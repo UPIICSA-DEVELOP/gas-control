@@ -1,0 +1,13 @@
+<!--
+  ~ Copyright (C) MapLander S de R.L de C.V - All Rights Reserved
+  ~ Unauthorized copying of this file, via any medium is strictly prohibited
+  ~ Proprietary and confidential
+  ~
+  -->
+
+<div id="upload-file-component">
+  <ng-container [ngTemplateOutlet]="layoutTemplate">
+    <input type="file" accept="image/*" (change)="onChangeFile($event)" id="inputHiddenForFileInComponent"/>
+    <input type="button" title="Seleccionar archivo" id="buttonHiddenForUploadFileComponent" onclick="document.getElementById('inputHiddenForFileInComponent').click()"/>
+  </ng-container>
+</div>

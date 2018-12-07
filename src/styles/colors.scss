@@ -1,0 +1,5 @@
+@import './theme';
+$primary: map-get($my-app-theme, primary);
+$accent: map-get($my-app-theme, accent);
+
+

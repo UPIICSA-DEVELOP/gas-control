@@ -1,0 +1,117 @@
+{
+  "FIND_PROPERTY": {
+
+  },
+  "ANNOUNCE-PROPERTY":{
+
+  },
+  "OPI":{
+
+  },
+  "HOME":{
+    "CHILDREN": {
+      "ABOUT":{
+
+      },
+      "DETAIL":{
+
+      },
+      "FAQ":{
+
+      },
+      "MAPS": {
+
+      },
+      "PLACE":{
+
+      },
+      "PRIVACY":{
+
+      },
+      "TERMS":{
+
+      }
+    },
+    "COMPONENTS":{
+      "CAROUSEL":{
+
+      },
+      "DRAW_TOOL":{
+
+      },
+      "FAVORITES":{
+
+      },
+      "FOOTER":{
+
+      },
+      "GALLERY":{
+
+      },
+      "LOGIN":{
+
+      },
+      "MENU":{
+        "ANNOUNCE_PROPERTY": "Anunciar una propiedad",
+        "PROPERTY_TYPE": "Tipo de propiedad",
+        "FAVORITES": "Favoritos",
+        "LOGIN": "Iniciar sesión",
+        "LOGOUT": "Cerrar sesión",
+        "FILTERS": "Filtros",
+        "OFFERING_TYPE": {
+          "TITLE": "Tipo de oferta",
+          "RENT": "Renta",
+          "SALE": "Venta"
+        },
+        "PRICES": "Mostrar precios convertidos en",
+        "RANGES":"Rangos",
+        "SURFACE": "Superficie",
+        "BEDROOMS": "Recámaras",
+        "BATHROOMS": "Baños",
+        "PARKING_SPOTS": "Estacionamientos",
+        "RETURN_INVESTMENT": "Retorno de inversión",
+        "AMENITIES": "Amenidades",
+        "NO_LIMIT": "Sin límites",
+        "APPLY": "APLICAR",
+        "RESET": "RESET"
+      },
+      "NAV_BAR":{
+
+      },
+      "RENT_SALE":{
+        "RENT": "Renta",
+        "SALE": "Venta"
+      },
+      "RESET_PASS":{
+
+      },
+      "SEARCH_BOX":{
+
+      },
+      "SEARCH_PROPERTY":{
+
+      }
+    }
+  },
+  "CONSTANTS":{
+    "OFFERING":{
+      "SUFIX": "en",
+      "RENT": "Renta",
+      "SALE": "Venta"
+    },
+    "PROPERTY_LIST":{
+      "RESIDENTIAL": "Vivienda",
+      "HOUSE": "Casa",
+      "APARTMENT": "Departamento",
+      "OFFICE": "Oficina",
+      "RETAIL": "Comercio",
+      "WAREHOUSE": "Bodega",
+      "LAND": "Terreno",
+      "INVESTMENT": "Inversión",
+      "BEDROOM": "Habitación"
+    },
+    "AMENITIES":{
+
+    }
+  }
+}

@@ -1,0 +1,15 @@
+/*!
+ * Copyright (C) MapLander S de R.L de C.V - All Rights Reserved
+ * Unauthorized copying of this file, via any medium is strictly prohibited
+ * Proprietary and confidential
+ *
+ */
+
+#core-dialog{
+  mat-dialog-content{
+    max-width: 30vw;
+    @media screen and (max-width: 600px){
+      max-width: 100vw;
+    }
+  }
+}

@@ -1,0 +1,16 @@
+# [START app_yaml]
+runtime: nodejs8
+env: standard
+instance_class: F4_1G
+handlers:
+- url: /.well-known
+  static_dir: .well-known
+- url: /favicon.ico
+  static_files: browser/favicon.ico
+  upload: browser/favicon.ico
+- url: /.*
+  script: auto
+  secure: always
+automatic_scaling:
+  min_idle_instances: 3
+# [END app_yaml]

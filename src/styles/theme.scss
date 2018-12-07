@@ -1,0 +1,47 @@
+@import '../../node_modules/@angular/material/theming';
+@include mat-core();
+
+$md-inspector: (
+  50 : #e2e9f4,
+  100 : #b6c8e3,
+  200 : #86a3d0,
+  300 : #567ebd,
+  400 : #3163af,
+  500 : #0d47a1,
+  600 : #0b4099,
+  700 : #09378f,
+  800 : #072f85,
+  900 : #032074,
+  A100 : #a2b4ff,
+  A200 : #6f8aff,
+  A400 : #3c61ff,
+  A700 : #234cff,
+  contrast: (
+    50 : #000000,
+    100 : #000000,
+    200 : #000000,
+    300 : #ffffff,
+    400 : #ffffff,
+    500 : #ffffff,
+    600 : #ffffff,
+    700 : #ffffff,
+    800 : #ffffff,
+    900 : #ffffff,
+    A100 : #000000,
+    A200 : #000000,
+    A400 : #ffffff,
+    A700 : #ffffff,
+  )
+);
+
+
+$md-inspector: $md-inspector;
+
+
+$my-app-primary: mat-palette($md-inspector);
+$my-app-accent:  mat-palette($md-inspector, 500, 900, A100);
+$my-app-warn:    mat-palette($mat-red);
+
+$my-app-theme: mat-light-theme($my-app-primary, $my-app-accent, $my-app-warn);
+
+@include angular-material-theme($my-app-theme);

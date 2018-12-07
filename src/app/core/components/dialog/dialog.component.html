@@ -1,0 +1,37 @@
+<!--
+  ~ Copyright (C) MapLander S de R.L de C.V - All Rights Reserved
+  ~ Unauthorized copying of this file, via any medium is strictly prohibited
+  ~ Proprietary and confidential
+  ~
+  -->
+
+<div id="core-dialog">
+  <h2 *ngIf="info.title">{{info.title}}</h2>
+  <div *ngIf="showInput; then input else withOutInput"></div>
+  <ng-template #input>
+    <mat-dialog-content>
+      {{info.message}}
+      <form [formGroup]="simpleForm" (ngSubmit)="onSubmitForm(simpleForm.value)" aria-label="Form for user" style="display: grid;">
+        <mat-form-field>
+          <input formControlName="text" matInput [placeholder]="info.placeholder" type="text" required aria-label="User input text">
+          <mat-error *ngIf="simpleForm.controls['text'].hasError('required')">
+            Este campo es requerido
+          </mat-error>
+        </mat-form-field>
+       <div style="display: flex; justify-content: flex-end">
+         <button mat-button (click)="cancel()" *ngIf="info.cancel">{{info.cancel}}</button>
+         <button mat-button  *ngIf="info.accept">{{info.accept}}</button>
+       </div>
+      </form>
+    </mat-dialog-content>
+  </ng-template>
+  <ng-template #withOutInput>
+    <mat-dialog-content>
+      {{info.message}}
+    </mat-dialog-content>
+    <mat-dialog-actions align="end">
+      <button mat-button (click)="cancel()" *ngIf="info.cancel">{{info.cancel}}</button>
+      <button mat-button (click)="accept()" *ngIf="info.accept">{{info.accept}}</button>
+    </mat-dialog-actions>
+  </ng-template>
+</div>

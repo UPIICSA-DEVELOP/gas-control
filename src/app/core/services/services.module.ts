@@ -1,0 +1,57 @@
+/*
+ * Copyright (C) MapLander S de R.L de C.V - All Rights Reserved
+ * Unauthorized copying of this file, via any medium is strictly prohibited
+ * Proprietary and confidential
+ *
+ */
+
+import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import {IconsService} from './icons/icons.service';
+import {MetaService} from './meta/meta.service';
+import {SnackBarService} from './snackbar/snackbar.service';
+import {ClipboardService} from './clipboard/clipboard.service';
+import {ApiService } from './api/api.service';
+import {ApiLoaderService} from './api/api-loader.service';
+import {DeviceDetectorService} from './device-detector/device-detector.service';
+import {LocalStorageService} from './local-storage/local-storage.service';
+import {CookieService} from './cookie/cookie.service';
+import {SessionStorageService} from '@app/core/services/session-storage/session-storage.service';
+import {MessagingService} from '@app/core/services/messaging/messaging.service';
+import {RouterStateService} from '@app/core/services/router-state/router-state.service';
+import {NetworkService} from '@app/core/services/connection/network.service';
+
+@NgModule({
+  imports: [
+    CommonModule
+  ],
+  declarations: [],
+  providers: [
+    MetaService,
+    IconsService,
+    SnackBarService,
+    ClipboardService,
+    ApiService,
+    ApiLoaderService,
+    DeviceDetectorService,
+    LocalStorageService,
+    SessionStorageService,
+    CookieService,
+    MessagingService,
+    RouterStateService,
+    NetworkService
+  ]
+})
+export class ServicesModule {
+  constructor(
+    private _icons: IconsService,
+    private _meta: MetaService,
+    private _routerState: RouterStateService,
+    private _networkService: NetworkService
+  ) {
+    this._routerState.loadRouting();
+    this._networkService.init();
+    // this._meta.init();
+    this._icons.init();
+  }
+}

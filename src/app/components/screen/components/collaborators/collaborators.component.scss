@@ -1,0 +1,30 @@
+/*!
+ * Copyright (C) MapLander S de R.L de C.V - All Rights Reserved
+ *  Unauthorized copying of this file, via any medium is strictly prohibited
+ *  Proprietary and confidential
+ */
+#collaborator-card {
+  padding-top: 96px;
+  width: 300px;
+  right: 5%;
+  position: absolute;
+
+  .container{
+    height: 200px;
+  }
+
+  .collaborator{
+    height: 70px;
+  }
+
+  .column{
+    float: left;
+    margin-top: 5px;
+  }
+
+  .image-colaborator {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+  }
+}

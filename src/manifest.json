@@ -1,0 +1,27 @@
+{
+  "short_name": "",
+  "name": "",
+  "scope": "/",
+  "start_url": "/",
+  "display": "fullscreen",
+  "orientation": "portrait",
+  "background_color": "#ffffff",
+  "theme_color": "#2196f3",
+  "icons": [{
+    "src": "favicon.png",
+    "type": "image/png",
+    "sizes": "451x451"
+  }],
+  "prefer_related_applications": true,
+  "related_applications": [
+    {
+      "platform": "play",
+      "url": "",
+      "id": ""
+    }, {
+      "platform": "itunes",
+      "url": ""
+    }
+  ],
+  "gcm_sender_id": "103953800507"
+}

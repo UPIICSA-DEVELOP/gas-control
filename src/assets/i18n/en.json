@@ -1,0 +1,116 @@
+{
+  "FIND_PROPERTY": {
+
+  },
+  "ANNOUNCE-PROPERTY":{
+
+  },
+  "OPI":{
+
+  },
+  "HOME":{
+    "CHILDREN": {
+      "ABOUT":{
+
+      },
+      "DETAIL":{
+
+      },
+      "FAQ":{
+
+      },
+      "MAPS": {
+
+      },
+      "PLACE":{
+
+      },
+      "PRIVACY":{
+
+      },
+      "TERMS":{
+
+      }
+    },
+    "COMPONENTS":{
+      "CAROUSEL":{
+
+      },
+      "DRAW_TOOL":{
+
+      },
+      "FAVORITES":{
+
+      },
+      "FOOTER":{
+
+      },
+      "GALLERY":{
+
+      },
+      "LOGIN":{
+
+      },
+      "MENU":{
+        "ANNOUNCE_PROPERTY": "Announce property",
+        "PROPERTY_TYPE": "Property type",
+        "FAVORITES": "Liked",
+        "LOGIN": "Sign in",
+        "LOGOUT": "Sign out",
+        "FILTERS": "Filters",
+        "OFFERING_TYPE": {
+          "TITLE": "For",
+          "RENT": "Lease",
+          "SALE": "Sale"
+        },
+        "PRICES": "Price in",
+        "RANGES":"Ranges",
+        "SURFACE": "Minimum area",
+        "BEDROOMS": "Bedrooms",
+        "BATHROOMS": "Bathrooms",
+        "PARKING_SPOTS": "Parking spots",
+        "RETURN_INVESTMENT": "Return on investment",
+        "AMENITIES": "With these amenities",
+        "NO_LIMIT": "No limit",
+        "APPLY": "APPLY",
+        "RESET": "RESET"
+      },
+      "NAV_BAR":{
+
+      },
+      "RENT_SALE":{
+        "RENT": "Lease",
+        "SALE": "Sale"
+      },
+      "RESET_PASS":{
+
+      },
+      "SEARCH_BOX":{
+
+      },
+      "SEARCH_PROPERTY":{
+
+      }
+    }
+  },
+  "CONSTANTS":{
+    "OFFERING": {
+      "SUFIX": "for",
+      "RENT": "Lease",
+      "SALE": "Sale"
+    },
+    "PROPERTY_LIST":{
+      "RESIDENTIAL": "Residential",
+      "HOUSE": "House",
+      "APARTMENT": "Apartment",
+      "OFFICE": "Office",
+      "RETAIL": "Retail",
+      "WAREHOUSE": "Warehouse",
+      "LAND": "Land",
+      "INVESTMENT": "Investment"
+    },
+    "AMENITIES":{
+
+    }
+  }
+}
