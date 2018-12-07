@@ -1,16 +1,19 @@
 # See http://help.github.com/ignore-files/ for more about ignoring files.
 
 # compiled output
-/dist
 /tmp
 /out-tsc
+/dist/node_modules
+/dist/browser
+/dist/server
+/dist/package-lock.json
+/dist/server.js
+/dist/bot.js
+/dist/config.json
+package-lock.json
 
 # dependencies
-/node_modules
-
-# profiling files
-chrome-profiler-events.json
-speed-measure-plugin.json
+node_modules
 
 # IDEs and editors
 /.idea
@@ -34,10 +37,17 @@ speed-measure-plugin.json
 /coverage
 /libpeerconnection.log
 npm-debug.log
-yarn-error.log
 testem.log
 /typings
+yarn-error.log
+
+# e2e
+/e2e/*.js
+/e2e/*.map
 
 # System Files
 .DS_Store
 Thumbs.db
+
+# log Files
+*.log

@@ -1,14 +1,176 @@
 <!doctype html>
-<html lang="en">
+<html lang="es-MX">
 <head>
-  <meta charset="utf-8">
-  <title>FrontInSpector</title>
   <base href="/">
+  <meta charset="utf-8">
+  <meta name="author" content="">
+  <meta name="theme-color" content="#2196f3">
+  <meta name="copyright" content="MapLander S. de R.L de C.V">
+  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no, minimal-ui">
+  <title>inSpector</title>
+  <meta name="description" content="">
+  <meta name="apple-itunes-app" content="app-id="/>
+  <meta property="fb:app_id" content="136434956702754">
+  <meta property="og:url" content="">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="">
+  <meta property="og:description" content="">
+  <meta property="og:image:width" content="200" />
+  <meta property="og:image:height" content="200" />
+  <meta property="og:image" content="/favicon.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="MapLander">
+  <meta name="twitter:description" content="">
+  <meta name="twitter:image" content="/favicon.png">
+  <link rel="preconnect" href="//35.190.52.92">
+  <link rel="preconnect" href="//fonts.googleapis.com">
+  <link rel="preconnect" href="//ajax.googleapis.com">
+  <link rel="preconnect" href="//maps.googleapis.com">
+  <link rel="preconnect" href="//connect.facebook.net">
+  <link rel="manifest" href="manifest.json"/>
+  <link rel="icon" type="image/png" href="favicon.png">
+  <link rel="preload" href="https://fonts.googleapis.com/icon?family=Material+Icons" as="style" onload="this.rel='stylesheet'">
 
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <noscript>
+    <h3
+      style="font-family: Roboto, 'Helvetice New', 'Arial',
+      sans-serif; position: absolute;
+      bottom: 0; text-align: center;
+      width: 99%;
+      z-index: 1;">
+      Lo sentimos, pero este sitio no funciona sin Javascript
+    </h3>
+  </noscript>
+  <script>
+    // Report fatal errors to Google Analytics
+    window.onerror = function() {
+      ga('send', 'exception', {exDescription: formatError.apply(null, arguments), exFatal: true});
+      function formatError(msg, url, line, col, e) {
+        var stack;
+        msg = msg.replace(/^Error: /, '');
+        if (e) {
+          stack = e.stack
+          // strip the leading "Error: " from the stack trace
+            .replace(/^Error: /, '')
+            // strip the message from the stack trace, if present
+            .replace(msg + '\n', '')
+            // strip leading spaces
+            .replace(/^ +/gm, '')
+            // strip all leading "at " for each frame
+            .replace(/^at /gm, '')
+            // replace long urls with just the last segment: `filename:line:column`
+            .replace(/(?: \(|@)http.+\/([^/)]+)\)?(?:\n|$)/gm, '@$1\n')
+            // replace "eval code" in Edge
+            .replace(/ *\(eval code(:\d+:\d+)\)(?:\n|$)/gm, '@???$1\n')
+        } else {
+          line = line || '?';
+          col = col || '?';
+          stack = url + ':' + line + ':' + col;
+        }
+        return (msg + '\n' + stack).substr(0, 150);
+      }
+    };
+  </script>
+  <script>
+    if (window.document.documentMode) {
+      // polyfill IE11 in a blocking way
+      var s = document.createElement('script');
+      s.src = 'generated/ie-polyfills.min.js';
+      document.head.appendChild(s);
+    } else if (!Object.assign) {
+      // polyfill other non-evergreen browsers in a blocking way
+      var polyfillUrl = "https://cdn.polyfill.io/v2/polyfill.min.js?features=default,Array.prototype.find&flags=gated&unknown=polyfill";
+      // send a blocking XHR to fetch the polyfill
+      // then append it to the document so that its eval-ed synchronously
+      // this is required because the method used for IE is not reliable with other non-evergreen browsers
+      var xhr = new XMLHttpRequest();
+      xhr.addEventListener("load", function() {
+        var s = document.createElement('script');
+        s.type = 'text/javascript';
+        var code = this.responseText;
+        s.appendChild(document.createTextNode(code));
+        document.head.appendChild(s);
+      });
+      xhr.open("GET", polyfillUrl, false);
+      xhr.send();
+    }
+  </script>
+  <style type="text/css">
+    body, html {
+      height: 100%;
+    }
+
+    .app-loading {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
+      background-color: white;
+    }
+
+    .app-loading .spinner {
+      height: 200px;
+      width: 200px;
+      animation: rotate 2s linear infinite;
+      transform-origin: center center;
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      margin: auto;
+    }
+
+    .app-loading .spinner .path {
+      stroke-dasharray: 1, 200;
+      stroke-dashoffset: 0;
+      animation: dash 1.5s ease-in-out infinite;
+      stroke-linecap: round;
+      stroke: #ddd;
+    }
+
+    @keyframes rotate {
+      100% {
+        transform: rotate(360deg);
+      }
+    }
+
+    @keyframes dash {
+      0% {
+        stroke-dasharray: 1, 200;
+        stroke-dashoffset: 0;
+      }
+      50% {
+        stroke-dasharray: 89, 200;
+        stroke-dashoffset: -35px;
+      }
+      100% {
+        stroke-dasharray: 89, 200;
+        stroke-dashoffset: -124px;
+      }
+    }
+  </style>
 </head>
 <body>
-  <app-root></app-root>
+  <!-- EXAMPLE [START]-->
+
+  <!--
+
+  <app-map-lander>
+    <div class="app-loading">
+      <img src="favicon.png" alt="Logo MapLander"
+           style="width: 80px; height: 80px; border-radius: 10px;">
+      <svg class="spinner" viewBox="25 25 50 50">
+        <circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="2" stroke-miterlimit="10"/>
+      </svg>
+    </div>
+  </app-map-lander>
+
+  -->
+
+  <!-- EXAMPLE [END]-->
+<app-in-spector> </app-in-spector>
 </body>
 </html>
