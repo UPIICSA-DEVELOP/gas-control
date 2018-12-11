@@ -18,12 +18,23 @@
       padding: 0 8px;
     }
 
+    .image-logo{
+      position: static;
+      margin: 0 auto;
+      display: flex;
+
+      img{
+        height: 48px;
+      }
+    }
+
     .navigation-buttons {
       position: absolute;
       right: 0;
       padding: 0 16px;
       display: flex;
       color: white;
+      margin-top: 5px;
 
       a{
         text-decoration: none;
@@ -31,6 +42,7 @@
       }
 
       .user{
+        margin-top: 5px;
         .button-user{
           min-width: 28px;
           line-height: 28px;

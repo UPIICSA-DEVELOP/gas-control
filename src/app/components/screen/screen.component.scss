@@ -4,3 +4,33 @@
  *  Proprietary and confidential
  */
 
+#Home {
+  @media only screen and (max-width: 600px) {
+    display: block !important;
+    #Column-One {
+      width: 100% !important;
+      height: 25% !important;
+    }
+
+    #Column-Two {
+      width: 100% !important;
+      height: 75% !important;
+      #Container {
+        #Station-Status {
+          width: 100% !important;
+          height: 50% !important;
+        }
+        #Collaborators-list {
+          width: 100% !important;
+          height: 50% !important;
+        }
+      }
+      #Activities-List{
+        width: 100%!important;
+        height: 50% !important;
+      }
+    }
+  }
+}
+
+
