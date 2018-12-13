@@ -3,34 +3,39 @@
   ~  Unauthorized copying of this file, via any medium is strictly prohibited
   ~  Proprietary and confidential
   -->
-<mat-sidenav-container style="height: 100%; overflow: auto">
+<mat-sidenav-container style="height: 100%;">
   <!-- Nav Bar [STAR]-->
   <app-nav-bar></app-nav-bar>
   <!-- Nav Bar [END]-->
 
+
+
   <!-- Home View [STAR]-->
-  <div id="Home" style="background-color: #0000FF; width: 100vw; height: 100vh; display: flex; margin-top: 48px;">
+  <div id="Home" >
+
+    <div class="background"></div>
 
     <!-- Column One [STAR]-->
-    <div id="Column-One" style="height: 100%; width: 30%; background-color: #FF0000; display: flex;">
+    <div id="Column-One">
       <app-gas-station></app-gas-station>
+      <app-tasks></app-tasks>
     </div>
     <!-- Column One [END]-->
 
     <!-- Column Two [STAR]-->
-    <div id="Column-Two" style="height: 100%; width: 70%; background-color: #000000;">
+    <div id="Column-Two">
 
       <!-- Container[STAR]-->
-      <div id="Container" style="width: 100%; height:277px;background-color: #888888; display: flex;">
+      <div id="Container" >
 
         <!-- Station Status [START]-->
-        <div id="Station-Status" style="width: 60%; height: 100%; background-color: orange;">
+        <div id="Station-Status">
           <app-station-status></app-station-status>
         </div>
         <!-- Station Status [END]-->
 
         <!-- Collaborators List [START]-->
-        <div id="Collaborators-list" style="width: 40%; height: 100%; background-color: green;">
+        <div id="Collaborators-list">
           <app-collaborators></app-collaborators>
         </div>
         <!-- Collaborators List [END]-->
@@ -39,7 +44,7 @@
       <!-- Container[END]-->
 
       <!-- Activities List [STAR]-->
-      <div id="Activities-List" style="width: 100%; height: calc(100% - 277px); background-color: deeppink"></div>
+      <div id="Activities-List"></div>
       <!-- Activities List [END]-->
 
     </div>

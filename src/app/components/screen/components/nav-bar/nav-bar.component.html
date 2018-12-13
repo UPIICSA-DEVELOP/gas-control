@@ -7,28 +7,22 @@
 <div id="nav-bar">
   <nav>
     <mat-toolbar id="nav-bar-toolbar">
-      <div style="display: flex; width: 100%">
-        <div class="image-logo">
-          <img src="../assets/Images/logo.png">
-        </div>
-        <div class="navigation-buttons">
-          <button mat-button>Home</button>
-          <button mat-button>Notifications</button>
-          <div>
-            <button mat-button>
-              <mat-icon>search</mat-icon>
-            </button>
-          </div>
-          <div>
-            <button mat-button>
-              <mat-icon>exit_to_app</mat-icon>
-            </button>
-          </div>
-          <div class="user">
-            <div class="button-user">
-              <img class="image-user" src="http://lh3.googleusercontent.com/1BBb17ZOAv7c5MBps9GTNa1ZabafH3nbqe8cvXhrRSfhY1_OmUeqsv0vJ4Ka_LQh2MQETUBbSbg8RJtoGNb9ReJonJ6bIK_p=s1600" alt="User image profile">
-            </div>
-          </div>
+      <div class="image-logo">
+        <img src="../assets/Images/logo.png">
+      </div>
+      <div class="navigation-buttons">
+        <button class="btn-home" mat-button>Home</button>
+        <button class="btn-notifications" mat-button>Notificaciones</button>
+        <button mat-button>
+          <mat-icon svgIcon="icons:search"></mat-icon>
+        </button>
+        <button mat-button>
+          <mat-icon svgIcon="icons:log_out"></mat-icon>
+        </button>
+        <div class="user">
+          <button class="button-user" mat-button>
+            <img class="image-user" src="http://lh3.googleusercontent.com/1BBb17ZOAv7c5MBps9GTNa1ZabafH3nbqe8cvXhrRSfhY1_OmUeqsv0vJ4Ka_LQh2MQETUBbSbg8RJtoGNb9ReJonJ6bIK_p=s1600" alt="User image profile">
+          </button>
         </div>
       </div>
     </mat-toolbar>

@@ -3,27 +3,73 @@
  *  Unauthorized copying of this file, via any medium is strictly prohibited
  *  Proprietary and confidential
  */
+* {
+  box-sizing: border-box;
+}
+
 #collaborator-card {
   padding-top: 48px;
-  width: 300px;
-  margin: 0 24px;
+  width: 95%;
+  margin: 0 2.5%;
 
-  .container{
-    height: 180px;
+  .header {
+    margin-top: 12px;
+    padding-bottom: 8px;
+    font-family: Roboto, 'Helvetice New', 'Arial', sans-serif;
+    font-weight: 500;
+    .title {
+      color: #707070;
+      font-family: Roboto, 'Helvetice New', 'Arial', sans-serif;
+      font-weight: 500;
+      font-size: 14pt;
+      padding: 0 20px;
+      @media screen and (max-width: 950px) {
+        padding: 0;
+      }
+    }
   }
 
-  .collaborator{
-    height: 70px;
+  .container {
+    height: 200px;
+    overflow: auto;
   }
 
-  .column{
-    float: left;
-    margin-top: 5px;
+  .column {
+    padding: 0 10px;
   }
 
-  .image-colaborator {
-    width: 60px;
-    height: 60px;
+  .collaborator {
+    height: auto;
+    display: flex;
+    margin-top: 8px;
+  }
+
+  .image-collaborator {
+    width: 50px;
+    height: 50px;
     border-radius: 50%;
+  }
+  .name {
+    font-family: Roboto, 'Helvetice New', 'Arial', sans-serif;
+    font-weight: 700;
+    font-size: 14pt;
+    color: #000000;
+  }
+  .email {
+    color: #707070;
+    font-family: Roboto, 'Helvetice New', 'Arial', sans-serif;
+    font-weight: 400;
+    margin-top: 5px;
+    font-size: 12pt;
+  }
+  .number {
+    color: #707070;
+    font-family: Roboto, 'Helvetice New', 'Arial', sans-serif;
+    font-weight: 400;
+    font-size: 12pt;
+  }
+
+  @media screen and (max-width: 800px) {
+    padding-top: 0;
   }
 }

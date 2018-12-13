@@ -26,7 +26,8 @@ import { CollaboratorsComponent } from './components/screen/components/collabora
 import { GasStationComponent } from './components/screen/components/gas-station/gas-station.component';
 import { StationStatusComponent } from './components/screen/components/station-status/station-status.component';
 import { TasksComponent } from './components/screen/components/tasks/tasks.component';
-
+import {Ng2GoogleChartsModule} from 'ng2-google-charts';
+import {ChartsModule} from 'ng2-charts';
 
 @NgModule({
   declarations: [
@@ -58,6 +59,8 @@ import { TasksComponent } from './components/screen/components/tasks/tasks.compo
         deps: [HttpClient]
       }
     }),
+    Ng2GoogleChartsModule,
+    ChartsModule
   ],
   entryComponents: [
 

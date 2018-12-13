@@ -8,6 +8,7 @@
 import { Injectable } from '@angular/core';
 import { MatIconRegistry } from '@angular/material';
 import { DomSanitizer } from '@angular/platform-browser';
+import {environment} from '@env/environment';
 
 @Injectable()
 export class IconsService {
@@ -17,12 +18,9 @@ export class IconsService {
     private matIconRegistry: MatIconRegistry) {
   }
   public init(): void {
-    /* Example
 
-    this.matIconRegistry.addSvgIconSetInNamespace('name_icons',
-      this.domSanitizer.bypassSecurityTrustResourceUrl('url'));
-
-    */
+    this.matIconRegistry.addSvgIconSetInNamespace('icons',
+      this.domSanitizer.bypassSecurityTrustResourceUrl(environment.url + 'assets/icons.svg'));
   }
 
 }

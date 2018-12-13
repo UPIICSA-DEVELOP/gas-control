@@ -3,38 +3,77 @@
  *  Unauthorized copying of this file, via any medium is strictly prohibited
  *  Proprietary and confidential
  */
-
+* {
+  box-sizing: border-box;
+}
 #gas-station-card{
   padding-top: 48px;
-  width: 344px;
-  margin: 0 24px;
+  width: 95%;
+  margin: 0 2.5%;
+  .header{
+    margin-top: 12px;
+    padding-bottom: 8px;
+    .title{
+      color: #707070;
+      font-family: Roboto, 'Helvetice New', 'Arial', sans-serif;
+      font-weight: 500;
+      font-size: 14pt;
+      padding: 0 20px;
+    }
+  }
   .container{
     box-shadow: 0 3px 1px 1px rgba(0, 0, 0, 0.1), 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, .10);
-    height: 124px;
+    display: flex;
+  }
+  .image{
+    width: 30%;
+  }
+  .content{
+    width: 70%;
+    padding: 0 10px;
   }
 
-  .collaborator{
-    height: 70px;
+  .contact{
+    font-family: Roboto, 'Helvetice New', 'Arial', sans-serif;
+    font-weight: 500;
+    font-size: 24pt;
+  }
+  .station-number{
+    margin-top: 5px;
+    color: #707070;
+    font-family: Roboto, 'Helvetice New', 'Arial', sans-serif;
+    font-weight: 400;
+    font-size: 12pt;
+  }
+  .station-email{
+    margin-top: 5px;
+    color: #707070;
+    font-family: Roboto, 'Helvetice New', 'Arial', sans-serif;
+    font-weight: 400;
+    font-size: 12pt;
   }
 
-  .column{
-    float: left;
-    margin-top: 15px;
-
-  }
-
-  .image-colaborator {
+  .image-station{
     width: 80px;
     height: 80px;
     border-radius: 50%;
+    margin-top: 20px;
     box-shadow: 0 3px 1px 1px rgba(0, 0, 0, 0.1), 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, .10);
   }
 
   .button-show{
     background-color: #0d47a1;
     color: #FFFFFF;
-    width: 60px !important;
-    height: 34px !important;
-    margin: 0 100%;
+    width: 60px;
+    height: 34px;
+    float: right;
+    margin: 8px 0;
+  }
+  @media screen and (max-width: 950px){
+    .header{
+      .title{
+        padding: 0;
+      }
+    }
   }
 }

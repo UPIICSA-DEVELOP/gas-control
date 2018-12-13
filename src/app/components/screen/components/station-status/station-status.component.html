@@ -5,23 +5,31 @@
   -->
 
 <div id="station-status">
-  <div style="margin-top: 12px !important; padding-bottom: 8px !important;">
-    <span>Activities progress</span>
+  <div class="header">
+    <span class="title">PROGRESO DE ACTIVIDAD</span>
   </div>
   <div>
     <mat-card class="container">
-      <div class="column" style="width: 40%; height: 100%;">
-        <span> 75 % </span>
+      <div class="column-1">
+        <div class="graphic">
+          <canvas baseChart
+                  [data]="doughnutChartData"
+                  [labels]="doughnutChartLabels"
+                  [chartType]="doughnutChartType"
+                  [options]="doughnutChartOptions"
+                  (chartHover)="chartHovered($event)"
+                  (chartClick)="chartClicked($event)"></canvas>
+        </div>
       </div>
-      <div class="column" style="width: 50%">
-        <div style="color: #0d47a1; font-size: 24px; text-align: right">
-          <span>Station Name</span>
+      <div class="column-2">
+        <div class="station-name">
+          <span>Nombre de la estación</span>
         </div>
-        <div style="margin-top:10px; text-align: right">
-          <span>Station owner</span>
+        <div class="station-data">
+          <span>Propietario de la estación</span>
         </div>
-        <div style="text-align: right">
-          <span>90/120 activities</span>
+        <div class="station-data">
+          <span>90 / 120 actividades</span>
         </div>
       </div>
     </mat-card>

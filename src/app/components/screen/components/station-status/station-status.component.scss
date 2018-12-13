@@ -3,29 +3,73 @@
  *  Unauthorized copying of this file, via any medium is strictly prohibited
  *  Proprietary and confidential
  */
+* {
+  box-sizing: border-box;
+}
 
-#station-status{
+#station-status {
   padding-top: 48px;
-  width: 477px;
-  margin: 0 3.5%;
-  .container{
+  width: 95% !important;
+  margin: 0 2.5%;
+  .header {
+    margin-top: 12px !important;
+    padding-bottom: 8px !important;
+    .title {
+      color: #707070;
+      font-family: Roboto, 'Helvetice New', 'Arial', sans-serif;
+      font-weight: 500;
+      font-size: 14pt;
+      padding: 0 20px;
+      @media screen and (max-width: 950px) {
+        padding: 0;
+      }
+    }
+  }
+  .container {
     box-shadow: 0 3px 1px 1px rgba(0, 0, 0, 0.1), 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, .10);
-    height: 180px;
+    height: 200px;
+    display: flex;
+  }
+  .column-1 {
+    width: 40%;
+    display: flex;
+    justify-content: center;
+    .graphic {
+      height: 100% !important;
+      position: relative;
+      canvas {
+        width: 140px !important;
+        height: 140px !important;
+        margin: 12px;
+      }
+    }
   }
 
-  .collaborator{
-    height: 70px;
+  .column-2 {
+    width: 60%;
   }
 
-  .column{
-    float: left;
-    margin-top: 20px;
+  .station-name {
+    color: #0d47a1;
+    font-family: Roboto, 'Helvetice New', 'Arial', sans-serif;
+    font-weight: 500;
+    font-size: 28pt;
+    text-align: right;
+    @media screen and (max-width: 1024px) {
+      font-size: 20pt;
+    }
   }
 
-  .image-colaborator {
-    width: 80px;
-    height: 80px;
-    border-radius: 50%;
-    box-shadow: 0 3px 1px 1px rgba(0, 0, 0, 0.1), 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, .10);
+  .station-data {
+    color: #707070;
+    font-family: Roboto, 'Helvetice New', 'Arial', sans-serif;
+    font-weight: 500;
+    font-size: 14pt;
+    margin-top: 5px;
+    text-align: right;
+  }
+
+  @media screen and (max-width: 800px) {
+    padding-top: 0;
   }
 }

@@ -5,30 +5,87 @@
  */
 
 #Home {
-  @media only screen and (max-width: 600px) {
-    display: block !important;
+  background-color: white;
+  overflow-y: auto ;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  .background{
+    width: 600px;
+    height: 300px;
+    position: absolute;
+    bottom: 0;
+    background-size: 100%;
+    background-position: bottom;
+    right: 0;
+    background-image: url("../../../assets/Images/background.png");
+    background-repeat: no-repeat;
+  }
+
+  #Column-One{
+    height: 100%;
+    width: 30%;
+    display: flex;
+  }
+
+  #Column-Two{
+    height: 100%;
+    width: 70%;
+    #Container{
+      width: 100%;
+      height: 277px;
+      display: flex;
+      #Station-Status{
+        width: 50%;
+        height: 100%;
+      }
+      #Collaborators-list{
+        width: 50%;
+        height: 100%;
+      }
+    }
+    #Activities-List{
+      width: 100%;
+      height: calc(100% - 277px);
+    }
+  }
+
+  @media screen and (max-width: 800px) {
+    display: block ;
     #Column-One {
-      width: 100% !important;
-      height: 25% !important;
+      position: relative ;
+      width: 100% ;
+      height: 300px ;
     }
 
     #Column-Two {
-      width: 100% !important;
-      height: 75% !important;
+      position: relative ;
+      width: 100% ;
+      height: 277px ;
       #Container {
+        display: block ;
+        height: 544px;
         #Station-Status {
-          width: 100% !important;
-          height: 50% !important;
+          position: relative ;
+          width: 100% ;
+          height: 277px ;
         }
         #Collaborators-list {
-          width: 100% !important;
-          height: 50% !important;
+          position: relative ;
+          width: 100% ;
+          height: 277px ;
         }
       }
       #Activities-List{
-        width: 100%!important;
-        height: 50% !important;
+        width: 100%;
+        height: 277px ;
       }
+    }
+  }
+  @media screen and (max-width: 768px), screen and (max-height: 480px) {
+    .background{
+      width: 300px ;
+      height: 150px ;
     }
   }
 }

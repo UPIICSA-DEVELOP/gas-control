@@ -7,13 +7,16 @@
 
 @include angular-material-theme($my-app-theme);
 
+* {
+  box-sizing: border-box;
+}
 
 html, body {
   margin: 0;
   padding: 0;
 }
 body{
-  background-color: #f0f0f0;
+  background-color: white;
   font-family: Roboto, 'Helvetice New', 'Arial', sans-serif
 }
 
@@ -24,20 +27,47 @@ body{
 app-collaborators{
   position: absolute;
   top: 0;
-  width: 100%;
-  height: 100%;
+  width: 34.5%;
 }
 
 app-gas-station{
   position: absolute;
   top: 0;
-  width: 100%;
-  height: 100%;
+  width: 29.5%;
 }
 
 app-station-status{
   position: absolute;
   top: 0;
-  width: 100%;
-  height: 100%;
+  width: 34.5%;
+}
+
+app-tasks{
+  position: absolute;
+  top: 0;
+  width: 29.5%;
+}
+
+@media screen and (max-width: 950px){
+  app-tasks{
+    display: none;
+  }
+}
+
+@media screen and (max-width: 800px){
+  app-gas-station{
+    width: 100%;
+  }
+  app-station-status{
+    width: 100%;
+  }
+  app-collaborators{
+    width: 100%;
+  }
+}
+
+@media screen and (max-height: 480px){
+  app-tasks{
+    display: none;
+  }
 }
