@@ -20,6 +20,7 @@ import {SessionStorageService} from '@app/core/services/session-storage/session-
 import {MessagingService} from '@app/core/services/messaging/messaging.service';
 import {RouterStateService} from '@app/core/services/router-state/router-state.service';
 import {NetworkService} from '@app/core/services/connection/network.service';
+import {PriorityService} from '@app/core/services/priority/priority.service';
 
 @NgModule({
   imports: [
@@ -39,7 +40,8 @@ import {NetworkService} from '@app/core/services/connection/network.service';
     CookieService,
     MessagingService,
     RouterStateService,
-    NetworkService
+    NetworkService,
+    PriorityService
   ]
 })
 export class ServicesModule {

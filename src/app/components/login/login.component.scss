@@ -1,0 +1,83 @@
+/*!
+ * Copyright (C) MapLander S de R.L de C.V - All Rights Reserved
+ *  Unauthorized copying of this file, via any medium is strictly prohibited
+ *  Proprietary and confidential
+ */
+
+#login {
+  background-color: #0d47a1;
+  width: 100vw;
+  height: 100vh;
+  mat-card {
+    overflow-y: auto;
+    margin: 0 auto;
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    justify-content: center;
+    display: block;
+    width: 35%;
+    height: 75%;
+    margin-top: 80px;
+    box-shadow: 0 3px 1px 1px rgba(0, 0, 0, 0.1), 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, .10);
+    @media screen and (max-width: 900px) {
+      margin-top: 20px;
+      width: 90%;
+      height: 90%;
+    }
+    .head {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      img {
+        height: 150px;
+      }
+    }
+    .body{
+      margin: 24px;
+      mat-form-field{
+        width: 100%;
+      }
+      .forgot-password{
+        text-align: right;
+        color: #0d47a1;
+        margin-top: -10px;
+        margin-bottom: 24px;
+      }
+      .icons{
+        color:#707070;
+        margin: 0 12px;
+      }
+      .see-ocult-pass{
+        color:#707070;
+        width: 24px;
+        height: 24px;
+      }
+      .login-actions{
+        display:flex;
+        justify-content: space-between;
+        .remember-password{
+          color: #0d47a1;
+          width: 50%;
+          @media screen and (max-width: 900px){
+            width: 100%;
+            display: flex;
+            justify-content: center;
+          }
+        }
+        .btn-login-email{
+          display: flex;
+          @media screen and (max-width: 900px){
+            margin-top: 24px;
+            width: 100%;
+            justify-content: center;
+          }
+        }
+        @media screen and (max-width: 900px){
+          display: block;
+        }
+      }
+    }
+  }
+}

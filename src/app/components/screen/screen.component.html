@@ -17,8 +17,15 @@
 
     <!-- Column One [STAR]-->
     <div id="Column-One">
-      <app-gas-station></app-gas-station>
-      <app-tasks></app-tasks>
+      <div id="contact">
+        <app-gas-station></app-gas-station>
+      </div>
+      <div id="stations">
+        <app-notifications></app-notifications>
+      </div>
+      <div id="filters">
+        <app-task-filter></app-task-filter>
+      </div>
     </div>
     <!-- Column One [END]-->
 
@@ -44,7 +51,9 @@
       <!-- Container[END]-->
 
       <!-- Activities List [STAR]-->
-      <div id="Activities-List"></div>
+      <div id="Activities-List">
+        <app-list-tasks></app-list-tasks>
+      </div>
       <!-- Activities List [END]-->
 
     </div>

@@ -17,19 +17,20 @@
                   [labels]="doughnutChartLabels"
                   [chartType]="doughnutChartType"
                   [options]="doughnutChartOptions"
-                  (chartHover)="chartHovered($event)"
-                  (chartClick)="chartClicked($event)"></canvas>
+                  [colors]="doughnutChartColor"></canvas>
         </div>
       </div>
-      <div class="column-2">
-        <div class="station-name">
-          <span>Nombre de la estación</span>
-        </div>
-        <div class="station-data">
-          <span>Propietario de la estación</span>
-        </div>
-        <div class="station-data">
-          <span>90 / 120 actividades</span>
+      <div class="alignment">
+        <div class="column-2">
+          <div class="station-name">
+            <span>Nombre de estación</span>
+          </div>
+          <div class="station-data">
+            <span>Propietario de la estación</span>
+          </div>
+          <div class="station-data">
+            <span>90 / 120 actividades</span>
+          </div>
         </div>
       </div>
     </mat-card>

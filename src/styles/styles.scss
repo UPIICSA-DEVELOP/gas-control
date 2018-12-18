@@ -36,20 +36,29 @@ app-gas-station{
   width: 29.5%;
 }
 
+app-notifications{
+  position: absolute;
+  width: 29.5%;
+}
+
+app-task-filter{
+  position: absolute;
+  width: 29.5%;
+}
+
 app-station-status{
   position: absolute;
   top: 0;
   width: 34.5%;
 }
 
-app-tasks{
+app-list-tasks{
   position: absolute;
-  top: 0;
-  width: 29.5%;
+  width: 70%;
 }
 
 @media screen and (max-width: 950px){
-  app-tasks{
+  app-task-filter{
     display: none;
   }
 }
@@ -64,10 +73,16 @@ app-tasks{
   app-collaborators{
     width: 100%;
   }
+  app-list-tasks{
+    width: 100%;
+  }
+  app-notifications{
+    width: 100%;
+  }
 }
 
 @media screen and (max-height: 480px){
-  app-tasks{
+  app-task-filter{
     display: none;
   }
 }

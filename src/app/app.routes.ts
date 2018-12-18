@@ -8,15 +8,19 @@
 import {Routes} from '@angular/router';
 import {environment} from '@env/environment';
 import {ScreenComponent} from '@app/components/screen/screen.component';
+import {LoginComponent} from '@app/components/login/login.component';
 const URL_BASE = environment.url;
 
 export const appRoutes: Routes = [
   {
-    path: '',
+    path: 'home',
     component: ScreenComponent,
-    data: {
-
-    }
+    data: {}
+  },
+  {
+    path: '',
+    component: LoginComponent,
+    data: {}
   }
 ];
 

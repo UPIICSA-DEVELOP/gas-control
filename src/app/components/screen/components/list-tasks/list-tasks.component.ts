@@ -7,11 +7,11 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'app-tasks',
-  templateUrl: './tasks.component.html',
-  styleUrls: ['./tasks.component.scss']
+  selector: 'app-list-tasks',
+  templateUrl: './list-tasks.component.html',
+  styleUrls: ['./list-tasks.component.scss']
 })
-export class TasksComponent implements OnInit {
+export class ListTasksComponent implements OnInit {
 
   constructor() { }
 

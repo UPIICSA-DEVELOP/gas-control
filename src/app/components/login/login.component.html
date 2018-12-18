@@ -1,0 +1,48 @@
+<!--
+  ~ Copyright (C) MapLander S de R.L de C.V - All Rights Reserved
+  ~  Unauthorized copying of this file, via any medium is strictly prohibited
+  ~  Proprietary and confidential
+  -->
+
+<div id="login">
+  <mat-card>
+    <div class="head">
+      <img src="../../../assets/Images/logo-inSpector.png" alt="app-logo">
+    </div>
+    <div class="body">
+      <form [formGroup]="loginForm" aria-label="Form of login with in inSpector">
+        <mat-form-field>
+          <input formControlName="email" matInput placeholder="Usuario" type="email" required aria-label="User email">
+          <mat-icon matPrefix class="icons" svgIcon="icons:user"></mat-icon>
+          <mat-error *ngIf="loginForm.controls['email'].hasError('required')">
+            Este campo es obligatorio
+          </mat-error>
+          <mat-error *ngIf="loginForm.controls['email'].hasError('email')">
+            La dirección de Email no es valida
+          </mat-error>
+        </mat-form-field>
+        <mat-form-field>
+          <input formControlName="password" matInput placeholder="Contraseña" required [type]="hide ? 'password' : 'text'" aria-label="User password">
+          <mat-icon matPrefix class="icons" svgIcon="icons:password"></mat-icon>
+          <button matSuffix mat-icon-button (click)="hide = !hide">
+            <mat-icon [svgIcon]="hide ? 'icons:ocult_pass' : 'icons:show_pass'" class="see-ocult-pass"></mat-icon>
+          </button>
+          <mat-error *ngIf="loginForm.controls['password'].hasError('required')">
+            Este campo es obligatorio
+          </mat-error>
+        </mat-form-field>
+          <div class="forgot-password">
+            <p>¿Olvidó su contraseña?</p>
+          </div>
+        <div class="login-actions">
+          <div class="remember-password">
+            <mat-checkbox>Recordarme</mat-checkbox>
+          </div>
+          <div class="btn-login-email">
+            <button mat-flat-button aria-label="LogIn" [color]="'primary'">INICIAR SESIÓN</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </mat-card>
+</div>

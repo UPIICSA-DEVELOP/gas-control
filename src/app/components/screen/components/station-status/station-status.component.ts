@@ -13,17 +13,23 @@ import {Component} from '@angular/core';
   styleUrls: ['./station-status.component.scss']
 })
 export class StationStatusComponent {
+  public doughnutChartData: number[] = [90, 30];
   public doughnutChartLabels: string[] = ['Completas', 'Pendientes'];
-  public doughnutChartData: number[] = [75, 25];
   public doughnutChartType: string = 'doughnut';
+  public doughnutChartColor: any[] = [{backgroundColor: ["#05C000", "#707070"]}];
   public doughnutChartOptions: any = {
-    backgroundColor: [
-      '#257602',
-      '#707070'
-    ],
-    cutoutPercentage: 80,
+    cutoutPercentage: 75,
+    tooltips: {
+      enable: false
+    },
     legend: {
-      display: false
+      display: true,
+      position: 'bottom',
+      fullWidth: false,
+      labels: {
+        fontColor: '#707070',
+        fontFamily: 'Roboto, "Helvetice New", "Arial", sans-serif'
+      }
     },
     responsive: true,
     devicePixelRatio: 0,

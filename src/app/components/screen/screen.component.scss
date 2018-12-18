@@ -6,7 +6,7 @@
 
 #Home {
   background-color: white;
-  overflow-y: auto ;
+  overflow: auto ;
   width: 100vw;
   height: 100vh;
   display: flex;
@@ -25,7 +25,15 @@
   #Column-One{
     height: 100%;
     width: 30%;
-    display: flex;
+    #contact{
+      width: 100%; height: 40%;
+    }
+    #stations{
+      width: 100%; height: 33%;
+    }
+    #filters{
+      width: 100%; height: 25%;
+    }
   }
 
   #Column-Two{
@@ -55,10 +63,14 @@
     #Column-One {
       position: relative ;
       width: 100% ;
-      height: 300px ;
+      height: 700px ;
+      #filters{
+        display: none;
+      }
     }
 
     #Column-Two {
+      margin-top: -203px;
       position: relative ;
       width: 100% ;
       height: 277px ;
@@ -82,10 +94,13 @@
       }
     }
   }
-  @media screen and (max-width: 768px), screen and (max-height: 480px) {
+  @media screen and (max-width: 768px), screen and (max-height: 600px) {
+    #filters{
+      display: none;
+    }
     .background{
-      width: 300px ;
-      height: 150px ;
+      width: 300px;
+      height: 150px;
     }
   }
 }

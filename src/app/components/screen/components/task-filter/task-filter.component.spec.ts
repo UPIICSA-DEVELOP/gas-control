@@ -6,21 +6,21 @@
 
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { TasksComponent } from './tasks.component';
+import { TaskFilterComponent } from './task-filter.component';
 
-describe('TasksComponent', () => {
-  let component: TasksComponent;
-  let fixture: ComponentFixture<TasksComponent>;
+describe('TaskFilterComponent', () => {
+  let component: TaskFilterComponent;
+  let fixture: ComponentFixture<TaskFilterComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ TasksComponent ]
+      declarations: [ TaskFilterComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(TasksComponent);
+    fixture = TestBed.createComponent(TaskFilterComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

@@ -1,0 +1,102 @@
+/*!
+ * Copyright (C) MapLander S de R.L de C.V - All Rights Reserved
+ *  Unauthorized copying of this file, via any medium is strictly prohibited
+ *  Proprietary and confidential
+ */
+
+#list-tasks{
+  padding-top: 24px;
+  width: 95%;
+  margin: 0 2.5%;
+  .header {
+    padding-bottom: 8px;
+    width: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    .title {
+      color: #707070;
+      font-family: Roboto, 'Helvetice New', 'Arial', sans-serif;
+      font-weight: 500;
+      font-size: 14pt;
+      padding: 0 20px;
+      @media screen and (max-width: 950px) {
+        padding: 0;
+      }
+    }
+  }
+  .container{
+    height: 270px;
+    margin-bottom: 10px;
+    box-shadow: 0 3px 1px 1px rgba(0, 0, 0, 0.1), 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, .10);
+    .contain-head{
+      display: flex;
+      justify-content: space-between;
+      .text{
+        color: #707070;
+        font-family: Roboto, 'Helvetice New', 'Arial', sans-serif;
+        font-weight: 700;
+        font-size: 12pt;
+        width: 100%;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      .icon{
+        color: #707070;
+      }
+    }
+    .sub-container{
+      overflow: auto;
+      height: 85%;
+      .task{
+        display: flex;
+        height: 100px;
+        margin-bottom: 8px;
+        .date{
+          text-align: center;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          width: 10%;
+          height: 100%;
+          @media screen and (max-width: 900px){
+            width: 25%;
+          }
+          .text-bold{
+            color: #707070;
+            font-family: Roboto, 'Helvetice New', 'Arial', sans-serif;
+            font-weight: 500;
+            font-size: 16pt;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+          }
+        }
+        .content{
+          width: 74%;
+          height: 100%;
+          .head{
+            color: #000000;
+            font-family: Roboto, 'Helvetice New', 'Arial', sans-serif;
+            font-weight: 700;
+            font-size: 14pt;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+          }
+          .text{
+            color: #707070;
+            font-family: Roboto, 'Helvetice New', 'Arial', sans-serif;
+            font-weight: 400;
+            font-size: 12pt;
+            margin-top: 5px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+          }
+        }
+      }
+    }
+  }
+}

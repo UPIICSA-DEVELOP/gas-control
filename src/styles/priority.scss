@@ -1,0 +1,26 @@
+/*!
+ * Copyright (C) MapLander S de R.L de C.V - All Rights Reserved
+ *  Unauthorized copying of this file, via any medium is strictly prohibited
+ *  Proprietary and confidential
+ */
+
+@import "colors";
+
+.basic{
+  background-color: #257602;
+}
+.medium{
+  background-color: #FFD800;
+}
+.critical{
+  background-color: #E00000;
+}
+.priority{
+  width: 1%;
+  height: 100%;
+  position: absolute;
+  background-color: #707070 !important;
+  top: 0;
+  left: 0;
+  border-radius: 4px 0 0 4px;
+}

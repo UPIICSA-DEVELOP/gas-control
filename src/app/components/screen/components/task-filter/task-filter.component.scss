@@ -1,0 +1,35 @@
+/*!
+ * Copyright (C) MapLander S de R.L de C.V - All Rights Reserved
+ *  Unauthorized copying of this file, via any medium is strictly prohibited
+ *  Proprietary and confidential
+ */
+
+* {
+  box-sizing: border-box;
+}
+#task-filter{
+  margin: 0 24px;
+  .header{
+    .title{
+      color: #707070;
+      font-family: Roboto, 'Helvetice New', 'Arial', sans-serif;
+      font-weight: 500;
+      font-size: 14pt;
+    }
+  }
+  button{
+    height: 36px;
+    width: 200px;
+    text-align: left;
+  }
+  .icons{
+    color: #0d47a1;
+  }
+  .filters-text{
+    color: #000000;
+    font-family: Roboto, 'Helvetice New', 'Arial', sans-serif;
+    font-weight: 700;
+    font-size: 12pt;
+    padding: 0 30px;
+  }
+}
