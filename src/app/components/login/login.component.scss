@@ -39,6 +39,16 @@
       mat-form-field{
         width: 100%;
       }
+      .error-login{
+        height: 12px;
+        width: 80%;
+        margin-top: -16px;
+        margin-left: calc(50% - 40%);
+        span{
+          font-size: 12px;
+          color: red;
+        }
+      }
       .forgot-password{
         text-align: right;
         color: #0d47a1;
@@ -51,8 +61,6 @@
       }
       .see-ocult-pass{
         color:#707070;
-        width: 24px;
-        height: 24px;
       }
       .login-actions{
         display:flex;

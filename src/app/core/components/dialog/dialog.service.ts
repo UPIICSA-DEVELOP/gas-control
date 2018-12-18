@@ -64,13 +64,13 @@ export class DialogService {
    * @return {@link MatDialogRef<DialogComponent>}
    *
    * */
-  public alertDialog(message: string, accept?: string): MatDialogRef<DialogComponent>{
+  public alertDialog(title: string, message: string, accept?: string): MatDialogRef<DialogComponent>{
     return this._dialog.open(DialogComponent,
       {
         data:
           {
             type: TypeDialog.Alert,
-            title: '',
+            title: title,
             message: message,
             accept: (accept)?accept:'ACEPTAR',
             cancel: ''
@@ -106,7 +106,7 @@ export class DialogService {
             accept: (accept)?accept:'ACEPTAR',
             cancel: (cancel)?cancel:'CANCELAR'
           },
-        disableClose: false
+        disableClose: true
       }
     );
   }
