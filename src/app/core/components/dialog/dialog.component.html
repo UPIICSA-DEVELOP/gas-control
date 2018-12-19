@@ -17,6 +17,9 @@
           <mat-error *ngIf="simpleForm.controls['text'].hasError('required')">
             Este campo es requerido
           </mat-error>
+          <mat-error *ngIf="simpleForm.controls['text'].hasError('email')">
+            La dirección de Email no es valida
+          </mat-error>
         </mat-form-field>
        <div style="display: flex; justify-content: flex-end">
          <button mat-button (click)="cancel()" *ngIf="info.cancel">{{info.cancel}}</button>

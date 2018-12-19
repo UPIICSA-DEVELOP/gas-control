@@ -48,7 +48,7 @@ export class DialogComponent implements OnInit {
           cancel: this._data.cancel || ''
         };
         this.simpleForm = this._formBuilder.group({
-          text: ['', [Validators.required]]
+          text: ['', [Validators.required, Validators.email]]
         });
         break;
     }
