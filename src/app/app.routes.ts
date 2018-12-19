@@ -9,12 +9,14 @@ import {Routes} from '@angular/router';
 import {environment} from '@env/environment';
 import {ScreenComponent} from '@app/components/screen/screen.component';
 import {LoginComponent} from '@app/components/login/login.component';
+import {AuthService} from '@app/core/services/auth/auth.service';
 const URL_BASE = environment.url;
 
 export const appRoutes: Routes = [
   {
     path: 'home',
     component: ScreenComponent,
+    resolve: {data: AuthService},
     data: {
       url: URL_BASE + 'home'
     }
@@ -22,6 +24,7 @@ export const appRoutes: Routes = [
   {
     path: '',
     component: LoginComponent,
+    resolve: {data: AuthService},
     data: {
       url: URL_BASE
     }

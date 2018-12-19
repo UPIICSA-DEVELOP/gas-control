@@ -16,8 +16,8 @@
         <button mat-button>
           <mat-icon svgIcon="icons:search"></mat-icon>
         </button>
-        <button mat-button>
-          <mat-icon svgIcon="icons:log_out"></mat-icon>
+        <button mat-button (click)="logOut()" class="btn-logout">
+          <mat-icon>exit_to_app</mat-icon>
         </button>
         <div class="user">
           <button class="button-user" mat-button>

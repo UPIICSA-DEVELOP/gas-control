@@ -6,7 +6,6 @@
  */
 
 import {Injectable} from '@angular/core';
-import {environment} from '@env/environment';
 
 export enum MaxAge {
   DAY,
@@ -21,8 +20,6 @@ export interface CookieOptions {
   maxAge: MaxAge;
   days?: number;
 }
-
-const URL_BASE = environment.url;
 
 @Injectable()
 export class CookieService {
@@ -56,7 +53,7 @@ export class CookieService {
 
   public static deleteCookie(name: string): void {
     if (CookieService.validate()) {
-      document.cookie = name + "=; max-age=0; path=/" + URL_BASE ;
+      document.cookie = name + "=; max-age=0; path=/" ;
     }
   }
 

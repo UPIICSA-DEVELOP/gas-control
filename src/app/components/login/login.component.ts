@@ -9,11 +9,7 @@ import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {ApiService} from '@app/core/services/api/api.service';
 import {DialogService} from '@app/core/components/dialog/dialog.service';
 import {ApiLoaderService} from '@app/core/services/api/api-loader.service';
-import {CookieService, MaxAge} from '@app/core/services/cookie/cookie.service';
-import {Constants} from '@app/core/constants.core';
-import {SessionStorageService} from '@app/core/services/session-storage/session-storage.service';
 import {SnackBarService} from '@app/core/services/snackbar/snackbar.service';
-import {Router} from '@angular/router';
 import {AuthService} from '@app/core/services/auth/auth.service';
 
 @Component({
@@ -34,11 +30,9 @@ export class LoginComponent implements OnInit {
     private _apiLoader: ApiLoaderService,
     private _dialogService: DialogService,
     private _snackService: SnackBarService,
-    private _router: Router,
-    private _authService: AuthService
+    private _auth: AuthService
   ) { }
   ngOnInit(): void {
-    this._authService.resolve();
     this.loginForm = this._formBuilder.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required]],
@@ -81,7 +75,7 @@ export class LoginComponent implements OnInit {
     this._apiService.signIn(opt).subscribe((response: any) => {
       switch (response.code) {
         case 200:
-          this.saveUserAndContinue(response.item, remember);
+          this._auth.logIn(response.item, remember);
           break;
         case 471:
           this.loginForm.controls['email'].setErrors({notExist: true});
@@ -99,19 +93,5 @@ export class LoginComponent implements OnInit {
       }
     });
   }
-  private saveUserAndContinue(user: any, rememberPass: boolean): void {
-    let time: MaxAge;
-    if (rememberPass) {
-      time = MaxAge.MONTH;
-    } else {
-      time = MaxAge.DAY;
-    }
-    SessionStorageService.setItem('user', user);
-    CookieService.setCookie({
-      value: user.id,
-      name: Constants.UserInSession,
-      maxAge: time
-    });
-    this._authService.resolve();
-  }
+
 }
