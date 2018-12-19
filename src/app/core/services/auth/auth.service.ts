@@ -6,8 +6,6 @@
 
 import { Injectable } from '@angular/core';
 import {Resolve, Router} from '@angular/router';
-import {ApiService} from '@app/core/services/api/api.service';
-import {DialogService} from '@app/core/components/dialog/dialog.service';
 import {CookieService} from '@app/core/services/cookie/cookie.service';
 import {Constants} from '@app/core/constants.core';
 
@@ -15,17 +13,15 @@ import {Constants} from '@app/core/constants.core';
 export class AuthService implements Resolve<any>{
 
   constructor(
-    private _router: Router,
-    private _api: ApiService,
-    private _dialog: DialogService,
-    private _cookieService: CookieService
+    private _router: Router
   ) { }
 
   resolve() {
     if (!AuthService.validateUser()) {
       this._router.navigate(['/']);
+    }else {
+      this._router.navigate(['/home']);
     }
-    return 0;
   }
 
   private static validateUser(): boolean {

@@ -22,6 +22,7 @@ import {MaterialModule} from '@app/core/material/material.module';
 import {ImageCropperModule} from 'ngx-image-cropper';
 import { CropImageComponent } from './components/crop-image/crop-image.component';
 import {Ng2GoogleChartsModule} from 'ng2-google-charts';
+import {AuthService} from '@app/core/services/auth/auth.service';
 
 @NgModule({
   imports: [

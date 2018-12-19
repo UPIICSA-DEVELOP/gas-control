@@ -12,6 +12,9 @@ import {ApiLoaderService} from '@app/core/services/api/api-loader.service';
 import {CookieService, MaxAge} from '@app/core/services/cookie/cookie.service';
 import {Constants} from '@app/core/constants.core';
 import {SessionStorageService} from '@app/core/services/session-storage/session-storage.service';
+import {SnackBarService} from '@app/core/services/snackbar/snackbar.service';
+import {Router} from '@angular/router';
+import {AuthService} from '@app/core/services/auth/auth.service';
 
 @Component({
   selector: 'app-login',
@@ -24,15 +27,18 @@ export class LoginComponent implements OnInit {
   private _dataUser: any;
   public load: boolean;
   public loginForm: FormGroup;
-  public hide: boolean = true;
+  public hide: boolean = false;
   constructor(
     private _formBuilder: FormBuilder,
     private _apiService: ApiService,
     private _apiLoader: ApiLoaderService,
     private _dialogService: DialogService,
-    private _sessionStorage: SessionStorageService
+    private _snackService: SnackBarService,
+    private _router: Router,
+    private _authService: AuthService
   ) { }
   ngOnInit(): void {
+    this._authService.resolve();
     this.loginForm = this._formBuilder.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required]],
@@ -79,9 +85,11 @@ export class LoginComponent implements OnInit {
           break;
         case 471:
           this.loginForm.controls['email'].setErrors({notExist: true});
+          this._snackService.openSnackBar('Este usuario no está registrado','OK', 2000);
           break;
         case 472:
           this.loginForm.controls['password'].setErrors({incorrect: true});
+          this._snackService.openSnackBar('Usuario o contraseña inválidos','OK', 2000);
           break;
         case 500:
           this.connectionLost();
@@ -104,5 +112,6 @@ export class LoginComponent implements OnInit {
       name: Constants.UserInSession,
       maxAge: time
     });
+    this._authService.resolve();
   }
 }
