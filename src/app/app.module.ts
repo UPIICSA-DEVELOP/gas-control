@@ -25,7 +25,6 @@ import {ScreenComponent} from '@app/components/screen/screen.component';
 import { CollaboratorsComponent } from './components/screen/components/collaborators/collaborators.component';
 import { GasStationComponent } from './components/screen/components/gas-station/gas-station.component';
 import { StationStatusComponent } from './components/screen/components/station-status/station-status.component';
-import {Ng2GoogleChartsModule} from 'ng2-google-charts';
 import {ChartsModule} from 'ng2-charts';
 import { ListTasksComponent } from './components/screen/components/list-tasks/list-tasks.component';
 import { TaskFilterComponent } from './components/screen/components/task-filter/task-filter.component';
@@ -65,7 +64,6 @@ import { NotificationsComponent } from './components/screen/components/notificat
         deps: [HttpClient]
       }
     }),
-    Ng2GoogleChartsModule,
     ChartsModule
   ],
   entryComponents: [

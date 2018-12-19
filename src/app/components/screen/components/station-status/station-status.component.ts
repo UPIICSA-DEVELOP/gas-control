@@ -4,7 +4,8 @@
  *  Proprietary and confidential
  */
 
-import {Component} from '@angular/core';
+import {Component, Inject, PLATFORM_ID} from '@angular/core';
+import {isPlatformBrowser} from '@angular/common';
 
 
 @Component({
@@ -13,6 +14,7 @@ import {Component} from '@angular/core';
   styleUrls: ['./station-status.component.scss']
 })
 export class StationStatusComponent {
+  public showGraphic: boolean;
   public doughnutChartData: number[] = [90, 30];
   public doughnutChartLabels: string[] = ['Completas', 'Pendientes'];
   public doughnutChartType: string = 'doughnut';
@@ -35,6 +37,12 @@ export class StationStatusComponent {
     devicePixelRatio: 0,
     aspectRatio: 1
   };
+
+  constructor(
+    @Inject(PLATFORM_ID) private _platformId
+  ){
+    this.showGraphic = isPlatformBrowser(this._platformId);
+  }
 
   // events on slice click
   public chartClicked(e: any): void {

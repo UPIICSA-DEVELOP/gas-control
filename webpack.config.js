@@ -21,7 +21,9 @@ module.exports = {
       /^@agm\/core/,
       /^hammerjs/,
       /^@ngx-translate\/core/,
-      /^@angular\/fire/
+      /^@angular\/fire/,
+      /^ng2-charts/
+
     ]
   })],
   node: {
