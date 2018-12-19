@@ -4,6 +4,7 @@
  *  Proprietary and confidential
  */
 export class Constants {
+  public static UserInSession = 'UserInSession';
   public static Priority_Task = {
     0: 'all',
     1: 'basic',

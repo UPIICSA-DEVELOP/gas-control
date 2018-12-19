@@ -15,12 +15,16 @@ export const appRoutes: Routes = [
   {
     path: 'home',
     component: ScreenComponent,
-    data: {}
+    data: {
+      url: URL_BASE + 'home'
+    }
   },
   {
     path: '',
     component: LoginComponent,
-    data: {}
+    data: {
+      url: URL_BASE
+    }
   }
 ];
 

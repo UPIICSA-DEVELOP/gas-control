@@ -5,44 +5,61 @@
   -->
 
 <div id="login">
+  <mat-progress-bar [mode]="'indeterminate'" *ngIf="load"></mat-progress-bar>
   <mat-card>
-    <div class="head">
-      <img src="../../../assets/Images/logo-inSpector.png" alt="app-logo">
-    </div>
-    <div class="body">
-      <form [formGroup]="loginForm" aria-label="Form of login with in inSpector">
-        <mat-form-field>
-          <input formControlName="email" matInput placeholder="Usuario" type="email" required aria-label="User email">
-          <mat-icon matPrefix class="icons" svgIcon="icons:user"></mat-icon>
-          <mat-error *ngIf="loginForm.controls['email'].hasError('required')">
-            Este campo es obligatorio
-          </mat-error>
-          <mat-error *ngIf="loginForm.controls['email'].hasError('email')">
-            La dirección de Email no es valida
-          </mat-error>
-        </mat-form-field>
-        <mat-form-field>
-          <input formControlName="password" matInput placeholder="Contraseña" required [type]="hide ? 'password' : 'text'" aria-label="User password">
-          <mat-icon matPrefix class="icons" svgIcon="icons:password"></mat-icon>
-          <button matSuffix mat-icon-button (click)="hide = !hide">
-            <mat-icon [svgIcon]="hide ? 'icons:ocult_pass' : 'icons:show_pass'" class="see-ocult-pass"></mat-icon>
-          </button>
-          <mat-error *ngIf="loginForm.controls['password'].hasError('required')">
-            Este campo es obligatorio
-          </mat-error>
-        </mat-form-field>
+    <mat-card-content>
+      <div class="head">
+        <img src="../../../assets/Images/logo-inSpector.png" alt="app-logo">
+      </div>
+      <div class="body">
+        <form [formGroup]="loginForm" (ngSubmit)="loginUser(loginForm.value)"
+              aria-label="Form of login with in inSpector">
+          <mat-form-field>
+            <input formControlName="email" matInput placeholder="Usuario" type="email" required aria-label="User email">
+            <mat-icon matPrefix class="icons" svgIcon="icons:user"></mat-icon>
+            <mat-error *ngIf="loginForm.controls['email'].hasError('required')">
+              Este campo es obligatorio
+            </mat-error>
+            <mat-error *ngIf="loginForm.controls['email'].hasError('email')">
+              La dirección de Email no es valida
+            </mat-error>
+            <mat-error *ngIf="loginForm.controls['email'].hasError('notExist')">
+              Este usuario no está registrado
+            </mat-error>
+          </mat-form-field>
+          <mat-form-field>
+            <input formControlName="password" matInput placeholder="Contraseña" #inputPassword type="password" required
+                   aria-label="User password">
+            <mat-icon matPrefix class="icons" svgIcon="icons:password"></mat-icon>
+            <button matSuffix aria-label="show password" type="button" mat-icon-button (click)="showPassword()">
+              <div *ngIf="hide; then passwordVisible else passwordInvisible"></div>
+              <ng-template #passwordVisible>
+                <mat-icon class="see-ocult-pass">visibility</mat-icon>
+              </ng-template>
+              <ng-template #passwordInvisible>
+                <mat-icon class="see-ocult-pass">visibility_off</mat-icon>
+              </ng-template>
+            </button>
+            <mat-error *ngIf="loginForm.controls['password'].hasError('required')">
+              Este campo es obligatorio
+            </mat-error>
+            <mat-error *ngIf="loginForm.controls['password'].hasError('incorrect')">
+              Usuario o ontraseña inválidos
+            </mat-error>
+          </mat-form-field>
           <div class="forgot-password">
-            <p>¿Olvidó su contraseña?</p>
+            <button mat-button type="button" (click)="resetPassword()">¿Olvidó su contraseña?</button>
           </div>
-        <div class="login-actions">
-          <div class="remember-password">
-            <mat-checkbox>Recordarme</mat-checkbox>
+          <div class="login-actions">
+            <div class="remember-password">
+              <mat-checkbox formControlName="rememberPass">Recordarme</mat-checkbox>
+            </div>
+            <div class="btn-login-email">
+              <button mat-flat-button [disabled]="load" aria-label="LogIn" [color]="'primary'">INICIAR SESIÓN</button>
+            </div>
           </div>
-          <div class="btn-login-email">
-            <button mat-flat-button aria-label="LogIn" [color]="'primary'">INICIAR SESIÓN</button>
-          </div>
-        </div>
-      </form>
-    </div>
+        </form>
+      </div>
+    </mat-card-content>
   </mat-card>
 </div>
