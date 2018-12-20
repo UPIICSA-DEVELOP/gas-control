@@ -51,18 +51,31 @@ export class LoginComponent implements OnInit {
     };
     this.signInUser(this._dataUser.email, this._dataUser.password, this._dataUser.remember);
   }
-  public resetPassword(data: any): void {
+  public resetPassword(): void {
     this._dialogService.alertWithInput('Ingrese su Email', '', 'Email', 'ACEPTAR', 'CANCELAR').afterClosed().subscribe(response => {
       switch (response.code) {
         case 1:
-          this._apiService.resetPassword(data.email);
+          const email: string = response.data.text;
+          this._apiService.resetPassword(response.data.text).subscribe( (response: any) =>{
+            switch (response.code) {
+              case 200:
+                  this._dialogService.alertDialog('Información','Hemos enviado un link de recuperación de contraseña al correo: '+ email,'ACEPTAR');
+                break;
+              case 471:
+                  this._snackService.openSnackBar('Este usuario no está registrado','OK', 2000);
+                break;
+              default:
+                this.connectionLost();
+                break;
+            }
+          });
           break;
       }
     });
     document.title = '';
   }
   public connectionLost(): void {
-    this._dialogService.alertDialog('prueba', 'Se produjo un error de comunicación con el servido', 'ACEPTAR');
+    this._dialogService.alertDialog('No se pudo acceder', 'Se produjo un error de comunicación con el servido', 'ACEPTAR');
   }
   public showPassword(): void {
     this.hide = !this.hide;
