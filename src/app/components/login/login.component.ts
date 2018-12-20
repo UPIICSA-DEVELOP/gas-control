@@ -51,10 +51,11 @@ export class LoginComponent implements OnInit {
     };
     this.signInUser(this._dataUser.email, this._dataUser.password, this._dataUser.remember);
   }
-  public resetPassword(): void {
+  public resetPassword(data: any): void {
     this._dialogService.alertWithInput('Ingrese su Email', '', 'Email', 'ACEPTAR', 'CANCELAR').afterClosed().subscribe(response => {
       switch (response.code) {
         case 1:
+          this._apiService.resetPassword(data.email);
           break;
       }
     });

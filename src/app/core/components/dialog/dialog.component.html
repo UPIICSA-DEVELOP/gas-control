@@ -13,9 +13,9 @@
       {{info.message}}
       <form [formGroup]="simpleForm" (ngSubmit)="onSubmitForm(simpleForm.value)" aria-label="Form for user" style="display: grid;">
         <mat-form-field>
-          <input formControlName="text" matInput [placeholder]="info.placeholder" type="text" required aria-label="User input text">
+          <input formControlName="text" matInput [placeholder]="info.inputPlaceholder" type="text" required aria-label="User input text">
           <mat-error *ngIf="simpleForm.controls['text'].hasError('required')">
-            Este campo es requerido
+            Este campo es obligatorio
           </mat-error>
           <mat-error *ngIf="simpleForm.controls['text'].hasError('email')">
             La dirección de Email no es valida

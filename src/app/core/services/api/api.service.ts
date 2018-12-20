@@ -38,6 +38,13 @@ export class ApiService {
     return this._http.post(ApiService.API_URL_COMPLETE + 'signIn', user);
   }
 
+   public  resetPassword(email: string) {
+     const options = {
+       email: email
+     };
+    return this._http.post(ApiService.API_URL_COMPLETE + 'sendSignInLink', options);
+   }
+
   public ipApi(): Observable<any> {
     return this._http.get('https://ipapi.co/json/');
   }
