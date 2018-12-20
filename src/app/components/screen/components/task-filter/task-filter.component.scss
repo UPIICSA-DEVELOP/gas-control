@@ -3,6 +3,7 @@
  *  Unauthorized copying of this file, via any medium is strictly prohibited
  *  Proprietary and confidential
  */
+@import "../../../../../styles/colors";
 
 * {
   box-sizing: border-box;
@@ -23,7 +24,7 @@
     text-align: left;
   }
   .icons{
-    color: #0d47a1;
+    color:  mat-color($primary);
   }
   .filters-text{
     color: #000000;
