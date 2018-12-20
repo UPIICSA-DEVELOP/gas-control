@@ -43,7 +43,6 @@ export class AuthService implements Resolve<any>{
     } else {
       time = MaxAge.DAY;
     }
-    debugger;
     SessionStorageService.setItem(Constants.UserInSession, {profileImage: (user.profileImage)?user.profileImage.thumbnail:null});
     CookieService.setCookie({
       value: user.id,

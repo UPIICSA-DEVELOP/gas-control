@@ -34,12 +34,19 @@
       width: 30%;
       justify-content: center;
       display: flex;
+      align-items: center;
       .image-station{
         width: 80px;
         height: 80px;
         border-radius: 50%;
-        margin-top: 20px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
         box-shadow: 0 3px 1px 1px rgba(0, 0, 0, 0.1), 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, .10);
+      }
+      mat-icon{
+        color: mat-color($primary);
+        font-size: 70px;
       }
     }
     .content{
@@ -74,7 +81,7 @@
         text-overflow: ellipsis;
       }
       .button-show{
-        background-color: #0d47a1;
+        background-color: mat-color($primary);
         color: #FFFFFF;
         width: 60px;
         height: 34px;
