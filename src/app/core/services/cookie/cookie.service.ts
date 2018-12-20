@@ -5,7 +5,9 @@
  *
  */
 
-import {Injectable} from '@angular/core';
+import {Inject, Injectable, PLATFORM_ID} from '@angular/core';
+import {isPlatformBrowser} from '@angular/common';
+import {CompileSummaryKind} from '@angular/compiler';
 
 export enum MaxAge {
   DAY,
@@ -72,6 +74,6 @@ export class CookieService {
   }
 
   private static validate(): boolean {
-    return document != null || document != undefined || document.cookie != undefined;
+    return document !== null || document !== undefined || document.cookie !== undefined || document.cookie !== null ;
   }
 }

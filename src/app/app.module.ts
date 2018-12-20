@@ -25,11 +25,11 @@ import {ScreenComponent} from '@app/components/screen/screen.component';
 import { CollaboratorsComponent } from './components/screen/components/collaborators/collaborators.component';
 import { GasStationComponent } from './components/screen/components/gas-station/gas-station.component';
 import { StationStatusComponent } from './components/screen/components/station-status/station-status.component';
-import {ChartsModule} from 'ng2-charts';
 import { ListTasksComponent } from './components/screen/components/list-tasks/list-tasks.component';
 import { TaskFilterComponent } from './components/screen/components/task-filter/task-filter.component';
 import { LoginComponent } from './components/login/login.component';
 import { NotificationsComponent } from './components/screen/components/notifications/notifications.component';
+
 
 @NgModule({
   declarations: [
@@ -64,7 +64,7 @@ import { NotificationsComponent } from './components/screen/components/notificat
         deps: [HttpClient]
       }
     }),
-    ChartsModule
+
   ],
   entryComponents: [
 
