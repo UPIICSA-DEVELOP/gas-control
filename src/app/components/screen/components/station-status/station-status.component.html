@@ -12,12 +12,7 @@
     <mat-card class="container">
       <div class="column-1">
         <div class="graphic" *ngIf="showGraphic">
-          <canvas baseChart
-                  [data]="doughnutChartData"
-                  [labels]="doughnutChartLabels"
-                  [chartType]="doughnutChartType"
-                  [options]="doughnutChartOptions"
-                  [colors]="doughnutChartColor"></canvas>
+         <canvas #canvas>{{ chart }}</canvas>
         </div>
       </div>
       <div class="alignment">
