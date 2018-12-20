@@ -16,6 +16,7 @@ export const appRoutes: Routes = [
   {
     path: 'home',
     component: ScreenComponent,
+    resolve: {data: AuthService},
     data: {
       url: URL_BASE + 'home'
     }
@@ -23,6 +24,7 @@ export const appRoutes: Routes = [
   {
     path: '',
     component: LoginComponent,
+    resolve: {data: AuthService},
     data: {
       url: URL_BASE
     }

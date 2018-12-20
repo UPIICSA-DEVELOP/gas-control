@@ -4,31 +4,35 @@
  *  Proprietary and confidential
  */
 
-import { Injectable } from '@angular/core';
+import {Inject, Injectable, PLATFORM_ID} from '@angular/core';
 import {ActivatedRouteSnapshot, Resolve, Router, RouterStateSnapshot} from '@angular/router';
 import {CookieService, MaxAge} from '@app/core/services/cookie/cookie.service';
 import {Constants} from '@app/core/constants.core';
 import {SessionStorageService} from '@app/core/services/session-storage/session-storage.service';
+import {isPlatformBrowser} from '@angular/common';
 
 @Injectable()
 export class AuthService implements Resolve<any>{
 
   constructor(
+    @Inject(PLATFORM_ID) private _platformId,
     private _router: Router
   ) { }
 
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-    switch (state.url){
-      case '/':
-        if(AuthService.validateUser()){
-          this._router.navigate(['/home']).then(() => {});
-        }
-        break;
-      case '/home':
-        if(!AuthService.validateUser()){
-          this._router.navigate(['/']).then(() => {});
-        }
-        break;
+    if(isPlatformBrowser(this._platformId)){
+      switch (state.url){
+        case '/':
+          if(AuthService.validateUser()){
+            this._router.navigate(['/home']).then(() => {});
+          }
+          break;
+        case '/home':
+          if(!AuthService.validateUser()){
+            this._router.navigate(['/']).then(() => {});
+          }
+          break;
+      }
     }
   }
 

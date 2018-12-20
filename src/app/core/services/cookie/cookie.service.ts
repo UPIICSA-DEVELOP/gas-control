@@ -50,6 +50,8 @@ export class CookieService {
         }
       }
       return null;
+    }else{
+      return null;
     }
   }
 
