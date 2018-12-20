@@ -7,6 +7,11 @@
 @import "../../../styles/colors";
 
 #login {
+  .progress{
+    position: absolute;
+    top: 0;
+    z-index: 1;
+  }
   background-color: mat-color($primary);
   width: 100vw;
   height: 100vh;
