@@ -13,7 +13,7 @@ if(process.env.NODE_ENV === 'prod'){
   BUCKET = "maplander-public.appspot.com";
 }else{
   console.log(chalk.blue.bold('▬▬▬▬▬▬▬▬▬ Upload CDN for Develop'));
-  BUCKET = 'schedule-maplander.appspot.com';
+  BUCKET = 'inspector-maplander-develop.appspot.com';
 }
 
 console.log(chalk.blue.bold(`▬▬▬▬▬▬▬▬▬ URL: ${BUCKET}`));
