@@ -6,6 +6,7 @@
 export class Constants {
   public static IdSession = '_IdSession';
   public static UserInSession = 'UserInSession';
+  public static SessionToken = 'SessionToken';
   public static Priority_Task = {
     0: 'all',
     1: 'basic',

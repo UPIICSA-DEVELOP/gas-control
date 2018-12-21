@@ -88,14 +88,16 @@ export class LoginComponent implements OnInit {
     this._inputPassword.nativeElement.type = (this.hide)?'text':'password';
   }
   private signInUser(email: string, password: string, remember: boolean) {
-    const opt = {
+    this._auth.requestPermissionNotifications().subscribe((token: string) => {
+      const opt = {
       email: email,
-      password: password
+      password: password,
+      token: token || null
     };
     this._apiService.signIn(opt).subscribe((response: any) => {
       switch (response.code) {
         case 200:
-          this._auth.logIn(response.item, remember);
+          this._auth.logIn(response.item, remember, token);
           break;
         case 471:
           this.loginForm.controls['email'].setErrors({notExist: true});
@@ -112,6 +114,7 @@ export class LoginComponent implements OnInit {
           break;
       }
     });
+    })
   }
 
 }

@@ -23,7 +23,7 @@
               "src/robots.txt",
               "src/manifest.json",
               "src/apple-app-site-association",
-              "src/fireinspector.front-messaging-sw.js",
+              "src/firebase-messaging-sw.js",
               "src/assetlinks.json"
             ],
             "styles": [

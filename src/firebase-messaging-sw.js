@@ -4,12 +4,12 @@ importScripts('https://www.gstatic.com/firebasejs/5.5.0/firebase-app.js');
 importScripts('https://www.gstatic.com/firebasejs/5.5.0/firebase-messaging.js');
 
 const config = {
-  apiKey: "AIzaSyA_wjUVArtBTuxYIMQb-qJnUvAuJrX1OkQ",
-  authDomain: "maplander-public.firebaseapp.com",
-  databaseURL: "https://maplander-public.firebaseio.com",
-  projectId: "maplander-public",
-  storageBucket: "maplander-public.appspot.com",
-  messagingSenderId: "131930554368"
+  apiKey: "AIzaSyDq9HzuM0DMge7-LOrclM_OhmnhnrsCwLM",
+  authDomain: "schedule-maplander.firebaseapp.com",
+  databaseURL: "https://schedule-maplander.firebaseio.com",
+  projectId: "schedule-maplander",
+  storageBucket: "schedule-maplander.appspot.com",
+  messagingSenderId: "948220319278"
 };
 firebase.initializeApp(config);
 

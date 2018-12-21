@@ -32,7 +32,7 @@ export class ApiService {
     const user = {
       email: options.email,
       password: options.password,
-      token: "123",
+      token: (options.token)?options.token:'123',
       type: 3
     };
     return this._http.post(ApiService.API_URL_COMPLETE + 'signIn', user);

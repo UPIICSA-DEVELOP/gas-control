@@ -10,13 +10,17 @@ import {CookieService, MaxAge} from '@app/core/services/cookie/cookie.service';
 import {Constants} from '@app/core/constants.core';
 import {SessionStorageService} from '@app/core/services/session-storage/session-storage.service';
 import {isPlatformBrowser} from '@angular/common';
+import {MessagingService} from '@app/core/services/messaging/messaging.service';
+import {Observable} from 'rxjs/index';
+import {LocalStorageService} from '@app/core/services/local-storage/local-storage.service';
 
 @Injectable()
 export class AuthService implements Resolve<any>{
 
   constructor(
     @Inject(PLATFORM_ID) private _platformId,
-    private _router: Router
+    private _router: Router,
+    private _messaging: MessagingService
   ) { }
 
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
@@ -36,12 +40,34 @@ export class AuthService implements Resolve<any>{
     }
   }
 
-  public logIn(user: any, rememberUser: boolean): void{
+  public requestPermissionNotifications(): Observable<string>{
+    return new Observable<string>((observer) => {
+      this._messaging.requestPermission().subscribe((token: string) => {
+        debugger;
+        if(token){
+          observer.next(token);
+          observer.complete();
+        }else{
+          observer.error(null);
+          observer.complete();
+        }
+      })
+    });
+  }
+
+  public onNotificationsRecived(): Observable<any>{
+    return this._messaging.receiveMessage();
+  }
+
+  public logIn(user: any, rememberUser: boolean, token?: string): void{
     let time: MaxAge;
     if (rememberUser) {
       time = MaxAge.MONTH;
     } else {
       time = MaxAge.DAY;
+    }
+    if(token){
+      LocalStorageService.setItem(Constants.SessionToken, token);
     }
     SessionStorageService.setItem(Constants.UserInSession, {profileImage: (user.profileImage)?user.profileImage.thumbnail:null});
     CookieService.setCookie({
@@ -53,6 +79,7 @@ export class AuthService implements Resolve<any>{
   }
 
   public logOut(): void{
+    LocalStorageService.removeItem(Constants.SessionToken);
     CookieService.deleteCookie(Constants.IdSession);
     this._router.navigate(['/']).then(() => {});
   }

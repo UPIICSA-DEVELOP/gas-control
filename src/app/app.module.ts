@@ -29,6 +29,8 @@ import { ListTasksComponent } from './components/screen/components/list-tasks/li
 import { TaskFilterComponent } from './components/screen/components/task-filter/task-filter.component';
 import { LoginComponent } from './components/login/login.component';
 import { NotificationsComponent } from './components/screen/components/notifications/notifications.component';
+import {AngularFireModule} from '@angular/fire';
+import {environment} from '@env/environment';
 
 
 @NgModule({
@@ -51,7 +53,7 @@ import { NotificationsComponent } from './components/screen/components/notificat
     ConnectionServiceModule,
     BrowserTransferStateModule,
     TransferHttpCacheModule,
-    //AngularFireModule.initializeApp(environment.firebase),
+    AngularFireModule.initializeApp(environment.firebase),
     RouterModule.forRoot(appRoutes),
     AngularFireMessagingModule,
     BrowserModule.withServerTransition({
