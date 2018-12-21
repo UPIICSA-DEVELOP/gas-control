@@ -52,7 +52,13 @@ export class LoginComponent implements OnInit {
     this.signInUser(this._dataUser.email, this._dataUser.password, this._dataUser.remember);
   }
   public resetPassword(): void {
-    this._dialogService.alertWithInput('Ingrese su Email', '', 'Email', 'ACEPTAR', 'CANCELAR').afterClosed().subscribe(response => {
+    this._dialogService.alertWithInput(
+      'Ingrese su Email',
+      '',
+      'Email',
+      'ACEPTAR',
+      'CANCELAR',
+      this.loginForm.controls['email'].value).afterClosed().subscribe(response => {
       switch (response.code) {
         case 1:
           const email: string = response.data.text;
@@ -62,7 +68,7 @@ export class LoginComponent implements OnInit {
                   this._dialogService.alertDialog('Información','Hemos enviado un link de recuperación de contraseña al correo: '+ email,'ACEPTAR');
                 break;
               case 471:
-                  this._snackService.openSnackBar('Este usuario no está registrado','OK', 2000);
+                  this._snackService.openSnackBar('Este usuario no está registrado','OK', 5000);
                 break;
               default:
                 this.connectionLost();

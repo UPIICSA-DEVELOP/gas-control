@@ -18,6 +18,7 @@ export interface ConfigDialog {
   inputPlaceholder?: string;
   accept?: boolean;
   cancel?: boolean;
+  text?: string;
 }
 
 @Injectable()
@@ -94,7 +95,7 @@ export class DialogService {
    * @return {@link MatDialogRef<DialogComponent>}
    *
    * */
-  public alertWithInput(title: string, message: string, inputPlaceholder: string, accept?: string, cancel?: string): MatDialogRef<DialogComponent>{
+  public alertWithInput(title: string, message: string, inputPlaceholder: string, accept?: string, cancel?: string, text?: string): MatDialogRef<DialogComponent>{
     return this._dialog.open(DialogComponent,
       {
         data:
@@ -104,7 +105,8 @@ export class DialogService {
             message: message,
             inputPlaceholder: inputPlaceholder,
             accept: (accept)?accept:'ACEPTAR',
-            cancel: (cancel)?cancel:'CANCELAR'
+            cancel: (cancel)?cancel:'CANCELAR',
+            text: text
           },
         disableClose: true
       }

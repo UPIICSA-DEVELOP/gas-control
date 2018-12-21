@@ -22,7 +22,7 @@
           </mat-error>
         </mat-form-field>
        <div style="display: flex; justify-content: flex-end">
-         <button mat-button (click)="cancel()" *ngIf="info.cancel">{{info.cancel}}</button>
+         <button mat-button type="button" (click)="cancel()" *ngIf="info.cancel">{{info.cancel}}</button>
          <button mat-button  *ngIf="info.accept">{{info.accept}}</button>
        </div>
       </form>
