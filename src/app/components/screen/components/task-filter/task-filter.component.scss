@@ -5,12 +5,10 @@
  */
 @import "../../../../../styles/colors";
 
-* {
-  box-sizing: border-box;
-}
 #task-filter{
   margin: 0 24px;
   .header{
+    margin-top: 12px;
     .title{
       color: #707070;
       font-family: Roboto, 'Helvetice New', 'Arial', sans-serif;

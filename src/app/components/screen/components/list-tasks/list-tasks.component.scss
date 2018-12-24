@@ -5,8 +5,6 @@
  */
 
 #list-tasks{
-  padding-top: 24px;
-  width: 95%;
   margin: 0 2.5%;
   height: 90%;
   .header {
@@ -15,6 +13,9 @@
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    @media screen and (max-width: 800px) {
+      margin-top: 12px;
+    }
     .title {
       color: #707070;
       font-family: Roboto, 'Helvetice New', 'Arial', sans-serif;
@@ -27,12 +28,9 @@
     }
   }
   .container{
-    height: 270px;
     margin-bottom: 4px;
     box-shadow: 0 3px 1px 1px rgba(0, 0, 0, 0.1), 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, .10);
-    @media screen and (min-height: 700px) {
-      height: 100%;
-    }
+    height: 90%;
     .contain-head{
       display: flex;
       justify-content: space-between;
@@ -92,7 +90,7 @@
           }
         }
         .content{
-          width: 74%;
+          width: 70%;
           height: 100%;
           .head{
             color: #000000;

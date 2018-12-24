@@ -4,13 +4,8 @@
  *  Proprietary and confidential
  */
 @import "../../../../../styles/colors";
-* {
-  box-sizing: border-box;
-}
 
 #collaborator-card {
-  padding-top: 48px;
-  width: 95%;
   margin: 0 2.5%;
 
   .header {
@@ -39,7 +34,7 @@
   }
 
   .container {
-    height: 200px;
+    height: 210px;
     overflow: auto;
     box-shadow: 0 3px 1px 1px rgba(0, 0, 0, 0.1), 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, .10);
   }
@@ -48,7 +43,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 25%;
+    padding: 0 10px;
   }
 
   .column-2 {
@@ -73,7 +68,7 @@
   }
   mat-icon{
     color: mat-color($primary);
-    font-size: 40px;
+    font-size: 50px;
   }
   .name {
     font-family: Roboto, 'Helvetice New', 'Arial', sans-serif;
@@ -102,9 +97,5 @@
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-  }
-
-  @media screen and (max-width: 800px) {
-    padding-top: 0;
   }
 }

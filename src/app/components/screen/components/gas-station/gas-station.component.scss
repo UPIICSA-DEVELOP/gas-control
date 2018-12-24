@@ -5,12 +5,7 @@
  */
 
 @import "../../../../../styles/colors";
-* {
-  box-sizing: border-box;
-}
 #gas-station-card{
-  padding-top: 48px;
-  width: 95%;
   margin: 0 2.5%;
   .header{
     width: 100%;
@@ -25,6 +20,9 @@
       font-weight: 500;
       font-size: 14pt;
       padding: 0 20px;
+      @media screen and (max-width: 950px){
+        padding: 0;
+      }
     }
   }
   .container{
@@ -91,12 +89,4 @@
     }
   }
 
-
-  @media screen and (max-width: 950px){
-    .header{
-      .title{
-        padding: 0;
-      }
-    }
-  }
 }

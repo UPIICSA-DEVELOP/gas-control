@@ -17,80 +17,10 @@ html, body {
 }
 body{
   background-color: white;
-  font-family: Roboto, 'Helvetice New', 'Arial', sans-serif
+  font-family: Roboto, 'Helvetice New', 'Arial', sans-serif;
+  overflow: hidden;
 }
 
 .mat-drawer-content{
   overflow: hidden !important;
-}
-
-app-collaborators{
-  position: absolute;
-  top: 0;
-  width: 34.5%;
-}
-
-app-gas-station{
-  position: absolute;
-  top: 0;
-  width: 29.5%;
-}
-
-app-notifications{
-  position: absolute;
-  width: 29.5%;
-  @media screen and (min-height: 768px) and (min-width: 1024px){
-    margin-top: -54px;
-  }
-}
-
-app-task-filter{
-  position: absolute;
-  width: 29.5%;
-  @media screen and (min-height: 768px) and (min-width: 1024px){
-    margin-top: 50px;
-  }
-}
-
-app-station-status{
-  position: absolute;
-  top: 0;
-  width: 34.5%;
-}
-
-app-list-tasks{
-  position: absolute;
-  width: 70%;
-  height: calc(100% - 277px);
-}
-
-@media screen and (max-width: 950px){
-  app-task-filter{
-    display: none;
-  }
-}
-
-@media screen and (max-width: 800px){
-  app-gas-station{
-    width: 100%;
-  }
-  app-station-status{
-    width: 100%;
-  }
-  app-collaborators{
-    width: 100%;
-  }
-  app-list-tasks{
-    width: 100%;
-    height: 100%;
-  }
-  app-notifications{
-    width: 100%;
-  }
-}
-
-@media screen and (max-height: 480px){
-  app-task-filter{
-    display: none;
-  }
 }

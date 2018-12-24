@@ -6,6 +6,7 @@
 
 import {Component, OnInit} from '@angular/core';
 import {AuthService} from '@app/core/services/auth/auth.service';
+import {DialogService} from '@app/core/components/dialog/dialog.service';
 
 @Component({
   selector: 'app-nav-bar',
@@ -15,14 +16,25 @@ import {AuthService} from '@app/core/services/auth/auth.service';
 export class NavBarComponent implements OnInit {
 
   constructor(
-    private _auth: AuthService
-  ) { }
+    private _auth: AuthService,
+    private _dialogService: DialogService
+  ) {
+  }
 
   ngOnInit() {
   }
 
-  public logOut(): void{
-    this._auth.logOut();
+  public logOut(): void {
+    this._dialogService.confirmDialog('Está a punto de cerrar sesión',
+      '¿Desea continuar?',
+      'ACEPTAR',
+      'CANCELAR').afterClosed().subscribe((response) => {
+      switch (response.code) {
+        case 1:
+          this._auth.logOut();
+          break;
+      }
+    });
   }
 
 }
