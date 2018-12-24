@@ -31,6 +31,7 @@ import { LoginComponent } from './components/login/login.component';
 import { NotificationsComponent } from './components/screen/components/notifications/notifications.component';
 import {AngularFireModule} from '@angular/fire';
 import {environment} from '@env/environment';
+import { SplashComponent } from './splash/splash.component';
 
 
 @NgModule({
@@ -44,7 +45,8 @@ import {environment} from '@env/environment';
     ListTasksComponent,
     TaskFilterComponent,
     LoginComponent,
-    NotificationsComponent
+    NotificationsComponent,
+    SplashComponent
   ],
   imports: [
     CoreModule,
