@@ -42,14 +42,12 @@ export class AuthService implements Resolve<any>{
 
   public requestPermissionNotifications(): Observable<string>{
     return new Observable<string>((observer) => {
-      this._messaging.requestPermission().subscribe((token: string) => {
-        if(token){
-          observer.next(token);
-          observer.complete();
-        }else{
-          observer.error(null);
-          observer.complete();
-        }
+      this._messaging.requestPermission().subscribe((token: string | null) => {
+        observer.next(token);
+        observer.complete();
+      }, error => {
+        observer.next(null);
+        observer.complete();
       })
     });
   }
