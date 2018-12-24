@@ -15,7 +15,7 @@
         <form [formGroup]="loginForm" (ngSubmit)="loginUser(loginForm.value)"
               aria-label="Form of login with in inSpector">
           <mat-form-field>
-            <input formControlName="email" matInput placeholder="Usuario" type="email" required aria-label="User email">
+            <input formControlName="email" matInput placeholder="Usuario" type="email" required aria-label="User email" (change)="getUser()">
             <mat-icon matPrefix class="icons" svgIcon="icons:user"></mat-icon>
             <mat-error *ngIf="loginForm.controls['email'].hasError('required')">
               Este campo es obligatorio

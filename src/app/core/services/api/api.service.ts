@@ -31,7 +31,7 @@ export class ApiService {
   public signIn(options: any) {
     const user = {
       email: options.email,
-      password: options.password,
+      password: options.password || '',
       token: (options.token)?options.token:'123',
       type: 3
     };

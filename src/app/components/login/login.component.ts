@@ -117,4 +117,20 @@ export class LoginComponent implements OnInit {
     })
   }
 
+  private getUser(): void{
+    const userExist = {
+      email:this.loginForm.controls['email'].value,
+      password: ''
+    };
+    this._apiService.signIn(userExist).subscribe((response: any)=>{
+      switch (response.code) {
+        case 471:
+          this.loginForm.controls['email'].setErrors({notExist: true});
+          break;
+      }
+    });
+
+
+  }
+
 }
