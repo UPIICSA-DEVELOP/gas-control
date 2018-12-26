@@ -36,6 +36,11 @@ export class AuthService implements Resolve<any>{
             this._router.navigate(['/']).then(() => {});
           }
           break;
+        case '/home/profile':
+          if (!AuthService.validateUser()){
+            this._router.navigate(['/']).then(() => {});
+          }
+          break;
       }
     }
   }

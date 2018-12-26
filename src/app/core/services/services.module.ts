@@ -22,6 +22,7 @@ import {RouterStateService} from '@app/core/services/router-state/router-state.s
 import {NetworkService} from '@app/core/services/connection/network.service';
 import {PriorityService} from '@app/core/services/priority/priority.service';
 import {AuthService} from '@app/core/services/auth/auth.service';
+import {ResetPassService} from '@app/core/services/reset-pass/reset-pass.service';
 
 @NgModule({
   imports: [
@@ -43,7 +44,8 @@ import {AuthService} from '@app/core/services/auth/auth.service';
     RouterStateService,
     NetworkService,
     PriorityService,
-    AuthService
+    AuthService,
+    ResetPassService
   ]
 })
 export class ServicesModule {
