@@ -19,7 +19,7 @@
       color: #707070;
       font-family: Roboto, 'Helvetice New', 'Arial', sans-serif;
       font-weight: 500;
-      font-size: 14pt;
+      font-size: 14px;
       padding: 0 20px;
       @media screen and (max-width: 950px) {
         padding: 0;
@@ -52,7 +52,7 @@
   }
 
   .collaborator {
-    height: auto;
+    height: 88px;
     display: flex;
     margin-bottom: 8px;
   }
@@ -73,7 +73,7 @@
   .name {
     font-family: Roboto, 'Helvetice New', 'Arial', sans-serif;
     font-weight: 700;
-    font-size: 14pt;
+    font-size: 14px;
     color: #000000;
     white-space: nowrap;
     overflow: hidden;
@@ -84,7 +84,7 @@
     font-family: Roboto, 'Helvetice New', 'Arial', sans-serif;
     font-weight: 400;
     margin-top: 5px;
-    font-size: 12pt;
+    font-size: 12px;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -93,7 +93,7 @@
     color: #707070;
     font-family: Roboto, 'Helvetice New', 'Arial', sans-serif;
     font-weight: 400;
-    font-size: 12pt;
+    font-size: 12px;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;

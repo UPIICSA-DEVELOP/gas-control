@@ -20,14 +20,21 @@
       color: #707070;
       font-family: Roboto, 'Helvetice New', 'Arial', sans-serif;
       font-weight: 500;
-      font-size: 14pt;
+      font-size: 14px;
       padding: 0 20px;
       @media screen and (max-width: 950px) {
         padding: 0;
       }
     }
   }
+  .list{
+    height: 100%;
+  }
   .container{
+    .height{
+      height: 100%;
+      position: relative;
+    }
     margin-bottom: 4px;
     box-shadow: 0 3px 1px 1px rgba(0, 0, 0, 0.1), 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, .10);
     height: 90%;
@@ -38,7 +45,7 @@
         color: #707070;
         font-family: Roboto, 'Helvetice New', 'Arial', sans-serif;
         font-weight: 700;
-        font-size: 12pt;
+        font-size: 12px;
         width: 100%;
         white-space: nowrap;
         overflow: hidden;
@@ -50,10 +57,10 @@
     }
     .sub-container{
       overflow: auto;
-      height: 90%;
+      height: 95%;
       .task{
         display: flex;
-        height: 100px;
+        height: 88px;
         margin: 12px 0;
         mat-card-content{
           display: flex;
@@ -83,7 +90,7 @@
             color: #707070;
             font-family: Roboto, 'Helvetice New', 'Arial', sans-serif;
             font-weight: 500;
-            font-size: 16pt;
+            font-size: 16px;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
@@ -96,7 +103,7 @@
             color: #000000;
             font-family: Roboto, 'Helvetice New', 'Arial', sans-serif;
             font-weight: 700;
-            font-size: 14pt;
+            font-size: 14px;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
@@ -105,7 +112,7 @@
             color: #707070;
             font-family: Roboto, 'Helvetice New', 'Arial', sans-serif;
             font-weight: 400;
-            font-size: 12pt;
+            font-size: 12px;
             margin-top: 5px;
             white-space: nowrap;
             overflow: hidden;
