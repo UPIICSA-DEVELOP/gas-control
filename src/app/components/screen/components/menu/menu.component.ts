@@ -8,6 +8,7 @@ import {Component, EventEmitter, Inject, OnInit, Output, PLATFORM_ID, ViewChild}
 import {MatSidenav} from '@angular/material';
 import {AuthService} from '@app/core/services/auth/auth.service';
 import {NavBarComponent} from '@app/components/screen/components/nav-bar/nav-bar.component';
+import {DialogService} from '@app/core/components/dialog/dialog.service';
 
 @Component({
   selector: 'app-menu',
@@ -22,7 +23,7 @@ export class MenuComponent implements OnInit {
   constructor(
     @Inject(PLATFORM_ID) private _platformId,
     private _auth: AuthService,
-    private _navBar: NavBarComponent
+    private _dialogService: DialogService
   ) { }
 
   ngOnInit() {
@@ -38,9 +39,18 @@ export class MenuComponent implements OnInit {
     this.menu.close().then();
   }
 
-  private logOutButton(): void{
+  public logOutButton(): void{
     this.onCloseMenu();
-    this._navBar.logOut();
+    this._dialogService.confirmDialog('Está a punto de cerrar sesión',
+      '¿Desea continuar?',
+      'ACEPTAR',
+      'CANCELAR').afterClosed().subscribe((response) => {
+      switch (response.code) {
+        case 1:
+          this._auth.logOut();
+          break;
+      }
+    });
   }
 
 }

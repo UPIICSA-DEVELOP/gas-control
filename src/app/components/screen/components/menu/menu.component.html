@@ -6,7 +6,7 @@
 
 <div id="menu">
   <div class="mask" *ngIf="visibleMask" (click)="onCloseMenu()"></div>
-  <mat-sidenav #sidenav id="sidenav" (opened)="onOpenMenu($event)">
+  <mat-sidenav #sidenav (opened)="onOpenMenu($event)">
     <div class="sections">
       <button mat-button>
         <mat-icon>account_circle</mat-icon>

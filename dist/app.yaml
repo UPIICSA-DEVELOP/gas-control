@@ -5,7 +5,8 @@ instance_class: F4_1G
 default_expiration: 1s
 handlers:
 - url: /.well-known/assetlinks.json
-  static_dir: .well-known/assetlinks.json
+  static_files: .well-known/assetlinks.json
+  upload: .well-known/assetlinks.json
   mime_type: application/json
 - url: /.well-known
   static_dir: .well-known
