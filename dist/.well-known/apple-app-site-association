@@ -3,9 +3,8 @@
    "apps": [],
    "details": [
      {
-       "appID": "8H6K8T3LZZ.com.mapLander.Customer",
+       "appID": "8H6K8T3LZZ.com.maplander.inspector",
        "paths": [
-          "NOT /profile/*",
           "/",
           "*"
        ]
