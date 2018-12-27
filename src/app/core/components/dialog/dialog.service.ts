@@ -16,9 +16,11 @@ export interface ConfigDialog {
   title: string;
   message: string;
   inputPlaceholder?: string;
+  inputPlaceholderTwo?: string
   accept?: boolean;
   cancel?: boolean;
   text?: string;
+  secondText?: string;
 }
 
 @Injectable()
@@ -112,4 +114,23 @@ export class DialogService {
       }
     );
   }
+  public alertWithDoubleInput(title: string, message: string, inputPlaceholder: string, inputPlaceholderTwo?:string, accept?: string, text?: string, secondText?: string): MatDialogRef<DialogComponent>{
+    return this._dialog.open(DialogComponent,
+      {
+        data:
+          {
+            type: TypeDialog.DoubleInput,
+            title: title,
+            message: message,
+            inputPlaceholder: inputPlaceholder,
+            inputPlaceholderTwo: inputPlaceholderTwo,
+            accept: (accept)?accept:'ACEPTAR',
+            text: text,
+            secondText: secondText
+          },
+        disableClose: true
+      }
+    );
+  }
+
 }

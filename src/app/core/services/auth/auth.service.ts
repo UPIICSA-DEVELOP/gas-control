@@ -13,6 +13,7 @@ import {isPlatformBrowser} from '@angular/common';
 import {MessagingService} from '@app/core/services/messaging/messaging.service';
 import {Observable} from 'rxjs/index';
 import {LocalStorageService} from '@app/core/services/local-storage/local-storage.service';
+import {ApiService} from '@app/core/services/api/api.service';
 
 @Injectable()
 export class AuthService implements Resolve<any>{
@@ -20,7 +21,9 @@ export class AuthService implements Resolve<any>{
   constructor(
     @Inject(PLATFORM_ID) private _platformId,
     private _router: Router,
-    private _messaging: MessagingService
+    private _messaging: MessagingService,
+    private _sessionStorage: SessionStorageService,
+    private _api: ApiService
   ) { }
 
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
@@ -29,16 +32,21 @@ export class AuthService implements Resolve<any>{
         case '/':
           if(AuthService.validateUser()){
             this._router.navigate(['/home']).then(() => {});
+            this.saveUserInfo();
           }
           break;
         case '/home':
           if(!AuthService.validateUser()){
             this._router.navigate(['/']).then(() => {});
+          }else{
+            this.saveUserInfo();
           }
           break;
         case '/home/profile':
           if (!AuthService.validateUser()){
             this._router.navigate(['/']).then(() => {});
+          }else{
+            this.saveUserInfo();
           }
           break;
       }
@@ -71,7 +79,7 @@ export class AuthService implements Resolve<any>{
     if(token){
       LocalStorageService.setItem(Constants.SessionToken, token);
     }
-    SessionStorageService.setItem(Constants.UserInSession, {profileImage: (user.profileImage)?user.profileImage.thumbnail:null});
+    SessionStorageService.setItem(Constants.UserInSession, user);
     CookieService.setCookie({
       value: user.id,
       name: Constants.IdSession,
@@ -83,10 +91,22 @@ export class AuthService implements Resolve<any>{
   public logOut(): void{
     LocalStorageService.removeItem(Constants.SessionToken);
     CookieService.deleteCookie(Constants.IdSession);
+    SessionStorageService.removeItem(Constants.UserInSession);
     this._router.navigate(['/']).then(() => {});
   }
 
   private static validateUser(): boolean {
     return CookieService.getCookie(Constants.IdSession) !== null;
+  }
+
+  public saveUserInfo(): void{
+    this._api.getPerson(CookieService.getCookie(Constants.IdSession)).subscribe(response =>{
+      switch (response.code) {
+        case 200:
+          const user = response.item;
+          SessionStorageService.setItem(Constants.UserInSession, user);
+          break;
+      }
+    });
   }
 }

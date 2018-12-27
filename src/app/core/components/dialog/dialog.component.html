@@ -9,7 +9,7 @@
   <h2 *ngIf="info.title">{{info.title}}</h2>
   <div *ngIf="showInput; then input else withOutInput"></div>
   <ng-template #input>
-    <mat-dialog-content>
+    <mat-dialog-content *ngIf="!showDoubleInput">
       {{info.message}}
       <form [formGroup]="simpleForm" (ngSubmit)="onSubmitForm(simpleForm.value)" aria-label="Form for user" style="display: grid;">
         <mat-form-field>
@@ -25,6 +25,51 @@
          <button mat-button type="button" (click)="cancel()" *ngIf="info.cancel">{{info.cancel}}</button>
          <button mat-button  *ngIf="info.accept">{{info.accept}}</button>
        </div>
+      </form>
+    </mat-dialog-content>
+    <mat-dialog-content *ngIf="showDoubleInput">
+      {{info.message}}
+      <form [formGroup]="simpleForm" (ngSubmit)="onSubmitForm(simpleForm.value)" aria-label="Form for user"
+            style="display: grid;">
+        <mat-form-field>
+          <input formControlName="password" matInput [placeholder]="info.inputPlaceholder" type="password" required
+                 aria-label="New password" #inputPasswordOne>
+          <button matSuffix aria-label="show password" type="button" mat-icon-button (click)="showPasswordOne()">
+            <div *ngIf="hideOne; then passwordVisible else passwordInvisible"></div>
+            <ng-template #passwordVisible>
+              <mat-icon class="see-ocult-pass">visibility</mat-icon>
+            </ng-template>
+            <ng-template #passwordInvisible>
+              <mat-icon class="see-ocult-pass">visibility_off</mat-icon>
+            </ng-template>
+          </button>
+          <mat-error *ngIf="simpleForm.controls['password'].hasError('required')">
+            Este campo es obligatorio
+          </mat-error>
+        </mat-form-field>
+        <mat-form-field>
+          <input formControlName="confirmPassword" matInput [placeholder]="info.inputPlaceholderTwo" type="password"
+                 required aria-label="Repeat new password" #inputPasswordTwo>
+          <button matSuffix aria-label="show password" type="button" mat-icon-button (click)="showPasswordTwo()">
+            <div *ngIf="hideTwo; then passwordVisible else passwordInvisible"></div>
+            <ng-template #passwordVisible>
+              <mat-icon class="see-ocult-pass">visibility</mat-icon>
+            </ng-template>
+            <ng-template #passwordInvisible>
+              <mat-icon class="see-ocult-pass">visibility_off</mat-icon>
+            </ng-template>
+          </button>
+          <mat-error *ngIf="simpleForm.controls['confirmPassword'].hasError('required')">
+            Este campo es obligatorio
+          </mat-error>
+          <mat-error *ngIf="simpleForm.controls['confirmPassword'].hasError('differentPasswords')">
+            Las contraseñas no coinciden
+          </mat-error>
+        </mat-form-field>
+        <div style="display: flex; justify-content: flex-end">
+          <button mat-button type="button" (click)="cancel()" *ngIf="!info.inputPlaceholderTwo">{{info.cancel}}</button>
+          <button mat-button *ngIf="info.accept">{{info.accept}}</button>
+        </div>
       </form>
     </mat-dialog-content>
   </ng-template>

@@ -7,7 +7,7 @@
 
 import { Injectable } from '@angular/core';
 import {Observable} from 'rxjs';
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpParams} from '@angular/common/http';
 import {NetworkService} from '@app/core/services/connection/network.service';
 import {SnackBarService} from '@app/core/services/snackbar/snackbar.service';
 
@@ -60,6 +60,16 @@ export class ApiService {
 
   public getBlobStore(): Observable<any> {
     return this._http.get('https://1-dot-inmobimapa-backend.appspot.com/blob/androidserveurl', {responseType: 'text'});
+  }
+
+  public getPerson(id: string): Observable<any> {
+    let params = new HttpParams();
+    params = params.append('id', id);
+    return this._http.get(ApiService.API_URL_COMPLETE+ 'getPerson',{params: params});
+  }
+
+  public updatePerson(person: any): Observable<any> {
+    return this._http.put( ApiService.API_URL_COMPLETE + 'updatePerson', person);
   }
 
   public uploadFileToBlob(url, body: any): Observable<any> {
