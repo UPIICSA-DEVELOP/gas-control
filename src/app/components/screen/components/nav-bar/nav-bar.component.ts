@@ -7,6 +7,7 @@
 import {Component, OnInit} from '@angular/core';
 import {AuthService} from '@app/core/services/auth/auth.service';
 import {DialogService} from '@app/core/components/dialog/dialog.service';
+import {MatSidenav} from '@angular/material';
 
 @Component({
   selector: 'app-nav-bar',
@@ -15,6 +16,8 @@ import {DialogService} from '@app/core/components/dialog/dialog.service';
 })
 export class NavBarComponent implements OnInit {
 
+  public menu: MatSidenav;
+
   constructor(
     private _auth: AuthService,
     private _dialogService: DialogService
@@ -22,6 +25,14 @@ export class NavBarComponent implements OnInit {
   }
 
   ngOnInit() {
+  }
+
+  public getMenu(event: MatSidenav): void{
+    this.menu = event;
+  }
+
+  public openMenu(): void{
+    this.menu.open().then();
   }
 
   public logOut(): void {
