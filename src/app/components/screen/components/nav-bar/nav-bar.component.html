@@ -3,10 +3,16 @@
   ~  Unauthorized copying of this file, via any medium is strictly prohibited
   ~  Proprietary and confidential
   -->
+<app-menu (menuObject)="getMenu($event)"></app-menu>
 
 <div id="nav-bar">
   <nav>
     <mat-toolbar id="nav-bar-toolbar">
+      <div class="menu">
+        <button (click)="openMenu()" mat-button aria-label="menu-for-mobiles">
+          <mat-icon>menu</mat-icon>
+        </button>
+      </div>
       <div class="image-logo">
         <img alt="app-logo" src="../assets/Images/logo.png">
       </div>
@@ -14,7 +20,7 @@
         <button class="btn-home" mat-button>Home</button>
         <button class="btn-notifications" mat-button>Notificaciones</button>
         <button mat-button>
-          <mat-icon svgIcon="icons:search"></mat-icon>
+          <mat-icon>search</mat-icon>
         </button>
         <button mat-button (click)="logOut()" class="btn-logout">
           <mat-icon>exit_to_app</mat-icon>

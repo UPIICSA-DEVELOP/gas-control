@@ -28,7 +28,7 @@ export class ApiService {
     this.initNetwork();
   }
 
-  public signIn(options: any) {
+  public signIn(options: any): Observable<any> {
     const user = {
       email: options.email,
       password: options.password,
@@ -38,11 +38,20 @@ export class ApiService {
     return this._http.post(ApiService.API_URL_COMPLETE + 'signIn', user);
   }
 
-   public  resetPassword(email: string) {
+   public  resetPassword(email: string): Observable<any> {
      const options = {
        email: email
      };
     return this._http.post(ApiService.API_URL_COMPLETE + 'sendSignInLink', options);
+   }
+
+   public signInWithLink(id: string): Observable<any> {
+    const options = {
+      id: id,
+      token: '123',
+      type: 3
+    };
+    return this._http.post(ApiService.API_URL_COMPLETE + 'signInWithLink', options);
    }
 
   public ipApi(): Observable<any> {

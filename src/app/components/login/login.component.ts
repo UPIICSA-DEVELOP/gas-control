@@ -81,7 +81,7 @@ export class LoginComponent implements OnInit {
     document.title = '';
   }
   public connectionLost(): void {
-    this._dialogService.alertDialog('No se pudo acceder', 'Se produjo un error de comunicación con el servido', 'ACEPTAR');
+    this._dialogService.alertDialog('No se pudo acceder', 'Se produjo un error de comunicación con el servidor', 'ACEPTAR');
   }
   public showPassword(): void {
     this.hide = !this.hide;

@@ -12,7 +12,15 @@
     padding: 0;
     background-color: mat-color($primary);
     z-index: 4;
-
+    .menu{
+      position: absolute;
+      left: 0;
+      display: none;
+      color: #FFFFFF;
+      @media screen and (max-width: 600px){
+        display: flex;
+      }
+    }
     .image-logo{
       margin: 0 auto;
       position: absolute;
@@ -21,6 +29,7 @@
       left: 0;
       justify-content: center;
       display: flex;
+      z-index: -1;
       img{
         height: 40px;
         margin: 4px;
