@@ -14,10 +14,10 @@
         </button>
       </div>
       <div class="image-logo">
-        <img alt="app-logo" src="../assets/Images/logo.png">
+        <img alt="app-logo" src="../assets/Images/logo.png" routerLink="/home">
       </div>
       <div class="navigation-buttons">
-        <button class="btn-home" mat-button>Home</button>
+        <button class="btn-home" mat-button routerLink="/home">Home</button>
         <button class="btn-notifications" mat-button>Notificaciones</button>
         <button mat-button>
           <mat-icon>search</mat-icon>
@@ -26,8 +26,9 @@
           <mat-icon>exit_to_app</mat-icon>
         </button>
         <div class="user">
-          <button class="button-user" mat-button>
-            <mat-icon>account_circle</mat-icon>
+          <button class="button-user" mat-button routerLink="/home/profile">
+            <img [src]="profileImg.profileImage" *ngIf="profileImg.profileImage">
+            <mat-icon *ngIf="!profileImg.profileImage">account_circle</mat-icon>
           </button>
         </div>
       </div>

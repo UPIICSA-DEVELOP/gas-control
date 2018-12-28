@@ -8,6 +8,8 @@ import {Component, OnInit} from '@angular/core';
 import {AuthService} from '@app/core/services/auth/auth.service';
 import {DialogService} from '@app/core/components/dialog/dialog.service';
 import {MatSidenav} from '@angular/material';
+import {SessionStorageService} from '@app/core/services/session-storage/session-storage.service';
+import {Constants} from '@app/core/constants.core';
 
 @Component({
   selector: 'app-nav-bar',
@@ -17,7 +19,7 @@ import {MatSidenav} from '@angular/material';
 export class NavBarComponent implements OnInit {
 
   public menu: MatSidenav;
-
+  public profileImg: any;
   constructor(
     private _auth: AuthService,
     private _dialogService: DialogService
@@ -25,6 +27,7 @@ export class NavBarComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.profileImg = SessionStorageService.getItem(Constants.UserInSession);
   }
 
   public getMenu(event: MatSidenav): void{
