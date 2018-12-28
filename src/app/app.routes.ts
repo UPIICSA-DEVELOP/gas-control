@@ -21,13 +21,18 @@ export const appRoutes: Routes = [
     component: ScreenComponent,
     resolve: {data: AuthService},
     data: {
-      url: URL_BASE + 'home'
+      url: URL_BASE + 'home',
+      title:'inSpector'
     },
     children: [
       {
         path: 'profile',
         component: ProfileComponent,
-        resolve: AuthService
+        resolve: {data: AuthService},
+        data: {
+          title:'Perfil',
+          url: URL_BASE + 'home/profile'
+        }
       }
     ]
   },
@@ -36,7 +41,11 @@ export const appRoutes: Routes = [
     component: LoginComponent,
     resolve: {data: AuthService},
     data: {
-      url: URL_BASE
+      title:'inSpector',
+      url: URL_BASE,
+      robots: 'true',
+      schema: 'true',
+      canonical: 'true'
     }
   },
   {
@@ -44,6 +53,7 @@ export const appRoutes: Routes = [
     component: ResetPassComponent,
     resolve: {data: ResetPassService},
     data:{
+      title:'inSpector',
       url: URL_BASE + 'signin'
     }
   },
