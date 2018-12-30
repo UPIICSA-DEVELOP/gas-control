@@ -27,7 +27,7 @@ export class NavBarComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.profileImg = SessionStorageService.getItem(Constants.UserInSession);
+    this.profileImg = SessionStorageService.getItem(Constants.UserInSession) || null;
   }
 
   public getMenu(event: MatSidenav): void{
