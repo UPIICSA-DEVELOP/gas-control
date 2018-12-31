@@ -18,7 +18,7 @@
       </div>
       <div class="navigation-buttons">
         <button class="btn-home" mat-button routerLink="/home">Home</button>
-        <button class="btn-notifications" mat-button>Notificaciones</button>
+        <button class="btn-notifications" (click)="openNotify()" routerLink="/home/notifications" mat-button>Notificaciones</button>
         <button mat-button>
           <mat-icon>search</mat-icon>
         </button>

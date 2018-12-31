@@ -7,7 +7,6 @@
 import {Component, EventEmitter, Inject, OnInit, Output, PLATFORM_ID, ViewChild} from '@angular/core';
 import {MatSidenav} from '@angular/material';
 import {AuthService} from '@app/core/services/auth/auth.service';
-import {NavBarComponent} from '@app/components/screen/components/nav-bar/nav-bar.component';
 import {DialogService} from '@app/core/components/dialog/dialog.service';
 
 @Component({

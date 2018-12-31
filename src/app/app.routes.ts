@@ -13,6 +13,7 @@ import {AuthService} from '@app/core/services/auth/auth.service';
 import {ResetPassService} from '@app/core/services/reset-pass/reset-pass.service';
 import {ResetPassComponent} from '@app/components/screen/child/reset-pass/reset-pass.component';
 import {ProfileComponent} from '@app/components/screen/components/profile/profile.component';
+import {NotificationsComponent} from '@app/components/screen/components/notifications/notifications.component';
 const URL_BASE = environment.url;
 
 export const appRoutes: Routes = [
@@ -33,7 +34,17 @@ export const appRoutes: Routes = [
           title:'Perfil',
           url: URL_BASE + 'home/profile'
         }
-      },{
+      },
+      {
+        path: 'notifications',
+        component: NotificationsComponent,
+        resolve: {data: AuthService},
+        data:{
+          title: 'Notificaciones',
+          url: URL_BASE + 'home/notifications'
+        }
+      },
+      {
         path: 'updatepassword',
         component: ResetPassComponent
       }
