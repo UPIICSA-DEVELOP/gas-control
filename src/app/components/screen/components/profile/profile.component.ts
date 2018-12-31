@@ -13,6 +13,7 @@ import {ApiLoaderService} from '@app/core/services/api/api-loader.service';
 import {DialogService} from '@app/core/components/dialog/dialog.service';
 import {SnackBarService} from '@app/core/services/snackbar/snackbar.service';
 import {CountryCodeService} from '@app/core/components/country-code/country-code.service';
+import {LocationService} from '@app/core/components/location/location.service';
 
 @Component({
   selector: 'app-profile',
@@ -40,7 +41,8 @@ export class ProfileComponent implements OnInit {
     private _formBuilder: FormBuilder,
     private _apiLoaderService: ApiLoaderService,
     private _snackBarService: SnackBarService,
-    private _countryCode: CountryCodeService
+    private _countryCode: CountryCodeService,
+    private _locationService: LocationService
   ) {
   }
 
@@ -62,6 +64,12 @@ export class ProfileComponent implements OnInit {
         code: response.code
       });
     });
+  }
+
+  public openSelectAddress(): void{
+    this._locationService.open().afterClosed().subscribe(response => {
+
+    })
   }
 
   public updateProfile(data: any): void {

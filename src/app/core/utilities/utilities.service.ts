@@ -94,6 +94,23 @@ export class UtilitiesService {
     }
   }
 
+  static getDefaultParamsMap(): any {
+    return {
+      center: {lat: 19.4326018, lng: -99.1353936},
+      mapTypeControl: false,
+      fullscreenControl: false,
+      streetViewControl: false,
+      zoomControl: false,
+      gestureHandling: 'auto',
+      zoom: 17,
+      styles: [{
+        featureType: 'poi',
+        stylers: [
+          { visibility: 'off' }
+        ]}]
+    }
+  }
+
   static round(value: number, precision: number): number{
     const multiplier = Math.pow(10, precision || 0);
     return Math.round(value * multiplier) / multiplier;

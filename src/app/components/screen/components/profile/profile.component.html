@@ -121,12 +121,15 @@
                   Este campo es obligatorio
                 </mat-error>
               </mat-form-field>
-              <mat-form-field class="inputs">
-                <textarea formControlName="address" matInput placeholder="Dirección" required type="text" aria-label="Consultancy address"></textarea>
-                <mat-error *ngIf="profileForm.controls['address'].hasError('required')">
-                  Este campo es obligatorio
-                </mat-error>
-              </mat-form-field>
+              <div class="address">
+                <div class="mask" (click)="openSelectAddress()"></div>
+                <mat-form-field class="inputs">
+                  <textarea  cdkTextareaAutosize formControlName="address" matInput placeholder="Dirección" required type="text" aria-label="Consultancy address"></textarea>
+                  <mat-error *ngIf="profileForm.controls['address'].hasError('required')">
+                    Este campo es obligatorio
+                  </mat-error>
+                </mat-form-field>
+              </div>
               <mat-form-field class="inputs">
                 <input formControlName="officePhone" matInput placeholder="Número de la consultora" type="tel" aria-label="Consultancy phone number">
                 <mat-error *ngIf="profileForm.controls['officePhone'].hasError('minlength')">

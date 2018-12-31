@@ -4,6 +4,7 @@
  *  Proprietary and confidential
  */
 export class Constants {
+  public static GoogleApiKey = 'AIzaSyA_wjUVArtBTuxYIMQb-qJnUvAuJrX1OkQ';
   public static IdSession = '_IdSession';
   public static UserInSession = 'UserInSession';
   public static SessionToken = 'SessionToken';
