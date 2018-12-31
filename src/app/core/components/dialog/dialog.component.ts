@@ -10,7 +10,7 @@ import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 import {TypeDialog} from '../../enums/type-dialog';
 import {AbstractControl, FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {ConfigDialog} from '@app/core/components/dialog/dialog.service';
-import {fakeAsync} from '@angular/core/testing';
+import {Constants} from '@app/core/constants.core';
 
 export function ValidatePasswords(ac: AbstractControl) {
   let password = ac.get('password').value;
@@ -33,6 +33,7 @@ export class DialogComponent implements OnInit {
   public info: any;
   public showInput: boolean;
   public showDoubleInput: boolean;
+  public showList: boolean;
   public hideOne: boolean;
   public hideTwo: boolean;
   public simpleForm: FormGroup;
@@ -46,6 +47,7 @@ export class DialogComponent implements OnInit {
     switch (this._data.type){
       case TypeDialog.Confirm:
       case TypeDialog.Alert:
+        this.showList = false;
         this.info = {
           title: this._data.title || '',
           message: this._data.message || '',
@@ -84,6 +86,13 @@ export class DialogComponent implements OnInit {
         });
         this.simpleForm.setValidators(ValidatePasswords);
         break;
+      case TypeDialog.list:
+        this.showList= true;
+        this.info = {
+          title: this._data.title,
+          message: this._data.message,
+          country: Constants.countries
+        }
     }
   }
 
@@ -106,10 +115,11 @@ export class DialogComponent implements OnInit {
   }
 
   public onSubmitForm(data): void{
-    if(this.simpleForm.invalid){
-      return;
+    if(!this.showList) {
+      if (this.simpleForm.invalid) {
+        return;
+      }
     }
     this.dialogRef.close({code: 1, data: data});
   }
-
 }

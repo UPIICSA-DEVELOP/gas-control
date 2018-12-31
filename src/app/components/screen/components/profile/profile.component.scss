@@ -5,6 +5,11 @@
  */
 @import "../../../../../styles/colors";
 #profile{
+  .progress{
+    position: absolute;
+    top: 0;
+    z-index: 1;
+  }
   width: 100%;
   height: calc(100% - -48px);
   display: flex;
@@ -94,6 +99,31 @@
       display: flex;
       justify-content: center;
       margin: 24px 0;
+    }
+    .formText{
+      font-family: Roboto, 'Helvetice New', 'Arial', sans-serif;
+      font-weight: 500;
+      font-size: 14px;
+      color: #707070;
+    }
+    .signatureContainer{
+      display:flex;
+      justify-content: center;
+      width: 100%;
+      height: 48px;
+      background-color: black;
+      .signature{
+        margin: 1px;
+        background-color: white;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        .imageSignature{
+          width: 50%;
+          height: auto;
+        }
+      }
     }
   }
 }

@@ -133,4 +133,18 @@ export class DialogService {
     );
   }
 
+  public dialogList(title: string): MatDialogRef<DialogComponent>{
+    return  this._dialog.open(DialogComponent,
+      {
+        data:
+          {
+            type:TypeDialog.list,
+            title: title,
+            message:''
+          },
+        disableClose: true
+      }
+      );
+  }
+
 }

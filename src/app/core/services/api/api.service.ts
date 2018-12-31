@@ -68,6 +68,12 @@ export class ApiService {
     return this._http.get(ApiService.API_URL_COMPLETE+ 'getPerson',{params: params});
   }
 
+  public getConsultancy(id: string): Observable<any> {
+    let params = new HttpParams();
+    params = params.append('id', id);
+    return this._http.get(ApiService.API_URL_COMPLETE+ 'getConsultancy',{params: params});
+  }
+
   public updatePerson(person: any): Observable<any> {
     return this._http.put( ApiService.API_URL_COMPLETE + 'updatePerson', person);
   }

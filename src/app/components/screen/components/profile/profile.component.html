@@ -4,37 +4,76 @@
   ~ Proprietary and confidential
   -->
 <div id="profile">
-  <form [formGroup]="profileForm" aria-label="Form of profile in inSpector" class="container">
+  <mat-progress-bar [mode]="'indeterminate'" *ngIf="load" class="progress"></mat-progress-bar>
+  <form *ngIf="user else loading" [formGroup]="profileForm" (submit)="updateProfile(profileForm.value)" aria-label="Form of profile in inSpector" class="container">
     <div class="information">
       <mat-card class="content">
         <mat-card-content>
           <span class="title">Mi información</span>
           <div style="width: 100%">
             <mat-form-field class="inputs">
-              <input matInput placeholder="Nombre(s)" required type="text" aria-label="User name">
+              <input formControlName="name" matInput placeholder="Nombre(s)" required type="text" aria-label="User name">
+              <mat-error *ngIf="profileForm.controls['name'].hasError('required')">
+                Este campo es obligatorio
+              </mat-error>
             </mat-form-field>
             <mat-form-field class="inputs">
-              <input matInput placeholder="Apellido(s)" required type="text" aria-label="User last-name">
+              <input formControlName="lastName" matInput placeholder="Apellido(s)" required type="text" aria-label="User last-name">
+              <mat-error *ngIf="profileForm.controls['lastName'].hasError('required')">
+                Este campo es obligatorio
+              </mat-error>
             </mat-form-field>
             <mat-form-field class="inputs">
-              <input matInput placeholder="Email comercial" required type="email" aria-label="User email">
+              <input formControlName="email" matInput placeholder="Email comercial" required type="email"  aria-label="User email">
+              <mat-error *ngIf="profileForm.controls['email'].hasError('required')">
+                Este campo es obligatorio
+              </mat-error>
             </mat-form-field>
             <mat-form-field class="inputs">
-              <input matInput placeholder="País" type="text" aria-label="User country">
+              <input formControlName="country" matInput placeholder="País" type="text" required aria-label="User country" (click)="openListCountry()">
+              <mat-error *ngIf="profileForm.controls['country'].hasError('required')">
+                Este campo es obligatorio
+              </mat-error>
             </mat-form-field>
             <div style="display: flex">
               <mat-form-field style="width: 60px;margin-right: 24px;">
-                <input matInput placeholder="Código" type="text" aria-label="Phone code">
+                <input formControlName="code" matInput placeholder="Código" type="text" aria-label="Phone code">
               </mat-form-field>
               <mat-form-field class="inputs">
-                <input matInput placeholder="Número celular" required type="tel" aria-label="User cellphone number">
+                <input formControlName="phoneNumber" matInput placeholder="Número celular" required type="tel" aria-label="User cellphone number">
+                <mat-error *ngIf="profileForm.controls['phoneNumber'].hasError('required')">
+                  Este campo es obligatorio
+                </mat-error>
+                <mat-error *ngIf="profileForm.controls['phoneNumber'].hasError('minlength')">
+                  Se requieren de 8 a 13 dígitos
+                </mat-error>
+                <mat-error *ngIf="profileForm.controls['phoneNumber'].hasError('maxlength')">
+                  Se requieren de 8 a 13 dígitos
+                </mat-error>
               </mat-form-field>
             </div>
             <mat-form-field class="inputs">
-              <input matInput placeholder="Cargo" required type="text" aria-label="User job-title">
+              <mat-select formControlName="role" placeholder="Rol" required aria-label="User role">
+                <mat-option *ngFor="let rol of role " (value)="rol.value">{{rol.name}}</mat-option>
+              </mat-select>
             </mat-form-field>
             <mat-form-field class="inputs">
-              <input matInput placeholder="Actualizar Contraseña" required type="password" aria-label="User password">
+              <input formControlName="jobTitle" matInput placeholder="Cargo" required type="text" aria-label="User job-title">
+              <mat-error *ngIf="profileForm.controls['jobTitle'].hasError('required')">
+                Este campo es obligatorio
+              </mat-error>
+            </mat-form-field>
+            <mat-form-field class="inputs">
+              <input matInput placeholder="Actualizar Contraseña" type="password" #seePassword aria-label="User password">
+              <button matSuffix aria-label="show password" type="button" mat-icon-button (click)="showPassword()">
+                <div *ngIf="hide; then passwordVisible else passwordInvisible"></div>
+                <ng-template #passwordVisible>
+                  <mat-icon class="see-ocult-pass">visibility</mat-icon>
+                </ng-template>
+                <ng-template #passwordInvisible>
+                  <mat-icon class="see-ocult-pass">visibility_off</mat-icon>
+                </ng-template>
+              </button>
             </mat-form-field>
             <div style="display: flex">
               <mat-form-field style="width: 72px;margin-right: 24px;">
@@ -44,8 +83,17 @@
                 </mat-select>
               </mat-form-field>
               <mat-form-field class="inputs">
-                <input matInput type="url" aria-label="User website">
+                <input formControlName="website" matInput type="url" aria-label="User website">
               </mat-form-field>
+            </div>
+            <div style="display: flex;">
+              <span class="formText">Firma digital</span>
+              <div class="signatureContainer">
+                <div class="signature">
+                  <span *ngIf="!user.signature" class="formText">Registre firma digital</span>
+                  <img *ngIf="user.signature" [src]="user.signature.thumbnail" class="signatureImage">
+                </div>
+              </div>
             </div>
           </div>
         </mat-card-content>
@@ -56,34 +104,52 @@
         <mat-card class="content">
           <mat-card-content>
             <span class="title">Información consultora</span>
-            <div style="width: 100%">
+            <div>
               <mat-form-field class="inputs">
-                <input matInput placeholder="Empresa o razón social" required type="text" aria-label="Consultancy name">
+                <input formControlName="businessName" matInput placeholder="Empresa o Razón social" required type="text" aria-label="Consultancy name">
+                <mat-error *ngIf="profileForm.controls['businessName'].hasError('required')">
+                  Este campo es obligatorio
+                </mat-error>
               </mat-form-field>
               <mat-form-field class="inputs">
-                <input matInput placeholder="R.F.C" required type="text" aria-label="Consultancy legal identifier">
+                <input formControlName="rfc" matInput placeholder="R.F.C" required type="text" aria-label="Consultancy legal identifier">
+                <mat-error *ngIf="profileForm.controls['rfc'].hasError('required')">
+                  Este campo es obligatorio
+                </mat-error>
               </mat-form-field>
               <mat-form-field class="inputs">
-                <input matInput placeholder="Dirección" required type="text" aria-label="Consultancy address">
+                <textarea formControlName="address" matInput placeholder="Dirección" required type="text" aria-label="Consultancy address"></textarea>
+                <mat-error *ngIf="profileForm.controls['address'].hasError('required')">
+                  Este campo es obligatorio
+                </mat-error>
               </mat-form-field>
               <mat-form-field class="inputs">
-                <input matInput placeholder="Número de la consultora" type="tel" aria-label="Consultancy phone number">
+                <input formControlName="officePhone" matInput placeholder="Número de la consultora" type="tel" aria-label="Consultancy phone number">
+                <mat-error *ngIf="profileForm.controls['officePhone'].hasError('minlength')">
+                  Se requieren de 8 a 13 dígitos
+                </mat-error>
+                <mat-error *ngIf="profileForm.controls['officePhone'].hasError('maxlength')">
+                  Se requieren de 8 a 13 dígitos
+                </mat-error>
               </mat-form-field>
             </div>
           </mat-card-content>
         </mat-card>
         <div class="form-button">
-          <button aria-label="LogIn" class="save-changes-btn" mat-button>GUARDAR CAMBIOS</button>
+          <button mat-flat-button aria-label="LogIn" [disabled]="load" class="save-changes-btn" mat-button>GUARDAR CAMBIOS</button>
         </div>
       </div>
     </div>
     <div class="business-card">
       <div class="card">
-        <a [href]="user.bCard.dynamicLink" target="_blank" *ngIf="user.bCard.dynamicLink">
-          <img [src]="user.bCard.cardThumbnail" alt="User Business Card" *ngIf="user.bCard.cardThumbnail">
+        <a [href]="user.bCard.dynamicLink" target="_blank" *ngIf="user.bCard">
+          <img [src]="user.bCard.cardThumbnail" alt="User Business Card" *ngIf="user.bCard">
         </a>
       </div>
     </div>
     <div class="margin"></div>
   </form>
+  <ng-template #loading>
+    <mat-spinner></mat-spinner>
+  </ng-template>
 </div>
