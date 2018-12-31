@@ -31,6 +31,7 @@ export class ProfileComponent implements OnInit {
     {value: 5, name: 'Encargado de estación'},
     {value: 6, name: 'Gerente de estación'},
     {value: 7, name: 'Asistente de estación'}];
+  public userRole: number;
   public profileForm: FormGroup;
   public hide: boolean;
   public protocol: any = 'http';
@@ -59,23 +60,39 @@ export class ProfileComponent implements OnInit {
       switch (response.code) {
         case 200:
           this.user = response.item;
+          for (let country of Constants.countries){
+            if (country.code === this.user.countryCode){
+              this.country=country.name;
+            }
+          }
+          let url=this.user.website;
+          if (url.includes('http://')){
+            url=url.replace('http://','');
+            this.protocol = 'http://';
+          }else if(url.includes('https://')) {
+            url=url.replace('https://','');
+            this.protocol = 'https://';
+          }
+          this.user.website=url;
+          this.userRole = this.user.role;
           this._api.getConsultancy(this.user.refId).subscribe(response => {
             switch (response.code) {
               case 200:
                 this.consultancy = response.item;
-                this.profileForm.reset({
+                this.profileForm.patchValue({
                   name: this.user.name,
                   lastName: this.user.lastName,
                   email: this.user.email,
-                  country: this.user.country,
+                  country: this.country,
+                  code: this.user.countryCode,
                   phoneNumber: this.user.phoneNumber,
-                  role: this.user.role,
                   jobTitle: this.user.jobTitle,
                   website: this.user.website,
                   businessName: this.consultancy.businessName,
                   rfc: this.consultancy.rfc,
                   address: this.consultancy.address,
-                  officePhone: this.consultancy.officePhone
+                  officePhone: this.consultancy.officePhone,
+                  password: this.user.password
                 });
                 break;
             }
@@ -91,10 +108,10 @@ export class ProfileComponent implements OnInit {
       lastName: ['', [Validators.required]],
       email: [{value: '', disabled: true}, [Validators.required, Validators.email]],
       country: ['', [Validators.required]],
-      role: [{value: 0, disabled: true}, [Validators.required]],
       code: ['', []],
       phoneNumber: ['', [Validators.required, Validators.minLength(8), Validators.maxLength(13)]],
       jobTitle: ['', [Validators.required]],
+      password:['',[]],
       website: ['', []],
       businessName: ['', [Validators.required]],
       rfc: ['', [Validators.required]],
@@ -117,20 +134,40 @@ export class ProfileComponent implements OnInit {
   }
 
   private updateProfile(data: any): void {
+    if (this.profileForm.invalid) {
+      return;
+    }
     this.user.name = data.name;
     this.user.lastName = data.lastName;
-    this.user.country = data.country;
+    this.user.countryCode = data.code;
     this.user.phoneNumber = data.phoneNumber;
     this.user.jobTitle = data.jobTitle;
     this.user.password = data.password;
-    this.user.website = this.protocol + data.website;
+    this.user.website = (data.website? this.protocol+data.website : '');
     this.consultancy.businessName = data.businessName;
     this.consultancy.rfc = data.rfc;
     this.consultancy.address = data.address;
-    this.consultancy.officePhone = data. officePhone;
+    this.consultancy.officePhone = (data.officePhone? data.officePhone: '');
 
-      this._api.updatePerson(this.user);
-    this._api.getConsultancy(this.consultancy);
+    this._api.updatePerson(this.user).subscribe(response=>{
+      switch (response.code) {
+        case 200:
+          this._api.updateConsultancy(this.consultancy).subscribe(response =>{
+            switch (response.code) {
+              case 200:
+                this._snackBarService.openSnackBar('Información actualizada','OK',3000);
+                break;
+              default:
+                this._dialogService.alertDialog('No se pudo acceder', 'Se produjo un error de comunicación con el servidor', 'ACEPTAR');
+                break;
+            }
+          });
+          break;
+        default:
+          this._dialogService.alertDialog('No se pudo acceder', 'Se produjo un error de comunicación con el servidor', 'ACEPTAR');
+          break;
+      }
+    });
   }
 
 }

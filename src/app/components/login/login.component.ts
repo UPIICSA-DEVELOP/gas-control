@@ -111,6 +111,7 @@ export class LoginComponent implements OnInit {
           this.connectionLost();
           break;
         default:
+          this.connectionLost();
           break;
       }
     });

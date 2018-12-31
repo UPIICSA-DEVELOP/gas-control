@@ -78,6 +78,10 @@ export class ApiService {
     return this._http.put( ApiService.API_URL_COMPLETE + 'updatePerson', person);
   }
 
+  public updateConsultancy(consultancy: any): Observable<any> {
+    return this._http.put(ApiService.API_URL_COMPLETE + 'updateConsultancy',consultancy);
+  }
+
   public uploadFileToBlob(url, body: any): Observable<any> {
     return this._http.post(url, body);
   }

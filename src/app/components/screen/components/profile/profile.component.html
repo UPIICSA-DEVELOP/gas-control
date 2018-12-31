@@ -36,7 +36,7 @@
               </mat-error>
             </mat-form-field>
             <div style="display: flex">
-              <mat-form-field style="width: 60px;margin-right: 24px;">
+              <mat-form-field class="right-inputs">
                 <input formControlName="code" matInput placeholder="Código" type="text" aria-label="Phone code">
               </mat-form-field>
               <mat-form-field class="inputs">
@@ -53,8 +53,8 @@
               </mat-form-field>
             </div>
             <mat-form-field class="inputs">
-              <mat-select formControlName="role" placeholder="Rol" required aria-label="User role">
-                <mat-option *ngFor="let rol of role " (value)="rol.value">{{rol.name}}</mat-option>
+              <mat-select disabled placeholder="Rol" required aria-label="User role" [(value)]="userRole" >
+                <mat-option *ngFor="let rol of role " [value]="rol.value">{{rol.name}}</mat-option>
               </mat-select>
             </mat-form-field>
             <mat-form-field class="inputs">
@@ -64,7 +64,7 @@
               </mat-error>
             </mat-form-field>
             <mat-form-field class="inputs">
-              <input matInput placeholder="Actualizar Contraseña" type="password" #seePassword aria-label="User password">
+              <input formControlName="password" matInput placeholder="Actualizar Contraseña" type="password" #seePassword aria-label="User password">
               <button matSuffix aria-label="show password" type="button" mat-icon-button (click)="showPassword()">
                 <div *ngIf="hide; then passwordVisible else passwordInvisible"></div>
                 <ng-template #passwordVisible>
@@ -76,10 +76,10 @@
               </button>
             </mat-form-field>
             <div style="display: flex">
-              <mat-form-field style="width: 72px;margin-right: 24px;">
+              <mat-form-field class="right-inputs">
                 <mat-select placeholder="Website" aria-label="User website protocol" [(value)]="protocol">
-                  <mat-option value="http">http://</mat-option>
-                  <mat-option value="https">https://</mat-option>
+                  <mat-option value="http://">http://</mat-option>
+                  <mat-option value="https://">https://</mat-option>
                 </mat-select>
               </mat-form-field>
               <mat-form-field class="inputs">
