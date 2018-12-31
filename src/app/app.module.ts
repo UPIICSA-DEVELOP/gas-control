@@ -35,6 +35,7 @@ import { SplashComponent } from './splash/splash.component';
 import { ResetPassComponent } from './components/screen/child/reset-pass/reset-pass.component';
 import { ProfileComponent } from './components/screen/components/profile/profile.component';
 import { MenuComponent } from './components/screen/components/menu/menu.component';
+import { StationListComponent } from './components/screen/components/station-list/station-list.component';
 
 
 @NgModule({
@@ -53,7 +54,8 @@ import { MenuComponent } from './components/screen/components/menu/menu.componen
     NotificationsComponent,
     SplashComponent,
     ProfileComponent,
-    MenuComponent
+    MenuComponent,
+    StationListComponent
   ],
   imports: [
     CoreModule,
