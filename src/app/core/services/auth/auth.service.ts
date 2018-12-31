@@ -27,28 +27,16 @@ export class AuthService implements Resolve<any>{
   ) { }
 
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-    if(isPlatformBrowser(this._platformId)){
-      switch (state.url){
-        case '/':
-          if(AuthService.validateUser()){
-            this._router.navigate(['/home']).then(() => {});
-            this.saveUserInfo();
-          }
-          break;
-        case '/home':
-          if(!AuthService.validateUser()){
-            this._router.navigate(['/']).then(() => {});
-          }else{
-            this.saveUserInfo();
-          }
-          break;
-        case '/home/profile':
-          if (!AuthService.validateUser()){
-            this._router.navigate(['/']).then(() => {});
-          }else{
-            this.saveUserInfo();
-          }
-          break;
+    if (isPlatformBrowser(this._platformId)) {
+      if(state.url !== '/home/updatepassword'){
+        if(AuthService.validateUpdatePassword()){
+          this.saveUserInfo();
+          this._router.navigate(['/home/updatepassword']).then();
+        }else{
+          this.goToHome(state.url);
+        }
+      }else if(!AuthService.validateUpdatePassword()){
+        this._router.navigate(['/home']).then();
       }
     }
   }
@@ -79,7 +67,7 @@ export class AuthService implements Resolve<any>{
     if(token){
       LocalStorageService.setItem(Constants.SessionToken, token);
     }
-    SessionStorageService.setItem(Constants.UserInSession, {profileImage: (user.profileImage)?user.profileImage.thumbnail:null});
+    SessionStorageService.setItem(Constants.UserInSession, user);
     CookieService.setCookie({
       value: user.id,
       name: Constants.IdSession,
@@ -99,11 +87,36 @@ export class AuthService implements Resolve<any>{
     return CookieService.getCookie(Constants.IdSession) !== null;
   }
 
-  public saveUserInfo(): void{
+  private static validateUpdatePassword(): boolean{
+    return LocalStorageService.getItem(Constants.UpdatePassword);
+  }
+
+  private goToHome(url: string): void{
+    switch (url){
+      case '/':
+        if(AuthService.validateUser()){
+          this.saveUserInfo();
+          this._router.navigate(['/home']).then();
+        }
+        break;
+      default:
+        switch (true){
+          case /home/.test(url):
+            if(!AuthService.validateUser()){
+              this._router.navigate(['/']).then();
+            }
+            break;
+          }
+        break;
+    }
+  }
+
+
+  private saveUserInfo(): void{
     this._api.getPerson(CookieService.getCookie(Constants.IdSession)).subscribe(response =>{
       switch (response.code) {
         case 200:
-          SessionStorageService.setItem(Constants.UserInSession, {profileImage:(response.item.profileImage)?response.item.profileImage.thumbnail:null});
+          SessionStorageService.setItem(Constants.UserInSession, response.item);
           break;
       }
     });

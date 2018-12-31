@@ -32,7 +32,7 @@ import { NotificationsComponent } from './components/screen/components/notificat
 import {AngularFireModule} from '@angular/fire';
 import {environment} from '@env/environment';
 import { SplashComponent } from './splash/splash.component';
-import { ResetPassComponent } from './components/reset-pass/reset-pass.component';
+import { ResetPassComponent } from './components/screen/child/reset-pass/reset-pass.component';
 import { ProfileComponent } from './components/screen/components/profile/profile.component';
 import { MenuComponent } from './components/screen/components/menu/menu.component';
 
