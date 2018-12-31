@@ -9,6 +9,5 @@ export enum TypeDialog {
   Confirm,
   Alert,
   Input,
-  DoubleInput,
-  list
+  DoubleInput
 }

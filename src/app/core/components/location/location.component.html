@@ -1,0 +1,39 @@
+<div id="location">
+  <mat-toolbar [color]="'primary'">Seleccionar ubicación
+    <button class="btn-close" (click)="close()" mat-icon-button="">
+      <mat-icon>close</mat-icon>
+    </button>
+  </mat-toolbar>
+  <div class="container">
+    <div class="container-search-box">
+      <mat-card>
+        <div class="search-box">
+          <app-search-box-core [title]="'Barra de Búsqueda'" [placeHolder]="'Buscar calle, colonia, ciudad'" [styles]="{width: 'calc(100% - 16px)', padding: '8px'}" (inputSearchBox)="onInputSearchBox($event)" (onChange)="onPlaceChanged($event)"></app-search-box-core>
+        </div>
+        <button mat-icon-button="" (click)="clearInput()" *ngIf="clear">
+          <mat-icon>close</mat-icon>
+        </button>
+        <button mat-icon-button="" (click)="getCurrentPositionByGPS()">
+          <mat-icon>gps_fixed</mat-icon>
+        </button>
+      </mat-card>
+    </div>
+    <agm-map
+      [latitude]="mapOptions.center.lat"
+      [longitude]="mapOptions.center.lng"
+      [gestureHandling]="mapOptions.gestureHandling"
+      [streetViewControl]="mapOptions.streetViewControl"
+      [styles]="mapOptions.styles"
+      [zoom]="mapOptions.zoom"
+      [zoomControl]="mapOptions.zoomControl">
+      <agm-marker
+        [latitude]="mapOptions.center.lat"
+        [longitude]="mapOptions.center.lng"
+        [markerDraggable]="true"
+        (dragEnd)="onMarkerDragEnd($event)" [label]="'Mueve el marker en la dirección correcta'"></agm-marker>
+    </agm-map>
+    <div class="buttons">
+      <button mat-raised-button="" (click)="accept()">ACEPTAR</button>
+    </div>
+  </div>
+</div>

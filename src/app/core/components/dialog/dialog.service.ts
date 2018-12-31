@@ -133,7 +133,7 @@ export class DialogService {
     );
   }
 
-  public dialogList(title: string): MatDialogRef<DialogComponent>{
+ /* public dialogList(title: string): MatDialogRef<DialogComponent>{
     return  this._dialog.open(DialogComponent,
       {
         data:
@@ -145,6 +145,6 @@ export class DialogService {
         disableClose: true
       }
       );
-  }
+  }*/
 
 }

@@ -15,7 +15,8 @@
       "@env/*": ["environments/*"]
     },
     "types": [
-      "node"
+      "node",
+      "googlemaps"
     ],
     "typeRoots": [
       "node_modules/@types"

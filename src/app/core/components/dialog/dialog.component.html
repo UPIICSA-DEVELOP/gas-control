@@ -73,26 +73,4 @@
       </form>
     </mat-dialog-content>
   </ng-template>
-  <ng-template #withOutInput>
-    <mat-dialog-content *ngIf="!showList">
-      {{info.message}}
-    </mat-dialog-content>
-    <mat-dialog-actions align="end" *ngIf="!showList">
-      <button mat-button (click)="cancel()" *ngIf="info.cancel">{{info.cancel}}</button>
-      <button mat-button (click)="accept()" *ngIf="info.accept">{{info.accept}}</button>
-    </mat-dialog-actions>
-    <mat-toolbar [color]="'primary'" *ngIf="showList">
-      <input matInput placeholder="Bucar" type="text" style="color: #FFFFFF">
-      <mat-icon prefix style="color: #FFFFFF">search</mat-icon>
-    </mat-toolbar>
-    <mat-dialog-content *ngIf="showList">
-      <mat-list>
-        <mat-list-item *ngFor="let country of info.country">
-          <button mat-button (click)="onSubmitForm(country)" style="width: 100%; display: flex; justify-content: space-between !important;">
-            <span>{{country.name}}</span>
-          </button>
-        </mat-list-item>
-      </mat-list>
-    </mat-dialog-content>
-  </ng-template>
 </div>
