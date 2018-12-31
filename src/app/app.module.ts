@@ -36,6 +36,7 @@ import { ResetPassComponent } from './components/screen/child/reset-pass/reset-p
 import { ProfileComponent } from './components/screen/components/profile/profile.component';
 import { MenuComponent } from './components/screen/components/menu/menu.component';
 import { StationListComponent } from './components/screen/components/station-list/station-list.component';
+import { CollaboratorsListComponent } from './components/screen/components/collaborators-list/collaborators-list.component';
 
 
 @NgModule({
@@ -55,7 +56,8 @@ import { StationListComponent } from './components/screen/components/station-lis
     SplashComponent,
     ProfileComponent,
     MenuComponent,
-    StationListComponent
+    StationListComponent,
+    CollaboratorsListComponent
   ],
   imports: [
     CoreModule,
