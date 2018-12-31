@@ -9,8 +9,14 @@
     <div class="information">
       <mat-card class="content">
         <mat-card-content>
-          <span class="title">Mi información</span>
-          <div style="width: 100%">
+          <div class="head">
+            <span class="title">Mi información</span>
+            <div class="image">
+              <img *ngIf="user.profileImage" [src]="user.profileImage.thumbnail" class="profileImage">
+              <mat-icon *ngIf="!user.profileImage" class="defaultProfileImage">account_circle</mat-icon>
+            </div>
+          </div>
+          <div>
             <mat-form-field class="inputs">
               <input formControlName="name" matInput placeholder="Nombre(s)" required type="text" aria-label="User name">
               <mat-error *ngIf="profileForm.controls['name'].hasError('required')">
@@ -147,7 +153,6 @@
         </a>
       </div>
     </div>
-    <div class="margin"></div>
   </form>
   <ng-template #loading>
     <mat-spinner></mat-spinner>

@@ -33,8 +33,11 @@ export class ProfileComponent implements OnInit {
     {value: 7, name: 'Asistente de estación'}];
   public userRole: number;
   public profileForm: FormGroup;
-  public hide: boolean;
-  public protocol: any = 'http';
+  public hide: boolean = false;
+  public protocol: string = 'http://';
+  public profileImage: any;
+  public country: any;
+
   constructor(
     private _api: ApiService,
     private _formBuilder: FormBuilder,
