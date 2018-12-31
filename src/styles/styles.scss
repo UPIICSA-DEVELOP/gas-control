@@ -22,6 +22,18 @@ body{
   overflow: hidden;
 }
 
+.country-code-panel{
+  mat-dialog-container{
+    width: 30vw;
+    min-height: 80vh;
+    max-width: 90vh;
+    padding: 0;
+    @media screen and (max-width: 600px){
+      width: 90vw;
+    }
+  }
+}
+
 .mat-drawer-content{
   overflow: hidden !important;
 }

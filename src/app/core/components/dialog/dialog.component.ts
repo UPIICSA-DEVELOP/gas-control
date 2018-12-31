@@ -86,13 +86,6 @@ export class DialogComponent implements OnInit {
         });
         this.simpleForm.setValidators(ValidatePasswords);
         break;
-      case TypeDialog.list:
-        this.showList= true;
-        this.info = {
-          title: this._data.title,
-          message: this._data.message,
-          country: Constants.countries
-        }
     }
   }
 

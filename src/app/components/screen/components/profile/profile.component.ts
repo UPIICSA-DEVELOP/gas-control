@@ -12,6 +12,7 @@ import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {ApiLoaderService} from '@app/core/services/api/api-loader.service';
 import {DialogService} from '@app/core/components/dialog/dialog.service';
 import {SnackBarService} from '@app/core/services/snackbar/snackbar.service';
+import {CountryCodeService} from '@app/core/components/country-code/country-code.service';
 
 @Component({
   selector: 'app-profile',
@@ -38,8 +39,8 @@ export class ProfileComponent implements OnInit {
     private _api: ApiService,
     private _formBuilder: FormBuilder,
     private _apiLoaderService: ApiLoaderService,
-    private _dialogService: DialogService,
-    private _snackBarService: SnackBarService
+    private _snackBarService: SnackBarService,
+    private _countryCode: CountryCodeService
   ) {
   }
 
@@ -52,6 +53,32 @@ export class ProfileComponent implements OnInit {
   public showPassword(): void {
     this.hide = !this.hide;
     this._see_pass.nativeElement.type = (this.hide) ? 'text' : 'password';
+  }
+
+  public openListCountry(): void {
+    this._countryCode.openDialog().afterClosed().subscribe(response => {
+      this.profileForm.patchValue({
+        country: response.name,
+        code: response.code
+      });
+    });
+  }
+
+  public updateProfile(data: any): void {
+    this.user.name = data.name;
+    this.user.lastName = data.lastName;
+    this.user.country = data.country;
+    this.user.phoneNumber = data.phoneNumber;
+    this.user.jobTitle = data.jobTitle;
+    this.user.password = data.password;
+    this.user.website = this.protocol + data.website;
+    this.consultancy.businessName = data.businessName;
+    this.consultancy.rfc = data.rfc;
+    this.consultancy.address = data.address;
+    this.consultancy.officePhone = data. officePhone;
+
+    this._api.updatePerson(this.user);
+    this._api.getConsultancy(this.consultancy);
   }
 
   private getUserInfo(): void {
@@ -101,36 +128,6 @@ export class ProfileComponent implements OnInit {
       address: ['', [Validators.required]],
       officePhone: ['', [Validators.minLength(8), Validators.maxLength(13)]]
     });
-  }
-
-  private openListCountry(): void {
-    this._dialogService.dialogList('').afterClosed().subscribe(response => {
-      switch (response.code) {
-        case 1:
-          this.profileForm.patchValue({
-            country: response.data.name,
-            code: response.data.code
-          });
-          break;
-      }
-    });
-  }
-
-  private updateProfile(data: any): void {
-    this.user.name = data.name;
-    this.user.lastName = data.lastName;
-    this.user.country = data.country;
-    this.user.phoneNumber = data.phoneNumber;
-    this.user.jobTitle = data.jobTitle;
-    this.user.password = data.password;
-    this.user.website = this.protocol + data.website;
-    this.consultancy.businessName = data.businessName;
-    this.consultancy.rfc = data.rfc;
-    this.consultancy.address = data.address;
-    this.consultancy.officePhone = data. officePhone;
-
-      this._api.updatePerson(this.user);
-    this._api.getConsultancy(this.consultancy);
   }
 
 }

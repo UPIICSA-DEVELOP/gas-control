@@ -22,6 +22,8 @@ import {MaterialModule} from '@app/core/material/material.module';
 import {ImageCropperModule} from 'ngx-image-cropper';
 import { CropImageComponent } from './components/crop-image/crop-image.component';
 import {AuthService} from '@app/core/services/auth/auth.service';
+import {CountryCodeComponent} from '@app/core/components/country-code/country-code.component';
+import {CountryCodeService} from '@app/core/components/country-code/country-code.service';
 
 @NgModule({
   imports: [
@@ -42,18 +44,21 @@ import {AuthService} from '@app/core/services/auth/auth.service';
     FormsModule,
     ReactiveFormsModule,
     UploadImageComponent,
-    CropImageComponent
+    CropImageComponent,
+    CountryCodeComponent
   ],
   declarations: [
     DialogComponent,
     ShareComponent,
     UploadImageComponent,
-    CropImageComponent
+    CropImageComponent,
+    CountryCodeComponent
   ],
   entryComponents: [
     DialogComponent,
     ShareComponent,
-    CropImageComponent
+    CropImageComponent,
+    CountryCodeComponent
   ],
   providers: [
     AuthService,
@@ -62,7 +67,8 @@ import {AuthService} from '@app/core/services/auth/auth.service';
     UtilitiesService,
     UploadImageService,
     PipesModule,
-    CurrencyPipe
+    CurrencyPipe,
+    CountryCodeService
   ]
 })
 export class CoreModule { }

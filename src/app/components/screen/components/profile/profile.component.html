@@ -29,12 +29,16 @@
                 Este campo es obligatorio
               </mat-error>
             </mat-form-field>
-            <mat-form-field class="inputs">
-              <input formControlName="country" matInput placeholder="País" type="text" required aria-label="User country" (click)="openListCountry()">
-              <mat-error *ngIf="profileForm.controls['country'].hasError('required')">
-                Este campo es obligatorio
-              </mat-error>
-            </mat-form-field>
+
+             <div class="country-code">
+               <div class="mask" (click)="openListCountry()"></div>
+                 <mat-form-field class="inputs">
+                 <input formControlName="country" matInput placeholder="País" type="text" required aria-label="User country">
+                 <mat-error *ngIf="profileForm.controls['country'].hasError('required')">
+                   Este campo es obligatorio
+                 </mat-error>
+               </mat-form-field>
+             </div>
             <div style="display: flex">
               <mat-form-field style="width: 60px;margin-right: 24px;">
                 <input formControlName="code" matInput placeholder="Código" type="text" aria-label="Phone code">

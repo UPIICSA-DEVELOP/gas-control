@@ -1,0 +1,23 @@
+#country-code{
+  mat-dialog-content{
+    margin: 24px;
+    position: relative;
+    .search{
+      mat-form-field{
+        width: 100%;
+      }
+    }
+
+    .container{
+
+      .country{
+        width: 100%;
+        button{
+          width: 100%;
+          text-align: left;
+        }
+      }
+
+    }
+  }
+}
