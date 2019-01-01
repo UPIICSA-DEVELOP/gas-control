@@ -14,6 +14,7 @@ import {ResetPassService} from '@app/core/services/reset-pass/reset-pass.service
 import {ResetPassComponent} from '@app/components/screen/child/reset-pass/reset-pass.component';
 import {ProfileComponent} from '@app/components/screen/components/profile/profile.component';
 import {NotificationsComponent} from '@app/components/screen/components/notifications/notifications.component';
+import {CollaboratorsListComponent} from '@app/components/screen/components/collaborators-list/collaborators-list.component';
 const URL_BASE = environment.url;
 
 export const appRoutes: Routes = [
@@ -42,6 +43,15 @@ export const appRoutes: Routes = [
         data:{
           title: 'Notificaciones',
           url: URL_BASE + 'home/notifications'
+        }
+      },
+      {
+        path:'collaborators',
+        component: CollaboratorsListComponent,
+        resolve: {data: AuthService},
+        data:{
+          title: 'Colaboradores',
+          url: URL_BASE + 'home/collaborators'
         }
       },
       {
