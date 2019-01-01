@@ -4,11 +4,9 @@
  *  Proprietary and confidential
  */
 
-import {AfterViewInit, Component, EventEmitter, Inject, OnDestroy, OnInit, Output, PLATFORM_ID, ViewChild} from '@angular/core';
-import {MatSidenav} from '@angular/material';
+import {Component, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
 import {animate, style, transition, trigger} from '@angular/animations';
-import {DOCUMENT, isPlatformBrowser} from '@angular/common';
 
 @Component({
   selector: 'app-notifications',
@@ -28,11 +26,9 @@ import {DOCUMENT, isPlatformBrowser} from '@angular/common';
   ],
   host: {'[@fadeInAnimation]': ''}
 })
-export class NotificationsComponent implements OnInit, OnDestroy, AfterViewInit {
+export class NotificationsComponent implements OnInit{
 
   constructor(
-    @Inject(PLATFORM_ID) private _platformId: string,
-    @Inject(DOCUMENT) private _document: Document,
     private _route: Router
   ) {
   }
@@ -44,27 +40,4 @@ export class NotificationsComponent implements OnInit, OnDestroy, AfterViewInit 
     this._route.navigate(['/home']);
   }
 
-  ngAfterViewInit(): void {
-    this.resizeElements(true);
-  }
-
-  ngOnDestroy(): void {
-    this.resizeElements(false);
-  }
-
-  private resizeElements(open: boolean): void {
-    if (isPlatformBrowser(this._platformId)) {
-      let detail: HTMLElement = this._document.getElementById('detail');
-      let timeOut: number = 0;
-      if (!detail) {
-        timeOut = 500;
-      }
-      setTimeout(() => {
-        if (timeOut !== 0) {
-          detail = this._document.getElementById('detail');
-        }
-
-      }, timeOut);
-    }
-  }
 }
