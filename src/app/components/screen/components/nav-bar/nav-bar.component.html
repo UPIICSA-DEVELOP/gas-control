@@ -18,7 +18,7 @@
       </div>
       <div class="navigation-buttons">
         <button class="btn-home" mat-button routerLink="/home">Home</button>
-        <button class="btn-notifications" (click)="openNotify()" routerLink="/home/notifications" mat-button>Notificaciones</button>
+        <button class="btn-notifications" routerLink="/home/notifications" mat-button>Notificaciones</button>
         <button mat-button>
           <mat-icon>search</mat-icon>
         </button>
@@ -27,8 +27,8 @@
         </button>
         <div class="user">
           <button class="button-user" mat-button routerLink="/home/profile">
-            <img class="image-user" [src]="profileImg.profileImage" *ngIf="profileImg.profileImage">
-            <mat-icon *ngIf="!profileImg.profileImage">account_circle</mat-icon>
+            <!--img class="image-user" *ngIf="profileImg" [src]="profileImg.profileImage"-->
+            <mat-icon>account_circle</mat-icon>
           </button>
         </div>
       </div>
