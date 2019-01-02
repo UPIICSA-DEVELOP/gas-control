@@ -27,7 +27,7 @@
         </button>
         <div class="user">
           <button class="button-user" mat-button routerLink="/home/profile">
-            <img [src]="profileImg.profileImage" *ngIf="profileImg.profileImage">
+            <img class="image-user" [src]="profileImg.profileImage" *ngIf="profileImg.profileImage">
             <mat-icon *ngIf="!profileImg.profileImage">account_circle</mat-icon>
           </button>
         </div>
