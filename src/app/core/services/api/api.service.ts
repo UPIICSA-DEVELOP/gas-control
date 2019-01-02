@@ -58,9 +58,6 @@ export class ApiService {
     return this._http.get('https://ipapi.co/json/');
   }
 
-  public getBlobStore(): Observable<any> {
-    return this._http.get('https://1-dot-inmobimapa-backend.appspot.com/blob/androidserveurl', {responseType: 'text'});
-  }
 
   public getPerson(id: string): Observable<any> {
     let params = new HttpParams();
@@ -82,8 +79,8 @@ export class ApiService {
     return this._http.put(ApiService.API_URL_COMPLETE + 'updateConsultancy',consultancy);
   }
 
-  public uploadFileToBlob(url, body: any): Observable<any> {
-    return this._http.post(url, body);
+  public uploadFileToBlob(body: any): Observable<any> {
+    return this._http.post('https://schedule-maplander.appspot.com/upload', body);
   }
 
   private initNetwork(): void {

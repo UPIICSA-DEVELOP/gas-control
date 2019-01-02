@@ -4,7 +4,7 @@
  * Proprietary and confidential
  */
 
-import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
+import {Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {ApiService} from '@app/core/services/api/api.service';
 import {CookieService} from '@app/core/services/cookie/cookie.service';
 import {Constants} from '@app/core/constants.core';
@@ -14,16 +14,19 @@ import {DialogService} from '@app/core/components/dialog/dialog.service';
 import {SnackBarService} from '@app/core/services/snackbar/snackbar.service';
 import {CountryCodeService} from '@app/core/components/country-code/country-code.service';
 import {LocationService} from '@app/core/components/location/location.service';
+import {UploadImageService} from '@app/core/components/upload-file/upload-image.service';
 
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.component.html',
   styleUrls: ['./profile.component.scss']
 })
-export class ProfileComponent implements OnInit {
+export class ProfileComponent implements OnInit, OnDestroy {
   @ViewChild('seePassword') private _see_pass: ElementRef;
+  private _formData: FormData;
   public user: any;
   public consultancy: any;
+  public latLong: any;
   public load: boolean;
   public role: any[] = [
     {value: 1, name: 'Director'},
@@ -36,9 +39,12 @@ export class ProfileComponent implements OnInit {
   public userRole: number;
   public profileForm: FormGroup;
   public hide: boolean = false;
+  public newImage: boolean = false;
   public protocol: string = 'http://';
   public profileImage: any;
+  public newImageProfile: any;
   public country: any;
+  public change: boolean = false;
 
   constructor(
     private _api: ApiService,
@@ -47,19 +53,34 @@ export class ProfileComponent implements OnInit {
     private _snackBarService: SnackBarService,
     private _countryCode: CountryCodeService,
     private _locationService: LocationService,
-    private _dialogService: DialogService
+    private _dialogService: DialogService,
+    private _uploadImage: UploadImageService
   ) {
+    this._formData = new FormData();
   }
 
   ngOnInit() {
-    this.getUserInfo();
     this.initUserInfo();
     this._apiLoaderService.getProgress().subscribe(load => {this.load = load; });
+  }
+
+  ngOnDestroy(): void {
+    this.saveChangeBeforeExit();
+  }
+
+  public onLoadImage(event): void{
+    this.newImage = true;
+    this.profileImage = event.url;
+    this._formData.append('file', event.blob);
   }
 
   public showPassword(): void {
     this.hide = !this.hide;
     this._see_pass.nativeElement.type = (this.hide) ? 'text' : 'password';
+  }
+
+  public detectChange(): void{
+    this.change = true;
   }
 
   public openListCountry(): void {
@@ -73,8 +94,52 @@ export class ProfileComponent implements OnInit {
 
   public openSelectAddress(): void{
     this._locationService.open().afterClosed().subscribe(response => {
-
+      switch (response.code) {
+        case 1:
+          this.latLong ={
+            latitude: response.location.lat,
+            longitude: response.location.lng
+          };
+          this.profileForm.patchValue({
+            address: response.location.address
+          });
+          break;
+        default:
+          this.profileForm.patchValue({
+            address: this.consultancy.address
+          });
+          break;
+      }
     })
+  }
+
+  private uploadImage(): void{
+    this._uploadImage.uploadImage(this._formData).subscribe(response => {
+      if (response){
+        this.newImageProfile = {
+          thumbnail: response.thumbnail,
+          blob: response.blobKey
+        };
+        this.saveInfoUserAndConsultancy(this.profileForm.value);
+      }
+    });
+  }
+
+  private saveChangeBeforeExit(): void{
+    if (this.change){
+      this._dialogService.confirmDialog(
+        '¿Desea salir sin guardar cambios?',
+        '',
+        'ACEPTAR',
+        'CANCELAR'
+      ).afterClosed().subscribe(response=>{
+        switch (response.code) {
+          case 1:
+            this.updateProfile(this.profileForm.value);
+            break;
+        }
+      })
+    }
   }
 
   private getUserInfo(): void {
@@ -82,25 +147,38 @@ export class ProfileComponent implements OnInit {
       switch (response.code) {
         case 200:
           this.user = response.item;
-          for (let country of Constants.countries){
-            if (country.code === this.user.countryCode){
-              this.country=country.name;
+          debugger;
+          if (this.user.profileImage){
+            this.profileImage = this.user.profileImage.thumbnail;
+          }
+          if (this.user.countryCode){
+            if (!this.user.countryCode.includes('+')) {
+              this.user.countryCode = '+' + this.user.countryCode;
+            }
+            for (let country of Constants.countries){
+              if (country.code === this.user.countryCode){
+                this.country=country.name;
+              }
             }
           }
-          let url=this.user.website;
-          if (url.includes('http://')){
-            url=url.replace('http://','');
-            this.protocol = 'http://';
-          }else if(url.includes('https://')) {
-            url=url.replace('https://','');
-            this.protocol = 'https://';
+          if (this.user.website){
+            if (this.user.website.includes('http://')){
+              this.user.website = this.user.website.replace('http://','');
+              this.protocol = 'http://';
+            } else {
+              this.user.website = this.user.website.replace('https://','');
+              this.protocol = 'https://';
+            }
           }
-          this.user.website=url;
           this.userRole = this.user.role;
           this._api.getConsultancy(this.user.refId).subscribe(response => {
             switch (response.code) {
               case 200:
                 this.consultancy = response.item;
+                this.latLong = {
+                  latitude: this.consultancy.location.latitude,
+                  longitude: this.consultancy.location.longitude
+                };
                 this.profileForm.patchValue({
                   name: this.user.name,
                   lastName: this.user.lastName,
@@ -140,12 +218,23 @@ export class ProfileComponent implements OnInit {
       address: ['', [Validators.required]],
       officePhone: ['', [Validators.minLength(8), Validators.maxLength(13)]]
     });
+    this.getUserInfo();
   }
 
   private updateProfile(data: any): void {
     if (this.profileForm.invalid) {
       return;
     }
+    if(this.newImage){
+      this.uploadImage();
+    }else{
+      this.saveInfoUserAndConsultancy(data);
+    }
+
+  }
+
+  private saveInfoUserAndConsultancy(data: any): void{
+    data.code = data.code.replace('+','');
     this.user.name = data.name;
     this.user.lastName = data.lastName;
     this.user.countryCode = data.code;
@@ -157,13 +246,21 @@ export class ProfileComponent implements OnInit {
     this.consultancy.rfc = data.rfc;
     this.consultancy.address = data.address;
     this.consultancy.officePhone = (data.officePhone? data.officePhone: '');
-
+    this.consultancy.location.latitude = this.latLong.latitude;
+    this.consultancy.location.longitude = this.latLong.longitude;
+    if (this.newImage){
+      this.user.profileImage = {
+        blobName: this.newImageProfile.blob,
+        thumbnail: this.newImageProfile.thumbnail
+      }
+    }
     this._api.updatePerson(this.user).subscribe(response=>{
       switch (response.code) {
         case 200:
           this._api.updateConsultancy(this.consultancy).subscribe(response =>{
             switch (response.code) {
               case 200:
+                this.change = false;
                 this._snackBarService.openSnackBar('Información actualizada','OK',3000);
                 break;
               default:
@@ -178,5 +275,4 @@ export class ProfileComponent implements OnInit {
       }
     });
   }
-
 }

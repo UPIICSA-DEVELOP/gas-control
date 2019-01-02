@@ -18,10 +18,8 @@ export class UploadImageService {
 
   uploadImage(formData: FormData): Observable<any>{
     return new Observable((observable) => {
-      this._api.getBlobStore().subscribe((blob) => {
-        this._api.uploadFileToBlob(blob, formData).subscribe((response) => {
-          observable.next(response);
-        });
+      this._api.uploadFileToBlob(formData).subscribe((response) => {
+        observable.next(response);
       });
     });
   }

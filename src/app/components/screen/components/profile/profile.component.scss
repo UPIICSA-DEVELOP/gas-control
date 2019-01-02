@@ -7,7 +7,7 @@
 #profile{
   .progress{
     position: absolute;
-    top: 0;
+    top: 48px;
     z-index: 1;
   }
   width: 100%;
@@ -23,48 +23,42 @@
     width: 90%;
     height: 80%;
     display: flex;
-    flex-direction: row;
     z-index: 1;
     @media screen and (max-width: 800px) {
       width: 100%;
       flex-direction: column;
-      display: block;
     }
     .information{
       width: calc(100% / 3);
-      display: flex;
-      justify-content: center;
-      align-items: center;
       margin: 24px;
       .head{
         display: flex;
         justify-content: space-between;
         .image{
-          display: flex;
-          margin-right: -40px;
-          margin-top: -16px;
+          margin-right: -48px;
+          margin-top: -22px;
           @media screen and (max-width: 800px){
-            display: block;
             margin-right: 0;
             margin-top: 0;
           }
         }
         .profileImage{
-          height: 50px;
-          width: 50px;
+          height: 70px;
+          width: 70px;
           border-radius: 50%;
+          background-color: #FFFFFF;
         }
         .defaultProfileImage{
           display: flex;
           justify-content: center;
           align-items: center;
-          width: 50px;
-          height: 50px;
+          width: 70px;
+          height: 70px;
           border-radius: 50%;
           background-color: #FFFFFF;
         }
         mat-icon{
-          font-size: 50px;
+          font-size: 70px;
           color: #707070;
         }
       }
@@ -77,21 +71,20 @@
     .consultanty{
       width: calc(100% / 3);
       display: flex;
-      justify-content: center;
       align-items: center;
       margin: 24px;
       @media screen and (max-width: 800px){
         width: 100%;
         height: auto;
         margin: 24px 0;
+        display: block;
       }
     }
     .business-card{
       width: calc(100% / 3);
-      display: flex;
-      justify-content: center;
-      align-items: center;
       margin: 24px;
+      display: flex;
+      align-items: center;
       .card{
         margin: 24px;
         img{
@@ -102,6 +95,7 @@
         width: 100%;
         height: auto;
         margin: 24px 0;
+        display: block;
       }
     }
     .margin{
@@ -118,6 +112,12 @@
       color: #000000;
     }
     .content{
+      height: 100%;
+    }
+    .user-form{
+      height: 90%;
+      overflow-x: hidden;
+      overflow-y: auto;
       width: 100%;
     }
     .inputs{
@@ -151,10 +151,6 @@
         cursor: pointer;
       }
     }
-    .save-changes-btn{
-      color: #FFFFFF;
-      background-color: mat-color($primary);
-    }
     .form-button{
       display: flex;
       justify-content: center;
@@ -165,12 +161,18 @@
       font-weight: 500;
       font-size: 14px;
       color: #707070;
+      margin: 24px;
+    }
+    .formHead{
+      font-family: Roboto, 'Helvetice New', 'Arial', sans-serif;
+      font-weight: 500;
+      font-size: 14px;
+      color: #707070;
+      margin-bottom: 12px;
     }
     .signatureContainer{
       display:flex;
       justify-content: center;
-      width: 100%;
-      height: 48px;
       background-color: black;
       .signature{
         margin: 1px;
@@ -180,8 +182,7 @@
         justify-content: center;
         align-items: center;
         .imageSignature{
-          width: 50%;
-          height: auto;
+          width: 100%;
         }
       }
     }
