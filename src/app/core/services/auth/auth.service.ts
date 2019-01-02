@@ -67,7 +67,7 @@ export class AuthService implements Resolve<any>{
     if(token){
       LocalStorageService.setItem(Constants.SessionToken, token);
     }
-    SessionStorageService.setItem(Constants.UserInSession, user);
+    SessionStorageService.setItem(Constants.UserInSession, (user.profileImage? {'profileImage':user.profileImage.thumbnail}:null));
     CookieService.setCookie({
       value: user.id,
       name: Constants.IdSession,
@@ -116,7 +116,7 @@ export class AuthService implements Resolve<any>{
     this._api.getPerson(CookieService.getCookie(Constants.IdSession)).subscribe(response =>{
       switch (response.code) {
         case 200:
-          SessionStorageService.setItem(Constants.UserInSession, response.item);
+          SessionStorageService.setItem(Constants.UserInSession, (response.item.profileImage? {'profileImage':response.item.profileImage.thumbnail}:null));
           break;
       }
     });
