@@ -6,28 +6,32 @@
 @import "../../../../../styles/colors";
 #collaborators-list{
   position: absolute;
-  top: 50px;
+  top: 0;
   bottom: 0;
   right: 0;
-  width: 300px;
+  width: 30vw;
   background: white;
   z-index: 3;
-  overflow-x: hidden;
-  overflow-y: auto;
-  .container {
-    margin: 16px;
-
-    .head {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      span{
-        font-family: Roboto, 'Helvetice New', 'Arial', sans-serif;
-        font-weight: 700;
-        font-size: 16px;
-        color: #000000;
-      }
+  overflow: hidden;
+  @media screen and(max-width: 600px){
+    width: 100%;
+  }
+  .head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px;
+    span{
+      font-family: Roboto, 'Helvetice New', 'Arial', sans-serif;
+      font-weight: 700;
+      font-size: 16px;
+      color: #000000;
     }
+  }
+  .container {
+    padding: 0 16px;
+    height: calc(100% - 72px);
+    overflow: auto;
     .collaborator {
       height: 88px;
       display: flex;
