@@ -10,6 +10,7 @@ import {ApiService} from '@app/core/services/api/api.service';
 import {SessionStorageService} from '@app/core/services/session-storage/session-storage.service';
 import {Constants} from '@app/core/constants.core';
 import {LocalStorageService} from '@app/core/services/local-storage/local-storage.service';
+import {CookieService, MaxAge} from '@app/core/services/cookie/cookie.service';
 
 @Injectable()
 export class ResetPassService implements Resolve<any>{
@@ -24,7 +25,12 @@ export class ResetPassService implements Resolve<any>{
     this._api.signInWithLink(id).subscribe(response =>{
       switch (response.code) {
         case 200:
-          SessionStorageService.setItem(Constants.UserInSession, response.item);
+          CookieService.setCookie({
+            value: response.item.id,
+            name: Constants.IdSession,
+            maxAge: MaxAge.DAY
+          });
+          SessionStorageService.setItem(Constants.UserInSession, (response.item.profileImage? {'profileImage':response.item.profileImage.thumbnail}:{'profileImage': null}));
           LocalStorageService.setItem(Constants.UpdatePassword, true);
           this._route.navigate(['/home/updatepassword']).then();
       }
