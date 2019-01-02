@@ -13,7 +13,7 @@
           <div class="image">
             <app-upload-image [layoutTemplate]="icon" (onLoadImage)="onLoadImage($event)">
               <ng-template #icon>
-                <img *ngIf="profileImage" [src]="profileImage" class="profileImage">
+                <img *ngIf="profileImage" [src]="profileImage" class="profileImage" alt="User profile image">
                 <mat-icon *ngIf="!profileImage" class="defaultProfileImage">account_circle</mat-icon>
               </ng-template>
             </app-upload-image>
@@ -98,6 +98,9 @@
               </mat-form-field>
               <mat-form-field class="inputs">
                 <input [attr.disabled]="load?true:null" formControlName="website" matInput type="url" aria-label="User website">
+                <mat-error *ngIf="profileForm.controls['website'].hasError('pattern')">
+                  Ingrese un sitio web válido
+                </mat-error>
               </mat-form-field>
             </div>
             <div>
@@ -105,7 +108,7 @@
               <div class="signatureContainer">
                 <div class="signature">
                   <span *ngIf="!user.signature" class="formText">Registre firma digital</span>
-                  <img *ngIf="user.signature" [src]="user.signature.thumbnail" class="imageSignature">
+                  <img *ngIf="user.signature" [src]="user.signature.thumbnail" class="imageSignature" alt="User signature image">
                 </div>
               </div>
             </div>

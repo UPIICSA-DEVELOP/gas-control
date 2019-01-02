@@ -147,7 +147,6 @@ export class ProfileComponent implements OnInit, OnDestroy {
       switch (response.code) {
         case 200:
           this.user = response.item;
-          debugger;
           if (this.user.profileImage){
             this.profileImage = this.user.profileImage.thumbnail;
           }
@@ -212,7 +211,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
       phoneNumber: ['', [Validators.required, Validators.minLength(8), Validators.maxLength(13)]],
       jobTitle: ['', [Validators.required]],
       password:['',[]],
-      website: ['', []],
+      website: ['', [Validators.pattern('[a-z0-9]+([\\-\\.]{1}[a-z0-9]+)*\\.[a-z]{2,5}(:[0-9]{1,5})?(\\/.*)?$')]],
       businessName: ['', [Validators.required]],
       rfc: ['', [Validators.required]],
       address: ['', [Validators.required]],
