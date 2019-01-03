@@ -40,21 +40,10 @@ export class StationStatusComponent implements OnInit, AfterViewInit{
         position: 'bottom',
         labels: {
           fontColor: '#707070',
-          fontFamily: 'Roboto, "Helvetice New", "Arial", sans-serif'
+          fontFamily: 'Roboto, "Helvetice New", "Arial", sans-serif',
+          usePointStyle: true
         }
       },
-      centerText: {
-        display: true,
-        text: "280"
-      },
-      scales: {
-        xAxes: [{
-          display: false
-        }],
-        yAxes: [{
-          display: false
-        }],
-      }
     }
   };
   constructor(
