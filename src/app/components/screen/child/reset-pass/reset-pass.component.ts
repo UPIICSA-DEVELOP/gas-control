@@ -40,7 +40,7 @@ export class ResetPassComponent implements OnInit, AfterViewInit {
         '',
         'Nueva contraseña',
         'Confirmar nueva contraseña',
-        'Aceptar',
+        'ACEPTAR',
         '',
         '').afterClosed().subscribe(response => {
         const newPassword = response.data.password;
