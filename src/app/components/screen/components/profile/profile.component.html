@@ -5,7 +5,7 @@
   -->
 <div id="profile">
   <mat-progress-bar [mode]="'indeterminate'" *ngIf="load" class="progress"></mat-progress-bar>
-  <form *ngIf="user else loading" [formGroup]="profileForm" (submit)="updateProfile(profileForm.value)" aria-label="Form of profile in inSpector" class="container" (change)="detectChange()">
+  <form *ngIf="user else loading" [formGroup]="profileForm" (submit)="updateProfile(profileForm.value, $event)" aria-label="Form of profile in inSpector" class="container" (change)="detectChange()">
     <div class="information">
       <mat-card class="content">
         <div class="head">
@@ -77,18 +77,12 @@
                 Este campo es obligatorio
               </mat-error>
             </mat-form-field>
-            <mat-form-field class="inputs">
-              <input [attr.disabled]="load?true:null" formControlName="password" matInput placeholder="Actualizar Contraseña" type="password" #seePassword aria-label="User password">
-              <button matSuffix aria-label="show password" type="button" mat-icon-button (click)="showPassword()">
-                <div *ngIf="hide; then passwordVisible else passwordInvisible"></div>
-                <ng-template #passwordVisible>
-                  <mat-icon class="see-ocult-pass">visibility</mat-icon>
-                </ng-template>
-                <ng-template #passwordInvisible>
-                  <mat-icon class="see-ocult-pass">visibility_off</mat-icon>
-                </ng-template>
-              </button>
-            </mat-form-field>
+            <div class="country-code">
+              <div class="mask" (click)="changePassword()"></div>
+              <mat-form-field class="inputs">
+                <input [attr.disabled]="load?true:null" formControlName="password" matInput placeholder="Actualizar Contraseña" type="password" aria-label="User password">
+              </mat-form-field>
+            </div>
             <div style="display: flex">
               <mat-form-field class="right-inputs">
                 <mat-select [disabled]="load" placeholder="Website" aria-label="User website protocol" [(value)]="protocol">

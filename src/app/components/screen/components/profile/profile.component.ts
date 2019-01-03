@@ -4,7 +4,7 @@
  * Proprietary and confidential
  */
 
-import {Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {ApiService} from '@app/core/services/api/api.service';
 import {CookieService} from '@app/core/services/cookie/cookie.service';
 import {Constants} from '@app/core/constants.core';
@@ -22,7 +22,6 @@ import {UploadImageService} from '@app/core/components/upload-file/upload-image.
   styleUrls: ['./profile.component.scss']
 })
 export class ProfileComponent implements OnInit, OnDestroy {
-  @ViewChild('seePassword') private _see_pass: ElementRef;
   private _formData: FormData;
   public user: any;
   public consultancy: any;
@@ -32,7 +31,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
     {value: 1, name: 'Director'},
     {value: 2, name: 'Gerente'},
     {value: 3, name: 'Asistente'},
-    {value: 4, name: 'Dueño de estación'},
+    {value: 4, name: 'Representante legal'},
     {value: 5, name: 'Encargado de estación'},
     {value: 6, name: 'Gerente de estación'},
     {value: 7, name: 'Asistente de estación'}];
@@ -61,6 +60,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.initUserInfo();
+
     this._apiLoaderService.getProgress().subscribe(load => {this.load = load; });
   }
 
@@ -71,12 +71,28 @@ export class ProfileComponent implements OnInit, OnDestroy {
   public onLoadImage(event): void{
     this.newImage = true;
     this.profileImage = event.url;
+    this._formData.append('path', this.consultancy.rfc);
+    this._formData.append('fileName', 'profile-'+this.user.id+'-'+new Date().toISOString()+'.png');
+    this._formData.append('isImage', 'true');
     this._formData.append('file', event.blob);
   }
 
-  public showPassword(): void {
-    this.hide = !this.hide;
-    this._see_pass.nativeElement.type = (this.hide) ? 'text' : 'password';
+  public changePassword(){
+    this._dialogService.alertWithDoubleInput('Actualice su contraseña',
+      '',
+      'Nueva contraseña',
+      'Confirmar nueva contraseña',
+      'ACEPTAR',
+      '',
+      '').afterClosed().subscribe(response =>{
+        switch (response.code) {
+          case 1:
+            this.profileForm.patchValue({
+              password: response.data.password
+            });
+            break;
+        }
+    })
   }
 
   public detectChange(): void{
@@ -117,8 +133,8 @@ export class ProfileComponent implements OnInit, OnDestroy {
     this._uploadImage.uploadImage(this._formData).subscribe(response => {
       if (response){
         this.newImageProfile = {
-          thumbnail: response.thumbnail,
-          blob: response.blobKey
+          thumbnail: response.item.thumbnail,
+          blob: response.item.blobName
         };
         this.saveInfoUserAndConsultancy(this.profileForm.value);
       }
@@ -135,7 +151,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
       ).afterClosed().subscribe(response=>{
         switch (response.code) {
           case 1:
-            this.updateProfile(this.profileForm.value);
+            this.updateProfile(this.profileForm.value, null);
             break;
         }
       })
@@ -220,7 +236,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
     this.getUserInfo();
   }
 
-  private updateProfile(data: any): void {
+  private updateProfile(data: any, event: any): void {
     if (this.profileForm.invalid) {
       return;
     }

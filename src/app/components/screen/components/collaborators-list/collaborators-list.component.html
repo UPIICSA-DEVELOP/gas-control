@@ -5,7 +5,12 @@
   -->
 
 <div id="collaborators-list">
-  <div style="margin-top: 48px;height: calc(100% - 48px);overflow: hidden;">
+  <div class="tap">
+    <button mat-icon-button (click)="onCloseCollaborators()">
+      <mat-icon>keyboard_arrow_right</mat-icon>
+    </button>
+  </div>
+  <div class="content">
     <div class="head">
       <span>Colaboradores</span>
       <button mat-icon-button (click)="onCloseCollaborators();">
