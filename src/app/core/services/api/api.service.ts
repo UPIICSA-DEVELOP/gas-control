@@ -79,8 +79,8 @@ export class ApiService {
     return this._http.put(ApiService.API_URL_COMPLETE + 'updateConsultancy',consultancy);
   }
 
-  public uploadFileToBlob(body: any): Observable<any> {
-    return this._http.post('https://schedule-maplander.appspot.com/upload', body);
+  public uploadFileToBlob(part: FormData): Observable<any> {
+    return this._http.post('https://schedule-maplander.appspot.com/upload', part);
   }
 
   private initNetwork(): void {
