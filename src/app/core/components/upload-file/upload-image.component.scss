@@ -9,10 +9,10 @@
   position: relative;
   display: flex;
   justify-content: center;
-  #inputHiddenForFileInComponent{
+  .inputHiddenForFileInComponent{
     display: none;
   }
-  #buttonHiddenForUploadFileComponent{
+  #mask{
     position: absolute;
     width: 100%;
     height: 100%;
@@ -22,6 +22,7 @@
     margin: 0;
     padding: 0;
     cursor: pointer;
+    border-radius: 50%;
     background-color: transparent;
   }
   input:focus{

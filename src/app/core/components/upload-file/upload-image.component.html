@@ -7,7 +7,14 @@
 
 <div id="upload-file-component">
   <ng-container [ngTemplateOutlet]="layoutTemplate">
-    <input type="file" accept="image/*" (change)="onChangeFile($event)" id="inputHiddenForFileInComponent"/>
-    <input type="button" title="Seleccionar archivo" id="buttonHiddenForUploadFileComponent" onclick="document.getElementById('inputHiddenForFileInComponent').click()"/>
+    <input class="inputHiddenForFileInComponent" type="file" accept="image/*" (change)="onChangeFile($event)" [id]="id"/>
+    <div *ngIf="show">
+      <div id="mask" [matMenuTriggerFor]="menu"></div>
+      <mat-menu class="upload-image-menu-panel" #menu="matMenu">
+        <button mat-menu-item (click)="onUpdate()">Actualizar</button>
+        <button mat-menu-item (click)="onRemove()">Eliminar</button>
+      </mat-menu>
+    </div>
+    <!--<input type="button" title="Seleccionar archivo" id="buttonHiddenForUploadFileComponent" onclick="document.getElementById('inputHiddenForFileInComponent').click()"/>-->
   </ng-container>
 </div>
