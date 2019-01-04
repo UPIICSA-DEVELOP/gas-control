@@ -34,6 +34,7 @@
         height: 40px;
         margin: 4px;
         cursor: pointer;
+        outline: none;
       }
     }
 
@@ -42,13 +43,53 @@
       right: 0;
       color: #FFFFFF;
       display: flex;
-      .btn-home{
+      #btn-home{
         font-family: Roboto, 'Helvetice New', 'Arial', sans-serif;
         font-weight: 500;
+        div{
+          display: block;
+          @media screen and (max-width: 900px){
+            display: none;
+          }
+        }
+        mat-icon{
+          display: none;
+          @media screen and (max-width: 900px){
+            display: block;
+          }
+        }
       }
-      .btn-notifications{
+      #btn-notifications{
         font-family: Roboto, 'Helvetice New', 'Arial', sans-serif;
         font-weight: 500;
+        div{
+          display: block;
+          @media screen and (max-width: 1024px){
+            display: none;
+          }
+        }
+        mat-icon{
+          display: none;
+          @media screen and (max-width: 1024px){
+            display: block;
+          }
+        }
+      }
+      #btn-collaborators{
+        font-family: Roboto, 'Helvetice New', 'Arial', sans-serif;
+        font-weight: 500;
+        div{
+          display: block;
+          @media screen and (max-width: 1024px){
+            display: none;
+          }
+        }
+        mat-icon{
+          display: none;
+          @media screen and (max-width: 1024px){
+            display: block;
+          }
+        }
       }
       .user{
         .button-user{
@@ -70,11 +111,11 @@
         }
       }
       @media screen and (max-width: 900px){
-        .btn-home{
-          display: none;
+        button{
+          width: 32px;
         }
-        .btn-notifications{
-          display: none;
+        #btn-home{
+          display: none !important;
         }
       }
 

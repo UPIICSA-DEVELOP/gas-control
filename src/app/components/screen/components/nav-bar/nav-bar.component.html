@@ -17,8 +17,15 @@
         <img alt="app-logo" src="../assets/Images/logo.png" routerLink="/home">
       </div>
       <div class="navigation-buttons">
-        <button class="btn-home" mat-button routerLink="/home">Home</button>
-        <button class="btn-notifications" routerLink="/home/notifications" mat-button>Notificaciones</button>
+        <button id="btn-home" mat-button routerLink="/home">Home</button>
+        <button id="btn-collaborators" mat-button routerLink="/home/collaborators">
+          <div>Colaboradores</div>
+          <mat-icon>notifications</mat-icon>
+        </button>
+        <button id="btn-notifications" routerLink="/home/notifications" mat-button>
+          <div>Notificaciones</div>
+          <mat-icon>group</mat-icon>
+        </button>
         <button mat-button>
           <mat-icon>search</mat-icon>
         </button>

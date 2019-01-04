@@ -6,6 +6,7 @@
 @import "../../../../../styles/colors";
 #station-list {
   margin: 0 2.5%;
+  height: 75%;
   .header {
     margin-top: 12px;
     padding-bottom: 8px;
@@ -29,10 +30,10 @@
   }
   .container {
     overflow: auto;
-    height: 150px;
+    height: 100%;
     box-shadow: 0 3px 1px 1px rgba(0, 0, 0, 0.1), 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, .10);
-    @media screen and (min-height: 768px) and (min-width: 1024px){
-      height: 300px;
+    @media screen and (max-width: 800px){
+      height: 150px;
     }
     .notify {
       margin-bottom: 8px;
