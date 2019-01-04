@@ -4,7 +4,7 @@
  * Proprietary and confidential
  */
 
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {ApiService} from '@app/core/services/api/api.service';
 import {CookieService} from '@app/core/services/cookie/cookie.service';
 import {Constants} from '@app/core/constants.core';
@@ -23,8 +23,9 @@ import {UpdatePasswordService} from '@app/core/components/update-password/update
   templateUrl: './profile.component.html',
   styleUrls: ['./profile.component.scss']
 })
-export class ProfileComponent implements OnInit, OnDestroy {
+export class ProfileComponent implements OnInit {
   private _formData: FormData;
+  private _formDeleteData: FormData;
   public user: any;
   public consultancy: any;
   public latLong: any;
@@ -40,6 +41,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
   public userRole: string;
   public profileForm: FormGroup;
   public newImage: boolean = false;
+  public deleteImage: boolean = false;
   public protocol: string = 'http://';
   public profileImage: any;
   public newImageProfile: any;
@@ -65,23 +67,36 @@ export class ProfileComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.initUserInfo();
     this._apiLoaderService.getProgress().subscribe(load => {this.load = load; });
+    this.detectChange();
   }
 
-  ngOnDestroy(): void {
-    this.saveChangeBeforeExit();
-  }
   public closeProfile(){
-    this._router.navigate(['/home']);
+    if (this.change){
+      this.saveChangeBeforeExit()
+    } else{
+      this._router.navigate(['/home']);
+    }
   }
 
   public onLoadImage(event): void{
     this.newImage = true;
+    this.change = true;
     this.profileImage = event.url;
     this._formData = new FormData();
     this._formData.append('path', this.consultancy.rfc);
     this._formData.append('fileName', 'profile-'+this.user.id+'-'+new Date().getTime()+'.png');
     this._formData.append('isImage', 'true');
     this._formData.append('file', event.blob);
+  }
+
+  public onRemoveImage(): void {
+    this.change = true;
+    this.deleteImage = true;
+    this.profileImage='';
+    this._formData = new FormData();
+    this._formData.append('file',this.blobName);
+    this._formDeleteData = new FormData();
+    this._formDeleteData.append('blobName', this.blobName);
   }
 
   public changePassword(){
@@ -111,7 +126,9 @@ export class ProfileComponent implements OnInit, OnDestroy {
   }
 
   public detectChange(): void{
-    this.change = true;
+    this.profileForm.valueChanges.subscribe( value => {
+      this.change = true;
+    })
   }
 
   public openListCountry(): void {
@@ -148,16 +165,20 @@ export class ProfileComponent implements OnInit, OnDestroy {
     this._uploadImage.uploadImage(this._formData).subscribe(response => {
       if (response){
         this.newImageProfile = {
-          thumbnail: response.item.thumbnail,
-          blob: response.item.blobName
+          thumbnail: response.item.thumbnail || '',
+          blob: (response.item.thumbnail) ? response.item.blobName : ''
         };
+        /*if(this.deleteImage){
+          this._api.deleteFileToBlob(this._formDeleteData).subscribe(response =>{
+            console.log(response);
+          })
+        }*/
         this.saveInfoUserAndConsultancy(this.profileForm.value);
       }
     });
   }
 
-  private saveChangeBeforeExit(): void{
-    if (this.change){
+  public saveChangeBeforeExit(): void{
       this._dialogService.confirmDialog(
         '¿Desea salir sin guardar cambios?',
         '',
@@ -166,11 +187,11 @@ export class ProfileComponent implements OnInit, OnDestroy {
       ).afterClosed().subscribe(response=>{
         switch (response.code) {
           case 1:
-            this.updateProfile(this.profileForm.value, null);
+            this.change = false;
+            this._router.navigate(['/home']);
             break;
         }
       })
-    }
   }
 
   private getUserInfo(): void {
@@ -180,6 +201,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
           this.user = response.item;
           if (this.user.profileImage){
             this.profileImage = this.user.profileImage.thumbnail;
+            this.blobName = this.user.profileImage.blobName;
           }
           if (this.user.countryCode){
             if (!this.user.countryCode.includes('+')) {

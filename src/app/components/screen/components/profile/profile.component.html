@@ -5,13 +5,13 @@
   -->
 <div id="profile">
   <mat-progress-bar [mode]="'indeterminate'" *ngIf="load" class="progress"></mat-progress-bar>
-  <form *ngIf="user else loading" [formGroup]="profileForm" (submit)="updateProfile(profileForm.value, $event)" aria-label="Form of profile in inSpector" class="container" (change)="detectChange()">
+  <form *ngIf="user else loading" [formGroup]="profileForm" (submit)="updateProfile(profileForm.value, $event)" aria-label="Form of profile in inSpector" class="container">
     <div class="information">
       <mat-card class="content">
         <div>
           <span class="title">Mi información</span>
           <div class="image">
-            <app-upload-image [layoutTemplate]="icon" (onLoadImage)="onLoadImage($event)">
+            <app-upload-image [layoutTemplate]="icon" (onLoadImage)="onLoadImage($event)" (onRemoveImage)="onRemoveImage()">
               <ng-template #icon>
                 <img *ngIf="profileImage" [src]="profileImage" class="profileImage" alt="User profile image">
                 <mat-icon *ngIf="!profileImage" class="defaultProfileImage">account_circle</mat-icon>
