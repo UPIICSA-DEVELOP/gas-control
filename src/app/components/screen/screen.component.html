@@ -4,10 +4,10 @@
   ~  Proprietary and confidential
   -->
 <mat-sidenav-container style="height: 100%;">
+  <router-outlet></router-outlet>
   <!-- Nav Bar [STAR]-->
   <app-nav-bar></app-nav-bar>
   <!-- Nav Bar [END]-->
-  <router-outlet></router-outlet>
   <!-- Home View [STAR]-->
   <div id="Home" >
     <div class="background"></div>
@@ -19,9 +19,6 @@
       </div>
       <div id="stations">
         <app-station-list></app-station-list>
-      </div>
-      <div id="filters">
-        <app-task-filter></app-task-filter>
       </div>
     </div>
     <!-- Column One [END]-->
@@ -40,7 +37,7 @@
 
         <!-- Collaborators List [START]-->
         <div id="Collaborators-list">
-          <app-collaborators></app-collaborators>
+          <app-task-filter></app-task-filter>
         </div>
         <!-- Collaborators List [END]-->
 

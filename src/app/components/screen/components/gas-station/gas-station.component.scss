@@ -32,10 +32,9 @@
       width: 30%;
       justify-content: center;
       display: flex;
-      align-items: center;
       .image-station{
-        width: 80px;
-        height: 80px;
+        width: 72px;
+        height: 72px;
         border-radius: 50%;
         display: flex;
         justify-content: center;
@@ -44,7 +43,7 @@
       }
       mat-icon{
         color: mat-color($primary);
-        font-size: 70px;
+        font-size: 60px;
       }
     }
     .content{
@@ -59,7 +58,7 @@
         text-overflow: ellipsis;
       }
       .station-number{
-        margin-top: 5px;
+        margin: 5px 0;
         color: #707070;
         font-family: Roboto, 'Helvetice New', 'Arial', sans-serif;
         font-weight: 400;
@@ -69,7 +68,7 @@
         text-overflow: ellipsis;
       }
       .station-email{
-        margin-top: 5px;
+        margin-top: 8px;
         color: #707070;
         font-family: Roboto, 'Helvetice New', 'Arial', sans-serif;
         font-weight: 400;
@@ -78,13 +77,15 @@
         overflow: hidden;
         text-overflow: ellipsis;
       }
-      .button-show{
-        background-color: mat-color($primary);
-        color: #FFFFFF;
-        width: 60px;
+      .button{
         height: 34px;
-        float: right;
-        margin: 8px 0;
+        margin: 8px;
+        font-family: Roboto, 'Helvetice New', 'Arial', sans-serif;
+        font-weight: 400;
+        font-size: 12px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
       }
     }
   }
