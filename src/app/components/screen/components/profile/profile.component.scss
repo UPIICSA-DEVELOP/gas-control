@@ -4,134 +4,143 @@
  * Proprietary and confidential
  */
 @import "../../../../../styles/colors";
-#profile{
-  .progress{
+
+#profile {
+  .progress {
     position: absolute;
-    top: 48px;
+    top: 0;
     z-index: 1;
   }
+
   width: 100%;
-  height: calc(100% - -48px);
+  height: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
   background-color: #FFFFFF;
-  @media screen and (max-width: 800px){
+  @media screen and (max-width: 800px) {
     overflow: auto;
   }
-  .container{
+
+  .container {
     width: 90%;
-    height: 80%;
+    height: 90%;
     display: flex;
     z-index: 1;
     @media screen and (max-width: 800px) {
       width: 100%;
       flex-direction: column;
     }
-    .information{
+
+    .information {
       width: calc(100% / 3);
       margin: 24px;
-      .head{
-        display: flex;
-        justify-content: space-between;
-        .image{
-          margin-right: -48px;
-          margin-top: -22px;
-          @media screen and (max-width: 800px){
-            margin-right: 0;
-            margin-top: 0;
-          }
-        }
-        .profileImage{
-          height: 70px;
-          width: 70px;
-          border-radius: 50%;
-          background-color: #FFFFFF;
-        }
-        .defaultProfileImage{
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          width: 70px;
-          height: 70px;
-          border-radius: 50%;
-          background-color: #FFFFFF;
-        }
-        mat-icon{
-          font-size: 70px;
-          color: #707070;
-        }
+
+      .profileImage {
+        height: 70px;
+        width: 70px;
+        border-radius: 50%;
+        background-color: #FFFFFF;
       }
-      @media screen and (max-width: 800px){
+
+      .defaultProfileImage {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 70px;
+        height: 70px;
+        border-radius: 50%;
+        background-color: #FFFFFF;
+      }
+
+      mat-icon {
+        font-size: 70px;
+        color: #707070;
+      }
+
+      @media screen and (max-width: 800px) {
         width: 100%;
         height: auto;
         margin: 24px 0;
       }
     }
-    .consultanty{
+
+    .consultanty {
       width: calc(100% / 3);
       display: flex;
       align-items: center;
       margin: 24px;
-      @media screen and (max-width: 800px){
+      @media screen and (max-width: 800px) {
         width: 100%;
         height: auto;
         margin: 24px 0;
         display: block;
       }
     }
-    .business-card{
+
+    .business-card {
       width: calc(100% / 3);
       margin: 24px;
       display: flex;
       align-items: center;
-      .card{
+
+      .card {
         margin: 24px;
-        img{
+
+        img {
           width: 100%;
           box-shadow: 0px 2px 1px -1px rgba(0, 0, 0, 0.2), 0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12);
           border-radius: 2px;
         }
       }
-      @media screen and (max-width: 800px){
+
+      @media screen and (max-width: 800px) {
         width: 100%;
         height: auto;
         margin: 24px 0;
         display: block;
       }
     }
-    .margin{
+
+    .margin {
       display: none;
       height: 48px;
-      @media screen and (max-width: 800px){
+      @media screen and (max-width: 800px) {
         display: block;
       }
     }
-    .title{
+
+    .title {
       font-family: Roboto, 'Helvetice New', 'Arial', sans-serif;
       font-weight: 500;
       font-size: 24px;
       color: #000000;
     }
-    .content{
+
+    .content {
       height: 100%;
     }
-    .user-form{
-      height: 90%;
+
+    .user-form {
+      height: 70%;
       overflow-x: hidden;
       overflow-y: auto;
       width: 100%;
     }
-    .inputs{
+
+    .inputs {
       width: 100%;
     }
-    .right-inputs{
+
+    .right-inputs {
       width: 72px;
       margin-right: 24px;
     }
-    .country-code{
+
+    .country-code {
       position: relative;
-      .mask{
+
+      .mask {
         position: absolute;
         top: 0;
         left: 0;
@@ -141,9 +150,11 @@
         cursor: pointer;
       }
     }
-    .address{
+
+    .address {
       position: relative;
-      .mask{
+
+      .mask {
         position: absolute;
         top: 0;
         left: 0;
@@ -153,40 +164,70 @@
         cursor: pointer;
       }
     }
-    .form-button{
+
+    .form-button {
       display: flex;
       justify-content: center;
       margin: 24px 0;
     }
-    .formText{
+
+    .formText {
       font-family: Roboto, 'Helvetice New', 'Arial', sans-serif;
       font-weight: 500;
       font-size: 14px;
       color: #707070;
       margin: 24px;
     }
-    .formHead{
+
+    .formHead {
       font-family: Roboto, 'Helvetice New', 'Arial', sans-serif;
       font-weight: 500;
       font-size: 14px;
       color: #707070;
       margin-bottom: 12px;
     }
-    .signatureContainer{
-      display:flex;
+    .signature-input{
+      margin-bottom: 16px;
+    }
+
+    .signatureContainer {
+      display: flex;
       justify-content: center;
       background-color: black;
-      .signature{
+
+      .signature {
         margin: 1px;
         background-color: white;
         width: 100%;
         display: flex;
         justify-content: center;
         align-items: center;
-        .imageSignature{
+
+        .imageSignature {
           width: 100%;
         }
       }
     }
+  }
+
+  .btn-close {
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin: 24px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 5;
+    button{
+      background-color: #707070;
+    }
+    mat-icon{
+      color: #FFFFFF;
+    }
+  }
+  .image{
+    margin: 12px;
+
   }
 }

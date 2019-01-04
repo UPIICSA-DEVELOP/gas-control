@@ -8,7 +8,7 @@
   <form *ngIf="user else loading" [formGroup]="profileForm" (submit)="updateProfile(profileForm.value, $event)" aria-label="Form of profile in inSpector" class="container" (change)="detectChange()">
     <div class="information">
       <mat-card class="content">
-        <div class="head">
+        <div>
           <span class="title">Mi información</span>
           <div class="image">
             <app-upload-image [layoutTemplate]="icon" (onLoadImage)="onLoadImage($event)">
@@ -34,7 +34,7 @@
               </mat-error>
             </mat-form-field>
             <mat-form-field class="inputs">
-              <input formControlName="email" matInput placeholder="Email comercial" required type="email"  aria-label="User email">
+              <input formControlName="email" matInput placeholder="Email comercial" type="email" aria-label="User email">
               <mat-error *ngIf="profileForm.controls['email'].hasError('required')">
                 Este campo es obligatorio
               </mat-error>
@@ -67,9 +67,7 @@
               </mat-form-field>
             </div>
             <mat-form-field class="inputs">
-              <mat-select disabled placeholder="Rol" required aria-label="User role" [(value)]="userRole" >
-                <mat-option *ngFor="let rol of role " [value]="rol.value">{{rol.name}}</mat-option>
-              </mat-select>
+              <input disabled placeholder="Rol" required aria-label="User role" [value]="userRole" matInput>
             </mat-form-field>
             <mat-form-field class="inputs">
               <input [attr.disabled]="load?true:null" formControlName="jobTitle" matInput placeholder="Cargo" required type="text" aria-label="User job-title">
@@ -85,19 +83,19 @@
             </div>
             <div style="display: flex">
               <mat-form-field class="right-inputs">
-                <mat-select [disabled]="load" placeholder="Website" aria-label="User website protocol" [(value)]="protocol">
+                <mat-select [disabled]="load" placeholder="Protocolo" aria-label="User website protocol" [(value)]="protocol">
                   <mat-option value="http://">http://</mat-option>
                   <mat-option value="https://">https://</mat-option>
                 </mat-select>
               </mat-form-field>
               <mat-form-field class="inputs">
-                <input [attr.disabled]="load?true:null" formControlName="website" matInput type="url" aria-label="User website">
+                <input [attr.disabled]="load?true:null" placeholder="Website" formControlName="website" matInput type="url" aria-label="User website">
                 <mat-error *ngIf="profileForm.controls['website'].hasError('pattern')">
                   Ingrese un sitio web válido
                 </mat-error>
               </mat-form-field>
             </div>
-            <div>
+            <div class="signature-input">
               <div class="formHead">Firma digital</div>
               <div class="signatureContainer">
                 <div class="signature">
@@ -165,4 +163,9 @@
   <ng-template #loading>
     <mat-spinner></mat-spinner>
   </ng-template>
+  <div class="btn-close" *ngIf="user">
+    <button mat-icon-button matTooltip="Cerrar" aria-label="Close-button" (click)="closeProfile()">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
 </div>

@@ -15,6 +15,8 @@ import {SnackBarService} from '@app/core/services/snackbar/snackbar.service';
 import {CountryCodeService} from '@app/core/components/country-code/country-code.service';
 import {LocationService} from '@app/core/components/location/location.service';
 import {UploadImageService} from '@app/core/components/upload-file/upload-image.service';
+import {Router} from '@angular/router';
+import {UpdatePasswordService} from '@app/core/components/update-password/update-password.service';
 
 @Component({
   selector: 'app-profile',
@@ -27,23 +29,23 @@ export class ProfileComponent implements OnInit, OnDestroy {
   public consultancy: any;
   public latLong: any;
   public load: boolean;
-  public role: any[] = [
-    {value: 1, name: 'Director'},
-    {value: 2, name: 'Gerente'},
-    {value: 3, name: 'Asistente'},
-    {value: 4, name: 'Representante legal'},
-    {value: 5, name: 'Encargado de estación'},
-    {value: 6, name: 'Gerente de estación'},
-    {value: 7, name: 'Asistente de estación'}];
-  public userRole: number;
+  public role: string[] = [
+    'Director',
+    'Gerente',
+    'Asistente',
+    'Representante legal',
+    'Encargado de estación',
+    'Gerente de estación',
+    'Asistente de estación'];
+  public userRole: string;
   public profileForm: FormGroup;
-  public hide: boolean = false;
   public newImage: boolean = false;
   public protocol: string = 'http://';
   public profileImage: any;
   public newImageProfile: any;
   public country: any;
   public change: boolean = false;
+  public blobName: any;
 
   constructor(
     private _api: ApiService,
@@ -53,45 +55,58 @@ export class ProfileComponent implements OnInit, OnDestroy {
     private _countryCode: CountryCodeService,
     private _locationService: LocationService,
     private _dialogService: DialogService,
-    private _uploadImage: UploadImageService
+    private _uploadImage: UploadImageService,
+    private _router:Router,
+    private _updatePasswordService: UpdatePasswordService
   ) {
-    this._formData = new FormData();
+
   }
 
   ngOnInit() {
     this.initUserInfo();
-
     this._apiLoaderService.getProgress().subscribe(load => {this.load = load; });
   }
 
   ngOnDestroy(): void {
     this.saveChangeBeforeExit();
   }
+  public closeProfile(){
+    this._router.navigate(['/home']);
+  }
 
   public onLoadImage(event): void{
     this.newImage = true;
     this.profileImage = event.url;
+    this._formData = new FormData();
     this._formData.append('path', this.consultancy.rfc);
-    this._formData.append('fileName', 'profile-'+this.user.id+'-'+new Date().toISOString()+'.png');
+    this._formData.append('fileName', 'profile-'+this.user.id+'-'+new Date().getTime()+'.png');
     this._formData.append('isImage', 'true');
     this._formData.append('file', event.blob);
   }
 
   public changePassword(){
-    this._dialogService.alertWithDoubleInput('Actualice su contraseña',
+    this._updatePasswordService.updatePassword(
+      this.user.password,
+      'Actualice su contraseña',
       '',
+      'Contraseña actual',
       'Nueva contraseña',
       'Confirmar nueva contraseña',
       'ACEPTAR',
-      '',
-      '').afterClosed().subscribe(response =>{
-        switch (response.code) {
-          case 1:
-            this.profileForm.patchValue({
-              password: response.data.password
-            });
-            break;
-        }
+      'CANCELAR'
+    ).afterClosed().subscribe(response =>{
+      switch (response.code) {
+        case 1:
+          this.profileForm.patchValue({
+            password: response.data.newPassword
+          });
+          break;
+        default:
+          this.profileForm.patchValue({
+            password: this.user.password
+          });
+          break;
+      }
     })
   }
 
@@ -185,7 +200,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
               this.protocol = 'https://';
             }
           }
-          this.userRole = this.user.role;
+          this.userRole = this.role[this.user.role-1];
           this._api.getConsultancy(this.user.refId).subscribe(response => {
             switch (response.code) {
               case 200:
@@ -277,6 +292,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
               case 200:
                 this.change = false;
                 this._snackBarService.openSnackBar('Información actualizada','OK',3000);
+                this._router.navigate(['/home']);
                 break;
               default:
                 this._dialogService.alertDialog('No se pudo acceder', 'Se produjo un error de comunicación con el servidor', 'ACEPTAR');

@@ -29,6 +29,8 @@ import {SearchBoxCoreComponent} from '@app/core/components/search-box/search-box
 import {AgmCoreModule} from '@agm/core';
 import {Constants} from '@app/core/constants.core';
 import {LocationService} from '@app/core/components/location/location.service';
+import {UpdatePasswordComponent} from '@app/core/components/update-password/update-password.component';
+import {UpdatePasswordService} from '@app/core/components/update-password/update-password.service';
 
 @NgModule({
   imports: [
@@ -63,6 +65,7 @@ import {LocationService} from '@app/core/components/location/location.service';
   ],
   declarations: [
     DialogComponent,
+    UpdatePasswordComponent,
     ShareComponent,
     UploadImageComponent,
     CropImageComponent,
@@ -72,6 +75,7 @@ import {LocationService} from '@app/core/components/location/location.service';
   ],
   entryComponents: [
     DialogComponent,
+    UpdatePasswordComponent,
     ShareComponent,
     CropImageComponent,
     CountryCodeComponent,
@@ -80,6 +84,7 @@ import {LocationService} from '@app/core/components/location/location.service';
   providers: [
     AuthService,
     DialogService,
+    UpdatePasswordService,
     ShareService,
     UtilitiesService,
     UploadImageService,
