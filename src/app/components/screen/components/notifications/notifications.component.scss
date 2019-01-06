@@ -13,8 +13,14 @@
   z-index: 3;
   overflow: hidden;
   display: flex;
+  @media screen and (max-width: 1024px){
+    width: 35vw;
+  }
+  @media screen and (max-width: 900px){
+    width: 50vw;
+  }
   @media screen and(max-width: 600px){
-    width: 100%;
+    width: 100vw;
   }
   .tap{
     margin-top: 72px;
@@ -25,7 +31,7 @@
     height: 40px;
     width: 40px;
     border-radius: 4px 0 0 4px;
-    box-shadow: 0px 2px 1px -1px rgba(0, 0, 0, 0.2), 0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12);
+    box-shadow: 0 2px 1px -1px rgba(0, 0, 0, 0.2), 0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12);
     @media screen and (max-width: 600px){
       display: none;
     }
@@ -36,7 +42,7 @@
     overflow: hidden;
     width: 100%;
     background: #FFFFFF;
-    box-shadow: 0px 2px 1px -1px rgba(0, 0, 0, 0.2), 0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12);
+    box-shadow: 0 2px 1px -1px rgba(0, 0, 0, 0.2), 0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12);
   }
 .head{
   display: flex;
@@ -45,7 +51,7 @@
   padding: 16px;
   span{
     font-family: Roboto, 'Helvetice New', 'Arial', sans-serif;
-    font-weight: 500;
+    font-weight: 700;
     font-size: 16px;
     color: #707070;
   }
