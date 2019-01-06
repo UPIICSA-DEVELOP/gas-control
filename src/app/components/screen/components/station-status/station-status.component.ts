@@ -16,6 +16,7 @@ import { Chart } from 'chart.js';
 })
 export class StationStatusComponent implements OnInit, AfterViewInit{
   @ViewChild('canvas') private _canvas: ElementRef;
+  @ViewChild('legend') private _legend: ElementRef;
   public showGraphic: boolean;
   public chart: any;
   public chartConfig: any ={
@@ -32,18 +33,19 @@ export class StationStatusComponent implements OnInit, AfterViewInit{
       ]
     },
     options: {
-      cutoutPercentage: 75,
+      cutoutPercentage: 80,
       responsive: true,
       aspectRatio: 1,
-      legend: {
-        display: true,
-        position: 'bottom',
-        labels: {
-          fontColor: '#707070',
-          fontFamily: 'Roboto, "Helvetice New", "Arial", sans-serif',
-          usePointStyle: true
+      legend: false,
+      legendCallback: function(chart) {
+        const text: string[] = [];
+        text.push('<ul style="font-size: 200%; line-height: 1.25; margin: 0;">');
+        for(let y=0; y < chart.data.datasets[0].data.length; y++){
+          text.push("<li style='color:"+chart.data.datasets[0].backgroundColor[y]+";'><span style='color: #707070; font-size: 50%'>" + chart.data.labels[y] +"</span></li>");
         }
-      },
+        text.push('</ul>');
+        return text.join("");
+      }
     }
   };
   constructor(
@@ -69,19 +71,20 @@ export class StationStatusComponent implements OnInit, AfterViewInit{
             ctx = chart.chart.ctx;
 
           ctx.restore();
-          let fontSize = (height / 114).toFixed(2);
+          let fontSize = (height / 80).toFixed(2);
           ctx.font = fontSize + "em sans-serif";
           ctx.textBaseline = "middle";
-          ctx.fontColor = '#0d47a1';
+          ctx.fillStyle = '#0d47a1';
 
           let text = ((90*100)/120).toFixed(0)+"%",
             textX = Math.round((width - ctx.measureText(text).width) / 2),
-            textY = height / 2.85;
+            textY = height / 2;
 
           ctx.fillText(text, textX, textY);
           ctx.save();
         }
       });
+      this._legend.nativeElement.innerHTML = this.chart.generateLegend();
     }
   }
 

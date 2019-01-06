@@ -26,6 +26,25 @@ body{
   margin: 8px 0 0 -12px !important;
 }
 
+#labels{
+  display: flex;;
+  justify-content: flex-end;
+  flex-direction: column;
+  ul{
+    list-style: none;
+  }
+  li{
+    position: relative;
+  }
+  li:before{
+    position: absolute;
+    content: '●';
+    top: 4px;
+    left: -24px;
+    font-size: 28px;
+  }
+}
+
 .location-panel{
   width: 40vw;
   mat-dialog-container{

@@ -11,7 +11,6 @@
 #station-status {
   margin: 0 2.5%;
   .header {
-    margin-top: 12px;
     padding-bottom: 8px;
     width: 100%;
     white-space: nowrap;
@@ -20,30 +19,32 @@
     .title {
       color: #707070;
       font-family: Roboto, 'Helvetice New', 'Arial', sans-serif;
-      font-weight: 500;
-      font-size: 14px;
-      padding: 0 20px;
-      @media screen and (max-width: 950px) {
-        padding: 0;
-      }
+      font-weight: 700;
+      font-size: 16px;
     }
   }
+  .card{
+    margin: 16px 0;
+  }
   .container {
-    box-shadow: 0 3px 1px 1px rgba(0, 0, 0, 0.1), 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, .10);
-    height: 210px;
     display: flex;
   }
   .column-1 {
     width: 40%;
     display: flex;
-    justify-content: center;
+    @media screen and (max-width: 600px){
+      display: block;
+    }
     .graphic {
-      height: 100% !important;
       position: relative;
       canvas {
         width: 140px !important;
         height: 140px !important;
         margin: 12px;
+        @media screen and (max-width: 600px){
+          width: 90px !important;
+          height: 90px !important;
+        }
       }
     }
   }
@@ -62,6 +63,9 @@
     font-weight: 700;
     font-size: 28px;
     text-align: right;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
     @media screen and (max-width: 1100px) {
       font-size: 20px;
       white-space: nowrap;
