@@ -4,12 +4,12 @@
   ~ Proprietary and confidential
   -->
 <div id="profile">
+  <div class="background"></div>
   <mat-progress-bar [mode]="'indeterminate'" *ngIf="load" class="progress"></mat-progress-bar>
   <form *ngIf="user else loading" [formGroup]="profileForm" (submit)="updateProfile(profileForm.value, $event)" aria-label="Form of profile in inSpector" class="container">
     <div class="information">
       <mat-card class="content">
-        <div>
-          <span class="title">Mi información</span>
+        <div class="head">
           <div class="image">
             <app-upload-image [layoutTemplate]="icon" (onLoadImage)="onLoadImage($event)" (onRemoveImage)="onRemoveImage()">
               <ng-template #icon>
@@ -18,6 +18,7 @@
               </ng-template>
             </app-upload-image>
           </div>
+          <span class="title">Mi información</span>
         </div>
         <mat-card-content class="user-form">
           <div>

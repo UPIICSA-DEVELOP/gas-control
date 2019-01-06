@@ -3,18 +3,14 @@
  * Unauthorized copying of this file, via any medium is strictly prohibited
  * Proprietary and confidential
  */
-@import "../../../../../styles/colors";
+@import "../../../../../../styles/colors";
 
 #profile {
-  .progress {
-    position: absolute;
-    top: 0;
-    z-index: 1;
-  }
-
-  width: 100%;
-  height: 100%;
+  top: 0;
+  width: 100vw;
+  height: 100vh;
   display: flex;
+  z-index: 10;
   justify-content: center;
   align-items: center;
   background-color: #FFFFFF;
@@ -22,10 +18,35 @@
     overflow: auto;
   }
 
+  .background{
+    width: 600px;
+    height: 300px;
+    position: absolute;
+    bottom: 0;
+    background-size: 100%;
+    background-position: bottom;
+    right: 0;
+    background-image: url("../../../../../../assets/Images/background.png");
+    background-repeat: no-repeat;
+    z-index: 0;
+    @media screen and (max-width: 768px), screen and (max-height: 600px) {
+      width: 300px;
+      height: 150px;
+    }
+  }
+
+
+  .progress {
+    position: absolute;
+    top: 0;
+    z-index: 1;
+  }
+
   .container {
     width: 90%;
     height: 90%;
     display: flex;
+    position: relative;
     z-index: 1;
     @media screen and (max-width: 800px) {
       width: 100%;
@@ -34,11 +55,11 @@
 
     .information {
       width: calc(100% / 3);
-      margin: 24px;
+      margin: 24px 16px;
 
       .profileImage {
-        height: 70px;
-        width: 70px;
+        height: 80px;
+        width: 80px;
         border-radius: 50%;
         background-color: #FFFFFF;
       }
@@ -47,8 +68,8 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        width: 70px;
-        height: 70px;
+        width: 80px;
+        height: 80px;
         border-radius: 50%;
         background-color: #FFFFFF;
       }
@@ -115,6 +136,7 @@
       font-weight: 500;
       font-size: 24px;
       color: #000000;
+      margin: 8px 0;
     }
 
     .content {
@@ -122,7 +144,7 @@
     }
 
     .user-form {
-      height: 75%;
+      height: 70%;
       overflow-x: hidden;
       overflow-y: auto;
       width: 100%;
@@ -227,7 +249,9 @@
     }
   }
   .image{
-    margin: 12px;
-
+    margin: 16px;
+  }
+  .head{
+    margin: 8px 0;
   }
 }

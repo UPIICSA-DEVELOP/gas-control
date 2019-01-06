@@ -17,11 +17,36 @@ import {LocationService} from '@app/core/components/location/location.service';
 import {UploadImageService} from '@app/core/components/upload-file/upload-image.service';
 import {Router} from '@angular/router';
 import {UpdatePasswordService} from '@app/core/components/update-password/update-password.service';
+import {animate, keyframes, query, stagger, style, transition, trigger} from '@angular/animations';
+import {SessionStorageService} from '@app/core/services/session-storage/session-storage.service';
 
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.component.html',
-  styleUrls: ['./profile.component.scss']
+  styleUrls: ['./profile.component.scss'],
+  animations: [
+    trigger('fadeInAnimation', [
+      transition(':enter', [
+        query('#profile', style({ opacity: 0, background: 'transparent' }), {optional: true}),
+        query('#profile', stagger('10ms', [
+          animate('.2s ease-out', keyframes([
+            style({opacity: 0, background: 'transparent', offset: 0}),
+            style({opacity: .5, background: 'rgba(255, 255, 255, .5)', offset: 0.5}),
+            style({opacity: 1, background: 'rgba(255, 255, 255, 1)',  offset: 1.0}),
+          ]))]), {optional: true})
+      ]),
+      transition(':leave', [
+        query('#profile', style({ opacity: 1, background: 'rgba(255, 255, 255, 1)' }), {optional: true}),
+        query('#profile', stagger('10ms', [
+          animate('.2s ease-in', keyframes([
+            style({opacity: 1, background: 'rgba(255, 255, 255, 1)', offset: 0}),
+            style({opacity: .5, background: 'rgba(255, 255, 255, .5)',  offset: 0.5}),
+            style({opacity: 0, background: 'transparent',     offset: 1.0}),
+          ]))]), {optional: true})
+      ])
+    ])
+  ],
+  host: {'[@fadeInAnimation]': ''}
 })
 export class ProfileComponent implements OnInit {
   private _formData: FormData;
@@ -67,7 +92,6 @@ export class ProfileComponent implements OnInit {
   ngOnInit() {
     this.initUserInfo();
     this._apiLoaderService.getProgress().subscribe(load => {this.load = load; });
-    this.detectChange();
   }
 
   public closeProfile(){
@@ -81,6 +105,7 @@ export class ProfileComponent implements OnInit {
   public onLoadImage(event): void{
     this.newImage = true;
     this.change = true;
+    this.deleteImage = false;
     this.profileImage = event.url;
     this._formData = new FormData();
     this._formData.append('path', this.consultancy.rfc);
@@ -92,6 +117,7 @@ export class ProfileComponent implements OnInit {
   public onRemoveImage(): void {
     this.change = true;
     this.deleteImage = true;
+    this.newImage = false;
     this.profileImage='';
     this._formData = new FormData();
     this._formData.append('file',this.blobName);
@@ -166,7 +192,7 @@ export class ProfileComponent implements OnInit {
       if (response){
         this.newImageProfile = {
           thumbnail: response.item.thumbnail || '',
-          blob: (response.item.thumbnail) ? response.item.blobName : ''
+          blob: response.item.blobName || ''
         };
         /*if(this.deleteImage){
           this._api.deleteFileToBlob(this._formDeleteData).subscribe(response =>{
@@ -279,7 +305,11 @@ export class ProfileComponent implements OnInit {
     }
     if(this.newImage){
       this.uploadImage();
-    }else{
+    }else if (this.deleteImage){
+      this.newImageProfile = {
+        thumbnail: '',
+        blob: ''
+      };
       this.saveInfoUserAndConsultancy(data);
     }
 
@@ -300,11 +330,15 @@ export class ProfileComponent implements OnInit {
     this.consultancy.officePhone = (data.officePhone? data.officePhone: '');
     this.consultancy.location.latitude = this.latLong.latitude;
     this.consultancy.location.longitude = this.latLong.longitude;
-    if (this.newImage){
+    if (this.newImage || this.deleteImage){
       this.user.profileImage = {
         blobName: this.newImageProfile.blob,
         thumbnail: this.newImageProfile.thumbnail
-      }
+      };
+      SessionStorageService.setItem(Constants.UserInSession, {
+        profileImage: this.user.profileImage.thumbnail,
+        role : this.user.role
+      })
     }
     this._api.updatePerson(this.user).subscribe(response=>{
       switch (response.code) {
