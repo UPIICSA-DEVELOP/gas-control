@@ -59,7 +59,7 @@ export class ResetPassComponent implements OnInit, AfterViewInit {
                         this._auth.logIn(response.item, false, null);
                         LocalStorageService.removeItem(Constants.UpdatePassword);
                         this._snackBarService.closeSnackBar();
-                        this._snackBarService.openSnackBar('Contraseña actualizda', 'OK', 3000);
+                        this._snackBarService.openSnackBar('Contraseña actualizada', 'OK', 3000);
                         break;
                       default:
                         this._snackBarService.openSnackBar('No se a podido actualizar la contraseña', 'OK', 3000);
