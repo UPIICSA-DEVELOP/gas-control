@@ -5,29 +5,29 @@
   -->
 
 <div id="gas-station-card">
-  <div class="header">
-    <span class="title">ESTACIÓN DE SERVICIO</span>
-  </div>
+
   <div>
     <mat-card class="container">
-      <div class="image">
-        <mat-icon class="image-station" alt="collaborator image">local_gas_station</mat-icon>
-      </div>
-      <div class="content">
-        <div class="contact">
-          <span>Contacto</span>
+      <mat-card-content style="display: flex">
+        <div class="image">
+          <mat-icon class="image-station">local_gas_station</mat-icon>
         </div>
-        <div class="station-email">
-        <span>isabella.bixbee@gmail.com</span>
+        <div class="content">
+          <div class="contact">
+            <span>Contacto</span>
+          </div>
+          <div class="station-email">
+            <span>isabella.bixbee@gmail.com</span>
+          </div>
+          <div class="station-number">
+            <span>55639028439</span>
+          </div>
+          <div style="display: flex; justify-content: flex-end">
+            <button class="button" [color]="'primary'" mat-flat-button>DIRECTORIO</button>
+            <button class="button" [color]="'primary'" mat-flat-button> VER </button>
+          </div>
         </div>
-        <div class="station-number">
-          <span>55639028439</span>
-        </div>
-        <div style="display: flex; justify-content: flex-end">
-          <button class="button" [color]="'primary'" mat-flat-button>DIRECTORIO</button>
-          <button class="button" [color]="'primary'" mat-flat-button> VER </button>
-        </div>
-      </div>
+      </mat-card-content>
     </mat-card>
   </div>
 </div>
