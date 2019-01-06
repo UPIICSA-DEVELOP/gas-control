@@ -24,7 +24,7 @@ export class SplashComponent implements OnInit {
 
   private increaseNumber(): void{
     this._seconds += 1;
-    if(this._seconds===2){
+    if(this._seconds===3){
       this.visible = false;
     }
   }
