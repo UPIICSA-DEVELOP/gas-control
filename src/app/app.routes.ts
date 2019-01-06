@@ -12,9 +12,11 @@ import {LoginComponent} from '@app/components/login/login.component';
 import {AuthService} from '@app/core/services/auth/auth.service';
 import {ResetPassService} from '@app/core/services/reset-pass/reset-pass.service';
 import {ResetPassComponent} from '@app/components/screen/child/reset-pass/reset-pass.component';
-import {ProfileComponent} from '@app/components/screen/components/profile/profile.component';
+import {ProfileComponent} from '@app/components/screen/components/profiles/profile/profile.component';
 import {NotificationsComponent} from '@app/components/screen/components/notifications/notifications.component';
 import {CollaboratorsListComponent} from '@app/components/screen/components/collaborators-list/collaborators-list.component';
+import {UserProfileComponent} from '@app/components/screen/components/profiles/user-profile/user-profile.component';
+import {StationProfileComponent} from '@app/components/screen/components/profiles/station-profile/station-profile.component';
 const URL_BASE = environment.url;
 
 export const appRoutes: Routes = [
@@ -29,12 +31,21 @@ export const appRoutes: Routes = [
     children: [
       {
         path: 'profile',
-        component: ProfileComponent,
         resolve: {data: AuthService},
-        data: {
-          title:'Perfil',
-          url: URL_BASE + 'home/profile'
-        }
+        children:[
+          {
+            path: 'consultancy',
+            component: ProfileComponent,
+          },
+          {
+            path: 'user',
+            component: UserProfileComponent
+          },
+          {
+            path: 'gas-station',
+            component: StationProfileComponent
+          },
+        ]
       },
       {
         path: 'notifications',

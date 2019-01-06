@@ -33,10 +33,12 @@ import {AngularFireModule} from '@angular/fire';
 import {environment} from '@env/environment';
 import { SplashComponent } from './splash/splash.component';
 import { ResetPassComponent } from './components/screen/child/reset-pass/reset-pass.component';
-import { ProfileComponent } from './components/screen/components/profile/profile.component';
+import { ProfileComponent } from './components/screen/components/profiles/profile/profile.component';
 import { MenuComponent } from './components/screen/components/menu/menu.component';
 import { StationListComponent } from './components/screen/components/station-list/station-list.component';
 import { CollaboratorsListComponent } from './components/screen/components/collaborators-list/collaborators-list.component';
+import { StationProfileComponent } from './components/screen/components/profiles/station-profile/station-profile.component';
+import { UserProfileComponent } from './components/screen/components/profiles/user-profile/user-profile.component';
 
 
 @NgModule({
@@ -57,7 +59,9 @@ import { CollaboratorsListComponent } from './components/screen/components/colla
     ProfileComponent,
     MenuComponent,
     StationListComponent,
-    CollaboratorsListComponent
+    CollaboratorsListComponent,
+    StationProfileComponent,
+    UserProfileComponent
   ],
   imports: [
     CoreModule,
