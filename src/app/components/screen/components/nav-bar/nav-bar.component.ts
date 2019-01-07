@@ -33,7 +33,6 @@ export class NavBarComponent implements OnInit, DoCheck  {
   }
 
   ngOnInit() {
-    this.getUser();
   }
 
   ngDoCheck(): void {
@@ -81,10 +80,8 @@ export class NavBarComponent implements OnInit, DoCheck  {
 
   private getUser(): void {
     this.user = SessionStorageService.getItem(Constants.UserInSession);
-    if (this.user.profileImage && this.user.profileImage !=='') {
-      this.imageExist = true;
-    }else {
-      this.imageExist = false;
+    if (this.user){
+      this.imageExist = this.user.profileImage && this.user.profileImage !== '';
     }
   }
 
