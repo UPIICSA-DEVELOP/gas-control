@@ -7,11 +7,14 @@
       <mat-form-field>
         <input placeholder="Buscar" matInput type="text" label="Search country" (input)="search($event)">
       </mat-form-field>
-      <p>Seleccione un pais</p>
+      <p>Seleccione un país</p>
     </div>
     <div class="container">
       <div *ngFor="let country of counties" class="country">
-        <button mat-button (click)="selectCountry(country)">{{country.name}}</button>
+        <button mat-button (click)="selectCountry(country)">
+          <span>{{country.name}}</span>
+          <span style="float: right">{{country.code}}</span>
+        </button>
       </div>
     </div>
   </mat-dialog-content>
