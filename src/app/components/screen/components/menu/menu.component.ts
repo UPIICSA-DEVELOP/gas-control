@@ -8,6 +8,9 @@ import {Component, EventEmitter, Inject, OnInit, Output, PLATFORM_ID, ViewChild}
 import {MatSidenav} from '@angular/material';
 import {AuthService} from '@app/core/services/auth/auth.service';
 import {DialogService} from '@app/core/components/dialog/dialog.service';
+import {Router} from '@angular/router';
+import {SessionStorageService} from '@app/core/services/session-storage/session-storage.service';
+import {Constants} from '@app/core/constants.core';
 
 @Component({
   selector: 'app-menu',
@@ -19,10 +22,12 @@ export class MenuComponent implements OnInit {
   @ViewChild('sidenav') menu: MatSidenav;
   @Output() menuObject: EventEmitter<any> = new EventEmitter<any>();
   public visibleMask: boolean;
+  public user: any;
   constructor(
     @Inject(PLATFORM_ID) private _platformId,
     private _auth: AuthService,
-    private _dialogService: DialogService
+    private _dialogService: DialogService,
+    private _router: Router
   ) { }
 
   ngOnInit() {
@@ -50,6 +55,26 @@ export class MenuComponent implements OnInit {
           break;
       }
     });
+  }
+
+  public navigateProfile(): void{
+    this.user = SessionStorageService.getItem(Constants.UserInSession);
+    switch (this.user.role) {
+      case 1:
+      case 2:
+      case 3:
+        this._router.navigate(['/home/profile/consultancy']);
+        break;
+      case 4:
+      case 5:
+      case 6:
+      case 7:
+        this._router.navigate(['/home/profile/user']);
+        break;
+      default:
+        break;
+    }
+    this.onCloseMenu();
   }
 
 }

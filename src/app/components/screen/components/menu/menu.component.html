@@ -8,7 +8,7 @@
   <div class="mask" *ngIf="visibleMask" (click)="onCloseMenu()"></div>
   <mat-sidenav #sidenav (opened)="onOpenMenu($event)">
     <div class="sections">
-      <button mat-button (click)="onCloseMenu()" routerLink="/home/profile">
+      <button mat-button (click)="navigateProfile()">
         <mat-icon>account_circle</mat-icon>
         <span>Perfil</span>
       </button>
