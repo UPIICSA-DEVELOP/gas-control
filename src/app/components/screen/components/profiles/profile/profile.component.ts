@@ -73,6 +73,7 @@ export class ProfileComponent implements OnInit {
   public country: any;
   public change: boolean = false;
   public blobName: any;
+  public password: string;
 
   constructor(
     private _api: ApiService,
@@ -138,14 +139,9 @@ export class ProfileComponent implements OnInit {
     ).afterClosed().subscribe(response =>{
       switch (response.code) {
         case 1:
-          this.profileForm.patchValue({
-            password: response.data.newPassword
-          });
+            this.password = response.data.newPassword;
           break;
         default:
-          this.profileForm.patchValue({
-            password: this.user.password
-          });
           break;
       }
     })
@@ -194,11 +190,6 @@ export class ProfileComponent implements OnInit {
           thumbnail: response.item.thumbnail || '',
           blob: response.item.blobName || ''
         };
-        /*if(this.deleteImage){
-          this._api.deleteFileToBlob(this._formDeleteData).subscribe(response =>{
-            console.log(response);
-          })
-        }*/
         this.saveInfoUserAndConsultancy(this.profileForm.value);
       }
     });
@@ -269,8 +260,7 @@ export class ProfileComponent implements OnInit {
                   businessName: this.consultancy.businessName,
                   rfc: this.consultancy.rfc,
                   address: this.consultancy.address,
-                  officePhone: this.consultancy.officePhone,
-                  password: this.user.password
+                  officePhone: this.consultancy.officePhone
                 });
                 break;
             }
@@ -289,7 +279,6 @@ export class ProfileComponent implements OnInit {
       code: ['', []],
       phoneNumber: ['', [Validators.required, Validators.minLength(8), Validators.maxLength(13)]],
       jobTitle: ['', [Validators.required]],
-      password:['',[]],
       website: ['', [Validators.pattern('[a-z0-9]+([\\-\\.]{1}[a-z0-9]+)*\\.[a-z]{2,5}(:[0-9]{1,5})?(\\/.*)?$')]],
       businessName: ['', [Validators.required]],
       rfc: ['', [Validators.required]],
@@ -311,6 +300,8 @@ export class ProfileComponent implements OnInit {
         blob: ''
       };
       this.saveInfoUserAndConsultancy(data);
+    }else {
+      this.saveInfoUserAndConsultancy(data);
     }
 
   }
@@ -322,7 +313,9 @@ export class ProfileComponent implements OnInit {
     this.user.countryCode = data.code;
     this.user.phoneNumber = data.phoneNumber;
     this.user.jobTitle = data.jobTitle;
-    this.user.password = data.password;
+    if (this.password) {
+      this.user.password = this.password;
+    }
     this.user.website = (data.website? this.protocol+data.website : '');
     this.consultancy.businessName = data.businessName;
     this.consultancy.rfc = data.rfc;
