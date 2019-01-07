@@ -68,7 +68,7 @@ export class AuthService implements Resolve<any>{
       LocalStorageService.setItem(Constants.SessionToken, token);
     }
     SessionStorageService.setItem(Constants.UserInSession, {
-      profileImage: (user.profileImage.thumbnail)?user.profileImage.thumbnail:null,
+      profileImage: (user.profileImage)?user.profileImage.thumbnail:null,
       role: user.role
     });
     CookieService.setCookie({
@@ -120,7 +120,7 @@ export class AuthService implements Resolve<any>{
       switch (response.code) {
         case 200:
           SessionStorageService.setItem(Constants.UserInSession, {
-            profileImage: (response.item.profileImage.thumbnail)?response.item.profileImage.thumbnail:null,
+            profileImage: (response.item.profileImage)?response.item.profileImage.thumbnail:null,
             role: response.item.role
           });
           break;

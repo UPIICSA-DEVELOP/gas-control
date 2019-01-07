@@ -4,24 +4,25 @@
  *  Proprietary and confidential
  */
 
-import {AfterViewChecked, Component, Inject, OnInit, PLATFORM_ID} from '@angular/core';
+import {Component, DoCheck, Inject, OnInit, PLATFORM_ID} from '@angular/core';
 import {AuthService} from '@app/core/services/auth/auth.service';
 import {DialogService} from '@app/core/components/dialog/dialog.service';
 import {MatSidenav} from '@angular/material';
-import {SessionStorageService} from '@app/core/services/session-storage/session-storage.service';
 import {Constants} from '@app/core/constants.core';
+import {DOCUMENT} from '@angular/common';
 import {Router} from '@angular/router';
-import {DOCUMENT, isPlatformBrowser} from '@angular/common';
+import {SessionStorageService} from '@app/core/services/session-storage/session-storage.service';
 
 @Component({
   selector: 'app-nav-bar',
   templateUrl: './nav-bar.component.html',
   styleUrls: ['./nav-bar.component.scss']
 })
-export class NavBarComponent implements OnInit, AfterViewChecked  {
+export class NavBarComponent implements OnInit, DoCheck  {
 
   public menu: MatSidenav;
-  public profileImg: any;
+  public user: any = {};
+  public imageExist: boolean = false;
   constructor(
     @Inject(DOCUMENT) private _document: Document,
     @Inject(PLATFORM_ID) private _platformId: string,
@@ -32,32 +33,11 @@ export class NavBarComponent implements OnInit, AfterViewChecked  {
   }
 
   ngOnInit() {
-    this.profileImg = SessionStorageService.getItem(Constants.UserInSession) || null;
+    this.getUser();
   }
 
-  ngAfterViewChecked(): void {
-    if (isPlatformBrowser(this._platformId)){
-      let btnHome: HTMLElement = this._document.getElementById('btn-home');
-      let btnNotifications: HTMLElement = this._document.getElementById('btn-notifications');
-      let btnCollaborators: HTMLElement = this._document.getElementById('btn-collaborators');
-      switch (this._router.url) {
-        case '/home':
-          btnHome.style.display = 'none';
-          btnNotifications.style.display = 'block';
-          btnCollaborators.style.display = 'block';
-          break;
-        case '/home/notifications':
-          btnHome.style.display = 'block';
-          btnNotifications.style.display = 'none';
-          btnCollaborators.style.display = 'block';
-          break;
-        case '/home/collaborators':
-          btnHome.style.display = 'block';
-          btnNotifications.style.display = 'block';
-          btnCollaborators.style.display = 'none';
-          break;
-      }
-    }
+  ngDoCheck(): void {
+    this.getUser();
   }
 
   public getMenu(event: MatSidenav): void{
@@ -79,6 +59,33 @@ export class NavBarComponent implements OnInit, AfterViewChecked  {
           break;
       }
     });
+  }
+
+  public navigateProfile():void {
+    switch (this.user.role) {
+      case 1:
+      case 2:
+      case 3:
+        this._router.navigate(['/home/profile/consultancy']);
+        break;
+      case 4:
+      case 5:
+      case 6:
+      case 7:
+        this._router.navigate(['/home/profile/user']);
+        break;
+      default:
+        break
+    }
+  }
+
+  private getUser(): void {
+    this.user = SessionStorageService.getItem(Constants.UserInSession);
+    if (this.user.profileImage && this.user.profileImage !=='') {
+      this.imageExist = true;
+    }else {
+      this.imageExist = false;
+    }
   }
 
 }

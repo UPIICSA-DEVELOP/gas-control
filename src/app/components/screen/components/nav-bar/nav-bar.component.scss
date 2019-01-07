@@ -43,22 +43,6 @@
       right: 0;
       color: #FFFFFF;
       display: flex;
-      #btn-home{
-        font-family: Roboto, 'Helvetice New', 'Arial', sans-serif;
-        font-weight: 500;
-        div{
-          display: block;
-          @media screen and (max-width: 900px){
-            display: none;
-          }
-        }
-        mat-icon{
-          display: none;
-          @media screen and (max-width: 900px){
-            display: block;
-          }
-        }
-      }
       #btn-notifications{
         font-family: Roboto, 'Helvetice New', 'Arial', sans-serif;
         font-weight: 500;
@@ -91,36 +75,42 @@
           }
         }
       }
-      .user{
-        .button-user{
-          min-width: 28px;
-          line-height: 28px;
-          padding: 0;
-          border-radius: 50%;
-          margin: 0 16px;
 
-          .image-user{
-            width: 28px;
-            height: 28px;
-            border-radius: 50%;
-          }
-          mat-icon{
-            color: #FFFFFF;
-          }
-
-        }
-      }
       @media screen and (max-width: 900px){
-        button{
-          width: 32px;
-        }
-        #btn-home{
-          display: none !important;
-        }
+        display: none;
       }
+    }
+    .menus{
+      display: none;
+      position: absolute;
+      right: 0;
+      color: #FFFFFF;
 
+      @media screen and (max-width: 900px){
+        display: flex;
+      }
       @media screen and (max-width: 600px){
         display: none;
+      }
+    }
+
+    .user{
+      .button-user{
+        min-width: 28px;
+        line-height: 28px;
+        padding: 0;
+        border-radius: 50%;
+        margin: 0 16px;
+
+        .image-user{
+          width: 28px;
+          height: 28px;
+          border-radius: 50%;
+        }
+        mat-icon{
+          color: #FFFFFF;
+        }
+
       }
     }
 

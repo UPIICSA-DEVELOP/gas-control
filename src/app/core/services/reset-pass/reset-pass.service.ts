@@ -31,7 +31,7 @@ export class ResetPassService implements Resolve<any>{
             maxAge: MaxAge.DAY
           });
           SessionStorageService.setItem(Constants.UserInSession, {
-            profileImage: (response.item.profileImage.thumbnail)?response.item.profileImage.thumbnail:null,
+            profileImage: (response.item.profileImage)?response.item.profileImage.thumbnail:null,
             role: response.item.role
           });
           LocalStorageService.setItem(Constants.UpdatePassword, true);

@@ -17,14 +17,13 @@
         <img alt="app-logo" src="../assets/Images/logo.png" routerLink="/home">
       </div>
       <div class="navigation-buttons">
-        <button id="btn-home" mat-button routerLink="/home">Home</button>
         <button id="btn-collaborators" mat-button routerLink="/home/collaborators">
           <div>Colaboradores</div>
-          <mat-icon>notifications</mat-icon>
+          <mat-icon>group</mat-icon>
         </button>
         <button id="btn-notifications" routerLink="/home/notifications" mat-button>
           <div>Notificaciones</div>
-          <mat-icon>group</mat-icon>
+          <mat-icon>notifications</mat-icon>
         </button>
         <button mat-button>
           <mat-icon>search</mat-icon>
@@ -33,10 +32,31 @@
           <mat-icon>exit_to_app</mat-icon>
         </button>
         <div class="user">
-          <button class="button-user" mat-button routerLink="/home/profile">
-            <!--img class="image-user" *ngIf="profileImg" [src]="profileImg.profileImage"-->
+          <button class="button-user" mat-button (click)="navigateProfile()">
+            <img class="image-user" *ngIf="imageExist" [src]="user.profileImage">
+            <mat-icon *ngIf="!imageExist">account_circle</mat-icon>
+          </button>
+        </div>
+      </div>
+      <div class="menus">
+        <button mat-button>
+          <mat-icon>search</mat-icon>
+        </button>
+        <button mat-button [mat-menu-trigger-for]="menu_one">
+          <mat-icon>more_vert</mat-icon>
+        </button>
+        <mat-menu #menu_one>
+          <button mat-menu-item routerLink="/home/notifications">Notificaciones</button>
+          <button mat-menu-item routerLink="/home/collaborators">Colaboradores</button>
+        </mat-menu>
+        <div class="user">
+          <button mat-button [mat-menu-trigger-for]="menu_two" class="button-user">
             <mat-icon>account_circle</mat-icon>
           </button>
+          <mat-menu #menu_two>
+            <button mat-menu-item (click)="navigateProfile()">Perfil</button>
+            <button mat-menu-item (click)="logOut()">Salir</button>
+          </mat-menu>
         </div>
       </div>
     </mat-toolbar>
