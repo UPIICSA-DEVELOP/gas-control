@@ -31,6 +31,8 @@ import {Constants} from '@app/core/constants.core';
 import {LocationService} from '@app/core/components/location/location.service';
 import {UpdatePasswordComponent} from '@app/core/components/update-password/update-password.component';
 import {UpdatePasswordService} from '@app/core/components/update-password/update-password.service';
+import {SignaturePadComponent} from '@app/core/components/signature-pad/signature-pad.component';
+import {SignaturePadService} from '@app/core/components/signature-pad/signature-pad.service';
 
 @NgModule({
   imports: [
@@ -71,7 +73,8 @@ import {UpdatePasswordService} from '@app/core/components/update-password/update
     CropImageComponent,
     CountryCodeComponent,
     LocationComponent,
-    SearchBoxCoreComponent
+    SearchBoxCoreComponent,
+    SignaturePadComponent
   ],
   entryComponents: [
     DialogComponent,
@@ -79,7 +82,8 @@ import {UpdatePasswordService} from '@app/core/components/update-password/update
     ShareComponent,
     CropImageComponent,
     CountryCodeComponent,
-    LocationComponent
+    LocationComponent,
+    SignaturePadComponent
   ],
   providers: [
     AuthService,
@@ -91,7 +95,8 @@ import {UpdatePasswordService} from '@app/core/components/update-password/update
     PipesModule,
     CurrencyPipe,
     CountryCodeService,
-    LocationService
+    LocationService,
+    SignaturePadService
   ]
 })
 export class CoreModule { }
