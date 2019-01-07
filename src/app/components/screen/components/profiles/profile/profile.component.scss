@@ -55,7 +55,7 @@
 
     .information {
       width: calc(100% / 3);
-      margin: 24px 16px;
+      margin: 24px;
 
       .profileImage {
         height: 80px;
@@ -119,14 +119,6 @@
         width: 100%;
         height: auto;
         margin: 24px 0;
-        display: block;
-      }
-    }
-
-    .margin {
-      display: none;
-      height: 48px;
-      @media screen and (max-width: 800px) {
         display: block;
       }
     }
@@ -253,5 +245,8 @@
   }
   .head{
     margin: 8px 0;
+  }
+  mat-spinner{
+    z-index: 3;
   }
 }
