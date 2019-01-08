@@ -2,8 +2,10 @@
  * Copyright (C) MapLander S de R.L de C.V - All Rights Reserved
  * Unauthorized copying of this file, via any medium is strictly prohibited
  * Proprietary and confidential
+ *
  */
-#upload-file{
+
+#upload-file-component{
   position: relative;
   display: flex;
   justify-content: center;
@@ -27,4 +29,3 @@
     outline: none !important;
   }
 }
-

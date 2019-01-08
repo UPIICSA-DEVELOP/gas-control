@@ -14,11 +14,12 @@ import {DialogService} from '@app/core/components/dialog/dialog.service';
 import {SnackBarService} from '@app/core/services/snackbar/snackbar.service';
 import {CountryCodeService} from '@app/core/components/country-code/country-code.service';
 import {LocationService} from '@app/core/components/location/location.service';
-import {UploadImageService} from '@app/core/components/upload-image/upload-image.service';
+import {UploadFileService} from '@app/core/components/upload-file/upload-file.service';
 import {Router} from '@angular/router';
 import {UpdatePasswordService} from '@app/core/components/update-password/update-password.service';
 import {animate, keyframes, query, stagger, style, transition, trigger} from '@angular/animations';
 import {SessionStorageService} from '@app/core/services/session-storage/session-storage.service';
+import {UploadFileResponse} from '@app/core/components/upload-file/upload-file.component';
 
 @Component({
   selector: 'app-profile',
@@ -83,7 +84,7 @@ export class ProfileComponent implements OnInit {
     private _countryCode: CountryCodeService,
     private _locationService: LocationService,
     private _dialogService: DialogService,
-    private _uploadImage: UploadImageService,
+    private _uploadImage: UploadFileService,
     private _router:Router,
     private _updatePasswordService: UpdatePasswordService
   ) {
@@ -103,7 +104,10 @@ export class ProfileComponent implements OnInit {
     }
   }
 
-  public onLoadImage(event): void{
+  public onLoadImage(event: UploadFileResponse): void{
+
+    if(event.isImage)
+
     this.newImage = true;
     this.change = true;
     this.deleteImage = false;
@@ -184,7 +188,7 @@ export class ProfileComponent implements OnInit {
   }
 
   private uploadImage(): void{
-    this._uploadImage.uploadImage(this._formData).subscribe(response => {
+    this._uploadImage.upload(this._formData).subscribe(response => {
       if (response){
         this.newImageProfile = {
           thumbnail: response.item.thumbnail || '',
