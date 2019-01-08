@@ -87,6 +87,43 @@ export class ApiService {
     return this._http.post('https://schedule-maplander.appspot.com/upload', blob);
   }
 
+  public savePersonInformation(infoPerson: any): Observable<any>{
+    return this._http.post(ApiService.API_URL_COMPLETE + 'savePersonInformation', infoPerson);
+  }
+
+  public getPersonInformation(id: string): Observable<any>{
+    let params = new HttpParams();
+    params = params.append('id', id);
+    return this._http.get(ApiService.API_URL_COMPLETE + 'getPersonInformation', {params:params});
+  }
+
+  public getConsultancyBasicData(personId: string, consultancyId: string): Observable<any>{
+    let params = new HttpParams();
+    params = params.append('consultancyId', consultancyId);
+    params = params.append('personId', personId);
+    return this._http.get(ApiService.API_URL_COMPLETE+ 'getConsultancyBasicData', {params:params});
+  }
+
+  public getUtils():Observable<any>{
+    return this._http.get(ApiService.API_URL_COMPLETE + 'getUtils');
+  }
+
+  public  turnOnNotificationStation(personId: string, stationId: string):Observable<any>{
+    const options = {
+      personId: personId,
+      stationId: stationId
+    };
+    return this._http.post(ApiService.API_URL_COMPLETE + 'turnOnNotificationStation',options);
+  }
+
+  public  turnOffNotificationStation(personId: string, stationId: string):Observable<any>{
+    const options = {
+      personId: personId,
+      stationId: stationId
+    };
+    return this._http.post(ApiService.API_URL_COMPLETE + 'turnOffNotificationStation',options);
+  }
+
   private initNetwork(): void {
     this._networkService.getChangesNetwork().subscribe(status => {
       const text = (!status) ? 'La conexión a internet se ha perdido' : 'De nuevo en linea';
