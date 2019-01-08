@@ -18,6 +18,7 @@ import {ApiLoaderService} from '@app/core/services/api/api-loader.service';
 import {CookieService} from '@app/core/services/cookie/cookie.service';
 import {Constants} from '@app/core/constants.core';
 import {SessionStorageService} from '@app/core/services/session-storage/session-storage.service';
+import {UploadFileResponse} from '@app/core/components/upload-file/upload-file.component';
 
 @Component({
   selector: 'app-user-profile',
@@ -62,6 +63,17 @@ export class UserProfileComponent implements OnInit {
     'Encargado de estación',
     'Gerente de estación',
     'Asistente de estación'];
+  public bloodGroup: string[] = [
+    'O-',
+    'O+',
+    'A-',
+    'A+',
+    'B-',
+    'B+',
+    'AB-',
+    'AB+'
+  ];
+  public bloodType: string;
   public userRole: string;
   public profileForm: FormGroup;
   public newImage: boolean = false;
@@ -76,7 +88,6 @@ export class UserProfileComponent implements OnInit {
   public file: any;
   public newFileSub: any;
   public newFile: boolean = false;
-  public deleteFile: boolean = false;
   constructor(
     private _router: Router,
     private _api: ApiService,
@@ -85,7 +96,7 @@ export class UserProfileComponent implements OnInit {
     private _dialogService: DialogService,
     private _countryCodeService: CountryCodeService,
     private _snackBarService: SnackBarService,
-    private _uploadImage: UploadFileService,
+    private _uploadFile: UploadFileService,
     private _formBuilder: FormBuilder
   ) { }
 
@@ -97,7 +108,7 @@ export class UserProfileComponent implements OnInit {
     this._router.navigate(['/home']);
   }
 
-  public onLoadImage(event): void{
+  public onLoadImage(event: UploadFileResponse): void{
     this.newImage = true;
     this.change = true;
     this.deleteImage = false;
@@ -109,21 +120,13 @@ export class UserProfileComponent implements OnInit {
     this._formData.append('file', event.blob);
   }
 
-  public onLoadFile(event): void{
+  public onLoadFile(event:UploadFileResponse): void{
     this.newFile = true;
-    this.deleteFile = false;
     this.change = true;
     this._formFile = new FormData();
     this._formFile.append('path', '');
     this._formFile.append('fileName', 'benzene-'+this.user.id+'-'+new Date().getTime()+'.pdf');
-    this._formFile.append('file', event.blob);
-  }
-
-  public onRemoveFile(): void{
-    this.newFile = false;
-    this.deleteFile = true;
-    this.change = true;
-    this.file = ''
+    this._formFile.append('file', event.file);
   }
 
   public onRemoveImage(): void {
@@ -171,7 +174,7 @@ export class UserProfileComponent implements OnInit {
   }
 
   private uploadImage(): void{
-    this._uploadImage.upload(this._formData).subscribe(response => {
+    this._uploadFile.upload(this._formData).subscribe(response => {
       if (response){
         this.newImageProfile = {
           thumbnail: response.item.thumbnail || '',
@@ -184,7 +187,7 @@ export class UserProfileComponent implements OnInit {
   }
 
   private uploadFile(): void{
-    /*this._UploadFile.uploadFile(this._formFile).subscribe(response => {
+    this._uploadFile.upload(this._formFile).subscribe(response => {
       if (response){
         this.newFileSub = {
           thumbnail: response.item.thumbnail || '',
@@ -193,7 +196,7 @@ export class UserProfileComponent implements OnInit {
         this.newFile = false;
         this.updateProfile(this.profileForm.value);
       }
-    });*/
+    });
   }
 
   private initUserInfo(): void {
@@ -206,7 +209,6 @@ export class UserProfileComponent implements OnInit {
       phoneNumber: ['', [Validators.required, Validators.minLength(8), Validators.maxLength(13)]],
       jobTitle: ['', [Validators.required]],
       website: ['', [Validators.pattern('[a-z0-9]+([\\-\\.]{1}[a-z0-9]+)*\\.[a-z]{2,5}(:[0-9]{1,5})?(\\/.*)?$')]],
-      bloodType: ['',[Validators.pattern('^(A|B|AB|O)[+-]$')]],
       contactPhone:['',[Validators.minLength(8), Validators.maxLength(13)]],
       contactKinship:['',[]],
       contactName:['',[]],
@@ -244,12 +246,23 @@ export class UserProfileComponent implements OnInit {
             }
           }
           this.userRole = this.role[this.user.role-1];
+
           this._api.getPersonInformation(this.user.id).subscribe(response =>{
             switch (response.code) {
               case 200:
                 this.userInformation = response.item;
                 if (this.userInformation.benzene){
                   this.file = this.userInformation.benzene.thumbnail
+                }
+                if(this.userInformation.bloodType){
+                  for (let bd in this.bloodGroup){
+                    if (this.bloodGroup[bd] === this.userInformation.bloodType){
+                      this.bloodType = this.bloodGroup[bd];
+                      break;
+                    }else {
+                      this.bloodType = '';
+                    }
+                  }
                 }
                 this.profileForm.patchValue({
                   name: this.user.name,
@@ -260,7 +273,6 @@ export class UserProfileComponent implements OnInit {
                   phoneNumber: this.user.phoneNumber,
                   jobTitle: this.user.jobTitle,
                   website: this.user.website,
-                  bloodType: this.userInformation.bloodType,
                   contactPhone: this.userInformation.concatcPhone,
                   contactKinship: this.userInformation.contactKinship,
                   contactName: this.userInformation.contactName,
@@ -278,6 +290,7 @@ export class UserProfileComponent implements OnInit {
                   jobTitle: this.user.jobTitle,
                   website: this.user.website
                 });
+                this.bloodType = '';
                 this.userInformation = {
                   bloodType:'',
                   concatcPhone:'',
@@ -316,14 +329,6 @@ export class UserProfileComponent implements OnInit {
     if (this.newFile){
       this.uploadFile();
     }
-    if (this.deleteFile) {
-      this.newFileSub = {
-        thumbnail: '',
-        blob: ''
-      };
-      this.deleteFile= false;
-      this.uploadFile();
-    }
     this.saveProfileInformation(data);
   }
 
@@ -335,7 +340,7 @@ export class UserProfileComponent implements OnInit {
     this.user.phoneNumber = data.phoneNumber;
     this.user.jobTitle = data.jobTitle;
     this.userInformation.ssn = data.ssn;
-    this.userInformation.bloodType = data.bloodType;
+    this.userInformation.bloodType = this.bloodType;
     this.userInformation.concatcPhone = data.contactPhone;
     this.userInformation.contactName = data.contactName;
     this.userInformation.contactKinship = data.contactKinship;
