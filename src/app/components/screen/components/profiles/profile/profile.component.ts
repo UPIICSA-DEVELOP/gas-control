@@ -248,10 +248,12 @@ export class ProfileComponent implements OnInit {
             switch (response.code) {
               case 200:
                 this.consultancy = response.item;
-                this.latLong = {
-                  latitude: this.consultancy.location.latitude,
-                  longitude: this.consultancy.location.longitude
-                };
+                if (this.consultancy.location){
+                  this.latLong = {
+                    latitude: this.consultancy.location.latitude,
+                    longitude: this.consultancy.location.longitude
+                  };
+                }
                 this.profileForm.patchValue({
                   name: this.user.name,
                   lastName: this.user.lastName,
