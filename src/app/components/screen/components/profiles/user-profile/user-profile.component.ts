@@ -13,10 +13,12 @@ import {UpdatePasswordService} from '@app/core/components/update-password/update
 import {DialogService} from '@app/core/components/dialog/dialog.service';
 import {CountryCodeService} from '@app/core/components/country-code/country-code.service';
 import {SnackBarService} from '@app/core/services/snackbar/snackbar.service';
-import {UploadImageService} from '@app/core/components/upload-file/upload-image.service';
+import {UploadImageService} from '@app/core/components/upload-image/upload-image.service';
 import {ApiLoaderService} from '@app/core/services/api/api-loader.service';
 import {CookieService} from '@app/core/services/cookie/cookie.service';
 import {Constants} from '@app/core/constants.core';
+import {SessionStorageService} from '@app/core/services/session-storage/session-storage.service';
+import {UploadFileService} from '@app/core/components/upload-file/upload-file.service';
 
 @Component({
   selector: 'app-user-profile',
@@ -49,7 +51,9 @@ import {Constants} from '@app/core/constants.core';
 export class UserProfileComponent implements OnInit {
   private _formData: FormData;
   private _formDeleteData: FormData;
+  private _formFile: FormData;
   public user: any;
+  public userInformation: any;
   public load: boolean;
   public role: string[] = [
     'Director',
@@ -69,6 +73,11 @@ export class UserProfileComponent implements OnInit {
   public country: any;
   public change: boolean = false;
   public blobName: any;
+  public password: string;
+  public file: any;
+  public newFileSub: any;
+  public newFile: boolean = false;
+  public deleteFile: boolean = false;
   constructor(
     private _router: Router,
     private _api: ApiService,
@@ -78,7 +87,8 @@ export class UserProfileComponent implements OnInit {
     private _countryCodeService: CountryCodeService,
     private _snackBarService: SnackBarService,
     private _uploadImage: UploadImageService,
-    private _formBuilder: FormBuilder
+    private _formBuilder: FormBuilder,
+    private _UploadFile: UploadFileService
   ) { }
 
   ngOnInit() {
@@ -99,6 +109,23 @@ export class UserProfileComponent implements OnInit {
     this._formData.append('fileName', 'profile-'+this.user.id+'-'+new Date().getTime()+'.png');
     this._formData.append('isImage', 'true');
     this._formData.append('file', event.blob);
+  }
+
+  public onLoadFile(event): void{
+    this.newFile = true;
+    this.deleteFile = false;
+    this.change = true;
+    this._formFile = new FormData();
+    this._formFile.append('path', '');
+    this._formFile.append('fileName', 'benzene-'+this.user.id+'-'+new Date().getTime()+'.pdf');
+    this._formFile.append('file', event.blob);
+  }
+
+  public onRemoveFile(): void{
+    this.newFile = false;
+    this.deleteFile = true;
+    this.change = true;
+    this.file = ''
   }
 
   public onRemoveImage(): void {
@@ -134,17 +161,41 @@ export class UserProfileComponent implements OnInit {
     ).afterClosed().subscribe(response =>{
       switch (response.code) {
         case 1:
-          this.profileForm.patchValue({
-            password: response.data.newPassword
-          });
+          this.password = response.data.newPassword;
           break;
         default:
           this.profileForm.patchValue({
-            password: this.user.password
+
           });
           break;
       }
     })
+  }
+
+  private uploadImage(): void{
+    this._uploadImage.uploadImage(this._formData).subscribe(response => {
+      if (response){
+        this.newImageProfile = {
+          thumbnail: response.item.thumbnail || '',
+          blob: response.item.blobName || ''
+        };
+        this.newImage = false;
+        this.updateProfile(this.profileForm.value);
+      }
+    });
+  }
+
+  private uploadFile(): void{
+    this._UploadFile.uploadFile(this._formFile).subscribe(response => {
+      if (response){
+        this.newFileSub = {
+          thumbnail: response.item.thumbnail || '',
+          blob: response.item.blobName || ''
+        };
+        this.newFile = false;
+        this.updateProfile(this.profileForm.value);
+      }
+    });
   }
 
   private initUserInfo(): void {
@@ -156,8 +207,12 @@ export class UserProfileComponent implements OnInit {
       code: ['', []],
       phoneNumber: ['', [Validators.required, Validators.minLength(8), Validators.maxLength(13)]],
       jobTitle: ['', [Validators.required]],
-      password:['',[]],
-      website: ['', [Validators.pattern('[a-z0-9]+([\\-\\.]{1}[a-z0-9]+)*\\.[a-z]{2,5}(:[0-9]{1,5})?(\\/.*)?$')]]
+      website: ['', [Validators.pattern('[a-z0-9]+([\\-\\.]{1}[a-z0-9]+)*\\.[a-z]{2,5}(:[0-9]{1,5})?(\\/.*)?$')]],
+      bloodType: ['',[Validators.pattern('^(A|B|AB|O)[+-]$')]],
+      contactPhone:['',[Validators.minLength(8), Validators.maxLength(13)]],
+      contactKinship:['',[]],
+      contactName:['',[]],
+      ssn:['',[]]
     });
     this.getUser();
   }
@@ -191,19 +246,142 @@ export class UserProfileComponent implements OnInit {
             }
           }
           this.userRole = this.role[this.user.role-1];
-          this.profileForm.patchValue({
-            name: this.user.name,
-            lastName: this.user.lastName,
-            email: this.user.email,
-            country: this.country,
-            code: this.user.countryCode,
-            phoneNumber: this.user.phoneNumber,
-            jobTitle: this.user.jobTitle,
-            website: this.user.website,
-            password: this.user.password
+          this._api.getPersonInformation(this.user.id).subscribe(response =>{
+            switch (response.code) {
+              case 200:
+                this.userInformation = response.item;
+                if (this.userInformation.benzene){
+                  this.file = this.userInformation.benzene.thumbnail
+                }
+                this.profileForm.patchValue({
+                  name: this.user.name,
+                  lastName: this.user.lastName,
+                  email: this.user.email,
+                  country: this.country,
+                  code: this.user.countryCode,
+                  phoneNumber: this.user.phoneNumber,
+                  jobTitle: this.user.jobTitle,
+                  website: this.user.website,
+                  bloodType: this.userInformation.bloodType,
+                  contactPhone: this.userInformation.concatcPhone,
+                  contactKinship: this.userInformation.contactKinship,
+                  contactName: this.userInformation.contactName,
+                  ssn: this.userInformation.ssn
+                });
+                break;
+              default:
+                this.profileForm.patchValue({
+                  name: this.user.name,
+                  lastName: this.user.lastName,
+                  email: this.user.email,
+                  country: this.country,
+                  code: this.user.countryCode,
+                  phoneNumber: this.user.phoneNumber,
+                  jobTitle: this.user.jobTitle,
+                  website: this.user.website
+                });
+                this.userInformation = {
+                  bloodType:'',
+                  concatcPhone:'',
+                  contactKinship:'',
+                  contactName:'',
+                  ssn:'',
+                  id:'',
+                  benzene: {
+                    thumbnail: '',
+                    blobName: ''
+                  }
+                };
+                break;
+            }
           });
           break;
       }
     })
+  }
+
+  private updateProfile(data: any, event?: any):void{
+    if (this.profileForm.invalid){
+      return;
+    }
+    if (this.newImage){
+      this.uploadImage();
+    }
+    if(this.deleteImage){
+      this.newImageProfile = {
+        thumbnail: '',
+        blob: ''
+      };
+      this.deleteImage=false;
+      this.updateProfile(data);
+    }
+    if (this.newFile){
+      this.uploadFile();
+    }
+    if (this.deleteFile) {
+      this.newFileSub = {
+        thumbnail: '',
+        blob: ''
+      };
+      this.deleteFile= false;
+      this.uploadFile();
+    }
+    this.saveProfileInformation(data);
+  }
+
+  private saveProfileInformation(data: any): void{
+    data.code = data.code.replace('+','');
+    this.user.name = data.name;
+    this.user.lastName = data.lastName;
+    this.user.countryCode = data.code;
+    this.user.phoneNumber = data.phoneNumber;
+    this.user.jobTitle = data.jobTitle;
+    this.userInformation.ssn = data.ssn;
+    this.userInformation.bloodType = data.bloodType;
+    this.userInformation.concatcPhone = data.contactPhone;
+    this.userInformation.contactName = data.contactName;
+    this.userInformation.contactKinship = data.contactKinship;
+    if (this.password) {
+      this.user.password = this.password;
+    }
+    this.user.website = (data.website? this.protocol+data.website : '');
+    if (this.newImageProfile){
+      this.user.profileImage = {
+        blobName: this.newImageProfile.blob,
+        thumbnail: this.newImageProfile.thumbnail
+      };
+      SessionStorageService.setItem(Constants.UserInSession, {
+        profileImage: this.user.profileImage.thumbnail,
+        role : this.user.role
+      });
+    }
+    if (this.newFileSub) {
+      this.userInformation.benzene = {
+        thumbnail: this.newFileSub.thumbnail,
+        blobName: this.newFileSub.blob
+      }
+    }
+    this._api.updatePerson(this.user).subscribe(response=>{
+      switch (response.code) {
+        case 200:
+            this.userInformation.id = this.user.id;
+            this._api.savePersonInformation(this.userInformation).subscribe(response=>{
+              switch (response.code) {
+                case 200:
+                  this.change = false;
+                  this._snackBarService.openSnackBar('Información actualizada','OK',3000);
+                  this._router.navigate(['/home']);
+                  break;
+                default:
+                  this._dialogService.alertDialog('No se pudo acceder', 'Se produjo un error de comunicación con el servidor', 'ACEPTAR');
+                  break;
+              }
+            });
+          break;
+        default:
+          this._dialogService.alertDialog('No se pudo acceder', 'Se produjo un error de comunicación con el servidor', 'ACEPTAR');
+          break;
+      }
+    });
   }
 }

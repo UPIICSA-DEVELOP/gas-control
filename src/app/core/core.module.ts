@@ -33,6 +33,8 @@ import {UpdatePasswordComponent} from '@app/core/components/update-password/upda
 import {UpdatePasswordService} from '@app/core/components/update-password/update-password.service';
 import {SignaturePadComponent} from '@app/core/components/signature-pad/signature-pad.component';
 import {SignaturePadService} from '@app/core/components/signature-pad/signature-pad.service';
+import {UploadFileComponent} from '@app/core/components/upload-file/upload-file.component';
+import {UploadFileService} from '@app/core/components/upload-file/upload-file.service';
 
 @NgModule({
   imports: [
@@ -63,7 +65,8 @@ import {SignaturePadService} from '@app/core/components/signature-pad/signature-
     CropImageComponent,
     CountryCodeComponent,
     LocationComponent,
-    SearchBoxCoreComponent
+    SearchBoxCoreComponent,
+    UploadFileComponent
   ],
   declarations: [
     DialogComponent,
@@ -74,7 +77,8 @@ import {SignaturePadService} from '@app/core/components/signature-pad/signature-
     CountryCodeComponent,
     LocationComponent,
     SearchBoxCoreComponent,
-    SignaturePadComponent
+    SignaturePadComponent,
+    UploadFileComponent
   ],
   entryComponents: [
     DialogComponent,
@@ -83,7 +87,8 @@ import {SignaturePadService} from '@app/core/components/signature-pad/signature-
     CropImageComponent,
     CountryCodeComponent,
     LocationComponent,
-    SignaturePadComponent
+    SignaturePadComponent,
+    UploadFileComponent
   ],
   providers: [
     AuthService,
@@ -96,7 +101,8 @@ import {SignaturePadService} from '@app/core/components/signature-pad/signature-
     CurrencyPipe,
     CountryCodeService,
     LocationService,
-    SignaturePadService
+    SignaturePadService,
+    UploadFileService
   ]
 })
 export class CoreModule { }
