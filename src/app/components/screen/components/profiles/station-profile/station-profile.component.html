@@ -4,6 +4,48 @@
   ~ Proprietary and confidential
   -->
 
-<p>
-  station-profile works!
-</p>
+<div id="station-profile">
+  <div class="background"></div>
+  <form class="station-form">
+    <div class="basic-information">
+      <div class="header">
+        <div>
+          <mat-icon class="defaultImage">local_gas_station</mat-icon>
+        </div>
+        <span class="text">Nombre de la estacion</span>
+      </div>
+      <mat-card class="body">
+        <mat-card-header class="head">
+          <span>Estación de Servicio</span>
+        </mat-card-header>
+        <mat-card-content class="content">
+          <mat-form-field class="inputs">
+            <input matInput placeholder="Nombre de la sucursal" required type="text" aria-label="Station name">
+          </mat-form-field>
+          <mat-form-field class="inputs">
+            <input matInput placeholder="Razón social" required type="text" aria-label="Station business name">
+          </mat-form-field>
+          <mat-form-field class="inputs">
+            <input matInput placeholder="Representante legal" type="text" aria-label="Station owner">
+          </mat-form-field>
+          <mat-form-field class="inputs">
+            <input matInput placeholder="R.F.C." required type="text" aria-label="Station rfc">
+          </mat-form-field>
+          <mat-form-field class="inputs">
+            <input matInput placeholder="Número de permiso de la CRE" required type="text" aria-label="Station cree permission">
+          </mat-form-field>
+          <mat-form-field class="inputs">
+            <textarea matInput placeholder="Dirección" required type="text" aria-label="Station address"></textarea>
+          </mat-form-field>
+        </mat-card-content>
+      </mat-card>
+    </div>
+    <div class="station-information"></div>
+    <div class="dispensers-information"></div>
+  </form>
+  <div class="btn-close">
+    <button mat-icon-button matTooltip="Cerrar" aria-label="Close-button" (click)="closeProfile()">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+</div>

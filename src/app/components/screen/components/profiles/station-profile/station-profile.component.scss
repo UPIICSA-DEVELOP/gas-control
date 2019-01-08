@@ -4,3 +4,153 @@
  * Proprietary and confidential
  */
 
+@import "../../../../../../styles/colors";
+#station-profile{
+  top: 0;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 10;
+  background-color: #FFFFFF;
+  @media screen and (max-width: 800px){
+    overflow: auto;
+  }
+  .station-form{
+    width: 90%;
+    height: 90%;
+    display: flex;
+    position: relative;
+    z-index: 1;
+    @media screen and (max-width: 800px) {
+      width: 100%;
+      flex-direction: column;
+    }
+    .inputs{
+      width: 100%;
+    }
+    .basic-information{
+      width: calc(100% / 3);
+      margin: 24px;
+      .header{
+        display: flex;
+        justify-content: space-between;
+        margin: 16px 0;
+        @media screen and (max-width: 800px){
+          margin: 16px 8px;
+        }
+        .profileImage {
+          height: 80px;
+          width: 80px;
+          border-radius: 50%;
+          background-color: #707070;
+        }
+        .defaultImage {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          width: 80px;
+          height: 80px;
+          border-radius: 50%;
+          background-color: #707070;
+        }
+        mat-icon {
+          font-size: 80px;
+          color: #FFFFFF;
+        }
+        .text{
+          font-family: Roboto, 'Helvetice New', 'Arial', sans-serif;
+          font-weight: 700;
+          font-size: 28px;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          text-align: right;
+          color: mat-color($primary);
+        }
+      }
+      .body{
+        height: calc( 100% - 112px);
+        .head{
+          span{
+            font-family: Roboto, 'Helvetice New', 'Arial', sans-serif;
+            font-weight: 500;
+            font-size: 24px;
+            color: #000000;
+            white-space: normal;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            text-align: right;
+          }
+        }
+        .content{
+          overflow: auto;
+          height: calc(100% - 28px);
+        }
+      }
+      @media screen and (max-width: 800px) {
+        width: 100%;
+        height: auto;
+        margin: 24px 0;
+      }
+    }
+    .station-information{
+      width: calc(100% / 3);
+      margin: 24px;
+      background-color: greenyellow;
+      @media screen and (max-width: 800px) {
+        width: 100%;
+        height: auto;
+        margin: 24px 0;
+      }
+    }
+    .dispensers-information{
+      width: calc(100% / 3);
+      margin: 24px;
+      background-color: green;
+      @media screen and (max-width: 800px) {
+        width: 100%;
+        height: auto;
+        margin: 24px 0;
+      }
+    }
+  }
+  .background{
+    width: 600px;
+    height: 300px;
+    position: absolute;
+    bottom: 0;
+    background-size: 100%;
+    background-position: bottom;
+    right: 0;
+    background-image: url("../../../../../../assets/Images/background.png");
+    background-repeat: no-repeat;
+    z-index: 0;
+    @media screen and (max-width: 768px), screen and (max-height: 600px) {
+      width: 300px;
+      height: 150px;
+    }
+  }
+  .progress {
+    position: absolute;
+    top: 0;
+    z-index: 1;
+  }
+  .btn-close {
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin: 24px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 5;
+    button{
+      background-color: #707070;
+    }
+    mat-icon{
+      color: #FFFFFF;
+    }
+  }
+}
