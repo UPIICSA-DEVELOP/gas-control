@@ -13,12 +13,11 @@ import {UpdatePasswordService} from '@app/core/components/update-password/update
 import {DialogService} from '@app/core/components/dialog/dialog.service';
 import {CountryCodeService} from '@app/core/components/country-code/country-code.service';
 import {SnackBarService} from '@app/core/services/snackbar/snackbar.service';
-import {UploadImageService} from '@app/core/components/upload-image/upload-image.service';
+import {UploadFileService} from '@app/core/components/upload-file/upload-file.service';
 import {ApiLoaderService} from '@app/core/services/api/api-loader.service';
 import {CookieService} from '@app/core/services/cookie/cookie.service';
 import {Constants} from '@app/core/constants.core';
 import {SessionStorageService} from '@app/core/services/session-storage/session-storage.service';
-import {UploadFileService} from '@app/core/components/upload-file/upload-file.service';
 
 @Component({
   selector: 'app-user-profile',
@@ -86,9 +85,8 @@ export class UserProfileComponent implements OnInit {
     private _dialogService: DialogService,
     private _countryCodeService: CountryCodeService,
     private _snackBarService: SnackBarService,
-    private _uploadImage: UploadImageService,
-    private _formBuilder: FormBuilder,
-    private _UploadFile: UploadFileService
+    private _uploadImage: UploadFileService,
+    private _formBuilder: FormBuilder
   ) { }
 
   ngOnInit() {
@@ -173,7 +171,7 @@ export class UserProfileComponent implements OnInit {
   }
 
   private uploadImage(): void{
-    this._uploadImage.uploadImage(this._formData).subscribe(response => {
+    this._uploadImage.upload(this._formData).subscribe(response => {
       if (response){
         this.newImageProfile = {
           thumbnail: response.item.thumbnail || '',
@@ -186,7 +184,7 @@ export class UserProfileComponent implements OnInit {
   }
 
   private uploadFile(): void{
-    this._UploadFile.uploadFile(this._formFile).subscribe(response => {
+    /*this._UploadFile.uploadFile(this._formFile).subscribe(response => {
       if (response){
         this.newFileSub = {
           thumbnail: response.item.thumbnail || '',
@@ -195,7 +193,7 @@ export class UserProfileComponent implements OnInit {
         this.newFile = false;
         this.updateProfile(this.profileForm.value);
       }
-    });
+    });*/
   }
 
   private initUserInfo(): void {

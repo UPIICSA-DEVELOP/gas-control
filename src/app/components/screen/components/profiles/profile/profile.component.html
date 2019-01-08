@@ -11,12 +11,12 @@
       <mat-card class="content">
         <div class="head">
           <div class="image">
-            <app-upload-image [layoutTemplate]="icon" (onLoadImage)="onLoadImage($event)" (onRemoveImage)="onRemoveImage()">
+            <app-upload-file [layoutTemplate]="icon" (onLoadImage)="onLoadImage($event)" (onRemoveImage)="onRemoveImage()" [type]="'image'">
               <ng-template #icon>
                 <img *ngIf="profileImage" [src]="profileImage" class="profileImage" alt="User profile image">
                 <mat-icon *ngIf="!profileImage" class="defaultProfileImage">account_circle</mat-icon>
               </ng-template>
-            </app-upload-image>
+            </app-upload-file>
           </div>
           <span class="title">Mi información</span>
         </div>

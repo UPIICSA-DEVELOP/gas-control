@@ -16,8 +16,8 @@ import {PipesModule} from '@app/core/pipes/pipes.module';
 import {UtilitiesService} from './utilities/utilities.service';
 import {ServicesModule} from '@app/core/services/services.module';
 import {DirectivesModule} from '@app/core/directives/directives.module';
-import {UploadImageComponent} from './components/upload-image/upload-image.component';
-import {UploadImageService} from '@app/core/components/upload-image/upload-image.service';
+import {UploadFileComponent} from './components/upload-file/upload-file.component';
+import {UploadFileService} from '@app/core/components/upload-file/upload-file.service';
 import {MaterialModule} from '@app/core/material/material.module';
 import {ImageCropperModule} from 'ngx-image-cropper';
 import { CropImageComponent } from './components/crop-image/crop-image.component';
@@ -33,8 +33,6 @@ import {UpdatePasswordComponent} from '@app/core/components/update-password/upda
 import {UpdatePasswordService} from '@app/core/components/update-password/update-password.service';
 import {SignaturePadComponent} from '@app/core/components/signature-pad/signature-pad.component';
 import {SignaturePadService} from '@app/core/components/signature-pad/signature-pad.service';
-import {UploadFileComponent} from '@app/core/components/upload-file/upload-file.component';
-import {UploadFileService} from '@app/core/components/upload-file/upload-file.service';
 
 @NgModule({
   imports: [
@@ -61,24 +59,22 @@ import {UploadFileService} from '@app/core/components/upload-file/upload-file.se
     ServicesModule,
     FormsModule,
     ReactiveFormsModule,
-    UploadImageComponent,
+    UploadFileComponent,
     CropImageComponent,
     CountryCodeComponent,
     LocationComponent,
-    SearchBoxCoreComponent,
-    UploadFileComponent
+    SearchBoxCoreComponent
   ],
   declarations: [
     DialogComponent,
     UpdatePasswordComponent,
     ShareComponent,
-    UploadImageComponent,
+    UploadFileComponent,
     CropImageComponent,
     CountryCodeComponent,
     LocationComponent,
     SearchBoxCoreComponent,
-    SignaturePadComponent,
-    UploadFileComponent
+    SignaturePadComponent
   ],
   entryComponents: [
     DialogComponent,
@@ -87,8 +83,7 @@ import {UploadFileService} from '@app/core/components/upload-file/upload-file.se
     CropImageComponent,
     CountryCodeComponent,
     LocationComponent,
-    SignaturePadComponent,
-    UploadFileComponent
+    SignaturePadComponent
   ],
   providers: [
     AuthService,
@@ -96,13 +91,12 @@ import {UploadFileService} from '@app/core/components/upload-file/upload-file.se
     UpdatePasswordService,
     ShareService,
     UtilitiesService,
-    UploadImageService,
+    UploadFileService,
     PipesModule,
     CurrencyPipe,
     CountryCodeService,
     LocationService,
-    SignaturePadService,
-    UploadFileService
+    SignaturePadService
   ]
 })
 export class CoreModule { }
