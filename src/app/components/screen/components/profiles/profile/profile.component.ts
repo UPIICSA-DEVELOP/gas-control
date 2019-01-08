@@ -14,7 +14,7 @@ import {DialogService} from '@app/core/components/dialog/dialog.service';
 import {SnackBarService} from '@app/core/services/snackbar/snackbar.service';
 import {CountryCodeService} from '@app/core/components/country-code/country-code.service';
 import {LocationService} from '@app/core/components/location/location.service';
-import {UploadImageService} from '@app/core/components/upload-file/upload-image.service';
+import {UploadImageService} from '@app/core/components/upload-image/upload-image.service';
 import {Router} from '@angular/router';
 import {UpdatePasswordService} from '@app/core/components/update-password/update-password.service';
 import {animate, keyframes, query, stagger, style, transition, trigger} from '@angular/animations';
