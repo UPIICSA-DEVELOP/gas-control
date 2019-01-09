@@ -101,9 +101,9 @@
             <div class="signature-input">
               <div class="formHead">Firma digital</div>
               <div class="signatureContainer">
-                <div class="signature">
-                  <span *ngIf="!user.signature" class="formText">Registre firma digital</span>
-                  <img *ngIf="user.signature" [src]="user.signature.thumbnail" class="imageSignature" alt="User signature image">
+                <div class="signature" (click)="changeSignature()" matTooltip="Cambiar firma">
+                  <span *ngIf="!signature" class="formText">Registre firma digital</span>
+                  <img *ngIf="signature" [src]="signature" class="imageSignature" alt="User signature image">
                 </div>
               </div>
             </div>

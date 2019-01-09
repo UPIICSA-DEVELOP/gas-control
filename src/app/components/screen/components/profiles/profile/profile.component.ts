@@ -20,6 +20,7 @@ import {UpdatePasswordService} from '@app/core/components/update-password/update
 import {animate, keyframes, query, stagger, style, transition, trigger} from '@angular/animations';
 import {SessionStorageService} from '@app/core/services/session-storage/session-storage.service';
 import {UploadFileResponse} from '@app/core/components/upload-file/upload-file.component';
+import {SignaturePadService} from '@app/core/components/signature-pad/signature-pad.service';
 
 @Component({
   selector: 'app-profile',
@@ -52,6 +53,7 @@ import {UploadFileResponse} from '@app/core/components/upload-file/upload-file.c
 export class ProfileComponent implements OnInit {
   private _formData: FormData;
   private _formDeleteData: FormData;
+  private _formSignature: FormData;
   public user: any;
   public consultancy: any;
   public latLong: any;
@@ -75,6 +77,9 @@ export class ProfileComponent implements OnInit {
   public change: boolean = false;
   public blobName: any;
   public password: string;
+  public signature: any;
+  public newSignature: boolean = false;
+  public newSig: any;
 
   constructor(
     private _api: ApiService,
@@ -86,7 +91,8 @@ export class ProfileComponent implements OnInit {
     private _dialogService: DialogService,
     private _uploadImage: UploadFileService,
     private _router:Router,
-    private _updatePasswordService: UpdatePasswordService
+    private _updatePasswordService: UpdatePasswordService,
+    private _signaturePad: SignaturePadService
   ) {
 
   }
@@ -194,7 +200,8 @@ export class ProfileComponent implements OnInit {
           thumbnail: response.item.thumbnail || '',
           blob: response.item.blobName || ''
         };
-        this.saveInfoUserAndConsultancy(this.profileForm.value);
+        this.newImage = false;
+        this.updateProfile(this.profileForm.value);
       }
     });
   }
@@ -215,6 +222,36 @@ export class ProfileComponent implements OnInit {
       })
   }
 
+  public changeSignature():void{
+    this._signaturePad.open().afterClosed().subscribe(response=>{
+      switch (response.code) {
+        case 1:
+          this.change= true;
+          this.newSignature = true;
+          this.signature = response.base64;
+          this._formSignature = new FormData();
+          this._formSignature.append('path', this.consultancy.rfc);
+          this._formSignature.append('fileName', 'signature-'+this.user.id+'-'+new Date().getTime()+'.png');
+          this._formSignature.append('isImage', 'true');
+          this._formSignature.append('file', response.blob);
+          break;
+      }
+    })
+  }
+
+  public uploadSignature():void{
+    this._uploadImage.upload(this._formSignature).subscribe(response => {
+      if (response){
+        this.newSig = {
+          thumbnail: response.item.thumbnail || '',
+          blob: response.item.blobName || ''
+        };
+        this.newSignature = false;
+        this.updateProfile(this.profileForm.value);
+      }
+    });
+  }
+
   private getUserInfo(): void {
     this._api.getPerson(CookieService.getCookie(Constants.IdSession)).subscribe(response => {
       switch (response.code) {
@@ -233,6 +270,9 @@ export class ProfileComponent implements OnInit {
                 this.country=country.name;
               }
             }
+          }
+          if(this.user.signature){
+            this.signature = this.user.signature.thumbnail
           }
           if (this.user.website){
             if (this.user.website.includes('http://')){
@@ -294,22 +334,29 @@ export class ProfileComponent implements OnInit {
     this.getUserInfo();
   }
 
-  private updateProfile(data: any, event: any): void {
+  private updateProfile(data: any, event?: any): void {
     if (this.profileForm.invalid) {
+      return;
+    }
+    if(!this.signature){
+      this._snackBarService.openSnackBar('Por favor, registre su firma','OK', 3000);
       return;
     }
     if(this.newImage){
       this.uploadImage();
-    }else if (this.deleteImage){
+    }
+    if (this.deleteImage){
       this.newImageProfile = {
         thumbnail: '',
         blob: ''
       };
-      this.saveInfoUserAndConsultancy(data);
-    }else {
-      this.saveInfoUserAndConsultancy(data);
+      this.deleteImage =false;
+      this.updateProfile(data, event);
     }
-
+    if(this.newSignature){
+      this.uploadSignature();
+    }
+      this.saveInfoUserAndConsultancy(data);
   }
 
   private saveInfoUserAndConsultancy(data: any): void{
@@ -329,7 +376,7 @@ export class ProfileComponent implements OnInit {
     this.consultancy.officePhone = (data.officePhone? data.officePhone: '');
     this.consultancy.location.latitude = this.latLong.latitude || 0;
     this.consultancy.location.longitude = this.latLong.longitude || 0;
-    if (this.newImage || this.deleteImage){
+    if (this.newImageProfile){
       this.user.profileImage = {
         blobName: this.newImageProfile.blob,
         thumbnail: this.newImageProfile.thumbnail
@@ -338,6 +385,12 @@ export class ProfileComponent implements OnInit {
         profileImage: this.user.profileImage.thumbnail,
         role : this.user.role
       })
+    }
+    if (this.newSig) {
+      this.user.signature = {
+        blobName: this.newSig.blob,
+        thumbnail: this.newSig.thumbnail
+      }
     }
     this._api.updatePerson(this.user).subscribe(response=>{
       switch (response.code) {

@@ -14,6 +14,7 @@ import {MessagingService} from '@app/core/services/messaging/messaging.service';
 import {Observable} from 'rxjs/index';
 import {LocalStorageService} from '@app/core/services/local-storage/local-storage.service';
 import {ApiService} from '@app/core/services/api/api.service';
+import {DialogService} from '@app/core/components/dialog/dialog.service';
 
 @Injectable()
 export class AuthService implements Resolve<any>{
@@ -23,7 +24,8 @@ export class AuthService implements Resolve<any>{
     private _router: Router,
     private _messaging: MessagingService,
     private _sessionStorage: SessionStorageService,
-    private _api: ApiService
+    private _api: ApiService,
+    private _dialog: DialogService
   ) { }
 
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
@@ -76,7 +78,28 @@ export class AuthService implements Resolve<any>{
       name: Constants.IdSession,
       maxAge: time
     });
-    this._router.navigate(['/home']).then(() => {});
+    if(user.signature){
+      this._router.navigate(['/home']).then(() => {});
+    }else{
+      this._dialog.alertDialog(
+        'Información',
+        'Para continuar es necesario registrar su firma digital',
+        'ACEPTAR').afterClosed().subscribe(response =>{
+          switch (user.role) {
+            case 1:
+            case 2:
+            case 3:
+              this._router.navigate(['/home/profile/consultancy']);
+              break;
+            case 4:
+            case 5:
+            case 6:
+            case 7:
+              this._router.navigate(['/home/profile/user']);
+              break;
+          }
+      })
+    }
   }
 
   public logOut(): void{

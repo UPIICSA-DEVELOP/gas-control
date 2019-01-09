@@ -19,6 +19,7 @@ import {CookieService} from '@app/core/services/cookie/cookie.service';
 import {Constants} from '@app/core/constants.core';
 import {SessionStorageService} from '@app/core/services/session-storage/session-storage.service';
 import {UploadFileResponse} from '@app/core/components/upload-file/upload-file.component';
+import {SignaturePadService} from '@app/core/components/signature-pad/signature-pad.service';
 
 @Component({
   selector: 'app-user-profile',
@@ -52,6 +53,7 @@ export class UserProfileComponent implements OnInit {
   private _formData: FormData;
   private _formDeleteData: FormData;
   private _formFile: FormData;
+  private _formSignature: FormData;
   public user: any;
   public userInformation: any;
   public load: boolean;
@@ -88,6 +90,9 @@ export class UserProfileComponent implements OnInit {
   public file: any;
   public newFileSub: any;
   public newFile: boolean = false;
+  public signature: any;
+  public newSignature: boolean = false;
+  public newSig: any;
   constructor(
     private _router: Router,
     private _api: ApiService,
@@ -97,7 +102,8 @@ export class UserProfileComponent implements OnInit {
     private _countryCodeService: CountryCodeService,
     private _snackBarService: SnackBarService,
     private _uploadFile: UploadFileService,
-    private _formBuilder: FormBuilder
+    private _formBuilder: FormBuilder,
+    private _signaturePad: SignaturePadService
   ) { }
 
   ngOnInit() {
@@ -127,6 +133,36 @@ export class UserProfileComponent implements OnInit {
     this._formFile.append('path', '');
     this._formFile.append('fileName', 'benzene-'+this.user.id+'-'+new Date().getTime()+'.pdf');
     this._formFile.append('file', event.file);
+  }
+
+  public changeSignature():void{
+    this._signaturePad.open().afterClosed().subscribe(response=>{
+      switch (response.code) {
+        case 1:
+          this.change= true;
+          this.newSignature = true;
+          this.signature = response.base64;
+          this._formSignature = new FormData();
+          this._formSignature.append('path', '');
+          this._formSignature.append('fileName', 'signature-'+this.user.id+'-'+new Date().getTime()+'.png');
+          this._formSignature.append('isImage', 'true');
+          this._formSignature.append('file', response.blob);
+          break;
+      }
+    })
+  }
+
+  public uploadSignature():void{
+    this._uploadFile.upload(this._formSignature).subscribe(response => {
+      if (response){
+        this.newSig = {
+          thumbnail: response.item.thumbnail || '',
+          blob: response.item.blobName || ''
+        };
+        this.newSignature = false;
+        this.updateProfile(this.profileForm.value);
+      }
+    });
   }
 
   public onRemoveImage(): void {
@@ -236,6 +272,9 @@ export class UserProfileComponent implements OnInit {
               }
             }
           }
+          if(this.user.signature){
+            this.signature = this.user.signature.thumbnail
+          }
           if (this.user.website){
             if (this.user.website.includes('http://')){
               this.user.website = this.user.website.replace('http://','');
@@ -315,6 +354,10 @@ export class UserProfileComponent implements OnInit {
     if (this.profileForm.invalid){
       return;
     }
+    if(!this.signature){
+      this._snackBarService.openSnackBar('Por favor, registre su firma','OK', 3000);
+      return;
+    }
     if (this.newImage){
       this.uploadImage();
     }
@@ -328,6 +371,9 @@ export class UserProfileComponent implements OnInit {
     }
     if (this.newFile){
       this.uploadFile();
+    }
+    if(this.newSignature){
+      this.uploadSignature();
     }
     this.saveProfileInformation(data);
   }
@@ -362,6 +408,12 @@ export class UserProfileComponent implements OnInit {
       this.userInformation.benzene = {
         thumbnail: this.newFileSub.thumbnail,
         blobName: this.newFileSub.blob
+      }
+    }
+    if (this.newSig) {
+      this.user.signature = {
+        blobName: this.newSig.blob,
+        thumbnail: this.newSig.thumbnail
       }
     }
     this._api.updatePerson(this.user).subscribe(response=>{
