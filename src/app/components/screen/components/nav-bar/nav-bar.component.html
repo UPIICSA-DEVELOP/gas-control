@@ -33,7 +33,7 @@
         </button>
         <div class="user">
           <button class="button-user" mat-button (click)="navigateProfile()">
-            <img class="image-user" *ngIf="imageExist" [src]="user.profileImage">
+            <img class="image-user" *ngIf="imageExist" [src]="user.profileImage" alt="User profile image">
             <mat-icon *ngIf="!imageExist">account_circle</mat-icon>
           </button>
         </div>
@@ -51,7 +51,8 @@
         </mat-menu>
         <div class="user">
           <button mat-button [mat-menu-trigger-for]="menu_two" class="button-user">
-            <mat-icon>account_circle</mat-icon>
+            <img class="image-user" *ngIf="imageExist" [src]="user.profileImage" alt="User profile image">
+            <mat-icon *ngIf="!imageExist">account_circle</mat-icon>
           </button>
           <mat-menu #menu_two>
             <button mat-menu-item (click)="navigateProfile()">Perfil</button>
