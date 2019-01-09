@@ -42,6 +42,7 @@
     "firebase": "^5.5.3",
     "webpack-node-externals": "^1.7.2",
     "@google-cloud/storage": "^2.0.3",
+    "signature_pad": "^3.0.0-beta.3",
     "zone.js": "0.8.26",
     "nodemailer": "^4.6.8",
     "dom-parser": "^0.1.5",
