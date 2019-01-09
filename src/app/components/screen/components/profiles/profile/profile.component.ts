@@ -327,8 +327,8 @@ export class ProfileComponent implements OnInit {
     this.consultancy.rfc = data.rfc;
     this.consultancy.address = data.address;
     this.consultancy.officePhone = (data.officePhone? data.officePhone: '');
-    this.consultancy.location.latitude = this.latLong.latitude;
-    this.consultancy.location.longitude = this.latLong.longitude;
+    this.consultancy.location.latitude = this.latLong.latitude || 0;
+    this.consultancy.location.longitude = this.latLong.longitude || 0;
     if (this.newImage || this.deleteImage){
       this.user.profileImage = {
         blobName: this.newImageProfile.blob,
