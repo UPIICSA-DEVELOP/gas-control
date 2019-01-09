@@ -9,54 +9,35 @@
   <app-nav-bar></app-nav-bar>
   <!-- Nav Bar [END]-->
   <!-- Home View [STAR]-->
-  <div id="Home" >
+  <div id="home" >
     <div class="background"></div>
-
     <!-- Column One [STAR]-->
-    <div id="Column-One">
+    <div id="column-one">
+      <div id="progress">
+        <app-station-status></app-station-status>
+      </div>
+      <div id="tasks">
+        <app-list-tasks></app-list-tasks>
+      </div>
+    </div>
+    <!-- Column One [END]-->
+
+    <!-- Column Two [STAR]-->
+    <div id="column-two">
       <div id="contact">
         <app-gas-station></app-gas-station>
       </div>
       <div id="stations">
         <app-station-list></app-station-list>
       </div>
-    </div>
-    <!-- Column One [END]-->
-
-    <!-- Column Two [STAR]-->
-    <div id="Column-Two">
-
-      <!-- Container[STAR]-->
-      <div id="Container" >
-
-        <!-- Station Status [START]-->
-        <div id="Station-Status">
-          <app-station-status></app-station-status>
-        </div>
-        <!-- Station Status [END]-->
-
-        <!-- Collaborators List [START]-->
-        <div id="Collaborators-list">
-          <app-task-filter></app-task-filter>
-        </div>
-        <!-- Collaborators List [END]-->
-
+      <div id="footer">
+        <app-footer></app-footer>
       </div>
-      <!-- Container[END]-->
-
-      <!-- Activities List [STAR]-->
-      <div id="Activities-List">
-        <app-list-tasks></app-list-tasks>
-      </div>
-      <!-- Activities List [END]-->
-
     </div>
     <!-- Column Two [END]-->
 
   </div>
   <!-- Home View [END]-->
-  <!--app-gas-station></app-gas-station>
-  <app-collaborators></app-collaborators-->
 
 
 </mat-sidenav-container>
