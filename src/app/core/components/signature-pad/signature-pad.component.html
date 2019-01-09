@@ -4,6 +4,25 @@
   ~ Proprietary and confidential
   -->
 
-<p>
-  signature-pad works!
-</p>
+<div id="signature-pad">
+  <mat-toolbar [color]="'primary'">
+    Firma digital
+  </mat-toolbar>
+  <mat-dialog-content class="container">
+    <span>Firme dentro del recuadro blanco</span>
+    <div id="pad">
+      <canvas></canvas>
+    </div>
+  </mat-dialog-content>
+  <mat-dialog-actions>
+    <button type="button" mat-flat-button [color]="'primary'" (click)="closeCancel()">
+      CANCELAR
+    </button>
+    <button type="button" mat-flat-button [color]="'primary'" (click)="clearCanvas()">
+      LIMPIAR
+    </button>
+    <button mat-flat-button [color]="'primary'" (click)="closeAccept()">
+      ACEPTAR
+    </button>
+  </mat-dialog-actions>
+</div>

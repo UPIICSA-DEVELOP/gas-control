@@ -5,8 +5,8 @@
  */
 
 import { Injectable } from '@angular/core';
-import {ApiService} from '@app/core/services/api/api.service';
-import {observable, Observable} from 'rxjs';
+import {MatDialog, MatDialogRef} from '@angular/material';
+import {SignaturePadComponent} from '@app/core/components/signature-pad/signature-pad.component';
 
 @Injectable({
   providedIn: 'root'
@@ -14,14 +14,10 @@ import {observable, Observable} from 'rxjs';
 export class SignaturePadService {
 
   constructor(
-    private _api: ApiService
+    private _dialog: MatDialog
   ) { }
 
-  uploadSignature(formData: FormData): Observable<any>{
-    return new Observable((observable)=>{
-      this._api.uploadFileToBlob(formData).subscribe(response=>{
-        observable.next(response);
-      })
-    })
+  public open(): MatDialogRef<SignaturePadComponent>{
+    return this._dialog.open(SignaturePadComponent,{panelClass:'signature-panel', disableClose: true});
   }
 }

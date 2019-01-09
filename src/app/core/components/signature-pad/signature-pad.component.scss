@@ -4,3 +4,27 @@
  * Proprietary and confidential
  */
 
+#signature-pad {
+  mat-toolbar{
+    height: 48px;
+  }
+  mat-dialog-content {
+    position: relative;
+    margin: 4px 0;
+    #pad {
+      border-style: solid;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 200px;
+      canvas{
+        height: 100%;
+        width: 100%;
+      }
+    }
+  }
+
+  mat-dialog-actions {
+    justify-content: space-around;
+  }
+}
