@@ -6,12 +6,21 @@
  */
 
 import { NgModule} from '@angular/core';
+import {ConvertTimeAndCapacityPipe} from '@app/core/pipes/convert-time-and-capacity/convert-time-and-capacity.pipe';
 
 @NgModule({
-  declarations: [],
-  imports: [],
-  exports: [],
-  providers: []
+  declarations: [
+    ConvertTimeAndCapacityPipe
+  ],
+  imports: [
+
+  ],
+  exports: [
+    ConvertTimeAndCapacityPipe
+  ],
+  providers: [
+    ConvertTimeAndCapacityPipe
+  ]
 })
 export class PipesModule {
   constructor() {
