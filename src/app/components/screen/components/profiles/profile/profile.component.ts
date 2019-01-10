@@ -105,9 +105,12 @@ export class ProfileComponent implements OnInit {
   public closeProfile(){
     if (this.change){
       this.saveChangeBeforeExit()
-    } else{
-      this._router.navigate(['/home']);
     }
+    if (!this.signature) {
+      this._snackBarService.openSnackBar('Por favor, registre su firma','OK', 3000);
+      return;
+    }
+    this._router.navigate(['/home']);
   }
 
   public onLoadImage(event: UploadFileResponse): void{
@@ -130,8 +133,6 @@ export class ProfileComponent implements OnInit {
     this.deleteImage = true;
     this.newImage = false;
     this.profileImage='';
-    this._formData = new FormData();
-    this._formData.append('file',this.blobName);
     this._formDeleteData = new FormData();
     this._formDeleteData.append('blobName', this.blobName);
   }

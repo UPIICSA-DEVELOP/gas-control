@@ -111,7 +111,36 @@ export class UserProfileComponent implements OnInit {
     this._apiLoaderService.getProgress().subscribe(load => {this.load = load; });
   }
   public closeProfile():void{
+    if (this.change){
+      this.saveChangeBeforeExit()
+    }
+    if (!this.signature) {
+      this._snackBarService.openSnackBar('Por favor, registre su firma','OK', 3000);
+      return;
+    }
     this._router.navigate(['/home']);
+  }
+
+  public saveChangeBeforeExit(): void{
+    this._dialogService.confirmDialog(
+      '¿Desea salir sin guardar cambios?',
+      '',
+      'ACEPTAR',
+      'CANCELAR'
+    ).afterClosed().subscribe(response=>{
+      switch (response.code) {
+        case 1:
+          this.change = false;
+          this._router.navigate(['/home']);
+          break;
+      }
+    })
+  }
+
+  public detectChange(): void{
+    this.profileForm.valueChanges.subscribe( value => {
+      this.change = true;
+    })
   }
 
   public onLoadImage(event: UploadFileResponse): void{
@@ -170,8 +199,6 @@ export class UserProfileComponent implements OnInit {
     this.deleteImage = true;
     this.newImage = false;
     this.profileImage='';
-    this._formData = new FormData();
-    this._formData.append('file',this.blobName);
     this._formDeleteData = new FormData();
     this._formDeleteData.append('blobName', this.blobName);
   }
