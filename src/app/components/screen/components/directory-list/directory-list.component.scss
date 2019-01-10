@@ -1,0 +1,123 @@
+/*!
+ * Copyright (C) MapLander S de R.L de C.V - All Rights Reserved
+ * Unauthorized copying of this file, via any medium is strictly prohibited
+ * Proprietary and confidential
+ */
+
+@import "../../../../../styles/colors";
+#directory-list{
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  width: 30vw;
+  z-index: 3;
+  overflow: hidden;
+  display: flex;
+  @media screen and (max-width: 1024px){
+    width: 35vw;
+  }
+  @media screen and (max-width: 900px){
+    width: 50vw;
+  }
+  @media screen and(max-width: 600px){
+    width: 100vw;
+  }
+  .tap{
+    margin-top: 72px;
+    background-color: #FFFFFF;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 40px;
+    width: 40px;
+    border-radius: 4px 0 0 4px;
+    box-shadow: 0px 2px 1px -1px rgba(0, 0, 0, 0.2), 0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12);
+    @media screen and (max-width: 600px){
+      display: none;
+    }
+  }
+  .content{
+    margin-top: 48px;
+    height: calc(100% - 48px);
+    overflow: hidden;
+    width: 100%;
+    background: #FFFFFF;
+    box-shadow: 0px 2px 1px -1px rgba(0, 0, 0, 0.2), 0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12);
+  }
+  .head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px;
+    span{
+      font-family: Roboto, 'Helvetice New', 'Arial', sans-serif;
+      font-weight: 700;
+      font-size: 16px;
+      color: #707070;
+    }
+    button{
+      display: none;
+      @media screen and (max-width: 600px){
+        display: block;
+      }
+    }
+  }
+  .container {
+    padding: 0 16px;
+    height: calc(100% - 72px);
+    overflow: auto;
+    .collaborator {
+      margin-bottom: 8px;
+      padding: 0;
+      mat-card-content{
+        display: flex;
+        width: 100%;
+        height: 100%;
+        padding: 12px 0;
+        margin: 0;
+        .image {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          padding: 0 10px;
+          .image-collaborator {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            box-shadow: 0 3px 1px 1px rgba(0, 0, 0, 0.1), 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, .10);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+          }
+          mat-icon{
+            color: mat-color($primary);
+            font-size: 50px;
+          }
+        }
+        .information {
+          padding: 0 10px;
+          width: 75%;
+          .info {
+            color: #707070;
+            font-family: Roboto, 'Helvetice New', 'Arial', sans-serif;
+            font-weight: 500;
+            font-size: 14px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            margin: 4px 0;
+          }
+        }
+      }
+      .action-buttons{
+        padding: 4px;
+        height: 100%;
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        color: #707070;
+      }
+    }
+  }
+}

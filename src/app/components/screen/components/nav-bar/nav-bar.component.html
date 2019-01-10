@@ -17,7 +17,7 @@
         <img alt="app-logo" src="../assets/Images/logo.png" routerLink="/home">
       </div>
       <div class="navigation-buttons">
-        <button id="btn-collaborators" mat-button routerLink="/home/collaborators">
+        <button id="btn-collaborators" *ngIf="user.role<=3" mat-button routerLink="/home/collaborators/consultancy">
           <div>Colaboradores</div>
           <mat-icon>group</mat-icon>
         </button>
@@ -47,7 +47,7 @@
         </button>
         <mat-menu #menu_one>
           <button mat-menu-item routerLink="/home/notifications">Notificaciones</button>
-          <button mat-menu-item routerLink="/home/collaborators">Colaboradores</button>
+          <button mat-menu-item *ngIf="user.role<=3" routerLink="/home/collaborators/consultancy">Colaboradores</button>
         </mat-menu>
         <div class="user">
           <button mat-button [mat-menu-trigger-for]="menu_two" class="button-user">

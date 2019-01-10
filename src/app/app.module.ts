@@ -40,6 +40,7 @@ import { CollaboratorsListComponent } from './components/screen/components/colla
 import { StationProfileComponent } from './components/screen/components/profiles/station-profile/station-profile.component';
 import { UserProfileComponent } from './components/screen/components/profiles/user-profile/user-profile.component';
 import { FooterComponent } from './components/screen/components/footer/footer.component';
+import { DirectoryListComponent } from './components/screen/components/directory-list/directory-list.component';
 
 
 @NgModule({
@@ -63,7 +64,8 @@ import { FooterComponent } from './components/screen/components/footer/footer.co
     CollaboratorsListComponent,
     StationProfileComponent,
     UserProfileComponent,
-    FooterComponent
+    FooterComponent,
+    DirectoryListComponent
   ],
   imports: [
     CoreModule,

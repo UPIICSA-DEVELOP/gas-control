@@ -17,6 +17,7 @@ import {NotificationsComponent} from '@app/components/screen/components/notifica
 import {CollaboratorsListComponent} from '@app/components/screen/components/collaborators-list/collaborators-list.component';
 import {UserProfileComponent} from '@app/components/screen/components/profiles/user-profile/user-profile.component';
 import {StationProfileComponent} from '@app/components/screen/components/profiles/station-profile/station-profile.component';
+import {DirectoryListComponent} from '@app/components/screen/components/directory-list/directory-list.component';
 const URL_BASE = environment.url;
 
 export const appRoutes: Routes = [
@@ -51,19 +52,24 @@ export const appRoutes: Routes = [
         path: 'notifications',
         component: NotificationsComponent,
         resolve: {data: AuthService},
-        data:{
-          title: 'Notificaciones',
-          url: URL_BASE + 'home/notifications'
-        }
       },
       {
         path:'collaborators',
-        component: CollaboratorsListComponent,
         resolve: {data: AuthService},
         data:{
           title: 'Colaboradores',
           url: URL_BASE + 'home/collaborators'
-        }
+        },
+        children:[
+          {
+            path:'consultancy',
+            component: CollaboratorsListComponent
+          },
+          {
+            path: 'gas-station',
+            component: DirectoryListComponent
+          }
+        ]
       },
       {
         path: 'updatepassword',

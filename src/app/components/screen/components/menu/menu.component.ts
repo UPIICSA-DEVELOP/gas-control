@@ -32,6 +32,7 @@ export class MenuComponent implements OnInit {
 
   ngOnInit() {
     this.menuObject.emit(this.menu);
+    this.user = SessionStorageService.getItem(Constants.UserInSession);
   }
 
   public onOpenMenu(event: any): void{
@@ -58,7 +59,6 @@ export class MenuComponent implements OnInit {
   }
 
   public navigateProfile(): void{
-    this.user = SessionStorageService.getItem(Constants.UserInSession);
     switch (this.user.role) {
       case 1:
       case 2:
@@ -76,5 +76,22 @@ export class MenuComponent implements OnInit {
     }
     this.onCloseMenu();
   }
-
+  public navigateCollaborators(): void{
+    switch (this.user.role) {
+      case 1:
+      case 2:
+      case 3:
+        this._router.navigate(['/home/collaborators/consultancy']);
+        break;
+      case 4:
+      case 5:
+      case 6:
+      case 7:
+        this._router.navigate(['/home/collaborators/gas-station']);
+        break;
+      default:
+        break;
+    }
+    this.onCloseMenu();
+  }
 }
