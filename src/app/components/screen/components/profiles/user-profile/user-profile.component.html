@@ -36,7 +36,7 @@
               </mat-error>
             </mat-form-field>
             <mat-form-field class="inputs">
-              <input formControlName="email" matInput placeholder="Email comercial" type="email" aria-label="User email">
+              <input [attr.disabled]="load?true:null" formControlName="email" matInput placeholder="Email comercial" type="email" aria-label="User email">
               <mat-error *ngIf="profileForm.controls['email'].hasError('required')">
                 Este campo es obligatorio
               </mat-error>
@@ -119,10 +119,10 @@
             <span class="title">Información adicional</span>
             <div>
               <mat-form-field class="inputs">
-                <input formControlName="ssn" matInput placeholder="Número de seguridad social" type="text" aria-label="User social security ID">
+                <input [attr.disabled]="load?true:null" formControlName="ssn" matInput placeholder="Número de seguridad social" type="text" aria-label="User social security ID">
               </mat-form-field>
               <mat-form-field class="inputs">
-                <mat-select [disabled]="load" placeholder="Tipo de sangre" aria-label="User blood type" [(value)]="bloodType">
+                <mat-select [attr.disabled]="load?true:null" placeholder="Tipo de sangre" aria-label="User blood type" [(value)]="bloodType">
                   <mat-option *ngFor="let blood of bloodGroup" [value]="blood">{{blood}}</mat-option>
                 </mat-select>
               </mat-form-field>
@@ -130,7 +130,8 @@
                 <app-upload-file [layoutTemplate]="button" (onLoad)="onLoadFile($event)" [type]="'file'">
                   <ng-template #button>
                     <span type="button">Estudio de toxicidad (Benceno)</span>
-                    <mat-icon svgIcon="icons:upload"></mat-icon>
+                    <mat-icon *ngIf="file" svgIcon="icons:upload"></mat-icon>
+                    <mat-icon *ngIf="!file">autorenew</mat-icon>
                   </ng-template>
                 </app-upload-file>
               </div>
@@ -138,10 +139,10 @@
                 <div class="formHead">Contacto de emergencia</div>
                 <div class="extra-data">
                   <mat-form-field class="inputs">
-                    <input formControlName="contactName" matInput placeholder="Nombre" type="text" aria-label="User emergency contact name">
+                    <input [attr.disabled]="load?true:null" formControlName="contactName" matInput placeholder="Nombre" type="text" aria-label="User emergency contact name">
                   </mat-form-field>
                   <mat-form-field class="inputs">
-                    <input formControlName="contactPhone" matInput placeholder="Número celular" type="tel" aria-label="User emergency contact phone number">
+                    <input [attr.disabled]="load?true:null" formControlName="contactPhone" matInput placeholder="Número celular" type="tel" aria-label="User emergency contact phone number">
                     <mat-error *ngIf="profileForm.controls['contactPhone'].hasError('minlength')">
                       Se requieren de 8 a 13 dígitos
                     </mat-error>
@@ -150,7 +151,7 @@
                     </mat-error>
                   </mat-form-field>
                   <mat-form-field class="inputs">
-                    <input formControlName="contactKinship" matInput placeholder="Parentesco" type="text" aria-label="User emergency contact relationship">
+                    <input [attr.disabled]="load?true:null" formControlName="contactKinship" matInput placeholder="Parentesco" type="text" aria-label="User emergency contact relationship">
                   </mat-form-field>
                 </div>
               </div>

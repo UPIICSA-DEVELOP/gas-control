@@ -118,13 +118,13 @@
             <span class="title">Información consultora</span>
             <div>
               <mat-form-field class="inputs">
-                <input [attr.disabled]="load?true:null" formControlName="businessName" matInput placeholder="Empresa o Razón social" required type="text" aria-label="Consultancy name">
+                <input [attr.disabled]="load?true:null || user.role===3" formControlName="businessName" matInput placeholder="Empresa o Razón social" required type="text" aria-label="Consultancy name">
                 <mat-error *ngIf="profileForm.controls['businessName'].hasError('required')">
                   Este campo es obligatorio
                 </mat-error>
               </mat-form-field>
               <mat-form-field class="inputs">
-                <input [attr.disabled]="load?true:null" formControlName="rfc" matInput placeholder="R.F.C" required type="text" aria-label="Consultancy legal identifier">
+                <input [attr.disabled]="load?true:null || user.role===3" formControlName="rfc" matInput placeholder="R.F.C" required type="text" aria-label="Consultancy legal identifier">
                 <mat-error *ngIf="profileForm.controls['rfc'].hasError('required')">
                   Este campo es obligatorio
                 </mat-error>
@@ -132,14 +132,14 @@
               <div class="address">
                 <div class="mask" (click)="openSelectAddress()"></div>
                 <mat-form-field class="inputs">
-                  <textarea [attr.disabled]="load?true:null" cdkTextareaAutosize formControlName="address" matInput placeholder="Dirección" required type="text" aria-label="Consultancy address"></textarea>
+                  <textarea [attr.disabled]="load?true:null || user.role===3" cdkTextareaAutosize formControlName="address" matInput placeholder="Dirección" required type="text" aria-label="Consultancy address"></textarea>
                   <mat-error *ngIf="profileForm.controls['address'].hasError('required')">
                     Este campo es obligatorio
                   </mat-error>
                 </mat-form-field>
               </div>
               <mat-form-field class="inputs">
-                <input [attr.disabled]="load?true:null" formControlName="officePhone" matInput placeholder="Número de la consultora" type="tel" aria-label="Consultancy phone number">
+                <input [attr.disabled]="load?true:null || user.role===3" formControlName="officePhone" matInput placeholder="Número de la consultora" type="tel" aria-label="Consultancy phone number">
                 <mat-error *ngIf="profileForm.controls['officePhone'].hasError('minlength')">
                   Se requieren de 8 a 13 dígitos
                 </mat-error>
