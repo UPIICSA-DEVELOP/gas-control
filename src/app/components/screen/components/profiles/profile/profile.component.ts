@@ -361,6 +361,7 @@ export class ProfileComponent implements OnInit {
   }
 
   private saveInfoUserAndConsultancy(data: any): void{
+    debugger;
     data.code = data.code.replace('+','');
     this.user.name = data.name;
     this.user.lastName = data.lastName;
@@ -375,8 +376,10 @@ export class ProfileComponent implements OnInit {
     this.consultancy.rfc = data.rfc;
     this.consultancy.address = data.address;
     this.consultancy.officePhone = (data.officePhone? data.officePhone: '');
-    this.consultancy.location.latitude = this.latLong.latitude || 0;
-    this.consultancy.location.longitude = this.latLong.longitude || 0;
+    if (this.latLong) {
+      this.consultancy.location.latitude = (this.latLong.latitude? this.latLong.latitude: 19.432675);
+      this.consultancy.location.longitude = (this.latLong.longitude? this.latLong.longitude:-99.133461);
+    }
     if (this.newImageProfile){
       this.user.profileImage = {
         blobName: this.newImageProfile.blob,
