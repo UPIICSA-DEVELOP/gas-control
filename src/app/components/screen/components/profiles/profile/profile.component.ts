@@ -387,7 +387,8 @@ export class ProfileComponent implements OnInit {
       };
       SessionStorageService.setItem(Constants.UserInSession, {
         profileImage: this.user.profileImage.thumbnail,
-        role : this.user.role
+        role: this.user.role,
+        refId: (this.user.refId? this.user.refId:null)
       })
     }
     if (this.newSig) {

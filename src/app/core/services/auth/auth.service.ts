@@ -146,7 +146,7 @@ export class AuthService implements Resolve<any>{
           SessionStorageService.setItem(Constants.UserInSession, {
             profileImage: (response.item.profileImage)?response.item.profileImage.thumbnail:null,
             role: response.item.role,
-            refId: response.item.refId
+            refId: (response.item.refId?response.item.refId:null)
           });
           break;
         default:
