@@ -11,7 +11,7 @@ import {Constants} from '@app/core/constants.core';
 import {SessionStorageService} from '@app/core/services/session-storage/session-storage.service';
 import {isPlatformBrowser} from '@angular/common';
 import {MessagingService} from '@app/core/services/messaging/messaging.service';
-import {Observable} from 'rxjs/index';
+import {Observable} from 'rxjs';
 import {LocalStorageService} from '@app/core/services/local-storage/local-storage.service';
 import {ApiService} from '@app/core/services/api/api.service';
 import {DialogService} from '@app/core/components/dialog/dialog.service';
@@ -71,7 +71,8 @@ export class AuthService implements Resolve<any>{
     }
     SessionStorageService.setItem(Constants.UserInSession, {
       profileImage: (user.profileImage)?user.profileImage.thumbnail:null,
-      role: user.role
+      role: user.role,
+      refId: user.refId
     });
     CookieService.setCookie({
       value: user.id,
@@ -144,13 +145,15 @@ export class AuthService implements Resolve<any>{
         case 200:
           SessionStorageService.setItem(Constants.UserInSession, {
             profileImage: (response.item.profileImage)?response.item.profileImage.thumbnail:null,
-            role: response.item.role
+            role: response.item.role,
+            refId: response.item.refId
           });
           break;
         default:
           SessionStorageService.setItem(Constants.UserInSession, {
             profileImage: null,
-            role: response.item.role
+            role: null,
+            refId: null
           });
           break;
       }
