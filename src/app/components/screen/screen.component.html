@@ -14,7 +14,7 @@
     <!-- Column One [STAR]-->
     <div id="column-one">
       <div id="progress">
-        <app-station-status></app-station-status>
+        <app-station-status [station]="stationActive"></app-station-status>
       </div>
       <div id="tasks">
         <app-list-tasks></app-list-tasks>
@@ -25,12 +25,12 @@
     <!-- Column Two [STAR]-->
     <div id="column-two">
       <div id="contact">
-        <app-gas-station></app-gas-station>
+        <app-gas-station [station]="stationActive"></app-gas-station>
       </div>
-      <div id="stations">
-        <app-station-list></app-station-list>
+      <div id="stations"  *ngIf="stationList.length>0">
+        <app-station-list [stationList]="stationList"></app-station-list>
       </div>
-      <div id="footer">
+      <div id="footer-component">
         <app-footer></app-footer>
       </div>
     </div>

@@ -8,6 +8,11 @@ import {Component, OnInit} from '@angular/core';
 import {MaterialModule} from '@app/core/material/material.module';
 import {PipesModule} from '@app/core/pipes/pipes.module';
 import {ServicesModule} from '@app/core/services/services.module';
+import {ApiService} from '@app/core/services/api/api.service';
+import {CookieService} from '@app/core/services/cookie/cookie.service';
+import {Constants} from '@app/core/constants.core';
+import {ActivatedRoute, Router} from '@angular/router';
+import {SessionStorageService} from '@app/core/services/session-storage/session-storage.service';
 
 @Component({
   selector: 'app-screen',
@@ -16,13 +21,65 @@ import {ServicesModule} from '@app/core/services/services.module';
 })
 export class ScreenComponent implements OnInit {
 
+  public stationList: any[];
+  public stationActive: any;
+  private _stationId;
   constructor(
-    private _material: MaterialModule,
-    private _pipes: PipesModule,
-    private _services: ServicesModule
+    private _api:ApiService,
+    private _router: Router,
+    private _activateRoute: ActivatedRoute
   ) { }
 
   ngOnInit() {
+    this.stationList = [];
+    if (this._activateRoute.snapshot.queryParams.station){
+      this._stationId = this._activateRoute.snapshot.queryParams.station;
+      this.getStation();
+    }else{
+      this.getStationList()
+    }
+  }
+
+  private getStationList(): void{
+    const userId = CookieService.getCookie(Constants.IdSession);
+    const user = SessionStorageService.getItem(Constants.UserInSession);
+    this._api.getConsultancyBasicData(userId, user.refId).subscribe(response => {
+      switch (response.code) {
+        case 200:
+          switch (user.role) {
+            case 1:
+            case 2:
+            case 3:
+              this.stationList = response.item.stationLites;
+              if (!this.stationActive) {
+                this.stationActive = this.stationList[0];
+              }
+              break;
+            case 4:
+            case 5:
+            case 6:
+            case 7:
+              this.stationActive = this.stationList[0];
+              break;
+          }
+          break;
+        default:
+          break;
+      }
+    });
+  }
+
+  public getStation():void{
+    this._api.getStation(this._stationId).subscribe(response =>{
+      switch (response.code) {
+        case 200:
+          this.stationActive = response.item;
+          this.getStationList();
+          break;
+        default:
+          break;
+      }
+    });
   }
 
 }
