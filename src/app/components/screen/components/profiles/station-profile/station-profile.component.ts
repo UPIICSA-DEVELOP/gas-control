@@ -231,8 +231,10 @@ export class StationProfileComponent implements OnInit {
     this.station.phoneNumber = data.phoneNumber;
     this.station.email = data.email;
     this.station.workers = data.workers;
-    this.station.location.latitude = this.latLng.latitude;
-    this.station.location.longitude = this.latLng.longitude;
+    if (this.latLng) {
+      this.station.location.latitude = (this.latLng.latitude?this.latLng.latitude:19.432675);
+      this.station.location.longitude = (this.latLng.longitude? this.latLng.longitude: -99.133461);
+    }
     this.station.workShifts = this.workShifts;
     this.station.fuelTanks = this.tanks;
     this.station.dispensers = this.dispensers;
