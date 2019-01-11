@@ -66,7 +66,6 @@ export class StationProfileComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    debugger;
     if (this._activatedRouter.snapshot.queryParams.id) {
       this.id = this._activatedRouter.snapshot.queryParams.id;
       this.initForm();
@@ -137,7 +136,7 @@ export class StationProfileComponent implements OnInit {
       businessName:['',[Validators.required]],
       legalRepresentative:[{value:'', disabled: true},[]],
       rfc: ['',[Validators.required]],
-      crePermission:['',[Validators.required]],
+      crePermission:['',[]],
       address:['',[Validators.required]],
       phoneNumber:['',[Validators.required, Validators.minLength(8), Validators.maxLength(13)]],
       email:['', [Validators.required, Validators.email]],
