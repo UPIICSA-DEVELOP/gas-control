@@ -4,7 +4,8 @@
  *  Proprietary and confidential
  */
 
-import { Component, OnInit } from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
+import {ApiService} from '@app/core/services/api/api.service';
 
 @Component({
   selector: 'app-gas-station',
@@ -12,10 +13,16 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./gas-station.component.scss']
 })
 export class GasStationComponent implements OnInit {
-
-  constructor() { }
+  public utils: any;
+  @Input() public station: any;
+  constructor(
+    private _api: ApiService
+  ) { }
 
   ngOnInit() {
+    this._api.getUtils().subscribe(response=>{
+      this.utils=response.item.groupIcons;
+    })
   }
 
 }

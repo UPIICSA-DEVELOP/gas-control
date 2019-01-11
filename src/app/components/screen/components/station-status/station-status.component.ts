@@ -4,7 +4,7 @@
  *  Proprietary and confidential
  */
 
-import {AfterViewInit, Component, ElementRef, Inject, OnInit, PLATFORM_ID, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, ElementRef, Inject, Input, OnInit, PLATFORM_ID, ViewChild} from '@angular/core';
 import {isPlatformBrowser} from '@angular/common';
 import { Chart } from 'chart.js';
 
@@ -15,9 +15,12 @@ import { Chart } from 'chart.js';
   styleUrls: ['./station-status.component.scss']
 })
 export class StationStatusComponent implements OnInit, AfterViewInit{
+
+  @Input() public station: any;
   @ViewChild('canvas') private _canvas: ElementRef;
   @ViewChild('legend') private _legend: ElementRef;
   public showGraphic: boolean;
+  public data: any;
   public chart: any;
   public chartConfig: any ={
     type: 'doughnut',
@@ -76,7 +79,7 @@ export class StationStatusComponent implements OnInit, AfterViewInit{
           ctx.textBaseline = "middle";
           ctx.fillStyle = '#0d47a1';
 
-          let text = ((90*100)/120).toFixed(0)+"%",
+          let text = "75%",
             textX = Math.round((width - ctx.measureText(text).width) / 2),
             textY = height / 2;
 

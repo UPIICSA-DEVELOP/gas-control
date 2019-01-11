@@ -10,21 +10,22 @@
     <mat-card class="container">
       <mat-card-content style="display: flex">
         <div class="image">
-          <mat-icon class="image-station">local_gas_station</mat-icon>
+          <img *ngIf="utils && station" [src]="utils[station.type-1].fileCS.thumbnail" class="image-station">
+          <mat-icon *ngIf="!utils" class="image-station">local_gas_station</mat-icon>
         </div>
         <div class="content">
           <div class="contact">
             <span>Contacto</span>
           </div>
           <div class="station-email">
-            <span>isabella.bixbee@gmail.com</span>
+            <span *ngIf="station">{{station.email}}</span>
           </div>
           <div class="station-number">
-            <span>55639028439</span>
+            <span *ngIf="station">{{station.phoneNumber}}</span>
           </div>
           <div style="display: flex; justify-content: flex-end">
             <button class="button" [color]="'primary'" mat-flat-button routerLink="/home/collaborators/gas-station">DIRECTORIO</button>
-            <button class="button" [color]="'primary'" mat-flat-button routerLink="/home/profile/gas-station"> VER </button>
+            <button *ngIf="station" class="button" [routerLink]="'/home/profile/gas-station'" [queryParams]="{id: station.id}" [color]="'primary'" mat-flat-button > VER </button>
           </div>
         </div>
       </mat-card-content>

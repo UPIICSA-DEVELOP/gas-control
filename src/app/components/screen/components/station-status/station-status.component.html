@@ -22,10 +22,10 @@
         <div class="alignment">
           <div class="column-2">
             <div class="station-name">
-              <span>Nombre de estación</span>
+              <span *ngIf="station">{{station.name}}</span>
             </div>
             <div class="station-data">
-              <span>Propietario de la estación</span>
+              <span *ngIf="station">{{station.managerName}}</span>
             </div>
             <div class="station-data">
               <span>90/120 actividades</span>
