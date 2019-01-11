@@ -27,7 +27,7 @@
       <div id="contact">
         <app-gas-station [station]="stationActive"></app-gas-station>
       </div>
-      <div id="stations"  *ngIf="stationList.length>0">
+      <div id="stations"  *ngIf="role<5">
         <app-station-list [stationList]="stationList"></app-station-list>
       </div>
       <div id="footer-component">

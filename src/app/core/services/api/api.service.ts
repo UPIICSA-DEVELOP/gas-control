@@ -134,6 +134,21 @@ export class ApiService {
     return this._http.put(ApiService.API_URL_COMPLETE + 'updateStation', station);
   }
 
+  public getLegalRepresentativeBasicData(consultancyId:string, legalRepresentativeId: string):Observable<any>{
+    let params = new HttpParams();
+    params = params.append('consultancyId', consultancyId);
+    params = params.append('legalRepresentativeId', legalRepresentativeId);
+    return this._http.get(ApiService.API_URL_COMPLETE + 'getLegalRepresentativeBasicData',{params: params});
+  }
+
+
+  public getStationBasicData(personId: string): Observable<any>{
+    let params = new HttpParams();
+    params = params.append('personId', personId);
+    return this._http.get(ApiService.API_URL_COMPLETE + 'getStationBasicData',{params: params});
+  }
+
+
   private initNetwork(): void {
     this._networkService.getChangesNetwork().subscribe(status => {
       const text = (!status) ? 'La conexión a internet se ha perdido' : 'De nuevo en linea';
