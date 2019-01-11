@@ -6,45 +6,227 @@
 
 <div id="station-profile">
   <div class="background"></div>
-  <form class="station-form">
-    <div class="basic-information">
-      <div class="header">
-        <div>
-          <mat-icon class="defaultImage">local_gas_station</mat-icon>
+  <mat-progress-bar [mode]="'indeterminate'" *ngIf="load" class="progress"></mat-progress-bar>
+  <div *ngIf="station; then form else loading"></div>
+  <ng-template #form>
+    <form [formGroup]="stationForm" (ngSubmit)="saveStationInformation(stationForm.value)" class="station-form">
+      <div class="basic-information">
+        <div class="header">
+          <div>
+            <img *ngIf="gasImage" [src]="gasImage" class="profileImage">
+            <mat-icon *ngIf="!gasImage" class="defaultImage">local_gas_station</mat-icon>
+          </div>
+          <span class="text">{{station.name}}</span>
         </div>
-        <span class="text">Nombre de la estacion</span>
+        <mat-card class="body">
+          <mat-card-header class="head">
+            <span>Estación de Servicio</span>
+          </mat-card-header>
+          <mat-card-content class="content">
+            <mat-form-field class="inputs">
+              <input formControlName="name" matInput placeholder="Nombre de la sucursal" type="text" aria-label="Station name">
+            </mat-form-field>
+            <mat-form-field class="inputs">
+              <input formControlName="businessName" matInput placeholder="Razón social" required type="text" aria-label="Station business name">
+              <mat-error *ngIf="stationForm.controls['businessName'].hasError('required')">
+                Este campo es obligatorio
+              </mat-error>
+            </mat-form-field>
+            <mat-form-field class="inputs">
+              <input formControlName="legalRepresentative" matInput placeholder="Representante legal" type="text" aria-label="Station owner">
+            </mat-form-field>
+            <mat-form-field class="inputs">
+              <input formControlName="rfc" matInput placeholder="R.F.C." required type="text" aria-label="Station rfc">
+              <mat-error *ngIf="stationForm.controls['rfc'].hasError('required')">
+                Este campo es obligatorio
+              </mat-error>
+            </mat-form-field>
+            <mat-form-field class="inputs">
+              <input formControlName="crePermission" matInput placeholder="Número de permiso de la CRE" required type="text" aria-label="Station cre permission">
+              <mat-error *ngIf="stationForm.controls['crePermission'].hasError('required')">
+                Este campo es obligatorio
+              </mat-error>
+            </mat-form-field>
+            <div class="address">
+              <div class="mask" (click)="openLocation()"></div>
+              <mat-form-field class="inputs">
+                <textarea formControlName="address" matInput placeholder="Dirección" required type="text" aria-label="Station address"></textarea>
+                <mat-error *ngIf="stationForm.controls['address'].hasError('required')">
+                  Este campo es obligatorio
+                </mat-error>
+              </mat-form-field>
+            </div>
+          </mat-card-content>
+        </mat-card>
       </div>
-      <mat-card class="body">
-        <mat-card-header class="head">
-          <span>Estación de Servicio</span>
-        </mat-card-header>
-        <mat-card-content class="content">
-          <mat-form-field class="inputs">
-            <input matInput placeholder="Nombre de la sucursal" required type="text" aria-label="Station name">
-          </mat-form-field>
-          <mat-form-field class="inputs">
-            <input matInput placeholder="Razón social" required type="text" aria-label="Station business name">
-          </mat-form-field>
-          <mat-form-field class="inputs">
-            <input matInput placeholder="Representante legal" type="text" aria-label="Station owner">
-          </mat-form-field>
-          <mat-form-field class="inputs">
-            <input matInput placeholder="R.F.C." required type="text" aria-label="Station rfc">
-          </mat-form-field>
-          <mat-form-field class="inputs">
-            <input matInput placeholder="Número de permiso de la CRE" required type="text" aria-label="Station cree permission">
-          </mat-form-field>
-          <mat-form-field class="inputs">
-            <textarea matInput placeholder="Dirección" required type="text" aria-label="Station address"></textarea>
-          </mat-form-field>
-        </mat-card-content>
-      </mat-card>
-    </div>
-    <div class="station-information"></div>
-    <div class="dispensers-information"></div>
-  </form>
+      <div class="station-information">
+        <mat-card class="card">
+          <mat-card-content>
+            <mat-form-field class="inputs">
+              <input formControlName="phoneNumber" matInput placeholder="Teléfono" required type="text" aria-label="Station phone number">
+              <mat-error *ngIf="stationForm.controls['phoneNumber'].hasError('required')">
+                Este campo es obligatorio
+              </mat-error>
+              <mat-error *ngIf="stationForm.controls['phoneNumber'].hasError('minlength')">
+                Este campo es obligatorio
+              </mat-error>
+              <mat-error *ngIf="stationForm.controls['phoneNumber'].hasError('maxlength')">
+              Este campo es obligatorio
+            </mat-error>
+            </mat-form-field>
+            <mat-form-field class="inputs">
+              <input formControlName="email" matInput placeholder="Email comercial" required type="email" aria-label="Station email">
+              <mat-error *ngIf="stationForm.controls['email'].hasError('required')">
+                Este campo es obligatorio
+              </mat-error>
+              <mat-error *ngIf="stationForm.controls['email'].hasError('email')">
+                La dirección de Email no es valida
+              </mat-error>
+            </mat-form-field>
+            <mat-form-field class="inputs">
+              <input formControlName="managerName" matInput placeholder="Encargado de la Estación" required type="text" aria-label="Station manager">
+            </mat-form-field>
+            <mat-form-field class="inputs">
+              <input formControlName="workers" matInput placeholder="No. de trabajadores" required type="number" aria-label="Station workers">
+              <mat-error *ngIf="stationForm.controls['workers'].hasError('required')">
+                La dirección de Email no es valida
+              </mat-error>
+            </mat-form-field>
+            <div>
+              <div class="double-inputs">
+                <span>Turnos</span>
+                <button type="button" mat-icon-button (click)="addRemoveTurn(false, 1)">
+                  <mat-icon>add</mat-icon>
+                </button>
+              </div>
+              <div *ngFor="let turn of workShifts; let i = index">
+                <div class="input-content">
+                  <mat-form-field class="width-form">
+                    <input matInput placeholder="Inicio" value="{{turn.start | convertTimeAndCapacity : true}}">
+                  </mat-form-field>
+                  <mat-form-field class="width-form">
+                    <input matInput placeholder="Fin" value="{{turn.end | convertTimeAndCapacity: true}}">
+                  </mat-form-field>
+                  <button type="button" *ngIf="workShifts.length>1" mat-icon-button (click)="addRemoveTurn(true,1, i)" class="remove">
+                    <mat-icon>remove</mat-icon>
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div>
+              <span class="text">No. de pozos</span>
+              <div class="fuel-selector">
+                <mat-form-field class="width-form">
+                  <input formControlName="monitoringWells" matInput placeholder="De monitoreo" type="text" aria-label="Station monitoring wells">
+                </mat-form-field>
+                <mat-form-field class="width-form">
+                  <input formControlName="observationWells" matInput placeholder="De observación" type="text" aria-label="Station observable wells">
+                </mat-form-field>
+              </div>
+            </div>
+            <div>
+              <div class="double-inputs">
+                <span>Tanques de Combustible</span>
+                <button mat-icon-button type="button" (click)="addRemoveTurn(false, 2)">
+                  <mat-icon>add</mat-icon>
+                </button>
+              </div>
+              <div *ngFor="let tank of tanks; let i = index">
+                <div class="flex-box">
+                  <div class="fuel">
+                    <mat-form-field class="inputs">
+                      <input matInput placeholder="Capacidad" aria-label="Station tank fuel capacity" value="{{tank.capacity | convertTimeAndCapacity : false}}">
+                    </mat-form-field>
+                    <mat-radio-group class="fuel-selector" aria-label="Station tank fuel type" value="{{tank.fuelType}}">
+                      <mat-radio-button value="1" >Magna</mat-radio-button>
+                      <mat-radio-button value="2">Premium</mat-radio-button>
+                      <mat-radio-button value="3">Diesel</mat-radio-button>
+                    </mat-radio-group>
+                  </div>
+                  <div class="button-container">
+                    <button *ngIf="tanks.length>1" type="button" mat-icon-button (click)="addRemoveTurn(true,2, i)" class="remove">
+                      <mat-icon>remove</mat-icon>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </mat-card-content>
+        </mat-card>
+      </div>
+      <div class="dispensers-information">
+        <div>
+          <mat-card class="card">
+            <mat-card-content class="content-card">
+              <div class="header">
+                <div>
+                  <span>Dispensarios</span>
+                </div>
+                <div>
+                  <button type="button" mat-icon-button (click)="addRemoveTurn(false, 3)">
+                    <mat-icon>add</mat-icon>
+                  </button>
+                </div>
+              </div>
+              <div *ngFor="let dispenser of dispensers; let i = index">
+                <div class="dispensers">
+                  <div class="content">
+                    <span class="head">Dispensario {{i+1}}</span>
+                    <div class="hoses">
+                      <mat-form-field class="field">
+                        <input matInput placeholder="No. de mangueras" type="number" aria-label="Station hoses number" value="{{dispenser.hoses}}">
+                      </mat-form-field>
+                      <mat-form-field class="field">
+                        <input matInput placeholder="No. de serie" type="text" aria-label="Station hoses cre id" value="{{dispenser.identifier}}">
+                      </mat-form-field>
+                    </div>
+                    <section class="hoses" aria-label="Station hoses fuel type">
+                      <mat-checkbox [checked]="dispenser.magna">Magna</mat-checkbox>
+                      <mat-checkbox [checked]="dispenser.premium">Premium</mat-checkbox>
+                      <mat-checkbox [checked]="dispenser.diesel">Diesel</mat-checkbox>
+                    </section>
+                  </div>
+                  <div class="button">
+                    <button type="button" *ngIf="dispensers.length>1" mat-icon-button (click)="addRemoveTurn(true,3, i)" class="remove">
+                      <mat-icon>remove</mat-icon>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </mat-card-content>
+          </mat-card>
+          <mat-card class="documents">
+            <mat-card-header class="head">
+              Documentación
+            </mat-card-header>
+            <mat-card-content class="content">
+              <div class="card-content">
+                <div class="text">Añadir documentación</div>
+                <div class="body">
+                  <button mat-button type="button" class="button">
+                    ASEA
+                  </button>
+                  <button mat-button type="button" class="button">
+                    CRE
+                  </button>
+                </div>
+              </div>
+            </mat-card-content>
+          </mat-card>
+          <div class="save">
+            <button mat-flat-button [color]="'primary'">
+              GUARDAR CAMBIOS
+            </button>
+          </div>
+        </div>
+      </div>
+    </form>
+  </ng-template>
+  <ng-template #loading>
+    <mat-spinner></mat-spinner>
+  </ng-template>
   <div class="btn-close">
-    <button mat-icon-button matTooltip="Cerrar" aria-label="Close-button" (click)="closeProfile()">
+    <button mat-icon-button matTooltip="Cerrar" [disabled]="load" aria-label="Close-button" (click)="closeProfile()">
       <mat-icon>close</mat-icon>
     </button>
   </div>

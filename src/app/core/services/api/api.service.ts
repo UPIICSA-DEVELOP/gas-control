@@ -124,6 +124,16 @@ export class ApiService {
     return this._http.post(ApiService.API_URL_COMPLETE + 'turnOffNotificationStation',options);
   }
 
+  public getStation(id: string):Observable<any>{
+    let params = new HttpParams();
+    params = params.append('id', id);
+    return this._http.get(ApiService.API_URL_COMPLETE + 'getStation',{params: params});
+  }
+
+  public updateStation(station: any):Observable<any>{
+    return this._http.put(ApiService.API_URL_COMPLETE + 'updateStation', station);
+  }
+
   private initNetwork(): void {
     this._networkService.getChangesNetwork().subscribe(status => {
       const text = (!status) ? 'La conexión a internet se ha perdido' : 'De nuevo en linea';

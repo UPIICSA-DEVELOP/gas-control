@@ -6,7 +6,13 @@
 
 import { Component, OnInit } from '@angular/core';
 import {animate, keyframes, query, stagger, style, transition, trigger} from '@angular/animations';
-import {Router} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {ApiService} from '@app/core/services/api/api.service';
+import {ApiLoaderService} from '@app/core/services/api/api-loader.service';
+import {LocationOptions, LocationService} from '@app/core/components/location/location.service';
+import {SnackBarService} from '@app/core/services/snackbar/snackbar.service';
+import {DialogService} from '@app/core/components/dialog/dialog.service';
 
 @Component({
   selector: 'app-station-profile',
@@ -37,16 +43,249 @@ import {Router} from '@angular/router';
   host: {'[@fadeInAnimation]': ''}
 })
 export class StationProfileComponent implements OnInit {
-
+  public workShifts = [];
+  public tanks = [];
+  public dispensers = [];
+  public stationForm: FormGroup;
+  public station: any;
+  public gasImage: string;
+  public change: boolean = false;
+  public latLng: any;
+  public load: boolean;
+  public legalRepresentative: string;
+  private id: string;
   constructor(
-    private _router: Router
+    private _router: Router,
+    private _formBuilder: FormBuilder,
+    private _api: ApiService,
+    private _apiLoader: ApiLoaderService,
+    private _locationService: LocationService,
+    private _snackBarService: SnackBarService,
+    private _dialogService: DialogService,
+    private _activatedRouter: ActivatedRoute
   ) { }
 
   ngOnInit() {
+    debugger;
+    if (this._activatedRouter.snapshot.queryParams.id) {
+      this.id = this._activatedRouter.snapshot.queryParams.id;
+      this.initForm();
+    }
+    this._apiLoader.getProgress().subscribe(load => {this.load = load; });
   }
 
   public closeProfile():void{
-    this._router.navigate(['/home'])
+    if (this.change){
+      this._dialogService.confirmDialog(
+        '¿Desea salir sin guardar cambios?',
+        '',
+        'ACEPTAR',
+        'CANCELAR'
+      ).afterClosed().subscribe(response=>{
+        switch (response.code) {
+          case 1:
+            this._router.navigate(['/home']).then();
+            break;
+        }
+      })
+    } else {
+      this._router.navigate(['/home']).then();
+    }
+  }
+
+  public openLocation():void{
+    let latLng: LocationOptions = {
+      lat: 19.432675,
+      lng: -99.133461
+    };
+    if (this.latLng){
+      latLng = {
+        lat: this.latLng.latitude,
+        lng: this.latLng.longitude
+      }
+    }
+    this._locationService.open(latLng).afterClosed().subscribe(response=>{
+      switch (response.code) {
+        case 1:
+          this.latLng ={
+            latitude: response.location.lat,
+            longitude: response.location.lng
+          };
+          this.stationForm.patchValue({
+            address: response.location.address
+          });
+          break;
+        default:
+          break;
+      }
+    });
+  }
+
+  public getUtils(): void{
+    this._api.getUtils().subscribe(response=>{
+      switch (response.code) {
+        case 200:
+          this.gasImage=response.item.groupIcons[this.station.type-1].fileCS.thumbnail;
+          break;
+      }
+    })
+  }
+
+  public initForm():void{
+    this.stationForm = this._formBuilder.group({
+      name:['',[]],
+      businessName:['',[Validators.required]],
+      legalRepresentative:[{value:'', disabled: true},[]],
+      rfc: ['',[Validators.required]],
+      crePermission:['',[Validators.required]],
+      address:['',[Validators.required]],
+      phoneNumber:['',[Validators.required, Validators.minLength(8), Validators.maxLength(13)]],
+      email:['', [Validators.required, Validators.email]],
+      managerName:[{value:'', disabled: true},[]],
+      workers:['',[Validators.required]],
+      monitoringWells:['',[]],
+      observationWells:['',[]]
+    });
+    this.getStation();
+  }
+
+  private getStation():void{
+    this._api.getStation(this.id).subscribe(response=>{
+      console.log(response);
+      switch (response.code) {
+        case 200:
+          this.station = response.item;
+          if (this.station.dispensers) {
+            this.dispensers = this.station.dispensers;
+          }else{
+            this.dispensers.push({hoses: 0, identifier: '', magna: false, premium: false, diesel: false});
+          }
+          if (this.station.fuelTanks){
+            this.tanks = this.station.fuelTanks;
+          }else{
+            this.tanks.push({capacity: 0, fuelType: 1});
+          }
+          if (this.station.workShifts){
+            this.workShifts = this.station.workShifts;
+          }else{
+            this.workShifts.push({start: '0000', end: '1200'});
+          }
+          if (this.station.location) {
+            this.latLng = {
+              latitude: this.station.location.latitude,
+              longitude: this.station.location.longitude
+            }
+          }
+          this.stationForm.patchValue({
+            name:this.station.name,
+            businessName:this.station.businessName,
+            rfc: this.station.rfc,
+            crePermission:this.station.crePermission,
+            address:this.station.address,
+            phoneNumber:this.station.phoneNumber,
+            email:this.station.email,
+            managerName:this.station.managerName,
+            workers:this.station.workers,
+            monitoringWells:this.station.monitoringWells,
+            observationWells: this.station.observationWells
+          });
+          this.getUtils();
+          if(this.station.idLegalRepresentative){
+            this._api.getPerson(this.station.idLegalRepresentative).subscribe(response=>{
+              switch (response.code) {
+                case 200:
+                  this.legalRepresentative = response.item.name + ' ' + response.item.lastName;
+                  this.stationForm.patchValue({
+                    legalRepresentative:this.legalRepresentative
+                  });
+                  break;
+                default:
+                  this.legalRepresentative = '';
+                  this.stationForm.patchValue({
+                    legalRepresentative:this.legalRepresentative
+                  });
+                  break;
+              }
+            });
+          }else {
+            this.legalRepresentative = '';
+            this.stationForm.patchValue({
+              legalRepresentative:this.legalRepresentative
+            });
+          }
+          break;
+        default:
+          break;
+      }
+    })
+  }
+
+  private saveStationInformation(data: any): void{
+    if (this.stationForm.invalid) {
+      return;
+    }
+    this.station.name = data.name;
+    this.station.businessName = data.businessName;
+    this.station.rfc = data.rfc;
+    this.station.address = data.address;
+    this.station.phoneNumber = data.phoneNumber;
+    this.station.email = data.email;
+    this.station.workers = data.workers;
+    this.station.location.latitude = this.latLng.latitude;
+    this.station.location.longitude = this.latLng.longitude;
+    this.station.workShifts = this.workShifts;
+    this.station.fuelTanks = this.tanks;
+    this.station.dispensers = this.dispensers;
+    console.log(this.station);
+   this._api.updateStation(this.station).subscribe(response => {
+      switch (response.code) {
+        case 200:
+          this.change = false;
+          this._snackBarService.openSnackBar('Información actualizada','OK',3000);
+          this._router.navigate(['/home']);
+          break;
+        default:
+          this._dialogService.alertDialog('No se pudo acceder', 'Se produjo un error de comunicación con el servidor', 'ACEPTAR');
+          break;
+      }
+    })
+  }
+
+  public addRemoveTurn(remove: boolean, type: number, index?: number): void{
+    if(!remove){
+      switch (type) {
+        case 1:
+          this.workShifts.push({start: '0000', end: '1200'});
+          break;
+        case 2:
+          this.tanks.push({capacity: 0, fuelType: 1});
+          break;
+        case 3:
+          this.dispensers.push({hoses: 0, identifier: '', magna: false, premium: false, diesel: false});
+          break;
+      }
+    }else {
+      switch (type) {
+        case 1:
+          this.workShifts.splice(index, 1);
+          break;
+        case 2:
+          this.tanks.splice(index, 1);
+          break;
+        case 3:
+          this.dispensers.splice(index, 1);
+          break;
+      }
+    }
+    if (this.station.workShifts.length != this.workShifts.length){
+      this.change=true;
+    }
+    if (this.station.dispensers.length != this.dispensers) {
+      this.change=true;
+    }
+    if (this.station.fuelTanks.length != this.tanks) {
+      this.change=true;
+    }
   }
 
 }
