@@ -114,9 +114,6 @@ export class ProfileComponent implements OnInit {
   }
 
   public onLoadImage(event: UploadFileResponse): void{
-
-    if(event.isImage)
-
     this.newImage = true;
     this.change = true;
     this.deleteImage = false;
@@ -361,7 +358,6 @@ export class ProfileComponent implements OnInit {
   }
 
   private saveInfoUserAndConsultancy(data: any): void{
-    debugger;
     data.code = data.code.replace('+','');
     this.user.name = data.name;
     this.user.lastName = data.lastName;

@@ -24,8 +24,7 @@ export class StationListComponent implements OnInit {
 
   constructor(
     private _api: ApiService,
-    private _dialogService: DialogService,
-    private _router: Router
+    private _dialogService: DialogService
   ) {
   }
 
@@ -45,7 +44,6 @@ export class StationListComponent implements OnInit {
   }
 
   private changeNotificationsStatus(id: string, status: boolean, index:number): void{
-    debugger;
     if (status) {
       this._dialogService.confirmDialog(
         'Información',
