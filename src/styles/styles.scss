@@ -86,3 +86,31 @@ body{
     }
   }
 }
+
+app-collaborators-list{
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  width: 35vw;
+  @media screen and (max-width: 900px){
+    width: 50vw;
+  }
+  @media screen and (max-width: 600px){
+    width: 100vw;
+  }
+}
+
+app-notifications{
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  width: 30vw;
+  @media screen and (max-width: 900px){
+    width: 50vw;
+  }
+  @media screen and (max-width: 600px){
+    width: 100vw;
+  }
+}

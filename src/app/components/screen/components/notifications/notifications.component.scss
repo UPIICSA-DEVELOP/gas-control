@@ -9,19 +9,10 @@
   top: 0;
   bottom: 0;
   right: 0;
-  width: 30vw;
+  width: 100%;
   z-index: 3;
   overflow: hidden;
   display: flex;
-  @media screen and (max-width: 1024px){
-    width: 35vw;
-  }
-  @media screen and (max-width: 900px){
-    width: 50vw;
-  }
-  @media screen and(max-width: 600px){
-    width: 100vw;
-  }
   .tap{
     margin-top: 72px;
     background-color: #FFFFFF;
