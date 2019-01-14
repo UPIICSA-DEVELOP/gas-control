@@ -5,299 +5,214 @@
   -->
 
 <div id="collaborators-list">
-  <div class="tap">
-    <button mat-icon-button (click)="onCloseCollaborators()">
-      <mat-icon>keyboard_arrow_right</mat-icon>
-    </button>
-  </div>
-  <div class="content">
-    <div class="head">
-      <span>COLABORADORES DE MI CONSULTORA</span>
-      <button mat-icon-button (click)="onCloseCollaborators();">
-        <mat-icon>close</mat-icon>
+  <mat-progress-bar [mode]="'indeterminate'" *ngIf="load" class="progress"></mat-progress-bar>
+  <div>
+    <div class="tap">
+      <button mat-icon-button (click)="onCloseCollaborators()">
+        <mat-icon>keyboard_arrow_right</mat-icon>
       </button>
     </div>
-    <div class="container">
-      <mat-card class="collaborator">
-        <mat-card-content>
-          <div class="image">
-            <mat-icon class="image-collaborator">account_circle</mat-icon>
-          </div>
-          <div class="information">
-            <div class="info"> Nombre del colaborador</div>
-            <div class="info"> Cargo del colaborador</div>
-            <div class="info"> Email del colaborador</div>
-            <div class="info"> Número del colaborador</div>
-          </div>
-        </mat-card-content>
-        <mat-divider></mat-divider>
-        <div class="action-buttons">
-          <button mat-button>
-            <mat-icon>delete</mat-icon>
-          </button>
-          <button mat-button>
-            <mat-icon svgIcon="icons:change_role"></mat-icon>
-          </button>
-          <button mat-button>
-            <mat-icon>mail</mat-icon>
-          </button>
-          <button mat-button>
-            <mat-icon>phone</mat-icon>
-          </button>
-        </div>
-      </mat-card>
-      <mat-card class="collaborator">
-        <mat-card-content>
-          <div class="image">
-            <mat-icon class="image-collaborator">account_circle</mat-icon>
-          </div>
-          <div class="information">
-            <div class="info"> Nombre del colaborador</div>
-            <div class="info"> Cargo del colaborador</div>
-            <div class="info"> Email del colaborador</div>
-            <div class="info"> Número del colaborador</div>
-          </div>
-        </mat-card-content>
-        <mat-divider></mat-divider>
-        <div class="action-buttons">
-          <button mat-button>
-            <mat-icon>delete</mat-icon>
-          </button>
-          <button mat-button>
-            <mat-icon svgIcon="icons:change_role"></mat-icon>
-          </button>
-          <button mat-button>
-            <mat-icon>mail</mat-icon>
-          </button>
-          <button mat-button>
-            <mat-icon>phone</mat-icon>
-          </button>
-        </div>
-      </mat-card>
-      <mat-card class="collaborator">
-        <mat-card-content>
-          <div class="image">
-            <mat-icon class="image-collaborator">account_circle</mat-icon>
-          </div>
-          <div class="information">
-            <div class="info"> Nombre del colaborador</div>
-            <div class="info"> Cargo del colaborador</div>
-            <div class="info"> Email del colaborador</div>
-            <div class="info"> Número del colaborador</div>
-          </div>
-        </mat-card-content>
-        <mat-divider></mat-divider>
-        <div class="action-buttons">
-          <button mat-button>
-            <mat-icon>delete</mat-icon>
-          </button>
-          <button mat-button>
-            <mat-icon svgIcon="icons:change_role"></mat-icon>
-          </button>
-          <button mat-button>
-            <mat-icon>mail</mat-icon>
-          </button>
-          <button mat-button>
-            <mat-icon>phone</mat-icon>
-          </button>
-        </div>
-      </mat-card>
-      <mat-card class="collaborator">
-        <mat-card-content>
-          <div class="image">
-            <mat-icon class="image-collaborator">account_circle</mat-icon>
-          </div>
-          <div class="information">
-            <div class="info"> Nombre del colaborador</div>
-            <div class="info"> Cargo del colaborador</div>
-            <div class="info"> Email del colaborador</div>
-            <div class="info"> Número del colaborador</div>
-          </div>
-        </mat-card-content>
-        <mat-divider></mat-divider>
-        <div class="action-buttons">
-          <button mat-button>
-            <mat-icon>delete</mat-icon>
-          </button>
-          <button mat-button>
-            <mat-icon svgIcon="icons:change_role"></mat-icon>
-          </button>
-          <button mat-button>
-            <mat-icon>mail</mat-icon>
-          </button>
-          <button mat-button>
-            <mat-icon>phone</mat-icon>
-          </button>
-        </div>
-      </mat-card>
-      <mat-card class="collaborator">
-        <mat-card-content>
-          <div class="image">
-            <mat-icon class="image-collaborator">account_circle</mat-icon>
-          </div>
-          <div class="information">
-            <div class="info"> Nombre del colaborador</div>
-            <div class="info"> Cargo del colaborador</div>
-            <div class="info"> Email del colaborador</div>
-            <div class="info"> Número del colaborador</div>
-          </div>
-        </mat-card-content>
-        <mat-divider></mat-divider>
-        <div class="action-buttons">
-          <button mat-button>
-            <mat-icon>delete</mat-icon>
-          </button>
-          <button mat-button>
-            <mat-icon svgIcon="icons:change_role"></mat-icon>
-          </button>
-          <button mat-button>
-            <mat-icon>mail</mat-icon>
-          </button>
-          <button mat-button>
-            <mat-icon>phone</mat-icon>
-          </button>
-        </div>
-      </mat-card>
-      <mat-card class="collaborator">
-        <mat-card-content>
-          <div class="image">
-            <mat-icon class="image-collaborator">account_circle</mat-icon>
-          </div>
-          <div class="information">
-            <div class="info"> Nombre del colaborador</div>
-            <div class="info"> Cargo del colaborador</div>
-            <div class="info"> Email del colaborador</div>
-            <div class="info"> Número del colaborador</div>
-          </div>
-        </mat-card-content>
-        <mat-divider></mat-divider>
-        <div class="action-buttons">
-          <button mat-button>
-            <mat-icon>delete</mat-icon>
-          </button>
-          <button mat-button>
-            <mat-icon svgIcon="icons:change_role"></mat-icon>
-          </button>
-          <button mat-button>
-            <mat-icon>mail</mat-icon>
-          </button>
-          <button mat-button>
-            <mat-icon>phone</mat-icon>
-          </button>
-        </div>
-      </mat-card>
-      <mat-card class="collaborator">
-        <mat-card-content>
-          <div class="image">
-            <mat-icon class="image-collaborator">account_circle</mat-icon>
-          </div>
-          <div class="information">
-            <div class="info"> Nombre del colaborador</div>
-            <div class="info"> Cargo del colaborador</div>
-            <div class="info"> Email del colaborador</div>
-            <div class="info"> Número del colaborador</div>
-          </div>
-        </mat-card-content>
-        <mat-divider></mat-divider>
-        <div class="action-buttons">
-          <button mat-button>
-            <mat-icon>delete</mat-icon>
-          </button>
-          <button mat-button>
-            <mat-icon svgIcon="icons:change_role"></mat-icon>
-          </button>
-          <button mat-button>
-            <mat-icon>mail</mat-icon>
-          </button>
-          <button mat-button>
-            <mat-icon>phone</mat-icon>
-          </button>
-        </div>
-      </mat-card>
-      <mat-card class="collaborator">
-        <mat-card-content>
-          <div class="image">
-            <mat-icon class="image-collaborator">account_circle</mat-icon>
-          </div>
-          <div class="information">
-            <div class="info"> Nombre del colaborador</div>
-            <div class="info"> Cargo del colaborador</div>
-            <div class="info"> Email del colaborador</div>
-            <div class="info"> Número del colaborador</div>
-          </div>
-        </mat-card-content>
-        <mat-divider></mat-divider>
-        <div class="action-buttons">
-          <button mat-button>
-            <mat-icon>delete</mat-icon>
-          </button>
-          <button mat-button>
-            <mat-icon svgIcon="icons:change_role"></mat-icon>
-          </button>
-          <button mat-button>
-            <mat-icon>mail</mat-icon>
-          </button>
-          <button mat-button>
-            <mat-icon>phone</mat-icon>
-          </button>
-        </div>
-      </mat-card>
-      <mat-card class="collaborator">
-        <mat-card-content>
-          <div class="image">
-            <mat-icon class="image-collaborator">account_circle</mat-icon>
-          </div>
-          <div class="information">
-            <div class="info"> Nombre del colaborador</div>
-            <div class="info"> Cargo del colaborador</div>
-            <div class="info"> Email del colaborador</div>
-            <div class="info"> Número del colaborador</div>
-          </div>
-        </mat-card-content>
-        <mat-divider></mat-divider>
-        <div class="action-buttons">
-          <button mat-button>
-            <mat-icon>delete</mat-icon>
-          </button>
-          <button mat-button>
-            <mat-icon svgIcon="icons:change_role"></mat-icon>
-          </button>
-          <button mat-button>
-            <mat-icon>mail</mat-icon>
-          </button>
-          <button mat-button>
-            <mat-icon>phone</mat-icon>
-          </button>
-        </div>
-      </mat-card>
-      <mat-card class="collaborator">
-        <mat-card-content>
-          <div class="image">
-            <mat-icon class="image-collaborator">account_circle</mat-icon>
-          </div>
-          <div class="information">
-            <div class="info"> Nombre del colaborador</div>
-            <div class="info"> Cargo del colaborador</div>
-            <div class="info"> Email del colaborador</div>
-            <div class="info"> Número del colaborador</div>
-          </div>
-        </mat-card-content>
-        <mat-divider></mat-divider>
-        <div class="action-buttons">
-          <button mat-button>
-            <mat-icon>delete</mat-icon>
-          </button>
-          <button mat-button>
-            <mat-icon svgIcon="icons:change_role"></mat-icon>
-          </button>
-          <button mat-button>
-            <mat-icon>mail</mat-icon>
-          </button>
-          <button mat-button>
-            <mat-icon>phone</mat-icon>
-          </button>
-        </div>
-      </mat-card>
+    <div *ngIf="!register && user.role!==3" class="add">
+      <button mat-icon-button matTooltip="Añadir colaborador" (click)="addCollaborator()">
+        <mat-icon>person_add</mat-icon>
+      </button>
     </div>
+  </div>
+  <div class="content">
+    <div *ngIf="!register; then cards else form"></div>
+    <ng-template #cards>
+      <div class="head">
+        <span>COLABORADORES DE MI CONSULTORA</span>
+        <button *ngIf="!register && user.role!==3" class="add" mat-icon-button (click)="addCollaborator();">
+          <mat-icon>person_add</mat-icon>
+        </button>
+        <button mat-icon-button (click)="onCloseCollaborators();">
+          <mat-icon>close</mat-icon>
+        </button>
+      </div>
+      <div class="container" *ngIf="!register">
+        <div *ngIf="collaborators; then view else load"></div>
+        <ng-template #view>
+          <div *ngIf="collaborators.length>0; then list else empty"></div>
+          <ng-template #list>
+            <div *ngFor="let collaborator of collaborators; let i = index">
+              <mat-card class="collaborator">
+                <mat-card-content>
+                  <div class="image">
+                    <img class="image-collaborator" *ngIf="collaborator.profileImage"
+                         [src]="collaborator.profileImage.thumbnail" alt="profile image">
+                    <mat-icon class="image-collaborator" *ngIf="!collaborator.profileImage">account_circle</mat-icon>
+                  </div>
+                  <div class="information">
+                    <div class="info">{{collaborator.name}} {{collaborator.lastName}} </div>
+                    <div class="info"> {{collaborator.jobTitle}}</div>
+                    <div class="info"> {{collaborator.email}}</div>
+                    <div class="info"> {{collaborator.phoneNumber}}</div>
+                  </div>
+                </mat-card-content>
+                <mat-divider></mat-divider>
+                <div class="action-buttons">
+                  <button matTooltip="Eliminar" *ngIf="user.role<3 && collaborator.role!==1" mat-button (click)="deleteCollaborator(collaborator.id,i)">
+                    <mat-icon>delete</mat-icon>
+                  </button>
+                  <button *ngIf="user.role<3 && collaborator.role!==1" mat-button [mat-menu-trigger-for]="role">
+                    <mat-icon matTooltip="Cambiar rol" svgIcon="icons:change_role"></mat-icon>
+                  </button>
+                  <mat-menu #role>
+                    <button mat-menu-item (click)="changeRoleCollaborator(collaborator.id, 2)">Gerente</button>
+                    <button mat-menu-item (click)="changeRoleCollaborator(collaborator.id, 3)">Asistente</button>
+                  </mat-menu>
+                  <a href="mailto:{{collaborator.email}}" class="link">
+                    <button matTooltip="Enviar email" mat-button>
+                      <mat-icon>mail</mat-icon>
+                    </button>
+                  </a>
+                  <a href="tel:+{{collaborator.countryCode}}{{collaborator.phoneNumber}}" class="link">
+                    <button matTooltip="Marcar" mat-button>
+                      <mat-icon>phone</mat-icon>
+                    </button>
+                  </a>
+                </div>
+              </mat-card>
+            </div>
+          </ng-template>
+          <ng-template #empty>
+            <div class="empty">
+              <span>Todavia no tiene colaboradores asociados a su consultora</span>
+            </div>
+          </ng-template>
+        </ng-template>
+        <ng-template #load>
+          <div class="load">
+            <mat-spinner></mat-spinner>
+          </div>
+        </ng-template>
+      </div>
+    </ng-template>
+    <ng-template #form>
+      <div class="head">
+        <span>AGREGAR COLABORADOR</span>
+        <div style="display: flex">
+          <button class="back" mat-icon-button (click)="back()" matTooltip="Volver">
+            <mat-icon>keyboard_backspace</mat-icon>
+          </button>
+          <button mat-icon-button (click)="onCloseCollaborators()">
+            <mat-icon>close</mat-icon>
+          </button>
+        </div>
+      </div>
+      <div class="container">
+        <form [formGroup]="newPerson" (ngSubmit)="validateImgAndSignature(newPerson.value)" class="form">
+          <img src="../../../assets/Images/background.png" class="head-image" alt="background gas station">
+          <div class="profileImage">
+            <app-upload-file [layoutTemplate]="icon" (onLoad)="onLoadImage($event)" (onRemove)="onRemoveImage()" [type]="'image'">
+              <ng-template #icon>
+                <img *ngIf="blobImageProfile" [src]="blobImageProfile" alt="User profile image">
+                <mat-icon *ngIf="!blobImageProfile">add_photo_alternate</mat-icon>
+              </ng-template>
+            </app-upload-file>
+          </div>
+          <mat-form-field class="inputs">
+            <input formControlName="name" matInput placeholder="Nombre(s)" required type="text" aria-label="New collaborator name">
+            <mat-error *ngIf="newPerson.controls['name'].hasError('required')">
+              Este campo es obligatorio
+            </mat-error>
+          </mat-form-field>
+          <mat-form-field class="inputs">
+            <input formControlName="lastName" matInput placeholder="Apellido(s)" required type="text"
+                   aria-label="New collaborator lastName">
+            <mat-error *ngIf="newPerson.controls['lastName'].hasError('required')">
+              Este campo es obligatorio
+            </mat-error>
+          </mat-form-field>
+          <mat-form-field class="inputs">
+            <input formControlName="email" matInput placeholder="Email" required type="email"
+                   aria-label="New collaborator email">
+            <mat-error *ngIf="newPerson.controls['email'].hasError('required')">
+              Este campo es obligatorio
+            </mat-error>
+            <mat-error *ngIf="newPerson.controls['email'].hasError('email')">
+              La dirección de email no es valida
+            </mat-error>
+          </mat-form-field>
+          <div class="modal">
+            <div class="mask" (click)="selectCountryCode()"></div>
+            <mat-form-field class="inputs">
+              <input formControlName="country" matInput placeholder="País" required type="text"
+                     aria-label="New collaborator country">
+              <mat-error *ngIf="newPerson.controls['country'].hasError('required')">
+                Este campo es obligatorio
+              </mat-error>
+            </mat-form-field>
+          </div>
+          <div class="phone">
+            <div class="modal">
+              <div class="mask" (click)="selectCountryCode()"></div>
+              <mat-form-field class="code">
+                <input formControlName="code" matInput placeholder="Código" type="text"
+                       aria-label="New collaborator countryCode">
+              </mat-form-field>
+            </div>
+            <mat-form-field class="number">
+              <input formControlName="phoneNumber" matInput placeholder="Número de celular" required type="text"
+                     aria-label="New collaborator cellphone number">
+              <mat-error *ngIf="newPerson.controls['phoneNumber'].hasError('required')">
+                Este campo es obligatorio
+              </mat-error>
+              <mat-error *ngIf="newPerson.controls['phoneNumber'].hasError('minlength')">
+                Se requieren de 8 a 13 dígitos
+              </mat-error>
+              <mat-error *ngIf="newPerson.controls['phoneNumber'].hasError('maxlength')">
+                Se requieren de 8 a 13 dígitos
+              </mat-error>
+            </mat-form-field>
+          </div>
+          <mat-form-field class="inputs">
+            <mat-select formControlName="role" placeholder="Rol" required aria-label="New collaborator role">
+              <mat-option value="2">Gerente</mat-option>
+              <mat-option value="3">Asistente</mat-option>
+            </mat-select>
+            <mat-error *ngIf="newPerson.controls['role'].hasError('required')">
+              Este campo es obligatorio
+            </mat-error>
+          </mat-form-field>
+          <mat-form-field class="inputs">
+            <input formControlName="jobTitle" matInput placeholder="Cargo" required type="text"
+                   aria-label="New collaborator job title">
+            <mat-error *ngIf="newPerson.controls['jobTitle'].hasError('required')">
+              Este campo es obligatorio
+            </mat-error>
+          </mat-form-field>
+          <div class="website">
+            <mat-form-field class="protocol">
+              <mat-select placeholder="Protocolo" aria-label="New collaborator website protocol" [value]="protocol">
+                <mat-option value="http://">http://</mat-option>
+                <mat-option value="https://">https://</mat-option>
+              </mat-select>
+            </mat-form-field>
+            <mat-form-field class="url">
+              <input formControlName="website" matInput placeholder="Website" type="url"
+                     aria-label="New collaborator website">
+              <mat-error *ngIf="newPerson.controls['website'].hasError('pattern')">
+                Ingrese un sitio web válido
+              </mat-error>
+            </mat-form-field>
+          </div>
+          <div class="signature-input">
+            <div class="formHead">Firma digital</div>
+            <div class="signatureContainer" matTooltip="Cambiar firma" (click)="addSignature()">
+              <span *ngIf="!blobSignature">Registre firma digital</span>
+              <img *ngIf="blobSignature" [src]="blobSignature" class="imageSignature"
+                   alt="New collaborator signature image">
+            </div>
+          </div>
+          <div class="save-button">
+            <button mat-flat-button [color]="'primary'" [disabled]="load">
+              AGREGAR
+            </button>
+          </div>
+        </form>
+      </div>
+    </ng-template>
   </div>
 </div>

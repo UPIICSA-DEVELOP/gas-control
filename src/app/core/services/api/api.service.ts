@@ -148,6 +148,29 @@ export class ApiService {
     return this._http.get(ApiService.API_URL_COMPLETE + 'getStationBasicData',{params: params});
   }
 
+  public deletePerson(id: string): Observable<any>{
+    let params = new HttpParams();
+    params = params.append('id',id);
+    return this._http.delete(ApiService.API_URL_COMPLETE + 'deletePerson',{params:params})
+  }
+
+  public listPersonInConsultancy(consultancyId: string): Observable<any>{
+    let params = new HttpParams();
+    params = params.append('consultancyId',consultancyId);
+    return this._http.get(ApiService.API_URL_COMPLETE + 'listPersonInConsultancy',{params: params});
+  }
+
+  public createReferencedPerson(person: any):Observable<any>{
+    return this._http.post(ApiService.API_URL_COMPLETE + 'createReferencedPerson', person);
+  }
+
+  public updateRolePerson(personId: string, role: number):Observable<any>{
+    const options = {
+      personId: personId,
+      role: role
+    };
+    return this._http.put(ApiService.API_URL_COMPLETE + 'updateRolePerson', options);
+  }
 
   private initNetwork(): void {
     this._networkService.getChangesNetwork().subscribe(status => {
