@@ -17,6 +17,10 @@
     height: 100vh;
     width: 280px;
     z-index: 5;
+    .searchBar{
+      margin-top: 8px;
+      color: mat-color($primary);
+    }
     .sections{
       margin: 12px 24px;
       button{

@@ -17,16 +17,20 @@
         <img alt="app-logo" src="../assets/Images/logo.png" routerLink="/home">
       </div>
       <div class="navigation-buttons">
-        <button id="btn-collaborators" *ngIf="user.role<=3" mat-button routerLink="/home/collaborators/consultancy">
+        <button id="btn-collaborators" *ngIf="user.role<=3 && !barVisible" mat-button routerLink="/home/collaborators/consultancy">
           <div>Colaboradores</div>
           <mat-icon>group</mat-icon>
         </button>
-        <button id="btn-notifications" routerLink="/home/notifications" mat-button>
+        <button id="btn-notifications" *ngIf="!barVisible" routerLink="/home/notifications" mat-button>
           <div>Notificaciones</div>
           <mat-icon>notifications</mat-icon>
         </button>
-        <button mat-button>
+        <button mat-button *ngIf="!barVisible" (click)="openSearchBar()">
           <mat-icon>search</mat-icon>
+        </button>
+        <app-search-bar *ngIf="barVisible"></app-search-bar>
+        <button mat-icon-button matTooltip="Cerrar"  *ngIf="barVisible" (click)="closeSearchBar()">
+          <mat-icon>close</mat-icon>
         </button>
         <button mat-button (click)="logOut()" class="btn-logout">
           <mat-icon>exit_to_app</mat-icon>
@@ -39,17 +43,21 @@
         </div>
       </div>
       <div class="menus">
-        <button mat-button>
+        <button mat-button *ngIf="!barVisible" (click)="openSearchBar()">
           <mat-icon>search</mat-icon>
         </button>
-        <button mat-button [mat-menu-trigger-for]="menu_one">
+        <app-search-bar *ngIf="barVisible"></app-search-bar>
+        <button mat-icon-button matTooltip="Cerrar"  *ngIf="barVisible" (click)="closeSearchBar()">
+          <mat-icon>close</mat-icon>
+        </button>
+        <button mat-button [mat-menu-trigger-for]="menu_one" *ngIf="!barVisible">
           <mat-icon>more_vert</mat-icon>
         </button>
         <mat-menu #menu_one>
           <button mat-menu-item routerLink="/home/notifications">Notificaciones</button>
           <button mat-menu-item *ngIf="user.role<=3" routerLink="/home/collaborators/consultancy">Colaboradores</button>
         </mat-menu>
-        <div class="user">
+        <div class="user" *ngIf="!barVisible">
           <button mat-button [mat-menu-trigger-for]="menu_two" class="button-user">
             <img class="image-user" *ngIf="imageExist" [src]="user.profileImage" alt="User profile image">
             <mat-icon *ngIf="!imageExist">account_circle</mat-icon>

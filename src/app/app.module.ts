@@ -41,6 +41,7 @@ import { StationProfileComponent } from './components/screen/components/profiles
 import { UserProfileComponent } from './components/screen/components/profiles/user-profile/user-profile.component';
 import { FooterComponent } from './components/screen/components/footer/footer.component';
 import { DirectoryListComponent } from './components/screen/components/directory-list/directory-list.component';
+import { SearchBarComponent } from './components/screen/components/search-bar/search-bar.component';
 
 
 @NgModule({
@@ -65,7 +66,8 @@ import { DirectoryListComponent } from './components/screen/components/directory
     StationProfileComponent,
     UserProfileComponent,
     FooterComponent,
-    DirectoryListComponent
+    DirectoryListComponent,
+    SearchBarComponent
   ],
   imports: [
     CoreModule,

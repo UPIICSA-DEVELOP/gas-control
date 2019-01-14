@@ -9,7 +9,7 @@ import {AuthService} from '@app/core/services/auth/auth.service';
 import {DialogService} from '@app/core/components/dialog/dialog.service';
 import {MatSidenav} from '@angular/material';
 import {Constants} from '@app/core/constants.core';
-import {DOCUMENT} from '@angular/common';
+import {DOCUMENT, isPlatformBrowser} from '@angular/common';
 import {Router} from '@angular/router';
 import {SessionStorageService} from '@app/core/services/session-storage/session-storage.service';
 
@@ -23,6 +23,7 @@ export class NavBarComponent implements OnInit, DoCheck  {
   public menu: MatSidenav;
   public user: any = {};
   public imageExist: boolean = false;
+  public barVisible: boolean = false;
   constructor(
     @Inject(DOCUMENT) private _document: Document,
     @Inject(PLATFORM_ID) private _platformId: string,
@@ -85,4 +86,12 @@ export class NavBarComponent implements OnInit, DoCheck  {
     }
   }
 
+
+  public openSearchBar():void{
+    this.barVisible = true;
+  }
+
+  public closeSearchBar():void{
+    this.barVisible = false;
+  }
 }

@@ -7,14 +7,13 @@
 <div id="menu">
   <div class="mask" *ngIf="visibleMask" (click)="onCloseMenu()"></div>
   <mat-sidenav #sidenav (opened)="onOpenMenu($event)">
+    <div class="searchBar">
+      <app-search-bar></app-search-bar>
+    </div>
     <div class="sections">
       <button mat-button (click)="navigateProfile()">
         <mat-icon>account_circle</mat-icon>
         <span>Perfil</span>
-      </button>
-      <button mat-button>
-        <mat-icon>search</mat-icon>
-        <span>Buscar</span>
       </button>
       <button mat-button (click)="onCloseMenu()" routerLink="/home/notifications">
         <mat-icon>notifications</mat-icon>
