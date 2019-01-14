@@ -18,6 +18,7 @@ import {CollaboratorsListComponent} from '@app/components/screen/components/coll
 import {UserProfileComponent} from '@app/components/screen/components/profiles/user-profile/user-profile.component';
 import {StationProfileComponent} from '@app/components/screen/components/profiles/station-profile/station-profile.component';
 import {DirectoryListComponent} from '@app/components/screen/components/directory-list/directory-list.component';
+import {StationListComponent} from '@app/components/screen/components/station-list/station-list.component';
 const URL_BASE = environment.url;
 
 export const appRoutes: Routes = [
@@ -64,12 +65,16 @@ export const appRoutes: Routes = [
           {
             path:'consultancy',
             component: CollaboratorsListComponent
-          },
-          {
-            path: 'gas-station',
-            component: DirectoryListComponent
           }
         ]
+      },
+      {
+        path:'station-list',
+        component: StationListComponent,
+        data:{
+          title: 'Lista de estaciones',
+          url: URL_BASE + 'home/station-list'
+        }
       },
       {
         path: 'updatepassword',

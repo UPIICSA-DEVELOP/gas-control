@@ -10,25 +10,42 @@ import {DialogService} from '@app/core/components/dialog/dialog.service';
 import {CookieService} from '@app/core/services/cookie/cookie.service';
 import {Constants} from '@app/core/constants.core';
 import {Router} from '@angular/router';
+import {animate, style, transition, trigger} from '@angular/animations';
+import {SessionStorageService} from '@app/core/services/session-storage/session-storage.service';
 
 @Component({
   selector: 'app-station-list',
   templateUrl: './station-list.component.html',
-  styleUrls: ['./station-list.component.scss']
+  styleUrls: ['./station-list.component.scss'],
+  animations: [
+    trigger('fadeInAnimation', [
+      transition(':enter', [
+        style({ right: '-100%' }),
+        animate('.40s ease-out', style({ right: '0'  }))
+      ]),
+      transition(':leave', [
+        style({ right: '0'}),
+        animate('.40s ease-in', style({ right: '-100%' }))
+      ])
+    ])
+  ],
+  host: {'[@fadeInAnimation]': ''}
 })
 export class StationListComponent implements OnInit, DoCheck {
 
-  @Input() public stationList: any[];
+  public stationList: any[];
   public notificationActive: boolean[] = [];
   public groupIcon: any;
 
   constructor(
     private _api: ApiService,
-    private _dialogService: DialogService
+    private _dialogService: DialogService,
+    private _router: Router
   ) {
   }
 
   ngOnInit() {
+    this.getStationList();
     this.getUtilities();
   }
 
@@ -74,6 +91,42 @@ export class StationListComponent implements OnInit, DoCheck {
             break;
         }
       })
+    }
+  }
+
+  private onCloseList():void{
+    this._router.navigate(['/home']);
+  }
+
+  private getStationList():void{
+    let user = SessionStorageService.getItem(Constants.UserInSession);
+    switch (user.role) {
+      case 1:
+      case 2:
+      case 3:
+        this._api.getConsultancyBasicData(CookieService.getCookie(Constants.IdSession),user.refId).subscribe(response=>{
+          switch (response.code) {
+            case 200:
+              this.stationList = response.item.stationLites;
+              break;
+            default:
+              break;
+          }
+        });
+        break;
+      case 4:
+        this._api.getLegalRepresentativeBasicData(user.refId, CookieService.getCookie(Constants.IdSession)).subscribe(response=>{
+          switch (response.code) {
+            case 200:
+              this.stationList = response.item.stationLites;
+              break;
+            default:
+              break;
+          }
+        });
+        break;
+      default:
+        break;
     }
   }
 }
