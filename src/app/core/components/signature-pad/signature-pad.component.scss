@@ -11,12 +11,12 @@
   mat-dialog-content {
     position: relative;
     margin: 4px 0;
+    padding: 0 12px;
     #pad {
       border-style: solid;
       display: flex;
       justify-content: center;
       align-items: center;
-      height: 200px;
     }
   }
 
