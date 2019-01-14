@@ -22,7 +22,6 @@ import {ConnectionServiceModule} from 'ng-connection-service';
 import {CoreModule} from '@app/core/core.module';
 import { NavBarComponent } from './components/screen/components/nav-bar/nav-bar.component';
 import {ScreenComponent} from '@app/components/screen/screen.component';
-import { CollaboratorsComponent } from './components/screen/components/collaborators/collaborators.component';
 import { GasStationComponent } from './components/screen/components/gas-station/gas-station.component';
 import { StationStatusComponent } from './components/screen/components/station-status/station-status.component';
 import { ListTasksComponent } from './components/screen/components/list-tasks/list-tasks.component';
@@ -49,7 +48,6 @@ import { SearchBarComponent } from './components/screen/components/search-bar/se
     AppComponent,
     NavBarComponent,
     ScreenComponent,
-    CollaboratorsComponent,
     GasStationComponent,
     StationStatusComponent,
     ListTasksComponent,
