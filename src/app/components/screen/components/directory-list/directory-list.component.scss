@@ -14,7 +14,7 @@
   height: 100%;
   overflow: hidden;
   display: flex;
-
+  box-shadow: 0 3px 1px 1px rgba(0, 0, 0, 0.1), 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, .10);
   .head {
     display: flex;
     justify-content: space-between;
@@ -27,9 +27,11 @@
   }
 
   mat-card-content{
-    height: 100%;
+    height: calc(100% - 60px);
     overflow-y: auto;
+    overflow-x: hidden;
     .collaborator {
+      width: 100%;
       margin-bottom: 8px;
       padding: 0;
       mat-card-content{

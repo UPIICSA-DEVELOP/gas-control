@@ -21,10 +21,6 @@
           <div>Colaboradores</div>
           <mat-icon>group</mat-icon>
         </button>
-        <button id="btn-notifications" *ngIf="!barVisible" routerLink="/home/notifications" mat-button>
-          <div>Notificaciones</div>
-          <mat-icon>notifications</mat-icon>
-        </button>
         <button mat-button *ngIf="!barVisible" (click)="openSearchBar()">
           <mat-icon>search</mat-icon>
         </button>
@@ -54,7 +50,6 @@
           <mat-icon>more_vert</mat-icon>
         </button>
         <mat-menu #menu_one>
-          <button mat-menu-item routerLink="/home/notifications">Notificaciones</button>
           <button mat-menu-item *ngIf="user.role<=3" routerLink="/home/collaborators/consultancy">Colaboradores</button>
         </mat-menu>
         <div class="user" *ngIf="!barVisible">

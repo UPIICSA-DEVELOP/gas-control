@@ -4,74 +4,74 @@
   ~  Proprietary and confidential
   -->
 
-
+<router-outlet></router-outlet>
 <!-- Nav Bar [STAR]-->
 <app-nav-bar></app-nav-bar>
 <!-- Nav Bar [END]-->
 
 <div id="home">
-
-
     <mat-drawer-container>
-
-
-
       <mat-drawer class="menu" mode="side" [opened]="true">
-        Emeritis galluss ducunt ad danista.
+        <div class="station-information" *ngIf="stationActive">
+          <div class="image">
+            <div class="container">
+              <img *ngIf="utils" [src]="utils.groupIcons[stationActive.type-1].fileCS.thumbnail">
+              <mat-icon *ngIf="!utils">local_gas_station</mat-icon>
+            </div>
+          </div>
+          <div class="contact">
+            <div class="info">{{stationActive.phoneNumber}}</div>
+            <div class="info">{{stationActive.email}}</div>
+          </div>
+          <mat-divider></mat-divider>
+          <div class="buttons">
+            <button mat-button [routerLink]="'/home/profile/gas-station'" [queryParams]="{id: stationActive.id}">
+              <mat-icon>local_gas_station</mat-icon>
+              <span>Información de Estacion</span>
+            </button>
+            <button mat-button routerLink="/home/notifications">
+              <mat-icon>notifications</mat-icon>
+              <span>Notificaciones</span>
+            </button>
+            <button mat-button>
+              <mat-icon>library_books</mat-icon>
+              <span>Procedimientos</span>
+            </button>
+            <button mat-button>
+              <mat-icon>person_add</mat-icon>
+              <span>Añadir Colaborador de E.S.</span>
+            </button>
+          </div>
+          <div class="change-station" *ngIf="role<5">
+            <button mat-button routerLink="/home/station-list">
+              <mat-icon>compare_arrows</mat-icon>
+              <span>Cambiar estación de servicio</span>
+            </button>
+          </div>
+        </div>
       </mat-drawer>
       <mat-drawer-content class="main">
-
-
         <div class="col-1">
-          <div class="title">
-            <h1>Cur plasmator experimentum? Parmas sunt cursuss de flavum finis.</h1>
-            <h2>Grandis orgias ducunt ad mortem.</h2>
-            <p>Heu, superbus habitio!</p>
+          <div class="title" *ngIf="stationActive">
+            <h1>{{stationActive.name}}</h1>
+            <h2>{{stationActive.managerName}}</h2>
+            <p>90/120 activiades</p>
           </div>
           <div class="tasks">
            <app-list-tasks></app-list-tasks>
           </div>
         </div>
-
         <div class="col-2">
-
           <div class="progress">
             <app-station-status [station]="stationActive"></app-station-status>
           </div>
-
           <div class="directory">
             <app-directory-list></app-directory-list>
           </div>
-
-        </div>
-
-
-        <!-- Column One [STAR]-->
-        <!--<div id="column-one">
-          <div id="progress">
-            <app-station-status [station]="stationActive"></app-station-status>
+          <div class="footer">
+            <app-footer></app-footer>
           </div>
-
-
-        <div id="tasks">
-          <app-list-tasks></app-list-tasks>
         </div>
-        </div>-->
-        <!-- Column One [END]-->
-
-        <!-- Column Two [STAR]-->
-        <!-- <div id="column-two">
-           <div id="contact">
-             <app-gas-station [station]="stationActive"></app-gas-station>
-           </div>
-           <div id="stations"  *ngIf="role<5">
-             <app-station-list [stationList]="stationList"></app-station-list>
-           </div>
-           <div id="footer-component">
-             <app-footer></app-footer>
-           </div>
-         </div>-->
-        <!-- Column Two [END]-->
       </mat-drawer-content>
     </mat-drawer-container>
 

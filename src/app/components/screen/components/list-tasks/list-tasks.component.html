@@ -9,8 +9,14 @@
     <div class="header">
       <h4>TAREAS</h4>
       <mat-chip-list>
-        <mat-chip color="primary" selected>Primary fish</mat-chip>
-        <mat-chip color="accent">Accent fish</mat-chip>
+        <mat-chip [color]="'primary'" selected>
+          Filtro por tareas:
+          <mat-icon>edit</mat-icon>
+        </mat-chip>
+        <mat-chip [color]="'primary'" selected>
+          Fecha:
+          <mat-icon>edit</mat-icon>
+        </mat-chip>
       </mat-chip-list>
     </div>
     <mat-card-content>

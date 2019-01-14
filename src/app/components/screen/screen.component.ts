@@ -25,6 +25,7 @@ export class ScreenComponent implements OnInit {
   public stationActive: any;
   public role: number;
   public menu: boolean;
+  public utils: any;
   private _stationId;
 
   constructor(
@@ -35,6 +36,7 @@ export class ScreenComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.getUtilities();
     this.menu = true;
     this.stationList = [];
     if (this._activateRoute.snapshot.queryParams.station) {
@@ -92,7 +94,7 @@ export class ScreenComponent implements OnInit {
             default:
               break;
           }
-        })
+        });
         break;
     }
   }
@@ -108,6 +110,18 @@ export class ScreenComponent implements OnInit {
           break;
       }
     });
+  }
+
+  private getUtilities(): void{
+    this._api.getUtils().subscribe(response=>{
+      switch (response.code) {
+        case 200:
+          this.utils = response.item;
+          break;
+        default:
+          break;
+      }
+    })
   }
 
 }
