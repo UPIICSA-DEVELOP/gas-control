@@ -7,19 +7,15 @@
 <div id="station-status">
   <div>
     <mat-card>
-      <mat-card-header>
-        <div class="header">
-          <span class="title">PROGRESO DE ACTIVIDAD</span>
+      <div class="header">
+        <h4>PROGRESO DE ACTIVIDAD</h4>
+      </div>
+      <mat-card-content>
+        <div id="labels" #legend></div>
+        <div class="graphic" *ngIf="showGraphic">
+          <canvas #canvas>{{ chart }}</canvas>
         </div>
-      </mat-card-header>
-      <mat-card-content class="container">
-        <div class="column-1">
-          <div class="graphic" *ngIf="showGraphic">
-            <canvas #canvas>{{ chart }}</canvas>
-          </div>
-          <div id="labels" #legend></div>
-        </div>
-        <div class="alignment">
+        <!--<div class="alignment">
           <div class="column-2">
             <div class="station-name">
               <span *ngIf="station">{{station.name}}</span>
@@ -31,7 +27,7 @@
               <span>90/120 actividades</span>
             </div>
           </div>
-        </div>
+        </div>-->
       </mat-card-content>
     </mat-card>
   </div>

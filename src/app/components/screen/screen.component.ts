@@ -24,6 +24,7 @@ export class ScreenComponent implements OnInit {
   public stationList: any[];
   public stationActive: any;
   public role: number;
+  public menu: boolean;
   private _stationId;
 
   constructor(
@@ -34,6 +35,7 @@ export class ScreenComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.menu = true;
     this.stationList = [];
     if (this._activateRoute.snapshot.queryParams.station) {
       this._stationId = this._activateRoute.snapshot.queryParams.station;
