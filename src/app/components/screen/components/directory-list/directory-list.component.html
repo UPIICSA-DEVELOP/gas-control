@@ -5,19 +5,19 @@
   -->
 
 <div id="directory-list">
-  <div class="tap">
+  <!--<div class="tap">
     <button mat-icon-button (click)="onCloseCollaborators()">
       <mat-icon>keyboard_arrow_right</mat-icon>
     </button>
-  </div>
-  <div class="content">
+  </div>-->
+  <mat-card>
+
     <div class="head">
-      <span>COLABORADORES DE MI ESTACIÓN DE SERVICIO</span>
-      <button mat-icon-button (click)="onCloseCollaborators();">
-        <mat-icon>close</mat-icon>
-      </button>
+      <h4>COLABORADORES</h4>
     </div>
-    <div class="container">
+
+    <mat-card-content>
+
       <mat-card class="collaborator">
         <mat-card-content>
           <div class="image">
@@ -298,6 +298,9 @@
           </button>
         </div>
       </mat-card>
-    </div>
-  </div>
+
+    </mat-card-content>
+
+
+  </mat-card>
 </div>

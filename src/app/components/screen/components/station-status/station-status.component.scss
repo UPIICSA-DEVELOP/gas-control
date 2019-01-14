@@ -4,85 +4,25 @@
  *  Proprietary and confidential
  */
 @import "../../../../../styles/colors";
-* {
-  box-sizing: border-box;
-}
 
 #station-status {
-  .header {
-    padding-bottom: 8px;
-    width: 100%;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    .title {
-      color: #707070;
-      font-family: Roboto, 'Helvetice New', 'Arial', sans-serif;
-      font-weight: 700;
-      font-size: 16px;
+  .header{
+    h4{
+      margin: 0;
     }
   }
-  .container {
+
+  mat-card-content{
     display: flex;
-  }
-  .column-1 {
-    width: 40%;
-    display: flex;
-    @media screen and (max-width: 600px){
-      display: block;
-    }
-    .graphic {
-      position: relative;
-      canvas {
-        width: 140px !important;
-        height: 140px !important;
-        margin: 12px;
-        @media screen and (max-width: 600px){
-          width: 90px !important;
-          height: 90px !important;
-        }
-      }
-    }
-  }
-  .alignment{
-    display: flex;
+    justify-content: space-around;
     align-items: center;
-    width: 60%;
   }
-  .column-2 {
-    width: 100%;
-  }
+  .graphic {
+    position: relative;
+    canvas {
+      width: 100px !important;
+      height: 100px !important;
 
-  .station-name {
-    color:  #000D85;
-    font-family: Roboto, 'Helvetice New', 'Arial', sans-serif;
-    font-weight: 700;
-    font-size: 28px;
-    text-align: right;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    @media screen and (max-width: 1100px) {
-      font-size: 20px;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
     }
-  }
-
-  .station-data {
-    color: #707070;
-    font-family: Roboto, 'Helvetice New', 'Arial', sans-serif;
-    font-weight: 500;
-    font-size: 16px;
-    margin-top: 5px;
-    text-align: right;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-
-  @media screen and (max-width: 800px) {
-    padding-top: 0;
   }
 }

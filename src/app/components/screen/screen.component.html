@@ -3,41 +3,77 @@
   ~  Unauthorized copying of this file, via any medium is strictly prohibited
   ~  Proprietary and confidential
   -->
-<mat-sidenav-container style="height: 100%;">
-  <router-outlet></router-outlet>
-  <!-- Nav Bar [STAR]-->
-  <app-nav-bar></app-nav-bar>
-  <!-- Nav Bar [END]-->
-  <!-- Home View [STAR]-->
-  <div id="home" >
-    <div class="background"></div>
-    <!-- Column One [STAR]-->
-    <div id="column-one">
-      <div id="progress">
-        <app-station-status [station]="stationActive"></app-station-status>
-      </div>
-      <div id="tasks">
-        <app-list-tasks></app-list-tasks>
-      </div>
-    </div>
-    <!-- Column One [END]-->
-
-    <!-- Column Two [STAR]-->
-    <div id="column-two">
-      <div id="contact">
-        <app-gas-station [station]="stationActive"></app-gas-station>
-      </div>
-      <div id="stations"  *ngIf="role<5">
-        <app-station-list [stationList]="stationList"></app-station-list>
-      </div>
-      <div id="footer-component">
-        <app-footer></app-footer>
-      </div>
-    </div>
-    <!-- Column Two [END]-->
-
-  </div>
-  <!-- Home View [END]-->
 
 
-</mat-sidenav-container>
+<!-- Nav Bar [STAR]-->
+<app-nav-bar></app-nav-bar>
+<!-- Nav Bar [END]-->
+
+<div id="home">
+
+
+    <mat-drawer-container>
+
+
+
+      <mat-drawer class="menu" mode="side" [opened]="true">
+        Emeritis galluss ducunt ad danista.
+      </mat-drawer>
+      <mat-drawer-content class="main">
+
+
+        <div class="col-1">
+          <div class="title">
+            <h1>Cur plasmator experimentum? Parmas sunt cursuss de flavum finis.</h1>
+            <h2>Grandis orgias ducunt ad mortem.</h2>
+            <p>Heu, superbus habitio!</p>
+          </div>
+          <div class="tasks">
+           <app-list-tasks></app-list-tasks>
+          </div>
+        </div>
+
+        <div class="col-2">
+
+          <div class="progress">
+            <app-station-status [station]="stationActive"></app-station-status>
+          </div>
+
+          <div class="directory">
+            <app-directory-list></app-directory-list>
+          </div>
+
+        </div>
+
+
+        <!-- Column One [STAR]-->
+        <!--<div id="column-one">
+          <div id="progress">
+            <app-station-status [station]="stationActive"></app-station-status>
+          </div>
+
+
+        <div id="tasks">
+          <app-list-tasks></app-list-tasks>
+        </div>
+        </div>-->
+        <!-- Column One [END]-->
+
+        <!-- Column Two [STAR]-->
+        <!-- <div id="column-two">
+           <div id="contact">
+             <app-gas-station [station]="stationActive"></app-gas-station>
+           </div>
+           <div id="stations"  *ngIf="role<5">
+             <app-station-list [stationList]="stationList"></app-station-list>
+           </div>
+           <div id="footer-component">
+             <app-footer></app-footer>
+           </div>
+         </div>-->
+        <!-- Column Two [END]-->
+      </mat-drawer-content>
+    </mat-drawer-container>
+
+</div>
+

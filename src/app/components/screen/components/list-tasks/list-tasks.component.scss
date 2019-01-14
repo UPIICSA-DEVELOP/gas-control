@@ -5,107 +5,90 @@
  */
 
 #list-tasks{
-  height: 100%;
+
+  width: 100%;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+
+
   .header {
     padding-bottom: 8px;
     width: 100%;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    .title {
-      color: #707070;
-      font-family: Roboto, 'Helvetice New', 'Arial', sans-serif;
-      font-weight: 700;
-      font-size: 16px;
-    }
-  }
-  .list{
-    height: 100%;
   }
   .container{
-    .height{
-      height: 100%;
-      position: relative;
-    }
-    margin-bottom: 4px;
-    box-shadow: 0 3px 1px 1px rgba(0, 0, 0, 0.1), 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, .10);
     height: 100%;
-    .contain-head{
+    .header{
       display: flex;
-      justify-content: space-between;
-      .text{
-        color: #707070;
-        font-family: Roboto, 'Helvetice New', 'Arial', sans-serif;
-        font-weight: 700;
-        font-size: 12px;
-        width: 100%;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-      }
-      .icon{
-        color: #707070;
+      align-items: center;
+      h4{
+        margin: 0 8px;
       }
     }
-    .sub-container{
-      overflow: auto;
-      height: calc(100% - 56px);
-      .task{
-        padding: 0;
-        display: flex;
-        margin: 12px 0;
-        mat-card-content{
+
+    mat-card-content{
+      height: 100%;
+      .sub-container{
+        overflow: auto;
+        height: calc(100% - 56px);
+        .task{
+          padding: 0;
           display: flex;
-          width: 100%;
-          height: 100%;
-          position: relative;
-          padding: 12px;
-        }
-        .date{
-          text-align: center;
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          width: 10%;
-          height: 100%;
-          @media screen and (max-width: 900px){
-            width: 25%;
+          margin: 12px 0;
+          mat-card-content{
+            display: flex;
+            width: 100%;
+            height: 100%;
+            position: relative;
+            padding: 12px;
           }
-          .text-bold{
-            color: #707070;
-            font-family: Roboto, 'Helvetice New', 'Arial', sans-serif;
-            font-weight: 500;
-            font-size: 16px;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
+          .date{
+            text-align: center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 10%;
+            height: 100%;
+            @media screen and (max-width: 900px){
+              width: 25%;
+            }
+            .text-bold{
+              color: #707070;
+              font-weight: 500;
+              font-size: 16px;
+              white-space: nowrap;
+              overflow: hidden;
+              text-overflow: ellipsis;
+            }
           }
-        }
-        .content{
-          width: 70%;
-          height: 100%;
-          .head{
-            color: #000000;
-            font-family: Roboto, 'Helvetice New', 'Arial', sans-serif;
-            font-weight: 700;
-            font-size: 14px;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-          }
-          .text{
-            color: #707070;
-            font-family: Roboto, 'Helvetice New', 'Arial', sans-serif;
-            font-weight: 400;
-            font-size: 12px;
-            margin-top: 5px;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
+          .content{
+            width: 70%;
+            height: 100%;
+            .head{
+              color: #000000;
+              font-weight: 700;
+              font-size: 14px;
+              white-space: nowrap;
+              overflow: hidden;
+              text-overflow: ellipsis;
+            }
+            .text{
+              color: #707070;
+              font-weight: 400;
+              font-size: 12px;
+              margin-top: 5px;
+              white-space: nowrap;
+              overflow: hidden;
+              text-overflow: ellipsis;
+            }
           }
         }
       }
     }
+
   }
   .priority{
     width: 1%;
