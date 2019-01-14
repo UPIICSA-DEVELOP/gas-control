@@ -22,6 +22,32 @@ import {SessionStorageService} from '@app/core/services/session-storage/session-
 import {UploadFileResponse} from '@app/core/components/upload-file/upload-file.component';
 import {SignaturePadService} from '@app/core/components/signature-pad/signature-pad.service';
 
+export interface Person {
+  id: string;
+  refId: string;
+  name: string;
+  lastName: string;
+  email: string;
+  phoneNumber: string;
+  countryCode: string;
+  country: string;
+  role: number;
+  jobTitle: string;
+  website?: string;
+  profileImage?: any;
+  signature: any;
+  password: string;
+}
+
+export interface Consultancy {
+  id: string;
+  businessName: string;
+  rfc: string;
+  address: string;
+  location: any;
+  officePhone?: string;
+}
+
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.component.html',
@@ -54,8 +80,8 @@ export class ProfileComponent implements OnInit {
   private _formData: FormData;
   private _formDeleteData: FormData;
   private _formSignature: FormData;
-  public user: any;
-  public consultancy: any;
+  public user: Person;
+  public consultancy: Consultancy;
   public latLong: any;
   public load: boolean;
   public role: string[] = [
@@ -254,7 +280,28 @@ export class ProfileComponent implements OnInit {
     this._api.getPerson(CookieService.getCookie(Constants.IdSession)).subscribe(response => {
       switch (response.code) {
         case 200:
-          this.user = response.item;
+          this.user = {
+            id: response.item.id,
+            refId: response.item.refId,
+            country: response.item.country || '',
+            countryCode: response.item.countryCode || '',
+            email: response.item.email,
+            jobTitle: response.item.jobTitle,
+            lastName: response.item.lastName,
+            name: response.item.name,
+            password: response.item.password,
+            phoneNumber: response.item.phoneNumber,
+            profileImage: {
+              blobName: response.item.profileImage.blobName,
+              thumbnail: response.item.profileImage.thumbnail
+            },
+            role: response.item.role,
+            signature: {
+              blobName: response.item.signature.blobName,
+              thumbnail: response.item.signature.thumbnail
+            },
+            website: response.item.website
+          };
           if (this.user.profileImage){
             this.profileImage = this.user.profileImage.thumbnail;
             this.blobName = this.user.profileImage.blobName;
@@ -285,7 +332,17 @@ export class ProfileComponent implements OnInit {
           this._api.getConsultancy(this.user.refId).subscribe(response => {
             switch (response.code) {
               case 200:
-                this.consultancy = response.item;
+                this.consultancy = {
+                  address: response.item.address,
+                  businessName: response.item.businessName,
+                  id: response.item.id,
+                  location: {
+                    latitude: response.item.location.latitude,
+                    longitude: response.item.location.longitude
+                  },
+                  officePhone: response.item.officePhone || '',
+                  rfc: response.item.rfc
+                };
                 if (this.consultancy.location){
                   this.latLong = {
                     latitude: this.consultancy.location.latitude,
