@@ -4,7 +4,7 @@
  * Proprietary and confidential
  */
 
-import {Component, Input, OnInit} from '@angular/core';
+import {AfterContentInit, Component, DoCheck, Input, OnInit} from '@angular/core';
 import {ApiService} from '@app/core/services/api/api.service';
 import {DialogService} from '@app/core/components/dialog/dialog.service';
 import {CookieService} from '@app/core/services/cookie/cookie.service';
@@ -16,7 +16,7 @@ import {Router} from '@angular/router';
   templateUrl: './station-list.component.html',
   styleUrls: ['./station-list.component.scss']
 })
-export class StationListComponent implements OnInit {
+export class StationListComponent implements OnInit, DoCheck {
 
   @Input() public stationList: any[];
   public notificationActive: boolean[] = [];
@@ -29,12 +29,15 @@ export class StationListComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.getUtilities();
+  }
+
+  ngDoCheck(): void {
     if (this.stationList) {
       for (let i = 0; i < this.stationList.length; i++){
         this.notificationActive.push(this.stationList[i].activeNotification);
       }
     }
-    this.getUtilities();
   }
 
   private getUtilities():void{
