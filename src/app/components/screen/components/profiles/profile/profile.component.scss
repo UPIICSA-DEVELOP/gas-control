@@ -124,7 +124,6 @@
     }
 
     .title {
-      font-family: Roboto, 'Helvetice New', 'Arial', sans-serif;
       font-weight: 500;
       font-size: 24px;
       color: #000000;
@@ -186,7 +185,6 @@
     }
 
     .formText {
-      font-family: Roboto, 'Helvetice New', 'Arial', sans-serif;
       font-weight: 500;
       font-size: 14px;
       color: #707070;
@@ -194,7 +192,6 @@
     }
 
     .formHead {
-      font-family: Roboto, 'Helvetice New', 'Arial', sans-serif;
       font-weight: 500;
       font-size: 14px;
       color: #707070;
@@ -250,7 +247,12 @@
   .password-button{
     margin-bottom: 12px;
     color: #707070;
-    text-align: center;
+    button{
+      padding: 0;
+      width: 100%;
+      text-align: left;
+      border-bottom: 1px solid gray;
+    }
   }
   mat-spinner{
     z-index: 3;

@@ -1,14 +1,17 @@
 <div id="country-code">
-  <mat-toolbar [color]="'primary'">
+  <mat-toolbar [color]="'primary'" style="justify-content: space-between">
     Código de país
+    <button type="button" mat-icon-button (click)="close()">
+      <mat-icon>close</mat-icon>
+    </button>
   </mat-toolbar>
+  <div class="search">
+    <mat-form-field>
+      <input placeholder="Buscar" matInput type="text" label="Search country" (input)="search($event)">
+    </mat-form-field>
+    <p>Seleccione un país</p>
+  </div>
   <mat-dialog-content>
-    <div class="search">
-      <mat-form-field>
-        <input placeholder="Buscar" matInput type="text" label="Search country" (input)="search($event)">
-      </mat-form-field>
-      <p>Seleccione un país</p>
-    </div>
     <div class="container">
       <div *ngFor="let country of counties" class="country">
         <button mat-button (click)="selectCountry(country)">

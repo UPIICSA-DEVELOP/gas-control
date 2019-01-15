@@ -1,12 +1,13 @@
 #country-code{
+  .search{
+    text-align: center;
+    mat-form-field{
+      width: 80%;
+    }
+  }
   mat-dialog-content{
     margin: 24px;
     position: relative;
-    .search{
-      mat-form-field{
-        width: 100%;
-      }
-    }
 
     .container{
 

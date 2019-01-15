@@ -42,4 +42,8 @@ export class CountryCodeComponent implements OnInit {
     this._dialogRef.close(country);
   }
 
+  public close():void{
+    this._dialogRef.close();
+  }
+
 }
