@@ -33,6 +33,10 @@ import {UpdatePasswordComponent} from '@app/core/components/update-password/upda
 import {UpdatePasswordService} from '@app/core/components/update-password/update-password.service';
 import {SignaturePadComponent} from '@app/core/components/signature-pad/signature-pad.component';
 import {SignaturePadService} from '@app/core/components/signature-pad/signature-pad.service';
+import {DatepickerComponent} from '@app/core/components/datepicker/datepicker.component';
+import {DatepickerService} from '@app/core/components/datepicker/datepicker.service';
+import {TaskFilterComponent} from '@app/core/components/task-filter/task-filter.component';
+import {TaskFilterService} from '@app/core/components/task-filter/task-filter.service';
 
 @NgModule({
   imports: [
@@ -74,7 +78,9 @@ import {SignaturePadService} from '@app/core/components/signature-pad/signature-
     CountryCodeComponent,
     LocationComponent,
     SearchBoxCoreComponent,
-    SignaturePadComponent
+    SignaturePadComponent,
+    DatepickerComponent,
+    TaskFilterComponent
   ],
   entryComponents: [
     DialogComponent,
@@ -83,7 +89,9 @@ import {SignaturePadService} from '@app/core/components/signature-pad/signature-
     CropImageComponent,
     CountryCodeComponent,
     LocationComponent,
-    SignaturePadComponent
+    SignaturePadComponent,
+    DatepickerComponent,
+    TaskFilterComponent
   ],
   providers: [
     AuthService,
@@ -96,7 +104,9 @@ import {SignaturePadService} from '@app/core/components/signature-pad/signature-
     CurrencyPipe,
     CountryCodeService,
     LocationService,
-    SignaturePadService
+    SignaturePadService,
+    DatepickerService,
+    TaskFilterService
   ]
 })
 export class CoreModule { }

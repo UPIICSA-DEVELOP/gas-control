@@ -9,16 +9,37 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
   MatAccordion,
-  MatAutocompleteModule, MatBadgeModule, MatBottomSheet, MatBottomSheetModule, MatButtonModule, MatButtonToggleModule, MatCardModule,
+  MatAutocompleteModule,
+  MatBadgeModule,
+  MatBottomSheet,
+  MatBottomSheetModule,
+  MatButtonModule,
+  MatButtonToggleModule,
+  MatCardModule,
   MatCheckboxModule,
   MatChipsModule,
-  MatDialogModule, MatExpansionModule,
+  MatDatepickerModule,
+  MatDialogModule,
+  MatExpansionModule,
   MatFormFieldModule,
-  MatGridListModule, MatIconModule, MatInputModule, MatListModule, MatMenuModule, MatProgressBarModule, MatProgressSpinnerModule,
+  MatGridListModule,
+  MatIconModule,
+  MatInputModule,
+  MatListModule,
+  MatMenuModule,
+  MatNativeDateModule,
+  MatProgressBarModule,
+  MatProgressSpinnerModule,
   MatRadioModule,
   MatRippleModule,
   MatSelectModule,
-  MatSidenavModule, MatSliderModule, MatSlideToggleModule, MatSnackBarModule, MatTabsModule, MatToolbarModule, MatTooltipModule
+  MatSidenavModule,
+  MatSliderModule,
+  MatSlideToggleModule,
+  MatSnackBarModule,
+  MatTabsModule,
+  MatToolbarModule,
+  MatTooltipModule
 } from '@angular/material';
 
 const MATERIAL_MODULES = [
@@ -50,7 +71,9 @@ const MATERIAL_MODULES = [
   MatSnackBarModule,
   MatTooltipModule,
   MatExpansionModule,
-  MatBadgeModule
+  MatBadgeModule,
+  MatDatepickerModule,
+  MatNativeDateModule
 ];
 
 @NgModule({

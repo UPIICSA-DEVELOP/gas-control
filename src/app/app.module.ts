@@ -25,7 +25,6 @@ import {ScreenComponent} from '@app/components/screen/screen.component';
 import { GasStationComponent } from './components/screen/components/gas-station/gas-station.component';
 import { StationStatusComponent } from './components/screen/components/station-status/station-status.component';
 import { ListTasksComponent } from './components/screen/components/list-tasks/list-tasks.component';
-import { TaskFilterComponent } from './components/screen/components/task-filter/task-filter.component';
 import { LoginComponent } from './components/login/login.component';
 import { NotificationsComponent } from './components/screen/components/notifications/notifications.component';
 import {AngularFireModule} from '@angular/fire';
@@ -51,7 +50,6 @@ import { SearchBarComponent } from './components/screen/components/search-bar/se
     GasStationComponent,
     StationStatusComponent,
     ListTasksComponent,
-    TaskFilterComponent,
     LoginComponent,
     NotificationsComponent,
     ResetPassComponent,

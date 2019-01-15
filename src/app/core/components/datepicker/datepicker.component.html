@@ -1,0 +1,35 @@
+<!--
+  ~ Copyright (C) MapLander S de R.L de C.V - All Rights Reserved
+  ~ Unauthorized copying of this file, via any medium is strictly prohibited
+  ~ Proprietary and confidential
+  -->
+
+<div id="datepicker">
+  <mat-toolbar [color]="'primary'">
+    Filtro por tarea
+  </mat-toolbar>
+  <mat-dialog-content style="display: flex; justify-content: center; align-items: center; padding: 0; margin: 0;">
+    <div style="text-align: center; padding: 8px 0;">
+      <form [formGroup]="dateForm" (ngSubmit)="applyDate(dateForm.value)">
+        <mat-form-field>
+          <input formControlName="startDate" matInput [matDatepicker]="pickerStart" placeholder="Fecha inicial">
+          <mat-datepicker-toggle matSuffix [for]="pickerStart"></mat-datepicker-toggle>
+          <mat-datepicker #pickerStart></mat-datepicker>
+        </mat-form-field>
+        <mat-form-field>
+          <input formControlName="endDate" matInput [matDatepicker]="pickerEnd" placeholder="Fecha final">
+          <mat-datepicker-toggle matSuffix [for]="pickerEnd"></mat-datepicker-toggle>
+          <mat-datepicker #pickerEnd></mat-datepicker>
+        </mat-form-field>
+        <div style="display: flex; justify-content: flex-end; padding: 16px;">
+          <button mat-button type="button" (click)="close()">
+            CANCELAR
+          </button>
+          <button mat-button>
+            APLICAR
+          </button>
+        </div>
+      </form>
+    </div>
+  </mat-dialog-content>
+</div>
