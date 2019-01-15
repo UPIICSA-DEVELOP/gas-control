@@ -32,7 +32,7 @@
     height: calc(100% - 48px);
     overflow: hidden;
     width: 100%;
-    background: #FFFFFF;
+    background: #F2F2F2;
     box-shadow: 0 2px 1px -1px rgba(0, 0, 0, 0.2), 0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12);
 
     .head {
@@ -42,7 +42,6 @@
       padding: 16px;
 
       span {
-        font-family: Roboto, 'Helvetice New', 'Arial', sans-serif;
         font-weight: 700;
         font-size: 16px;
         color: #707070;
@@ -96,7 +95,6 @@
   }
   .percent {
     color: #707070;
-    font-family: Roboto, 'Helvetice New', 'Arial', sans-serif;
     font-weight: 400;
     font-size: 12px;
     position: absolute;
@@ -109,13 +107,11 @@
 
   .task-head {
     color: #000000;
-    font-family: Roboto, 'Helvetice New', 'Arial', sans-serif;
     font-weight: 700;
     font-size: 12px;
   }
   .content-text {
     color: #707070;
-    font-family: Roboto, 'Helvetice New', 'Arial', sans-serif;
     font-weight: 400;
     font-size: 12px;
   }
@@ -133,6 +129,7 @@
   }
   .notify{
     display: flex;
+    margin: 8px 0;
   }
 }
 
