@@ -3,7 +3,7 @@
  *  Unauthorized copying of this file, via any medium is strictly prohibited
  *  Proprietary and confidential
  */
-
+@import "../../../../../styles/colors";
 #list-tasks{
 
   width: 100%;
@@ -24,7 +24,22 @@
     .header{
       align-items: center;
       h4{
-        margin: 0 8px;
+        margin: 8px;
+      }
+      .filters{
+       display: flex;
+        justify-content: space-between;
+        .settings{
+          display: flex;
+          button{
+            margin: -8px 8px 0 0;
+            color: mat-color($primary);
+          }
+        }
+        button{
+          margin: -8px 8px 0 0;
+          color: mat-color($primary);
+        }
       }
     }
 
@@ -32,7 +47,7 @@
       height: 100%;
       .sub-container{
         overflow: auto;
-        height: calc(100% - 56px);
+        height: calc(100% - 72px);
         .task{
           padding: 0;
           display: flex;

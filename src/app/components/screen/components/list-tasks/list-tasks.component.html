@@ -8,16 +8,29 @@
   <mat-card class="container">
     <div class="header">
       <h4>TAREAS</h4>
-      <mat-chip-list>
-        <mat-chip [color]="'primary'" selected>
-          Filtro por tareas:
-          <mat-icon>edit</mat-icon>
-        </mat-chip>
-        <mat-chip [color]="'primary'" selected>
-          Fecha:
-          <mat-icon>edit</mat-icon>
-        </mat-chip>
-      </mat-chip-list>
+      <div class="filters">
+        <div class="settings">
+          <button mat-icon-button style="margin: -8px 8px 0 0; color: #0d47a1">
+            <mat-icon>filter_list</mat-icon>
+          </button>
+          <mat-chip-list>
+            <mat-chip [color]="'primary'" selected (click)="taskFilter()">
+              Filtro por tareas:
+              <span>&nbsp;{{filterApply}}</span>
+              <mat-icon>edit</mat-icon>
+            </mat-chip>
+            <mat-chip [color]="'primary'" selected (click)="dateFilter()">
+              Fecha:
+              <span *ngIf="today">&nbsp;{{startDate}}</span>
+              <span *ngIf="!today">&nbsp;{{startDate}} - {{endDate}}</span>
+              <mat-icon>edit</mat-icon>
+            </mat-chip>
+          </mat-chip-list>
+        </div>
+        <button mat-icon-button (click)="resetFilters()">
+          <mat-icon>refresh</mat-icon>
+        </button>
+      </div>
     </div>
     <mat-card-content>
       <div class="sub-container">
