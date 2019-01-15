@@ -30,6 +30,7 @@
           <mat-icon>close</mat-icon>
         </button>
       </div>
+
       <div class="container" *ngIf="!register">
         <div *ngIf="collaborators; then view else load"></div>
         <ng-template #view>
@@ -51,7 +52,7 @@
                   </div>
                 </mat-card-content>
                 <mat-divider></mat-divider>
-                <div class="action-buttons">
+                <div class="action-buttons" *ngIf="collaborator.id!==id">
                   <button matTooltip="Eliminar" *ngIf="user.role<3 && collaborator.role!==1" mat-button (click)="deleteCollaborator(collaborator.id,i)">
                     <mat-icon>delete</mat-icon>
                   </button>
@@ -59,8 +60,8 @@
                     <mat-icon matTooltip="Cambiar rol" svgIcon="icons:change_role"></mat-icon>
                   </button>
                   <mat-menu #role>
-                    <button mat-menu-item (click)="changeRoleCollaborator(collaborator.id, 2)">Gerente</button>
-                    <button mat-menu-item (click)="changeRoleCollaborator(collaborator.id, 3)">Asistente</button>
+                    <button mat-menu-item *ngIf="collaborator.role !== 2" (click)="changeRoleCollaborator(collaborator.id, 2)">Gerente</button>
+                    <button mat-menu-item *ngIf="collaborator.role !== 3" (click)="changeRoleCollaborator(collaborator.id, 3)">Asistente</button>
                   </mat-menu>
                   <a href="mailto:{{collaborator.email}}" class="link">
                     <button matTooltip="Enviar email" mat-button>
@@ -72,6 +73,11 @@
                       <mat-icon>phone</mat-icon>
                     </button>
                   </a>
+                </div>
+                <div class="profile-button" *ngIf="collaborator.id===id">
+                  <button mat-button routerLink="/home/profile/consultancy">
+                    IR A MI PERFIL
+                  </button>
                 </div>
               </mat-card>
             </div>

@@ -63,7 +63,6 @@
     align-items: center;
     padding: 16px;
     span{
-      font-family: Roboto, 'Helvetice New', 'Arial', sans-serif;
       font-weight: 700;
       font-size: 16px;
       color: #707070;
@@ -81,8 +80,11 @@
       margin-top: -4px;
     }
     .back{
-      display: block;
+      display: none;
       color: #707070;
+      @media screen and (max-width: 600px){
+        display: block;
+      }
     }
   }
   .container {
@@ -123,7 +125,6 @@
           width: 75%;
           .info {
             color: #707070;
-            font-family: Roboto, 'Helvetice New', 'Arial', sans-serif;
             font-weight: 500;
             font-size: 14px;
             white-space: nowrap;
@@ -132,6 +133,14 @@
             margin: 4px 0;
           }
         }
+      }
+      .profile-button{
+        padding: 4px;
+        height: 100%;
+        width: 100%;
+        display: flex;
+        justify-content: flex-end;
+        color: #707070;
       }
       .action-buttons{
         padding: 4px;
@@ -152,10 +161,12 @@
       }
       .profileImage{
         margin-top: -48px;
+        margin-bottom: 16px;
         img{
           width: 80px;
           height: 80px;
           border-radius: 50%;
+          box-shadow: 0 3px 1px 1px rgba(0, 0, 0, 0.1), 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, .10);
         }
         mat-icon{
           width: 80px;
@@ -164,10 +175,11 @@
           color: #707070;
           background-color: #FFFFFF;
           border-radius: 50%;
+          box-shadow: 0 3px 1px 1px rgba(0, 0, 0, 0.1), 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, .10);
         }
       }
       .inputs{
-        width: 80%;
+        width: 90%;
       }
       .phone{
         display: flex;
@@ -191,7 +203,6 @@
         }
       }
       .formHead {
-        font-family: Roboto, 'Helvetice New', 'Arial', sans-serif;
         font-weight: 500;
         font-size: 14px;
         color: #707070;
@@ -200,16 +211,17 @@
       .signature-input{
         margin-bottom: 16px;
         width: 100%;
-        padding: 0 8%;
+        padding: 0 4%;
       }
       .signatureContainer {
         display: flex;
         justify-content: center;
         background-color: #FFFFFF;
         border-style: solid;
+        border-width: 1.25px;
         align-items: center;
         span{
-          margin: 68px 0;
+          margin: 54px 0;
         }
         .imageSignature {
           width: 100%;

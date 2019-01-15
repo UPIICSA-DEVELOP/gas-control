@@ -65,6 +65,7 @@ export class CollaboratorsListComponent implements OnInit {
   public addImage: boolean=false;
   public addSign: boolean=false;
   public user: any;
+  public id: string;
   public country: string;
   public load: boolean;
   private _formImage:FormData;
@@ -107,18 +108,22 @@ export class CollaboratorsListComponent implements OnInit {
   }
 
   public getCollaborators(): void {
-    let id = CookieService.getCookie(Constants.IdSession);
+    this.id = CookieService.getCookie(Constants.IdSession);
     let user = SessionStorageService.getItem(Constants.UserInSession);
     this.user=user;
     this._api.listPersonInConsultancy(user.refId).subscribe(response=>{
       switch (response.code) {
         case 200:
+          let user = null;
           this.collaborators = response.items;
           for (let i = 0; i< this.collaborators.length; i++){
-            if(this.collaborators[i].id === id){
-              this.collaborators.splice(i, 1);
+            if(this.collaborators[i].id === this.id){
+                user = this.collaborators[i];
             }
           }
+          const index = this.collaborators.indexOf(user);
+          this.collaborators.splice(index, 1);
+          this.collaborators.unshift(user);
           break;
         default:
           break;
@@ -157,9 +162,11 @@ export class CollaboratorsListComponent implements OnInit {
       switch (response.code) {
         case 200:
           this._snackBarService.openSnackBar('Rol actualizado', 'OK', 2000);
+          this.getCollaborators();
           break;
         default:
           this._snackBarService.openSnackBar('No se ha podido actualizar el rol', 'OK', 2000);
+          this.getCollaborators();
           break;
       }
     });
