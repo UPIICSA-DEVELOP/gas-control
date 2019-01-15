@@ -62,8 +62,9 @@
           }
         }
         .change-station{
-          position: absolute;
-          bottom: 24px;
+          display: flex;
+          justify-content: center;
+          margin-top: 75%;
           button{
             background-color: #FFAA00;
             color: #FFFFFF;
@@ -115,13 +116,13 @@
         }
 
         .directory{
-          margin-top: 8px;
+          margin-top: 16px;
           width: 100%;
           height: calc(75% - 16px);
           position: relative;
         }
         .footer{
-          margin-top: 8px;
+          margin-top: 12px;
         }
       }
 

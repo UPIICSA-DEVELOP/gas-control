@@ -27,7 +27,7 @@
           <div class="buttons">
             <button mat-button [routerLink]="'/home/profile/gas-station'" [queryParams]="{id: stationActive.id}">
               <mat-icon>local_gas_station</mat-icon>
-              <span>Información de Estacion</span>
+              <span>Información de Estación</span>
             </button>
             <button mat-button routerLink="/home/notifications">
               <mat-icon>notifications</mat-icon>
@@ -45,7 +45,7 @@
           <div class="change-station" *ngIf="role<5">
             <button mat-button routerLink="/home/station-list">
               <mat-icon>compare_arrows</mat-icon>
-              <span>Cambiar estación de servicio</span>
+              <span>Cambiar Estación de Servicio</span>
             </button>
           </div>
         </div>
@@ -55,7 +55,7 @@
           <div class="title" *ngIf="stationActive">
             <h1>{{stationActive.name}}</h1>
             <h2>{{stationActive.managerName}}</h2>
-            <p>90/120 activiades</p>
+            <p>90/120 actividades</p>
           </div>
           <div class="tasks">
            <app-list-tasks></app-list-tasks>

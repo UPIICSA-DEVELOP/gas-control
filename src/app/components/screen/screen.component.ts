@@ -5,14 +5,12 @@
  */
 
 import {Component, OnInit} from '@angular/core';
-import {MaterialModule} from '@app/core/material/material.module';
-import {PipesModule} from '@app/core/pipes/pipes.module';
-import {ServicesModule} from '@app/core/services/services.module';
 import {ApiService} from '@app/core/services/api/api.service';
 import {CookieService} from '@app/core/services/cookie/cookie.service';
 import {Constants} from '@app/core/constants.core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {SessionStorageService} from '@app/core/services/session-storage/session-storage.service';
+import {DatepickerService} from '@app/core/components/datepicker/datepicker.service';
 
 @Component({
   selector: 'app-screen',
@@ -27,7 +25,6 @@ export class ScreenComponent implements OnInit {
   public menu: boolean;
   public utils: any;
   private _stationId;
-
   constructor(
     private _api: ApiService,
     private _router: Router,
@@ -88,8 +85,8 @@ export class ScreenComponent implements OnInit {
         this._api.getStationBasicData(userId).subscribe(response=>{
           switch (response.code) {
             case 200:
-              this.stationList = response.item.stationLites;
-              this.stationActive = this.stationList[0];
+              this.stationList = response.item.station;
+              this.stationActive = this.stationList;
               break;
             default:
               break;
