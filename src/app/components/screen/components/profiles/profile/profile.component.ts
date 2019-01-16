@@ -434,15 +434,24 @@ export class ProfileComponent implements OnInit {
       this.consultancy.location.longitude = (this.latLong.longitude? this.latLong.longitude:-99.133461);
     }
     if (this.newImageProfile){
-      this.user.profileImage = {
-        blobName: this.newImageProfile.blob,
-        thumbnail: this.newImageProfile.thumbnail
-      };
-      SessionStorageService.setItem(Constants.UserInSession, {
-        profileImage: this.user.profileImage.thumbnail,
-        role: this.user.role,
-        refId: (this.user.refId? this.user.refId:null)
-      })
+      if (this.newImageProfile.thumbnail !== '' && this.newImageProfile.blob !== '') {
+        this.user.profileImage = {
+          blobName: this.newImageProfile.blob,
+          thumbnail: this.newImageProfile.thumbnail
+        };
+        SessionStorageService.setItem(Constants.UserInSession, {
+          profileImage: this.user.profileImage.thumbnail,
+          role: this.user.role,
+          refId: (this.user.refId? this.user.refId:null)
+        });
+      }else{
+        this.user.profileImage = null;
+        SessionStorageService.setItem(Constants.UserInSession, {
+          profileImage: null,
+          role: this.user.role,
+          refId: (this.user.refId? this.user.refId:null)
+        });
+      }
     }
     if (this.newSig) {
       this.user.signature = {
