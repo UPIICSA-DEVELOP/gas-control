@@ -53,26 +53,34 @@
                 </mat-card-content>
                 <mat-divider></mat-divider>
                 <div class="action-buttons" *ngIf="collaborator.id!==id">
-                  <button matTooltip="Eliminar" *ngIf="user.role<3 && collaborator.role!==1" mat-button (click)="deleteCollaborator(collaborator.id,i)">
-                    <mat-icon>delete</mat-icon>
-                  </button>
-                  <button *ngIf="user.role<3 && collaborator.role!==1" mat-button [mat-menu-trigger-for]="role">
-                    <mat-icon matTooltip="Cambiar rol" svgIcon="icons:change_role"></mat-icon>
-                  </button>
-                  <mat-menu #role>
-                    <button mat-menu-item *ngIf="collaborator.role !== 2" (click)="changeRoleCollaborator(collaborator.id, 2)">Gerente</button>
-                    <button mat-menu-item *ngIf="collaborator.role !== 3" (click)="changeRoleCollaborator(collaborator.id, 3)">Asistente</button>
-                  </mat-menu>
-                  <a href="mailto:{{collaborator.email}}" class="link">
-                    <button matTooltip="Enviar email" mat-button>
-                      <mat-icon>mail</mat-icon>
+                  <div class="button">
+                    <button matTooltip="Eliminar" *ngIf="user.role<3 && collaborator.role!==1" mat-button (click)="deleteCollaborator(collaborator.id,i)">
+                      <mat-icon>delete</mat-icon>
                     </button>
-                  </a>
-                  <a href="tel:+{{collaborator.countryCode}}{{collaborator.phoneNumber}}" class="link">
-                    <button matTooltip="Marcar" mat-button>
-                      <mat-icon>phone</mat-icon>
+                  </div>
+                  <div class="button">
+                    <button *ngIf="user.role<3 && collaborator.role!==1" mat-button [mat-menu-trigger-for]="role">
+                      <mat-icon matTooltip="Cambiar rol" svgIcon="icons:change_role"></mat-icon>
                     </button>
-                  </a>
+                    <mat-menu #role>
+                      <button mat-menu-item *ngIf="collaborator.role !== 2" (click)="changeRoleCollaborator(collaborator.id, 2)">Gerente</button>
+                      <button mat-menu-item *ngIf="collaborator.role !== 3" (click)="changeRoleCollaborator(collaborator.id, 3)">Asistente</button>
+                    </mat-menu>
+                  </div>
+                  <div class="button">
+                    <a href="mailto:{{collaborator.email}}" class="link">
+                      <button matTooltip="Enviar email" mat-button>
+                        <mat-icon>mail</mat-icon>
+                      </button>
+                    </a>
+                  </div>
+                  <div class="button">
+                    <a href="tel:+{{collaborator.countryCode}}{{collaborator.phoneNumber}}" class="link">
+                      <button matTooltip="Marcar" mat-button>
+                        <mat-icon>phone</mat-icon>
+                      </button>
+                    </a>
+                  </div>
                 </div>
                 <div class="profile-button" *ngIf="collaborator.id===id">
                   <button mat-button routerLink="/home/profile/consultancy">
