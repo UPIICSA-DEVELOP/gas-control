@@ -52,6 +52,7 @@
       </mat-drawer>
       <mat-drawer-content class="main">
         <div class="col-1">
+          <button mat-button style="display: none" (click)="menu=!menu">Holi</button>
           <div class="title" *ngIf="stationActive">
             <h1>{{stationActive.name}}</h1>
             <h2>{{stationActive.managerName}}</h2>
