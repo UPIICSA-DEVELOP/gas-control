@@ -263,7 +263,7 @@ export class ProfileComponent implements OnInit {
     })
   }
 
-  public uploadSignature():void{
+  private uploadSignature():void{
     this._uploadImage.upload(this._formSignature).subscribe(response => {
       if (response){
         this.newSig = {
@@ -292,15 +292,15 @@ export class ProfileComponent implements OnInit {
             password: response.item.password,
             phoneNumber: response.item.phoneNumber,
             profileImage: {
-              blobName: response.item.profileImage.blobName,
-              thumbnail: response.item.profileImage.thumbnail
+              blobName: (response.item.profileImage? response.item.profileImage.blobName : ''),
+              thumbnail: (response.item.profileImage? response.item.profileImage.thumbnail : '')
             },
             role: response.item.role,
             signature: {
-              blobName: response.item.signature.blobName,
-              thumbnail: response.item.signature.thumbnail
+              blobName: (response.item.signature?response.item.signature.blobName : ''),
+              thumbnail: (response.item.signature?response.item.signature.thumbnail : ''),
             },
-            website: response.item.website
+            website: response.item.website || ''
           };
           if (this.user.profileImage){
             this.profileImage = this.user.profileImage.thumbnail;
@@ -337,8 +337,8 @@ export class ProfileComponent implements OnInit {
                   businessName: response.item.businessName,
                   id: response.item.id,
                   location: {
-                    latitude: response.item.location.latitude,
-                    longitude: response.item.location.longitude
+                    latitude: (response.item.location?response.item.location.latitude : 19.432675),
+                    longitude: (response.item.location?response.item.location.longitude : -99.133461)
                   },
                   officePhone: response.item.officePhone || '',
                   rfc: response.item.rfc
@@ -389,7 +389,7 @@ export class ProfileComponent implements OnInit {
     this.getUserInfo();
   }
 
-  private updateProfile(data: any, event?: any): void {
+  public updateProfile(data: any, event?: any): void {
     if (this.profileForm.invalid) {
       return;
     }

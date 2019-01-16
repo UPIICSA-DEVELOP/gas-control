@@ -130,7 +130,7 @@ export class StationProfileComponent implements OnInit {
     })
   }
 
-  public initForm():void{
+  private initForm():void{
     this.stationForm = this._formBuilder.group({
       name:['',[]],
       businessName:['',[Validators.required]],
@@ -219,7 +219,7 @@ export class StationProfileComponent implements OnInit {
     })
   }
 
-  private saveStationInformation(data: any): void{
+  public saveStationInformation(data: any): void{
     if (this.stationForm.invalid) {
       return;
     }

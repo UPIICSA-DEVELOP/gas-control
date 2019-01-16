@@ -32,7 +32,6 @@ import {environment} from '@env/environment';
 import { SplashComponent } from './splash/splash.component';
 import { ResetPassComponent } from './components/screen/child/reset-pass/reset-pass.component';
 import { ProfileComponent } from './components/screen/components/profiles/profile/profile.component';
-import { MenuComponent } from './components/screen/components/menu/menu.component';
 import { StationListComponent } from './components/screen/components/station-list/station-list.component';
 import { CollaboratorsListComponent } from './components/screen/components/collaborators-list/collaborators-list.component';
 import { StationProfileComponent } from './components/screen/components/profiles/station-profile/station-profile.component';
@@ -56,7 +55,6 @@ import { SearchBarComponent } from './components/screen/components/search-bar/se
     NotificationsComponent,
     SplashComponent,
     ProfileComponent,
-    MenuComponent,
     StationListComponent,
     CollaboratorsListComponent,
     StationProfileComponent,

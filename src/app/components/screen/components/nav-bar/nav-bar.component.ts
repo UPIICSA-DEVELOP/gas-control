@@ -40,14 +40,6 @@ export class NavBarComponent implements OnInit, DoCheck  {
     this.getUser();
   }
 
-  public getMenu(event: MatSidenav): void{
-    this.menu = event;
-  }
-
-  public openMenu(): void{
-    this.menu.open().then();
-  }
-
   public logOut(): void {
     this._dialogService.confirmDialog('Está a punto de cerrar sesión',
       '¿Desea continuar?',

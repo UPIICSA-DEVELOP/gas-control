@@ -3,21 +3,15 @@
   ~  Unauthorized copying of this file, via any medium is strictly prohibited
   ~  Proprietary and confidential
   -->
-<app-menu (menuObject)="getMenu($event)"></app-menu>
 
 <div id="nav-bar">
   <nav>
     <mat-toolbar id="nav-bar-toolbar">
-      <div class="menu">
-        <button (click)="openMenu()" mat-button aria-label="menu-for-mobiles">
-          <mat-icon>menu</mat-icon>
-        </button>
-      </div>
       <div class="image-logo">
         <img alt="app-logo" src="../assets/Images/logo.png" routerLink="/home">
       </div>
       <div class="navigation-buttons">
-        <button id="btn-collaborators" *ngIf="user.role<=3 && !barVisible" mat-button routerLink="/home/collaborators/consultancy">
+        <button id="btn-collaborators" *ngIf="user.role<=3 && !barVisible" mat-button routerLink="/home/collaborators">
           <div>Colaboradores</div>
           <mat-icon>group</mat-icon>
         </button>
@@ -50,7 +44,7 @@
           <mat-icon>more_vert</mat-icon>
         </button>
         <mat-menu #menu_one>
-          <button mat-menu-item *ngIf="user.role<=3" routerLink="/home/collaborators/consultancy">Colaboradores</button>
+          <button mat-menu-item *ngIf="user.role<=3" routerLink="/home/collaborators">Colaboradores</button>
         </mat-menu>
         <div class="user" *ngIf="!barVisible">
           <button mat-button [mat-menu-trigger-for]="menu_two" class="button-user">

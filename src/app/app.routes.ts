@@ -17,7 +17,6 @@ import {NotificationsComponent} from '@app/components/screen/components/notifica
 import {CollaboratorsListComponent} from '@app/components/screen/components/collaborators-list/collaborators-list.component';
 import {UserProfileComponent} from '@app/components/screen/components/profiles/user-profile/user-profile.component';
 import {StationProfileComponent} from '@app/components/screen/components/profiles/station-profile/station-profile.component';
-import {DirectoryListComponent} from '@app/components/screen/components/directory-list/directory-list.component';
 import {StationListComponent} from '@app/components/screen/components/station-list/station-list.component';
 const URL_BASE = environment.url;
 
@@ -38,14 +37,26 @@ export const appRoutes: Routes = [
           {
             path: 'consultancy',
             component: ProfileComponent,
+            data:{
+              title: 'Perfil',
+              url: URL_BASE + 'home/profile/consultancy'
+            }
           },
           {
             path: 'user',
-            component: UserProfileComponent
+            component: UserProfileComponent,
+            data:{
+              title: 'Perfil',
+              url: URL_BASE + 'home/profile/user'
+            }
           },
           {
             path: 'gas-station',
-            component: StationProfileComponent
+            component: StationProfileComponent,
+            data:{
+              title: 'Estación de servicio',
+              url: URL_BASE + 'home/profile/gas-station'
+            }
           },
         ]
       },
@@ -53,20 +64,19 @@ export const appRoutes: Routes = [
         path: 'notifications',
         component: NotificationsComponent,
         resolve: {data: AuthService},
+        data:{
+          title: 'Notificaciones',
+          url: URL_BASE + 'home/notifications'
+        }
       },
       {
         path:'collaborators',
         resolve: {data: AuthService},
+        component: CollaboratorsListComponent,
         data:{
           title: 'Colaboradores',
           url: URL_BASE + 'home/collaborators'
-        },
-        children:[
-          {
-            path:'consultancy',
-            component: CollaboratorsListComponent
-          }
-        ]
+        }
       },
       {
         path:'station-list',
@@ -99,8 +109,7 @@ export const appRoutes: Routes = [
     component: ResetPassComponent,
     resolve: {data: ResetPassService},
     data:{
-      title:'inSpector',
-      url: URL_BASE + 'signin'
+      title:'inSpector'
     }
   },
   {

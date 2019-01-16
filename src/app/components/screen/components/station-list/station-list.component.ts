@@ -63,7 +63,7 @@ export class StationListComponent implements OnInit, DoCheck {
     })
   }
 
-  private changeNotificationsStatus(id: string, status: boolean, index:number): void{
+  public changeNotificationsStatus(id: string, status: boolean, index:number): void{
     if (status) {
       this._dialogService.confirmDialog(
         'Información',
@@ -94,7 +94,7 @@ export class StationListComponent implements OnInit, DoCheck {
     }
   }
 
-  private onCloseList():void{
+  public onCloseList():void{
     this._router.navigate(['/home']);
   }
 
