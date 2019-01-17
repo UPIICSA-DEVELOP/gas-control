@@ -42,6 +42,10 @@ export class DatepickerComponent implements OnInit {
       this._snackBarService.openSnackBar('Elija ambas fechas','OK',3000);
       return;
     }
+    if (this.endDate < this.startDate) {
+      this._snackBarService.openSnackBar('La fecha de termino no puede se mayor a la fecha de inicio','OK',3000);
+      return;
+    }
     let startDate = this.startDate.toLocaleDateString();
     let endDate = this.endDate.toLocaleDateString();
     this._dialogRef.close({code: 1, startDate: startDate, endDate: endDate});
