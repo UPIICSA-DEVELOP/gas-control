@@ -21,6 +21,7 @@ import {animate, keyframes, query, stagger, style, transition, trigger} from '@a
 import {SessionStorageService} from '@app/core/services/session-storage/session-storage.service';
 import {UploadFileResponse} from '@app/core/components/upload-file/upload-file.component';
 import {SignaturePadService} from '@app/core/components/signature-pad/signature-pad.service';
+import {LocalStorageService} from '@app/core/services/local-storage/local-storage.service';
 
 export interface Person {
   id: string;
@@ -377,6 +378,9 @@ export class ProfileComponent implements OnInit {
                   officePhone: this.consultancy.officePhone
                 });
                 this.detectChange();
+                if (LocalStorageService.getItem('notSign')) {
+                  this.changeSignature();
+                }
                 break;
             }
           });
@@ -476,6 +480,7 @@ export class ProfileComponent implements OnInit {
             switch (response.code) {
               case 200:
                 this.change = false;
+                LocalStorageService.removeItem('notSign');
                 this._snackBarService.openSnackBar('Información actualizada','OK',3000);
                 this._router.navigate(['/home']);
                 break;
