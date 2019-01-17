@@ -32,8 +32,7 @@ export class AuthService implements Resolve<any>{
     if (isPlatformBrowser(this._platformId)) {
       if(state.url !== '/home/updatepassword'){
         if(AuthService.validateUpdatePassword()){
-          this.saveUserInfo();
-          this._router.navigate(['/home/updatepassword']).then();
+          this.saveUserInfo(false);
         }else{
           this.goToHome(state.url);
         }
@@ -122,8 +121,7 @@ export class AuthService implements Resolve<any>{
     switch (url){
       case '/':
         if(AuthService.validateUser()){
-          this.saveUserInfo();
-          this._router.navigate(['/home']).then();
+          this.saveUserInfo(true);
         }
         break;
       default:
@@ -139,15 +137,21 @@ export class AuthService implements Resolve<any>{
   }
 
 
-  private saveUserInfo(): void{
+  private saveUserInfo(navigateHome?:boolean): void{
     this._api.getPerson(CookieService.getCookie(Constants.IdSession)).subscribe(response =>{
       switch (response.code) {
         case 200:
-          SessionStorageService.setItem(Constants.UserInSession, {
-            profileImage: (response.item.profileImage)?response.item.profileImage.thumbnail:null,
-            role: response.item.role,
-            refId: (response.item.refId?response.item.refId:null)
-          });
+          if (navigateHome) {
+            SessionStorageService.setItem(Constants.UserInSession, {
+              profileImage: (response.item.profileImage)?response.item.profileImage.thumbnail:null,
+              role: response.item.role,
+              refId: (response.item.refId?response.item.refId:null)
+            });
+            this._router.navigate(['/home']).then();
+          }else{
+            SessionStorageService.setItem(Constants.IdSession, response.item);
+            this._router.navigate(['/home/updatepassword']).then();
+          }
           break;
         default:
           SessionStorageService.setItem(Constants.UserInSession, {
