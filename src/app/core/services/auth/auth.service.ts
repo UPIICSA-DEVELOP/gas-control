@@ -105,6 +105,7 @@ export class AuthService implements Resolve<any>{
 
   public logOut(): void{
     LocalStorageService.removeItem(Constants.SessionToken);
+    LocalStorageService.removeItem('notSign');
     CookieService.deleteCookie(Constants.IdSession);
     SessionStorageService.removeItem(Constants.UserInSession);
     this._router.navigate(['/']).then(() => {});
