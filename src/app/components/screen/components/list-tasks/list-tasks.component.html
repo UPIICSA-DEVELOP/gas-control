@@ -16,13 +16,13 @@
           <mat-chip-list>
             <mat-chip [color]="'primary'" selected (click)="taskFilter()">
               Filtro por tareas:
-              <span>&nbsp;{{filterApply}}</span>
+              <span>&nbsp;{{filterApply}}&nbsp;</span>
               <mat-icon>edit</mat-icon>
             </mat-chip>
             <mat-chip [color]="'primary'" selected (click)="dateFilter()">
               Fecha:
-              <span *ngIf="today">&nbsp;{{startDate}}</span>
-              <span *ngIf="!today">&nbsp;{{startDate}} - {{endDate}}</span>
+              <span *ngIf="today">&nbsp;{{startDate}}&nbsp;</span>
+              <span *ngIf="!today">&nbsp;{{startDate}} - {{endDate}}&nbsp;</span>
               <mat-icon>edit</mat-icon>
             </mat-chip>
           </mat-chip-list>
