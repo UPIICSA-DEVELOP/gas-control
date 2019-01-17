@@ -257,4 +257,10 @@
   mat-spinner{
     z-index: 3;
   }
+  .defaultBC{
+    margin-top: -88px;
+    @media screen and (max-width: 800px){
+      margin-top: 0;
+    }
+  }
 }

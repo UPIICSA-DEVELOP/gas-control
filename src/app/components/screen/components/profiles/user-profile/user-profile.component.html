@@ -169,7 +169,7 @@
         <a [href]="user.bCard.dynamicLink" target="_blank" *ngIf="user.bCard">
           <img [src]="user.bCard.cardThumbnail" alt="User Business Card" *ngIf="user.bCard">
         </a>
-        <img *ngIf="!user.bCard" src="../../../../../../assets/Images/Business-Default.png" alt="Default Business Card">
+        <img class="defaultBC" *ngIf="!user.bCard" src="../../../../../../assets/Images/Business-Default.png" alt="Default Business Card">
       </div>
     </div>
   </form>
