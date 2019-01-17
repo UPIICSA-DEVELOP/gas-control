@@ -58,9 +58,12 @@ body{
 .country-code-panel{
   mat-dialog-container{
     width: 30vw;
-    min-height: 80vh;
+    min-height: 55vh;
     max-width: 90vh;
     padding: 0;
+    @media screen and (max-width: 1024px){
+      width: 50vw;
+    }
     @media screen and (max-width: 600px){
       width: 90vw;
     }
