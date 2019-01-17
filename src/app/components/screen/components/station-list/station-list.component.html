@@ -4,8 +4,7 @@
   ~ Proprietary and confidential
   -->
 
-<div id="station-list">
-  <div class="mask" *ngIf="visibleMask"></div>
+<div id="station-list" [@selected]="'selected'">
   <div class="list">
     <div class="tap">
       <button mat-icon-button (click)="onCloseList()">

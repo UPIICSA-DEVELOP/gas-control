@@ -10,7 +10,7 @@ import {DialogService} from '@app/core/components/dialog/dialog.service';
 import {CookieService} from '@app/core/services/cookie/cookie.service';
 import {Constants} from '@app/core/constants.core';
 import {Router} from '@angular/router';
-import {animate, style, transition, trigger} from '@angular/animations';
+import {animate, keyframes, query, stagger, state, style, transition, trigger} from '@angular/animations';
 import {SessionStorageService} from '@app/core/services/session-storage/session-storage.service';
 
 @Component({
@@ -21,22 +21,31 @@ import {SessionStorageService} from '@app/core/services/session-storage/session-
     trigger('fadeInAnimation', [
       transition(':enter', [
         style({ right: '-100%' }),
-        animate('.40s ease-out', style({ right: '0'  }))
+        animate('.40s ease-in-out', style({ right: '0'}))
       ]),
       transition(':leave', [
-        style({ right: '0'}),
-        animate('.40s ease-in', style({ right: '-100%' }))
+        style({ right: '0' }),
+        animate('.40s ease-in-out', style({ right: '-100%' }))
+      ])
+    ]),
+    trigger('selected', [
+      state('selected',
+        style({
+          backgroundColor: 'rgba(0, 0, 0, 0.288)',
+        })
+      ),
+      transition('selected <=> *', [
+        animate('10ms ease-in')
       ])
     ])
   ],
   host: {'[@fadeInAnimation]': ''}
 })
-export class StationListComponent implements OnInit, DoCheck, AfterViewInit {
+export class StationListComponent implements OnInit, DoCheck {
 
   public stationList: any[];
   public notificationActive: boolean[] = [];
   public groupIcon: any;
-  public visibleMask:boolean= false;
   constructor(
     private _api: ApiService,
     private _dialogService: DialogService,
@@ -55,14 +64,6 @@ export class StationListComponent implements OnInit, DoCheck, AfterViewInit {
         this.notificationActive.push(this.stationList[i].activeNotification);
       }
     }
-  }
-
-  ngAfterViewInit(): void {
-    this.changeMaskVisibility();
-  }
-
-  private changeMaskVisibility():boolean{
-    return this.visibleMask = !this.visibleMask;
   }
 
   private getUtilities():void{
@@ -103,7 +104,6 @@ export class StationListComponent implements OnInit, DoCheck, AfterViewInit {
   }
 
   public onCloseList():void{
-    this.changeMaskVisibility();
     this._router.navigate(['/home']);
   }
 
