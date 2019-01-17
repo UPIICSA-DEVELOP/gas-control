@@ -330,7 +330,7 @@ export class CollaboratorsListComponent implements OnInit {
   public search(event: any): void{
     debugger;
     const newArray = [];
-    const text = event.srcElement.value;
+    const text = (event.srcElement.value).toLowerCase();
     if(text === ''){
       this.collaborators = this.collaborator;
     }else{

@@ -21,12 +21,12 @@ export class CountryCodeComponent implements OnInit {
 
   public search(event: any): void{
     const newArray = [];
-    const text = event.srcElement.value;
+    const text = (event.srcElement.value).toLowerCase();
     if(text === ''){
       this.counties = Constants.countries;
     }else{
       for(let x=0; x < this.counties.length; x++){
-        if(UtilitiesService.removeDiacritics(this.counties[x].name).toLowerCase().includes(text) || this.counties[x].code.replace('+', '').toLowerCase().includes(text)){
+        if(UtilitiesService.removeDiacritics(this.counties[x].name).toLowerCase().includes(text) || this.counties[x].code.replace('+', '').toLowerCase().includes(text) || this.counties[x].iso.toLowerCase().includes(text)){
           newArray.push(this.counties[x]);
         }
       }
