@@ -49,6 +49,14 @@
       display: none;
     }
   }
+  .search{
+    width: 100%;
+    padding: 0 24px;
+    .icons{
+      color:#707070;
+      margin: 0 12px;
+    }
+  }
   .content{
     margin-top: 48px;
     height: calc(100% - 48px);
@@ -89,7 +97,7 @@
   }
   .container {
     padding: 0 24px;
-    height: calc(100% - 72px);
+    height: calc(100% - 134px);
     overflow-x: hidden;
     overflow-y: auto;
     .collaborator {

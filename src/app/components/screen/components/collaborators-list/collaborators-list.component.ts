@@ -19,6 +19,7 @@ import {DialogService} from '@app/core/components/dialog/dialog.service';
 import {UploadFileResponse} from '@app/core/components/upload-file/upload-file.component';
 import {UploadFileService} from '@app/core/components/upload-file/upload-file.service';
 import {ApiLoaderService} from '@app/core/services/api/api-loader.service';
+import {UtilitiesService} from '@app/core/utilities/utilities.service';
 
 export interface person {
   name: string;
@@ -68,8 +69,17 @@ export class CollaboratorsListComponent implements OnInit {
   public id: string;
   public country: string;
   public load: boolean;
+  public collaborator: any[];
   private _formImage:FormData;
   private _formSignature: FormData;
+  public role: string[] = [
+    'Director',
+    'Gerente',
+    'Asistente',
+    'Representante legal',
+    'Encargado de estación',
+    'Gerente de estación',
+    'Asistente de estación'];
   constructor(
     private _route: Router,
     private _api: ApiService,
@@ -124,6 +134,7 @@ export class CollaboratorsListComponent implements OnInit {
           const index = this.collaborators.indexOf(user);
           this.collaborators.splice(index, 1);
           this.collaborators.unshift(user);
+          this.collaborator = this.collaborators;
           break;
         default:
           break;
@@ -314,5 +325,43 @@ export class CollaboratorsListComponent implements OnInit {
           break;
       }
     })
+  }
+
+  public search(event: any): void{
+    debugger;
+    const newArray = [];
+    const text = event.srcElement.value;
+    if(text === ''){
+      this.collaborators = this.collaborator;
+    }else{
+      for(let x=0; x < this.collaborator.length; x++){
+        if(UtilitiesService.removeDiacritics(this.collaborator[x].name).toLowerCase().includes(text) || this.collaborator[x].email.toLowerCase().includes(text) || this.collaborator[x].phoneNumber.includes(text) || UtilitiesService.removeDiacritics(this.collaborator[x].lastName).toLowerCase().includes(text) ){
+          newArray.push(this.collaborator[x]);
+        }else {
+          switch (text.toLowerCase()) {
+            case 'director':
+              if (this.collaborator[x].role === 1) {
+                newArray.push(this.collaborator[x]);
+              }
+              break;
+            case 'gerente':
+              if (this.collaborator[x].role === 2) {
+                newArray.push(this.collaborator[x]);
+              }
+              break;
+            case 'asistente':
+              if (this.collaborator[x].role === 3) {
+                newArray.push(this.collaborator[x]);
+              }
+              break;
+          }
+        }
+      }
+      if(newArray.length > 0){
+        this.collaborators = newArray;
+      }else{
+        this.collaborators = this.collaborator;
+      }
+    }
   }
 }

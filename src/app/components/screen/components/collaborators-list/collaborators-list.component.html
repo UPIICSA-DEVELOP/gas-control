@@ -30,7 +30,10 @@
           <mat-icon>close</mat-icon>
         </button>
       </div>
-
+      <mat-form-field class="search" *ngIf="collaborators && collaborators.length!==0">
+        <input matInput placeholder="Buscar" aria-label="Search input" (input)="search($event)">
+        <mat-icon matPrefix class="icons">search</mat-icon>
+      </mat-form-field>
       <div class="container" *ngIf="!register">
         <div *ngIf="collaborators; then view else load"></div>
         <ng-template #view>
@@ -46,7 +49,7 @@
                   </div>
                   <div class="information">
                     <div class="info">{{collaborator.name}} {{collaborator.lastName}} </div>
-                    <div class="info"> {{collaborator.jobTitle}}</div>
+                    <div class="info"> {{collaborator.jobTitle}} | {{role[collaborator.role-1]}}</div>
                     <div class="info"> {{collaborator.email}}</div>
                     <div class="info"> {{collaborator.phoneNumber}}</div>
                   </div>
