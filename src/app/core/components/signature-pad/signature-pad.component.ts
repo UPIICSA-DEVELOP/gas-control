@@ -10,6 +10,7 @@ import {DOCUMENT, isPlatformBrowser} from '@angular/common';
 import SignaturePad from 'signature_pad';
 import {UtilitiesService} from '@app/core/utilities/utilities.service';
 import {SnackBarService} from '@app/core/services/snackbar/snackbar.service';
+import {DeviceDetectorService} from '@app/core/services/device-detector/device-detector.service';
 
 @Component({
   selector: 'app-signature-pad',
@@ -23,13 +24,15 @@ export class SignaturePadComponent implements OnInit {
     @Inject(PLATFORM_ID) private _platformId,
     @Inject(DOCUMENT) private _document: Document,
     private _dialogRef: MatDialogRef<SignaturePadComponent>,
-    private _snackBarService: SnackBarService
+    private _snackBarService: SnackBarService,
+    private _deviceDetector: DeviceDetectorService
   ) { }
 
   ngOnInit() {
     if (isPlatformBrowser(this._platformId)) {
       const container = this._document.getElementById('pad');
       this.canvas = container.querySelector('canvas');
+      this.resizeCanvas();
       this.pad = new SignaturePad(this.canvas,{
         penColor: '#000000',
         backgroundColor: '#FFFFFF'
@@ -52,5 +55,12 @@ export class SignaturePadComponent implements OnInit {
     }
     let data = this.pad.toDataURL('image/png');
     this._dialogRef.close({code: 1, blob: UtilitiesService.base64ToBlob(data), base64: data});
+  }
+
+  public resizeCanvas():void{
+    const percent = this._deviceDetector.isMobileDevice()?.80:.40;
+    const width = this._document.body.clientWidth;
+    this.canvas.width = ((width * percent) - 36 );
+    this.canvas.height = (this.canvas.width / 2);
   }
 }
