@@ -290,7 +290,7 @@ export class ProfileComponent implements OnInit {
           this.user = {
             id: response.item.id,
             refId: response.item.refId,
-            country: (response.item.country?response.item.country:'MX'),
+            country: (response.item.country?response.item.country:''),
             countryCode: response.item.countryCode || '',
             email: response.item.email,
             jobTitle: response.item.jobTitle,
