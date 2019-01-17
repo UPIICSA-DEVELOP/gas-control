@@ -154,10 +154,11 @@ export class ApiService {
     return this._http.delete(ApiService.API_URL_COMPLETE + 'deletePerson',{params:params})
   }
 
-  public listPersonInConsultancy(consultancyId: string): Observable<any>{
+  public listCollaborators(refId: string, isConsultancyBoolean:string): Observable<any>{
     let params = new HttpParams();
-    params = params.append('consultancyId',consultancyId);
-    return this._http.get(ApiService.API_URL_COMPLETE + 'listPersonInConsultancy',{params: params});
+    params = params.append('isConsultancy',isConsultancyBoolean);
+    params = params.append('refId',refId);
+    return this._http.get(ApiService.API_URL_COMPLETE + 'listCollaborators',{params: params});
   }
 
   public createReferencedPerson(person: any):Observable<any>{

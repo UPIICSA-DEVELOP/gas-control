@@ -111,7 +111,7 @@ export class CollaboratorsListComponent implements OnInit {
     this.id = CookieService.getCookie(Constants.IdSession);
     let user = SessionStorageService.getItem(Constants.UserInSession);
     this.user=user;
-    this._api.listPersonInConsultancy(user.refId).subscribe(response=>{
+    this._api.listCollaborators(user.refId, 'true').subscribe(response=>{
       switch (response.code) {
         case 200:
           let user = null;
@@ -221,11 +221,13 @@ export class CollaboratorsListComponent implements OnInit {
   public selectCountryCode():void{
     this._countryCodeService.openDialog().afterClosed().subscribe(response=>{
       console.log(response);
-      this.country = response.iso;
-      this.newPerson.patchValue({
-        country: response.name,
-        code: response.code
-      });
+      if (response) {
+        this.country = response.iso;
+        this.newPerson.patchValue({
+          country: response.name,
+          code: response.code
+        });
+      }
     });
   }
 
