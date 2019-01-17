@@ -123,6 +123,7 @@
               </mat-form-field>
               <mat-form-field class="inputs">
                 <mat-select [attr.disabled]="load?true:null" placeholder="Tipo de sangre" aria-label="User blood type" [(value)]="bloodType">
+                  <mat-option>-Seleccione un tipo de sangre-</mat-option>
                   <mat-option *ngFor="let blood of bloodGroup" [value]="blood">{{blood}}</mat-option>
                 </mat-select>
               </mat-form-field>
@@ -130,8 +131,8 @@
                 <app-upload-file [layoutTemplate]="button" (onLoad)="onLoadFile($event)" [type]="'file'">
                   <ng-template #button>
                     <span type="button">Estudio de toxicidad (Benceno)</span>
-                    <mat-icon *ngIf="file" svgIcon="icons:upload"></mat-icon>
-                    <mat-icon *ngIf="!file">autorenew</mat-icon>
+                    <mat-icon *ngIf="!file" svgIcon="icons:upload"></mat-icon>
+                    <mat-icon *ngIf="file">autorenew</mat-icon>
                   </ng-template>
                 </app-upload-file>
               </div>
@@ -168,6 +169,7 @@
         <a [href]="user.bCard.dynamicLink" target="_blank" *ngIf="user.bCard">
           <img [src]="user.bCard.cardThumbnail" alt="User Business Card" *ngIf="user.bCard">
         </a>
+        <img *ngIf="!user.bCard" src="../../../../../../assets/Images/Business-Default.png" alt="Default Business Card">
       </div>
     </div>
   </form>

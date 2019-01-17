@@ -21,6 +21,34 @@ import {SessionStorageService} from '@app/core/services/session-storage/session-
 import {UploadFileResponse} from '@app/core/components/upload-file/upload-file.component';
 import {SignaturePadService} from '@app/core/components/signature-pad/signature-pad.service';
 
+export interface Person {
+  id: string;
+  refId?: string;
+  name: string;
+  lastName: string;
+  email: string;
+  phoneNumber: string;
+  countryCode: string;
+  country: string;
+  role: number;
+  jobTitle: string;
+  website?: string;
+  profileImage?: any;
+  signature: any;
+  password: string;
+  bCard?: any;
+}
+
+export interface PersonInformation {
+  id: string;
+  bloodType?:string;
+  concatcPhone?:string;
+  contactKinship?:string;
+  contactName?:string;
+  ssn?: string;
+  benzene?: any;
+}
+
 @Component({
   selector: 'app-user-profile',
   templateUrl: './user-profile.component.html',
@@ -54,8 +82,8 @@ export class UserProfileComponent implements OnInit {
   private _formDeleteData: FormData;
   private _formFile: FormData;
   private _formSignature: FormData;
-  public user: any;
-  public userInformation: any;
+  public user: Person;
+  public userInformation: PersonInformation;
   public load: boolean;
   public role: string[] = [
     'Director',
@@ -83,7 +111,7 @@ export class UserProfileComponent implements OnInit {
   public protocol: string = 'http://';
   public profileImage: any;
   public newImageProfile: any;
-  public country: any;
+  public country: string;
   public change: boolean = false;
   public blobName: any;
   public password: string;
@@ -112,7 +140,8 @@ export class UserProfileComponent implements OnInit {
   }
   public closeProfile():void{
     if (this.change){
-      this.saveChangeBeforeExit()
+      this.saveChangeBeforeExit();
+      return;
     }
     if (!this.signature) {
       this._snackBarService.openSnackBar('Por favor, registre su firma','OK', 3000);
@@ -158,6 +187,7 @@ export class UserProfileComponent implements OnInit {
   public onLoadFile(event:UploadFileResponse): void{
     this.newFile = true;
     this.change = true;
+    this.file = event.file;
     this._formFile = new FormData();
     this._formFile.append('path', '');
     this._formFile.append('fileName', 'benzene-'+this.user.id+'-'+new Date().getTime()+'.pdf');
@@ -198,17 +228,21 @@ export class UserProfileComponent implements OnInit {
     this.change = true;
     this.deleteImage = true;
     this.newImage = false;
-    this.profileImage='';
+    this.profileImage=undefined;
     this._formDeleteData = new FormData();
     this._formDeleteData.append('blobName', this.blobName);
   }
 
   public openListCountry(): void {
     this._countryCodeService.openDialog().afterClosed().subscribe(response => {
-      this.profileForm.patchValue({
-        country: response.name,
-        code: response.code
-      });
+      if (response) {
+        this.change = true;
+        this.country = response.iso;
+        this.profileForm.patchValue({
+          country: response.name,
+          code: response.code
+        });
+      }
     });
   }
 
@@ -225,18 +259,16 @@ export class UserProfileComponent implements OnInit {
     ).afterClosed().subscribe(response =>{
       switch (response.code) {
         case 1:
+          this.change = true;
           this.password = response.data.newPassword;
           break;
         default:
-          this.profileForm.patchValue({
-
-          });
           break;
       }
     })
   }
 
-  private uploadImage(): void{
+  public uploadImage(): void{
     this._uploadFile.upload(this._formData).subscribe(response => {
       if (response){
         this.newImageProfile = {
@@ -284,7 +316,29 @@ export class UserProfileComponent implements OnInit {
     this._api.getPerson(CookieService.getCookie(Constants.IdSession)).subscribe(response=>{
       switch (response.code) {
         case 200:
-          this.user = response.item;
+          this.user = {
+            id: response.item.id,
+            refId: response.item.refId || undefined,
+            name: response.item.name,
+            lastName: response.item.lastName,
+            email: response.item.email,
+            countryCode: response.item.countryCode || '',
+            country: (response.item.country?response.item.country:''),
+            phoneNumber: response.item.phoneNumber,
+            password: response.item.password,
+            role: response.item.role,
+            jobTitle: response.item.jobTitle,
+            profileImage: (response.item.profileImage?{
+              blobName: (response.item.profileImage.blobName? response.item.profileImage.blobName : undefined),
+              thumbnail: (response.item.profileImage.thumbnail? response.item.profileImage.thumbnail : undefined)
+            }:undefined),
+            signature: (response.item.signature?{
+              blobName: (response.item.signature?response.item.signature.blobName : undefined),
+              thumbnail: (response.item.signature?response.item.signature.thumbnail : undefined),
+            }:undefined),
+            website: response.item.website,
+            bCard: (response.item.bCard?response.item.bCard:null)
+          };
           if (this.user.profileImage){
             this.profileImage = this.user.profileImage.thumbnail;
             this.blobName = this.user.profileImage.blobName;
@@ -293,9 +347,13 @@ export class UserProfileComponent implements OnInit {
             if (!this.user.countryCode.includes('+')) {
               this.user.countryCode = '+' + this.user.countryCode;
             }
+          }
+          let formCountry: string;
+          if (this.user.country) {
             for (let country of Constants.countries){
-              if (country.code === this.user.countryCode){
-                this.country=country.name;
+              if (country.iso === this.user.country){
+                this.country = country.iso;
+                formCountry=country.name;
               }
             }
           }
@@ -312,11 +370,21 @@ export class UserProfileComponent implements OnInit {
             }
           }
           this.userRole = this.role[this.user.role-1];
-
           this._api.getPersonInformation(this.user.id).subscribe(response =>{
             switch (response.code) {
               case 200:
-                this.userInformation = response.item;
+                this.userInformation = {
+                  id: response.item.id,
+                  ssn: response.item.ssn || undefined,
+                  bloodType: response.item.bloodType || undefined,
+                  concatcPhone: response.item.concatcPhone || undefined,
+                  contactName: response.item.contactName || undefined,
+                  contactKinship: response.item.contactKinship || undefined,
+                  benzene:(response.item.benzene?{
+                    blobName: (response.item.benzene.blobName?response.item.benzene.blobName: undefined),
+                    thumbnail: (response.item.benzene.thumbnail?response.item.benzene.thumbnail: undefined)
+                  }: undefined)
+                };
                 if (this.userInformation.benzene){
                   this.file = this.userInformation.benzene.thumbnail
                 }
@@ -334,7 +402,7 @@ export class UserProfileComponent implements OnInit {
                   name: this.user.name,
                   lastName: this.user.lastName,
                   email: this.user.email,
-                  country: this.country,
+                  country: formCountry,
                   code: this.user.countryCode,
                   phoneNumber: this.user.phoneNumber,
                   jobTitle: this.user.jobTitle,
@@ -344,13 +412,14 @@ export class UserProfileComponent implements OnInit {
                   contactName: this.userInformation.contactName,
                   ssn: this.userInformation.ssn
                 });
+                this.detectChange();
                 break;
               default:
                 this.profileForm.patchValue({
                   name: this.user.name,
                   lastName: this.user.lastName,
                   email: this.user.email,
-                  country: this.country,
+                  country: formCountry,
                   code: this.user.countryCode,
                   phoneNumber: this.user.phoneNumber,
                   jobTitle: this.user.jobTitle,
@@ -358,17 +427,15 @@ export class UserProfileComponent implements OnInit {
                 });
                 this.bloodType = '';
                 this.userInformation = {
-                  bloodType:'',
-                  concatcPhone:'',
-                  contactKinship:'',
-                  contactName:'',
-                  ssn:'',
-                  id:'',
-                  benzene: {
-                    thumbnail: '',
-                    blobName: ''
-                  }
+                  bloodType:undefined,
+                  concatcPhone:undefined,
+                  contactKinship:undefined,
+                  contactName:undefined,
+                  ssn:undefined,
+                  id:this.user.id,
+                  benzene: undefined
                 };
+                this.detectChange();
                 break;
             }
           });
@@ -377,7 +444,7 @@ export class UserProfileComponent implements OnInit {
     })
   }
 
-  private updateProfile(data: any, event?: any):void{
+  public updateProfile(data: any, event?: any):void{
     if (this.profileForm.invalid){
       return;
     }
@@ -389,10 +456,7 @@ export class UserProfileComponent implements OnInit {
       this.uploadImage();
     }
     if(this.deleteImage){
-      this.newImageProfile = {
-        thumbnail: '',
-        blob: ''
-      };
+      this.newImageProfile = undefined;
       this.deleteImage=false;
       this.updateProfile(data);
     }
@@ -410,6 +474,7 @@ export class UserProfileComponent implements OnInit {
     this.user.name = data.name;
     this.user.lastName = data.lastName;
     this.user.countryCode = data.code;
+    this.user.country = this.country;
     this.user.phoneNumber = data.phoneNumber;
     this.user.jobTitle = data.jobTitle;
     this.userInformation.ssn = data.ssn;
@@ -428,7 +493,14 @@ export class UserProfileComponent implements OnInit {
       };
       SessionStorageService.setItem(Constants.UserInSession, {
         profileImage: this.user.profileImage.thumbnail,
-        role : this.user.role,
+        role: this.user.role,
+        refId: (this.user.refId? this.user.refId:null)
+      });
+    }else if(!this.profileImage){
+      this.user.profileImage = null;
+      SessionStorageService.setItem(Constants.UserInSession, {
+        profileImage: null,
+        role: this.user.role,
         refId: (this.user.refId? this.user.refId:null)
       });
     }

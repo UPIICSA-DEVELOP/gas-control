@@ -318,6 +318,7 @@ export class ProfileComponent implements OnInit {
           if (this.user.country){
             for (let country of Constants.countries){
               if (country.iso === this.user.country){
+                this.country = country.iso;
                 formCountry=country.name;
                 break;
               }
