@@ -27,6 +27,7 @@ export class ResetPassService implements Resolve<any>{
     this._api.signInWithLink(id).subscribe(response =>{
       switch (response.code) {
         case 200:
+          SessionStorageService.setItem(Constants.UserInSession, response.item);
           LocalStorageService.setItem(Constants.UpdatePassword, true);
           this._route.navigate(['/home/updatepassword']).then();
       }
