@@ -5,5 +5,24 @@
  */
 
 #task-filter{
-
+  mat-dialog-content{
+    height: 100%;
+    margin: 0;
+    overflow: hidden;
+    .filters{
+      padding: 8px 0;
+      mat-radio-group{
+        display: inline-flex;
+        flex-direction: column;
+        mat-radio-button{
+          margin: 8px 0
+        }
+      }
+    }
+  }
+  .buttons{
+    display: flex;
+    justify-content: flex-end;
+    padding: 16px;
+  }
 }

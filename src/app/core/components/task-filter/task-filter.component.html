@@ -8,19 +8,19 @@
   <mat-toolbar [color]="'primary'">
     Filtro por tareas
   </mat-toolbar>
-  <mat-dialog-content style="height: 100%; margin: 0; overflow: hidden">
-    <div style="padding: 8px 0;">
-      <mat-radio-group [(ngModel)]="option" style="display: inline-flex; flex-direction: column">
-        <mat-radio-button [value]="0" style="margin: 8px 0">Todas</mat-radio-button>
-        <mat-radio-button [value]="1" style="margin: 8px 0">Atrasadas</mat-radio-button>
-        <mat-radio-button [value]="2" style="margin: 8px 0">Terminadas</mat-radio-button>
-        <mat-radio-button [value]="3" style="margin: 8px 0">Vencidas</mat-radio-button>
-        <mat-radio-button [value]="4" style="margin: 8px 0">Incidencias</mat-radio-button>
+  <mat-dialog-content>
+    <div class="filters">
+      <mat-radio-group [(ngModel)]="option">
+        <mat-radio-button [value]="0">Todas</mat-radio-button>
+        <mat-radio-button [value]="1">Atrasadas</mat-radio-button>
+        <mat-radio-button [value]="2">Terminadas</mat-radio-button>
+        <mat-radio-button [value]="3">Vencidas</mat-radio-button>
+        <mat-radio-button [value]="4">Incidencias</mat-radio-button>
       </mat-radio-group>
     </div>
   </mat-dialog-content>
   <mat-divider></mat-divider>
-  <div style="display: flex; justify-content: flex-end; padding: 16px;">
+  <div class="buttons">
     <button mat-button type="button" (click)="close()">
       CANCELAR
     </button>
