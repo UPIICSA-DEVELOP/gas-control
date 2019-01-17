@@ -136,11 +136,15 @@ app-station-list{
   top: 0;
   bottom: 0;
   right: 0;
-  width: 30vw;
+  width: 100vw;
   @media screen and (max-width: 900px){
     width: 50vw;
   }
   @media screen and (max-width: 600px){
     width: 100vw;
   }
+}
+
+.dark-backdrop-panel{
+  background: rgba(0,0,0,0.288) !important;
 }

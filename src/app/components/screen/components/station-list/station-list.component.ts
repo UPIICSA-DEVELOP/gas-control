@@ -4,7 +4,7 @@
  * Proprietary and confidential
  */
 
-import {AfterContentInit, Component, DoCheck, Input, OnInit} from '@angular/core';
+import {AfterViewInit, Component, DoCheck, OnInit} from '@angular/core';
 import {ApiService} from '@app/core/services/api/api.service';
 import {DialogService} from '@app/core/components/dialog/dialog.service';
 import {CookieService} from '@app/core/services/cookie/cookie.service';
@@ -31,12 +31,12 @@ import {SessionStorageService} from '@app/core/services/session-storage/session-
   ],
   host: {'[@fadeInAnimation]': ''}
 })
-export class StationListComponent implements OnInit, DoCheck {
+export class StationListComponent implements OnInit, DoCheck, AfterViewInit {
 
   public stationList: any[];
   public notificationActive: boolean[] = [];
   public groupIcon: any;
-
+  public visibleMask:boolean= false;
   constructor(
     private _api: ApiService,
     private _dialogService: DialogService,
@@ -55,6 +55,14 @@ export class StationListComponent implements OnInit, DoCheck {
         this.notificationActive.push(this.stationList[i].activeNotification);
       }
     }
+  }
+
+  ngAfterViewInit(): void {
+    this.changeMaskVisibility();
+  }
+
+  private changeMaskVisibility():boolean{
+    return this.visibleMask = !this.visibleMask;
   }
 
   private getUtilities():void{
@@ -95,6 +103,7 @@ export class StationListComponent implements OnInit, DoCheck {
   }
 
   public onCloseList():void{
+    this.changeMaskVisibility();
     this._router.navigate(['/home']);
   }
 
