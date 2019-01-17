@@ -4,7 +4,7 @@
  * Proprietary and confidential
  */
 
-import { Component, OnInit } from '@angular/core';
+import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {Router} from '@angular/router';
 import {animate, keyframes, query, stagger, style, transition, trigger} from '@angular/animations';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
@@ -79,6 +79,7 @@ export interface PersonInformation {
   host: {'[@fadeInAnimation]': ''}
 })
 export class UserProfileComponent implements OnInit {
+  @ViewChild('phoneNumber') private _phoneNumberInput: ElementRef;
   private _formData: FormData;
   private _formDeleteData: FormData;
   private _formFile: FormData;
@@ -244,6 +245,7 @@ export class UserProfileComponent implements OnInit {
           code: response.code
         });
       }
+      this._phoneNumberInput.nativeElement.focus();
     });
   }
 

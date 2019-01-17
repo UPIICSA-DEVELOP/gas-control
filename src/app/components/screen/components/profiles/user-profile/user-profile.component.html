@@ -59,7 +59,7 @@
                 </mat-form-field>
               </div>
               <mat-form-field class="inputs">
-                <input [attr.disabled]="load?true:null" formControlName="phoneNumber" matInput placeholder="Número celular" required type="tel" aria-label="User cellphone number">
+                <input [attr.disabled]="load?true:null" formControlName="phoneNumber" matInput placeholder="Número celular" required type="tel" aria-label="User cellphone number" #phoneNumber>
                 <mat-error *ngIf="profileForm.controls['phoneNumber'].hasError('required')">
                   Este campo es obligatorio
                 </mat-error>

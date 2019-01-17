@@ -4,7 +4,7 @@
  * Proprietary and confidential
  */
 
-import {Component, OnInit} from '@angular/core';
+import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {ApiService} from '@app/core/services/api/api.service';
 import {CookieService} from '@app/core/services/cookie/cookie.service';
 import {Constants} from '@app/core/constants.core';
@@ -79,6 +79,7 @@ export interface Consultancy {
   host: {'[@fadeInAnimation]': ''}
 })
 export class ProfileComponent implements OnInit {
+  @ViewChild('phoneNumber') private _phoneNumberInput: ElementRef;
   private _formData: FormData;
   private _formDeleteData: FormData;
   private _formSignature: FormData;
@@ -200,6 +201,7 @@ export class ProfileComponent implements OnInit {
           country: response.name,
           code: response.code
         });
+        this._phoneNumberInput.nativeElement.focus();
       }
     });
   }
@@ -377,6 +379,12 @@ export class ProfileComponent implements OnInit {
                   address: this.consultancy.address,
                   officePhone: this.consultancy.officePhone
                 });
+                if (this.user.role !== 1) {
+                  this.profileForm.controls['businessName'].disable();
+                  this.profileForm.controls['rfc'].disable();
+                  this.profileForm.controls['address'].disable();
+                  this.profileForm.controls['officePhone'].disable();
+                }
                 this.detectChange();
                 if (LocalStorageService.getItem('notSign')) {
                   this.changeSignature();

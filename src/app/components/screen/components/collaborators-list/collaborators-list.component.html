@@ -34,7 +34,7 @@
         <input matInput placeholder="Buscar" aria-label="Search input" (input)="search($event)">
         <mat-icon matPrefix class="icons">search</mat-icon>
       </mat-form-field>
-      <div class="container" *ngIf="!register">
+      <div class="container-1" *ngIf="!register">
         <div *ngIf="collaborators; then view else load"></div>
         <ng-template #view>
           <div *ngIf="collaborators.length>0; then list else empty"></div>
@@ -118,7 +118,7 @@
           </button>
         </div>
       </div>
-      <div class="container">
+      <div class="container-2">
         <form [formGroup]="newPerson" (ngSubmit)="validateImgAndSignature(newPerson.value)" class="form">
           <img src="../../../assets/Images/background.png" class="head-image" alt="background gas station">
           <div class="profileImage">
@@ -155,7 +155,7 @@
           <div class="modal">
             <div class="mask" (click)="selectCountryCode()"></div>
             <mat-form-field class="inputs">
-              <input formControlName="country" matInput placeholder="País" required type="text"
+              <input (keyup)="selectCountryCode()" formControlName="country" matInput placeholder="País" required type="text"
                      aria-label="New collaborator country">
               <mat-error *ngIf="newPerson.controls['country'].hasError('required')">
                 Este campo es obligatorio
@@ -172,7 +172,7 @@
             </div>
             <mat-form-field class="number">
               <input formControlName="phoneNumber" matInput placeholder="Número de celular" required type="text"
-                     aria-label="New collaborator cellphone number">
+                     aria-label="New collaborator cellphone number" #phoneNumber>
               <mat-error *ngIf="newPerson.controls['phoneNumber'].hasError('required')">
                 Este campo es obligatorio
               </mat-error>

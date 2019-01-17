@@ -44,7 +44,7 @@
              <div class="country-code">
                <div class="mask" (click)="openListCountry()"></div>
                  <mat-form-field class="inputs">
-                 <input [attr.disabled]="load?true:null" formControlName="country" matInput placeholder="País" type="text" required aria-label="User country">
+                 <input (keyup)="openListCountry()" [attr.disabled]="load?true:null" formControlName="country" matInput placeholder="País" type="text" required aria-label="User country">
                  <mat-error *ngIf="profileForm.controls['country'].hasError('required')">
                    Este campo es obligatorio
                  </mat-error>
@@ -58,7 +58,7 @@
                 </mat-form-field>
               </div>
               <mat-form-field class="inputs">
-                <input [attr.disabled]="load?true:null" formControlName="phoneNumber" matInput placeholder="Número celular" required type="tel" aria-label="User cellphone number">
+                <input [attr.disabled]="load?true:null" formControlName="phoneNumber" matInput placeholder="Número celular" required type="tel" aria-label="User cellphone number" #phoneNumber>
                 <mat-error *ngIf="profileForm.controls['phoneNumber'].hasError('required')">
                   Este campo es obligatorio
                 </mat-error>
@@ -118,28 +118,28 @@
             <span class="title">Información consultora</span>
             <div>
               <mat-form-field class="inputs">
-                <input [attr.disabled]="load?true:null || user.role!==3" formControlName="businessName" matInput placeholder="Empresa o Razón social" required type="text" aria-label="Consultancy name">
+                <input [attr.disabled]="(load)?true:null" formControlName="businessName" matInput placeholder="Empresa o Razón social" required type="text" aria-label="Consultancy name">
                 <mat-error *ngIf="profileForm.controls['businessName'].hasError('required')">
                   Este campo es obligatorio
                 </mat-error>
               </mat-form-field>
               <mat-form-field class="inputs">
-                <input [attr.disabled]="load?true:null || user.role!==3" formControlName="rfc" matInput placeholder="R.F.C" required type="text" aria-label="Consultancy legal identifier">
+                <input [attr.disabled]="load?true:null" formControlName="rfc" matInput placeholder="R.F.C" required type="text" aria-label="Consultancy legal identifier">
                 <mat-error *ngIf="profileForm.controls['rfc'].hasError('required')">
                   Este campo es obligatorio
                 </mat-error>
               </mat-form-field>
               <div class="address">
-                <div class="mask" (click)="openSelectAddress()"></div>
+                <div class="mask" *ngIf="user.role===1" (click)="openSelectAddress()"></div>
                 <mat-form-field class="inputs">
-                  <textarea [attr.disabled]="load?true:null || user.role!==3" cdkTextareaAutosize formControlName="address" matInput placeholder="Dirección" required type="text" aria-label="Consultancy address"></textarea>
+                  <textarea [attr.disabled]="load?true:null" cdkTextareaAutosize formControlName="address" matInput placeholder="Dirección" required type="text" aria-label="Consultancy address"></textarea>
                   <mat-error *ngIf="profileForm.controls['address'].hasError('required')">
                     Este campo es obligatorio
                   </mat-error>
                 </mat-form-field>
               </div>
               <mat-form-field class="inputs">
-                <input [attr.disabled]="load?true:null || user.role!==3" formControlName="officePhone" matInput placeholder="Número de la consultora" type="tel" aria-label="Consultancy phone number">
+                <input [attr.disabled]="load?true:null" formControlName="officePhone" matInput placeholder="Número de la consultora" type="tel" aria-label="Consultancy phone number">
                 <mat-error *ngIf="profileForm.controls['officePhone'].hasError('minlength')">
                   Se requieren de 8 a 13 dígitos
                 </mat-error>

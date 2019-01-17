@@ -4,7 +4,7 @@
  * Proprietary and confidential
  */
 
-import { Component, OnInit } from '@angular/core';
+import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {Router} from '@angular/router';
 import {animate, style, transition, trigger} from '@angular/animations';
 import {SessionStorageService} from '@app/core/services/session-storage/session-storage.service';
@@ -55,6 +55,7 @@ export interface person {
   host: {'[@fadeInAnimation]': ''}
 })
 export class CollaboratorsListComponent implements OnInit {
+  @ViewChild('phoneNumber') private _phoneNumberInput: ElementRef;
   public collaborators: any[];
   public register: boolean = false;
   public signature: any;
@@ -188,13 +189,14 @@ export class CollaboratorsListComponent implements OnInit {
       name:['',[Validators.required]],
       lastName:['',[Validators.required]],
       email:['',[Validators.required, Validators.email]],
-      country:['',[Validators.required]],
-      code:['',[]],
+      country:['México',[Validators.required]],
+      code:['+52',[]],
       phoneNumber:['',[Validators.required, Validators.minLength(8), Validators.maxLength(13)]],
       role:['',[Validators.required]],
       jobTitle:['',[Validators.required]],
       website:['',[Validators.pattern('[a-z0-9]+([\\-\\.]{1}[a-z0-9]+)*\\.[a-z]{2,5}(:[0-9]{1,5})?(\\/.*)?$')]]
     });
+    this.country = 'MX';
     this.register = true;
   }
 
@@ -231,13 +233,13 @@ export class CollaboratorsListComponent implements OnInit {
 
   public selectCountryCode():void{
     this._countryCodeService.openDialog().afterClosed().subscribe(response=>{
-      console.log(response);
       if (response) {
         this.country = response.iso;
         this.newPerson.patchValue({
           country: response.name,
           code: response.code
         });
+        this._phoneNumberInput.nativeElement.focus();
       }
     });
   }
