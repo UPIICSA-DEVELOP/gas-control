@@ -37,6 +37,7 @@ export interface Person {
   profileImage?: any;
   signature: any;
   password: string;
+  bCard?: any;
 }
 
 export interface Consultancy {
@@ -130,7 +131,8 @@ export class ProfileComponent implements OnInit {
 
   public closeProfile(){
     if (this.change){
-      this.saveChangeBeforeExit()
+      this.saveChangeBeforeExit();
+      return;
     }
     if (!this.signature) {
       this._snackBarService.openSnackBar('Por favor, registre su firma','OK', 3000);
@@ -155,7 +157,7 @@ export class ProfileComponent implements OnInit {
     this.change = true;
     this.deleteImage = true;
     this.newImage = false;
-    this.profileImage='';
+    this.profileImage=undefined;
     this._formDeleteData = new FormData();
     this._formDeleteData.append('blobName', this.blobName);
   }
@@ -173,7 +175,8 @@ export class ProfileComponent implements OnInit {
     ).afterClosed().subscribe(response =>{
       switch (response.code) {
         case 1:
-            this.password = response.data.newPassword;
+          this.change = true;
+          this.password = response.data.newPassword;
           break;
         default:
           break;
@@ -189,10 +192,14 @@ export class ProfileComponent implements OnInit {
 
   public openListCountry(): void {
     this._countryCode.openDialog().afterClosed().subscribe(response => {
-      this.profileForm.patchValue({
-        country: response.name,
-        code: response.code
-      });
+      if (response) {
+        this.change = true;
+        this.country = response.iso;
+        this.profileForm.patchValue({
+          country: response.name,
+          code: response.code
+        });
+      }
     });
   }
 
@@ -283,7 +290,7 @@ export class ProfileComponent implements OnInit {
           this.user = {
             id: response.item.id,
             refId: response.item.refId,
-            country: response.item.country || '',
+            country: (response.item.country?response.item.country:'MX'),
             countryCode: response.item.countryCode || '',
             email: response.item.email,
             jobTitle: response.item.jobTitle,
@@ -291,29 +298,34 @@ export class ProfileComponent implements OnInit {
             name: response.item.name,
             password: response.item.password,
             phoneNumber: response.item.phoneNumber,
-            profileImage: {
-              blobName: (response.item.profileImage? response.item.profileImage.blobName : ''),
-              thumbnail: (response.item.profileImage? response.item.profileImage.thumbnail : '')
-            },
+            profileImage: (response.item.profileImage?{
+              blobName: (response.item.profileImage? response.item.profileImage.blobName : undefined),
+              thumbnail: (response.item.profileImage? response.item.profileImage.thumbnail : undefined)
+            }:undefined),
             role: response.item.role,
-            signature: {
-              blobName: (response.item.signature?response.item.signature.blobName : ''),
-              thumbnail: (response.item.signature?response.item.signature.thumbnail : ''),
-            },
-            website: response.item.website || ''
+            signature: (response.item.signature?{
+              blobName: (response.item.signature?response.item.signature.blobName : undefined),
+              thumbnail: (response.item.signature?response.item.signature.thumbnail : undefined),
+            }:undefined),
+            website: response.item.website || '',
+            bCard: (response.item.bCard?response.item.bCard:null)
           };
           if (this.user.profileImage){
             this.profileImage = this.user.profileImage.thumbnail;
             this.blobName = this.user.profileImage.blobName;
           }
+          let formCountry: string;
+          if (this.user.country){
+            for (let country of Constants.countries){
+              if (country.iso === this.user.country){
+                formCountry=country.name;
+                break;
+              }
+            }
+          }
           if (this.user.countryCode){
             if (!this.user.countryCode.includes('+')) {
               this.user.countryCode = '+' + this.user.countryCode;
-            }
-            for (let country of Constants.countries){
-              if (country.code === this.user.countryCode){
-                this.country=country.name;
-              }
             }
           }
           if(this.user.signature){
@@ -353,7 +365,7 @@ export class ProfileComponent implements OnInit {
                   name: this.user.name,
                   lastName: this.user.lastName,
                   email: this.user.email,
-                  country: this.country,
+                  country: formCountry,
                   code: this.user.countryCode,
                   phoneNumber: this.user.phoneNumber,
                   jobTitle: this.user.jobTitle,
@@ -363,6 +375,7 @@ export class ProfileComponent implements OnInit {
                   address: this.consultancy.address,
                   officePhone: this.consultancy.officePhone
                 });
+                this.detectChange();
                 break;
             }
           });
@@ -401,10 +414,7 @@ export class ProfileComponent implements OnInit {
       this.uploadImage();
     }
     if (this.deleteImage){
-      this.newImageProfile = {
-        thumbnail: '',
-        blob: ''
-      };
+      this.newImageProfile = undefined;
       this.deleteImage =false;
       this.updateProfile(data, event);
     }
@@ -419,6 +429,7 @@ export class ProfileComponent implements OnInit {
     this.user.name = data.name;
     this.user.lastName = data.lastName;
     this.user.countryCode = data.code;
+    this.user.country = this.country;
     this.user.phoneNumber = data.phoneNumber;
     this.user.jobTitle = data.jobTitle;
     if (this.password) {
@@ -434,24 +445,22 @@ export class ProfileComponent implements OnInit {
       this.consultancy.location.longitude = (this.latLong.longitude? this.latLong.longitude:-99.133461);
     }
     if (this.newImageProfile){
-      if (this.newImageProfile.thumbnail !== '' && this.newImageProfile.blob !== '') {
-        this.user.profileImage = {
-          blobName: this.newImageProfile.blob,
-          thumbnail: this.newImageProfile.thumbnail
-        };
-        SessionStorageService.setItem(Constants.UserInSession, {
-          profileImage: this.user.profileImage.thumbnail,
-          role: this.user.role,
-          refId: (this.user.refId? this.user.refId:null)
-        });
-      }else{
-        this.user.profileImage = null;
-        SessionStorageService.setItem(Constants.UserInSession, {
-          profileImage: null,
-          role: this.user.role,
-          refId: (this.user.refId? this.user.refId:null)
-        });
-      }
+      this.user.profileImage = {
+        blobName: this.newImageProfile.blob,
+        thumbnail: this.newImageProfile.thumbnail
+      };
+      SessionStorageService.setItem(Constants.UserInSession, {
+        profileImage: this.user.profileImage.thumbnail,
+        role: this.user.role,
+        refId: (this.user.refId? this.user.refId:null)
+      });
+    }else if(!this.profileImage){
+      this.user.profileImage = null;
+      SessionStorageService.setItem(Constants.UserInSession, {
+        profileImage: null,
+        role: this.user.role,
+        refId: (this.user.refId? this.user.refId:null)
+      });
     }
     if (this.newSig) {
       this.user.signature = {
