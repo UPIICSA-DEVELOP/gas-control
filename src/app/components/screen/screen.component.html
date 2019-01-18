@@ -37,7 +37,7 @@
               <mat-icon>library_books</mat-icon>
               <span>Procedimientos</span>
             </button>
-            <button mat-button>
+            <button mat-button routerLink="/home/add-collaborator">
               <mat-icon>person_add</mat-icon>
               <span>Añadir Colaborador de E.S.</span>
             </button>
@@ -67,7 +67,7 @@
             <app-station-status [station]="stationActive"></app-station-status>
           </div>
           <div class="directory">
-            <app-directory-list></app-directory-list>
+            <app-directory-list [gasStation]="stationActive"></app-directory-list>
           </div>
           <div class="footer">
             <app-footer></app-footer>

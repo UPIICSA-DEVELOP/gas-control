@@ -1,0 +1,133 @@
+<!--
+  ~ Copyright (C) MapLander S de R.L de C.V - All Rights Reserved
+  ~ Unauthorized copying of this file, via any medium is strictly prohibited
+  ~ Proprietary and confidential
+  -->
+
+<div id="add-collaborators">
+  <div class="tap">
+    <button mat-icon-button (click)="close()">
+      <mat-icon>keyboard_arrow_right</mat-icon>
+    </button>
+  </div>
+  <div class="content">
+    <div class="head">
+      <span>AÑADIR COLABORADOR DE ESTACIÓN</span>
+      <button mat-icon-button (click)="close()">
+        <mat-icon>close</mat-icon>
+      </button>
+    </div>
+    <div class="form">
+      <form [formGroup]="newPerson" class="add">
+        <img src="../../../assets/Images/background.png" class="head-image" alt="background gas station">
+        <div class="profileImage">
+          <app-upload-file [layoutTemplate]="icon" (onLoad)="onLoadImage($event)" (onRemove)="onRemoveImage()" [type]="'image'">
+            <ng-template #icon>
+              <img *ngIf="blobImageProfile" [src]="blobImageProfile" alt="User profile image">
+              <mat-icon *ngIf="!blobImageProfile">add_photo_alternate</mat-icon>
+            </ng-template>
+          </app-upload-file>
+        </div>
+        <mat-form-field class="inputs">
+          <input formControlName="name" matInput placeholder="Nombre(s)" required type="text" aria-label="New collaborator name">
+          <mat-error *ngIf="newPerson.controls['name'].hasError('required')">
+            Este campo es obligatorio
+          </mat-error>
+        </mat-form-field>
+        <mat-form-field class="inputs">
+          <input formControlName="lastName" matInput placeholder="Apellido(s)" required type="text"
+                 aria-label="New collaborator lastName">
+          <mat-error *ngIf="newPerson.controls['lastName'].hasError('required')">
+            Este campo es obligatorio
+          </mat-error>
+        </mat-form-field>
+        <mat-form-field class="inputs">
+          <input formControlName="email" matInput placeholder="Email" required type="email"
+                 aria-label="New collaborator email">
+          <mat-error *ngIf="newPerson.controls['email'].hasError('required')">
+            Este campo es obligatorio
+          </mat-error>
+          <mat-error *ngIf="newPerson.controls['email'].hasError('email')">
+            La dirección de email no es valida
+          </mat-error>
+        </mat-form-field>
+        <div class="modal">
+          <div class="mask" (click)="selectCountryCode()"></div>
+          <mat-form-field class="inputs">
+            <input (keyup)="selectCountryCode()" formControlName="country" matInput placeholder="País" required type="text"
+                   aria-label="New collaborator country">
+            <mat-error *ngIf="newPerson.controls['country'].hasError('required')">
+              Este campo es obligatorio
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div class="phone">
+          <div class="modal">
+            <div class="mask" (click)="selectCountryCode()"></div>
+            <mat-form-field class="code">
+              <input formControlName="code" matInput placeholder="Código" type="text"
+                     aria-label="New collaborator countryCode">
+            </mat-form-field>
+          </div>
+          <mat-form-field class="number">
+            <input formControlName="phoneNumber" matInput placeholder="Número de celular" required type="text"
+                   aria-label="New collaborator cellphone number" #phoneNumber>
+            <mat-error *ngIf="newPerson.controls['phoneNumber'].hasError('required')">
+              Este campo es obligatorio
+            </mat-error>
+            <mat-error *ngIf="newPerson.controls['phoneNumber'].hasError('minlength')">
+              Se requieren de 8 a 13 dígitos
+            </mat-error>
+            <mat-error *ngIf="newPerson.controls['phoneNumber'].hasError('maxlength')">
+              Se requieren de 8 a 13 dígitos
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <mat-form-field class="inputs">
+          <mat-select formControlName="role" placeholder="Rol" required aria-label="New collaborator role">
+            <mat-option value="6">Gerente de etación</mat-option>
+            <mat-option value="7">Asistente de etación</mat-option>
+          </mat-select>
+          <mat-error *ngIf="newPerson.controls['role'].hasError('required')">
+            Este campo es obligatorio
+          </mat-error>
+        </mat-form-field>
+        <mat-form-field class="inputs">
+          <input formControlName="jobTitle" matInput placeholder="Cargo" required type="text"
+                 aria-label="New collaborator job title">
+          <mat-error *ngIf="newPerson.controls['jobTitle'].hasError('required')">
+            Este campo es obligatorio
+          </mat-error>
+        </mat-form-field>
+        <div class="website">
+          <mat-form-field class="protocol">
+            <mat-select placeholder="Protocolo" aria-label="New collaborator website protocol" [value]="protocol">
+              <mat-option value="http://">http://</mat-option>
+              <mat-option value="https://">https://</mat-option>
+            </mat-select>
+          </mat-form-field>
+          <mat-form-field class="url">
+            <input formControlName="website" matInput placeholder="Website" type="url"
+                   aria-label="New collaborator website">
+            <mat-error *ngIf="newPerson.controls['website'].hasError('pattern')">
+              Ingrese un sitio web válido
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div class="signature-input">
+          <div class="formHead">Firma digital</div>
+          <div class="signatureContainer" matTooltip="Cambiar firma" (click)="addSignature()">
+            <span *ngIf="!blobSignature">Registre firma digital</span>
+            <img *ngIf="blobSignature" [src]="blobSignature" class="imageSignature"
+                 alt="New collaborator signature image">
+          </div>
+        </div>
+        <div class="save-button">
+          <button mat-flat-button [color]="'primary'" [disabled]="load">
+            AGREGAR
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

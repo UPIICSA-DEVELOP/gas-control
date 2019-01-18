@@ -83,8 +83,16 @@
         height: 100%;
         width: 100%;
         display: flex;
-        justify-content: space-between;
+        justify-content: space-evenly;
         color: #707070;
+        .link{
+          color: #707070;
+        }
+      }
+      .button{
+        width: 64px;
+        height: 32px;
+        margin: 4px 0;
       }
     }
   }

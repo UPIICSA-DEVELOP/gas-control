@@ -73,6 +73,12 @@ export class StationProfileComponent implements OnInit {
     this._apiLoader.getProgress().subscribe(load => {this.load = load; });
   }
 
+  public detectChanges(): void{
+    this.stationForm.valueChanges.subscribe(value => {
+      this.change = true;
+    })
+  }
+
   public closeProfile():void{
     if (this.change){
       this._dialogService.confirmDialog(
@@ -197,12 +203,14 @@ export class StationProfileComponent implements OnInit {
                   this.stationForm.patchValue({
                     legalRepresentative:this.legalRepresentative
                   });
+                  this.detectChanges();
                   break;
                 default:
                   this.legalRepresentative = '';
                   this.stationForm.patchValue({
                     legalRepresentative:this.legalRepresentative
                   });
+                  this.detectChanges();
                   break;
               }
             });
@@ -211,6 +219,7 @@ export class StationProfileComponent implements OnInit {
             this.stationForm.patchValue({
               legalRepresentative:this.legalRepresentative
             });
+            this.detectChanges();
           }
           break;
         default:

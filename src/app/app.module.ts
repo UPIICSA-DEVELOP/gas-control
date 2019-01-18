@@ -39,6 +39,7 @@ import { UserProfileComponent } from './components/screen/components/profiles/us
 import { FooterComponent } from './components/screen/components/footer/footer.component';
 import { DirectoryListComponent } from './components/screen/components/directory-list/directory-list.component';
 import { SearchBarComponent } from './components/screen/components/search-bar/search-bar.component';
+import { AddCollaboratorComponent } from './components/screen/components/add-collaborator/add-collaborator.component';
 
 
 @NgModule({
@@ -61,7 +62,8 @@ import { SearchBarComponent } from './components/screen/components/search-bar/se
     UserProfileComponent,
     FooterComponent,
     DirectoryListComponent,
-    SearchBarComponent
+    SearchBarComponent,
+    AddCollaboratorComponent
   ],
   imports: [
     CoreModule,

@@ -96,10 +96,10 @@
               <div *ngFor="let turn of workShifts; let i = index">
                 <div class="input-content">
                   <mat-form-field class="width-form">
-                    <input matInput placeholder="Inicio" value="{{turn.start | convertTimeAndCapacity : true}}">
+                    <input matInput placeholder="Inicio" value="{{turn.start | convertTimeAndCapacity}}">
                   </mat-form-field>
                   <mat-form-field class="width-form">
-                    <input matInput placeholder="Fin" value="{{turn.end | convertTimeAndCapacity: true}}">
+                    <input matInput placeholder="Fin" value="{{turn.end | convertTimeAndCapacity}}">
                   </mat-form-field>
                   <button type="button" *ngIf="workShifts.length>1" mat-icon-button (click)="addRemoveTurn(true,1, i)" class="remove">
                     <mat-icon>remove</mat-icon>
@@ -129,7 +129,7 @@
                 <div class="flex-box">
                   <div class="fuel">
                     <mat-form-field class="inputs">
-                      <input matInput placeholder="Capacidad" aria-label="Station tank fuel capacity" value="{{tank.capacity | convertTimeAndCapacity : false}}">
+                      <input matInput placeholder="Capacidad (lts)" aria-label="Station tank fuel capacity" value="{{tank.capacity}}">
                     </mat-form-field>
                     <mat-radio-group class="fuel-selector" aria-label="Station tank fuel type" value="{{tank.fuelType}}">
                       <mat-radio-button value="1" >Magna</mat-radio-button>

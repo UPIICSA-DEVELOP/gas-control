@@ -18,6 +18,7 @@ import {CollaboratorsListComponent} from '@app/components/screen/components/coll
 import {UserProfileComponent} from '@app/components/screen/components/profiles/user-profile/user-profile.component';
 import {StationProfileComponent} from '@app/components/screen/components/profiles/station-profile/station-profile.component';
 import {StationListComponent} from '@app/components/screen/components/station-list/station-list.component';
+import {AddCollaboratorComponent} from '@app/components/screen/components/add-collaborator/add-collaborator.component';
 const URL_BASE = environment.url;
 
 export const appRoutes: Routes = [
@@ -89,6 +90,14 @@ export const appRoutes: Routes = [
       {
         path: 'updatepassword',
         component: ResetPassComponent
+      },
+      {
+        path: 'add-collaborator',
+        component: AddCollaboratorComponent,
+        data:{
+          url: URL_BASE + 'home/add-collaborator',
+          title: 'Añadir colaborador'
+        }
       }
     ]
   },

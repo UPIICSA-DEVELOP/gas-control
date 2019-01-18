@@ -10,291 +10,68 @@
     <div class="head">
       <h4>COLABORADORES</h4>
     </div>
-
-    <mat-card-content>
-
-      <mat-card class="collaborator">
+    <div *ngIf="gasStation; then list else load"></div>
+    <ng-template #list>
+      <div *ngIf="collaborators.length>0; then card else empty"></div>
+      <ng-template #card>
         <mat-card-content>
-          <div class="image">
-            <mat-icon class="image-collaborator">account_circle</mat-icon>
-          </div>
-          <div class="information">
-            <div class="info"> Nombre del colaborador</div>
-            <div class="info"> Cargo del colaborador</div>
-            <div class="info"> Email del colaborador</div>
-            <div class="info"> Número del colaborador</div>
+          <div *ngFor="let collaborator of collaborators; let i = index">
+            <mat-card class="collaborator">
+              <mat-card-content>
+                <div class="image">
+                  <img class="image-collaborator" *ngIf="collaborator.profileImage"
+                       [src]="collaborator.profileImage.thumbnail" alt="profile image">
+                  <mat-icon class="image-collaborator" *ngIf="!collaborator.profileImage">account_circle</mat-icon>
+                </div>
+                <div class="information">
+                  <div class="info"> {{collaborator.name}} {{collaborator.lastName}}</div>
+                  <div class="info"> {{collaborator.jobTitle}}</div>
+                  <div class="info"> {{collaborator.email}}</div>
+                  <div class="info"> {{collaborator.phoneNumber}}</div>
+                </div>
+              </mat-card-content>
+              <mat-divider></mat-divider>
+              <div class="action-buttons">
+                <div class="button">
+                  <button mat-button matTooltip="Eliminar">
+                    <mat-icon>delete</mat-icon>
+                  </button>
+                </div>
+                <div class="button">
+                  <button mat-button matTooltip="Cambiar rol">
+                    <mat-icon svgIcon="icons:change_role"></mat-icon>
+                  </button>
+                </div>
+                <div class="button">
+                  <a href="mailto:{{collaborator.email}}" class="link">
+                    <button matTooltip="Enviar email" mat-button>
+                      <mat-icon>mail</mat-icon>
+                    </button>
+                  </a>
+                </div>
+                <div class="button">
+                  <a href="tel:+{{collaborator.countryCode || '52'}}{{collaborator.phoneNumber}}" class="link">
+                    <button matTooltip="Marcar" mat-button>
+                      <mat-icon>phone</mat-icon>
+                    </button>
+                  </a>
+                </div>
+              </div>
+            </mat-card>
           </div>
         </mat-card-content>
-        <mat-divider></mat-divider>
-        <div class="action-buttons">
-          <button mat-button>
-            <mat-icon>delete</mat-icon>
-          </button>
-          <button mat-button>
-            <mat-icon svgIcon="icons:change_role"></mat-icon>
-          </button>
-          <button mat-button>
-            <mat-icon>mail</mat-icon>
-          </button>
-          <button mat-button>
-            <mat-icon>phone</mat-icon>
-          </button>
-        </div>
-      </mat-card>
-      <mat-card class="collaborator">
-        <mat-card-content>
-          <div class="image">
-            <mat-icon class="image-collaborator">account_circle</mat-icon>
-          </div>
-          <div class="information">
-            <div class="info"> Nombre del colaborador</div>
-            <div class="info"> Cargo del colaborador</div>
-            <div class="info"> Email del colaborador</div>
-            <div class="info"> Número del colaborador</div>
-          </div>
+      </ng-template>
+      <ng-template #empty>
+        <mat-card-content style="display: flex; justify-content: center; align-items: center; text-align: center;">
+          <span>Aun no tiene collaboradores asignados a esta estación de servicio</span>
         </mat-card-content>
-        <mat-divider></mat-divider>
-        <div class="action-buttons">
-          <button mat-button>
-            <mat-icon>delete</mat-icon>
-          </button>
-          <button mat-button>
-            <mat-icon svgIcon="icons:change_role"></mat-icon>
-          </button>
-          <button mat-button>
-            <mat-icon>mail</mat-icon>
-          </button>
-          <button mat-button>
-            <mat-icon>phone</mat-icon>
-          </button>
-        </div>
-      </mat-card>
-      <mat-card class="collaborator">
-        <mat-card-content>
-          <div class="image">
-            <mat-icon class="image-collaborator">account_circle</mat-icon>
-          </div>
-          <div class="information">
-            <div class="info"> Nombre del colaborador</div>
-            <div class="info"> Cargo del colaborador</div>
-            <div class="info"> Email del colaborador</div>
-            <div class="info"> Número del colaborador</div>
-          </div>
-        </mat-card-content>
-        <mat-divider></mat-divider>
-        <div class="action-buttons">
-          <button mat-button>
-            <mat-icon>delete</mat-icon>
-          </button>
-          <button mat-button>
-            <mat-icon svgIcon="icons:change_role"></mat-icon>
-          </button>
-          <button mat-button>
-            <mat-icon>mail</mat-icon>
-          </button>
-          <button mat-button>
-            <mat-icon>phone</mat-icon>
-          </button>
-        </div>
-      </mat-card>
-      <mat-card class="collaborator">
-        <mat-card-content>
-          <div class="image">
-            <mat-icon class="image-collaborator">account_circle</mat-icon>
-          </div>
-          <div class="information">
-            <div class="info"> Nombre del colaborador</div>
-            <div class="info"> Cargo del colaborador</div>
-            <div class="info"> Email del colaborador</div>
-            <div class="info"> Número del colaborador</div>
-          </div>
-        </mat-card-content>
-        <mat-divider></mat-divider>
-        <div class="action-buttons">
-          <button mat-button>
-            <mat-icon>delete</mat-icon>
-          </button>
-          <button mat-button>
-            <mat-icon svgIcon="icons:change_role"></mat-icon>
-          </button>
-          <button mat-button>
-            <mat-icon>mail</mat-icon>
-          </button>
-          <button mat-button>
-            <mat-icon>phone</mat-icon>
-          </button>
-        </div>
-      </mat-card>
-      <mat-card class="collaborator">
-        <mat-card-content>
-          <div class="image">
-            <mat-icon class="image-collaborator">account_circle</mat-icon>
-          </div>
-          <div class="information">
-            <div class="info"> Nombre del colaborador</div>
-            <div class="info"> Cargo del colaborador</div>
-            <div class="info"> Email del colaborador</div>
-            <div class="info"> Número del colaborador</div>
-          </div>
-        </mat-card-content>
-        <mat-divider></mat-divider>
-        <div class="action-buttons">
-          <button mat-button>
-            <mat-icon>delete</mat-icon>
-          </button>
-          <button mat-button>
-            <mat-icon svgIcon="icons:change_role"></mat-icon>
-          </button>
-          <button mat-button>
-            <mat-icon>mail</mat-icon>
-          </button>
-          <button mat-button>
-            <mat-icon>phone</mat-icon>
-          </button>
-        </div>
-      </mat-card>
-      <mat-card class="collaborator">
-        <mat-card-content>
-          <div class="image">
-            <mat-icon class="image-collaborator">account_circle</mat-icon>
-          </div>
-          <div class="information">
-            <div class="info"> Nombre del colaborador</div>
-            <div class="info"> Cargo del colaborador</div>
-            <div class="info"> Email del colaborador</div>
-            <div class="info"> Número del colaborador</div>
-          </div>
-        </mat-card-content>
-        <mat-divider></mat-divider>
-        <div class="action-buttons">
-          <button mat-button>
-            <mat-icon>delete</mat-icon>
-          </button>
-          <button mat-button>
-            <mat-icon svgIcon="icons:change_role"></mat-icon>
-          </button>
-          <button mat-button>
-            <mat-icon>mail</mat-icon>
-          </button>
-          <button mat-button>
-            <mat-icon>phone</mat-icon>
-          </button>
-        </div>
-      </mat-card>
-      <mat-card class="collaborator">
-        <mat-card-content>
-          <div class="image">
-            <mat-icon class="image-collaborator">account_circle</mat-icon>
-          </div>
-          <div class="information">
-            <div class="info"> Nombre del colaborador</div>
-            <div class="info"> Cargo del colaborador</div>
-            <div class="info"> Email del colaborador</div>
-            <div class="info"> Número del colaborador</div>
-          </div>
-        </mat-card-content>
-        <mat-divider></mat-divider>
-        <div class="action-buttons">
-          <button mat-button>
-            <mat-icon>delete</mat-icon>
-          </button>
-          <button mat-button>
-            <mat-icon svgIcon="icons:change_role"></mat-icon>
-          </button>
-          <button mat-button>
-            <mat-icon>mail</mat-icon>
-          </button>
-          <button mat-button>
-            <mat-icon>phone</mat-icon>
-          </button>
-        </div>
-      </mat-card>
-      <mat-card class="collaborator">
-        <mat-card-content>
-          <div class="image">
-            <mat-icon class="image-collaborator">account_circle</mat-icon>
-          </div>
-          <div class="information">
-            <div class="info"> Nombre del colaborador</div>
-            <div class="info"> Cargo del colaborador</div>
-            <div class="info"> Email del colaborador</div>
-            <div class="info"> Número del colaborador</div>
-          </div>
-        </mat-card-content>
-        <mat-divider></mat-divider>
-        <div class="action-buttons">
-          <button mat-button>
-            <mat-icon>delete</mat-icon>
-          </button>
-          <button mat-button>
-            <mat-icon svgIcon="icons:change_role"></mat-icon>
-          </button>
-          <button mat-button>
-            <mat-icon>mail</mat-icon>
-          </button>
-          <button mat-button>
-            <mat-icon>phone</mat-icon>
-          </button>
-        </div>
-      </mat-card>
-      <mat-card class="collaborator">
-        <mat-card-content>
-          <div class="image">
-            <mat-icon class="image-collaborator">account_circle</mat-icon>
-          </div>
-          <div class="information">
-            <div class="info"> Nombre del colaborador</div>
-            <div class="info"> Cargo del colaborador</div>
-            <div class="info"> Email del colaborador</div>
-            <div class="info"> Número del colaborador</div>
-          </div>
-        </mat-card-content>
-        <mat-divider></mat-divider>
-        <div class="action-buttons">
-          <button mat-button>
-            <mat-icon>delete</mat-icon>
-          </button>
-          <button mat-button>
-            <mat-icon svgIcon="icons:change_role"></mat-icon>
-          </button>
-          <button mat-button>
-            <mat-icon>mail</mat-icon>
-          </button>
-          <button mat-button>
-            <mat-icon>phone</mat-icon>
-          </button>
-        </div>
-      </mat-card>
-      <mat-card class="collaborator">
-        <mat-card-content>
-          <div class="image">
-            <mat-icon class="image-collaborator">account_circle</mat-icon>
-          </div>
-          <div class="information">
-            <div class="info"> Nombre del colaborador</div>
-            <div class="info"> Cargo del colaborador</div>
-            <div class="info"> Email del colaborador</div>
-            <div class="info"> Número del colaborador</div>
-          </div>
-        </mat-card-content>
-        <mat-divider></mat-divider>
-        <div class="action-buttons">
-          <button mat-button>
-            <mat-icon>delete</mat-icon>
-          </button>
-          <button mat-button>
-            <mat-icon svgIcon="icons:change_role"></mat-icon>
-          </button>
-          <button mat-button>
-            <mat-icon>mail</mat-icon>
-          </button>
-          <button mat-button>
-            <mat-icon>phone</mat-icon>
-          </button>
-        </div>
-      </mat-card>
-
-    </mat-card-content>
+      </ng-template>
+    </ng-template>
+    <ng-template #load>
+      <mat-card-content style="display: flex; justify-content: center; align-items: center">
+        <mat-spinner></mat-spinner>
+      </mat-card-content>
+    </ng-template>
 
 
   </mat-card>
