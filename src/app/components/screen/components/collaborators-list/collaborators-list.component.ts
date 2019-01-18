@@ -134,7 +134,6 @@ export class CollaboratorsListComponent implements OnInit {
           }
           const index = this.collaborators.indexOf(user);
           this.collaborators.splice(index, 1);
-          this.collaborators.unshift(user);
           this.collaborator = this.collaborators;
           break;
         default:
@@ -170,7 +169,6 @@ export class CollaboratorsListComponent implements OnInit {
 
   public changeRoleCollaborator(id: string, newRole: number):void{
     this._api.updateRolePerson(id, newRole).subscribe(response=>{
-      console.log(response);
       switch (response.code) {
         case 200:
           this._snackBarService.openSnackBar('Rol actualizado', 'OK', 2000);
@@ -250,9 +248,11 @@ export class CollaboratorsListComponent implements OnInit {
     }
     if (this.addImage) {
       this.uploadImage(false);
+      return;
     }
     if (this.addSign) {
       this.uploadImage(true);
+      return;
     }
     this.saveUser(data);
   }
@@ -302,11 +302,19 @@ export class CollaboratorsListComponent implements OnInit {
     this._api.createReferencedPerson(newPerson).subscribe(response=>{
       switch (response.code) {
         case 200:
+          this.blobImageProfile = undefined;
+          this.blobSignature = undefined;
           this._snackBarService.openSnackBar('Colaborado creado','OK',3000);
           this.getCollaborators();
           this.register = false;
           break;
+        case 470:
+          this._dialogService.alertDialog('Información',
+            'El Email que está tratando de usar ya ha sido asociado a un usuario',
+            'ACEPTAR');
+          break;
         default:
+          console.log(response);
           this._dialogService.alertDialog('No se pudo acceder', 'Se produjo un error de comunicación con el servidor', 'ACEPTAR');
           break;
       }
@@ -330,7 +338,6 @@ export class CollaboratorsListComponent implements OnInit {
   }
 
   public search(event: any): void{
-    debugger;
     const newArray = [];
     const text = (event.srcElement.value).toLowerCase();
     if(text === ''){
