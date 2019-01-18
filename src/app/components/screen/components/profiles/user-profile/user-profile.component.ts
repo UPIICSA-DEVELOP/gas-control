@@ -463,6 +463,7 @@ export class UserProfileComponent implements OnInit {
     }
     if (this.newImage){
       this.uploadImage();
+      return;
     }
     if(this.deleteImage){
       this.newImageProfile = undefined;
@@ -471,9 +472,11 @@ export class UserProfileComponent implements OnInit {
     }
     if (this.newFile){
       this.uploadFile();
+      return;
     }
     if(this.newSignature){
       this.uploadSignature();
+      return;
     }
     this.saveProfileInformation(data);
   }

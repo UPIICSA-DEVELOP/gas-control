@@ -421,6 +421,7 @@ export class ProfileComponent implements OnInit {
     }
     if(this.newImage){
       this.uploadImage();
+      return;
     }
     if (this.deleteImage){
       this.newImageProfile = undefined;
@@ -429,6 +430,7 @@ export class ProfileComponent implements OnInit {
     }
     if(this.newSignature){
       this.uploadSignature();
+      return;
     }
       this.saveInfoUserAndConsultancy(data);
   }
