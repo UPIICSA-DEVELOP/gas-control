@@ -141,7 +141,7 @@ export class StationProfileComponent implements OnInit {
       phoneNumber:['',[Validators.required, Validators.minLength(8), Validators.maxLength(13)]],
       email:['', [Validators.required, Validators.email]],
       managerName:[{value:'', disabled: true},[]],
-      workers:['',[Validators.required]],
+      workers:['',[]],
       monitoringWells:['',[]],
       observationWells:['',[]]
     });
