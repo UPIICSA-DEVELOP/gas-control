@@ -83,6 +83,7 @@ export class ProfileComponent implements OnInit {
   private _formData: FormData;
   private _formDeleteData: FormData;
   private _formSignature: FormData;
+  public disabledInputs: boolean;
   public user: Person;
   public consultancy: Consultancy;
   public latLong: any;
@@ -128,7 +129,7 @@ export class ProfileComponent implements OnInit {
 
   ngOnInit() {
     this.initUserInfo();
-    this._apiLoaderService.getProgress().subscribe(load => {this.load = load; });
+    this._apiLoaderService.getProgress().subscribe(load => { this.load = load;});
   }
 
   public closeProfile(){
@@ -379,12 +380,7 @@ export class ProfileComponent implements OnInit {
                   address: this.consultancy.address,
                   officePhone: this.consultancy.officePhone
                 });
-                if (this.user.role !== 1) {
-                  this.profileForm.controls['businessName'].disable();
-                  this.profileForm.controls['rfc'].disable();
-                  this.profileForm.controls['address'].disable();
-                  this.profileForm.controls['officePhone'].disable();
-                }
+                this.validateDisabledInputs();
                 this.detectChange();
                 if (LocalStorageService.getItem('notSign')) {
                   this.changeSignature();
@@ -438,6 +434,7 @@ export class ProfileComponent implements OnInit {
   }
 
   private saveInfoUserAndConsultancy(data: any): void{
+    this.validateDisabledInputs(true);
     data.code = data.code.replace('+','');
     this.user.name = data.name;
     this.user.lastName = data.lastName;
@@ -502,6 +499,15 @@ export class ProfileComponent implements OnInit {
           this._dialogService.alertDialog('No se pudo acceder', 'Se produjo un error de comunicación con el servidor', 'ACEPTAR');
           break;
       }
+      this.validateDisabledInputs(false);
     });
+  }
+
+  private validateDisabledInputs(disable?: boolean): void{
+    if(this.user.role !== 1){
+      this.disabledInputs =true;
+    }else{
+      this.disabledInputs = disable;
+    }
   }
 }
