@@ -15,6 +15,15 @@ export class Constants {
     2: 'medium',
     3: 'critical'
   };
+  public static  roles = [
+      'Director',
+      'Gerente',
+      'Asistente',
+      'Representante legal',
+      'Encargado de estación',
+      'Gerente de estación',
+      'Asistente de estación'
+  ];
   public static countries = [
     {
       name: 'Afghanistan',

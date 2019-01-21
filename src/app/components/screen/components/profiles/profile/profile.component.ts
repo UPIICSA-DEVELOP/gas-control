@@ -88,27 +88,20 @@ export class ProfileComponent implements OnInit {
   public consultancy: Consultancy;
   public latLong: any;
   public load: boolean;
-  public role: string[] = [
-    'Director',
-    'Gerente',
-    'Asistente',
-    'Representante legal',
-    'Encargado de estación',
-    'Gerente de estación',
-    'Asistente de estación'];
+  public role: string[];
   public userRole: string;
   public profileForm: FormGroup;
-  public newImage: boolean = false;
-  public deleteImage: boolean = false;
-  public protocol: string = 'http://';
+  public newImage: boolean;
+  public deleteImage: boolean;
+  public protocol: string;
   public profileImage: any;
   public newImageProfile: any;
   public country: any;
-  public change: boolean = false;
+  public change: boolean;
   public blobName: any;
   public password: string;
   public signature: any;
-  public newSignature: boolean = false;
+  public newSignature: boolean;
   public newSig: any;
 
   constructor(
@@ -124,7 +117,12 @@ export class ProfileComponent implements OnInit {
     private _updatePasswordService: UpdatePasswordService,
     private _signaturePad: SignaturePadService
   ) {
-
+    this.role = Constants.roles;
+    this.protocol = 'http://';
+    this.change = false;
+    this.newImage = false;
+    this.deleteImage = false;
+    this.newSignature = false;
   }
 
   ngOnInit() {
@@ -318,16 +316,6 @@ export class ProfileComponent implements OnInit {
             this.profileImage = this.user.profileImage.thumbnail;
             this.blobName = this.user.profileImage.blobName;
           }
-          let formCountry: string;
-          if (this.user.country){
-            for (let country of Constants.countries){
-              if (country.iso === this.user.country){
-                this.country = country.iso;
-                formCountry=country.name;
-                break;
-              }
-            }
-          }
           if (this.user.countryCode){
             if (!this.user.countryCode.includes('+')) {
               this.user.countryCode = '+' + this.user.countryCode;
@@ -346,51 +334,69 @@ export class ProfileComponent implements OnInit {
             }
           }
           this.userRole = this.role[this.user.role-1];
-          this._api.getConsultancy(this.user.refId).subscribe(response => {
-            switch (response.code) {
-              case 200:
-                this.consultancy = {
-                  address: response.item.address,
-                  businessName: response.item.businessName,
-                  id: response.item.id,
-                  location: {
-                    latitude: (response.item.location?response.item.location.latitude : 19.432675),
-                    longitude: (response.item.location?response.item.location.longitude : -99.133461)
-                  },
-                  officePhone: response.item.officePhone || '',
-                  rfc: response.item.rfc
-                };
-                if (this.consultancy.location){
-                  this.latLong = {
-                    latitude: this.consultancy.location.latitude,
-                    longitude: this.consultancy.location.longitude
-                  };
-                }
-                this.profileForm.patchValue({
-                  name: this.user.name,
-                  lastName: this.user.lastName,
-                  email: this.user.email,
-                  country: formCountry,
-                  code: this.user.countryCode,
-                  phoneNumber: this.user.phoneNumber,
-                  jobTitle: this.user.jobTitle,
-                  website: this.user.website,
-                  businessName: this.consultancy.businessName,
-                  rfc: this.consultancy.rfc,
-                  address: this.consultancy.address,
-                  officePhone: this.consultancy.officePhone
-                });
-                this.validateDisabledInputs();
-                this.detectChange();
-                if (LocalStorageService.getItem('notSign')) {
-                  this.changeSignature();
-                }
-                break;
-            }
-          });
+          this.getConsultancyInfo();
           break;
       }
     });
+  }
+
+  private getConsultancyInfo():void{
+    this._api.getConsultancy(this.user.refId).subscribe(response=>{
+      switch (response.code){
+        case 200:
+          this.consultancy = {
+            address: response.item.address,
+            businessName: response.item.businessName,
+            id: response.item.id,
+            location: {
+              latitude: (response.item.location?response.item.location.latitude : 19.432675),
+              longitude: (response.item.location?response.item.location.longitude : -99.133461)
+            },
+            officePhone: response.item.officePhone || '',
+            rfc: response.item.rfc
+          };
+          if (this.consultancy.location){
+            this.latLong = {
+              latitude: this.consultancy.location.latitude,
+              longitude: this.consultancy.location.longitude
+            };
+          }
+          this.patchForm();
+          break;
+      }
+    })
+  }
+
+  private patchForm():void{
+    let formCountry: string;
+    if (this.user.country){
+      for (let country of Constants.countries){
+        if (country.iso === this.user.country){
+          this.country = country.iso;
+          formCountry=country.name;
+          break;
+        }
+      }
+    }
+    this.profileForm.patchValue({
+      name: this.user.name,
+      lastName: this.user.lastName,
+      email: this.user.email,
+      country: formCountry,
+      code: this.user.countryCode,
+      phoneNumber: this.user.phoneNumber,
+      jobTitle: this.user.jobTitle,
+      website: this.user.website,
+      businessName: this.consultancy.businessName,
+      rfc: this.consultancy.rfc,
+      address: this.consultancy.address,
+      officePhone: this.consultancy.officePhone
+    });
+    this.validateDisabledInputs();
+    this.detectChange();
+    if (LocalStorageService.getItem('notSign')) {
+      this.changeSignature();
+    }
   }
 
   private initUserInfo(): void {
@@ -436,7 +442,6 @@ export class ProfileComponent implements OnInit {
   }
 
   private saveInfoUserAndConsultancy(data: any): void{
-    this.validateDisabledInputs(true);
     data.code = data.code.replace('+','');
     this.user.name = data.name;
     this.user.lastName = data.lastName;
@@ -480,28 +485,36 @@ export class ProfileComponent implements OnInit {
         thumbnail: this.newSig.thumbnail
       }
     }
+    this.saveProfileData();
+  }
+
+  private saveProfileData():void{
+    this.validateDisabledInputs(true);
     this._api.updatePerson(this.user).subscribe(response=>{
-      switch (response.code) {
+      switch (response.code){
         case 200:
-          this._api.updateConsultancy(this.consultancy).subscribe(response =>{
-            switch (response.code) {
-              case 200:
-                this.change = false;
-                LocalStorageService.removeItem('notSign');
-                this._snackBarService.openSnackBar('Información actualizada','OK',3000);
-                this._router.navigate(['/home']);
-                break;
-              default:
-                this._dialogService.alertDialog('No se pudo acceder', 'Se produjo un error de comunicación con el servidor', 'ACEPTAR');
-                break;
-            }
-          });
+          this.saveConsultancyData();
           break;
         default:
           this._dialogService.alertDialog('No se pudo acceder', 'Se produjo un error de comunicación con el servidor', 'ACEPTAR');
           break;
       }
-      this.validateDisabledInputs(false);
+    });
+  }
+
+  private saveConsultancyData():void{
+    this.validateDisabledInputs(true);
+    this._api.updateConsultancy(this.consultancy).subscribe(response=>{
+      switch (response.code){
+        case 200:
+          this.change = false;
+          LocalStorageService.removeItem('notSign');
+          this._snackBarService.openSnackBar('Información actualizada','OK',3000);
+          this._router.navigate(['/home']);
+          break;
+        default:
+          break;
+      }
     });
   }
 
