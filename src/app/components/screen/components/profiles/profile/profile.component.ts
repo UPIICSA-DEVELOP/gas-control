@@ -513,6 +513,7 @@ export class ProfileComponent implements OnInit {
           this._router.navigate(['/home']);
           break;
         default:
+          this._dialogService.alertDialog('No se pudo acceder', 'Se produjo un error de comunicación con el servidor', 'ACEPTAR');
           break;
       }
     });

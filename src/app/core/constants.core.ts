@@ -24,6 +24,16 @@ export class Constants {
       'Gerente de estación',
       'Asistente de estación'
   ];
+  public static bloodGroup = [
+    'O-',
+    'O+',
+    'A-',
+    'A+',
+    'B-',
+    'B+',
+    'AB-',
+    'AB+'
+  ];
   public static countries = [
     {
       name: 'Afghanistan',

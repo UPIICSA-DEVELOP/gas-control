@@ -71,8 +71,12 @@
       flex-direction: column;
     }
     .information{
-      width: calc(100% / 3);
+      width: 50%;
       margin: 24px;
+      overflow: auto;
+      @media screen and (max-width: 800px){
+        overflow: unset;
+      }
       .profileImage {
         height: 80px;
         width: 80px;
@@ -99,31 +103,28 @@
         margin: 24px 0;
       }
     }
-    .information-extra{
-      width: calc(100% / 3);
-      display: flex;
-      align-items: center;
-      margin: 24px;
-      @media screen and (max-width: 800px) {
-        width: 100%;
-        height: auto;
-        margin: 24px 0;
-        display: block;
-      }
-    }
     .business-card{
-      width: calc(100% / 3);
+      width: 50%;
       margin: 24px;
       display: flex;
-      align-items: center;
       .card {
         margin: 24px;
+        width: 100%;
+        text-align: end;
+        @media screen and (max-width: 800px){
+          text-align: center;
+        }
         img {
-          width: 100%;
+          width: 80%;
           box-shadow: 0 2px 1px -1px rgba(0, 0, 0, 0.2), 0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12);
           border-radius: 2px;
+          margin-top: 72px;
+          @media screen and (max-width: 800px){
+            margin-top: 0;
+          }
         }
       }
+
       @media screen and (max-width: 800px) {
         width: 100%;
         height: auto;
@@ -175,7 +176,7 @@
         cursor: pointer;
 
         .imageSignature {
-          width: 100%;
+          width: 60%;
         }
       }
     }
@@ -193,7 +194,7 @@
     }
   }
   .content {
-    height: 100%;
+    height: auto;
   }
   .image{
     margin: 16px;
@@ -226,10 +227,8 @@
   mat-spinner{
     z-index: 3;
   }
-  .defaultBC{
-    margin-top: -88px;
-    @media screen and (max-width: 800px){
-      margin-top: 0;
-    }
+  .file-icon{
+    font-size: 24px !important;
+    color: #707070 !important;
   }
 }

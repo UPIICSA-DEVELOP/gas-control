@@ -87,41 +87,25 @@ export class UserProfileComponent implements OnInit {
   public user: Person;
   public userInformation: PersonInformation;
   public load: boolean;
-  public role: string[] = [
-    'Director',
-    'Gerente',
-    'Asistente',
-    'Representante legal',
-    'Encargado de estación',
-    'Gerente de estación',
-    'Asistente de estación'];
-  public bloodGroup: string[] = [
-    'O-',
-    'O+',
-    'A-',
-    'A+',
-    'B-',
-    'B+',
-    'AB-',
-    'AB+'
-  ];
+  public role: string[];
+  public bloodGroup: string[];
   public bloodType: string;
   public userRole: string;
   public profileForm: FormGroup;
-  public newImage: boolean = false;
-  public deleteImage: boolean = false;
-  public protocol: string = 'http://';
+  public newImage: boolean;
+  public deleteImage: boolean;
+  public protocol: string;
   public profileImage: any;
   public newImageProfile: any;
   public country: string;
-  public change: boolean = false;
+  public change: boolean;
   public blobName: any;
   public password: string;
   public file: any;
   public newFileSub: any;
-  public newFile: boolean = false;
+  public newFile: boolean;
   public signature: any;
-  public newSignature: boolean = false;
+  public newSignature: boolean;
   public newSig: any;
   constructor(
     private _router: Router,
@@ -134,12 +118,22 @@ export class UserProfileComponent implements OnInit {
     private _uploadFile: UploadFileService,
     private _formBuilder: FormBuilder,
     private _signaturePad: SignaturePadService
-  ) { }
+  ) {
+    this.role = Constants.roles;
+    this.bloodGroup = Constants.bloodGroup;
+    this.change = false;
+    this.protocol = 'http://';
+    this.newFile = false;
+    this.newImage = false;
+    this.deleteImage = false;
+    this.newSignature = false;
+  }
 
   ngOnInit() {
     this.initUserInfo();
     this._apiLoaderService.getProgress().subscribe(load => {this.load = load; });
   }
+
   public closeProfile():void{
     if (this.change){
       this.saveChangeBeforeExit();
@@ -186,7 +180,7 @@ export class UserProfileComponent implements OnInit {
     this._formData.append('file', event.blob);
   }
 
-  public onLoadFile(event:UploadFileResponse): void{
+  public onLoadFile(event: UploadFileResponse): void{
     this.newFile = true;
     this.change = true;
     this.file = event.file;
@@ -351,15 +345,6 @@ export class UserProfileComponent implements OnInit {
               this.user.countryCode = '+' + this.user.countryCode;
             }
           }
-          let formCountry: string;
-          if (this.user.country) {
-            for (let country of Constants.countries){
-              if (country.iso === this.user.country){
-                this.country = country.iso;
-                formCountry=country.name;
-              }
-            }
-          }
           if(this.user.signature){
             this.signature = this.user.signature.thumbnail
           }
@@ -373,84 +358,88 @@ export class UserProfileComponent implements OnInit {
             }
           }
           this.userRole = this.role[this.user.role-1];
-          this._api.getPersonInformation(this.user.id).subscribe(response =>{
-            switch (response.code) {
-              case 200:
-                this.userInformation = {
-                  id: response.item.id,
-                  ssn: response.item.ssn || undefined,
-                  bloodType: response.item.bloodType || undefined,
-                  concatcPhone: response.item.concatcPhone || undefined,
-                  contactName: response.item.contactName || undefined,
-                  contactKinship: response.item.contactKinship || undefined,
-                  benzene:(response.item.benzene?{
-                    blobName: (response.item.benzene.blobName?response.item.benzene.blobName: undefined),
-                    thumbnail: (response.item.benzene.thumbnail?response.item.benzene.thumbnail: undefined)
-                  }: undefined)
-                };
-                if (this.userInformation.benzene){
-                  this.file = this.userInformation.benzene.thumbnail
-                }
-                if(this.userInformation.bloodType){
-                  for (let bd in this.bloodGroup){
-                    if (this.bloodGroup[bd] === this.userInformation.bloodType){
-                      this.bloodType = this.bloodGroup[bd];
-                      break;
-                    }else {
-                      this.bloodType = '';
-                    }
-                  }
-                }
-                this.profileForm.patchValue({
-                  name: this.user.name,
-                  lastName: this.user.lastName,
-                  email: this.user.email,
-                  country: formCountry,
-                  code: this.user.countryCode,
-                  phoneNumber: this.user.phoneNumber,
-                  jobTitle: this.user.jobTitle,
-                  website: this.user.website,
-                  contactPhone: this.userInformation.concatcPhone,
-                  contactKinship: this.userInformation.contactKinship,
-                  contactName: this.userInformation.contactName,
-                  ssn: this.userInformation.ssn
-                });
-                this.detectChange();
-                if (LocalStorageService.getItem('notSign')) {
-                  this.changeSignature();
-                }
-                break;
-              default:
-                this.profileForm.patchValue({
-                  name: this.user.name,
-                  lastName: this.user.lastName,
-                  email: this.user.email,
-                  country: formCountry,
-                  code: this.user.countryCode,
-                  phoneNumber: this.user.phoneNumber,
-                  jobTitle: this.user.jobTitle,
-                  website: this.user.website
-                });
-                this.bloodType = '';
-                this.userInformation = {
-                  bloodType:undefined,
-                  concatcPhone:undefined,
-                  contactKinship:undefined,
-                  contactName:undefined,
-                  ssn:undefined,
-                  id:this.user.id,
-                  benzene: undefined
-                };
-                this.detectChange();
-                if (LocalStorageService.getItem('notSign')) {
-                  this.changeSignature();
-                }
-                break;
-            }
-          });
+          this.getUserInformation();
           break;
       }
     })
+  }
+
+  private getUserInformation():void{
+    this._api.getPersonInformation(this.user.id).subscribe(response=>{
+      switch (response.code){
+        case 200:
+          this.userInformation = {
+            id: response.item.id,
+            ssn: response.item.ssn || undefined,
+            bloodType: response.item.bloodType || undefined,
+            concatcPhone: response.item.concatcPhone || undefined,
+            contactName: response.item.contactName || undefined,
+            contactKinship: response.item.contactKinship || undefined,
+            benzene:(response.item.benzene?{
+              blobName: (response.item.benzene.blobName?response.item.benzene.blobName: undefined),
+              thumbnail: (response.item.benzene.thumbnail?response.item.benzene.thumbnail: undefined)
+            }: undefined)
+          };
+          if (this.userInformation.benzene){
+            this.file = this.userInformation.benzene.thumbnail
+          }
+          if(this.userInformation.bloodType){
+            for (let bd in this.bloodGroup){
+              if (this.bloodGroup[bd] === this.userInformation.bloodType){
+                this.bloodType = this.bloodGroup[bd];
+                break;
+              }else {
+                this.bloodType = '';
+              }
+            }
+          }
+          this.patchForm();
+          break;
+        default:
+          this.bloodType = '';
+          this.userInformation = {
+            bloodType:undefined,
+            concatcPhone:undefined,
+            contactKinship:undefined,
+            contactName:undefined,
+            ssn:undefined,
+            id:this.user.id,
+            benzene: undefined
+          };
+          this.patchForm();
+          break;
+      }
+    });
+  }
+
+  private patchForm():void{
+    let formCountry: string;
+    if (this.user.country) {
+      for (let country of Constants.countries){
+        if (country.iso === this.user.country){
+          this.country = country.iso;
+          formCountry=country.name;
+        }
+      }
+    }
+    this.profileForm.patchValue({
+      name: this.user.name,
+      lastName: this.user.lastName,
+      email: this.user.email,
+      country: formCountry,
+      code: this.user.countryCode,
+      phoneNumber: this.user.phoneNumber,
+      jobTitle: this.user.jobTitle,
+      website: this.user.website,
+      contactPhone: this.userInformation.concatcPhone,
+      contactKinship: this.userInformation.contactKinship,
+      contactName: this.userInformation.contactName,
+      ssn: this.userInformation.ssn
+    });
+    this.detectChange();
+    if (LocalStorageService.getItem('notSign')) {
+      this.changeSignature();
+    }
   }
 
   public updateProfile(data: any, event?: any):void{
@@ -528,28 +517,35 @@ export class UserProfileComponent implements OnInit {
         thumbnail: this.newSig.thumbnail
       }
     }
+    this.saveUser();
+  }
+
+  private saveUser():void{
     this._api.updatePerson(this.user).subscribe(response=>{
-      switch (response.code) {
+      switch (response.code){
         case 200:
-            this.userInformation.id = this.user.id;
-            this._api.savePersonInformation(this.userInformation).subscribe(response=>{
-              switch (response.code) {
-                case 200:
-                  this.change = false;
-                  LocalStorageService.removeItem('notSign');
-                  this._snackBarService.openSnackBar('Información actualizada','OK',3000);
-                  this._router.navigate(['/home']);
-                  break;
-                default:
-                  this._dialogService.alertDialog('No se pudo acceder', 'Se produjo un error de comunicación con el servidor', 'ACEPTAR');
-                  break;
-              }
-            });
+          this.saveInformation();
           break;
         default:
           this._dialogService.alertDialog('No se pudo acceder', 'Se produjo un error de comunicación con el servidor', 'ACEPTAR');
           break;
       }
-    });
+    })
+  }
+
+  private saveInformation():void{
+    this._api.savePersonInformation(this.userInformation).subscribe(response=>{
+      switch (response.code){
+        case 200:
+          this.change = false;
+          LocalStorageService.removeItem('notSign');
+          this._snackBarService.openSnackBar('Información actualizada','OK',3000);
+          this._router.navigate(['/home']);
+          break;
+        default:
+          this._dialogService.alertDialog('No se pudo acceder', 'Se produjo un error de comunicación con el servidor', 'ACEPTAR');
+          break;
+      }
+    })
   }
 }

@@ -7,115 +7,110 @@
 <div id="user-profile">
   <div class="background"></div>
   <mat-progress-bar [mode]="'indeterminate'" *ngIf="load" class="progress"></mat-progress-bar>
-  <form *ngIf="user else loading" [formGroup]="profileForm" (ngSubmit)="updateProfile(profileForm.value, $event)" class="container">
-    <div class="information">
-      <mat-card class="content">
-        <div class="head">
-          <div class="image">
-            <app-upload-file [layoutTemplate]="icon" (onLoad)="onLoadImage($event)" (onRemove)="onRemoveImage()" [type]="'image'">
-              <ng-template #icon>
-                <img *ngIf="profileImage" [src]="profileImage" class="profileImage" alt="User profile image">
-                <mat-icon *ngIf="!profileImage" class="defaultProfileImage">account_circle</mat-icon>
-              </ng-template>
-            </app-upload-file>
+  <div *ngIf="user; then form else loading"></div>
+  <ng-template #form>
+    <form [formGroup]="profileForm" (ngSubmit)="updateProfile(profileForm.value, $event)" class="container">
+      <div class="information">
+        <mat-card class="content">
+          <div class="head">
+            <div class="image">
+              <app-upload-file [layoutTemplate]="icon" (onLoad)="onLoadImage($event)" (onRemove)="onRemoveImage()" [type]="'image'">
+                <ng-template #icon>
+                  <img *ngIf="profileImage" [src]="profileImage" class="profileImage" alt="User profile image">
+                  <mat-icon *ngIf="!profileImage" class="defaultProfileImage">account_circle</mat-icon>
+                </ng-template>
+              </app-upload-file>
+            </div>
+            <span class="title">Mi información</span>
           </div>
-          <span class="title">Mi información</span>
-        </div>
-        <mat-card-content class="user-form">
-          <div>
-            <mat-form-field class="inputs">
-              <input [attr.disabled]="load?true:null" formControlName="name" matInput placeholder="Nombre(s)" required type="text" aria-label="User name">
-              <mat-error *ngIf="profileForm.controls['name'].hasError('required')">
-                Este campo es obligatorio
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field class="inputs">
-              <input [attr.disabled]="load?true:null" formControlName="lastName" matInput placeholder="Apellido(s)" required type="text" aria-label="User last-name">
-              <mat-error *ngIf="profileForm.controls['lastName'].hasError('required')">
-                Este campo es obligatorio
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field class="inputs">
-              <input [attr.disabled]="load?true:null" formControlName="email" matInput placeholder="Email comercial" type="email" aria-label="User email">
-              <mat-error *ngIf="profileForm.controls['email'].hasError('required')">
-                Este campo es obligatorio
-              </mat-error>
-            </mat-form-field>
-
-            <div class="country-code">
-              <div class="mask" (click)="openListCountry()"></div>
+          <mat-card-content class="user-form">
+            <div>
               <mat-form-field class="inputs">
-                <input [attr.disabled]="load?true:null" formControlName="country" matInput placeholder="País" type="text" required aria-label="User country">
-                <mat-error *ngIf="profileForm.controls['country'].hasError('required')">
+                <input [attr.disabled]="load?true:null" formControlName="name" matInput placeholder="Nombre(s)" required type="text" aria-label="User name">
+                <mat-error *ngIf="profileForm.controls['name'].hasError('required')">
                   Este campo es obligatorio
                 </mat-error>
               </mat-form-field>
-            </div>
-            <div style="display: flex">
+              <mat-form-field class="inputs">
+                <input [attr.disabled]="load?true:null" formControlName="lastName" matInput placeholder="Apellido(s)" required type="text" aria-label="User last-name">
+                <mat-error *ngIf="profileForm.controls['lastName'].hasError('required')">
+                  Este campo es obligatorio
+                </mat-error>
+              </mat-form-field>
+              <mat-form-field class="inputs">
+                <input [attr.disabled]="load?true:null" formControlName="email" matInput placeholder="Email comercial" type="email" aria-label="User email">
+                <mat-error *ngIf="profileForm.controls['email'].hasError('required')">
+                  Este campo es obligatorio
+                </mat-error>
+              </mat-form-field>
+
               <div class="country-code">
                 <div class="mask" (click)="openListCountry()"></div>
-                <mat-form-field class="right-inputs">
-                  <input [attr.disabled]="load?true:null" formControlName="code" matInput placeholder="Código" type="text" aria-label="Phone code">
+                <mat-form-field class="inputs">
+                  <input [attr.disabled]="load?true:null" formControlName="country" matInput placeholder="País" type="text" required aria-label="User country">
+                  <mat-error *ngIf="profileForm.controls['country'].hasError('required')">
+                    Este campo es obligatorio
+                  </mat-error>
+                </mat-form-field>
+              </div>
+              <div style="display: flex">
+                <div class="country-code">
+                  <div class="mask" (click)="openListCountry()"></div>
+                  <mat-form-field class="right-inputs">
+                    <input [attr.disabled]="load?true:null" formControlName="code" matInput placeholder="Código" type="text" aria-label="Phone code">
+                  </mat-form-field>
+                </div>
+                <mat-form-field class="inputs">
+                  <input [attr.disabled]="load?true:null" formControlName="phoneNumber" matInput placeholder="Número celular" required type="tel" aria-label="User cellphone number" #phoneNumber>
+                  <mat-error *ngIf="profileForm.controls['phoneNumber'].hasError('required')">
+                    Este campo es obligatorio
+                  </mat-error>
+                  <mat-error *ngIf="profileForm.controls['phoneNumber'].hasError('minlength')">
+                    Se requieren de 8 a 13 dígitos
+                  </mat-error>
+                  <mat-error *ngIf="profileForm.controls['phoneNumber'].hasError('maxlength')">
+                    Se requieren de 8 a 13 dígitos
+                  </mat-error>
                 </mat-form-field>
               </div>
               <mat-form-field class="inputs">
-                <input [attr.disabled]="load?true:null" formControlName="phoneNumber" matInput placeholder="Número celular" required type="tel" aria-label="User cellphone number" #phoneNumber>
-                <mat-error *ngIf="profileForm.controls['phoneNumber'].hasError('required')">
-                  Este campo es obligatorio
-                </mat-error>
-                <mat-error *ngIf="profileForm.controls['phoneNumber'].hasError('minlength')">
-                  Se requieren de 8 a 13 dígitos
-                </mat-error>
-                <mat-error *ngIf="profileForm.controls['phoneNumber'].hasError('maxlength')">
-                  Se requieren de 8 a 13 dígitos
-                </mat-error>
-              </mat-form-field>
-            </div>
-            <mat-form-field class="inputs">
-              <input disabled placeholder="Rol" required aria-label="User role" [value]="userRole" matInput>
-            </mat-form-field>
-            <mat-form-field class="inputs">
-              <input [attr.disabled]="load?true:null" formControlName="jobTitle" matInput placeholder="Cargo" required type="text" aria-label="User job-title">
-              <mat-error *ngIf="profileForm.controls['jobTitle'].hasError('required')">
-                Este campo es obligatorio
-              </mat-error>
-            </mat-form-field>
-            <div class="password-button">
-              <button mat-button (click)="changePassword()" type="button" aria-label="User update password">
-                Actualizar contraseña
-              </button>
-            </div>
-            <div style="display: flex">
-              <mat-form-field class="right-inputs">
-                <mat-select [disabled]="load" placeholder="Protocolo" aria-label="User website protocol" [(value)]="protocol">
-                  <mat-option value="http://">http://</mat-option>
-                  <mat-option value="https://">https://</mat-option>
-                </mat-select>
+                <input disabled placeholder="Rol" required aria-label="User role" [value]="userRole" matInput>
               </mat-form-field>
               <mat-form-field class="inputs">
-                <input [attr.disabled]="load?true:null" placeholder="Website" formControlName="website" matInput type="url" aria-label="User website">
-                <mat-error *ngIf="profileForm.controls['website'].hasError('pattern')">
-                  Ingrese un sitio web válido
+                <input [attr.disabled]="load?true:null" formControlName="jobTitle" matInput placeholder="Cargo" required type="text" aria-label="User job-title">
+                <mat-error *ngIf="profileForm.controls['jobTitle'].hasError('required')">
+                  Este campo es obligatorio
                 </mat-error>
               </mat-form-field>
-            </div>
-            <div class="signature-input">
-              <div class="formHead">Firma digital</div>
-              <div class="signatureContainer">
-                <div class="signature" (click)="changeSignature()" matTooltip="Cambiar firma">
-                  <span *ngIf="!signature" class="formText">Registre firma digital</span>
-                  <img *ngIf="signature" [src]="signature" class="imageSignature" alt="User signature image">
+              <div class="password-button">
+                <button mat-button (click)="changePassword()" type="button" aria-label="User update password">
+                  Actualizar contraseña
+                </button>
+              </div>
+              <div style="display: flex">
+                <mat-form-field class="right-inputs">
+                  <mat-select [disabled]="load" placeholder="Protocolo" aria-label="User website protocol" [(value)]="protocol">
+                    <mat-option value="http://">http://</mat-option>
+                    <mat-option value="https://">https://</mat-option>
+                  </mat-select>
+                </mat-form-field>
+                <mat-form-field class="inputs">
+                  <input [attr.disabled]="load?true:null" placeholder="Website" formControlName="website" matInput type="url" aria-label="User website">
+                  <mat-error *ngIf="profileForm.controls['website'].hasError('pattern')">
+                    Ingrese un sitio web válido
+                  </mat-error>
+                </mat-form-field>
+              </div>
+              <div class="signature-input">
+                <div class="formHead">Firma digital</div>
+                <div class="signatureContainer">
+                  <div class="signature" (click)="changeSignature()" matTooltip="Cambiar firma">
+                    <span *ngIf="!signature" class="formText">Registre firma digital</span>
+                    <img *ngIf="signature" [src]="signature" class="imageSignature" alt="User signature image">
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-        </mat-card-content>
-      </mat-card>
-    </div>
-    <div class="information-extra">
-      <div>
-        <mat-card class="content">
-          <mat-card-content>
             <span class="title">Información adicional</span>
             <div>
               <mat-form-field class="inputs">
@@ -131,8 +126,8 @@
                 <app-upload-file [layoutTemplate]="button" (onLoad)="onLoadFile($event)" [type]="'file'">
                   <ng-template #button>
                     <span type="button">Estudio de toxicidad (Benceno)</span>
-                    <mat-icon *ngIf="!file" svgIcon="icons:upload"></mat-icon>
-                    <mat-icon *ngIf="file">autorenew</mat-icon>
+                    <mat-icon class="file-icon" *ngIf="!file" svgIcon="icons:upload"></mat-icon>
+                    <mat-icon class="file-icon" *ngIf="file">autorenew</mat-icon>
                   </ng-template>
                 </app-upload-file>
               </div>
@@ -163,16 +158,16 @@
           <button mat-flat-button aria-label="LogIn" [disabled]="load" [color]="'primary'" mat-button>GUARDAR CAMBIOS</button>
         </div>
       </div>
-    </div>
-    <div class="business-card">
-      <div class="card">
-        <a [href]="user.bCard.dynamicLink" target="_blank" *ngIf="user.bCard">
-          <img [src]="user.bCard.cardThumbnail" alt="User Business Card" *ngIf="user.bCard">
-        </a>
-        <img class="defaultBC" *ngIf="!user.bCard" src="../../../../../../assets/Images/Business-Default.png" alt="Default Business Card">
+      <div class="business-card">
+        <div class="card">
+          <a [href]="user.bCard.dynamicLink" target="_blank" *ngIf="user.bCard">
+            <img [src]="user.bCard.cardThumbnail" alt="User Business Card" *ngIf="user.bCard">
+          </a>
+          <img *ngIf="!user.bCard" src="../../../../../../assets/Images/Business-Default.png" alt="Default Business Card">
+        </div>
       </div>
-    </div>
-  </form>
+    </form>
+  </ng-template>
   <ng-template #loading>
     <mat-spinner></mat-spinner>
   </ng-template>
