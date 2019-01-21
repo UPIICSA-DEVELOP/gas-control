@@ -53,6 +53,7 @@ export class StationProfileComponent implements OnInit {
   public latLng: any;
   public load: boolean;
   public legalRepresentative: string;
+  public gasName: string;
   private id: string;
   constructor(
     private _router: Router,
@@ -130,7 +131,8 @@ export class StationProfileComponent implements OnInit {
     this._api.getUtils().subscribe(response=>{
       switch (response.code) {
         case 200:
-          this.gasImage=response.item.groupIcons[this.station.type-1].fileCS.thumbnail;
+          this.gasName = response.item.groupIcons[this.station.type-1].name;
+          this.gasImage = response.item.groupIcons[this.station.type-1].fileCS.thumbnail;
           break;
       }
     })
@@ -156,7 +158,6 @@ export class StationProfileComponent implements OnInit {
 
   private getStation():void{
     this._api.getStation(this.id).subscribe(response=>{
-      console.log(response);
       switch (response.code) {
         case 200:
           this.station = response.item;
@@ -246,7 +247,6 @@ export class StationProfileComponent implements OnInit {
     this.station.workShifts = this.workShifts;
     this.station.fuelTanks = this.tanks;
     this.station.dispensers = this.dispensers;
-    console.log(this.station);
    this._api.updateStation(this.station).subscribe(response => {
       switch (response.code) {
         case 200:

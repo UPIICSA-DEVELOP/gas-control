@@ -11,17 +11,10 @@
   <ng-template #form>
     <form [formGroup]="stationForm" (ngSubmit)="saveStationInformation(stationForm.value)" class="station-form">
       <div class="basic-information">
-        <div class="header">
-          <div>
-            <img *ngIf="gasImage" [src]="gasImage" class="profileImage">
-            <mat-icon *ngIf="!gasImage" class="defaultImage">local_gas_station</mat-icon>
-          </div>
-          <span class="text">{{station.name}}</span>
-        </div>
         <mat-card class="body">
-          <mat-card-header class="head">
+          <div class="head">
             <span>Estación de Servicio</span>
-          </mat-card-header>
+          </div>
           <mat-card-content class="content">
             <mat-form-field class="inputs">
               <input formControlName="businessName" matInput placeholder="Razón social" required type="text" aria-label="Station business name">
@@ -53,12 +46,6 @@
                 </mat-error>
               </mat-form-field>
             </div>
-          </mat-card-content>
-        </mat-card>
-      </div>
-      <div class="station-information">
-        <mat-card class="card">
-          <mat-card-content>
             <mat-form-field class="inputs">
               <input formControlName="phoneNumber" matInput placeholder="Teléfono" required type="text" aria-label="Station phone number">
               <mat-error *ngIf="stationForm.controls['phoneNumber'].hasError('required')">
@@ -86,6 +73,7 @@
             <mat-form-field class="inputs">
               <input formControlName="workers" matInput placeholder="No. de trabajadores" type="number" aria-label="Station workers">
             </mat-form-field>
+            <mat-divider></mat-divider>
             <div>
               <div class="double-inputs">
                 <span>Turnos</span>
@@ -107,8 +95,11 @@
                 </div>
               </div>
             </div>
+            <mat-divider></mat-divider>
             <div>
-              <span class="text">No. de pozos</span>
+              <div class="text">
+                <span>No. de pozos</span>
+              </div>
               <div class="fuel-selector">
                 <mat-form-field class="width-form">
                   <input formControlName="monitoringWells" matInput placeholder="De monitoreo" type="text" aria-label="Station monitoring wells">
@@ -118,6 +109,7 @@
                 </mat-form-field>
               </div>
             </div>
+            <mat-divider></mat-divider>
             <div>
               <div class="double-inputs">
                 <span>Tanques de Combustible</span>
@@ -131,10 +123,10 @@
                     <mat-form-field class="inputs">
                       <input matInput placeholder="Capacidad (lts)" aria-label="Station tank fuel capacity" value="{{tank.capacity}}">
                     </mat-form-field>
-                    <mat-radio-group class="fuel-selector" aria-label="Station tank fuel type" value="{{tank.fuelType}}">
-                      <mat-radio-button value="1" >Magna</mat-radio-button>
-                      <mat-radio-button value="2">Premium</mat-radio-button>
-                      <mat-radio-button value="3">Diesel</mat-radio-button>
+                    <mat-radio-group class="fuel-selector" aria-label="Station tank fuel type" [(value)]="tank.fuelType">
+                      <mat-radio-button [value]="1" >Magna</mat-radio-button>
+                      <mat-radio-button [value]="2">Premium</mat-radio-button>
+                      <mat-radio-button [value]="3">Diesel</mat-radio-button>
                     </mat-radio-group>
                   </div>
                   <div class="button-container">
@@ -145,73 +137,67 @@
                 </div>
               </div>
             </div>
+            <mat-divider></mat-divider>
+            <div class="header-two">
+              <div>
+                <span>Dispensarios</span>
+              </div>
+              <div>
+                <button type="button" mat-icon-button (click)="addRemoveTurn(false, 3)">
+                  <mat-icon>add</mat-icon>
+                </button>
+              </div>
+            </div>
+            <div *ngFor="let dispenser of dispensers; let i = index">
+              <div class="dispensers">
+                <div class="content">
+                  <span class="head">Dispensario {{i+1}}</span>
+                  <div class="hoses">
+                    <mat-form-field class="field">
+                      <input matInput placeholder="No. de mangueras" type="number" aria-label="Station hoses number" value="{{dispenser.hoses}}">
+                    </mat-form-field>
+                    <mat-form-field class="field">
+                      <input matInput placeholder="No. de serie" type="text" aria-label="Station hoses cre id" value="{{dispenser.identifier}}">
+                    </mat-form-field>
+                  </div>
+                  <section class="hoses" aria-label="Station hoses fuel type">
+                    <mat-checkbox [checked]="dispenser.magna">Magna</mat-checkbox>
+                    <mat-checkbox [checked]="dispenser.premium">Premium</mat-checkbox>
+                    <mat-checkbox [checked]="dispenser.diesel">Diesel</mat-checkbox>
+                  </section>
+                </div>
+                <div class="button">
+                  <button type="button" *ngIf="dispensers.length>1" mat-icon-button (click)="addRemoveTurn(true,3, i)" class="remove">
+                    <mat-icon>remove</mat-icon>
+                  </button>
+                </div>
+              </div>
+            </div>
           </mat-card-content>
         </mat-card>
+        <div class="save">
+          <button mat-flat-button [color]="'primary'">
+            GUARDAR CAMBIOS
+          </button>
+        </div>
       </div>
       <div class="dispensers-information">
-        <div>
-          <mat-card class="card">
-            <mat-card-content class="content-card">
-              <div class="header">
-                <div>
-                  <span>Dispensarios</span>
-                </div>
-                <div>
-                  <button type="button" mat-icon-button (click)="addRemoveTurn(false, 3)">
-                    <mat-icon>add</mat-icon>
-                  </button>
-                </div>
-              </div>
-              <div *ngFor="let dispenser of dispensers; let i = index">
-                <div class="dispensers">
-                  <div class="content">
-                    <span class="head">Dispensario {{i+1}}</span>
-                    <div class="hoses">
-                      <mat-form-field class="field">
-                        <input matInput placeholder="No. de mangueras" type="number" aria-label="Station hoses number" value="{{dispenser.hoses}}">
-                      </mat-form-field>
-                      <mat-form-field class="field">
-                        <input matInput placeholder="No. de serie" type="text" aria-label="Station hoses cre id" value="{{dispenser.identifier}}">
-                      </mat-form-field>
-                    </div>
-                    <section class="hoses" aria-label="Station hoses fuel type">
-                      <mat-checkbox [checked]="dispenser.magna">Magna</mat-checkbox>
-                      <mat-checkbox [checked]="dispenser.premium">Premium</mat-checkbox>
-                      <mat-checkbox [checked]="dispenser.diesel">Diesel</mat-checkbox>
-                    </section>
-                  </div>
-                  <div class="button">
-                    <button type="button" *ngIf="dispensers.length>1" mat-icon-button (click)="addRemoveTurn(true,3, i)" class="remove">
-                      <mat-icon>remove</mat-icon>
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </mat-card-content>
-          </mat-card>
-          <mat-card class="documents">
-            <mat-card-header class="head">
-              Documentación
-            </mat-card-header>
-            <mat-card-content class="content">
-              <div class="card-content">
-                <div class="text">Añadir documentación</div>
-                <div class="body">
-                  <button mat-button type="button" class="button">
-                    ASEA
-                  </button>
-                  <button mat-button type="button" class="button">
-                    CRE
-                  </button>
-                </div>
-              </div>
-            </mat-card-content>
-          </mat-card>
-          <div class="save">
-            <button mat-flat-button [color]="'primary'">
-              GUARDAR CAMBIOS
-            </button>
+        <div class="header">
+          <div>
+            <img *ngIf="gasImage" [src]="gasImage" class="profileImage">
+            <mat-icon *ngIf="!gasImage" class="defaultImage">local_gas_station</mat-icon>
           </div>
+          <span class="text">{{gasName}}</span>
+        </div>
+        <div class="businessName">
+          <span>{{station.businessName}}</span>
+          <br>
+          <span>{{station.name}}</span>
+        </div>
+        <div class="documentation">
+          <button mat-button [color]="'primary'" type="button">
+            Documentación <mat-icon>keyboard_backspace</mat-icon>
+          </button>
         </div>
       </div>
     </form>

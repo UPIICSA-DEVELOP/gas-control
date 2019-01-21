@@ -37,50 +37,13 @@
       color: #707070;
     }
     .basic-information{
-      width: calc(100% / 3);
+      width: 40%;
       margin: 24px;
-      .header{
-        display: flex;
-        justify-content: space-between;
-        margin: 16px 0;
-        @media screen and (max-width: 800px){
-          margin: 16px;
-        }
-        .profileImage {
-          height: 80px;
-          width: 80px;
-          border-radius: 50%;
-          background-color: #FFFFFF;
-          box-shadow: 0 2px 1px -1px rgba(0, 0, 0, 0.2), 0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12);
-        }
-        .defaultImage {
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          width: 80px;
-          height: 80px;
-          border-radius: 50%;
-          background-color: #707070;
-          box-shadow: 0 2px 1px -1px rgba(0, 0, 0, 0.2), 0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12);
-        }
-        mat-icon {
-          font-size: 80px;
-          color: #FFFFFF;
-        }
-        .text{
-          width: calc(100% - 120px);
-          font-weight: 700;
-          font-size: 28px;
-          text-align: right;
-          color: mat-color($primary);
-          @media screen and (max-width: 1024px){
-            font-size: 24px;
-          }
-        }
-      }
+      overflow: auto;
       .body{
-        height: calc( 100% - 112px);
+        height: auto;
         .head{
+          margin: 16px 0;
           span{
             font-weight: 500;
             font-size: 24px;
@@ -91,155 +54,138 @@
             text-align: right;
           }
         }
-        .content{
-          overflow: auto;
-          height: calc(100% - 28px);
-        }
       }
       @media screen and (max-width: 800px) {
         width: 100%;
         height: auto;
         margin: 24px 0;
       }
-    }
-    .station-information{
-      width: calc(100% / 3);
-      margin: 24px;
-      .card{
-        height: 100%;
-        mat-card-content{
-          overflow-x: hidden;
-          overflow-y: auto;
-          height: 100%;
-          @media screen and (max-width: 800px){
-            overflow-y: hidden;
-          }
-          .double-inputs{
-            color: #707070;
-            justify-content: space-between;
-            display: flex;
-            align-items: center;
-          }
-          .input-content{
-            display: flex;
-            justify-content: space-between;
-          }
-          .width-form{
+      .double-inputs{
+        color: #707070;
+        justify-content: space-between;
+        display: flex;
+        align-items: center;
+      }
+      .input-content{
+        display: flex;
+        justify-content: space-between;
+      }
+      .width-form{
+        width: 40%;
+      }
+      .text{
+        margin: 16px 0;
+        color: #707070
+      }
+      .button-container{
+        display: flex;
+        align-items: center;
+      }
+      .fuel-selector{
+        display: flex;
+        justify-content: space-around;
+      }
+      .fuel{
+        width: 90%;
+        margin: 12px 0;
+      }
+      .dispensers{
+        display: flex;
+        margin: 12px 0;
+      }
+      .content{
+        margin: 0 16px;
+        .head{
+          color: #707070;
+          padding-left: 16px;
+        }
+        .hoses{
+          display: flex;
+          justify-content: space-around;
+          color: #707070;
+          .field{
             width: 40%;
           }
-          .text{
-            color: #707070
-          }
-          .button-container{
-            display: flex;
-            align-items: center;
-          }
-          .fuel-selector{
-            display: flex;
-            justify-content: space-around;
-          }
-          .fuel{
-            width: 90%;
-            margin: 8px 0;
-          }
         }
       }
-      @media screen and (max-width: 800px) {
-        width: 100%;
-        height: auto;
-        margin: 24px 0;
+      .header-two{
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        color: #707070;
+      }
+      .button{
+        display: flex;
+        align-items: center;
       }
     }
     .dispensers-information{
-      width: calc(100% / 3);
+      width: 50%;
       margin: 24px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
       @media screen and (max-width: 800px) {
         width: 100%;
         height: auto;
         margin: 24px 0;
         display: block;
       }
-      .card{
-        margin: 8px 0;
-        height: 200px;
-        @media screen and (max-width: 800px){
-          height: auto;
+      .header{
+        display: flex;
+        align-items: center;
+        width: 100%;
+        margin-top: 88px;
+        .profileImage {
+          height: 120px;
+          width: 120px;
+          border-radius: 50%;
+          margin: 0 24px;
+          background-color: #FFFFFF;
+          box-shadow: 0 2px 1px -1px rgba(0, 0, 0, 0.2), 0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12);
         }
-        .dispensers{
+        .defaultImage {
           display: flex;
-          margin: 12px 0;
-        }
-        .content-card{
-          height: 100%;
-          overflow-x: hidden;
-          overflow-y: auto;
-          @media screen and (max-width: 800px){
-            overflow-y: hidden;
-          }
-          .header{
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            color: #707070;
-          }
-        }
-        .content{
-          width: 90%;
-          .head{
-            color: #707070;
-            padding-left: 16px;
-          }
-          .hoses{
-            display: flex;
-            justify-content: space-around;
-            color: #707070;
-            .field{
-              width: 40%;
-            }
-          }
-        }
-        .button{
-          display: flex;
+          justify-content: center;
           align-items: center;
+          width: 80px;
+          height: 80px;
+          border-radius: 50%;
+          margin: 0 24px;
+          background-color: #707070;
+          box-shadow: 0 2px 1px -1px rgba(0, 0, 0, 0.2), 0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12);
+        }
+        mat-icon {
+          font-size: 80px;
+          color: #FFFFFF;
+        }
+        .text{
+          font-weight: 700;
+          font-size: 40px;
+          text-align: right;
+          color: mat-color($primary);
+          @media screen and (max-width: 1024px){
+            font-size: 24px;
+          }
         }
       }
-      .documents{
-        margin: 8px 0;
-        height: 144px;
-        .head{
-          font-weight: 500;
-          font-size: 24px;
-          color: #000000;
-        }
-        .content{
-          .card-content{
-            width: 100%;
-          }
-          .body{
-            display: flex;
-            justify-content: space-around;
-          }
-          display: flex;
-          justify-content: space-around;
-          align-items: center;
-          height: 90%;
-          .text{
-            margin: 8px 0;
-            font-weight: 500;
-            font-size: 16px;
-            color: #000000;
-          }
-          .button{
-            box-shadow: 0 2px 1px -1px rgba(0, 0, 0, 0.2), 0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12);
+      .businessName{
+        margin: 12px 0;
+        font-size: 32px;
+        color: mat-color($primary);
+      }
+      .documentation{
+        position: absolute;
+        top: 80px;
+        right: 16px;
+        button{
+          font-size: 18px;
+          mat-icon{
+            transform: rotate(180deg);
           }
         }
       }
     }
   }
   .save{
+    margin: 16px 0;
     display: flex;
     justify-content: center;
   }
