@@ -49,7 +49,7 @@
                   </div>
                   <div class="information">
                     <div class="info">{{collaborator.name}} {{collaborator.lastName}} </div>
-                    <div class="info"> {{collaborator.jobTitle}} | {{role[collaborator.role-1]}}</div>
+                    <div class="info"> {{role[collaborator.role-1]}} | {{collaborator.jobTitle}}</div>
                     <div class="info"> {{collaborator.email}}</div>
                     <div class="info"> {{collaborator.phoneNumber}}</div>
                   </div>
@@ -143,13 +143,16 @@
             </mat-error>
           </mat-form-field>
           <mat-form-field class="inputs">
-            <input formControlName="email" matInput placeholder="Email" required type="email"
+            <input (blur)="validateEmailExist()" formControlName="email" matInput placeholder="Email" required type="email"
                    aria-label="New collaborator email">
             <mat-error *ngIf="newPerson.controls['email'].hasError('required')">
               Este campo es obligatorio
             </mat-error>
             <mat-error *ngIf="newPerson.controls['email'].hasError('email')">
               La dirección de email no es valida
+            </mat-error>
+            <mat-error *ngIf="newPerson.controls['email'].hasError('emailUsed')">
+              Este email ya tiene un usuario asociado
             </mat-error>
           </mat-form-field>
           <div class="modal">

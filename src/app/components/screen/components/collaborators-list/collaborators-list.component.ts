@@ -304,17 +304,14 @@ export class CollaboratorsListComponent implements OnInit {
         case 200:
           this.blobImageProfile = undefined;
           this.blobSignature = undefined;
-          this._snackBarService.openSnackBar('Colaborado creado','OK',3000);
+          this._dialogService.confirmDialog(
+            'Información',
+            'Hemos enviado un email de validación de cuenta a: ' + newPerson.email,
+            'ACEPTAR');
           this.getCollaborators();
           this.register = false;
           break;
-        case 470:
-          this._dialogService.alertDialog('Información',
-            'El Email que está tratando de usar ya ha sido asociado a un usuario',
-            'ACEPTAR');
-          break;
         default:
-          console.log(response);
           this._dialogService.alertDialog('No se pudo acceder', 'Se produjo un error de comunicación con el servidor', 'ACEPTAR');
           break;
       }
@@ -347,22 +344,10 @@ export class CollaboratorsListComponent implements OnInit {
         if(UtilitiesService.removeDiacritics(this.collaborator[x].name).toLowerCase().includes(text) || this.collaborator[x].email.toLowerCase().includes(text) || this.collaborator[x].phoneNumber.includes(text) || UtilitiesService.removeDiacritics(this.collaborator[x].lastName).toLowerCase().includes(text) ){
           newArray.push(this.collaborator[x]);
         }else {
-          switch (text.toLowerCase()) {
-            case 'director':
-              if (this.collaborator[x].role === 1) {
-                newArray.push(this.collaborator[x]);
-              }
-              break;
-            case 'gerente':
-              if (this.collaborator[x].role === 2) {
-                newArray.push(this.collaborator[x]);
-              }
-              break;
-            case 'asistente':
-              if (this.collaborator[x].role === 3) {
-                newArray.push(this.collaborator[x]);
-              }
-              break;
+          for (let y = 0; y < this.role.length; y++){
+            if (UtilitiesService.removeDiacritics(this.role[y]).toLowerCase().includes(text) && this.collaborator[x].role === y+1){
+              newArray.push(this.collaborator[x]);
+            }
           }
         }
       }
@@ -372,5 +357,25 @@ export class CollaboratorsListComponent implements OnInit {
         this.collaborators = this.collaborator;
       }
     }
+  }
+
+  public validateEmailExist():void{
+    let verify={
+      email: this.newPerson.controls['email'].value,
+      password: '',
+      token: '123'
+    };
+    this._api.signIn(verify).subscribe(response=>{
+      switch (response.code){
+        case 472:
+          this._dialogService.alertDialog('Información',
+            'El Email que está tratando de usar ya ha sido asociado a un usuario',
+            'ACEPTAR');
+          this.newPerson.controls['email'].setErrors({emailUsed: true});
+          break;
+        default:
+          break;
+      }
+    })
   }
 }
