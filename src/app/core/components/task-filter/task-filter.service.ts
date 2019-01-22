@@ -19,6 +19,6 @@ export class TaskFilterService {
   ) { }
 
   public open(filter?:number):MatDialogRef<TaskFilterComponent>{
-    return this._dialog.open(TaskFilterComponent,{panelClass:'date-panel', disableClose: true, data:filter || 0});
+    return this._dialog.open(TaskFilterComponent,{panelClass:'filter-panel', disableClose: true, data:filter || 0});
   }
 }
