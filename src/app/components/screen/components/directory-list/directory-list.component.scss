@@ -32,7 +32,7 @@
   }
 
   mat-card-content{
-    height: calc(100% - 60px);
+    height: calc(100% - 136px);
     overflow-y: auto;
     overflow-x: hidden;
     .collaborator {
@@ -96,5 +96,12 @@
       }
     }
   }
-
+  .search{
+    width: 100%;
+    padding: 0 24px;
+    .icons{
+      color:#707070;
+      margin: 0 12px;
+    }
+  }
 }
