@@ -134,10 +134,9 @@
         width: 100%;
         margin-top: 88px;
         .profileImage {
-          height: 120px;
-          width: 120px;
+          height: 112px;
+          width: 112px;
           border-radius: 50%;
-          margin: 0 24px;
           background-color: #FFFFFF;
           box-shadow: 0 2px 1px -1px rgba(0, 0, 0, 0.2), 0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12);
         }
@@ -158,7 +157,7 @@
         }
         .text{
           font-weight: 700;
-          font-size: 40px;
+          font-size: 48px;
           text-align: right;
           color: mat-color($primary);
           @media screen and (max-width: 1024px){
@@ -194,11 +193,9 @@
     height: 300px;
     position: absolute;
     bottom: 0;
-    background-size: 100%;
-    background-position: bottom;
     right: 0;
-    background-image: url("../../../../../../assets/Images/background.png");
-    background-repeat: no-repeat;
+    background: url("../../../../../../assets/Images/background.png") no-repeat bottom;
+    background-size: cover;
     z-index: 0;
     @media screen and (max-width: 768px), screen and (max-height: 600px) {
       width: 300px;

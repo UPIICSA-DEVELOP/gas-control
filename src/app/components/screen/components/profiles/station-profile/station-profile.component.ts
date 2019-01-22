@@ -140,7 +140,7 @@ export class StationProfileComponent implements OnInit {
 
   private initForm():void{
     this.stationForm = this._formBuilder.group({
-      name:['',[]],
+      name:['',[Validators.required]],
       businessName:['',[Validators.required]],
       legalRepresentative:[{value:'', disabled: true},[]],
       rfc: ['',[Validators.required]],

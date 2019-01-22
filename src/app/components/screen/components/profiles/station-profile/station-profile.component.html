@@ -29,13 +29,25 @@
               </mat-error>
             </mat-form-field>
             <mat-form-field class="inputs">
-              <input formControlName="crePermission" matInput placeholder="Número de permiso de la CRE" required type="text" aria-label="Station cre permission">
+              <input formControlName="crePermission" matInput placeholder="Número de permiso de la CRE" type="text" aria-label="Station cre permission">
             </mat-form-field>
             <mat-form-field class="inputs">
-              <input formControlName="name" matInput placeholder="Nombre de la sucursal" type="text" aria-label="Station name">
+              <input formControlName="name" matInput placeholder="Nombre de la sucursal" required type="text" aria-label="Station name">
+              <mat-error *ngIf="stationForm.controls['name'].hasError('required')">
+                Este campo es obligatorio
+              </mat-error>
             </mat-form-field>
             <mat-form-field class="inputs">
               <input formControlName="legalRepresentative" matInput placeholder="Representante legal" type="text" aria-label="Station owner">
+            </mat-form-field>
+            <mat-form-field class="inputs">
+              <input formControlName="email" matInput placeholder="Email comercial" required type="email" aria-label="Station email">
+              <mat-error *ngIf="stationForm.controls['email'].hasError('required')">
+                Este campo es obligatorio
+              </mat-error>
+              <mat-error *ngIf="stationForm.controls['email'].hasError('email')">
+                La dirección de email no es valida
+              </mat-error>
             </mat-form-field>
             <div class="address">
               <div class="mask" (click)="openLocation()"></div>
@@ -56,15 +68,6 @@
               </mat-error>
               <mat-error *ngIf="stationForm.controls['phoneNumber'].hasError('maxlength')">
                 Se reuieren de 8 a 13 dígitos
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field class="inputs">
-              <input formControlName="email" matInput placeholder="Email comercial" required type="email" aria-label="Station email">
-              <mat-error *ngIf="stationForm.controls['email'].hasError('required')">
-                Este campo es obligatorio
-              </mat-error>
-              <mat-error *ngIf="stationForm.controls['email'].hasError('email')">
-                La dirección de email no es valida
               </mat-error>
             </mat-form-field>
             <mat-form-field class="inputs">
@@ -183,16 +186,17 @@
       </div>
       <div class="dispensers-information">
         <div class="header">
-          <div>
+          <div style="margin-right: 16px;">
             <img *ngIf="gasImage" [src]="gasImage" class="profileImage">
             <mat-icon *ngIf="!gasImage" class="defaultImage">local_gas_station</mat-icon>
           </div>
-          <span class="text">{{gasName}}</span>
-        </div>
-        <div class="businessName">
-          <span>{{station.businessName}}</span>
-          <br>
-          <span>{{station.name}}</span>
+          <div>
+            <span class="text">{{gasName}}</span>
+            <br>
+            <span class="businessName">{{station.businessName}}</span>
+            <br>
+            <span class="businessName">{{station.name}}</span>
+          </div>
         </div>
         <div class="documentation">
           <button mat-button [color]="'primary'" type="button">

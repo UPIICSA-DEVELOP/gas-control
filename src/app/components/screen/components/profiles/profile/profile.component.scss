@@ -23,11 +23,9 @@
     height: 300px;
     position: absolute;
     bottom: 0;
-    background-size: 100%;
-    background-position: bottom;
     right: 0;
-    background-image: url("../../../../../../assets/Images/background.png");
-    background-repeat: no-repeat;
+    background: url("../../../../../../assets/Images/background.png") no-repeat bottom;
+    background-size: cover;
     z-index: 0;
     @media screen and (max-width: 768px), screen and (max-height: 600px) {
       width: 300px;
@@ -54,7 +52,7 @@
     }
 
     .information {
-      width: calc(100% / 2);
+      width: 40%;
       height: auto;
       margin: 24px;
       overflow: auto;
@@ -92,7 +90,7 @@
     }
 
     .business-card {
-      width: calc(100% / 2);
+      width: 50%;
       margin: 24px;
       display: flex;
       .card {
@@ -103,7 +101,7 @@
           text-align: center;
         }
         img {
-          width: 80%;
+          width: 65%;
           box-shadow: 0 2px 1px -1px rgba(0, 0, 0, 0.2), 0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12);
           border-radius: 2px;
           margin-top: 72px;
@@ -133,7 +131,7 @@
     }
 
     .user-form {
-      width: 100%;
+      margin: 0 16px;
     }
 
     .inputs {
