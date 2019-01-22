@@ -11,7 +11,7 @@
 
 <div id="home">
     <mat-drawer-container>
-      <mat-drawer class="menu" mode="side" [opened]="true">
+      <mat-drawer class="menu" mode="side" [opened]="true" [disableClose]="true">
         <div class="station-information" *ngIf="stationActive">
           <div class="image">
             <div class="container">
@@ -37,7 +37,7 @@
               <mat-icon>library_books</mat-icon>
               <span>Procedimientos</span>
             </button>
-            <button mat-button routerLink="/home/add-collaborator">
+            <button mat-button (click)="addCollaborator()">
               <mat-icon>person_add</mat-icon>
               <span>Añadir Colaborador de E.S.</span>
             </button>

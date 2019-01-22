@@ -121,4 +121,8 @@ export class ScreenComponent implements OnInit {
     })
   }
 
+  public addCollaborator():void{
+    SessionStorageService.setItem('refId', this.stationActive.id);
+    this._router.navigate(['/home/add-collaborator'])
+  }
 }
