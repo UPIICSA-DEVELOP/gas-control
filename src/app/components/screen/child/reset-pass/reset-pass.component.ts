@@ -47,13 +47,9 @@ export class ResetPassComponent implements OnInit, AfterViewInit {
         switch (response.code) {
           case 1:
             this._snackBarService.openSnackBar('Espere un momento', '', 0);
-            let user = SessionStorageService.getItem(Constants.UserInSession);
+            let user = SessionStorageService.getItem(Constants.UserUpdatePassword);
             user.password=newPassword;
-            SessionStorageService.setItem(Constants.UserInSession, {
-              profileImage: (user.profileImage)?user.profileImage.thumbnail:null,
-              role: user.role,
-              refId: (user.refId?user.refId:null)
-            });
+            SessionStorageService.removeItem(Constants.UserUpdatePassword);
             this._api.updatePerson(user).subscribe(response => {
               switch (response.code) {
                 case 200:

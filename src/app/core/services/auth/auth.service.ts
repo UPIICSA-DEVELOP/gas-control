@@ -32,7 +32,7 @@ export class AuthService implements Resolve<any>{
     if (isPlatformBrowser(this._platformId)) {
       if(state.url !== '/home/updatepassword'){
         if(AuthService.validateUpdatePassword()){
-          this.saveUserInfo(false);
+          this._router.navigate(['/home/updatepassword']).then();
         }else{
           this.goToHome(state.url);
         }
