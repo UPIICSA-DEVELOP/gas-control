@@ -34,6 +34,9 @@ export const appRoutes: Routes = [
       {
         path: 'profile',
         resolve: {data: AuthService},
+        data:{
+          title: 'Perfil'
+        },
         children:[
           {
             path: 'consultancy',

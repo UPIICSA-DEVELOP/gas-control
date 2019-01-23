@@ -57,7 +57,7 @@ export class ServicesModule {
   ) {
     this._routerState.loadRouting();
     this._networkService.init();
-    // this._meta.init();
+    this._meta.init();
     this._icons.init();
   }
 }
