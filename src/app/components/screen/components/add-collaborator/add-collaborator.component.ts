@@ -18,8 +18,10 @@ import {ApiLoaderService} from '@app/core/services/api/api-loader.service';
 import {UploadFileResponse} from '@app/core/components/upload-file/upload-file.component';
 import {SessionStorageService} from '@app/core/services/session-storage/session-storage.service';
 import {Constants} from '@app/core/constants.core';
+import {User} from 'firebase';
+import {LocalStorageService} from '@app/core/services/local-storage/local-storage.service';
 
-export interface person {
+export interface Person {
   name: string;
   lastName: string
   email: string;
@@ -32,6 +34,16 @@ export interface person {
   refId: string;
   signature?:any;
   profileImage?: any;
+}
+
+export interface PersonInformation {
+  id: string;
+  bloodType?:string;
+  concatcPhone?:string;
+  contactKinship?:string;
+  contactName?:string;
+  ssn?: string;
+  benzene?: any;
 }
 
 @Component({
@@ -55,19 +67,25 @@ export interface person {
 export class AddCollaboratorComponent implements OnInit {
   @ViewChild('phoneNumber') private _phoneNumberInput: ElementRef;
   public signature: any;
+  public profileImage: any;
+  public file: any;
   public blobSignature: string;
-  public protocol: string = 'http://';
+  public protocol: string;
   public newPerson: FormGroup;
   public blobImageProfile: string;
-  public profileImage: any;
-  public addImage: boolean=false;
-  public addSign: boolean=false;
+  public addImage: boolean;
+  public addSign: boolean;
   public user: any;
   public id: string;
   public country: string;
   public load: boolean;
+  public bloodGroup: string[];
+  public newFile: boolean;
+  public bloodType: string;
   private _formImage:FormData;
   private _formSignature: FormData;
+  private _formFile: FormData;
+  private _refId: string;
   constructor(
     private _api:ApiService,
     private _apiLoader: ApiLoaderService,
@@ -78,7 +96,14 @@ export class AddCollaboratorComponent implements OnInit {
     private _snackBarService: SnackBarService,
     private _formBuilder: FormBuilder,
     private _router: Router
-  ) { }
+  ) {
+    this.bloodGroup = Constants.bloodGroup;
+    this.addImage = false;
+    this.addSign = false;
+    this.newFile = false;
+    this.protocol = 'http://';
+    this._refId = SessionStorageService.getItem('refId');
+  }
 
   ngOnInit() {
     this.user= SessionStorageService.getItem(Constants.UserInSession);
@@ -93,6 +118,7 @@ export class AddCollaboratorComponent implements OnInit {
       'CANCELAR').afterClosed().subscribe(response=>{
         switch (response.code) {
           case 1:
+            SessionStorageService.removeItem('refId');
             this._router.navigate(['/home']);
             break;
         }
@@ -127,19 +153,13 @@ export class AddCollaboratorComponent implements OnInit {
     });
   }
 
-  private initForm():void{
-    this.newPerson = this._formBuilder.group({
-      name:['',[Validators.required]],
-      lastName:['',[Validators.required]],
-      email:['',[Validators.required, Validators.email]],
-      country:['México',[Validators.required]],
-      code:['+52',[]],
-      phoneNumber:['',[Validators.required, Validators.minLength(8), Validators.maxLength(13)]],
-      role:['',[Validators.required]],
-      jobTitle:['',[Validators.required]],
-      website:['',[Validators.pattern('[a-z0-9]+([\\-\\.]{1}[a-z0-9]+)*\\.[a-z]{2,5}(:[0-9]{1,5})?(\\/.*)?$')]]
-    });
-    this.country = 'MX';
+  public onLoadFile(event: UploadFileResponse): void{
+    this.newFile = true;
+    this.file = event.file;
+    this._formFile = new FormData();
+    this._formFile.append('path', '');
+    this._formFile.append('fileName', 'benzene-'+this.user.refId+'-'+new Date().getTime()+'.pdf');
+    this._formFile.append('file', event.file);
   }
 
   public addSignature(): void{
@@ -153,6 +173,162 @@ export class AddCollaboratorComponent implements OnInit {
           this._formSignature.append('fileName', 'signature-'+this.user.refId+'-'+new Date().getTime()+'.png');
           this._formSignature.append('isImage', 'true');
           this._formSignature.append('file', response.blob);
+          break;
+      }
+    })
+  }
+
+  public uploadGenericFile(type:number): void{
+    let form: FormData;
+    switch (type){
+      case 1:
+        form = this._formImage;
+        this.addImage = false;
+        break;
+      case 2:
+        form = this._formSignature;
+        this.addSign = false;
+        break;
+      case 3:
+        form = this._formFile;
+        this.newFile = false;
+        break;
+    }
+    this._uploadFileService.upload(form).subscribe(response=>{
+      if(response){
+        switch (type){
+          case 1:
+            this.profileImage = {
+              blobName: response.item.blobName || '',
+              thumbnail: response.item.thumbnail || ''
+            };
+            break;
+          case 2:
+            this.signature = {
+              blobName: response.item.blobName || '',
+              thumbnail: response.item.thumbnail || ''
+            };
+            break;
+          case 3:
+            this.file = {
+              blobName: response.item.blobName || '',
+              thumbnail: response.item.thumbnail || ''
+            };
+            break;
+        }
+        this.validateForm(this.newPerson.value);
+      }
+    });
+  }
+
+  public validateForm(data: any):void{
+    if (this.newPerson.invalid){
+      return;
+    }
+    if (this.newFile){
+      this.uploadGenericFile(3);
+      return;
+    }
+    if (this.addImage){
+      this.uploadGenericFile(1);
+      return;
+    }
+    if (this.addSign){
+      this.uploadGenericFile(2);
+      return;
+    }
+    this.createCollaborator(data)
+  }
+
+  private initForm():void{
+    this.newPerson = this._formBuilder.group({
+      name:['',[Validators.required]],
+      lastName:['',[Validators.required]],
+      email:['',[Validators.required, Validators.email]],
+      country:['México',[Validators.required]],
+      code:['+52',[]],
+      phoneNumber:['',[Validators.required, Validators.minLength(8), Validators.maxLength(13)]],
+      role:['',[Validators.required]],
+      jobTitle:['',[Validators.required]],
+      website:['',[Validators.pattern('[a-z0-9]+([\\-\\.]{1}[a-z0-9]+)*\\.[a-z]{2,5}(:[0-9]{1,5})?(\\/.*)?$')]],
+      ssn:['',[]],
+      contactName:['',[]],
+      contactPhoneNumber:['',[Validators.minLength(8), Validators.maxLength(13)]],
+      contactKinship:['',[]]
+    });
+    this.country = 'MX';
+  }
+
+  private createCollaborator(data:any):void{
+    data.code = data.code.replace('+','');
+    let person: Person ={
+      name: data.name,
+      lastName: data.lastName,
+      email: data.email,
+      refId: this._refId,
+      country: this.country,
+      countryCode: data.code,
+      role: data.role,
+      website: (data.website?this.protocol + data.website:undefined),
+      jobTitle: data.jobTitle,
+      phoneNumber: data.phoneNumber,
+      profileImage:(this.profileImage?this.profileImage:undefined),
+      signature:(this.signature?this.signature:undefined)
+    };
+    let personInformation: PersonInformation = {
+      id: '',
+      benzene: (this.file?this.file:undefined),
+      bloodType: (data.bloodType? data.bloodType:undefined),
+      ssn: (data.ssn? data.ssn:undefined),
+      contactName: (data.contactName? data.contactName:undefined),
+      concatcPhone:(data.contactPhoneNumber? data.contactPhoneNumber:undefined),
+      contactKinship: (data.contactKinship?data.contactKinship:undefined)
+    };
+    console.log(person);
+    console.log(personInformation);
+    this._api.createReferencedPerson(person).subscribe(response=>{
+        switch (response.code){
+          case 200:
+              personInformation.id=response.item.id;
+              this.createInformationCollaborator(personInformation);
+             break;
+          default:
+            this._dialogService.alertDialog('No se pudo acceder', 'Se produjo un error de comunicación con el servidor', 'ACEPTAR');
+            break;
+        }
+    })
+  }
+
+  private createInformationCollaborator(personInfo: PersonInformation): void{
+    this._api.savePersonInformation(personInfo).subscribe(response=>{
+      switch (response.code){
+        case 200:
+          SessionStorageService.removeItem('refId');
+          LocalStorageService.setItem('newCollaborator', true);
+          this._router.navigate(['/home']);
+          break;
+        default:
+          this._dialogService.alertDialog('No se pudo acceder', 'Se produjo un error de comunicación con el servidor', 'ACEPTAR');
+          break;
+      }
+    });
+  }
+
+  public validateEmailExist():void{
+    let verify={
+      email: this.newPerson.controls['email'].value,
+      password: '',
+      token: '123'
+    };
+    this._api.signIn(verify).subscribe(response=>{
+      switch (response.code){
+        case 472:
+          this._dialogService.alertDialog('Información',
+            'El Email que está tratando de usar ya ha sido asociado a un usuario',
+            'ACEPTAR');
+          this.newPerson.controls['email'].setErrors({emailUsed: true});
+          break;
+        default:
           break;
       }
     })

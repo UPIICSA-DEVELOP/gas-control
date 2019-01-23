@@ -4,20 +4,21 @@
  * Proprietary and confidential
  */
 
-import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
+import {Component, DoCheck, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
 import {ApiService} from '@app/core/services/api/api.service';
 import {SnackBarService} from '@app/core/services/snackbar/snackbar.service';
 import {DialogService} from '@app/core/components/dialog/dialog.service';
 import {Constants} from '@app/core/constants.core';
 import {UtilitiesService} from '@app/core/utilities/utilities.service';
 import {CookieService} from '@app/core/services/cookie/cookie.service';
+import {LocalStorageService} from '@app/core/services/local-storage/local-storage.service';
 
 @Component({
   selector: 'app-directory-list',
   templateUrl: './directory-list.component.html',
   styleUrls: ['./directory-list.component.scss']
 })
-export class DirectoryListComponent implements OnInit, OnChanges {
+export class DirectoryListComponent implements OnInit, OnChanges,DoCheck {
   @Input() public gasStation: any;
   public collaborators: any[];
   public roleType: string[];
@@ -40,6 +41,13 @@ export class DirectoryListComponent implements OnInit, OnChanges {
 
   ngOnChanges(changes: SimpleChanges): void {
     if(this.gasStation){
+      this.getCollaborators();
+    }
+  }
+
+  ngDoCheck(): void {
+    if (LocalStorageService.getItem('newCollaborator')){
+      LocalStorageService.removeItem('newCollaborator');
       this.getCollaborators();
     }
   }

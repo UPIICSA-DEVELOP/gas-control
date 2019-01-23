@@ -5,6 +5,7 @@
   -->
 
 <div id="add-collaborators">
+  <mat-progress-bar [mode]="'indeterminate'" *ngIf="load" class="progress"></mat-progress-bar>
   <div class="tap">
     <button mat-icon-button (click)="close()">
       <mat-icon>keyboard_arrow_right</mat-icon>
@@ -18,7 +19,7 @@
       </button>
     </div>
     <div class="form">
-      <form [formGroup]="newPerson" class="add">
+      <form [formGroup]="newPerson" (ngSubmit)="validateForm(newPerson.value)" class="add">
         <img src="../../../assets/Images/background.png" class="head-image" alt="background gas station">
         <div class="profileImage">
           <app-upload-file [layoutTemplate]="icon" (onLoad)="onLoadImage($event)" (onRemove)="onRemoveImage()" [type]="'image'">
@@ -43,12 +44,15 @@
         </mat-form-field>
         <mat-form-field class="inputs">
           <input formControlName="email" matInput placeholder="Email" required type="email"
-                 aria-label="New collaborator email">
+                 aria-label="New collaborator email" (blur)="validateEmailExist()">
           <mat-error *ngIf="newPerson.controls['email'].hasError('required')">
             Este campo es obligatorio
           </mat-error>
           <mat-error *ngIf="newPerson.controls['email'].hasError('email')">
             La dirección de email no es valida
+          </mat-error>
+          <mat-error *ngIf="newPerson.controls['email'].hasError('emailUsed')">
+            Este email ya tiene un usuario asociado
           </mat-error>
         </mat-form-field>
         <div class="modal">
@@ -85,8 +89,8 @@
         </div>
         <mat-form-field class="inputs">
           <mat-select formControlName="role" placeholder="Rol" required aria-label="New collaborator role">
-            <mat-option value="6">Gerente de etación</mat-option>
-            <mat-option value="7">Asistente de etación</mat-option>
+            <mat-option value="6">Coordinador de estación</mat-option>
+            <mat-option value="7">Asistente de estación</mat-option>
           </mat-select>
           <mat-error *ngIf="newPerson.controls['role'].hasError('required')">
             Este campo es obligatorio
@@ -120,6 +124,49 @@
             <span *ngIf="!blobSignature">Registre firma digital</span>
             <img *ngIf="blobSignature" [src]="blobSignature" class="imageSignature"
                  alt="New collaborator signature image">
+          </div>
+        </div>
+        <div>
+          <div class="extra-info">
+            <span>Información adicional</span>
+          </div>
+          <mat-form-field class="inputs">
+            <input formControlName="ssn" matInput placeholder="Número de seguridad social" aria-label="New collaborator ssn">
+          </mat-form-field>
+          <mat-form-field class="inputs">
+            <mat-select placeholder="Tipo de sangre" aria-label="User blood type" [(value)]="bloodType">
+              <mat-option>-Seleccione un tipo de sangre-</mat-option>
+              <mat-option *ngFor="let blood of bloodGroup" [value]="blood">{{blood}}</mat-option>
+            </mat-select>
+          </mat-form-field>
+          <div class="submit">
+            <app-upload-file [layoutTemplate]="button" (onLoad)="onLoadFile($event)" [type]="'file'">
+              <ng-template #button>
+                <span type="button">Estudio de toxicidad (Benceno)</span>
+                <mat-icon class="file-icon" *ngIf="!file" svgIcon="icons:upload"></mat-icon>
+                <mat-icon class="file-icon" *ngIf="file">autorenew</mat-icon>
+              </ng-template>
+            </app-upload-file>
+          </div>
+          <div>
+            <div class="emergency">
+              <span>Contacto de emergencia</span>
+            </div>
+            <mat-form-field class="inputs">
+              <input formControlName="contactName" matInput placeholder="Nombre" aria-label="New collaborator emergency contact name">
+            </mat-form-field>
+            <mat-form-field class="inputs">
+              <input formControlName="contactPhoneNumber" matInput placeholder="Número de celular" aria-label="New collaborator emergency contact phone number">
+              <mat-error *ngIf="newPerson.controls['phoneNumber'].hasError('minlength')">
+                Se requieren de 8 a 13 dígitos
+              </mat-error>
+              <mat-error *ngIf="newPerson.controls['phoneNumber'].hasError('maxlength')">
+                Se requieren de 8 a 13 dígitos
+              </mat-error>
+            </mat-form-field>
+            <mat-form-field class="inputs">
+              <input formControlName="contactKinship" matInput placeholder="Parentesco" aria-label="New collaborator emergency contact relationship">
+            </mat-form-field>
           </div>
         </div>
         <div class="save-button">

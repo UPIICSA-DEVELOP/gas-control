@@ -143,6 +143,14 @@
       display: flex;
       justify-content: center;
     }
+    .submit{
+      color: #707070;
+      padding: 8px 0;
+    }
+    .file-icon{
+      font-size: 24px !important;
+      color: #707070 !important;
+    }
   }
   .modal {
     position: relative;
@@ -156,5 +164,16 @@
       z-index: 2;
       cursor: pointer;
     }
+  }
+  .extra-info{
+    color: #000000;
+    font-weight: 600;
+    text-align: left;
+    font-size: 24px;
+  }
+  .emergency{
+    color: #707070;
+    text-align: left;
+    margin: 8px 0;
   }
 }
