@@ -50,8 +50,8 @@
                       <mat-icon svgIcon="icons:change_role"></mat-icon>
                     </button>
                     <mat-menu #role>
-                      <button mat-menu-item *ngIf="collaborator.role !== 6" (click)="changeRoleCollaborator(collaborator.id, 7)">Gerente de estación</button>
-                      <button mat-menu-item *ngIf="collaborator.role !== 7" (click)="changeRoleCollaborator(collaborator.id, 6)">Asistente de estación</button>
+                      <button mat-menu-item *ngIf="collaborator.role !== 6" (click)="changeRoleCollaborator(collaborator.id, 6)">Gerente de estación</button>
+                      <button mat-menu-item *ngIf="collaborator.role !== 7" (click)="changeRoleCollaborator(collaborator.id, 7)">Asistente de estación</button>
                     </mat-menu>
                   </div>
                   <div class="button">

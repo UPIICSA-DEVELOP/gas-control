@@ -125,7 +125,6 @@ export class CollaboratorsListComponent implements OnInit {
     this._api.listCollaborators(user.refId, 'true').subscribe(response=>{
       switch (response.code) {
         case 200:
-          debugger;
           let user = null;
           this.collaborators = UtilitiesService.sortJSON(response.items,'name','asc');
           for (let i = 0; i< this.collaborators.length; i++){

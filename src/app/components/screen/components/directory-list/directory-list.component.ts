@@ -127,7 +127,6 @@ export class DirectoryListComponent implements OnInit, OnChanges {
 
   public changeRoleCollaborator(id: string, newRole: number):void{
     this._api.updateRolePerson(id, newRole).subscribe(response=>{
-      console.log(response);
       switch (response.code) {
         case 200:
           this._snackBarService.openSnackBar('Rol actualizado', 'OK', 2000);
