@@ -86,12 +86,18 @@
               </div>
               <div *ngFor="let turn of workShifts; let i = index">
                 <div class="input-content">
-                  <mat-form-field class="width-form">
-                    <input matInput placeholder="Inicio" value="{{turn.start | convertTimeAndCapacity}}">
-                  </mat-form-field>
-                  <mat-form-field class="width-form">
-                    <input matInput placeholder="Fin" value="{{turn.end | convertTimeAndCapacity}}">
-                  </mat-form-field>
+                  <div class="address">
+                    <div class="mask"></div>
+                    <mat-form-field>
+                      <input matInput placeholder="Inicio" value="{{turn.start | convertTimeAndCapacity}}">
+                    </mat-form-field>
+                  </div>
+                  <div class="address">
+                    <div class="mask"></div>
+                    <mat-form-field>
+                      <input matInput placeholder="Fin" value="{{turn.end | convertTimeAndCapacity}}">
+                    </mat-form-field>
+                  </div>
                   <button type="button" *ngIf="workShifts.length>1" mat-icon-button (click)="addRemoveTurn(true,1, i)" class="remove">
                     <mat-icon>remove</mat-icon>
                   </button>
@@ -124,9 +130,9 @@
                 <div class="flex-box">
                   <div class="fuel">
                     <mat-form-field class="inputs">
-                      <input matInput placeholder="Capacidad (lts)" aria-label="Station tank fuel capacity" value="{{tank.capacity}}">
+                      <input matInput placeholder="Capacidad (lts)" type="number" aria-label="Station tank fuel capacity" [(ngModel)]="tank.capacity" [ngModelOptions]="{standalone: true}">
                     </mat-form-field>
-                    <mat-radio-group class="fuel-selector" aria-label="Station tank fuel type" [(value)]="tank.fuelType">
+                    <mat-radio-group class="fuel-selector" aria-label="Station tank fuel type" [(ngModel)]="tank.fuelType" [ngModelOptions]="{standalone: true}">
                       <mat-radio-button [value]="1" >Magna</mat-radio-button>
                       <mat-radio-button [value]="2">Premium</mat-radio-button>
                       <mat-radio-button [value]="3">Diesel</mat-radio-button>
@@ -153,20 +159,20 @@
             </div>
             <div *ngFor="let dispenser of dispensers; let i = index">
               <div class="dispensers">
-                <div class="content">
+                <div style="width: 100%;">
                   <span class="head">Dispensario {{i+1}}</span>
                   <div class="hoses">
-                    <mat-form-field class="field">
-                      <input matInput placeholder="No. de mangueras" type="number" aria-label="Station hoses number" value="{{dispenser.hoses}}">
+                    <mat-form-field>
+                      <input matInput placeholder="No. de mangueras" type="number" aria-label="Station hoses number" [(ngModel)]="dispenser.hoses" [ngModelOptions]="{standalone: true}">
                     </mat-form-field>
-                    <mat-form-field class="field">
-                      <input matInput placeholder="No. de serie" type="text" aria-label="Station hoses cre id" value="{{dispenser.identifier}}">
+                    <mat-form-field>
+                      <input matInput placeholder="No. de serie" type="text" aria-label="Station hoses cre id" [(ngModel)]="dispenser.identifier" [ngModelOptions]="{standalone: true}">
                     </mat-form-field>
                   </div>
                   <section class="hoses" aria-label="Station hoses fuel type">
-                    <mat-checkbox [checked]="dispenser.magna">Magna</mat-checkbox>
-                    <mat-checkbox [checked]="dispenser.premium">Premium</mat-checkbox>
-                    <mat-checkbox [checked]="dispenser.diesel">Diesel</mat-checkbox>
+                    <mat-checkbox [(ngModel)]="dispenser.magna" [ngModelOptions]="{standalone: true}">Magna</mat-checkbox>
+                    <mat-checkbox [(ngModel)]="dispenser.premium" [ngModelOptions]="{standalone: true}">Premium</mat-checkbox>
+                    <mat-checkbox [(ngModel)]="dispenser.diesel" [ngModelOptions]="{standalone: true}">Diesel</mat-checkbox>
                   </section>
                 </div>
                 <div class="button">
@@ -186,16 +192,14 @@
       </div>
       <div class="dispensers-information">
         <div class="header">
-          <div style="margin-right: 16px;">
+          <div style="margin-right: 32px;">
             <img *ngIf="gasImage" [src]="gasImage" class="profileImage">
             <mat-icon *ngIf="!gasImage" class="defaultImage">local_gas_station</mat-icon>
           </div>
           <div>
-            <span class="text">{{gasName}}</span>
-            <br>
-            <span class="businessName">{{station.businessName}}</span>
-            <br>
-            <span class="businessName">{{station.name}}</span>
+            <div class="text">{{gasName}}</div>
+            <div class="businessName">{{station.businessName}}</div>
+            <div class="businessName">{{station.name}}</div>
           </div>
         </div>
         <div class="documentation">
