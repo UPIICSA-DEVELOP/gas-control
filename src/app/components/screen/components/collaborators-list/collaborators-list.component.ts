@@ -125,15 +125,18 @@ export class CollaboratorsListComponent implements OnInit {
     this._api.listCollaborators(user.refId, 'true').subscribe(response=>{
       switch (response.code) {
         case 200:
+          debugger;
           let user = null;
-          this.collaborators = response.items;
+          this.collaborators = UtilitiesService.sortJSON(response.items,'name','asc');
           for (let i = 0; i< this.collaborators.length; i++){
             if(this.collaborators[i].id === this.id){
                 user = this.collaborators[i];
             }
           }
-          const index = this.collaborators.indexOf(user);
-          this.collaborators.splice(index, 1);
+          if (user){
+            const index = this.collaborators.indexOf(user);
+            this.collaborators.splice(index, 1);
+          }
           this.collaborator = this.collaborators;
           break;
         default:

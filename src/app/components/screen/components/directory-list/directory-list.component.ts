@@ -48,8 +48,8 @@ export class DirectoryListComponent implements OnInit, OnChanges {
     this._api.listCollaborators(this.gasStation.id, 'false').subscribe( response=>{
       switch (response.code) {
         case 200:
-          this.collaborators = response.items;
-          this.collaborator = response.items;
+          this.collaborators = UtilitiesService.sortJSON(response.items, 'name', 'asc');
+          this.collaborator = this.collaborators;
           break;
         default:
           break;
@@ -127,6 +127,7 @@ export class DirectoryListComponent implements OnInit, OnChanges {
 
   public changeRoleCollaborator(id: string, newRole: number):void{
     this._api.updateRolePerson(id, newRole).subscribe(response=>{
+      console.log(response);
       switch (response.code) {
         case 200:
           this._snackBarService.openSnackBar('Rol actualizado', 'OK', 2000);

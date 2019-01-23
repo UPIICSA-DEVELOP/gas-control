@@ -62,6 +62,21 @@ export class UtilitiesService {
     return Object.keys(objMap).map(e=>Number(e)).length>0;
   }
 
+  static sortJSON(data: any, key: string, order:string) {
+    return data.sort(function (a, b) {
+      let x = a[key],
+        y = b[key];
+
+      if (order === 'asc') {
+        return ((x < y) ? -1 : ((x > y) ? 1 : 0));
+      }
+
+      if (order === 'desc') {
+        return ((x > y) ? -1 : ((x < y) ? 1 : 0));
+      }
+    });
+  }
+
   static makeRandomHash(): string {
     let text = "";
     const possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
