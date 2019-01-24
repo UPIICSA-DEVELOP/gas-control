@@ -62,8 +62,17 @@ export const appRoutes: Routes = [
               title: 'Estación de servicio',
               url: URL_BASE + 'home/profile/gas-station'
             }
-          },
+          }
         ]
+      },
+      {
+        path:'documents',
+        component: DocumentationComponent,
+        resolve: {data: AuthService},
+        data:{
+          title: 'Documentación',
+          url: URL_BASE + 'home/documents'
+        }
       },
       {
         path: 'notifications',
@@ -104,15 +113,6 @@ export const appRoutes: Routes = [
         }
       }
     ]
-  },
-  {
-    path: 'documents',
-    component: DocumentationComponent,
-    resolve: {data:AuthService},
-    data:{
-      title: 'Documentos',
-      url: URL_BASE + 'documents'
-    }
   },
   {
     path: '',

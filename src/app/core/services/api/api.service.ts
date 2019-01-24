@@ -173,6 +173,21 @@ export class ApiService {
     return this._http.put(ApiService.API_URL_COMPLETE + 'updateRolePerson', options);
   }
 
+  public listDocumentByStation(stationId: string, regulationType?: string): Observable<any>{
+    let params = new HttpParams();
+    params = params.append('idStation', stationId);
+    params = params.append('regulationType', (regulationType?regulationType:'1'));
+    return this._http.get(ApiService.API_URL_COMPLETE + 'listDocumentByStation', {params: params});
+  }
+
+  public createDocument(document: any):Observable<any>{
+    return this._http.post(ApiService.API_URL_COMPLETE + 'createDocument', document);
+  }
+
+  public updateDocumet(document: any):Observable<any>{
+    return this._http.put(ApiService.API_URL_COMPLETE + 'updateDocument', document);
+  }
+
   private initNetwork(): void {
     this._networkService.getChangesNetwork().subscribe(status => {
       const text = (!status) ? 'La conexión a internet se ha perdido' : 'De nuevo en linea';

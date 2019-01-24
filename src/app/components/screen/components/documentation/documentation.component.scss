@@ -7,13 +7,128 @@
 #documentation{
   width: 100vw;
   height: 100vh;
+  padding: 32px;
   display: flex;
+  background-color: #FFFFFF;
+  z-index: 10;
+  @media screen and(max-width: 900px){
+    display: block;
+    padding: 16px;
+    overflow: auto;
+  }
+  .background{
+    width: 600px;
+    height: 300px;
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    background: url("../../../../../assets/Images/background.png") no-repeat bottom;
+    background-size: cover;
+    z-index: 0;
+    @media screen and (max-width: 768px), screen and (max-height: 600px) {
+      width: 300px;
+      height: 150px;
+    }
+  }
   .column-one{
+    z-index: 1;
     width: 50%;
     height: 100%;
+    @media screen and (max-width: 900px){
+      width: 100%;
+    }
+    .buttons{
+      width: 100%;
+      height: 40%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 0 36px;
+      .documents{
+        font-weight: 600;
+        font-size: 28px;
+        margin: 8px 0;
+      }
+      .add{
+        font-weight: 600;
+        font-size: 18px;
+        margin: 8px 0;
+      }
+      .buttons-container{
+        display: flex;
+        flex-direction: column;
+        width: 25%;
+        padding: 0 24px;
+        button{
+          font-weight: 600;
+          margin: 12px 0;
+          box-shadow: 0 3px 1px 1px rgba(0, 0, 0, 0.1), 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, .10);
+        }
+      }
+      p{
+        font-weight: 600;
+      }
+    }
+    .description{
+      width: 100%;
+      height: 60%;
+      color: #707070;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      .paragraph{
+        margin:18px 36px;
+        .content{
+          font-weight: 600;
+        }
+      }
+    }
   }
   .column-two{
+    z-index: 1;
     width: 50%;
     height: 100%;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    overflow: auto;
+    @media screen and (max-width: 900px){
+      width: 100%;
+      overflow: hidden;
+      height: auto;
+    }
+    .container{
+      height: auto;
+      width: 85%;
+      .file{
+        display: flex;
+        justify-content: space-between;
+        margin: 8px 0;
+        .text{
+          display: flex;
+          align-items: center;
+          width: 75%;
+        }
+        .button-icon{
+          color: #707070;
+        }
+      }
+      .others{
+        margin: 16px 0;
+        padding-left: 24px;
+        font-weight: 600;
+        font-size: 18px;
+      }
+      .divider{
+        height: 1px;
+        background-color: #707070;
+        width: 100%;
+        margin: 4px 0;
+      }
+    }
+    .save{
+      margin: 24px 0;
+    }
   }
 }

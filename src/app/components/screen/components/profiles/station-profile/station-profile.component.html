@@ -203,7 +203,7 @@
           </div>
         </div>
         <div class="documentation">
-          <button mat-button [color]="'primary'" type="button" *ngIf="user.role!==6 && user.role!==7">
+          <button mat-button [color]="'primary'" type="button" *ngIf="user.role!==6 && user.role!==7" [routerLink]="'/home/documents'" [queryParams]="{station: station.id}">
             Documentación <mat-icon>keyboard_backspace</mat-icon>
           </button>
         </div>
