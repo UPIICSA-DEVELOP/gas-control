@@ -1,0 +1,19 @@
+/*!
+ * Copyright (C) MapLander S de R.L de C.V - All Rights Reserved
+ * Unauthorized copying of this file, via any medium is strictly prohibited
+ * Proprietary and confidential
+ */
+
+#documentation{
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  .column-one{
+    width: 50%;
+    height: 100%;
+  }
+  .column-two{
+    width: 50%;
+    height: 100%;
+  }
+}

@@ -19,6 +19,7 @@ import {UserProfileComponent} from '@app/components/screen/components/profiles/u
 import {StationProfileComponent} from '@app/components/screen/components/profiles/station-profile/station-profile.component';
 import {StationListComponent} from '@app/components/screen/components/station-list/station-list.component';
 import {AddCollaboratorComponent} from '@app/components/screen/components/add-collaborator/add-collaborator.component';
+import {DocumentationComponent} from '@app/components/screen/components/documentation/documentation.component';
 const URL_BASE = environment.url;
 
 export const appRoutes: Routes = [
@@ -103,6 +104,15 @@ export const appRoutes: Routes = [
         }
       }
     ]
+  },
+  {
+    path: 'documents',
+    component: DocumentationComponent,
+    resolve: {data:AuthService},
+    data:{
+      title: 'Documentos',
+      url: URL_BASE + 'documents'
+    }
   },
   {
     path: '',

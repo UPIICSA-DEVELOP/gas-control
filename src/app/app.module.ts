@@ -22,7 +22,6 @@ import {ConnectionServiceModule} from 'ng-connection-service';
 import {CoreModule} from '@app/core/core.module';
 import { NavBarComponent } from './components/screen/components/nav-bar/nav-bar.component';
 import {ScreenComponent} from '@app/components/screen/screen.component';
-import { GasStationComponent } from './components/screen/components/gas-station/gas-station.component';
 import { StationStatusComponent } from './components/screen/components/station-status/station-status.component';
 import { ListTasksComponent } from './components/screen/components/list-tasks/list-tasks.component';
 import { LoginComponent } from './components/login/login.component';
@@ -40,6 +39,8 @@ import { FooterComponent } from './components/screen/components/footer/footer.co
 import { DirectoryListComponent } from './components/screen/components/directory-list/directory-list.component';
 import { SearchBarComponent } from './components/screen/components/search-bar/search-bar.component';
 import { AddCollaboratorComponent } from './components/screen/components/add-collaborator/add-collaborator.component';
+import { AddGasStationComponent } from './components/screen/components/add-gas-station/add-gas-station.component';
+import { DocumentationComponent } from './components/screen/components/documentation/documentation.component';
 
 
 @NgModule({
@@ -47,7 +48,6 @@ import { AddCollaboratorComponent } from './components/screen/components/add-col
     AppComponent,
     NavBarComponent,
     ScreenComponent,
-    GasStationComponent,
     StationStatusComponent,
     ListTasksComponent,
     LoginComponent,
@@ -63,7 +63,9 @@ import { AddCollaboratorComponent } from './components/screen/components/add-col
     FooterComponent,
     DirectoryListComponent,
     SearchBarComponent,
-    AddCollaboratorComponent
+    AddCollaboratorComponent,
+    AddGasStationComponent,
+    DocumentationComponent
   ],
   imports: [
     CoreModule,
