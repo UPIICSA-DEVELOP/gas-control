@@ -20,10 +20,10 @@ export class Constants {
       'Director',
       'Gerente',
       'Asistente',
-      'Representante legal',
-      'Encargado de estación',
-      'Gerente de estación',
-      'Asistente de estación'
+      'Representante Legal',
+      'Encargado de Estación',
+      'Coordinador de Estación',
+      'Coordinador de Estación',
   ];
   public static bloodGroup = [
     'O-',

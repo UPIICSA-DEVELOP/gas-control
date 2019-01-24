@@ -133,18 +133,4 @@ export class DirectoryListComponent implements OnInit, OnChanges,DoCheck {
     }
   }
 
-  public changeRoleCollaborator(id: string, newRole: number):void{
-    this._api.updateRolePerson(id, newRole).subscribe(response=>{
-      switch (response.code) {
-        case 200:
-          this._snackBarService.openSnackBar('Rol actualizado', 'OK', 2000);
-          this.getCollaborators();
-          break;
-        default:
-          this._snackBarService.openSnackBar('No se ha podido actualizar el rol', 'OK', 2000);
-          this.getCollaborators();
-          break;
-      }
-    });
-  }
 }

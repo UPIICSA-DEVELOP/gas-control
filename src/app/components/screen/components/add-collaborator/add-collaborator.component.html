@@ -88,13 +88,7 @@
           </mat-form-field>
         </div>
         <mat-form-field class="inputs">
-          <mat-select formControlName="role" placeholder="Rol" required aria-label="New collaborator role">
-            <mat-option value="6">Coordinador de estación</mat-option>
-            <mat-option value="7">Asistente de estación</mat-option>
-          </mat-select>
-          <mat-error *ngIf="newPerson.controls['role'].hasError('required')">
-            Este campo es obligatorio
-          </mat-error>
+          <input matInput placeholder="Rol" [disabled]="true" [value]="roleType[5]">
         </mat-form-field>
         <mat-form-field class="inputs">
           <input formControlName="jobTitle" matInput placeholder="Cargo" required type="text"

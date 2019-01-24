@@ -80,6 +80,7 @@ export class AddCollaboratorComponent implements OnInit {
   public country: string;
   public load: boolean;
   public bloodGroup: string[];
+  public roleType: string[];
   public newFile: boolean;
   public bloodType: string;
   private _formImage:FormData;
@@ -97,6 +98,7 @@ export class AddCollaboratorComponent implements OnInit {
     private _formBuilder: FormBuilder,
     private _router: Router
   ) {
+    this.roleType = Constants.roles;
     this.bloodGroup = Constants.bloodGroup;
     this.addImage = false;
     this.addSign = false;
@@ -248,7 +250,6 @@ export class AddCollaboratorComponent implements OnInit {
       country:['México',[Validators.required]],
       code:['+52',[]],
       phoneNumber:['',[Validators.required, Validators.minLength(8), Validators.maxLength(13)]],
-      role:['',[Validators.required]],
       jobTitle:['',[Validators.required]],
       website:['',[Validators.pattern('[a-z0-9]+([\\-\\.]{1}[a-z0-9]+)*\\.[a-z]{2,5}(:[0-9]{1,5})?(\\/.*)?$')]],
       ssn:['',[]],
@@ -268,7 +269,7 @@ export class AddCollaboratorComponent implements OnInit {
       refId: this._refId,
       country: this.country,
       countryCode: data.code,
-      role: data.role,
+      role: 6,
       website: (data.website?this.protocol + data.website:undefined),
       jobTitle: data.jobTitle,
       phoneNumber: data.phoneNumber,
