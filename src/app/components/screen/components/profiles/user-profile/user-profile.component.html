@@ -111,7 +111,7 @@
                 </div>
               </div>
             </div>
-            <span class="title">Información adicional</span>
+            <div class="title">Información adicional</div>
             <div>
               <mat-form-field class="inputs">
                 <input [attr.disabled]="load?true:null" formControlName="ssn" matInput placeholder="Número de seguridad social" type="text" aria-label="User social security ID">
@@ -125,9 +125,11 @@
               <div class="submit">
                 <app-upload-file [layoutTemplate]="button" (onLoad)="onLoadFile($event)" [type]="'file'">
                   <ng-template #button>
-                    <span type="button">Estudio de toxicidad (Benceno)</span>
-                    <mat-icon class="file-icon" *ngIf="!file" svgIcon="icons:upload"></mat-icon>
-                    <mat-icon class="file-icon" *ngIf="file">autorenew</mat-icon>
+                    <div class="study">
+                      <span type="button">Estudio de toxicidad (Benceno)</span>
+                      <mat-icon class="file-icon" *ngIf="!file" svgIcon="icons:upload"></mat-icon>
+                      <mat-icon class="file-icon" *ngIf="file">autorenew</mat-icon>
+                    </div>
                   </ng-template>
                 </app-upload-file>
               </div>
