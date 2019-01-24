@@ -80,7 +80,7 @@
             <div>
               <div class="double-inputs">
                 <span>Turnos</span>
-                <button type="button" mat-icon-button (click)="addRemoveTurn(false, 1)" [disabled]="user.role===3 || user.role===6 || user.role===7">
+                <button type="button" mat-icon-button (click)="addRemoveTurn(false, 1)" [disabled]=" user.role===6 || user.role===7">
                   <mat-icon>add</mat-icon>
                 </button>
               </div>
@@ -89,16 +89,16 @@
                   <div class="address">
                     <div class="mask"></div>
                     <mat-form-field>
-                      <input matInput placeholder="Inicio" value="{{turn.start | convertTimeAndCapacity}}" [disabled]="user.role===3 || user.role===6 || user.role===7">
+                      <input matInput placeholder="Inicio" value="{{turn.start | convertTimeAndCapacity}}" [disabled]=" user.role===6 || user.role===7">
                     </mat-form-field>
                   </div>
                   <div class="address">
                     <div class="mask"></div>
                     <mat-form-field>
-                      <input matInput placeholder="Fin" value="{{turn.end | convertTimeAndCapacity}}" [disabled]="user.role===3 || user.role===6 || user.role===7">
+                      <input matInput placeholder="Fin" value="{{turn.end | convertTimeAndCapacity}}" [disabled]=" user.role===6 || user.role===7">
                     </mat-form-field>
                   </div>
-                  <button type="button" *ngIf="workShifts.length>1" mat-icon-button (click)="addRemoveTurn(true,1, i)" class="remove" [disabled]="user.role===3 || user.role===6 || user.role===7">
+                  <button type="button" *ngIf="workShifts.length>1" mat-icon-button (click)="addRemoveTurn(true,1, i)" class="remove" [disabled]=" user.role===6 || user.role===7">
                     <mat-icon>remove</mat-icon>
                   </button>
                 </div>
@@ -122,7 +122,7 @@
             <div>
               <div class="double-inputs">
                 <span>Tanques de Combustible</span>
-                <button mat-icon-button type="button" (click)="addRemoveTurn(false, 2)" [disabled]="user.role===3 || user.role===6 || user.role===7">
+                <button mat-icon-button type="button" (click)="addRemoveTurn(false, 2)" [disabled]=" user.role===6 || user.role===7">
                   <mat-icon>add</mat-icon>
                 </button>
               </div>
@@ -130,16 +130,16 @@
                 <div class="flex-box">
                   <div class="fuel">
                     <mat-form-field class="inputs">
-                      <input matInput placeholder="Capacidad (lts)" type="number" aria-label="Station tank fuel capacity" [(ngModel)]="tank.capacity" [ngModelOptions]="{standalone: true}" [disabled]="user.role===3 || user.role===6 || user.role===7">
+                      <input matInput placeholder="Capacidad (lts)" type="number" aria-label="Station tank fuel capacity" [(ngModel)]="tank.capacity" [ngModelOptions]="{standalone: true}" [disabled]=" user.role===6 || user.role===7">
                     </mat-form-field>
-                    <mat-radio-group class="fuel-selector" aria-label="Station tank fuel type" [(ngModel)]="tank.fuelType" [ngModelOptions]="{standalone: true}" [disabled]="user.role===3 || user.role===6 || user.role===7">
+                    <mat-radio-group class="fuel-selector" aria-label="Station tank fuel type" [(ngModel)]="tank.fuelType" [ngModelOptions]="{standalone: true}" [disabled]=" user.role===6 || user.role===7">
                       <mat-radio-button [value]="1" >Magna</mat-radio-button>
                       <mat-radio-button [value]="2">Premium</mat-radio-button>
                       <mat-radio-button [value]="3">Diesel</mat-radio-button>
                     </mat-radio-group>
                   </div>
                   <div class="button-container">
-                    <button *ngIf="tanks.length>1" type="button" mat-icon-button (click)="addRemoveTurn(true,2, i)" class="remove" [disabled]="user.role===3 || user.role===6 || user.role===7">
+                    <button *ngIf="tanks.length>1" type="button" mat-icon-button (click)="addRemoveTurn(true,2, i)" class="remove" [disabled]=" user.role===6 || user.role===7">
                       <mat-icon>remove</mat-icon>
                     </button>
                   </div>
@@ -152,7 +152,7 @@
                 <span>Dispensarios</span>
               </div>
               <div>
-                <button type="button" mat-icon-button (click)="addRemoveTurn(false, 3)" [disabled]="user.role===3 || user.role===6 || user.role===7">
+                <button type="button" mat-icon-button (click)="addRemoveTurn(false, 3)" [disabled]=" user.role===6 || user.role===7">
                   <mat-icon>add</mat-icon>
                 </button>
               </div>
@@ -163,20 +163,20 @@
                   <span class="head">Dispensario {{i+1}}</span>
                   <div class="hoses">
                     <mat-form-field>
-                      <input matInput placeholder="No. de mangueras" type="number" aria-label="Station hoses number" [(ngModel)]="dispenser.hoses" [ngModelOptions]="{standalone: true}" [disabled]="user.role===3 || user.role===6 || user.role===7">
+                      <input matInput placeholder="No. de mangueras" type="number" aria-label="Station hoses number" [(ngModel)]="dispenser.hoses" [ngModelOptions]="{standalone: true}" [disabled]=" user.role===6 || user.role===7">
                     </mat-form-field>
                     <mat-form-field>
-                      <input matInput placeholder="No. de serie" type="text" aria-label="Station hoses cre id" [(ngModel)]="dispenser.identifier" [ngModelOptions]="{standalone: true}" [disabled]="user.role===3 || user.role===6 || user.role===7">
+                      <input matInput placeholder="No. de serie" type="text" aria-label="Station hoses cre id" [(ngModel)]="dispenser.identifier" [ngModelOptions]="{standalone: true}" [disabled]=" user.role===6 || user.role===7">
                     </mat-form-field>
                   </div>
                   <section class="hoses" aria-label="Station hoses fuel type">
-                    <mat-checkbox [(ngModel)]="dispenser.magna" [ngModelOptions]="{standalone: true}" [disabled]="user.role===3 || user.role===6 || user.role===7">Magna</mat-checkbox>
-                    <mat-checkbox [(ngModel)]="dispenser.premium" [ngModelOptions]="{standalone: true}" [disabled]="user.role===3 || user.role===6 || user.role===7">Premium</mat-checkbox>
-                    <mat-checkbox [(ngModel)]="dispenser.diesel" [ngModelOptions]="{standalone: true}" [disabled]="user.role===3 || user.role===6 || user.role===7">Diesel</mat-checkbox>
+                    <mat-checkbox [(ngModel)]="dispenser.magna" [ngModelOptions]="{standalone: true}" [disabled]=" user.role===6 || user.role===7">Magna</mat-checkbox>
+                    <mat-checkbox [(ngModel)]="dispenser.premium" [ngModelOptions]="{standalone: true}" [disabled]=" user.role===6 || user.role===7">Premium</mat-checkbox>
+                    <mat-checkbox [(ngModel)]="dispenser.diesel" [ngModelOptions]="{standalone: true}" [disabled]=" user.role===6 || user.role===7">Diesel</mat-checkbox>
                   </section>
                 </div>
                 <div class="button">
-                  <button type="button" *ngIf="dispensers.length>1" mat-icon-button (click)="addRemoveTurn(true,3, i)" class="remove" [disabled]="user.role===3 || user.role===6 || user.role===7">
+                  <button type="button" *ngIf="dispensers.length>1" mat-icon-button (click)="addRemoveTurn(true,3, i)" class="remove" [disabled]=" user.role===6 || user.role===7">
                     <mat-icon>remove</mat-icon>
                   </button>
                 </div>
@@ -185,7 +185,7 @@
           </mat-card-content>
         </mat-card>
         <div class="save">
-          <button mat-flat-button [color]="'primary'" *ngIf="user.role!==3 && user.role!==6 && user.role!==7">
+          <button mat-flat-button [color]="'primary'" *ngIf="user.role!==6 && user.role!==7">
             GUARDAR CAMBIOS
           </button>
         </div>
@@ -203,7 +203,7 @@
           </div>
         </div>
         <div class="documentation">
-          <button mat-button [color]="'primary'" type="button" *ngIf="user.role!==3 && user.role!==6 && user.role!==7">
+          <button mat-button [color]="'primary'" type="button" *ngIf="user.role!==6 && user.role!==7">
             Documentación <mat-icon>keyboard_backspace</mat-icon>
           </button>
         </div>

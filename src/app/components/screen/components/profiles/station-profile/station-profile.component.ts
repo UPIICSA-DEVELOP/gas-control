@@ -208,7 +208,7 @@ export class StationProfileComponent implements OnInit {
                   this.stationForm.patchValue({
                     legalRepresentative:this.legalRepresentative
                   });
-                  if (this.user.role===3 || this.user.role===6 || this.user.role===7){
+                  if (this.user.role===6 || this.user.role===7){
                     this.stationForm.disable();
                   }
                   this.detectChanges();
@@ -218,7 +218,7 @@ export class StationProfileComponent implements OnInit {
                   this.stationForm.patchValue({
                     legalRepresentative:this.legalRepresentative
                   });
-                  if (this.user.role===3 || this.user.role===6 || this.user.role===7){
+                  if (this.user.role===6 || this.user.role===7){
                     this.stationForm.disable();
                   }
                   this.detectChanges();
@@ -230,7 +230,7 @@ export class StationProfileComponent implements OnInit {
             this.stationForm.patchValue({
               legalRepresentative:this.legalRepresentative
             });
-            if (this.user.role===3 || this.user.role===6 || this.user.role===7){
+            if (this.user.role===6 || this.user.role===7){
               this.stationForm.disable();
             }
             this.detectChanges();
