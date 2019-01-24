@@ -13,6 +13,8 @@ import {ApiLoaderService} from '@app/core/services/api/api-loader.service';
 import {LocationOptions, LocationService} from '@app/core/components/location/location.service';
 import {SnackBarService} from '@app/core/services/snackbar/snackbar.service';
 import {DialogService} from '@app/core/components/dialog/dialog.service';
+import {SessionStorageService} from '@app/core/services/session-storage/session-storage.service';
+import {Constants} from '@app/core/constants.core';
 
 @Component({
   selector: 'app-station-profile',
@@ -55,6 +57,7 @@ export class StationProfileComponent implements OnInit {
   public legalRepresentative: string;
   public gasName: string;
   private id: string;
+  public user: any;
   constructor(
     private _router: Router,
     private _formBuilder: FormBuilder,
@@ -67,6 +70,7 @@ export class StationProfileComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.user = SessionStorageService.getItem(Constants.UserInSession);
     if (this._activatedRouter.snapshot.queryParams.id) {
       this.id = this._activatedRouter.snapshot.queryParams.id;
       this.initForm();
@@ -204,6 +208,9 @@ export class StationProfileComponent implements OnInit {
                   this.stationForm.patchValue({
                     legalRepresentative:this.legalRepresentative
                   });
+                  if (this.user.role===3 || this.user.role===6 || this.user.role===7){
+                    this.stationForm.disable();
+                  }
                   this.detectChanges();
                   break;
                 default:
@@ -211,6 +218,9 @@ export class StationProfileComponent implements OnInit {
                   this.stationForm.patchValue({
                     legalRepresentative:this.legalRepresentative
                   });
+                  if (this.user.role===3 || this.user.role===6 || this.user.role===7){
+                    this.stationForm.disable();
+                  }
                   this.detectChanges();
                   break;
               }
@@ -220,13 +230,16 @@ export class StationProfileComponent implements OnInit {
             this.stationForm.patchValue({
               legalRepresentative:this.legalRepresentative
             });
+            if (this.user.role===3 || this.user.role===6 || this.user.role===7){
+              this.stationForm.disable();
+            }
             this.detectChanges();
           }
           break;
         default:
           break;
       }
-    })
+    });
   }
 
   public saveStationInformation(data: any): void{
@@ -252,7 +265,7 @@ export class StationProfileComponent implements OnInit {
         case 200:
           this.change = false;
           this._snackBarService.openSnackBar('Información actualizada','OK',3000);
-          this._router.navigate(['/home']);
+          this._router.navigate(['/home'],{queryParams:{station: this.station.id}});
           break;
         default:
           this._dialogService.alertDialog('No se pudo acceder', 'Se produjo un error de comunicación con el servidor', 'ACEPTAR');

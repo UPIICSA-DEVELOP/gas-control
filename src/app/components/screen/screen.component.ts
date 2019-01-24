@@ -4,7 +4,7 @@
  *  Proprietary and confidential
  */
 
-import {Component, OnInit} from '@angular/core';
+import {Component, DoCheck, OnInit} from '@angular/core';
 import {ApiService} from '@app/core/services/api/api.service';
 import {CookieService} from '@app/core/services/cookie/cookie.service';
 import {Constants} from '@app/core/constants.core';
@@ -17,7 +17,7 @@ import {DatepickerService} from '@app/core/components/datepicker/datepicker.serv
   templateUrl: './screen.component.html',
   styleUrls: ['./screen.component.scss']
 })
-export class ScreenComponent implements OnInit {
+export class ScreenComponent implements OnInit, DoCheck {
 
   public stationList: any[];
   public stationActive: any;
@@ -36,6 +36,8 @@ export class ScreenComponent implements OnInit {
     this.getUtilities();
     this.menu = true;
     this.stationList = [];
+  }
+  ngDoCheck():void{
     if (this._activateRoute.snapshot.queryParams.station) {
       this._stationId = this._activateRoute.snapshot.queryParams.station;
       this.getStation();
