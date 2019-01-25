@@ -5,12 +5,13 @@
  */
 
 #documentation{
+  top: 0;
   width: 100vw;
   height: 100vh;
   padding: 32px;
   display: flex;
   background-color: #FFFFFF;
-  z-index: 10;
+  z-index: 15;
   @media screen and(max-width: 900px){
     display: block;
     padding: 16px;
