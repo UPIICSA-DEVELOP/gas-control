@@ -13,8 +13,8 @@ import {ApiLoaderService} from '@app/core/services/api/api-loader.service';
 import {LocationOptions, LocationService} from '@app/core/components/location/location.service';
 import {SnackBarService} from '@app/core/services/snackbar/snackbar.service';
 import {DialogService} from '@app/core/components/dialog/dialog.service';
-import {SessionStorageService} from '@app/core/services/session-storage/session-storage.service';
 import {Constants} from '@app/core/constants.core';
+import {LocalStorageService} from '@app/core/services/local-storage/local-storage.service';
 
 @Component({
   selector: 'app-station-profile',
@@ -70,7 +70,7 @@ export class StationProfileComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.user = SessionStorageService.getItem(Constants.UserInSession);
+    this.user = LocalStorageService.getItem(Constants.UserInSession);
     if (this._activatedRouter.snapshot.queryParams.id) {
       this.id = this._activatedRouter.snapshot.queryParams.id;
       this.initForm();

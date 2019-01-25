@@ -18,7 +18,6 @@ import {UploadFileService} from '@app/core/components/upload-file/upload-file.se
 import {Router} from '@angular/router';
 import {UpdatePasswordService} from '@app/core/components/update-password/update-password.service';
 import {animate, keyframes, query, stagger, style, transition, trigger} from '@angular/animations';
-import {SessionStorageService} from '@app/core/services/session-storage/session-storage.service';
 import {UploadFileResponse} from '@app/core/components/upload-file/upload-file.component';
 import {SignaturePadService} from '@app/core/components/signature-pad/signature-pad.service';
 import {LocalStorageService} from '@app/core/services/local-storage/local-storage.service';
@@ -466,14 +465,14 @@ export class ProfileComponent implements OnInit {
         blobName: this.newImageProfile.blob,
         thumbnail: this.newImageProfile.thumbnail
       };
-      SessionStorageService.setItem(Constants.UserInSession, {
+      LocalStorageService.setItem(Constants.UserInSession, {
         profileImage: this.user.profileImage.thumbnail,
         role: this.user.role,
         refId: (this.user.refId? this.user.refId:null)
       });
     }else if(!this.profileImage){
       this.user.profileImage = null;
-      SessionStorageService.setItem(Constants.UserInSession, {
+      LocalStorageService.setItem(Constants.UserInSession, {
         profileImage: null,
         role: this.user.role,
         refId: (this.user.refId? this.user.refId:null)

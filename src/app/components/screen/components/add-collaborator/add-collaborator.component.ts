@@ -108,7 +108,7 @@ export class AddCollaboratorComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.user= SessionStorageService.getItem(Constants.UserInSession);
+    this.user= LocalStorageService.getItem(Constants.UserInSession);
     this._apiLoader.getProgress().subscribe(load => {this.load = load; });
     this.initForm();
   }

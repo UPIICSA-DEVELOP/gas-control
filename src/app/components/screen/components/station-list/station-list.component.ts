@@ -11,7 +11,7 @@ import {CookieService} from '@app/core/services/cookie/cookie.service';
 import {Constants} from '@app/core/constants.core';
 import {Router} from '@angular/router';
 import {animate, keyframes, query, stagger, state, style, transition, trigger} from '@angular/animations';
-import {SessionStorageService} from '@app/core/services/session-storage/session-storage.service';
+import {LocalStorageService} from '@app/core/services/local-storage/local-storage.service';
 
 @Component({
   selector: 'app-station-list',
@@ -108,7 +108,7 @@ export class StationListComponent implements OnInit, DoCheck {
   }
 
   private getStationList():void{
-    let user = SessionStorageService.getItem(Constants.UserInSession);
+    let user = LocalStorageService.getItem(Constants.UserInSession);
     switch (user.role) {
       case 1:
       case 2:

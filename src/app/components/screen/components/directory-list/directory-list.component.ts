@@ -12,7 +12,6 @@ import {Constants} from '@app/core/constants.core';
 import {UtilitiesService} from '@app/core/utilities/utilities.service';
 import {CookieService} from '@app/core/services/cookie/cookie.service';
 import {LocalStorageService} from '@app/core/services/local-storage/local-storage.service';
-import {SessionStorageService} from '@app/core/services/session-storage/session-storage.service';
 
 @Component({
   selector: 'app-directory-list',
@@ -32,7 +31,7 @@ export class DirectoryListComponent implements OnInit, OnChanges,DoCheck {
     private _snackBarService: SnackBarService,
     private _dialogService:DialogService
   ) {
-    this.user = SessionStorageService.getItem(Constants.UserInSession);
+    this.user = LocalStorageService.getItem(Constants.UserInSession);
     this.idSession = CookieService.getCookie(Constants.IdSession);
   }
 

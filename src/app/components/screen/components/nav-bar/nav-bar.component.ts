@@ -9,9 +9,9 @@ import {AuthService} from '@app/core/services/auth/auth.service';
 import {DialogService} from '@app/core/components/dialog/dialog.service';
 import {MatSidenav} from '@angular/material';
 import {Constants} from '@app/core/constants.core';
-import {DOCUMENT, isPlatformBrowser} from '@angular/common';
+import {DOCUMENT} from '@angular/common';
 import {Router} from '@angular/router';
-import {SessionStorageService} from '@app/core/services/session-storage/session-storage.service';
+import {LocalStorageService} from '@app/core/services/local-storage/local-storage.service';
 
 @Component({
   selector: 'app-nav-bar',
@@ -72,7 +72,7 @@ export class NavBarComponent implements OnInit, DoCheck  {
   }
 
   private getUser(): void {
-    this.user = SessionStorageService.getItem(Constants.UserInSession);
+    this.user = LocalStorageService.getItem(Constants.UserInSession);
     if (this.user){
       this.imageExist = this.user.profileImage && this.user.profileImage !== '';
     }

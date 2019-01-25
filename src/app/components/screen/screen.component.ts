@@ -4,20 +4,20 @@
  *  Proprietary and confidential
  */
 
-import {Component, DoCheck, OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {ApiService} from '@app/core/services/api/api.service';
 import {CookieService} from '@app/core/services/cookie/cookie.service';
 import {Constants} from '@app/core/constants.core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {SessionStorageService} from '@app/core/services/session-storage/session-storage.service';
-import {DatepickerService} from '@app/core/components/datepicker/datepicker.service';
+import {LocalStorageService} from '@app/core/services/local-storage/local-storage.service';
 
 @Component({
   selector: 'app-screen',
   templateUrl: './screen.component.html',
   styleUrls: ['./screen.component.scss']
 })
-export class ScreenComponent implements OnInit, DoCheck {
+export class ScreenComponent implements OnInit{
 
   public stationList: any[];
   public stationActive: any;
@@ -36,8 +36,6 @@ export class ScreenComponent implements OnInit, DoCheck {
     this.getUtilities();
     this.menu = true;
     this.stationList = [];
-  }
-  ngDoCheck():void{
     if (this._activateRoute.snapshot.queryParams.station) {
       this._stationId = this._activateRoute.snapshot.queryParams.station;
       this.getStation();
@@ -48,7 +46,7 @@ export class ScreenComponent implements OnInit, DoCheck {
 
   private getStationList(): void {
     const userId = CookieService.getCookie(Constants.IdSession);
-    const user = SessionStorageService.getItem(Constants.UserInSession);
+    const user = LocalStorageService.getItem(Constants.UserInSession);
     this.role = user.role;
     switch (user.role) {
       case 1:

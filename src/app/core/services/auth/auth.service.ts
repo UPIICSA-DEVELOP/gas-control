@@ -68,7 +68,7 @@ export class AuthService implements Resolve<any>{
     if(token){
       LocalStorageService.setItem(Constants.SessionToken, token);
     }
-    SessionStorageService.setItem(Constants.UserInSession, {
+    LocalStorageService.setItem(Constants.UserInSession, {
       profileImage: (user.profileImage)?user.profileImage.thumbnail:null,
       role: user.role,
       refId: user.refId
@@ -107,7 +107,7 @@ export class AuthService implements Resolve<any>{
     LocalStorageService.removeItem(Constants.SessionToken);
     LocalStorageService.removeItem('notSign');
     CookieService.deleteCookie(Constants.IdSession);
-    SessionStorageService.removeItem(Constants.UserInSession);
+    LocalStorageService.removeItem(Constants.UserInSession);
     this._router.navigate(['/']).then(() => {});
   }
 
@@ -144,7 +144,7 @@ export class AuthService implements Resolve<any>{
       switch (response.code) {
         case 200:
           if (navigateHome) {
-            SessionStorageService.setItem(Constants.UserInSession, {
+            LocalStorageService.setItem(Constants.UserInSession, {
               profileImage: (response.item.profileImage)?response.item.profileImage.thumbnail:null,
               role: response.item.role,
               refId: (response.item.refId?response.item.refId:null)
@@ -156,7 +156,7 @@ export class AuthService implements Resolve<any>{
           }
           break;
         default:
-          SessionStorageService.setItem(Constants.UserInSession, {
+          LocalStorageService.setItem(Constants.UserInSession, {
             profileImage: null,
             role: null,
             refId: null

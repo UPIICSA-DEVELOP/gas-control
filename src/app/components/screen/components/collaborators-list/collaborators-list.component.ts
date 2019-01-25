@@ -7,7 +7,6 @@
 import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {Router} from '@angular/router';
 import {animate, style, transition, trigger} from '@angular/animations';
-import {SessionStorageService} from '@app/core/services/session-storage/session-storage.service';
 import {Constants} from '@app/core/constants.core';
 import {ApiService} from '@app/core/services/api/api.service';
 import {SnackBarService} from '@app/core/services/snackbar/snackbar.service';
@@ -20,6 +19,7 @@ import {UploadFileResponse} from '@app/core/components/upload-file/upload-file.c
 import {UploadFileService} from '@app/core/components/upload-file/upload-file.service';
 import {ApiLoaderService} from '@app/core/services/api/api-loader.service';
 import {UtilitiesService} from '@app/core/utilities/utilities.service';
+import {LocalStorageService} from '@app/core/services/local-storage/local-storage.service';
 
 export interface person {
   name: string;
@@ -120,7 +120,7 @@ export class CollaboratorsListComponent implements OnInit {
 
   public getCollaborators(): void {
     this.id = CookieService.getCookie(Constants.IdSession);
-    let user = SessionStorageService.getItem(Constants.UserInSession);
+    let user = LocalStorageService.getItem(Constants.UserInSession);
     this.user=user;
     this._api.listCollaborators(user.refId, 'true').subscribe(response=>{
       switch (response.code) {

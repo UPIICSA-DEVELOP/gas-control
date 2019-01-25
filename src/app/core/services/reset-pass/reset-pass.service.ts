@@ -32,7 +32,7 @@ export class ResetPassService implements Resolve<any>{
             value: response.item.id,
             maxAge: MaxAge.DAY
           });
-          SessionStorageService.setItem(Constants.UserInSession, {
+          LocalStorageService.setItem(Constants.UserInSession, {
             profileImage: (response.item.profileImage)?response.item.profileImage.thumbnail:null,
             role: response.item.role,
             refId: (response.item.refId?response.item.refId:null)

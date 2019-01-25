@@ -17,7 +17,6 @@ import {UploadFileService} from '@app/core/components/upload-file/upload-file.se
 import {ApiLoaderService} from '@app/core/services/api/api-loader.service';
 import {CookieService} from '@app/core/services/cookie/cookie.service';
 import {Constants} from '@app/core/constants.core';
-import {SessionStorageService} from '@app/core/services/session-storage/session-storage.service';
 import {UploadFileResponse} from '@app/core/components/upload-file/upload-file.component';
 import {SignaturePadService} from '@app/core/components/signature-pad/signature-pad.service';
 import {LocalStorageService} from '@app/core/services/local-storage/local-storage.service';
@@ -492,14 +491,14 @@ export class UserProfileComponent implements OnInit {
         blobName: this.newImageProfile.blob,
         thumbnail: this.newImageProfile.thumbnail
       };
-      SessionStorageService.setItem(Constants.UserInSession, {
+      LocalStorageService.setItem(Constants.UserInSession, {
         profileImage: this.user.profileImage.thumbnail,
         role: this.user.role,
         refId: (this.user.refId? this.user.refId:null)
       });
     }else if(!this.profileImage){
       this.user.profileImage = null;
-      SessionStorageService.setItem(Constants.UserInSession, {
+      LocalStorageService.setItem(Constants.UserInSession, {
         profileImage: null,
         role: this.user.role,
         refId: (this.user.refId? this.user.refId:null)
