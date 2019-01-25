@@ -168,17 +168,17 @@ export class StationProfileComponent implements OnInit {
           if (this.station.dispensers) {
             this.dispensers = this.station.dispensers;
           }else{
-            this.dispensers.push({hoses: 0, identifier: '', magna: false, premium: false, diesel: false});
+            this.dispensers.push({hoses: '', identifier: '', magna: false, premium: false, diesel: false});
           }
           if (this.station.fuelTanks){
             this.tanks = this.station.fuelTanks;
           }else{
-            this.tanks.push({capacity: 0, fuelType: 1});
+            this.tanks.push({capacity: '', fuelType: 0});
           }
           if (this.station.workShifts){
             this.workShifts = this.station.workShifts;
           }else{
-            this.workShifts.push({start: '0000', end: '1200'});
+            this.workShifts.push({start: '', end: ''});
           }
           if (this.station.location) {
             this.latLng = {

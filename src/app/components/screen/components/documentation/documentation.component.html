@@ -5,6 +5,7 @@
   -->
 
 <div id="documentation">
+  <mat-progress-bar [mode]="'indeterminate'" *ngIf="load" class="progress"></mat-progress-bar>
   <div class="background"></div>
   <div class="column-one">
     <div class="buttons">
@@ -36,7 +37,7 @@
     </div>
   </div>
   <div class="column-two">
-    <div *ngIf="docAseaExist; then list else load"></div>
+    <div *ngIf="docAseaExist; then list else loading"></div>
     <ng-template #list>
       <div *ngIf="isASEA; then asea else cre"></div>
       <ng-template #asea>
@@ -50,7 +51,7 @@
                 <span> A. Dictamen de instalaciones eléctricas</span>
               </div>
               <div class="button-icon">
-                <app-upload-file [layoutTemplate]="button" [type]="'file'">
+                <app-upload-file (onLoad)="onLoadFile($event,0,docAseaExist[0],1,1)" [layoutTemplate]="button" [type]="'file'">
                   <ng-template #button>
                     <mat-icon *ngIf="!docAseaExist[0]" svgIcon="icons:upload"></mat-icon>
                     <mat-icon *ngIf="docAseaExist[0]">autorenew</mat-icon>
@@ -63,7 +64,7 @@
                 <span> 1. Plano de instalaciones eléctricas</span>
               </div>
               <div class="button-icon">
-                <app-upload-file [layoutTemplate]="button" [type]="'file'">
+                <app-upload-file (onLoad)="onLoadFile($event,1,docAseaExist[1],1,2)" [layoutTemplate]="button" [type]="'file'">
                   <ng-template #button>
                     <mat-icon *ngIf="!docAseaExist[1]" svgIcon="icons:upload"></mat-icon>
                     <mat-icon *ngIf="docAseaExist[1]">autorenew</mat-icon>
@@ -76,7 +77,7 @@
                 <span> 2. Diagrama unifilar</span>
               </div>
               <div class="button-icon">
-                <app-upload-file [layoutTemplate]="button" [type]="'file'">
+                <app-upload-file (onLoad)="onLoadFile($event,2,docAseaExist[2],1,3)" [layoutTemplate]="button" [type]="'file'">
                   <ng-template #button>
                     <mat-icon *ngIf="!docAseaExist[2]" svgIcon="icons:upload"></mat-icon>
                     <mat-icon *ngIf="docAseaExist[2]">autorenew</mat-icon>
@@ -89,7 +90,7 @@
                 <span> 3. Recibo de consumo eléctrico</span>
               </div>
               <div class="button-icon">
-                <app-upload-file [layoutTemplate]="button" [type]="'file'">
+                <app-upload-file (onLoad)="onLoadFile($event,3,docAseaExist[3],1,4)" [layoutTemplate]="button" [type]="'file'">
                   <ng-template #button>
                     <mat-icon *ngIf="!docAseaExist[3]" svgIcon="icons:upload"></mat-icon>
                     <mat-icon *ngIf="docAseaExist[3]">autorenew</mat-icon>
@@ -103,7 +104,7 @@
                 <span> B. Estudio de tierras físicas y pararrayos</span>
               </div>
               <div class="button-icon">
-                <app-upload-file [layoutTemplate]="button" [type]="'file'">
+                <app-upload-file (onLoad)="onLoadFile($event,4,docAseaExist[4],1,5)" [layoutTemplate]="button" [type]="'file'">
                   <ng-template #button>
                     <mat-icon *ngIf="!docAseaExist[4]" svgIcon="icons:upload"></mat-icon>
                     <mat-icon *ngIf="docAseaExist[4]">autorenew</mat-icon>
@@ -116,7 +117,7 @@
                 <span> 1. Razón social</span>
               </div>
               <div class="button-icon">
-                <app-upload-file [layoutTemplate]="button" [type]="'file'">
+                <app-upload-file (onLoad)="onLoadFile($event,5,docAseaExist[5],1,6)" [layoutTemplate]="button" [type]="'file'">
                   <ng-template #button>
                     <mat-icon *ngIf="!docAseaExist[5]" svgIcon="icons:upload"></mat-icon>
                     <mat-icon *ngIf="docAseaExist[5]">autorenew</mat-icon>
@@ -129,7 +130,7 @@
                 <span> 2. R.F.C</span>
               </div>
               <div class="button-icon">
-                <app-upload-file [layoutTemplate]="button" [type]="'file'">
+                <app-upload-file (onLoad)="onLoadFile($event,6,docAseaExist[6],1,7)" [layoutTemplate]="button" [type]="'file'">
                   <ng-template #button>
                     <mat-icon *ngIf="!docAseaExist[6]" svgIcon="icons:upload"></mat-icon>
                     <mat-icon *ngIf="docAseaExist[6]">autorenew</mat-icon>
@@ -142,7 +143,7 @@
                 <span> 3. Dirección</span>
               </div>
               <div class="button-icon">
-                <app-upload-file [layoutTemplate]="button" [type]="'file'">
+                <app-upload-file (onLoad)="onLoadFile($event,7,docAseaExist[7],1,8)" [layoutTemplate]="button" [type]="'file'">
                   <ng-template #button>
                     <mat-icon *ngIf="!docAseaExist[7]" svgIcon="icons:upload"></mat-icon>
                     <mat-icon *ngIf="docAseaExist[7]">autorenew</mat-icon>
@@ -156,7 +157,7 @@
                 <span> C. Prueba de hermeticidad</span>
               </div>
               <div class="button-icon">
-                <app-upload-file [layoutTemplate]="button" [type]="'file'">
+                <app-upload-file (onLoad)="onLoadFile($event,8,docAseaExist[8],1,9)" [layoutTemplate]="button" [type]="'file'">
                   <ng-template #button>
                     <mat-icon *ngIf="!docAseaExist[8]" svgIcon="icons:upload"></mat-icon>
                     <mat-icon *ngIf="docAseaExist[8]">autorenew</mat-icon>
@@ -169,7 +170,7 @@
                 <span> 1. Número de permiso de la CRE</span>
               </div>
               <div class="button-icon">
-                <app-upload-file [layoutTemplate]="button" [type]="'file'">
+                <app-upload-file (onLoad)="onLoadFile($event,9,docAseaExist[9],1,10)" [layoutTemplate]="button" [type]="'file'">
                   <ng-template #button>
                     <mat-icon *ngIf="!docAseaExist[9]" svgIcon="icons:upload"></mat-icon>
                     <mat-icon *ngIf="docAseaExist[9]">autorenew</mat-icon>
@@ -182,23 +183,10 @@
                 <span> 2. R.F.C</span>
               </div>
               <div class="button-icon">
-                <app-upload-file [layoutTemplate]="button" [type]="'file'">
+                <app-upload-file (onLoad)="onLoadFile($event,10,docAseaExist[10],1,11)" [layoutTemplate]="button" [type]="'file'">
                   <ng-template #button>
                     <mat-icon *ngIf="!docAseaExist[10]" svgIcon="icons:upload"></mat-icon>
                     <mat-icon *ngIf="docAseaExist[10]">autorenew</mat-icon>
-                  </ng-template>
-                </app-upload-file>
-              </div>
-            </mat-card>
-            <mat-card class="file">
-              <div class="text">
-                <span> 3. Dirección</span>
-              </div>
-              <div class="button-icon">
-                <app-upload-file [layoutTemplate]="button" [type]="'file'">
-                  <ng-template #button>
-                    <mat-icon *ngIf="!docAseaExist[11]" svgIcon="icons:upload"></mat-icon>
-                    <mat-icon *ngIf="docAseaExist[11]">autorenew</mat-icon>
                   </ng-template>
                 </app-upload-file>
               </div>
@@ -209,7 +197,7 @@
                 <span> Manifiesto de residuos peligrosos</span>
               </div>
               <div class="button-icon">
-                <app-upload-file [layoutTemplate]="button" [type]="'file'">
+                <app-upload-file (onLoad)="onLoadFile($event,12,docAseaExist[12],1,12)" [layoutTemplate]="button" [type]="'file'">
                   <ng-template #button>
                     <mat-icon *ngIf="!docAseaExist[12]" svgIcon="icons:upload"></mat-icon>
                     <mat-icon *ngIf="docAseaExist[12]">autorenew</mat-icon>
@@ -222,7 +210,7 @@
                 <span> Limpieza ecológica</span>
               </div>
               <div class="button-icon">
-                <app-upload-file [layoutTemplate]="button" [type]="'file'">
+                <app-upload-file (onLoad)="onLoadFile($event,13,docAseaExist[13],1,13)" [layoutTemplate]="button" [type]="'file'">
                   <ng-template #button>
                     <mat-icon *ngIf="!docAseaExist[13]" svgIcon="icons:upload"></mat-icon>
                     <mat-icon *ngIf="docAseaExist[13]">autorenew</mat-icon>
@@ -235,7 +223,7 @@
                 <span> Documento que enuncie el material de las fabricación de tanques y tuberías </span>
               </div>
               <div class="button-icon">
-                <app-upload-file [layoutTemplate]="button" [type]="'file'">
+                <app-upload-file (onLoad)="onLoadFile($event,14,docAseaExist[14],1,14)" [layoutTemplate]="button" [type]="'file'">
                   <ng-template #button>
                     <mat-icon *ngIf="!docAseaExist[14]" svgIcon="icons:upload"></mat-icon>
                     <mat-icon *ngIf="docAseaExist[14]">autorenew</mat-icon>
@@ -248,7 +236,7 @@
                 <span> Planos de estación (todos)</span>
               </div>
               <div class="button-icon">
-                <app-upload-file [layoutTemplate]="button" [type]="'file'">
+                <app-upload-file (onLoad)="onLoadFile($event,15,docAseaExist[15],1,15)" [layoutTemplate]="button" [type]="'file'">
                   <ng-template #button>
                     <mat-icon *ngIf="!docAseaExist[15]" svgIcon="icons:upload"></mat-icon>
                     <mat-icon *ngIf="docAseaExist[15]">autorenew</mat-icon>
@@ -261,7 +249,7 @@
                 <span> Procedimientos mínimos de seguridad internos de la estación</span>
               </div>
               <div class="button-icon">
-                <app-upload-file [layoutTemplate]="button" [type]="'file'">
+                <app-upload-file (onLoad)="onLoadFile($event,16,docAseaExist[16],1,16)" [layoutTemplate]="button" [type]="'file'">
                   <ng-template #button>
                     <mat-icon *ngIf="!docAseaExist[16]" svgIcon="icons:upload"></mat-icon>
                     <mat-icon *ngIf="docAseaExist[16]">autorenew</mat-icon>
@@ -283,7 +271,7 @@
                 <span> Estudio de calidad de productos</span>
               </div>
               <div class="button-icon">
-                <app-upload-file [layoutTemplate]="button" [type]="'file'">
+                <app-upload-file (onLoad)="onLoadFile($event,0,docCreExist[0],2,17)" [layoutTemplate]="button" [type]="'file'">
                   <ng-template #button>
                     <mat-icon *ngIf="!docCreExist[0]" svgIcon="icons:upload"></mat-icon>
                     <mat-icon *ngIf="docCreExist[0]">autorenew</mat-icon>
@@ -296,7 +284,7 @@
                 <span> Dictamen de los estudios de calidad de los productos</span>
               </div>
               <div class="button-icon">
-                <app-upload-file [layoutTemplate]="button" [type]="'file'">
+                <app-upload-file (onLoad)="onLoadFile($event,1,docCreExist[1],2,18)" [layoutTemplate]="button" [type]="'file'">
                   <ng-template #button>
                     <mat-icon *ngIf="!docCreExist[1]" svgIcon="icons:upload"></mat-icon>
                     <mat-icon *ngIf="docCreExist[1]">autorenew</mat-icon>
@@ -308,11 +296,11 @@
         </mat-card>
       </ng-template>
     </ng-template>
-    <ng-template #load>
+    <ng-template #loading>
       <mat-spinner></mat-spinner>
     </ng-template>
     <div class="save">
-      <button mat-flat-button [color]="'primary'" [routerLink]="'/home/profile/gas-station'" [queryParams]="{id: stationId}">GUARDAR</button>
+      <button mat-flat-button [color]="'primary'" [disabled]="load" (click)="saveDocs()">GUARDAR</button>
     </div>
   </div>
 </div>
