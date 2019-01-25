@@ -28,8 +28,8 @@ interface Document{
   animations: [
     trigger('fadeInAnimation', [
       transition(':enter', [
-        query('#profile', style({ opacity: 0, background: 'transparent' }), {optional: true}),
-        query('#profile', stagger('10ms', [
+        query('#documentation', style({ opacity: 0, background: 'transparent' }), {optional: true}),
+        query('#documentation', stagger('10ms', [
           animate('.2s ease-out', keyframes([
             style({opacity: 0, background: 'transparent', offset: 0}),
             style({opacity: .5, background: 'rgba(255, 255, 255, .5)', offset: 0.5}),
@@ -37,8 +37,8 @@ interface Document{
           ]))]), {optional: true})
       ]),
       transition(':leave', [
-        query('#profile', style({ opacity: 1, background: 'rgba(255, 255, 255, 1)' }), {optional: true}),
-        query('#profile', stagger('10ms', [
+        query('#documentation', style({ opacity: 1, background: 'rgba(255, 255, 255, 1)' }), {optional: true}),
+        query('#documentation', stagger('10ms', [
           animate('.2s ease-in', keyframes([
             style({opacity: 1, background: 'rgba(255, 255, 255, 1)', offset: 0}),
             style({opacity: .5, background: 'rgba(255, 255, 255, .5)',  offset: 0.5}),

@@ -8,7 +8,27 @@
   width: 100vw;
   height: calc(100vh - 48px);
   margin-top: 48px;
+  .empty{
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    padding: 0 35%;
+    text-align: center;
 
+    .text{
+      font-size: 24px;
+      font-weight: 600;
+      color: #707070;
+      margin: 24px 0;
+    }
+    .button{
+      background-color: #FFAA00;
+      color: #FFFFFF;
+      border-radius: 36px;
+    }
+  }
   mat-drawer-container{
     height: 100%;
     background-color: #F2F2F2;

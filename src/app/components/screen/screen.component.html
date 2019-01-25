@@ -10,6 +10,18 @@
 <!-- Nav Bar [END]-->
 
 <div id="home">
+
+  <div *ngIf="!stationActive && !stationList; then emptyDash else dashboard"></div>
+    <ng-template #emptyDash>
+      <div class="empty">
+        <div class="text">Aún no tiene estaciones agregadas en su lista en su lista</div>
+        <button mat-button class="button" routerLink="/add-station">
+          <mat-icon>add</mat-icon>
+          <span>AGREGAR ESTACIÓN</span>
+        </button>
+      </div>
+    </ng-template>
+  <ng-template #dashboard>
     <mat-drawer-container>
       <mat-drawer class="menu" mode="side" [opened]="true" [disableClose]="true">
         <div class="station-information" *ngIf="stationActive">
@@ -59,7 +71,7 @@
             <p>90/120 actividades</p>
           </div>
           <div class="tasks">
-           <app-list-tasks></app-list-tasks>
+            <app-list-tasks></app-list-tasks>
           </div>
         </div>
         <div class="col-2">
@@ -75,6 +87,7 @@
         </div>
       </mat-drawer-content>
     </mat-drawer-container>
+  </ng-template>
 
 </div>
 
