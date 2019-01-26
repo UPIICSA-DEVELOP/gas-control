@@ -6,9 +6,9 @@
 
 #documentation{
   top: 0;
-  width: 100vw;
-  height: 100vh;
-  padding: 32px;
+  height: 100%;
+  margin: 0 5%;
+  padding: 2.5% 0;
   display: flex;
   background-color: #FFFFFF;
   z-index: 15;
@@ -28,8 +28,8 @@
     height: 300px;
     position: absolute;
     bottom: 0;
-    right: 0;
-    background: url("../../../../../assets/Images/background.png") no-repeat bottom;
+    right: 5%;
+    background: url("https://www.googleapis.com/download/storage/v1/b/businesscardgcs/o/alex4%2F2019-01-26-003812930Web-Fondo-gas-poca-transparencia.png?generation=1548463093083368&alt=media") no-repeat bottom;
     background-size: cover;
     z-index: 0;
     @media screen and (max-width: 768px), screen and (max-height: 600px) {
@@ -39,7 +39,7 @@
   }
   .column-one{
     z-index: 1;
-    width: 50%;
+    width: 40%;
     height: 100%;
     @media screen and (max-width: 900px){
       width: 100%;
@@ -85,6 +85,7 @@
       align-items: center;
       justify-content: center;
       .paragraph{
+        text-align: justify;
         margin:18px 36px;
         .content{
           font-weight: 600;
@@ -94,7 +95,7 @@
   }
   .column-two{
     z-index: 1;
-    width: 50%;
+    width: 60%;
     height: 100%;
     display: flex;
     align-items: center;
@@ -136,6 +137,22 @@
     }
     .save{
       margin: 24px 0;
+    }
+  }
+  .btn-close{
+    position: absolute;
+    top: 0;
+    right: 5%;
+    margin: 24px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 5;
+    button{
+      background-color: #707070;
+    }
+    mat-icon{
+      color: #FFFFFF;
     }
   }
 }

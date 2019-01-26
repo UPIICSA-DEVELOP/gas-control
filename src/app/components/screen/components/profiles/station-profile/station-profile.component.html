@@ -191,6 +191,11 @@
         </div>
       </div>
       <div class="dispensers-information">
+        <div class="documentation">
+          <button mat-button [color]="'primary'" type="button" *ngIf="user.role!==6 && user.role!==7" [routerLink]="'/home/documents'" [queryParams]="{station: station.id}">
+            Documentación <mat-icon>keyboard_backspace</mat-icon>
+          </button>
+        </div>
         <div class="header">
           <div style="margin-right: 32px;">
             <img *ngIf="gasImage" [src]="gasImage" class="profileImage">
@@ -201,11 +206,6 @@
             <div class="businessName">{{station.businessName}}</div>
             <div class="businessName">{{station.name}}</div>
           </div>
-        </div>
-        <div class="documentation">
-          <button mat-button [color]="'primary'" type="button" *ngIf="user.role!==6 && user.role!==7" [routerLink]="'/home/documents'" [queryParams]="{station: station.id}">
-            Documentación <mat-icon>keyboard_backspace</mat-icon>
-          </button>
         </div>
       </div>
     </form>

@@ -24,7 +24,7 @@
     position: absolute;
     bottom: 0;
     right: 0;
-    background: url("../../../../../../assets/Images/background.png") no-repeat bottom;
+    background: url("https://www.googleapis.com/download/storage/v1/b/businesscardgcs/o/alex4%2F2019-01-26-000134341background.png?generation=1548460895547085&alt=media") no-repeat bottom;
     background-size: cover;
     z-index: 0;
     @media screen and (max-width: 768px), screen and (max-height: 600px) {
@@ -61,8 +61,8 @@
       }
 
       .profileImage {
-        height: 80px;
-        width: 80px;
+        height: 100px;
+        width: 100px;
         border-radius: 50%;
         background-color: #FFFFFF;
       }
@@ -71,8 +71,8 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        width: 80px;
-        height: 80px;
+        width: 100px;
+        height: 100px;
         border-radius: 50%;
         background-color: #FFFFFF;
       }
@@ -123,7 +123,7 @@
       font-weight: 500;
       font-size: 24px;
       color: #000000;
-      margin: 8px 0;
+      margin: 24px 0 16px 0;
     }
 
     .content {
@@ -232,10 +232,10 @@
     }
   }
   .image{
-    margin: 16px;
+    margin: 24px;
   }
   .head{
-    margin: 8px 0;
+    margin: 16px 0;
   }
   .password-button{
     margin-bottom: 12px;

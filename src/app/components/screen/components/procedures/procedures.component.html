@@ -1,0 +1,32 @@
+<!--
+  ~ Copyright (C) MapLander S de R.L de C.V - All Rights Reserved
+  ~ Unauthorized copying of this file, via any medium is strictly prohibited
+  ~ Proprietary and confidential
+  -->
+
+<div id="procedures">
+  <div class="tap">
+    <button mat-icon-button (click)="onCloseProcedures()">
+      <mat-icon>keyboard_arrow_right</mat-icon>
+    </button>
+  </div>
+  <div class="content">
+    <div class="head">
+      <span>PROCEDIMIENTOS</span>
+      <button mat-icon-button (click)="onCloseProcedures()">
+        <mat-icon>close</mat-icon>
+      </button>
+    </div>
+    <div class="container" *ngIf="procedures">
+      <div *ngFor="let procedure of procedures">
+        <mat-card >
+          <mat-card-content>
+            <a [href]="procedure.fileCS.thumbnail">
+              {{procedure.name}}
+            </a>
+          </mat-card-content>
+        </mat-card>
+      </div>
+    </div>
+  </div>
+</div>

@@ -90,13 +90,13 @@ export class AuthService implements Resolve<any>{
             case 1:
             case 2:
             case 3:
-              this._router.navigate(['/home/profile/consultancy']);
+              this._router.navigate(['/profile/consultancy']);
               break;
             case 4:
             case 5:
             case 6:
             case 7:
-              this._router.navigate(['/home/profile/user']);
+              this._router.navigate(['/profile/user']);
               break;
           }
       })

@@ -95,7 +95,6 @@ export class DocumentationComponent implements OnInit {
   }
 
   private getDocuments():void{
-    debugger;
     this._api.listDocumentByStation(this.stationId, '2').subscribe(response=>{
       switch (response.code){
         case 200:
@@ -378,7 +377,7 @@ export class DocumentationComponent implements OnInit {
                 switch (response.code){
                   case 200:
                     if (i===this.updateNewDocCre.length-1){
-                      this._router.navigate(['/home/profile/gas-station'], {queryParams:{id: this.stationId}});
+                      this._router.navigate(['/profile/gas-station'], {queryParams:{id: this.stationId}});
                     }
                     break;
                   default:
@@ -389,10 +388,14 @@ export class DocumentationComponent implements OnInit {
           }
         }
       }else{
-        this._router.navigate(['/home/profile/gas-station'], {queryParams:{id: this.stationId}});
+        this._router.navigate(['/profile/gas-station'], {queryParams:{id: this.stationId}});
       }
     }else{
-      this._router.navigate(['/home/profile/gas-station'], {queryParams:{id: this.stationId}});
+      this._router.navigate(['/profile/gas-station'], {queryParams:{id: this.stationId}});
     }
+  }
+
+  public closeDocumentation():void{
+    this._router.navigate(['/profile/gas-station'], {queryParams:{id: this.stationId}});
   }
 }

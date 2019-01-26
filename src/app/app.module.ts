@@ -41,6 +41,7 @@ import { SearchBarComponent } from './components/screen/components/search-bar/se
 import { AddCollaboratorComponent } from './components/screen/components/add-collaborator/add-collaborator.component';
 import { AddGasStationComponent } from './components/screen/components/add-gas-station/add-gas-station.component';
 import { DocumentationComponent } from './components/screen/components/documentation/documentation.component';
+import { ProceduresComponent } from './components/screen/components/procedures/procedures.component';
 
 
 @NgModule({
@@ -65,7 +66,8 @@ import { DocumentationComponent } from './components/screen/components/documenta
     SearchBarComponent,
     AddCollaboratorComponent,
     AddGasStationComponent,
-    DocumentationComponent
+    DocumentationComponent,
+    ProceduresComponent
   ],
   imports: [
     CoreModule,

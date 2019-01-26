@@ -333,7 +333,7 @@ export class UserProfileComponent implements OnInit {
               thumbnail: (response.item.signature?response.item.signature.thumbnail : undefined),
             }:undefined),
             website: response.item.website,
-            bCard: (response.item.bCard?response.item.bCard:null)
+            bCard: (response.item.bCard?response.item.bCard:undefined)
           };
           if (this.user.profileImage){
             this.profileImage = this.user.profileImage.thumbnail;

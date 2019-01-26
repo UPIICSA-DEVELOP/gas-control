@@ -20,6 +20,8 @@ import {StationProfileComponent} from '@app/components/screen/components/profile
 import {StationListComponent} from '@app/components/screen/components/station-list/station-list.component';
 import {AddCollaboratorComponent} from '@app/components/screen/components/add-collaborator/add-collaborator.component';
 import {DocumentationComponent} from '@app/components/screen/components/documentation/documentation.component';
+import {AddGasStationComponent} from '@app/components/screen/components/add-gas-station/add-gas-station.component';
+import {ProceduresComponent} from '@app/components/screen/components/procedures/procedures.component';
 const URL_BASE = environment.url;
 
 export const appRoutes: Routes = [
@@ -32,39 +34,6 @@ export const appRoutes: Routes = [
       title:'inSpector'
     },
     children: [
-      {
-        path: 'profile',
-        resolve: {data: AuthService},
-        data:{
-          title: 'Perfil'
-        },
-        children:[
-          {
-            path: 'consultancy',
-            component: ProfileComponent,
-            data:{
-              title: 'Perfil',
-              url: URL_BASE + 'home/profile/consultancy'
-            }
-          },
-          {
-            path: 'user',
-            component: UserProfileComponent,
-            data:{
-              title: 'Perfil',
-              url: URL_BASE + 'home/profile/user'
-            }
-          },
-          {
-            path: 'gas-station',
-            component: StationProfileComponent,
-            data:{
-              title: 'Estación de servicio',
-              url: URL_BASE + 'home/profile/gas-station'
-            }
-          }
-        ]
-      },
       {
         path:'documents',
         component: DocumentationComponent,
@@ -111,8 +80,60 @@ export const appRoutes: Routes = [
           url: URL_BASE + 'home/add-collaborator',
           title: 'Añadir colaborador'
         }
+      },
+      {
+        path: 'procedures',
+        component: ProceduresComponent,
+        resolve: {data: AuthService},
+        data:{
+          title: 'Procedimientos',
+          url: URL_BASE + 'home/procedures'
+        }
+      },
+    ]
+  },
+  {
+    path: 'profile',
+    resolve: {data: AuthService},
+    data:{
+      url: URL_BASE + 'profile',
+      title: 'Perfil'
+    },
+    children:[
+      {
+        path: 'consultancy',
+        component: ProfileComponent,
+        data:{
+          title: 'Perfil',
+          url: URL_BASE + '/profile/consultancy'
+        }
+      },
+      {
+        path: 'user',
+        component: UserProfileComponent,
+        data:{
+          title: 'Perfil',
+          url: URL_BASE + '/profile/user'
+        }
+      },
+      {
+        path: 'gas-station',
+        component: StationProfileComponent,
+        data:{
+          title: 'Estación de servicio',
+          url: URL_BASE + '/profile/gas-station'
+        }
       }
     ]
+  },
+  {
+    path: 'add-station',
+    component: AddGasStationComponent,
+    resolve: {data: AuthService},
+    data:{
+      url: URL_BASE+'add-station',
+      title: 'Agregar estación'
+    }
   },
   {
     path: '',

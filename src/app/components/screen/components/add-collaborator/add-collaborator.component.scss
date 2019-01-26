@@ -119,6 +119,7 @@
       font-size: 14px;
       color: #707070;
       margin-bottom: 12px;
+      text-align: left;
     }
     .signature-input{
       margin-bottom: 16px;
@@ -146,6 +147,9 @@
     .submit{
       color: #707070;
       padding: 8px 0;
+      display: flex;
+      margin-left: 16px;
+      align-items: center;
     }
     .file-icon{
       font-size: 24px !important;
@@ -170,10 +174,12 @@
     font-weight: 600;
     text-align: left;
     font-size: 24px;
+    margin-top: 18px;
   }
   .emergency{
     color: #707070;
     text-align: left;
-    margin: 8px 0;
+    margin: 12px 0 8px 0;
+    font-weight: 600;
   }
 }
