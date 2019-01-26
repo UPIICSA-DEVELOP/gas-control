@@ -88,6 +88,20 @@ body{
   }
 }
 
+.modal-panel{
+  mat-dialog-container{
+    width: 40vw;
+    padding: 0;
+    overflow: hidden;
+    @media screen and (max-width: 1200px){
+      width: 50vw;
+    }
+    @media screen and (max-width: 800px){
+      width: 80vw;
+    }
+  }
+}
+
 .date-panel{
   mat-dialog-container{
     min-height: 25vh;
@@ -134,6 +148,20 @@ app-collaborators-list{
 }
 
 app-notifications{
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  width: 30vw;
+  @media screen and (max-width: 900px){
+    width: 50vw;
+  }
+  @media screen and (max-width: 600px){
+    width: 100vw;
+  }
+}
+
+app-procedures{
   position: absolute;
   top: 0;
   bottom: 0;

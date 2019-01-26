@@ -37,6 +37,7 @@ import {
   MatSliderModule,
   MatSlideToggleModule,
   MatSnackBarModule,
+  MatStepperModule,
   MatTabsModule,
   MatToolbarModule,
   MatTooltipModule
@@ -73,7 +74,8 @@ const MATERIAL_MODULES = [
   MatExpansionModule,
   MatBadgeModule,
   MatDatepickerModule,
-  MatNativeDateModule
+  MatNativeDateModule,
+  MatStepperModule
 ];
 
 @NgModule({

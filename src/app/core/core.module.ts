@@ -37,6 +37,10 @@ import {DatepickerComponent} from '@app/core/components/datepicker/datepicker.co
 import {DatepickerService} from '@app/core/components/datepicker/datepicker.service';
 import {TaskFilterComponent} from '@app/core/components/task-filter/task-filter.component';
 import {TaskFilterService} from '@app/core/components/task-filter/task-filter.service';
+import { ModalStationComponent } from './components/modal-station/modal-station.component';
+import {ModalStationService} from '@app/core/components/modal-station/modal-station.service';
+import { PdfVisorComponent } from './components/pdf-visor/pdf-visor.component';
+import {PdfVisorService} from '@app/core/components/pdf-visor/pdf-visor.service';
 
 @NgModule({
   imports: [
@@ -80,7 +84,9 @@ import {TaskFilterService} from '@app/core/components/task-filter/task-filter.se
     SearchBoxCoreComponent,
     SignaturePadComponent,
     DatepickerComponent,
-    TaskFilterComponent
+    TaskFilterComponent,
+    ModalStationComponent,
+    PdfVisorComponent
   ],
   entryComponents: [
     DialogComponent,
@@ -91,7 +97,9 @@ import {TaskFilterService} from '@app/core/components/task-filter/task-filter.se
     LocationComponent,
     SignaturePadComponent,
     DatepickerComponent,
-    TaskFilterComponent
+    TaskFilterComponent,
+    ModalStationComponent,
+    PdfVisorComponent
   ],
   providers: [
     AuthService,
@@ -106,7 +114,9 @@ import {TaskFilterService} from '@app/core/components/task-filter/task-filter.se
     LocationService,
     SignaturePadService,
     DatepickerService,
-    TaskFilterService
+    TaskFilterService,
+    ModalStationService,
+    PdfVisorService
   ]
 })
 export class CoreModule { }

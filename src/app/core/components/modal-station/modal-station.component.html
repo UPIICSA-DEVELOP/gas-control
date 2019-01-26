@@ -1,0 +1,23 @@
+<!--
+  ~ Copyright (C) MapLander S de R.L de C.V - All Rights Reserved
+  ~ Unauthorized copying of this file, via any medium is strictly prohibited
+  ~ Proprietary and confidential
+  -->
+
+<div id="station-modal">
+  <mat-toolbar [color]="'primary'" style="justify-content: space-between;">
+    Tipo de estación
+    <button mat-icon-button (click)="closeModal()">
+      <mat-icon>close</mat-icon>
+    </button>
+  </mat-toolbar>
+  <mat-dialog-content>
+    <div *ngFor="let station of icons">
+      <div (click)="selectStationType(station)">
+        <mat-card class="image">
+          <img [src]="station.fileCS.thumbnail">
+        </mat-card>
+      </div>
+    </div>
+  </mat-dialog-content>
+</div>
