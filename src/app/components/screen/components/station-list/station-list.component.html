@@ -74,4 +74,9 @@
       </div>
     </div>
   </div>
+  <div style="position: absolute; right: 16px; bottom: 40px; z-index: 4" *ngIf="user.role<4">
+    <button mat-icon-button style="background-color: #FFAA00; color: #FFFFFF;" routerLink="/add-station">
+      <mat-icon>local_gas_station</mat-icon>
+    </button>
+  </div>
 </div>

@@ -46,6 +46,7 @@ export class StationListComponent implements OnInit, DoCheck {
   public stationList: any[];
   public notificationActive: boolean[] = [];
   public groupIcon: any;
+  public user: any;
   constructor(
     private _api: ApiService,
     private _dialogService: DialogService,
@@ -109,6 +110,7 @@ export class StationListComponent implements OnInit, DoCheck {
 
   private getStationList():void{
     let user = LocalStorageService.getItem(Constants.UserInSession);
+    this.user=user;
     switch (user.role) {
       case 1:
       case 2:

@@ -5,5 +5,259 @@
  */
 
 #create-station{
+  position: absolute;
+  width: 100vw;
+  height: 100vh;
+  background-color: #FFFFFF;
+  display: flex;
+  .background{
+    width: 600px;
+    height: 300px;
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    background: url("../../../../../assets/Images/background.png") no-repeat bottom;
+    background-size: cover;
+    z-index: 0;
+    @media screen and (max-width: 768px), screen and (max-height: 600px) {
+      width: 300px;
+      height: 150px;
+    }
+  }
+  .steps{
+    width: 50%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .forms-and-lists{
+    width: 50%;
+    height: 100%;
+    z-index: 1;
+    overflow: auto;
+    .form-station{
+      display: flex;
+      align-items: center;
+      margin: 24px;
+      flex-direction: column;
+      mat-card{
+        height: auto;
+        mat-card-content{
+          text-align: center;
+          padding: 28px;
+        }
+      }
+    }
+    .form-person{
+      display: flex;
+      align-items: center;
+      margin: 24px;
+      flex-direction: column;
+      mat-card{
+        height: auto;
+        mat-card-content{
+          text-align: center;
+          padding: 28px;
+        }
+      }
+    }
+    .docs{
+      display: flex;
+      align-items: center;
+      margin: 24px;
+      flex-direction: column;
+      mat-card{
+        height: auto;
+        mat-card-content{
+          text-align: center;
+          padding: 28px;
+        }
+      }
+    }
+    .calendar{
+      display: flex;
+      align-items: center;
+      margin: 24px;
+      flex-direction: column;
+      mat-card{
+        height: auto;
+        mat-card-content{
+          text-align: center;
+          padding: 28px;
+        }
+      }
+    }
+    .done{
+      display: flex;
+      align-items: center;
+      margin: 24px;
+      mat-card{
+        height: auto;
+        mat-card-content{
+          text-align: center;
+          padding: 28px;
+        }
+      }
+    }
+  }
+  .modal{
+    position: relative;
+    .mask{
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 2;
+      cursor: pointer;
+    }
+  }
+  .inputs{
+    width: 100%;
+  }
+  .head-image{
+    width: 80%;
+  }
+  .input-content{
+    display: flex;
+    justify-content: space-between;
+  }
+  .width-form{
+    width: 40%;
+  }
+  .text{
+    margin: 16px 0;
+    color: #707070
+  }
+  .button-container{
+    display: flex;
+    align-items: center;
+  }
+  .fuel-selector{
+    display: flex;
+    justify-content: space-around;
+  }
+  .fuel{
+    width: 90%;
+    margin: 12px 0;
+  }
+  .dispensers{
+    display: flex;
+    margin: 12px 0;
+  }
+  .head{
+    color: #707070;
+    padding-left: 16px;
+  }
+  .hoses{
+    display: flex;
+    justify-content: space-around;
+    color: #707070;
+    .field{
+      width: 40%;
+    }
+  }
+  .header-two{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    color: #707070;
+  }
+  .button{
+    display: flex;
+    align-items: center;
+  }
+  .flex-box{
+    display: flex;
+  }
+  .remove{
+    color: #707070;
+  }
+  .double-inputs{
+    color: #707070;
+    justify-content: space-between;
+    display: flex;
+    align-items: center;
+  }
 
+  .profileImage {
+    height: 100px;
+    width: 100px;
+    border-radius: 50%;
+    background-color: #FFFFFF;
+    box-shadow: 0 2px 1px -1px rgba(0, 0, 0, 0.2), 0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12);
+  }
+
+  .defaultProfileImage {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    background-color: #FFFFFF;
+    font-size: 80px;
+    color: #707070;
+    box-shadow: 0 2px 1px -1px rgba(0, 0, 0, 0.2), 0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12);
+  }
+  .right-inputs {
+    width: 72px;
+    margin-right: 24px;
+  }
+
+  .signature-input{
+    margin-bottom: 16px;
+  }
+
+  .signatureContainer {
+    display: flex;
+    justify-content: center;
+    background-color: black;
+
+    .signature {
+      margin: 1px;
+      background-color: white;
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+
+      .imageSignature {
+        width: 60%;
+      }
+    }
+  }
+  .empty{
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    padding: 0 35%;
+    text-align: center;
+
+    .text{
+      font-size: 24px;
+      font-weight: 600;
+      color: #707070;
+      margin: 24px 0;
+    }
+    .button{
+      background-color: #FFAA00;
+      color: #FFFFFF;
+      border-radius: 36px;
+    }
+  }
+  .form-button {
+    display: flex;
+    justify-content: center;
+    margin: 24px 0;
+  }
+
+  .submit{
+    color: #707070;
+    padding: 8px 0;
+  }
 }

@@ -285,8 +285,6 @@ export class AddCollaboratorComponent implements OnInit {
       concatcPhone:(data.contactPhoneNumber? data.contactPhoneNumber:undefined),
       contactKinship: (data.contactKinship?data.contactKinship:undefined)
     };
-    console.log(person);
-    console.log(personInformation);
     this._api.createReferencedPerson(person).subscribe(response=>{
         switch (response.code){
           case 200:
