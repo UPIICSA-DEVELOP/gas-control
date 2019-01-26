@@ -87,16 +87,10 @@
               <div *ngFor="let turn of workShifts; let i = index">
                 <div class="input-content">
                   <div class="address">
-                    <div class="mask"></div>
-                    <mat-form-field>
-                      <input matInput placeholder="Inicio" value="{{turn.start | convertTimeAndCapacity}}" [disabled]=" user.role===6 || user.role===7">
-                    </mat-form-field>
+                    <app-time-picker [(value)]="turn.start"></app-time-picker>
                   </div>
                   <div class="address">
-                    <div class="mask"></div>
-                    <mat-form-field>
-                      <input matInput placeholder="Fin" value="{{turn.end | convertTimeAndCapacity}}" [disabled]=" user.role===6 || user.role===7">
-                    </mat-form-field>
+                    <app-time-picker [(value)]="turn.end"></app-time-picker>
                   </div>
                   <button type="button" *ngIf="workShifts.length>1" mat-icon-button (click)="addRemoveTurn(true,1, i)" class="remove" [disabled]=" user.role===6 || user.role===7">
                     <mat-icon>remove</mat-icon>
