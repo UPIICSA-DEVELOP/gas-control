@@ -9,6 +9,7 @@ import {NgxMaterialTimepickerTheme} from 'ngx-material-timepicker';
 export class TimePickerComponent implements OnInit {
 
   @Input() value: string;
+  @Input() disabled: boolean;
   @Output() valueChange: EventEmitter<string|null>;
   public theme: NgxMaterialTimepickerTheme;
 
