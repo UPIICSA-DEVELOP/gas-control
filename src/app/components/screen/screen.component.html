@@ -49,7 +49,7 @@
               <mat-icon>library_books</mat-icon>
               <span>Procedimientos</span>
             </button>
-            <button mat-button (click)="addCollaborator()">
+            <button mat-button (click)="addCollaborator()" *ngIf="role<6">
               <mat-icon>person_add</mat-icon>
               <span>Añadir Colaborador de E.S.</span>
             </button>
