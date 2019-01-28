@@ -151,6 +151,7 @@ export class AddGasStationComponent implements OnInit {
   public bloodTypeTwo: string;
   public load: boolean;
   public startDate: any;
+  public name: string;
   private _formImage:FormData;
   private _formSignature: FormData;
   private _formFile: FormData;
@@ -486,7 +487,7 @@ export class AddGasStationComponent implements OnInit {
         businessName: data.businessName,
         crePermission: (data.crePermission?data.crePermission:undefined),
         email: data.email,
-        name: data.email,
+        name: data.name,
         phoneNumber: data.phoneNumber,
         workers: (data.workers?data.workers:undefined),
         type: this.stationType.id,
@@ -507,6 +508,7 @@ export class AddGasStationComponent implements OnInit {
   public selectLegalRep(person: any){
     this.station.idLegalRepresentative = person.id;
     this.station.legalRepresentativeName = person.name+' '+ person.lastName;
+    this.name = this.station.legalRepresentativeName;
     this.legalRepAsign = true;
     this._stepper.next();
   }
@@ -631,6 +633,7 @@ export class AddGasStationComponent implements OnInit {
         contactName:(data.contactName?data.contactName:undefined),
         benzene:(this.file?this.file:undefined)
       };
+      this.name = data.name+' '+data.lastName;
       this.legalRepAsign = true;
       this._stepper.next();
       this.step=2;
@@ -802,7 +805,7 @@ export class AddGasStationComponent implements OnInit {
       this._api.createStationTask(task).subscribe(response=>{
         switch (response.code){
           case 200:
-            this._router.navigate(['/home'],{queryParams:{station: stationId}}).then();
+            this._router.navigate(['/home'],{queryParams:{station: stationId}});
             break;
         }
       })
