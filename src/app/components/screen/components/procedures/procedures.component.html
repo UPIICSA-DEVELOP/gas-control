@@ -18,15 +18,90 @@
       </button>
     </div>
     <div class="container" *ngIf="procedures">
-      <div *ngFor="let procedure of procedures">
-        <mat-card >
-          <mat-card-content>
-            <a [href]="procedure.fileCS.thumbnail">
-              {{procedure.name}}
-            </a>
-          </mat-card-content>
-        </mat-card>
-      </div>
+      <mat-card>
+        <mat-card-content>
+          <a [href]="procedures[0].fileCS.thumbnail">
+            Recepción y descarga de autotanque
+          </a>
+        </mat-card-content>
+      </mat-card>
+      <mat-card>
+        <mat-card-content>
+          <a [href]="procedures[1].fileCS.thumbnail">
+            Despacho al consumidor
+          </a>
+        </mat-card-content>
+      </mat-card>
+      <mat-card >
+        <mat-card-content>
+          <a [href]="procedures[2].fileCS.thumbnail">
+            Respuesta a emergencias
+          </a>
+        </mat-card-content>
+      </mat-card>
+      <mat-card >
+        <mat-card-content>
+          <a [href]="procedures[3].fileCS.thumbnail">
+            Investigación de accidentes e incidentes
+          </a>
+        </mat-card-content>
+      </mat-card>
+      <mat-card >
+        <mat-card-content>
+          <a [href]="procedures[4].fileCS.thumbnail">
+            Candadeo y bloque de líneas eléctricas y de producto
+          </a>
+        </mat-card-content>
+      </mat-card>
+      <mat-card >
+        <mat-card-content>
+          <a [href]="procedures[5].fileCS.thumbnail">
+            Trabajos con fuentes que generen ignición
+          </a>
+        </mat-card-content>
+      </mat-card>
+      <mat-card >
+        <mat-card-content>
+          <a [href]="procedures[6].fileCS.thumbnail">
+            Trabajos en alturas
+          </a>
+        </mat-card-content>
+      </mat-card>
+      <mat-card >
+        <mat-card-content>
+          <a [href]="procedures[7].fileCS.thumbnail">
+            Trabajos en áreas confinadas
+          </a>
+        </mat-card-content>
+      </mat-card>
+      <mat-card >
+        <mat-card-content>
+          <a [href]="procedures[8].fileCS.thumbnail">
+            Mantenimiento
+          </a>
+        </mat-card-content>
+      </mat-card>
+      <mat-card >
+        <mat-card-content>
+          <a [href]="procedures[9].fileCS.thumbnail">
+            Mantenimiento correctivo
+          </a>
+        </mat-card-content>
+      </mat-card>
+      <mat-card >
+        <mat-card-content>
+          <a [href]="procedures[10].fileCS.thumbnail">
+            Drenado de agua a tanques
+          </a>
+        </mat-card-content>
+      </mat-card>
+      <mat-card >
+        <mat-card-content>
+          <a [href]="procedures[11].fileCS.thumbnail">
+            Manejo y disposición de residuos peligrosos
+          </a>
+        </mat-card-content>
+      </mat-card>
     </div>
   </div>
 </div>
