@@ -73,14 +73,7 @@ export class CollaboratorsListComponent implements OnInit {
   public collaborator: any[];
   private _formImage:FormData;
   private _formSignature: FormData;
-  public role: string[] = [
-    'Director',
-    'Gerente',
-    'Asistente',
-    'Representante legal',
-    'Encargado de estación',
-    'Gerente de estación',
-    'Asistente de estación'];
+  public role: string[];
   constructor(
     private _route: Router,
     private _api: ApiService,
@@ -94,6 +87,7 @@ export class CollaboratorsListComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.role = Constants.roles;
     this._apiLoaderService.getProgress().subscribe(load => {this.load = load; });
     this.getCollaborators();
   }
