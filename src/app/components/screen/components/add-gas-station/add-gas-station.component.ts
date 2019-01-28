@@ -19,6 +19,7 @@ import {CountryCodeService} from '@app/core/components/country-code/country-code
 import {LocationOptions, LocationService} from '@app/core/components/location/location.service';
 import {ModalStationService} from '@app/core/components/modal-station/modal-station.service';
 import {UploadFileResponse} from '@app/core/components/upload-file/upload-file.component';
+import {DialogService} from '@app/core/components/dialog/dialog.service';
 
 interface Person {
   name: string;
@@ -69,14 +70,6 @@ interface PersonInformation {
   benzene?: any;
 }
 
-interface Document {
-  id?: string;
-  idStation: string;
-  regulationType: number;
-  type: number;
-  file: any;
-}
-
 @Component({
   selector: 'app-add-gas-station',
   templateUrl: './add-gas-station.component.html',
@@ -110,6 +103,8 @@ export class AddGasStationComponent implements OnInit {
   @ViewChild('stepper') private _stepper;
   public step: number;
   public utils: any[];
+  public tasks: any[];
+  public legalRepAsign: boolean;
   public manger: Person;
   public mangerInformation: PersonInformation;
   public legalRepresentative: Person;
@@ -124,6 +119,11 @@ export class AddGasStationComponent implements OnInit {
   public addImage: boolean;
   public addSign: boolean;
   public newFile: boolean;
+  public protocolTwo: string;
+  public countryTwo: string;
+  public addImageTwo: boolean;
+  public addSignTwo: boolean;
+  public newFileTwo: boolean;
   public bloodGroup: string[];
   public workShifts:any[];
   public tanks:any[];
@@ -133,12 +133,20 @@ export class AddGasStationComponent implements OnInit {
   public signature: any;
   public profileImage: any;
   public file:any;
+  public signatureTwo: any;
+  public profileImageTwo: any;
+  public fileTwo: any;
   public listRepresentative: any;
   public listExist: boolean;
   public bloodType: string;
+  public bloodTypeTwo: string;
+  public load: boolean;
   private _formImage:FormData;
   private _formSignature: FormData;
   private _formFile: FormData;
+  private _formImageTwo:FormData;
+  private _formSignatureTwo: FormData;
+  private _formFileTwo: FormData;
 
   constructor(
     private _api: ApiService,
@@ -147,20 +155,26 @@ export class AddGasStationComponent implements OnInit {
     private _formBuilder: FormBuilder,
     private _signature: SignaturePadService,
     private _snackBarService: SnackBarService,
-    private _uploadfileService: UploadFileService,
+    private _uploadFileService: UploadFileService,
     private _countryCodeService: CountryCodeService,
     private _locationService: LocationService,
-    private _modalStation: ModalStationService
+    private _modalStation: ModalStationService,
+    private _dialogService: DialogService
   ) {
-    this.listExist = false;
+    this.listExist = true;
     this.bloodGroup = Constants.bloodGroup;
     this.addImage = false;
     this.addSign = false;
     this.newFile = false;
+    this.addImageTwo = false;
+    this.addSignTwo = false;
+    this.newFileTwo = false;
     this.workShifts = [];
     this.tanks = [];
     this.dispensers = [];
     this.protocol = 'http://';
+    this.protocolTwo = 'http://';
+    this.legalRepAsign = false;
   }
 
   ngOnInit() {
@@ -174,6 +188,7 @@ export class AddGasStationComponent implements OnInit {
     this.tanks.push({capacity: '', fuelType: 0});
     this.workShifts.push({start: '', end: ''});
     this.getListRepresentative();
+    this._apiLoaderService.getProgress().subscribe(load=>{this.load = load});
   }
 
   private getUtilities(): void {
@@ -235,8 +250,8 @@ export class AddGasStationComponent implements OnInit {
       contactPhoneNumber:['',[Validators.minLength(8), Validators.maxLength(13)]],
       contactKinship:['',[]]
     });
-    this.country='MX';
-    this.protocol = 'http://';
+    this.countryTwo = 'MX';
+    this.protocolTwo = 'http://';
   }
 
   private initRepresentativeForm():void{
@@ -313,6 +328,7 @@ export class AddGasStationComponent implements OnInit {
       }
     });
   }
+
   public openModal():void{
     this._modalStation.open(this.utils).afterClosed().subscribe(response=>{
       switch (response.code){
@@ -323,40 +339,75 @@ export class AddGasStationComponent implements OnInit {
     });
   }
 
-  public onLoadImage(event: UploadFileResponse): void{
-    this.addImage = true;
-    this.profileImage = event.url;
-    this._formImage = new FormData();
-    this._formImage.append('path', '');
-    this._formImage.append('fileName', 'profile-'+this.user.id+'-'+new Date().getTime()+'.png');
-    this._formImage.append('isImage', 'true');
-    this._formImage.append('file', event.blob);
-  }
-  public onRemoveImage(): void {
-    this.addImage = false;
-    this.profileImage=undefined;
-  }
-
-  public onLoadFile(event: UploadFileResponse): void{
-    this.newFile = true;
-    this.file = event.file;
-    this._formFile = new FormData();
-    this._formFile.append('path', '');
-    this._formFile.append('fileName', 'benzene-'+this.user.id+'-'+new Date().getTime()+'.pdf');
-    this._formFile.append('file', event.file);
+  public onLoadImage(event: UploadFileResponse, isManager?: boolean): void{
+    if (isManager){
+      this.addImageTwo = true;
+      this.profileImageTwo = event.url;
+      this._formImage = new FormData();
+      this._formImage.append('path', '');
+      this._formImage.append('fileName', 'profile-'+this.user.id+'-'+new Date().getTime()+'.png');
+      this._formImage.append('isImage', 'true');
+      this._formImage.append('file', event.blob);
+    }else{
+      this.addImage = true;
+      this.profileImage = event.url;
+      this._formImageTwo = new FormData();
+      this._formImageTwo.append('path', '');
+      this._formImageTwo.append('fileName', 'profile-'+this.user.id+'-'+new Date().getTime()+'.png');
+      this._formImageTwo.append('isImage', 'true');
+      this._formImageTwo.append('file', event.blob);
+    }
   }
 
-  public changeSignature():void{
+  public onRemoveImage(isManager?: boolean): void {
+    if (isManager){
+      this.addImageTwo = false;
+      this.profileImageTwo = undefined;
+    }else{
+      this.addImage = false;
+      this.profileImage=undefined;
+    }
+  }
+
+  public onLoadFile(event: UploadFileResponse, isManager?:boolean): void{
+    if (isManager){
+      this.newFileTwo = true;
+      this.fileTwo = event.file;
+      this._formFileTwo = new FormData();
+      this._formFileTwo.append('path', '');
+      this._formFileTwo.append('fileName', 'benzene-'+this.user.id+'-'+new Date().getTime()+'.pdf');
+      this._formFileTwo.append('file', event.file);
+    }else{
+      this.newFile = true;
+      this.file = event.file;
+      this._formFile = new FormData();
+      this._formFile.append('path', '');
+      this._formFile.append('fileName', 'benzene-'+this.user.id+'-'+new Date().getTime()+'.pdf');
+      this._formFile.append('file', event.file);
+    }
+  }
+
+  public changeSignature(isManager?:boolean):void{
     this._signature.open().afterClosed().subscribe(response=>{
       switch (response.code) {
         case 1:
-          this.addSign = true;
-          this.signature = response.base64;
-          this._formSignature = new FormData();
-          this._formSignature.append('path', '');
-          this._formSignature.append('fileName', 'signature-'+this.user.id+'-'+new Date().getTime()+'.png');
-          this._formSignature.append('isImage', 'true');
-          this._formSignature.append('file', response.blob);
+          if (isManager){
+            this.addSignTwo = true;
+            this.signatureTwo = response.base64;
+            this._formSignatureTwo = new FormData();
+            this._formSignatureTwo.append('path', '');
+            this._formSignatureTwo.append('fileName', 'signature-'+this.user.id+'-'+new Date().getTime()+'.png');
+            this._formSignatureTwo.append('isImage', 'true');
+            this._formSignatureTwo.append('file', response.blob);
+          }else{
+            this.addSign = true;
+            this.signature = response.base64;
+            this._formSignature = new FormData();
+            this._formSignature.append('path', '');
+            this._formSignature.append('fileName', 'signature-'+this.user.id+'-'+new Date().getTime()+'.png');
+            this._formSignature.append('isImage', 'true');
+            this._formSignature.append('file', response.blob);
+          }
           break;
       }
     })
@@ -365,15 +416,16 @@ export class AddGasStationComponent implements OnInit {
   public openListCountry(type: number): void {
     this._countryCodeService.openDialog().afterClosed().subscribe(response => {
       if (response) {
-        this.country = response.iso;
         switch (type){
           case 1:
+            this.country = response.iso;
             this.newLegalRep.patchValue({
               country: response.name,
               code: response.code
             });
             break;
           case 2:
+            this.countryTwo = response.iso;
             this.newManager.patchValue({
               country: response.name,
               code: response.code
@@ -390,8 +442,10 @@ export class AddGasStationComponent implements OnInit {
       switch (response.code){
         case 200:
           this.listExist = true;
-          if (response.item){
-            this.listRepresentative = response.item;
+          if (response.items){
+            this.listRepresentative = response.items;
+          }else{
+            this.listRepresentative = [];
           }
           break;
       }
@@ -400,6 +454,10 @@ export class AddGasStationComponent implements OnInit {
 
   public validateStation(data:any){
     if(this.newStation.invalid || !this.stationType){
+      if(!this.stationType){
+        this._snackBarService.openSnackBar('Asigne la imagen del grupo gasolinero correspondiente','OK', 3000);
+        return;
+      }
       return;
     }else{
       this.station = {
@@ -425,46 +483,91 @@ export class AddGasStationComponent implements OnInit {
       this._stepper.next();
     }
   }
-  public selectLegalRep(person: any){
 
+  public selectLegalRep(person: any){
+    this.station.idLegalRepresentative = person.id;
+    this.station.legalRepresentativeName = person.name+' '+ person.lastName;
+    this.legalRepAsign = true;
+    this._stepper.next();
   }
-  public uploadGenericFile(type:number): void{
+
+  public uploadGenericFile(type:number, isManager?:boolean): void{
     let form: FormData;
-    switch (type){
-      case 1:
-        form = this._formImage;
-        this.addImage = false;
-        break;
-      case 2:
-        form = this._formSignature;
-        this.addSign = false;
-        break;
-      case 3:
-        form = this._formFile;
-        this.newFile = false;
-        break;
+    if(isManager){
+      switch (type){
+        case 1:
+          form = this._formImageTwo;
+          this.addImageTwo = false;
+          break;
+        case 2:
+          form = this._formSignatureTwo;
+          this.addSignTwo = false;
+          break;
+        case 3:
+          form = this._formFileTwo;
+          this.newFileTwo = false;
+          break;
+      }
+    }else{
+      switch (type){
+        case 1:
+          form = this._formImage;
+          this.addImage = false;
+          break;
+        case 2:
+          form = this._formSignature;
+          this.addSign = false;
+          break;
+        case 3:
+          form = this._formFile;
+          this.newFile = false;
+          break;
+      }
     }
-    this._uploadfileService.upload(form).subscribe(response=>{
+    this._uploadFileService.upload(form).subscribe(response=>{
       if(response){
-        switch (type){
-          case 1:
-            this.profileImage = {
-              blobName: response.item.blobName || '',
-              thumbnail: response.item.thumbnail || ''
-            };
-            break;
-          case 2:
-            this.signature = {
-              blobName: response.item.blobName || '',
-              thumbnail: response.item.thumbnail || ''
-            };
-            break;
-          case 3:
-            this.file = {
-              blobName: response.item.blobName || '',
-              thumbnail: response.item.thumbnail || ''
-            };
-            break;
+        if (isManager){
+          switch (type){
+            case 1:
+              this.profileImageTwo = {
+                blobName: response.item.blobName || '',
+                thumbnail: response.item.thumbnail || ''
+              };
+              break;
+            case 2:
+              this.signatureTwo = {
+                blobName: response.item.blobName || '',
+                thumbnail: response.item.thumbnail || ''
+              };
+              break;
+            case 3:
+              this.fileTwo = {
+                blobName: response.item.blobName || '',
+                thumbnail: response.item.thumbnail || ''
+              };
+              break;
+          }
+        }else {
+          switch (type){
+            case 1:
+              this.profileImage = {
+                blobName: response.item.blobName || '',
+                thumbnail: response.item.thumbnail || ''
+              };
+              break;
+            case 2:
+              this.signature = {
+                blobName: response.item.blobName || '',
+                thumbnail: response.item.thumbnail || ''
+              };
+              break;
+            case 3:
+              this.file = {
+                blobName: response.item.blobName || '',
+                thumbnail: response.item.thumbnail || ''
+              };
+              break;
+          }
         }
         this.validateLegal(this.newLegalRep.value);
       }
@@ -475,13 +578,13 @@ export class AddGasStationComponent implements OnInit {
     if(this.newLegalRep.invalid){
       return;
     }else if(this.addImage){
-      this.uploadGenericFile(1);
+      this.uploadGenericFile(1, false);
       return;
     }else if(this.addSign){
-      this.uploadGenericFile(2);
+      this.uploadGenericFile(2, false);
       return;
     }else if(this.newFile){
-      this.uploadGenericFile(3);
+      this.uploadGenericFile(3, false);
       return;
     }else{
       data.code = data.code.replace('+','');
@@ -508,6 +611,7 @@ export class AddGasStationComponent implements OnInit {
         contactName:(data.contactName?data.contactName:undefined),
         benzene:(this.file?this.file:undefined)
       };
+      this.legalRepAsign = true;
       this._stepper.next();
       this.step=2;
     }
@@ -516,28 +620,28 @@ export class AddGasStationComponent implements OnInit {
   public validateManager(data:any):void{
     if(this.newManager.invalid){
       return;
-    }else if(this.addImage){
-      this.uploadGenericFile(1);
+    }else if(this.addImageTwo){
+      this.uploadGenericFile(1, true);
       return;
-    }else if(this.addSign){
-      this.uploadGenericFile(2);
+    }else if(this.addSignTwo){
+      this.uploadGenericFile(2, true);
       return;
-    }else if(this.newFile){
-      this.uploadGenericFile(3);
+    }else if(this.newFileTwo){
+      this.uploadGenericFile(3, true);
       return;
     }else{
       data.code = data.code.replace('+','');
       this.manger = {
         refId: LocalStorageService.getItem(Constants.UserInSession).refId,
-        signature: (this.signature?this.signature:undefined),
-        profileImage:(this.profileImage?this.profileImage:undefined),
+        signature: (this.signatureTwo?this.signatureTwo:undefined),
+        profileImage:(this.profileImageTwo?this.profileImageTwo:undefined),
         name: data.name,
         lastName: data.lastName,
         email: data.email,
         phoneNumber: data.phoneNumber,
         countryCode: data.code,
-        country: this.country,
-        website: (data.website?this.protocol+data.website: undefined),
+        country: this.countryTwo,
+        website: (data.website?this.protocolTwo+data.website: undefined),
         jobTitle: data.jobTitle,
         role: 5,
       };
@@ -546,9 +650,9 @@ export class AddGasStationComponent implements OnInit {
         contactKinship:(data.contactKinship?data.contactKinship:undefined),
         concatcPhone:(data.contactPhoneNumber?data.contactPhoneNumber:undefined),
         ssn: (data.ssn ?data.ssn:undefined),
-        bloodType: this.bloodType,
+        bloodType: this.bloodTypeTwo,
         contactName:(data.contactName?data.contactName:undefined),
-        benzene:(this.file?this.file:undefined)
+        benzene:(this.fileTwo?this.fileTwo:undefined)
       };
       this.step=4;
       this._stepper.next();
@@ -602,6 +706,54 @@ export class AddGasStationComponent implements OnInit {
       switch (response.code){
         case 200:
           this._router.navigate(['/home'],{queryParams:{station: response.item.id}});
+          break;
+      }
+    })
+  }
+
+  public validateEmailExist(isManager: boolean):void{
+    let verify: any;
+    if (isManager){
+      verify={
+        email: this.newManager.controls['email'].value,
+        password: '',
+        token: '123'
+      };
+    }else{
+      verify={
+        email: this.newLegalRep.controls['email'].value,
+        password: '',
+        token: '123'
+      };
+    }
+    this._api.signIn(verify).subscribe(response=>{
+      switch (response.code){
+        case 472:
+          this._dialogService.alertDialog('Información',
+            'El Email que está tratando de usar ya ha sido asociado a un usuario',
+            'ACEPTAR');
+          if (isManager){
+            this.newManager.controls['email'].setErrors({emailUsed: true});
+          }else{
+            this.newLegalRep.controls['email'].setErrors({emailUsed: true});
+          }
+          break;
+        default:
+          break;
+      }
+    })
+  }
+
+  public closeAddStation():void{
+    this._dialogService.confirmDialog(
+      '¿Desea salir sin guardar cambios?',
+      '',
+      'ACEPTAR',
+      'CANCELAR'
+    ).afterClosed().subscribe(response=>{
+      switch (response.code){
+        case 1:
+          this._router.navigate(['/home']);
           break;
       }
     })
