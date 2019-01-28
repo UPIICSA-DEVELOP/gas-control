@@ -41,6 +41,8 @@ import { ModalStationComponent } from './components/modal-station/modal-station.
 import {ModalStationService} from '@app/core/components/modal-station/modal-station.service';
 import { PdfVisorComponent } from './components/pdf-visor/pdf-visor.component';
 import {PdfVisorService} from '@app/core/components/pdf-visor/pdf-visor.service';
+import {NgxMaterialTimepickerModule} from 'ngx-material-timepicker';
+import { TimePickerComponent } from './components/time-picker/time-picker.component';
 
 @NgModule({
   imports: [
@@ -52,6 +54,7 @@ import {PdfVisorService} from '@app/core/components/pdf-visor/pdf-visor.service'
     FormsModule,
     ReactiveFormsModule,
     ImageCropperModule,
+    NgxMaterialTimepickerModule.forRoot(),
     AgmCoreModule.forRoot({
       apiKey: Constants.GoogleApiKey,
       libraries: [
@@ -71,7 +74,8 @@ import {PdfVisorService} from '@app/core/components/pdf-visor/pdf-visor.service'
     CropImageComponent,
     CountryCodeComponent,
     LocationComponent,
-    SearchBoxCoreComponent
+    SearchBoxCoreComponent,
+    TimePickerComponent
   ],
   declarations: [
     DialogComponent,
@@ -86,7 +90,8 @@ import {PdfVisorService} from '@app/core/components/pdf-visor/pdf-visor.service'
     DatepickerComponent,
     TaskFilterComponent,
     ModalStationComponent,
-    PdfVisorComponent
+    PdfVisorComponent,
+    TimePickerComponent
   ],
   entryComponents: [
     DialogComponent,

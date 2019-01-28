@@ -1,0 +1,10 @@
+<div id="time-picker">
+  <mat-form-field>
+    <input [ngxTimepicker]="picker" title="Time" matInput [(ngModel)]="value">
+  </mat-form-field>
+  <ngx-material-timepicker #picker
+                           [defaultTime]="value"
+                           (timeSet)="selectDate($event)"
+                           [ngxMaterialTimepickerTheme]="theme">
+  </ngx-material-timepicker>
+</div>
