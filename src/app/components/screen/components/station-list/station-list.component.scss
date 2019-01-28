@@ -140,5 +140,15 @@
     display: flex;
     margin: 8px 0;
   }
+  .add-station{
+    position: absolute;
+    right: calc(30% - 60px);
+    bottom: 40px;
+    z-index: 4;
+    button{
+      background-color: #FFAA00;
+      color: #FFFFFF;
+    }
+  }
 }
 

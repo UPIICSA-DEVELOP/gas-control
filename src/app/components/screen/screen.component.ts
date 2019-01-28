@@ -56,7 +56,7 @@ export class ScreenComponent implements OnInit{
           switch (response.code) {
             case 200:
               this.stationList = response.item.stationLites;
-              if (!this.stationActive) {
+              if (!this.stationActive && this.stationList) {
                 this.stationActive = this.stationList[0];
               }
               break;
@@ -70,7 +70,7 @@ export class ScreenComponent implements OnInit{
           switch (response.code) {
             case 200:
               this.stationList = response.item.stationLites;
-              if (!this.stationActive) {
+              if (!this.stationActive && this.stationList) {
                 this.stationActive = this.stationList[0];
               }
               break;
@@ -86,7 +86,9 @@ export class ScreenComponent implements OnInit{
           switch (response.code) {
             case 200:
               this.stationList = response.item.station;
-              this.stationActive = this.stationList;
+              if(this.stationList){
+                this.stationActive = this.stationList;
+              }
               break;
             default:
               break;

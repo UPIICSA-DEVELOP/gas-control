@@ -32,7 +32,7 @@
                   </div>
                   <div class="column">
                     <div class="margin">
-                      <span class="task-head">{{groupIcon.groupIcons[stations.type-1].name}} {{stations.name}}</span>
+                      <span class="task-head" *ngIf="groupIcon">{{groupIcon.groupIcons[stations.type-1].name}} {{stations.name}}</span>
                     </div>
                     <div class="margin">
                       <span class="content-text">{{stations.managerName}}</span>
@@ -74,8 +74,8 @@
       </div>
     </div>
   </div>
-  <div style="position: absolute; right: 16px; bottom: 40px; z-index: 4" *ngIf="user.role<4">
-    <button mat-icon-button style="background-color: #FFAA00; color: #FFFFFF;" routerLink="/add-station">
+  <div class="add-station" *ngIf="user.role<4">
+    <button mat-icon-button routerLink="/add-station" matTooltip="Añadir estación">
       <mat-icon>local_gas_station</mat-icon>
     </button>
   </div>
