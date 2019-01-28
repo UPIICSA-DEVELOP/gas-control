@@ -30,6 +30,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    flex-direction: column;
   }
   .forms-and-lists{
     width: 50%;
@@ -349,6 +350,13 @@
       color: #FFFFFF;
     }
   }
+  .title {
+    font-weight: 500;
+    font-size: 24px;
+    color: #000000;
+    text-align: left;
+    margin: 24px 0 8px 0;
+  }
 
   .station-image{
     display: flex;
@@ -357,5 +365,41 @@
     margin-top: -40px;
     background-color: #FFFFFF;
     border-radius: 50%
+  }
+  .progress {
+    position: absolute;
+    top: 0;
+    z-index: 4;
+  }
+
+  .priority{
+    width: 1%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    border-radius: 4px 0 0 4px;
+  }
+
+  .date{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-weight: 600;
+    color: #707070;
+    padding: 0 12px;
+    cursor: pointer;
+    margin-top: -16px;
+  }
+  .task-title{
+    margin: 4px 0;
+    font-weight: 600;
+    font-size: 16px;
+    color: #707070;
+  }
+  .text-task{
+    margin: 4px 0;
+    color: #707070;
+    font-size: 16px;
   }
 }
