@@ -198,6 +198,10 @@ export class ApiService {
     return this._http.get(ApiService.API_URL_COMPLETE + 'listPersonStationByConsultancy', {params: params});
   }
 
+  public createStationTask(task:any):Observable<any>{
+    return this._http.post(ApiService.API_URL_COMPLETE + 'createStationTask',task);
+  }
+
   private initNetwork(): void {
     this._networkService.getChangesNetwork().subscribe(status => {
       const text = (!status) ? 'La conexión a internet se ha perdido' : 'De nuevo en linea';

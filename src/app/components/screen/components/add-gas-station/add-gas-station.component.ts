@@ -11,7 +11,7 @@ import {ApiLoaderService} from '@app/core/services/api/api-loader.service';
 import {Router} from '@angular/router';
 import {LocalStorageService} from '@app/core/services/local-storage/local-storage.service';
 import {Constants} from '@app/core/constants.core';
-import {FormBuilder, FormGroup, Validator, Validators} from '@angular/forms';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {SignaturePadService} from '@app/core/components/signature-pad/signature-pad.service';
 import {SnackBarService} from '@app/core/services/snackbar/snackbar.service';
 import {UploadFileService} from '@app/core/components/upload-file/upload-file.service';
@@ -68,6 +68,14 @@ interface PersonInformation {
   contactName?: string;
   ssn?: string;
   benzene?: any;
+}
+
+interface Task {
+  creationDate: number;
+  editedTasks: any;
+  stationId: string;
+  status: number;
+  progress: number;
 }
 
 @Component({
@@ -128,6 +136,7 @@ export class AddGasStationComponent implements OnInit {
   public workShifts:any[];
   public tanks:any[];
   public dispensers:any[];
+  public calendar:any[];
   public latLng: any;
   public stationType: any;
   public signature: any;
@@ -141,6 +150,7 @@ export class AddGasStationComponent implements OnInit {
   public bloodType: string;
   public bloodTypeTwo: string;
   public load: boolean;
+  public startDate: any;
   private _formImage:FormData;
   private _formSignature: FormData;
   private _formFile: FormData;
@@ -172,9 +182,11 @@ export class AddGasStationComponent implements OnInit {
     this.workShifts = [];
     this.tanks = [];
     this.dispensers = [];
+    this.calendar=[];
     this.protocol = 'http://';
     this.protocolTwo = 'http://';
     this.legalRepAsign = false;
+    this.startDate = new Date();
   }
 
   ngOnInit() {
@@ -193,7 +205,15 @@ export class AddGasStationComponent implements OnInit {
 
   private getUtilities(): void {
     this._api.getUtils().subscribe(response => {
-      this.utils = response.item.groupIcons;
+      if (response){
+        this.utils = response.item.groupIcons;
+        this.tasks = response.item.taskTemplates;
+        this.tasks = this.tasks.filter(task => {
+          if(task.editable){
+            return task;
+          }
+        });
+      }
     });
   }
 
@@ -705,7 +725,7 @@ export class AddGasStationComponent implements OnInit {
     this._api.createStation(this.station).subscribe(response=>{
       switch (response.code){
         case 200:
-          this._router.navigate(['/home'],{queryParams:{station: response.item.id}});
+          this.createStationTasks(response.item.id);
           break;
       }
     })
@@ -757,5 +777,44 @@ export class AddGasStationComponent implements OnInit {
           break;
       }
     })
+  }
+
+  private createStationTasks(stationId: string):void{
+    let today = Number(this.startDate.getFullYear()+''+(this.startDate.getMonth()+1)+''+this.startDate.getDay());
+    for (let d=0;d<this.calendar.length; d++){
+      let year = this.calendar[d].getFullYear();
+      let month = this.calendar[d].getMonth()+1;
+      let day = this.calendar[d].getDate;
+      this.calendar[d]=Number(year+''+month+''+day);
+    }
+    for (let i = 0; i<this.tasks.length; i++){
+      let task: Task = {
+        creationDate: today,
+        stationId: stationId,
+        progress: 0,
+        status: 2,
+        editedTasks: {
+          startDate: this.calendar[i],
+          differenceOfDays: this.calendar[i]-today,
+          type: this.tasks[i].id
+        }
+      };
+      this._api.createStationTask(task).subscribe(response=>{
+        switch (response.code){
+          case 200:
+            this._router.navigate(['/home'],{queryParams:{station: stationId}}).then();
+            break;
+        }
+      })
+    }
+  }
+
+  public validateCompleteCalendar():void{
+    if(this.calendar.length !== this.tasks.length){
+      this._snackBarService.openSnackBar('Por favor, calendarize todas las tareas','OK', 3000);
+      return;
+    }else{
+      this.step = 4;
+    }
   }
 }

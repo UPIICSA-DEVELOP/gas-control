@@ -6,7 +6,12 @@
 
 <div id="create-station">
   <div class="background"></div>
+  <mat-progress-bar [mode]="'indeterminate'" *ngIf="load" class="progress"></mat-progress-bar>
   <div class="steps">
+    <h4 *ngIf="step===0">Estación de servicio</h4>
+    <h4 *ngIf="step===1 || step===2">Registro de usuario</h4>
+    <h4 *ngIf="step===3">Agende las actividades</h4>
+    <h4 *ngIf="step===4">Hecho</h4>
     <mat-vertical-stepper [linear]="true" #stepper style="width: 70%;"
                           (selectionChange)="changeStep($event)">
       <mat-step [stepControl]="newStation">
@@ -246,7 +251,7 @@
           </div>
           <div class="add-legal" >
             <button mat-icon-button matTooltip="Añadir representante legal" (click)="listExist = false; legalRepAsign=false;">
-              <mat-icon>local_gas_station</mat-icon>
+              <mat-icon>person_add</mat-icon>
             </button>
           </div>
         </mat-card>
@@ -440,99 +445,99 @@
                   <mat-icon *ngIf="!profileImageTwo" class="defaultProfileImage">account_circle</mat-icon>
                 </ng-template>
               </app-upload-file>
+            </div>
+            <mat-form-field class="inputs">
+              <input formControlName="name" matInput placeholder="Nombre(s)"
+                     required type="text" aria-label="User name">
+              <mat-error *ngIf="newManager.controls['name'].hasError('required')">
+                Este campo es obligatorio
+              </mat-error>
+            </mat-form-field>
+            <mat-form-field class="inputs">
+              <input formControlName="lastName" matInput placeholder="Apellido(s)"
+                     required type="text" aria-label="User last-name">
+              <mat-error *ngIf="newManager.controls['lastName'].hasError('required')">
+                Este campo es obligatorio
+              </mat-error>
+            </mat-form-field>
+            <mat-form-field class="inputs">
+              <input formControlName="email" matInput placeholder="Email comercial"
+                     type="email" aria-label="User email" required (blur)="validateEmailExist(true)">
+              <mat-error *ngIf="newManager.controls['email'].hasError('required')">
+                Este campo es obligatorio
+              </mat-error>
+              <mat-error *ngIf="newManager.controls['email'].hasError('required')">
+                La dirección email no es valida
+              </mat-error>
+              <mat-error *ngIf="newManager.controls['email'].hasError('emailUsed')">
+                Este email ya tiene un usuario asociado
+              </mat-error>
+            </mat-form-field>
+            <div class="modal">
+              <div class="mask" (click)="openListCountry(2)"></div>
               <mat-form-field class="inputs">
-                <input formControlName="name" matInput placeholder="Nombre(s)"
-                       required type="text" aria-label="User name">
-                <mat-error *ngIf="newManager.controls['name'].hasError('required')">
+                <input (keyup)="openListCountry(2)" formControlName="country" matInput placeholder="País"
+                       type="text" required aria-label="User country">
+                <mat-error *ngIf="newManager.controls['country'].hasError('required')">
                   Este campo es obligatorio
                 </mat-error>
               </mat-form-field>
-              <mat-form-field class="inputs">
-                <input formControlName="lastName" matInput placeholder="Apellido(s)"
-                       required type="text" aria-label="User last-name">
-                <mat-error *ngIf="newManager.controls['lastName'].hasError('required')">
-                  Este campo es obligatorio
-                </mat-error>
-              </mat-form-field>
-              <mat-form-field class="inputs">
-                <input formControlName="email" matInput placeholder="Email comercial"
-                       type="email" aria-label="User email" required (blur)="validateEmailExist(true)">
-                <mat-error *ngIf="newManager.controls['email'].hasError('required')">
-                  Este campo es obligatorio
-                </mat-error>
-                <mat-error *ngIf="newManager.controls['email'].hasError('required')">
-                  La dirección email no es valida
-                </mat-error>
-                <mat-error *ngIf="newManager.controls['email'].hasError('emailUsed')">
-                  Este email ya tiene un usuario asociado
-                </mat-error>
-              </mat-form-field>
+            </div>
+            <div style="display: flex">
               <div class="modal">
                 <div class="mask" (click)="openListCountry(2)"></div>
-                <mat-form-field class="inputs">
-                  <input (keyup)="openListCountry(2)" formControlName="country" matInput placeholder="País"
-                         type="text" required aria-label="User country">
-                  <mat-error *ngIf="newManager.controls['country'].hasError('required')">
-                    Este campo es obligatorio
-                  </mat-error>
-                </mat-form-field>
-              </div>
-              <div style="display: flex">
-                <div class="modal">
-                  <div class="mask" (click)="openListCountry(2)"></div>
-                  <mat-form-field class="right-inputs">
-                    <input formControlName="code" matInput placeholder="Código"
-                           type="text" aria-label="Phone code">
-                  </mat-form-field>
-                </div>
-                <mat-form-field class="inputs">
-                  <input formControlName="phoneNumber" matInput
-                         placeholder="Número celular" required type="tel" aria-label="User cellphone number"
-                         #phoneNumber>
-                  <mat-error *ngIf="newManager.controls['phoneNumber'].hasError('required')">
-                    Este campo es obligatorio
-                  </mat-error>
-                  <mat-error *ngIf="newManager.controls['phoneNumber'].hasError('minlength')">
-                    Se requieren de 8 a 13 dígitos
-                  </mat-error>
-                  <mat-error *ngIf="newManager.controls['phoneNumber'].hasError('maxlength')">
-                    Se requieren de 8 a 13 dígitos
-                  </mat-error>
+                <mat-form-field class="right-inputs">
+                  <input formControlName="code" matInput placeholder="Código"
+                         type="text" aria-label="Phone code">
                 </mat-form-field>
               </div>
               <mat-form-field class="inputs">
-                <input disabled placeholder="Rol" required aria-label="User role" value="Encargado de estación" matInput>
-              </mat-form-field>
-              <mat-form-field class="inputs">
-                <input formControlName="jobTitle" matInput placeholder="Cargo"
-                       required type="text" aria-label="User job-title">
-                <mat-error *ngIf="newManager.controls['jobTitle'].hasError('required')">
+                <input formControlName="phoneNumber" matInput
+                       placeholder="Número celular" required type="tel" aria-label="User cellphone number"
+                       #phoneNumber>
+                <mat-error *ngIf="newManager.controls['phoneNumber'].hasError('required')">
                   Este campo es obligatorio
                 </mat-error>
+                <mat-error *ngIf="newManager.controls['phoneNumber'].hasError('minlength')">
+                  Se requieren de 8 a 13 dígitos
+                </mat-error>
+                <mat-error *ngIf="newManager.controls['phoneNumber'].hasError('maxlength')">
+                  Se requieren de 8 a 13 dígitos
+                </mat-error>
               </mat-form-field>
-              <div style="display: flex">
-                <mat-form-field class="right-inputs">
-                  <mat-select placeholder="Protocolo" aria-label="User website protocol"
-                              [(value)]="protocolTwo">
-                    <mat-option value="http://">http://</mat-option>
-                    <mat-option value="https://">https://</mat-option>
-                  </mat-select>
-                </mat-form-field>
-                <mat-form-field class="inputs">
-                  <input placeholder="Website" formControlName="website" matInput
-                         type="url" aria-label="User website">
-                  <mat-error *ngIf="newManager.controls['website'].hasError('pattern')">
-                    Ingrese un sitio web válido
-                  </mat-error>
-                </mat-form-field>
-              </div>
-              <div class="signature-input">
-                <div class="formHead">Firma digital</div>
-                <div class="signatureContainer">
-                  <div class="signature" (click)="changeSignature(false)" matTooltip="Cambiar firma">
-                    <span *ngIf="!signatureTwo" class="formText">Registre firma digital</span>
-                    <img *ngIf="signatureTwo" [src]="signatureTwo" class="imageSignature" alt="User signature image">
-                  </div>
+            </div>
+            <mat-form-field class="inputs">
+              <input disabled placeholder="Rol" required aria-label="User role" value="Encargado de estación" matInput>
+            </mat-form-field>
+            <mat-form-field class="inputs">
+              <input formControlName="jobTitle" matInput placeholder="Cargo"
+                     required type="text" aria-label="User job-title">
+              <mat-error *ngIf="newManager.controls['jobTitle'].hasError('required')">
+                Este campo es obligatorio
+              </mat-error>
+            </mat-form-field>
+            <div style="display: flex">
+              <mat-form-field class="right-inputs">
+                <mat-select placeholder="Protocolo" aria-label="User website protocol"
+                            [(value)]="protocolTwo">
+                  <mat-option value="http://">http://</mat-option>
+                  <mat-option value="https://">https://</mat-option>
+                </mat-select>
+              </mat-form-field>
+              <mat-form-field class="inputs">
+                <input placeholder="Website" formControlName="website" matInput
+                       type="url" aria-label="User website">
+                <mat-error *ngIf="newManager.controls['website'].hasError('pattern')">
+                  Ingrese un sitio web válido
+                </mat-error>
+              </mat-form-field>
+            </div>
+            <div class="signature-input">
+              <div class="formHead">Firma digital</div>
+              <div class="signatureContainer">
+                <div class="signature" (click)="changeSignature(true)" matTooltip="Cambiar firma">
+                  <span *ngIf="!signatureTwo" class="formText">Registre firma digital</span>
+                  <img *ngIf="signatureTwo" [src]="signatureTwo" class="imageSignature" alt="User signature image">
                 </div>
               </div>
             </div>
@@ -592,7 +597,59 @@
       </mat-card>
     </div>
     <div *ngIf="step===3" class="docs">
-      step 4
+      <mat-card>
+        <mat-card-content>
+          <div *ngFor="let task of tasks; let i = index">
+            <mat-card style="margin: 8px 0;">
+              <div class="priority" *ngIf="task.level===3" style="background-color:#E00000"></div>
+              <div class="priority" *ngIf="task.level===2" style="background-color:#FFD800"></div>
+              <div class="priority" *ngIf="task.level===1" style="background-color:#257602"></div>
+              <mat-card-content style="display: flex; align-items: center;">
+                <div style="padding: 0 12px">
+                  <input [min]="startDate" [matDatepicker]="picker" style="width: 0;border: 0;" [(ngModel)]="calendar[i]">
+                  <mat-datepicker-toggle matSuffix [for]="picker" *ngIf="!calendar[i]"></mat-datepicker-toggle>
+                  <mat-datepicker #picker></mat-datepicker>
+                  <div *ngIf="calendar[i]" class="date" (click)="picker.open()">
+                    <div>{{calendar[i].getDate()}}</div>
+                    <div *ngIf="calendar[i].getMonth() === 0">Ene</div>
+                    <div *ngIf="calendar[i].getMonth() === 1">Feb</div>
+                    <div *ngIf="calendar[i].getMonth() === 2">Mar</div>
+                    <div *ngIf="calendar[i].getMonth() === 3">Abr</div>
+                    <div *ngIf="calendar[i].getMonth() === 4">May</div>
+                    <div *ngIf="calendar[i].getMonth() === 5">Jun</div>
+                    <div *ngIf="calendar[i].getMonth() === 6">Jul</div>
+                    <div *ngIf="calendar[i].getMonth() === 7">Ago</div>
+                    <div *ngIf="calendar[i].getMonth() === 8">Sep</div>
+                    <div *ngIf="calendar[i].getMonth() === 9">Oct</div>
+                    <div *ngIf="calendar[i].getMonth() === 10">Nov</div>
+                    <div *ngIf="calendar[i].getMonth() === 11">Dic</div>
+                  </div>
+                </div>
+                <div style="display: flex; flex-direction: column">
+                  <span class="task-title">{{task.name}}</span>
+                  <span class="text-task" *ngIf="task.zone===1">Dispensarios</span>
+                  <span class="text-task" *ngIf="task.zone===2">Islas</span>
+                  <span class="text-task" *ngIf="task.zone===3">Tanques</span>
+                  <span class="text-task" *ngIf="task.zone===4">Cuarto de maquinas</span>
+                  <span class="text-task" *ngIf="task.zone===5">Cuarto eléctrico</span>
+                  <span class="text-task" *ngIf="task.zone===6">Cisternas tinacos y bombas de agua</span>
+                  <span class="text-task" *ngIf="task.zone===7">Cuarto de RP</span>
+                  <span class="text-task" *ngIf="task.zone===8">Planta de emergencia</span>
+                  <span class="text-task" *ngIf="task.zone===9">Dispensarios</span>
+                  <span class="text-task" *ngIf="task.zone===10">Sanitarios</span>
+                  <span class="text-task" *ngIf="task.zone===11">Otros</span>
+                  <span class="text-task" *ngIf="task.level===1">Básico</span>
+                  <span class="text-task" *ngIf="task.level===2">Intermedio</span>
+                  <span class="text-task" *ngIf="task.level===3">Critico</span>
+                </div>
+              </mat-card-content>
+            </mat-card>
+          </div>
+        </mat-card-content>
+      </mat-card>
+      <div class="form-button">
+        <button mat-flat-button aria-label="LogIn" [color]="'primary'" (click)="validateCompleteCalendar()" mat-button>SIGUIENTE</button>
+      </div>
     </div>
     <div *ngIf="step===4" class="done">
       <mat-card class="card">

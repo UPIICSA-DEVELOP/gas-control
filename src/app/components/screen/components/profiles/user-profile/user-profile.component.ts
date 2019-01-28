@@ -137,6 +137,10 @@ export class UserProfileComponent implements OnInit {
   }
 
   public closeProfile():void{
+    if (LocalStorageService.getItem('notSign')){
+      this._snackBarService.openSnackBar('Por favor, guarde su firma antes de salir','OK', 3000);
+      return;
+    }
     if (this.change){
       this.saveChangeBeforeExit();
       return;
