@@ -50,7 +50,7 @@
               </mat-error>
             </mat-form-field>
             <div class="address">
-              <div class="mask" (click)="openLocation()"></div>
+              <div class="mask" (click)="openLocation()" *ngIf="user.role!==6 && user.role!==7"></div>
               <mat-form-field class="inputs">
                 <textarea formControlName="address" matInput placeholder="Dirección" required type="text" aria-label="Station address"></textarea>
                 <mat-error *ngIf="stationForm.controls['address'].hasError('required')">
