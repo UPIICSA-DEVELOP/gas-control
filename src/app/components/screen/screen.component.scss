@@ -133,15 +133,7 @@
         width: 30%;
         height: 100%;
         padding: 8px;
-        display: flex;
-        flex-direction: column;
-        .progress{
-          height: 25%;
-          @media screen and (min-height: 800px){
-            height: 20%;
-          }
-        }
-
+        overflow-y: auto;
         .directory{
           margin-top: 16px;
           width: 100%;

@@ -52,14 +52,8 @@
       color: #FFFFFF;
     }
   }
-  .title {
-    font-weight: 500;
-    font-size: 24px;
-    color: #000000;
-    margin: 24px 0 16px 0;
-  }
   .container {
-    width: 90%;
+    width: 75%;
     height: 90%;
     display: flex;
     position: relative;
@@ -69,12 +63,8 @@
       flex-direction: column;
     }
     .information{
-      width: 40%;
+      width: 50%;
       margin: 24px;
-      overflow: auto;
-      @media screen and (max-width: 800px){
-        overflow: unset;
-      }
       .profileImage {
         height: 100px;
         width: 100px;
@@ -87,6 +77,7 @@
         align-items: center;
         width: 100px;
         height: 100px;
+        font-size: 100px;
         border-radius: 50%;
         background-color: #FFFFFF;
       }
@@ -104,22 +95,20 @@
     .business-card{
       width: 50%;
       margin: 24px;
-      display: flex;
-      .card {
-        margin: 24px;
-        width: 100%;
-        text-align: end;
-        @media screen and (max-width: 800px){
-          text-align: center;
+      mat-card {
+        width: 80%;
+        padding: 0;
+        margin: auto;
+        mat-card-content{
+          width: 100%;
+          margin: 0;
+          padding-bottom: calc(100% / 9 * 5);
+          background: url('https://lh3.googleusercontent.com/e3Y9EZ04JWp0L2h6uQuCguoWFI1bem0o77Dw149rQ3riTBK8HV4vkK9BQ2sm89qEaZD25jGRuQXpCE6JZXVG2_E4rtYoa5GiWwE=s1600') no-repeat center;
+          background-size: 100%;
         }
-        img {
-          width: 60%;
-          box-shadow: 0 2px 1px -1px rgba(0, 0, 0, 0.2), 0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12);
-          border-radius: 2px;
-          margin-top: 72px;
-          @media screen and (max-width: 800px){
-            margin-top: 0;
-          }
+        mat-card-actions{
+          padding: 0;
+          margin: 0;
         }
       }
 
@@ -189,7 +178,9 @@
     }
   }
   .content {
-    height: auto;
+    width: 100%;
+    height: 100%;
+    overflow-y: auto;
   }
   .image{
     margin: 24px;

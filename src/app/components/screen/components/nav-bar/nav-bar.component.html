@@ -15,6 +15,9 @@
           <div>Colaboradores</div>
           <mat-icon>group</mat-icon>
         </button>
+        <div id="progress">
+          <mat-progress-spinner class="white-progress" [diameter]="25" [mode]="'indeterminate'"></mat-progress-spinner>
+        </div>
         <button mat-button *ngIf="!barVisible" (click)="openSearchBar()">
           <mat-icon>search</mat-icon>
         </button>

@@ -23,6 +23,7 @@ import {NetworkService} from '@app/core/services/connection/network.service';
 import {PriorityService} from '@app/core/services/priority/priority.service';
 import {AuthService} from '@app/core/services/auth/auth.service';
 import {ResetPassService} from '@app/core/services/reset-pass/reset-pass.service';
+import {UserProfileService} from '@app/core/services/profiles/user-profile.service';
 
 @NgModule({
   imports: [
@@ -45,7 +46,8 @@ import {ResetPassService} from '@app/core/services/reset-pass/reset-pass.service
     NetworkService,
     PriorityService,
     AuthService,
-    ResetPassService
+    ResetPassService,
+    UserProfileService
   ]
 })
 export class ServicesModule {
