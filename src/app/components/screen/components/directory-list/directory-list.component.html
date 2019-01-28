@@ -12,7 +12,7 @@
     </div>
     <mat-form-field class="search" *ngIf="collaborators && collaborators.length!==0">
       <input matInput placeholder="Buscar" aria-label="Search input" (input)="search($event)">
-      <mat-icon matPrefix class="icons">search</mat-icon>
+      <mat-icon matSuffix class="icons">search</mat-icon>
     </mat-form-field>
     <div *ngIf="gasStation; then list else load"></div>
     <ng-template #list>

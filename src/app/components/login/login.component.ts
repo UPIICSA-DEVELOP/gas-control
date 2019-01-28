@@ -11,6 +11,7 @@ import {DialogService} from '@app/core/components/dialog/dialog.service';
 import {ApiLoaderService} from '@app/core/services/api/api-loader.service';
 import {SnackBarService} from '@app/core/services/snackbar/snackbar.service';
 import {AuthService} from '@app/core/services/auth/auth.service';
+const md5 = require('md5');
 
 @Component({
   selector: 'app-login',
@@ -49,7 +50,7 @@ export class LoginComponent implements OnInit {
       password: data.password,
       remember: data.rememberPass
     };
-    this.signInUser(this._dataUser.email, this._dataUser.password, this._dataUser.remember);
+    this.signInUser(this._dataUser.email, md5(this._dataUser.password), this._dataUser.remember);
   }
   public resetPassword(): void {
     this._dialogService.alertWithInput(

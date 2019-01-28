@@ -22,6 +22,7 @@ import {AddCollaboratorComponent} from '@app/components/screen/components/add-co
 import {DocumentationComponent} from '@app/components/screen/components/documentation/documentation.component';
 import {AddGasStationComponent} from '@app/components/screen/components/add-gas-station/add-gas-station.component';
 import {ProceduresComponent} from '@app/components/screen/components/procedures/procedures.component';
+import {UserProfileService} from '@app/core/services/profiles/user-profile.service';
 const URL_BASE = environment.url;
 
 export const appRoutes: Routes = [
@@ -111,6 +112,7 @@ export const appRoutes: Routes = [
       {
         path: 'user',
         component: UserProfileComponent,
+        resolve: {data: UserProfileService},
         data:{
           title: 'Perfil',
           url: URL_BASE + '/profile/user'

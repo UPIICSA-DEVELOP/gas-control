@@ -5,7 +5,7 @@
  */
 
 import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
-import {Router} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {animate, keyframes, query, stagger, style, transition, trigger} from '@angular/animations';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {ApiService} from '@app/core/services/api/api.service';
@@ -116,7 +116,8 @@ export class UserProfileComponent implements OnInit {
     private _snackBarService: SnackBarService,
     private _uploadFile: UploadFileService,
     private _formBuilder: FormBuilder,
-    private _signaturePad: SignaturePadService
+    private _signaturePad: SignaturePadService,
+    private _params: ActivatedRoute
   ) {
     this.role = Constants.roles;
     this.bloodGroup = Constants.bloodGroup;
@@ -130,6 +131,8 @@ export class UserProfileComponent implements OnInit {
 
   ngOnInit() {
     this.initUserInfo();
+    this.getUser(this._params.snapshot.data.data[0]);
+    this.getUserInformation(this._params.snapshot.data.data[1]);
     this._apiLoaderService.getProgress().subscribe(load => {this.load = load; });
   }
 
@@ -309,110 +312,105 @@ export class UserProfileComponent implements OnInit {
       contactName:['',[]],
       ssn:['',[]]
     });
-    this.getUser();
+    //this.getUser();
   }
 
-  private getUser(): void{
-    this._api.getPerson(CookieService.getCookie(Constants.IdSession)).subscribe(response=>{
-      switch (response.code) {
-        case 200:
-          this.user = {
-            id: response.item.id,
-            refId: response.item.refId || undefined,
-            name: response.item.name,
-            lastName: response.item.lastName,
-            email: response.item.email,
-            countryCode: response.item.countryCode || '',
-            country: (response.item.country?response.item.country:''),
-            phoneNumber: response.item.phoneNumber,
-            password: response.item.password,
-            role: response.item.role,
-            jobTitle: response.item.jobTitle,
-            profileImage: (response.item.profileImage?{
-              blobName: (response.item.profileImage.blobName? response.item.profileImage.blobName : undefined),
-              thumbnail: (response.item.profileImage.thumbnail? response.item.profileImage.thumbnail : undefined)
-            }:undefined),
-            signature: (response.item.signature?{
-              blobName: (response.item.signature?response.item.signature.blobName : undefined),
-              thumbnail: (response.item.signature?response.item.signature.thumbnail : undefined),
-            }:undefined),
-            website: response.item.website,
-            bCard: (response.item.bCard?response.item.bCard:undefined)
-          };
-          if (this.user.profileImage){
-            this.profileImage = this.user.profileImage.thumbnail;
-            this.blobName = this.user.profileImage.blobName;
+  private getUser(response: any): void{
+    switch (response.code) {
+      case 200:
+        this.user = {
+          id: response.item.id,
+          refId: response.item.refId || undefined,
+          name: response.item.name,
+          lastName: response.item.lastName,
+          email: response.item.email,
+          countryCode: response.item.countryCode || '',
+          country: (response.item.country?response.item.country:''),
+          phoneNumber: response.item.phoneNumber,
+          password: response.item.password,
+          role: response.item.role,
+          jobTitle: response.item.jobTitle,
+          profileImage: (response.item.profileImage?{
+            blobName: (response.item.profileImage.blobName? response.item.profileImage.blobName : undefined),
+            thumbnail: (response.item.profileImage.thumbnail? response.item.profileImage.thumbnail : undefined)
+          }:undefined),
+          signature: (response.item.signature?{
+            blobName: (response.item.signature?response.item.signature.blobName : undefined),
+            thumbnail: (response.item.signature?response.item.signature.thumbnail : undefined),
+          }:undefined),
+          website: response.item.website,
+          bCard: (response.item.bCard?response.item.bCard:undefined)
+        };
+        if (this.user.profileImage){
+          this.profileImage = this.user.profileImage.thumbnail;
+          this.blobName = this.user.profileImage.blobName;
+        }
+        if (this.user.countryCode){
+          if (!this.user.countryCode.includes('+')) {
+            this.user.countryCode = '+' + this.user.countryCode;
           }
-          if (this.user.countryCode){
-            if (!this.user.countryCode.includes('+')) {
-              this.user.countryCode = '+' + this.user.countryCode;
-            }
+        }
+        if(this.user.signature){
+          this.signature = this.user.signature.thumbnail
+        }
+        if (this.user.website){
+          if (this.user.website.includes('http://')){
+            this.user.website = this.user.website.replace('http://','');
+            this.protocol = 'http://';
+          } else {
+            this.user.website = this.user.website.replace('https://','');
+            this.protocol = 'https://';
           }
-          if(this.user.signature){
-            this.signature = this.user.signature.thumbnail
-          }
-          if (this.user.website){
-            if (this.user.website.includes('http://')){
-              this.user.website = this.user.website.replace('http://','');
-              this.protocol = 'http://';
-            } else {
-              this.user.website = this.user.website.replace('https://','');
-              this.protocol = 'https://';
-            }
-          }
-          this.userRole = this.role[this.user.role-1];
-          this.getUserInformation();
-          break;
-      }
-    })
+        }
+        this.userRole = this.role[this.user.role-1];
+        break;
+    }
   }
 
-  private getUserInformation():void{
-    this._api.getPersonInformation(this.user.id).subscribe(response=>{
-      switch (response.code){
-        case 200:
-          this.userInformation = {
-            id: response.item.id,
-            ssn: response.item.ssn || undefined,
-            bloodType: response.item.bloodType || undefined,
-            concatcPhone: response.item.concatcPhone || undefined,
-            contactName: response.item.contactName || undefined,
-            contactKinship: response.item.contactKinship || undefined,
-            benzene:(response.item.benzene?{
-              blobName: (response.item.benzene.blobName?response.item.benzene.blobName: undefined),
-              thumbnail: (response.item.benzene.thumbnail?response.item.benzene.thumbnail: undefined)
-            }: undefined)
-          };
-          if (this.userInformation.benzene){
-            this.file = this.userInformation.benzene.thumbnail
-          }
-          if(this.userInformation.bloodType){
-            for (let bd in this.bloodGroup){
-              if (this.bloodGroup[bd] === this.userInformation.bloodType){
-                this.bloodType = this.bloodGroup[bd];
-                break;
-              }else {
-                this.bloodType = '';
-              }
+  private getUserInformation(response: any):void{
+    switch (response.code){
+      case 200:
+        this.userInformation = {
+          id: response.item.id,
+          ssn: response.item.ssn || undefined,
+          bloodType: response.item.bloodType || undefined,
+          concatcPhone: response.item.concatcPhone || undefined,
+          contactName: response.item.contactName || undefined,
+          contactKinship: response.item.contactKinship || undefined,
+          benzene:(response.item.benzene?{
+            blobName: (response.item.benzene.blobName?response.item.benzene.blobName: undefined),
+            thumbnail: (response.item.benzene.thumbnail?response.item.benzene.thumbnail: undefined)
+          }: undefined)
+        };
+        if (this.userInformation.benzene){
+          this.file = this.userInformation.benzene.thumbnail
+        }
+        if(this.userInformation.bloodType){
+          for (let bd in this.bloodGroup){
+            if (this.bloodGroup[bd] === this.userInformation.bloodType){
+              this.bloodType = this.bloodGroup[bd];
+              break;
+            }else {
+              this.bloodType = '';
             }
           }
-          this.patchForm();
-          break;
-        default:
-          this.bloodType = '';
-          this.userInformation = {
-            bloodType:undefined,
-            concatcPhone:undefined,
-            contactKinship:undefined,
-            contactName:undefined,
-            ssn:undefined,
-            id:this.user.id,
-            benzene: undefined
-          };
-          this.patchForm();
-          break;
-      }
-    });
+        }
+        this.patchForm();
+        break;
+      default:
+        this.bloodType = '';
+        this.userInformation = {
+          bloodType:undefined,
+          concatcPhone:undefined,
+          contactKinship:undefined,
+          contactName:undefined,
+          ssn:undefined,
+          id:this.user.id,
+          benzene: undefined
+        };
+        this.patchForm();
+        break;
+    }
   }
 
   private patchForm():void{
