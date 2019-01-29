@@ -82,7 +82,7 @@
         background-color: #FFFFFF;
       }
       mat-icon {
-        font-size: 70px;
+        font-size: 100px;
         color: #707070;
       }
 
@@ -158,6 +158,7 @@
         justify-content: center;
         align-items: center;
         cursor: pointer;
+        height: 128px;
 
         .imageSignature {
           width: 60%;
