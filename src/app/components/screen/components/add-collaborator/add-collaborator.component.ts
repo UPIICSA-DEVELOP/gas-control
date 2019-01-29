@@ -269,9 +269,10 @@ export class AddCollaboratorComponent implements OnInit {
       contactKinship:['',[]]
     });
     this.country = 'MX';
+    this.detectChange();
   }
 
-  public detectChange(): void{
+  private detectChange(): void{
     this.newPerson.valueChanges.subscribe( value => {
       this.changes = true;
     })
