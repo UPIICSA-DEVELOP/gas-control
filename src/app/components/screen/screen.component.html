@@ -25,34 +25,36 @@
     <mat-drawer-container>
       <mat-drawer class="menu" mode="side" [opened]="true" [disableClose]="true">
         <div class="station-information" *ngIf="stationActive">
-          <div class="image">
-            <div class="container">
-              <img *ngIf="utils" [src]="utils.groupIcons[stationActive.type-1].fileCS.thumbnail">
-              <mat-icon *ngIf="!utils">local_gas_station</mat-icon>
+          <div style="margin-top: -48px">
+            <div class="image">
+              <div class="container">
+                <img *ngIf="utils" [src]="utils.groupIcons[stationActive.type-1].fileCS.thumbnail">
+                <mat-icon *ngIf="!utils">local_gas_station</mat-icon>
+              </div>
             </div>
-          </div>
-          <div class="contact">
-            <div class="info">{{stationActive.phoneNumber}}</div>
-            <div class="info">{{stationActive.email}}</div>
-          </div>
-          <mat-divider></mat-divider>
-          <div class="buttons">
-            <button mat-button [routerLink]="'/profile/gas-station'" [queryParams]="{id: stationActive.id}">
-              <mat-icon>local_gas_station</mat-icon>
-              <span>Información de Estación</span>
-            </button>
-            <button mat-button routerLink="/home/notifications">
-              <mat-icon>notifications</mat-icon>
-              <span>Notificaciones</span>
-            </button>
-            <button mat-button routerLink="/home/procedures">
-              <mat-icon>library_books</mat-icon>
-              <span>Procedimientos</span>
-            </button>
-            <button mat-button (click)="addCollaborator()" *ngIf="role<6">
-              <mat-icon>person_add</mat-icon>
-              <span>Añadir Colaborador de E.S.</span>
-            </button>
+            <div class="contact">
+              <div class="info">{{stationActive.phoneNumber}}</div>
+              <div class="info">{{stationActive.email}}</div>
+            </div>
+            <mat-divider></mat-divider>
+            <div class="buttons">
+              <button mat-button [routerLink]="'/profile/gas-station'" [queryParams]="{id: stationActive.id}">
+                <mat-icon>local_gas_station</mat-icon>
+                <span>Información de Estación</span>
+              </button>
+              <button mat-button routerLink="/home/notifications">
+                <mat-icon>notifications</mat-icon>
+                <span>Notificaciones</span>
+              </button>
+              <button mat-button routerLink="/home/procedures">
+                <mat-icon>library_books</mat-icon>
+                <span>Procedimientos</span>
+              </button>
+              <button mat-button (click)="addCollaborator()" *ngIf="role<6">
+                <mat-icon>person_add</mat-icon>
+                <span>Añadir Colaborador de E.S.</span>
+              </button>
+            </div>
           </div>
           <div class="change-station" *ngIf="role<5">
             <button mat-button routerLink="/home/station-list">
@@ -79,7 +81,7 @@
             <app-station-status [station]="stationActive"></app-station-status>
           </div>
           <div class="directory">
-            <app-directory-list [gasStation]="stationActive"></app-directory-list>
+            <app-directory-list [gasStation]="stationActive" [utils]="utils"></app-directory-list>
           </div>
           <div class="footer">
             <app-footer></app-footer>
