@@ -59,11 +59,23 @@
     mat-card{
       margin: 8px 0;
       mat-card-content{
-        a{
-          text-decoration: none;
-          color: #000000;
+        align-items: center;
+        display: flex;
+        color: #707070;
+        font-weight: 600;
+        .icon{
+          margin: 0 4px;
+        }
+        .divider{
+          width: 1px;
+          height: 32px;
+          margin: 0 8px 0 4px;
+          background-color: #707070;
         }
       }
     }
+  }
+  .file{
+    cursor: pointer;
   }
 }
