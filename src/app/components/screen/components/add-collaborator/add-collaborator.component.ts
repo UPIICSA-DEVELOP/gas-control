@@ -87,6 +87,7 @@ export class AddCollaboratorComponent implements OnInit {
   private _formSignature: FormData;
   private _formFile: FormData;
   private _refId: string;
+  public changes: boolean;
   constructor(
     private _api:ApiService,
     private _apiLoader: ApiLoaderService,
@@ -98,6 +99,7 @@ export class AddCollaboratorComponent implements OnInit {
     private _formBuilder: FormBuilder,
     private _router: Router
   ) {
+    this.changes=false;
     this.roleType = Constants.roles;
     this.bloodGroup = Constants.bloodGroup;
     this.addImage = false;
@@ -114,20 +116,25 @@ export class AddCollaboratorComponent implements OnInit {
   }
 
   public close():void{
-    this._dialogService.confirmDialog('¿Desea salir sin guardar cambios?',
-      '',
-      'ACEPTAR',
-      'CANCELAR').afterClosed().subscribe(response=>{
+    if (this.changes){
+      this._dialogService.confirmDialog('¿Desea salir sin guardar cambios?',
+        '',
+        'ACEPTAR',
+        'CANCELAR').afterClosed().subscribe(response=>{
         switch (response.code) {
           case 1:
             SessionStorageService.removeItem('refId');
             this._router.navigate(['/home']);
             break;
         }
-    })
+      });
+    }else{
+      this._router.navigate(['/home']);
+    }
   }
 
   public onLoadImage(event: UploadFileResponse):void{
+    this.changes=true;
     this.blobImageProfile = event.url;
     this.addImage = true;
     this._formImage = new FormData();
@@ -138,6 +145,7 @@ export class AddCollaboratorComponent implements OnInit {
   }
 
   public  onRemoveImage(): void{
+    this.changes=true;
     this.blobImageProfile = '';
     this.addImage = false;
   }
@@ -145,6 +153,7 @@ export class AddCollaboratorComponent implements OnInit {
   public selectCountryCode():void{
     this._countryCodeService.openDialog().afterClosed().subscribe(response=>{
       if (response) {
+        this.changes=true;
         this.country = response.iso;
         this.newPerson.patchValue({
           country: response.name,
@@ -156,6 +165,7 @@ export class AddCollaboratorComponent implements OnInit {
   }
 
   public onLoadFile(event: UploadFileResponse): void{
+    this.changes=true;
     this.newFile = true;
     this.file = event.file;
     this._formFile = new FormData();
@@ -168,6 +178,7 @@ export class AddCollaboratorComponent implements OnInit {
     this._signatureService.open().afterClosed().subscribe(response=>{
       switch (response.code) {
         case 1:
+          this.changes=true;
           this.blobSignature = response.base64;
           this.addSign = true;
           this._formSignature = new FormData();
@@ -258,6 +269,12 @@ export class AddCollaboratorComponent implements OnInit {
       contactKinship:['',[]]
     });
     this.country = 'MX';
+  }
+
+  public detectChange(): void{
+    this.newPerson.valueChanges.subscribe( value => {
+      this.changes = true;
+    })
   }
 
   private createCollaborator(data:any):void{

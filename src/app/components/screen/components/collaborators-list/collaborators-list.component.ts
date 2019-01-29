@@ -74,6 +74,7 @@ export class CollaboratorsListComponent implements OnInit {
   private _formImage:FormData;
   private _formSignature: FormData;
   public role: string[];
+  public changes: boolean;
   constructor(
     private _route: Router,
     private _api: ApiService,
@@ -84,7 +85,9 @@ export class CollaboratorsListComponent implements OnInit {
     private _formBuilder: FormBuilder,
     private _dialogService: DialogService,
     private _uploadFile: UploadFileService
-  ) { }
+  ) {
+    this.changes=false;
+  }
 
   ngOnInit() {
     this.role = Constants.roles;
@@ -93,7 +96,7 @@ export class CollaboratorsListComponent implements OnInit {
   }
 
   public onCloseCollaborators(): void{
-    if (this.register) {
+    if (this.changes) {
       this._dialogService.confirmDialog(
         '¿Desea salir sin guardar cambios?',
         '',
@@ -192,12 +195,20 @@ export class CollaboratorsListComponent implements OnInit {
     });
     this.country = 'MX';
     this.register = true;
+    this.detectChanges();
+  }
+
+  private detectChanges():void{
+    this.newPerson.valueChanges.subscribe(value=>{
+      this.changes = true;
+    });
   }
 
   public addSignature(): void{
     this._signatureService.open().afterClosed().subscribe(response=>{
       switch (response.code) {
         case 1:
+          this.changes=true;
           this.blobSignature = response.base64;
           this.addSign = true;
           this._formSignature = new FormData();
@@ -211,6 +222,7 @@ export class CollaboratorsListComponent implements OnInit {
   }
 
   public onLoadImage(event: UploadFileResponse):void{
+    this.changes=true;
     this.blobImageProfile = event.url;
     this.addImage = true;
     this._formImage = new FormData();
@@ -221,6 +233,7 @@ export class CollaboratorsListComponent implements OnInit {
   }
 
   public  onRemoveImage(): void{
+    this.changes=true;
     this.blobImageProfile = '';
     this.addImage = false;
   }
@@ -228,6 +241,7 @@ export class CollaboratorsListComponent implements OnInit {
   public selectCountryCode():void{
     this._countryCodeService.openDialog().afterClosed().subscribe(response=>{
       if (response) {
+        this.changes=true;
         this.country = response.iso;
         this.newPerson.patchValue({
           country: response.name,
