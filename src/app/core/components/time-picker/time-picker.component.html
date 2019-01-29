@@ -1,6 +1,6 @@
 <div id="time-picker">
   <mat-form-field>
-    <input [ngxTimepicker]="picker" title="Time" matInput [(ngModel)]="value">
+    <input [ngxTimepicker]="picker" title="Time" matInput [(ngModel)]="value" [disabled]="disabled">
   </mat-form-field>
   <ngx-material-timepicker #picker
                            [defaultTime]="value"
