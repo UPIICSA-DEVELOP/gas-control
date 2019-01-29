@@ -13,7 +13,7 @@
   </div>
   <div class="content">
     <div class="head">
-      <span>AÑADIR COLABORADOR DE ESTACIÓN</span>
+      <span>REGISTRO DE USUARIO</span>
       <button mat-icon-button (click)="close()">
         <mat-icon>close</mat-icon>
       </button>
@@ -43,7 +43,7 @@
           </mat-error>
         </mat-form-field>
         <mat-form-field class="inputs">
-          <input formControlName="email" matInput placeholder="Email" required type="email"
+          <input formControlName="email" matInput placeholder="Email comercial" required type="email"
                  aria-label="New collaborator email" (blur)="validateEmailExist()">
           <mat-error *ngIf="newPerson.controls['email'].hasError('required')">
             Este campo es obligatorio
@@ -74,7 +74,7 @@
             </mat-form-field>
           </div>
           <mat-form-field class="number">
-            <input formControlName="phoneNumber" matInput placeholder="Número de celular" required type="text"
+            <input formControlName="phoneNumber" matInput placeholder="Número de Celular" required type="text"
                    aria-label="New collaborator cellphone number" #phoneNumber>
             <mat-error *ngIf="newPerson.controls['phoneNumber'].hasError('required')">
               Este campo es obligatorio
@@ -125,7 +125,7 @@
             <span>Información adicional</span>
           </div>
           <mat-form-field class="inputs">
-            <input formControlName="ssn" matInput placeholder="Número de seguridad social" aria-label="New collaborator ssn">
+            <input formControlName="ssn" matInput placeholder="Número de Seguridad Social" aria-label="New collaborator ssn">
           </mat-form-field>
           <mat-form-field class="inputs">
             <mat-select placeholder="Tipo de sangre" aria-label="User blood type" [(value)]="bloodType">
@@ -150,7 +150,7 @@
               <input formControlName="contactName" matInput placeholder="Nombre" aria-label="New collaborator emergency contact name">
             </mat-form-field>
             <mat-form-field class="inputs">
-              <input formControlName="contactPhoneNumber" matInput placeholder="Número de celular" aria-label="New collaborator emergency contact phone number">
+              <input formControlName="contactPhoneNumber" matInput placeholder="Número de Celular" aria-label="New collaborator emergency contact phone number">
               <mat-error *ngIf="newPerson.controls['phoneNumber'].hasError('minlength')">
                 Se requieren de 8 a 13 dígitos
               </mat-error>
