@@ -20,10 +20,10 @@ import {LocalStorageService} from '@app/core/services/local-storage/local-storag
 })
 export class DirectoryListComponent implements OnInit, OnChanges,DoCheck {
   @Input() public gasStation: any;
+  @Input() public utils: any;
   public collaborators: any[];
   public roleType: string[];
   public collaborator: any[];
-  public utils: any[];
   public idSession: string;
   public user: any;
   constructor(
@@ -36,7 +36,6 @@ export class DirectoryListComponent implements OnInit, OnChanges,DoCheck {
   }
 
   ngOnInit() {
-    this.getUtilities();
     this.roleType = Constants.roles;
     this.collaborators = [];
   }
@@ -65,18 +64,6 @@ export class DirectoryListComponent implements OnInit, OnChanges,DoCheck {
           break;
       }
     });
-  }
-
-  private getUtilities(): void{
-    this._api.getUtils().subscribe(response=>{
-      switch (response.code) {
-        case 200:
-          this.utils = response.item;
-          break;
-        default:
-          break;
-      }
-    })
   }
 
   public deleteCollaborator(id: string, index: number, role: number){
