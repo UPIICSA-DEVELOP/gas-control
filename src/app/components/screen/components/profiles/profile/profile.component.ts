@@ -98,7 +98,6 @@ export class ProfileComponent implements OnInit {
   public country: any;
   public change: boolean;
   public blobName: any;
-  public password: string;
   public signature: any;
   public newSignature: boolean;
   public newSig: any;
@@ -179,8 +178,8 @@ export class ProfileComponent implements OnInit {
     ).afterClosed().subscribe(response =>{
       switch (response.code) {
         case 1:
-          this.change = true;
-          this.password = response.data.newPassword;
+          this.user.password = response.data;
+          this.saveProfileData(true);
           break;
         default:
           break;
@@ -452,9 +451,6 @@ export class ProfileComponent implements OnInit {
     this.user.country = this.country;
     this.user.phoneNumber = data.phoneNumber;
     this.user.jobTitle = data.jobTitle;
-    if (this.password) {
-      this.user.password = this.password;
-    }
     this.user.website = (data.website? this.protocol+data.website : '');
     this.consultancy.businessName = data.businessName;
     this.consultancy.rfc = data.rfc;
@@ -491,12 +487,16 @@ export class ProfileComponent implements OnInit {
     this.saveProfileData();
   }
 
-  private saveProfileData():void{
-    this.validateDisabledInputs(true);
+  private saveProfileData(redirect?:boolean):void{
+    if(!redirect){
+      this.validateDisabledInputs(true);
+    }
     this._api.updatePerson(this.user).subscribe(response=>{
       switch (response.code){
         case 200:
-          this.saveConsultancyData();
+          if(!redirect){
+            this.saveConsultancyData();
+          }
           break;
         default:
           this._dialogService.alertDialog('No se pudo acceder', 'Se produjo un error de comunicación con el servidor', 'ACEPTAR');
