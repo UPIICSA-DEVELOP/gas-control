@@ -267,8 +267,8 @@ export class UserProfileComponent implements OnInit {
     ).afterClosed().subscribe(response =>{
       switch (response.code) {
         case 1:
-          this.change = true;
-          this.password = response.data.newPassword;
+          this.user.password = response.data;
+          this.saveUser(true);
           break;
         default:
           break;
@@ -526,11 +526,13 @@ export class UserProfileComponent implements OnInit {
     this.saveUser();
   }
 
-  private saveUser():void{
+  private saveUser(redirect?:boolean):void{
     this._api.updatePerson(this.user).subscribe(response=>{
       switch (response.code){
         case 200:
-          this.saveInformation();
+          if(!redirect){
+            this.saveInformation();
+          }
           break;
         default:
           this._dialogService.alertDialog('No se pudo acceder', 'Se produjo un error de comunicación con el servidor', 'ACEPTAR');
