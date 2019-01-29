@@ -710,7 +710,7 @@ export class AddGasStationComponent implements OnInit {
       switch (response.code){
         case 200:
           this.mangerInformation.id = response.item.id;
-          this.station.idLegalRepresentative = response.item.id;
+          this.station.idManager = response.item.id;
           this.station.managerName = response.item.name + ' ' + response.item.lastName;
           this._api.savePersonInformation(this.mangerInformation).subscribe(response=>{
             switch (response.code){
@@ -783,24 +783,25 @@ export class AddGasStationComponent implements OnInit {
   }
 
   private createStationTasks(stationId: string):void{
-    let today = Number(this.startDate.getFullYear()+''+(this.startDate.getMonth()+1)+''+this.startDate.getDay());
+    let actuallyDay = (this.startDate.getDate()).toString();
+    let actuallyMonth = (this.startDate.getMonth()+1).toString();
+    let actuallyYear = (this.startDate.getFullYear()).toString();
+    let today = Number(actuallyYear+''+(actuallyMonth.length<2?'0'+actuallyMonth:actuallyMonth)+''+(actuallyDay.length<2?'0'+actuallyDay:actuallyDay));
+    let editedTasks: any[] = [];
     for (let d=0;d<this.calendar.length; d++){
-      let year = this.calendar[d].getFullYear();
-      let month = this.calendar[d].getMonth()+1;
-      let day = this.calendar[d].getDate;
-      this.calendar[d]=Number(year+''+month+''+day);
+      let year = (this.calendar[d].getFullYear()).toString();
+      let month = (this.calendar[d].getMonth()+1).toString();
+      let day = (this.calendar[d].getDate());
+      this.calendar[d] = Number(year+''+(month.length<2?'0'+month:month)+''+(day.length<2?'0'+day:day));
+      editedTasks.push({startDate: this.calendar[d], differenceOfDays:(this.calendar[d]-today), type: this.tasks[d].id});
     }
     for (let i = 0; i<this.tasks.length; i++){
       let task: Task = {
-        creationDate: today,
+        creationDate: 0,
         stationId: stationId,
         progress: 0,
         status: 2,
-        editedTasks: {
-          startDate: this.calendar[i],
-          differenceOfDays: this.calendar[i]-today,
-          type: this.tasks[i].id
-        }
+        editedTasks: editedTasks
       };
       this._api.createStationTask(task).subscribe(response=>{
         switch (response.code){
