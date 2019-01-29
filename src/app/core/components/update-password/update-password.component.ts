@@ -9,11 +9,24 @@ import {AbstractControl, FormBuilder, FormGroup, Validators} from '@angular/form
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
 import {ConfigDialogPass} from '@app/core/components/update-password/update-password.service';
 
+const md5 = require('md5');
+
+let data = null;
+
 export function ValidatePasswords(ac: AbstractControl) {
   let password = ac.get('newPassword').value;
   let repeatPassword = ac.get('confirmNewPass').value;
   if(password !== repeatPassword){
     ac.get('confirmNewPass').setErrors({differentPasswords: true});
+  }else{
+    return null;
+  }
+}
+
+export function ValidateOldPassword(ac: AbstractControl) {
+  let oldPassword = ac.get('oldPassword').value;
+  if(md5(oldPassword) !==  data.oldPass){
+    ac.get('oldPassword').setErrors({invalidPassword: true});
   }else{
     return null;
   }
@@ -34,8 +47,6 @@ export class UpdatePasswordComponent implements OnInit {
   public hideTwo: boolean;
   public hideThree: boolean;
   public simpleForm: FormGroup;
-  public oldPassValid: boolean = false;
-  public oldPassword: string;
   constructor(
     public dialogRef: MatDialogRef<UpdatePasswordComponent>,
     @Inject(MAT_DIALOG_DATA) private _data: ConfigDialogPass,
@@ -53,13 +64,13 @@ export class UpdatePasswordComponent implements OnInit {
       cancel: this._data.cancel,
       oldPass: this._data.oldPassword
     };
-    this.oldPassword = this.info.oldPass;
+    data = this.info;
     this.simpleForm = this._formBuilder.group({
-      oldPassword: ['',[Validators.required, Validators.pattern(this.oldPassword)]],
+      oldPassword: ['',[Validators.required]],
       newPassword: ['',[Validators.required]],
       confirmNewPass:['',[Validators.required]]
     });
-    this.simpleForm.setValidators(ValidatePasswords);
+    this.simpleForm.setValidators([ValidatePasswords, ValidateOldPassword]);
   }
 
   public showPasswordOne(): void {
@@ -82,7 +93,7 @@ export class UpdatePasswordComponent implements OnInit {
       return;
     }
 
-    this.dialogRef.close({code: 1, data: data});
+    this.dialogRef.close({code: 1, data: md5(data.newPassword)});
   }
 
   public cancel(): void{
