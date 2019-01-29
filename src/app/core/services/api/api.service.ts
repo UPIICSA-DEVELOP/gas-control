@@ -202,6 +202,26 @@ export class ApiService {
     return this._http.post(ApiService.API_URL_COMPLETE + 'createStationTask',task);
   }
 
+  public getCompleteInfoDashboard(userId: string, refId: string, role: number): Observable<any>{
+    let response1 = null;
+    switch (role) {
+      case 1:
+      case 2:
+      case 3:
+        response1 = this.getConsultancyBasicData(userId, refId);
+        break;
+      case 4:
+        response1 = this.getLegalRepresentativeBasicData(refId, userId);
+        break;
+      case 5:
+      case 6:
+      case 7:
+        response1 = this.getStationBasicData(userId);
+        break;
+    }
+    return null;
+  }
+
   private initNetwork(): void {
     this._networkService.getChangesNetwork().subscribe(status => {
       const text = (!status) ? 'La conexión a internet se ha perdido' : 'De nuevo en linea';

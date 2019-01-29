@@ -149,6 +149,11 @@ export class UserProfileComponent implements OnInit {
       this._snackBarService.openSnackBar('Por favor, registre su firma','OK', 3000);
       return;
     }
+    if(this.profileForm.invalid){
+      this._snackBarService.openSnackBar('Por favor, complete todos los campos','OK', 3000);
+      return;
+    }
+
     this._router.navigate(['/home']);
   }
 

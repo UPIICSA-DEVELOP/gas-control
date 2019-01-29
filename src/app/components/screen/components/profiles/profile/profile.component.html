@@ -20,9 +20,9 @@
                 </ng-template>
               </app-upload-file>
             </div>
-            <span class="title">Mi información</span>
           </div>
           <mat-card-content class="user-form">
+            <h2 class="title">Mi información</h2>
             <div>
               <mat-form-field class="inputs">
                 <input [attr.disabled]="load?true:null" formControlName="name" matInput placeholder="Nombre(s)" required type="text" aria-label="User name">
@@ -146,18 +146,29 @@
               </div>
             </div>
           </mat-card-content>
+          <div class="form-button">
+            <button mat-flat-button aria-label="LogIn" [disabled]="load" [color]="'primary'">GUARDAR CAMBIOS</button>
+          </div>
         </mat-card>
-        <div class="form-button">
-          <button mat-flat-button aria-label="LogIn" [disabled]="load" [color]="'primary'">GUARDAR CAMBIOS</button>
-        </div>
       </div>
       <div class="business-card">
-        <div class="card">
-          <a [href]="user.bCard.dynamicLink" target="_blank" *ngIf="user.bCard">
-            <img [src]="user.bCard.cardThumbnail" alt="User Business Card" *ngIf="user.bCard">
-          </a>
-          <img *ngIf="!user.bCard" src="https://www.googleapis.com/download/storage/v1/b/businesscardgcs/o/alex4%2F2019-01-26-000405293Business-Default.png?generation=1548461045488769&alt=media" alt="Default Business Card">
-      </div>
+        <mat-card>
+          <div *ngIf="user.bCard; then card else withOutCard"></div>
+          <ng-template #card>
+            <a [href]="user.bCard.dynamicLink" target="_blank">
+              <mat-card-content  [ngStyle]="{'background-image': 'url('+user.bCard.cardThumbnail+')'}">
+              </mat-card-content>
+            </a>
+          </ng-template>
+          <ng-template #withOutCard>
+            <mat-card-content>
+            </mat-card-content>
+          </ng-template>
+          <mat-card-actions [align]="'end'">
+            <button mat-icon-button><mat-icon>share</mat-icon></button>
+            <button mat-icon-button><mat-icon>share</mat-icon></button>
+          </mat-card-actions>
+        </mat-card>
       </div>
     </form>
   </ng-template>

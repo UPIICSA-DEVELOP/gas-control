@@ -12,9 +12,9 @@
     <form [formGroup]="stationForm" (ngSubmit)="saveStationInformation(stationForm.value)" class="station-form">
       <div class="basic-information">
         <mat-card class="body">
-          <div class="head">
-            <span>Estación de Servicio</span>
-          </div>
+          <mat-card-header>
+            <h2>Estación de Servicio</h2>
+          </mat-card-header>
           <mat-card-content class="content">
             <mat-form-field class="inputs">
               <input formControlName="businessName" matInput placeholder="Razón social" required type="text" aria-label="Station business name">
@@ -85,11 +85,11 @@
                 </button>
               </div>
               <div *ngFor="let turn of workShifts; let i = index">
-                <div class="input-content">
-                  <div class="address">
+                <div class="input-turns">
+                  <div class="time">
                     <app-time-picker [(value)]="turn.start"></app-time-picker>
                   </div>
-                  <div class="address">
+                  <div class="time">
                     <app-time-picker [(value)]="turn.end"></app-time-picker>
                   </div>
                   <button type="button" *ngIf="workShifts.length>1" mat-icon-button (click)="addRemoveTurn(true,1, i)" class="remove" [disabled]=" user.role===6 || user.role===7">
@@ -177,12 +177,12 @@
               </div>
             </div>
           </mat-card-content>
+          <div class="save">
+            <button mat-flat-button [color]="'primary'" *ngIf="user.role!==6 && user.role!==7">
+              GUARDAR CAMBIOS
+            </button>
+          </div>
         </mat-card>
-        <div class="save">
-          <button mat-flat-button [color]="'primary'" *ngIf="user.role!==6 && user.role!==7">
-            GUARDAR CAMBIOS
-          </button>
-        </div>
       </div>
       <div class="dispensers-information">
         <div class="documentation">
@@ -190,15 +190,15 @@
             Documentación <mat-icon>keyboard_backspace</mat-icon>
           </button>
         </div>
-        <div class="header">
-          <div style="margin-right: 32px;">
-            <img *ngIf="gasImage" [src]="gasImage" class="profileImage">
-            <mat-icon *ngIf="!gasImage" class="defaultImage">local_gas_station</mat-icon>
+        <div class="info-gas-station">
+          <div class="image">
+            <img *ngIf="gasImage" [src]="gasImage">
+            <mat-icon *ngIf="!gasImage">local_gas_station</mat-icon>
           </div>
-          <div>
-            <div class="text">{{gasName}}</div>
-            <div class="businessName">{{station.businessName}}</div>
-            <div class="businessName">{{station.name}}</div>
+          <div class="info">
+            <h2>{{gasName}}</h2>
+            <p class="company">{{station.businessName}}</p>
+            <p class="store">{{station.name}}</p>
           </div>
         </div>
       </div>

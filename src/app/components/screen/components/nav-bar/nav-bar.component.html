@@ -11,13 +11,13 @@
         <img alt="app-logo" src="../assets/Images/logo.png" routerLink="/home">
       </div>
       <div class="navigation-buttons">
+        <div id="progress" #progress *ngIf="load">
+          <mat-spinner [diameter]="25" [mode]="'indeterminate'"></mat-spinner>
+        </div>
         <button id="btn-collaborators" *ngIf="user.role<=3 && !barVisible" mat-button routerLink="/home/collaborators">
           <div>Colaboradores</div>
           <mat-icon>group</mat-icon>
         </button>
-        <div id="progress">
-          <mat-progress-spinner class="white-progress" [diameter]="25" [mode]="'indeterminate'"></mat-progress-spinner>
-        </div>
         <button mat-button *ngIf="!barVisible" (click)="openSearchBar()">
           <mat-icon>search</mat-icon>
         </button>

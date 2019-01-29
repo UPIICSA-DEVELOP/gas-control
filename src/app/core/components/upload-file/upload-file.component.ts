@@ -16,7 +16,8 @@ export interface UploadFileResponse {
   isImage: boolean,
   blob: Blob,
   file: File,
-  url: string
+  url: string,
+  fileName: string
 }
 
 export enum UploadFileType {
@@ -58,6 +59,8 @@ export class UploadFileComponent implements OnInit {
 
   public onChangeFile(event): void{
     const file = event.target.value;
+    const fileName = event.target.files[0].name;
+    console.log(file);
     if(this.validateTypeExist()){
       switch (this.type){
         case UploadFileType.image:
@@ -71,13 +74,13 @@ export class UploadFileComponent implements OnInit {
                 disableClose: true
               }
             ).afterClosed().subscribe((response) => {
-              this.onLoad.emit({url: response.base64, blob: response.blob, isImage: true, file: null});
+              this.onLoad.emit({url: response.base64, blob: response.blob, isImage: true, file: null, fileName: fileName});
             });
           }
           break;
         case UploadFileType.file:
           if(this.validateFile(file)){
-            this.onLoad.emit({url: null, blob: null, isImage: false, file: event.target.files[0]});
+            this.onLoad.emit({url: null, blob: null, isImage: false, file: event.target.files[0], fileName: fileName});
           }
           break;
       }

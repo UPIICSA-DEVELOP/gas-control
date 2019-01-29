@@ -4,7 +4,7 @@
  *  Proprietary and confidential
  */
 
-import {Component, DoCheck, Inject, OnInit, PLATFORM_ID} from '@angular/core';
+import {AfterViewInit, Component, DoCheck, ElementRef, Inject, OnInit, PLATFORM_ID, ViewChild} from '@angular/core';
 import {AuthService} from '@app/core/services/auth/auth.service';
 import {DialogService} from '@app/core/components/dialog/dialog.service';
 import {MatSidenav} from '@angular/material';
@@ -12,16 +12,19 @@ import {Constants} from '@app/core/constants.core';
 import {DOCUMENT} from '@angular/common';
 import {Router} from '@angular/router';
 import {LocalStorageService} from '@app/core/services/local-storage/local-storage.service';
+import {ApiLoaderService} from '@app/core/services/api/api-loader.service';
 
 @Component({
   selector: 'app-nav-bar',
   templateUrl: './nav-bar.component.html',
   styleUrls: ['./nav-bar.component.scss']
 })
-export class NavBarComponent implements OnInit, DoCheck  {
+export class NavBarComponent implements OnInit, AfterViewInit, DoCheck  {
 
+  @ViewChild('progress') private _progress: ElementRef;
   public menu: MatSidenav;
   public user: any = {};
+  public load: boolean;
   public imageExist: boolean = false;
   public barVisible: boolean = false;
   constructor(
@@ -29,11 +32,19 @@ export class NavBarComponent implements OnInit, DoCheck  {
     @Inject(PLATFORM_ID) private _platformId: string,
     private _auth: AuthService,
     private _dialogService: DialogService,
-    private _router: Router
+    private _router: Router,
+    private _apiLoader: ApiLoaderService
   ) {
   }
 
   ngOnInit() {
+    this._apiLoader.getProgress().subscribe(load => this.load = load);
+  }
+
+  ngAfterViewInit(): void {
+    let circle = this._progress.nativeElement.firstChild.firstChild.getElementsByTagName('circle');
+    circle = circle[0];
+    circle.style.stroke = '#fff';
   }
 
   ngDoCheck(): void {
