@@ -71,7 +71,7 @@
               </mat-error>
             </mat-form-field>
             <mat-form-field class="inputs">
-              <input formControlName="managerName" matInput placeholder="Encargado de la Estación" required type="text" aria-label="Station manager">
+              <input formControlName="managerName" matInput placeholder="Encargado de Estación" required type="text" aria-label="Station manager">
             </mat-form-field>
             <mat-form-field class="inputs">
               <input formControlName="workers" matInput placeholder="No. de trabajadores" type="number" aria-label="Station workers">
@@ -87,10 +87,10 @@
               <div *ngFor="let turn of workShifts; let i = index">
                 <div class="input-content">
                   <div class="address">
-                    <app-time-picker [(value)]="turn.start" [disabled]="user.role===6 || user.role===7"></app-time-picker>
+                    <app-time-picker [(value)]="turn.start" [disabled]="user.role===6 || user.role===7" [placeholder]="'Inicio'"></app-time-picker>
                   </div>
                   <div class="address">
-                    <app-time-picker [(value)]="turn.end" [disabled]="user.role===6 || user.role===7"></app-time-picker>
+                    <app-time-picker [(value)]="turn.end" [disabled]="user.role===6 || user.role===7" [placeholder]="'Fin'"></app-time-picker>
                   </div>
                   <button type="button" *ngIf="workShifts.length>1" mat-icon-button (click)="addRemoveTurn(true,1, i)" class="remove" [disabled]=" user.role===6 || user.role===7">
                     <mat-icon>remove</mat-icon>

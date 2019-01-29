@@ -54,7 +54,6 @@ export class StationProfileComponent implements OnInit {
   public change: boolean = false;
   public latLng: any;
   public load: boolean;
-  public legalRepresentative: string;
   public gasName: string;
   private id: string;
   public user: any;
@@ -197,44 +196,14 @@ export class StationProfileComponent implements OnInit {
             managerName:this.station.managerName,
             workers:this.station.workers,
             monitoringWells:this.station.monitoringWells,
-            observationWells: this.station.observationWells
+            observationWells: this.station.observationWells,
+            legalRepresentative: this.station.legalRepresentativeName
           });
           this.getUtils();
-          if(this.station.idLegalRepresentative){
-            this._api.getPerson(this.station.idLegalRepresentative).subscribe(response=>{
-              switch (response.code) {
-                case 200:
-                  this.legalRepresentative = response.item.name + ' ' + response.item.lastName;
-                  this.stationForm.patchValue({
-                    legalRepresentative:this.legalRepresentative
-                  });
-                  if (this.user.role===6 || this.user.role===7){
-                    this.stationForm.disable();
-                  }
-                  this.detectChanges();
-                  break;
-                default:
-                  this.legalRepresentative = '';
-                  this.stationForm.patchValue({
-                    legalRepresentative:this.legalRepresentative
-                  });
-                  if (this.user.role===6 || this.user.role===7){
-                    this.stationForm.disable();
-                  }
-                  this.detectChanges();
-                  break;
-              }
-            });
-          }else {
-            this.legalRepresentative = '';
-            this.stationForm.patchValue({
-              legalRepresentative:this.legalRepresentative
-            });
-            if (this.user.role===6 || this.user.role===7){
-              this.stationForm.disable();
-            }
-            this.detectChanges();
+          if (this.user.role===6 || this.user.role===7){
+            this.stationForm.disable();
           }
+          this.detectChanges();
           break;
         default:
           break;

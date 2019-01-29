@@ -106,22 +106,13 @@
               </div>
               <div *ngFor="let turn of workShifts; let i = index">
                 <div class="input-content">
-                  <div class="modal">
-                    <div class="mask"></div>
-                    <mat-form-field>
-                      <input matInput placeholder="Inicio" value="{{turn.start }}"
-                      >
-                    </mat-form-field>
+                  <div class="address">
+                    <app-time-picker [(value)]="turn.start" [placeholder]="'Inicio'"></app-time-picker>
                   </div>
-                  <div class="modal">
-                    <div class="mask"></div>
-                    <mat-form-field>
-                      <input matInput placeholder="Fin" value="{{turn.end }}"
-                      >
-                    </mat-form-field>
+                  <div class="address">
+                    <app-time-picker [(value)]="turn.end" [placeholder]="'Fin'"></app-time-picker>
                   </div>
-                  <button type="button" *ngIf="workShifts.length>1" mat-icon-button (click)="addRemoveTurn(true,1, i)"
-                          class="remove">
+                  <button type="button" *ngIf="workShifts.length>1" mat-icon-button (click)="addRemoveTurn(true,1, i)" class="remove" [disabled]=" user.role===6 || user.role===7">
                     <mat-icon>remove</mat-icon>
                   </button>
                 </div>
@@ -507,7 +498,7 @@
               </mat-form-field>
             </div>
             <mat-form-field class="inputs">
-              <input disabled placeholder="Rol" required aria-label="User role" value="Encargado de estación" matInput>
+              <input disabled placeholder="Rol" required aria-label="User role" value="Encargado de Estación" matInput>
             </mat-form-field>
             <mat-form-field class="inputs">
               <input formControlName="jobTitle" matInput placeholder="Cargo"

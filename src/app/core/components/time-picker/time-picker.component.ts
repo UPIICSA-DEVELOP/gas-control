@@ -10,6 +10,7 @@ export class TimePickerComponent implements OnInit {
 
   @Input() value: string;
   @Input() disabled: boolean;
+  @Input() placeholder: string;
   @Output() valueChange: EventEmitter<string|null>;
   public theme: NgxMaterialTimepickerTheme;
 
