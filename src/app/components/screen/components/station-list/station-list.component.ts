@@ -12,6 +12,7 @@ import {Constants} from '@app/core/constants.core';
 import {Router} from '@angular/router';
 import {animate, keyframes, query, stagger, state, style, transition, trigger} from '@angular/animations';
 import {LocalStorageService} from '@app/core/services/local-storage/local-storage.service';
+import {UtilitiesService} from '@app/core/utilities/utilities.service';
 
 @Component({
   selector: 'app-station-list',
@@ -118,7 +119,7 @@ export class StationListComponent implements OnInit, DoCheck {
         this._api.getConsultancyBasicData(CookieService.getCookie(Constants.IdSession),user.refId).subscribe(response=>{
           switch (response.code) {
             case 200:
-              this.stationList = response.item.stationLites;
+              this.stationList = UtilitiesService.sortJSON(response.item.stationLites,'progress','asc');
               break;
             default:
               break;
