@@ -198,6 +198,10 @@ export class ApiService {
     return this._http.get(ApiService.API_URL_COMPLETE + 'listPersonStationByConsultancy', {params: params});
   }
 
+  public personExists(email: string): Observable<any>{
+    return this._http.post(ApiService.API_URL_COMPLETE + 'personExists', email);
+  }
+
   public createStationTask(task:any):Observable<any>{
     return this._http.post(ApiService.API_URL_COMPLETE + 'createStationTask',task);
   }

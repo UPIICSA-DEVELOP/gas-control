@@ -16,6 +16,36 @@ export class Constants {
     2: 'medium',
     3: 'critical'
   };
+  public static Level = [
+    'Básico',
+    'Intermedio',
+    'Critico'
+  ];
+  public static Zones = [
+    'Dispensarios',
+    'Islas',
+    'Patio',
+    'Tanques',
+    'Cuarto de maquinas',
+    'Cuarto eléctrico',
+    'Cisternas tinacos y bombas de agua',
+    'Cuarto de RP',
+    'Planta de emergencia',
+    'Dispensarios',
+    'Otros'
+  ];
+  public static Frecuency = [
+    'Diario',
+    'Cada 3 días',
+    'Semanal',
+    'Quincenal',
+    'Mensual',
+    'Bimestral',
+    'Trimestral',
+    'Cuatrimestral',
+    'Semestral',
+    'Anual'
+  ];
   public static  roles = [
       'Director',
       'Gerente',
