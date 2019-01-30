@@ -20,6 +20,7 @@ import {SessionStorageService} from '@app/core/services/session-storage/session-
 import {Constants} from '@app/core/constants.core';
 import {User} from 'firebase';
 import {LocalStorageService} from '@app/core/services/local-storage/local-storage.service';
+import {PdfVisorService} from '@app/core/components/pdf-visor/pdf-visor.service';
 
 export interface Person {
   name: string;
@@ -97,7 +98,8 @@ export class AddCollaboratorComponent implements OnInit {
     private _signatureService: SignaturePadService,
     private _snackBarService: SnackBarService,
     private _formBuilder: FormBuilder,
-    private _router: Router
+    private _router: Router,
+    private _pdfVisor: PdfVisorService
   ) {
     this.changes=false;
     this.roleType = Constants.roles;
@@ -345,5 +347,8 @@ export class AddCollaboratorComponent implements OnInit {
           break;
       }
     })
+  }
+  public openStudy():void{
+    this._pdfVisor.open({url: this.file, file: this.file, notIsUrl: true});
   }
 }

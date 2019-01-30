@@ -385,7 +385,7 @@
                 </mat-select>
               </mat-form-field>
               <div class="submit">
-                <app-upload-file [layoutTemplate]="button" (onLoad)="onLoadFile($event, false)" [type]="'file'">
+                <app-upload-file style="width: 100%" [layoutTemplate]="button" (onLoad)="onLoadFile($event, false)" [type]="'file'">
                   <ng-template #button>
                     <div class="study">
                       <span type="button">Estudio de toxicidad (Benceno)</span>
@@ -394,6 +394,9 @@
                     </div>
                   </ng-template>
                 </app-upload-file>
+                <button type="button" mat-icon-button matTooltip="Ver estudio" *ngIf="file" (click)="openStudy(false)">
+                  <mat-icon class="file-icon">visibility</mat-icon>
+                </button>
               </div>
               <div class="extra-data">
                 <div class="formHead">Contacto de emergencia</div>
@@ -549,7 +552,7 @@
                 </mat-select>
               </mat-form-field>
               <div class="submit">
-                <app-upload-file [layoutTemplate]="button" (onLoad)="onLoadFile($event, true)" [type]="'file'">
+                <app-upload-file style="width: 100%" [layoutTemplate]="button" (onLoad)="onLoadFile($event, true)" [type]="'file'">
                   <ng-template #button>
                     <div class="study">
                       <span type="button">Estudio de toxicidad (Benceno)</span>
@@ -558,6 +561,9 @@
                     </div>
                   </ng-template>
                 </app-upload-file>
+                <button type="button" mat-icon-button matTooltip="Ver estudio" *ngIf="fileTwo" (click)="openStudy(true)">
+                  <mat-icon class="file-icon">visibility</mat-icon>
+                </button>
               </div>
               <div class="extra-data">
                 <div class="formHead">Contacto de emergencia</div>

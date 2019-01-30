@@ -20,6 +20,7 @@ import {Constants} from '@app/core/constants.core';
 import {UploadFileResponse} from '@app/core/components/upload-file/upload-file.component';
 import {SignaturePadService} from '@app/core/components/signature-pad/signature-pad.service';
 import {LocalStorageService} from '@app/core/services/local-storage/local-storage.service';
+import {PdfVisorService} from '@app/core/components/pdf-visor/pdf-visor.service';
 
 export interface Person {
   id: string;
@@ -117,7 +118,8 @@ export class UserProfileComponent implements OnInit {
     private _uploadFile: UploadFileService,
     private _formBuilder: FormBuilder,
     private _signaturePad: SignaturePadService,
-    private _params: ActivatedRoute
+    private _params: ActivatedRoute,
+    private _pdfVisor: PdfVisorService
   ) {
     this.role = Constants.roles;
     this.bloodGroup = Constants.bloodGroup;
@@ -555,5 +557,9 @@ export class UserProfileComponent implements OnInit {
           break;
       }
     })
+  }
+
+  public openStudy():void{
+    this._pdfVisor.open({url: this.file, file: this.file, notIsUrl: this.newFile});
   }
 }

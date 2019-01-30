@@ -207,6 +207,9 @@
   .submit{
     color: #707070;
     padding: 8px 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
   }
   .extra-data{
     margin-top: 8px;
@@ -230,7 +233,7 @@
   .title {
     font-weight: 500;
     font-size: 24px;
-    color: #000000;
+    color: mat-color($primary);
     margin: 24px 0 16px 0;
   }
 }

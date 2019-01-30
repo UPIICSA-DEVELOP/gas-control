@@ -134,13 +134,16 @@
             </mat-select>
           </mat-form-field>
           <div class="submit">
-            <app-upload-file [layoutTemplate]="button" (onLoad)="onLoadFile($event)" [type]="'file'">
+            <app-upload-file style="width: 100%" [layoutTemplate]="button" (onLoad)="onLoadFile($event)" [type]="'file'">
               <ng-template #button>
                 <div type="button">Estudio de toxicidad (Benceno)</div>
                 <mat-icon class="file-icon" *ngIf="!file" svgIcon="icons:upload"></mat-icon>
                 <mat-icon class="file-icon" *ngIf="file">autorenew</mat-icon>
               </ng-template>
             </app-upload-file>
+            <button type="button" mat-icon-button matTooltip="Ver estudio" *ngIf="file" (click)="openStudy()">
+              <mat-icon class="file-icon">visibility</mat-icon>
+            </button>
           </div>
           <div>
             <div class="emergency">

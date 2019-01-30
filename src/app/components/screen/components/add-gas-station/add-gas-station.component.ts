@@ -20,6 +20,7 @@ import {LocationOptions, LocationService} from '@app/core/components/location/lo
 import {ModalStationService} from '@app/core/components/modal-station/modal-station.service';
 import {UploadFileResponse} from '@app/core/components/upload-file/upload-file.component';
 import {DialogService} from '@app/core/components/dialog/dialog.service';
+import {PdfVisorOptions, PdfVisorService} from '@app/core/components/pdf-visor/pdf-visor.service';
 
 interface Person {
   name: string;
@@ -173,7 +174,8 @@ export class AddGasStationComponent implements OnInit {
     private _countryCodeService: CountryCodeService,
     private _locationService: LocationService,
     private _modalStation: ModalStationService,
-    private _dialogService: DialogService
+    private _dialogService: DialogService,
+    private _pdfVisor: PdfVisorService
   ) {
     this.listExist = true;
     this.bloodGroup = Constants.bloodGroup;
@@ -826,5 +828,23 @@ export class AddGasStationComponent implements OnInit {
     }else if(!this.workShifts[index].start && this.workShifts[index].end) {
 
     }
+  }
+
+  public openStudy(isManager: boolean):void{
+    let options: PdfVisorOptions;
+    if (!isManager){
+      options={
+        url: this.file,
+        file: this.file,
+        notIsUrl: this.newFile
+      }
+    }else{
+      options={
+        url: this.fileTwo,
+        file: this.fileTwo,
+        notIsUrl: this.newFileTwo
+      }
+    }
+    this._pdfVisor.open(options);
   }
 }

@@ -9,6 +9,13 @@ import {MatDialog, MatDialogRef} from '@angular/material';
 import {PdfVisorComponent} from '@app/core/components/pdf-visor/pdf-visor.component';
 import {ApiService} from '@app/core/services/api/api.service';
 
+
+export interface PdfVisorOptions {
+  url: string,
+  file?: File,
+  notIsUrl?: boolean
+}
+
 @Injectable()
 export class PdfVisorService {
 
@@ -17,11 +24,22 @@ export class PdfVisorService {
     private _api: ApiService
   ) { }
 
-  public open(fileUrl: string): void{
-    this._api.getFile(fileUrl).subscribe(response => {
-      const obj = window.URL.createObjectURL(new Blob([response], {type: 'application/pdf'}));
-      console.log(obj);
-      return this._dialog.open(PdfVisorComponent,{panelClass:'pdf-visor-panel', data:obj});
-    });
+  public open(options: PdfVisorOptions): void{
+    if(options.notIsUrl){
+      if(!options.file) {
+        console.error(new Error('File is required'));
+        return;
+      }
+      const reader = new FileReader();
+      reader.readAsDataURL(options.file);
+      reader.onload = () => {
+        this._dialog.open(PdfVisorComponent,{panelClass:'pdf-visor-panel', data:reader.result});
+      };
+    }else{
+      this._api.getFile(options.url).subscribe(response => {
+        const url = window.URL.createObjectURL(new Blob([response], {type: 'application/pdf'}));
+        this._dialog.open(PdfVisorComponent,{panelClass:'pdf-visor-panel', data:url});
+      });
+    }
   }
 }

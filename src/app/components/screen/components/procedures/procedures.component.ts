@@ -45,7 +45,7 @@ export class ProceduresComponent implements OnInit {
   }
 
   public openFile(file:any):void{
-    this._pdf.open(file).afterClosed().subscribe(response=>{});
+    this._pdf.open({file: file, url: file, notIsUrl: false});
   }
 
   private getProcedures():void{
