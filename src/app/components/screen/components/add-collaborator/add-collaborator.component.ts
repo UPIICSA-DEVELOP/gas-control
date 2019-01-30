@@ -332,14 +332,10 @@ export class AddCollaboratorComponent implements OnInit {
   }
 
   public validateEmailExist():void{
-    let verify={
-      email: this.newPerson.controls['email'].value,
-      password: '',
-      token: '123'
-    };
-    this._api.signIn(verify).subscribe(response=>{
+    let email = this.newPerson.controls['email'].value;
+    this._api.personExists(email).subscribe(response=>{
       switch (response.code){
-        case 472:
+        case 200:
           this._dialogService.alertDialog('Información',
             'El Email que está tratando de usar ya ha sido asociado a un usuario',
             'ACEPTAR');

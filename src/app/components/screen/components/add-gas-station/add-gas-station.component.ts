@@ -197,9 +197,9 @@ export class AddGasStationComponent implements OnInit {
     this.user = LocalStorageService.getItem(Constants.UserInSession);
     this.getUtilities();
     this.step = 0;
-    this.dispensers.push({hoses: '', identifier: '', magna: false, premium: false, diesel: false});
-    this.tanks.push({capacity: '', fuelType: 0});
-    this.workShifts.push({start: '', end: ''});
+    this.dispensers.push({hoses: undefined, identifier: undefined, magna: undefined, premium: undefined, diesel: undefined});
+    this.tanks.push({capacity: undefined, fuelType: undefined});
+    this.workShifts.push({start: undefined, end: undefined});
     this.getListRepresentative();
     this._apiLoaderService.getProgress().subscribe(load=>{this.load = load});
   }
@@ -493,9 +493,9 @@ export class AddGasStationComponent implements OnInit {
         type: this.stationType.id,
         observationWells:(data.observationWells?data.observationWells:undefined),
         monitoringWells:(data.monitoringWells?data.monitoringWells:undefined),
-        workShifts: this.workShifts,
-        dispensers: this.dispensers,
-        fuelTanks: this.tanks,
+        workShifts: (this.workShifts[0].start?this.workShifts:undefined),
+        dispensers: (this.dispensers[0].hoses?this.dispensers:undefined),
+        fuelTanks: (this.tanks[0].capacity?this.tanks:undefined),
         idConsultancy: LocalStorageService.getItem(Constants.UserInSession).refId,
         rfc: data.rfc,
         progress: 0
@@ -735,23 +735,15 @@ export class AddGasStationComponent implements OnInit {
   }
 
   public validateEmailExist(isManager: boolean):void{
-    let verify: any;
+    let email: string;
     if (isManager){
-      verify={
-        email: this.newManager.controls['email'].value,
-        password: '',
-        token: '123'
-      };
+      email=this.newManager.controls['email'].value;
     }else{
-      verify={
-        email: this.newLegalRep.controls['email'].value,
-        password: '',
-        token: '123'
-      };
+      email=this.newLegalRep.controls['email'].value;
     }
-    this._api.signIn(verify).subscribe(response=>{
+    this._api.personExists(email).subscribe(response=>{
       switch (response.code){
-        case 472:
+        case 200:
           this._dialogService.alertDialog('Información',
             'El Email que está tratando de usar ya ha sido asociado a un usuario',
             'ACEPTAR');
@@ -819,6 +811,14 @@ export class AddGasStationComponent implements OnInit {
       return;
     }else{
       this.step = 4;
+    }
+  }
+
+  public validateTurns(index:number):void{
+    if(this.workShifts[index].start && !this.workShifts[index].end){
+
+    }else if(!this.workShifts[index].start && this.workShifts[index].end) {
+
     }
   }
 }
