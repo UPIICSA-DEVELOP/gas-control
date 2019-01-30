@@ -5,20 +5,23 @@
  */
 
 import { Injectable } from '@angular/core';
-import {ModalStationComponent} from '@app/core/components/modal-station/modal-station.component';
 import {MatDialog, MatDialogRef} from '@angular/material';
 import {PdfVisorComponent} from '@app/core/components/pdf-visor/pdf-visor.component';
+import {ApiService} from '@app/core/services/api/api.service';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 export class PdfVisorService {
 
   constructor(
-    private _dialog: MatDialog
+    private _dialog: MatDialog,
+    private _api: ApiService
   ) { }
 
-  public open(pdf:any):MatDialogRef<PdfVisorComponent>{
-    return this._dialog.open(PdfVisorComponent,{panelClass:'filter-panel', disableClose: true, data:pdf});
+  public open(fileUrl: string): void{
+    this._api.getFile(fileUrl).subscribe(response => {
+      const obj = window.URL.createObjectURL(new Blob([response], {type: 'application/pdf'}));
+      console.log(obj);
+      return this._dialog.open(PdfVisorComponent,{panelClass:'pdf-visor-panel', data:obj});
+    });
   }
 }

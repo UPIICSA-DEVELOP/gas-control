@@ -45,6 +45,17 @@ body{
   }
 }
 
+.pdf-visor-panel{
+  width: 50vw;
+  height: 90vh;
+  mat-dialog-container{
+    padding: 0 !important;
+  }
+  @media screen and (max-width: 600px){
+    width: 100vw;
+  }
+}
+
 .location-panel{
   width: 40vw;
   mat-dialog-container{

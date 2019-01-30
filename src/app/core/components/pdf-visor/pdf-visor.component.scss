@@ -1,0 +1,8 @@
+#pdf-visor{
+  height: 90vh;
+  overflow: hidden;
+  position: relative;
+  iframe{
+    border: none;
+  }
+}

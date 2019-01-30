@@ -7,7 +7,7 @@
 
 import { Injectable } from '@angular/core';
 import {Observable} from 'rxjs';
-import {HttpClient, HttpParams} from '@angular/common/http';
+import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 import {NetworkService} from '@app/core/services/connection/network.service';
 import {SnackBarService} from '@app/core/services/snackbar/snackbar.service';
 
@@ -200,6 +200,11 @@ export class ApiService {
 
   public createStationTask(task:any):Observable<any>{
     return this._http.post(ApiService.API_URL_COMPLETE + 'createStationTask',task);
+  }
+
+  public getFile(url: string): Observable<any>{
+    const headers = new HttpHeaders().set('Content-Type', 'text/plain; charset=utf-8');
+    return this._http.get(url, {responseType: 'arraybuffer' as 'json', headers: headers});
   }
 
   public getCompleteInfoDashboard(userId: string, refId: string, role: number): Observable<any>{
