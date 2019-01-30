@@ -152,6 +152,9 @@ export class AddGasStationComponent implements OnInit {
   public load: boolean;
   public startDate: any;
   public name: string;
+  public zone: string[];
+  public frequency: string[];
+  public priority: string[];
   private _formImage:FormData;
   private _formSignature: FormData;
   private _formFile: FormData;
@@ -174,6 +177,9 @@ export class AddGasStationComponent implements OnInit {
   ) {
     this.listExist = true;
     this.bloodGroup = Constants.bloodGroup;
+    this.frequency = Constants.Frecuency;
+    this.priority = Constants.Level;
+    this.zone = Constants.Zones;
     this.addImage = false;
     this.addSign = false;
     this.newFile = false;

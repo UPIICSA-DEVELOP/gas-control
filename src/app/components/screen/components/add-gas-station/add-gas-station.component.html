@@ -226,6 +226,9 @@
           <div *ngFor="let representative of listRepresentative;">
             <div (click)="selectLegalRep(representative)" style="cursor: pointer">
               <mat-card class="card">
+                <div class="notValidate" *ngIf="!representative.active">
+                  Validación pendiente
+                </div>
                 <mat-card-content>
                   <div class="image-list">
                     <img class="image-collaborator" *ngIf="representative.profileImage"
@@ -587,7 +590,7 @@
         </mat-card-content>
       </mat-card>
     </div>
-    <div *ngIf="step===3" class="docs">
+    <div *ngIf="step===3" class="calendar">
       <mat-card>
         <mat-card-content>
           <div *ngFor="let task of tasks; let i = index">
@@ -596,9 +599,12 @@
               <div class="priority" *ngIf="task.level===2" style="background-color:#FFD800"></div>
               <div class="priority" *ngIf="task.level===1" style="background-color:#257602"></div>
               <mat-card-content style="display: flex; align-items: center;">
-                <div style="padding: 0 12px">
+                <div class="calendar-task">
                   <input [min]="startDate" [matDatepicker]="picker" style="width: 0;border: 0;" [(ngModel)]="calendar[i]">
-                  <mat-datepicker-toggle matSuffix [for]="picker" *ngIf="!calendar[i]"></mat-datepicker-toggle>
+                  <button mat-icon-button *ngIf="!calendar[i]" (click)="picker.open()">
+                    <mat-icon>update</mat-icon>
+                  </button>
+                  <div *ngIf="!calendar[i]">Asignar</div>
                   <mat-datepicker #picker></mat-datepicker>
                   <div *ngIf="calendar[i]" class="date" (click)="picker.open()">
                     <div>{{calendar[i].getDate()}}</div>
@@ -616,22 +622,13 @@
                     <div *ngIf="calendar[i].getMonth() === 11">Dic</div>
                   </div>
                 </div>
-                <div style="display: flex; flex-direction: column">
+                <div style="display: flex; flex-direction: column; width: 100%;">
                   <span class="task-title">{{task.name}}</span>
-                  <span class="text-task" *ngIf="task.zone===1">Dispensarios</span>
-                  <span class="text-task" *ngIf="task.zone===2">Islas</span>
-                  <span class="text-task" *ngIf="task.zone===3">Tanques</span>
-                  <span class="text-task" *ngIf="task.zone===4">Cuarto de maquinas</span>
-                  <span class="text-task" *ngIf="task.zone===5">Cuarto eléctrico</span>
-                  <span class="text-task" *ngIf="task.zone===6">Cisternas tinacos y bombas de agua</span>
-                  <span class="text-task" *ngIf="task.zone===7">Cuarto de RP</span>
-                  <span class="text-task" *ngIf="task.zone===8">Planta de emergencia</span>
-                  <span class="text-task" *ngIf="task.zone===9">Dispensarios</span>
-                  <span class="text-task" *ngIf="task.zone===10">Sanitarios</span>
-                  <span class="text-task" *ngIf="task.zone===11">Otros</span>
-                  <span class="text-task" *ngIf="task.level===1">Básico</span>
-                  <span class="text-task" *ngIf="task.level===2">Intermedio</span>
-                  <span class="text-task" *ngIf="task.level===3">Critico</span>
+                  <span class="text-task" *ngIf="task.zone">{{zone[task.zone-1]}}</span>
+                  <div class="last-task">
+                    <span *ngIf="task.level">{{priority[task.level-1]}}</span>
+                    <span *ngIf="task.frequency"> {{frequency[task.frequency-1]}}</span>
+                  </div>
                 </div>
               </mat-card-content>
             </mat-card>
