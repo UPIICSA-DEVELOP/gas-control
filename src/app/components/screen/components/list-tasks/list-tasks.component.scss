@@ -30,15 +30,27 @@
        display: flex;
         justify-content: space-between;
         .settings{
+          width: 100%;
           display: flex;
+          .filter-icon{
+            margin: 4px 8px 0 0;
+            color: mat-color($primary);
+          }
+
+          .search-box{
+            width: 0;
+            transition: width 250ms ease-in-out;
+            input{
+              height: 100%;
+              border-bottom: 1px solid rgba(0,0,0, .42);
+            }
+          }
+        }
+        .search{
           button{
             margin: -8px 8px 0 0;
             color: mat-color($primary);
           }
-        }
-        button{
-          margin: -8px 8px 0 0;
-          color: mat-color($primary);
         }
       }
     }

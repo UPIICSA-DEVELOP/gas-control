@@ -4,7 +4,7 @@
  *  Proprietary and confidential
  */
 
-import { Component, OnInit } from '@angular/core';
+import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {DatepickerService} from '@app/core/components/datepicker/datepicker.service';
 import {TaskFilterService} from '@app/core/components/task-filter/task-filter.service';
 
@@ -14,9 +14,11 @@ import {TaskFilterService} from '@app/core/components/task-filter/task-filter.se
   styleUrls: ['./list-tasks.component.scss']
 })
 export class ListTasksComponent implements OnInit {
+  @ViewChild('searchBox') private _searchBox: ElementRef;
   public startDate: string = new Date().toLocaleDateString();
   public endDate: string = new Date().toLocaleDateString();
   public today: boolean = false;
+  public showSearchBox: boolean;
   public typeFilter: string[] = ['Todas','Atrasadas','Terminadas','Vencidas','Incidencias'];
   public filterApply:string;
   public filter: number = 0;
@@ -63,5 +65,17 @@ export class ListTasksComponent implements OnInit {
     this.startDate = new Date().toLocaleDateString();
     this.endDate = new Date().toLocaleDateString();
     this.today = true;
+  }
+
+  public search(): void{
+    if(!this.showSearchBox){
+      this.showSearchBox = !this.showSearchBox;
+      this._searchBox.nativeElement.style.width = '100%';
+    }else{
+      this._searchBox.nativeElement.style.width = '0';
+      setTimeout(() => {
+        this.showSearchBox = !this.showSearchBox;
+      }, 250);
+    }
   }
 }

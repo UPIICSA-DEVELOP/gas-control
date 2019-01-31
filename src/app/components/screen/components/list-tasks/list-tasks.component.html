@@ -10,10 +10,8 @@
       <h4>TAREAS</h4>
       <div class="filters">
         <div class="settings">
-          <button mat-icon-button style="margin: -8px 8px 0 0; color: #0d47a1">
-            <mat-icon>filter_list</mat-icon>
-          </button>
-          <mat-chip-list>
+          <mat-icon class="filter-icon">filter_list</mat-icon>
+          <mat-chip-list *ngIf="!showSearchBox">
             <mat-chip [color]="'primary'" selected (click)="taskFilter()">
               Filtro por tareas:
               <span>&nbsp;{{filterApply}}&nbsp;</span>
@@ -26,10 +24,19 @@
               <mat-icon>edit</mat-icon>
             </mat-chip>
           </mat-chip-list>
+          <div #searchBox class="search-box">
+            <input matInput placeholder="Buscar">
+          </div>
         </div>
-        <button mat-icon-button (click)="resetFilters()">
-          <mat-icon>refresh</mat-icon>
-        </button>
+        <div class="search">
+          <button mat-icon-button *ngIf="!showSearchBox" (click)="resetFilters()">
+            <mat-icon>refresh</mat-icon>
+          </button>
+          <button mat-icon-button (click)="search()">
+            <mat-icon *ngIf="!showSearchBox">search</mat-icon>
+            <mat-icon *ngIf="showSearchBox">close</mat-icon>
+          </button>
+        </div>
       </div>
     </div>
     <mat-card-content>
