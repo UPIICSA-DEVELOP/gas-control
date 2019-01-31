@@ -37,11 +37,11 @@ import { StationProfileComponent } from './components/screen/components/profiles
 import { UserProfileComponent } from './components/screen/components/profiles/user-profile/user-profile.component';
 import { FooterComponent } from './components/screen/components/footer/footer.component';
 import { DirectoryListComponent } from './components/screen/components/directory-list/directory-list.component';
-import { SearchBarComponent } from './components/screen/components/search-bar/search-bar.component';
 import { AddCollaboratorComponent } from './components/screen/components/add-collaborator/add-collaborator.component';
 import { AddGasStationComponent } from './components/screen/components/add-gas-station/add-gas-station.component';
 import { DocumentationComponent } from './components/screen/components/documentation/documentation.component';
 import { ProceduresComponent } from './components/screen/components/procedures/procedures.component';
+import { PrivacyComponent } from './components/screen/child/privacy/privacy.component';
 
 
 @NgModule({
@@ -63,11 +63,11 @@ import { ProceduresComponent } from './components/screen/components/procedures/p
     UserProfileComponent,
     FooterComponent,
     DirectoryListComponent,
-    SearchBarComponent,
     AddCollaboratorComponent,
     AddGasStationComponent,
     DocumentationComponent,
-    ProceduresComponent
+    ProceduresComponent,
+    PrivacyComponent
   ],
   imports: [
     CoreModule,

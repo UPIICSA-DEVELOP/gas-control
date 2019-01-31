@@ -23,6 +23,7 @@ import {DocumentationComponent} from '@app/components/screen/components/document
 import {AddGasStationComponent} from '@app/components/screen/components/add-gas-station/add-gas-station.component';
 import {ProceduresComponent} from '@app/components/screen/components/procedures/procedures.component';
 import {UserProfileService} from '@app/core/services/profiles/user-profile.service';
+import {PrivacyComponent} from '@app/components/screen/child/privacy/privacy.component';
 const URL_BASE = environment.url;
 
 export const appRoutes: Routes = [
@@ -155,6 +156,17 @@ export const appRoutes: Routes = [
     resolve: {data: ResetPassService},
     data:{
       title:'inSpector'
+    }
+  },
+  {
+    path: 'privacidad',
+    component: PrivacyComponent,
+    resolve:{data: AuthService},
+    data:{
+      title:'Privacidad',
+      url: URL_BASE + 'privacidad',
+      robots: 'true',
+      canonical: 'true'
     }
   },
   {
