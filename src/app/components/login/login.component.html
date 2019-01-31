@@ -5,7 +5,12 @@
   -->
 
 <div id="login">
-  <mat-progress-bar [mode]="'indeterminate'" *ngIf="load" class="progress"></mat-progress-bar>
+  <div class="background"></div>
+  <mat-toolbar>
+    <div class="image-logo">
+      <img alt="app-logo" src="../assets/Images/logo.png">
+    </div>
+  </mat-toolbar>
   <mat-card>
     <mat-card-content>
       <div class="head">
@@ -55,11 +60,12 @@
               <mat-checkbox formControlName="rememberPass">Recordarme</mat-checkbox>
             </div>
             <div class="btn-login-email">
-              <button mat-flat-button [disabled]="load" aria-label="LogIn" [color]="'primary'">INICIAR SESIÓN</button>
+              <button mat-flat-button [disabled]="load" aria-label="LogIn">INICIAR SESIÓN</button>
             </div>
           </div>
         </form>
       </div>
     </mat-card-content>
+    <mat-progress-bar [mode]="'indeterminate'" *ngIf="load" class="progress"></mat-progress-bar>
   </mat-card>
 </div>
