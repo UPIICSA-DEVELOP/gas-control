@@ -12,6 +12,7 @@ import {Constants} from '@app/core/constants.core';
 import {UtilitiesService} from '@app/core/utilities/utilities.service';
 import {CookieService} from '@app/core/services/cookie/cookie.service';
 import {LocalStorageService} from '@app/core/services/local-storage/local-storage.service';
+import {SharedService} from '@app/core/services/shared/shared.service';
 
 @Component({
   selector: 'app-directory-list',
@@ -29,7 +30,8 @@ export class DirectoryListComponent implements OnInit, OnChanges,DoCheck {
   constructor(
     private _api:ApiService,
     private _snackBarService: SnackBarService,
-    private _dialogService:DialogService
+    private _dialogService:DialogService,
+    private _sharedService: SharedService
   ) {
     this.user = LocalStorageService.getItem(Constants.UserInSession);
     this.idSession = CookieService.getCookie(Constants.IdSession);
@@ -47,10 +49,11 @@ export class DirectoryListComponent implements OnInit, OnChanges,DoCheck {
   }
 
   ngDoCheck(): void {
-    if (LocalStorageService.getItem('newCollaborator')){
-      LocalStorageService.removeItem('newCollaborator');
-      this.getCollaborators();
-    }
+    this._sharedService.getNotifications().subscribe(response=>{
+      if (response.value) {
+        this.getCollaborators();
+      }
+    })
   }
 
   private getCollaborators():void{

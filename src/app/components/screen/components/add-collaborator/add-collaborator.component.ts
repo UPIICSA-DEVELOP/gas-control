@@ -21,6 +21,7 @@ import {Constants} from '@app/core/constants.core';
 import {User} from 'firebase';
 import {LocalStorageService} from '@app/core/services/local-storage/local-storage.service';
 import {PdfVisorService} from '@app/core/components/pdf-visor/pdf-visor.service';
+import {SharedService, SharedTypeNotification} from '@app/core/services/shared/shared.service';
 
 export interface Person {
   name: string;
@@ -99,7 +100,8 @@ export class AddCollaboratorComponent implements OnInit {
     private _snackBarService: SnackBarService,
     private _formBuilder: FormBuilder,
     private _router: Router,
-    private _pdfVisor: PdfVisorService
+    private _pdfVisor: PdfVisorService,
+    private _sharedService: SharedService
   ) {
     this.changes=false;
     this.roleType = Constants.roles;
@@ -323,7 +325,7 @@ export class AddCollaboratorComponent implements OnInit {
       switch (response.code){
         case 200:
           SessionStorageService.removeItem('refId');
-          LocalStorageService.setItem('newCollaborator', true);
+          this._sharedService.setNotification({value: true, type: SharedTypeNotification.Directory});
           this._router.navigate(['/home']);
           break;
         default:
