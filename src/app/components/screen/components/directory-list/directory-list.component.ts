@@ -12,7 +12,7 @@ import {Constants} from '@app/core/constants.core';
 import {UtilitiesService} from '@app/core/utilities/utilities.service';
 import {CookieService} from '@app/core/services/cookie/cookie.service';
 import {LocalStorageService} from '@app/core/services/local-storage/local-storage.service';
-import {SharedService} from '@app/core/services/shared/shared.service';
+import {SharedNotification, SharedService, SharedTypeNotification} from '@app/core/services/shared/shared.service';
 
 @Component({
   selector: 'app-directory-list',
@@ -49,9 +49,11 @@ export class DirectoryListComponent implements OnInit, OnChanges,DoCheck {
   }
 
   ngDoCheck(): void {
-    this._sharedService.getNotifications().subscribe(response=>{
-      if (response.value) {
-        this.getCollaborators();
+    this._sharedService.getNotifications().subscribe((response: SharedNotification)=>{
+      switch (response.type){
+        case SharedTypeNotification.Directory:
+          this.getCollaborators();
+          break;
       }
     })
   }
