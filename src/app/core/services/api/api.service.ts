@@ -6,7 +6,7 @@
  */
 
 import { Injectable } from '@angular/core';
-import {Observable} from 'rxjs';
+import {forkJoin, Observable} from 'rxjs';
 import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 import {NetworkService} from '@app/core/services/connection/network.service';
 import {SnackBarService} from '@app/core/services/snackbar/snackbar.service';
@@ -211,24 +211,29 @@ export class ApiService {
     return this._http.get(url, {responseType: 'arraybuffer' as 'json', headers: headers});
   }
 
-  public getCompleteInfoDashboard(userId: string, refId: string, role: number): Observable<any>{
+  public getCompleteInfoDashboard(userId: string, refId: string, role: number, onlyOneStationId?: any): Observable<any>{
     let response1 = null;
-    switch (role) {
-      case 1:
-      case 2:
-      case 3:
-        response1 = this.getConsultancyBasicData(userId, refId);
-        break;
-      case 4:
-        response1 = this.getLegalRepresentativeBasicData(refId, userId);
-        break;
-      case 5:
-      case 6:
-      case 7:
-        response1 = this.getStationBasicData(userId);
-        break;
+    let response2 = this.getUtils();
+    if(onlyOneStationId){
+      response1 = this.getStation(onlyOneStationId);
+    }else{
+      switch (role) {
+        case 1:
+        case 2:
+        case 3:
+          response1 = this.getConsultancyBasicData(userId, refId);
+          break;
+        case 4:
+          response1 = this.getLegalRepresentativeBasicData(refId, userId);
+          break;
+        case 5:
+        case 6:
+        case 7:
+          response1 = this.getStationBasicData(userId);
+          break;
+      }
     }
-    return null;
+    return forkJoin(response1, response2);
   }
 
   private initNetwork(): void {
