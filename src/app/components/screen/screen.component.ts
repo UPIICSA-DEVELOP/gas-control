@@ -58,8 +58,14 @@ export class ScreenComponent implements OnInit{
           case 2:
           case 3:
           case 4:
-            this.stationList = response[0].item.stationLites;
-            this.stationActive = this.stationList[0];
+            if(onlyOneStationId){
+              this.stationList = response[0].item;
+              this.stationActive = this.stationList;
+              console.log('station active', this.stationActive);
+            }else{
+              this.stationList = response[0].item.stationLites;
+              this.stationActive = this.stationList[0];
+            }
             break;
           case 5:
           case 6:
