@@ -9,6 +9,7 @@ import {ApiService} from '@app/core/services/api/api.service';
 import {Router} from '@angular/router';
 import {animate, style, transition, trigger} from '@angular/animations';
 import {PdfVisorService} from '@app/core/components/pdf-visor/pdf-visor.service';
+import {Constants} from '@app/core/constants.core';
 
 @Component({
   selector: 'app-procedures',
@@ -30,11 +31,14 @@ import {PdfVisorService} from '@app/core/components/pdf-visor/pdf-visor.service'
 })
 export class ProceduresComponent implements OnInit {
   public procedures: any;
+  public procedureTitle: any;
   constructor(
     private _api: ApiService,
     private _route: Router,
     private _pdf: PdfVisorService
-  ) { }
+  ) {
+    this.procedureTitle = Constants.Files;
+  }
 
   ngOnInit() {
     this.getProcedures();
@@ -44,6 +48,9 @@ export class ProceduresComponent implements OnInit {
     this._route.navigate(['/home']);
   }
 
+  /*
+  * TODO: Implements pdf visor after first launch
+  * */
   public openFile(file:any):void{
     this._pdf.open({file: file, url: file, notIsUrl: false});
   }
