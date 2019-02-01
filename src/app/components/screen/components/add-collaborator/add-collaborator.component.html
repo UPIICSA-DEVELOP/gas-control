@@ -74,7 +74,7 @@
             </mat-form-field>
           </div>
           <mat-form-field class="number">
-            <input formControlName="phoneNumber" matInput placeholder="Número de Celular" required type="text"
+            <input formControlName="phoneNumber" matInput placeholder="Número celular" required type="text"
                    aria-label="New collaborator cellphone number" #phoneNumber>
             <mat-error *ngIf="newPerson.controls['phoneNumber'].hasError('required')">
               Este campo es obligatorio

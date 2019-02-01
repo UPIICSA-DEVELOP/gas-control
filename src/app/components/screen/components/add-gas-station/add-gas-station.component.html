@@ -227,7 +227,7 @@
             <div (click)="selectLegalRep(representative)" style="cursor: pointer">
               <mat-card class="card">
                 <div class="notValidate" *ngIf="!representative.active">
-                  Validación pendiente
+                  <div class="text-validate">Validación pendiente</div>
                 </div>
                 <mat-card-content>
                   <div class="image-list">
