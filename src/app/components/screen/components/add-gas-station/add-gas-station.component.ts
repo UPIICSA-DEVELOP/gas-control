@@ -5,7 +5,6 @@
  */
 
 import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
-import {animate, keyframes, query, stagger, style, transition, trigger} from '@angular/animations';
 import {ApiService} from '@app/core/services/api/api.service';
 import {ApiLoaderService} from '@app/core/services/api/api-loader.service';
 import {Router} from '@angular/router';
@@ -21,8 +20,10 @@ import {ModalStationService} from '@app/core/components/modal-station/modal-stat
 import {UploadFileResponse} from '@app/core/components/upload-file/upload-file.component';
 import {DialogService} from '@app/core/components/dialog/dialog.service';
 import {PdfVisorOptions, PdfVisorService} from '@app/core/components/pdf-visor/pdf-visor.service';
+import {MatDialogRef} from '@angular/material';
 
 interface Person {
+  id?: string;
   name: string;
   lastName: string
   email: string;
@@ -38,6 +39,7 @@ interface Person {
 }
 
 interface Station {
+  id?: string;
   businessName: string;
   rfc: string;
   crePermission?: string;
@@ -82,38 +84,13 @@ interface Task {
 @Component({
   selector: 'app-add-gas-station',
   templateUrl: './add-gas-station.component.html',
-  styleUrls: ['./add-gas-station.component.scss'],
-  animations: [
-    trigger('fadeInAnimation', [
-      transition(':enter', [
-        query('#create-station', style({opacity: 0, background: 'transparent'}), {optional: true}),
-        query('#create-station', stagger('10ms', [
-          animate('.2s ease-out', keyframes([
-            style({opacity: 0, background: 'transparent', offset: 0}),
-            style({opacity: .5, background: 'rgba(255, 255, 255, .5)', offset: 0.5}),
-            style({opacity: 1, background: 'rgba(255, 255, 255, 1)', offset: 1.0}),
-          ]))]), {optional: true})
-      ]),
-      transition(':leave', [
-        query('#create-station', style({opacity: 1, background: 'rgba(255, 255, 255, 1)'}), {optional: true}),
-        query('#create-station', stagger('10ms', [
-          animate('.2s ease-in', keyframes([
-            style({opacity: 1, background: 'rgba(255, 255, 255, 1)', offset: 0}),
-            style({opacity: .5, background: 'rgba(255, 255, 255, .5)', offset: 0.5}),
-            style({opacity: 0, background: 'transparent', offset: 1.0}),
-          ]))]), {optional: true})
-      ])
-    ])
-  ],
-  host: {'[@fadeInAnimation]': ''}
+  styleUrls: ['./add-gas-station.component.scss']
 })
 export class AddGasStationComponent implements OnInit {
   @ViewChild('phoneNumber') private _phoneNumberInput: ElementRef;
-  @ViewChild('stepper') private _stepper;
   public step: number;
   public utils: any[];
   public tasks: any[];
-  public legalRepAsign: boolean;
   public manger: Person;
   public mangerInformation: PersonInformation;
   public legalRepresentative: Person;
@@ -152,10 +129,13 @@ export class AddGasStationComponent implements OnInit {
   public bloodTypeTwo: string;
   public load: boolean;
   public startDate: any;
-  public name: string;
   public zone: string[];
   public frequency: string[];
   public priority: string[];
+  public legalId: string;
+  public managerId: string;
+  public legalName: string;
+  public managerName: string;
   private _formImage:FormData;
   private _formSignature: FormData;
   private _formFile: FormData;
@@ -175,7 +155,8 @@ export class AddGasStationComponent implements OnInit {
     private _locationService: LocationService,
     private _modalStation: ModalStationService,
     private _dialogService: DialogService,
-    private _pdfVisor: PdfVisorService
+    private _pdfVisor: PdfVisorService,
+    private _dialogRef: MatDialogRef<AddGasStationComponent>
   ) {
     this.listExist = true;
     this.bloodGroup = Constants.bloodGroup;
@@ -194,8 +175,8 @@ export class AddGasStationComponent implements OnInit {
     this.calendar=[];
     this.protocol = 'http://';
     this.protocolTwo = 'http://';
-    this.legalRepAsign = false;
     this.startDate = new Date();
+    this.step = 0;
   }
 
   ngOnInit() {
@@ -204,8 +185,7 @@ export class AddGasStationComponent implements OnInit {
     this.initRepresentativeForm();
     this.user = LocalStorageService.getItem(Constants.UserInSession);
     this.getUtilities();
-    this.step = 0;
-    this.dispensers.push({hoses: undefined, identifier: undefined, magna: undefined, premium: undefined, diesel: undefined});
+    this.dispensers.push({hoses: undefined, identifier: undefined, magna: false, premium: false, diesel: false});
     this.tanks.push({capacity: undefined, fuelType: undefined});
     this.workShifts.push({start: undefined, end: undefined});
     this.getListRepresentative();
@@ -226,29 +206,6 @@ export class AddGasStationComponent implements OnInit {
     });
   }
 
-  public changeStep(step: any) {
-    switch (step.previouslySelectedIndex) {
-      case 0:
-        this.step = step.selectedIndex;
-        break;
-      case 1:
-        this.step = step.selectedIndex;
-        break;
-      case 2:
-        this.step = step.selectedIndex;
-        break;
-      case 3:
-        this.step = step.selectedIndex;
-        break;
-      case 4:
-        this.step = step.selectedIndex;
-        break;
-      default:
-        this.step = 1;
-        break;
-    }
-  }
-
   private initStationForm(): void {
     this.newStation = this._formBuilder.group({
       businessName: ['', [Validators.required]],
@@ -258,6 +215,8 @@ export class AddGasStationComponent implements OnInit {
       email: ['', [Validators.required, Validators.email]],
       address: ['', [Validators.required]],
       phoneNumber: ['', [Validators.required, Validators.minLength(8), Validators.maxLength(13)]],
+      legalRepresentative:['',[Validators.required]],
+      manager:['',[Validators.required]],
       workers: ['', []],
       monitoringWells: ['', []],
       observationWells: ['', []]
@@ -306,13 +265,13 @@ export class AddGasStationComponent implements OnInit {
     if(!remove){
       switch (type) {
         case 1:
-          this.workShifts.push({start: '', end: ''});
+          this.workShifts.push({start: undefined, end: undefined});
           break;
         case 2:
-          this.tanks.push({capacity: '', fuelType: 0});
+          this.tanks.push({capacity: undefined, fuelType: undefined});
           break;
         case 3:
-          this.dispensers.push({hoses: '', identifier: '', magna: false, premium: false, diesel: false});
+          this.dispensers.push({hoses: undefined, identifier: undefined, magna: false, premium: false, diesel: false});
           break;
       }
     }else {
@@ -466,7 +425,7 @@ export class AddGasStationComponent implements OnInit {
     });
   }
 
-  private getListRepresentative():void{
+  public getListRepresentative():void{
     this._api.listPersonStationByConsultancy(LocalStorageService.getItem(Constants.UserInSession).refId).subscribe(response=>{
       switch (response.code){
         case 200:
@@ -488,7 +447,10 @@ export class AddGasStationComponent implements OnInit {
         return;
       }
       return;
+    }else if(!this.validateStationArrays()){
+      return;
     }else{
+      this.clearStationArray();
       this.station = {
         location: (this.latLng?this.latLng:undefined),
         address: data.address,
@@ -501,24 +463,28 @@ export class AddGasStationComponent implements OnInit {
         type: this.stationType.id,
         observationWells:(data.observationWells?data.observationWells:undefined),
         monitoringWells:(data.monitoringWells?data.monitoringWells:undefined),
-        workShifts: (this.workShifts[0].start?this.workShifts:undefined),
-        dispensers: (this.dispensers[0].hoses?this.dispensers:undefined),
-        fuelTanks: (this.tanks[0].capacity?this.tanks:undefined),
+        workShifts: (this.workShifts.length>0? this.workShifts:undefined),
+        dispensers: (this.dispensers.length>0?this.dispensers:undefined),
+        fuelTanks: (this.tanks.length>0?this.tanks:undefined),
         idConsultancy: LocalStorageService.getItem(Constants.UserInSession).refId,
         rfc: data.rfc,
-        progress: 0
+        progress: 0,
+        idLegalRepresentative: this.legalId,
+        legalRepresentativeName: this.legalName,
+        idManager: this.managerId,
+        managerName: this.managerName
       };
-      this.step=1;
-      this._stepper.next();
+      this.createStation();
     }
   }
 
   public selectLegalRep(person: any){
-    this.station.idLegalRepresentative = person.id;
-    this.station.legalRepresentativeName = person.name+' '+ person.lastName;
-    this.name = this.station.legalRepresentativeName;
-    this.legalRepAsign = true;
-    this._stepper.next();
+    this.legalId = person.id;
+    this.legalName = person.name+' '+ person.lastName;
+    this.newStation.patchValue({
+      legalRepresentative: this.legalName
+    });
+    this.step = 0
   }
 
   public uploadGenericFile(type:number, isManager?:boolean): void{
@@ -599,7 +565,11 @@ export class AddGasStationComponent implements OnInit {
               break;
           }
         }
-        this.validateLegal(this.newLegalRep.value);
+        if(isManager){
+          this.validateManager(this.newManager.value);
+        }else{
+          this.validateLegal(this.newLegalRep.value);
+        }
       }
     });
   }
@@ -641,10 +611,7 @@ export class AddGasStationComponent implements OnInit {
         contactName:(data.contactName?data.contactName:undefined),
         benzene:(this.file?this.file:undefined)
       };
-      this.name = data.name+' '+data.lastName;
-      this.legalRepAsign = true;
-      this._stepper.next();
-      this.step=2;
+      this.createLegal();
     }
   }
 
@@ -685,23 +652,29 @@ export class AddGasStationComponent implements OnInit {
         contactName:(data.contactName?data.contactName:undefined),
         benzene:(this.fileTwo?this.fileTwo:undefined)
       };
-      this.step=4;
-      this._stepper.next();
+      this.createManager();
     }
   }
 
   public createLegal():void{
-    if(this.legalRepresentative){
+    if(!this.legalRepresentative.id){
       this._api.createReferencedPerson(this.legalRepresentative).subscribe(response=>{
         switch (response.code){
           case 200:
+            this.legalRepresentative.id = response.item.id;
             this.legalRepresentativeInformation.id = response.item.id;
-            this.station.idLegalRepresentative = response.item.id;
-            this.station.legalRepresentativeName = response.item.name + ' ' + response.item.lastName;
+            this.legalId = response.item.id;
+            this.legalName = response.item.name + ' ' + response.item.lastName;
             this._api.savePersonInformation(this.legalRepresentativeInformation).subscribe(response=>{
               switch (response.code){
                 case 200:
-                  this.createManager();
+                  this.newStation.patchValue({
+                    legalRepresentative: this.legalName
+                  });
+                  this._dialogService.confirmDialog(
+                    'Información',
+                    'Hemos enviado un email de validación de cuenta a: ' + this.legalRepresentative.email,
+                    'ACEPTAR').afterClosed().subscribe(response=>{this.step = 0; this.listExist = true;});
                   break;
               }
             });
@@ -709,56 +682,129 @@ export class AddGasStationComponent implements OnInit {
         }
       })
     }else{
-      this.createManager();
+      this._api.updatePersonWithDifferentEmail(this.legalRepresentative).subscribe(response =>{
+        switch (response.code){
+          case 200:
+            this.legalName = response.item.name + ' ' + response.item.lastName;
+            this._api.savePersonInformation(this.legalRepresentativeInformation).subscribe(response=>{
+              switch (response.code){
+                case 200:
+                  this.newStation.patchValue({
+                    legalRepresentative: this.legalName
+                  });
+                  this._dialogService.confirmDialog(
+                    'Información',
+                    'Hemos enviado un email de validación de cuenta a: ' + this.legalRepresentative.email,
+                    'ACEPTAR').afterClosed().subscribe(response=>{this.step = 0; this.listExist = true;});
+                  break;
+              }
+            });
+            break;
+        }
+      });
     }
   }
 
   public createManager():void{
-    this._api.createReferencedPerson(this.manger).subscribe(response=>{
-      switch (response.code){
-        case 200:
-          this.mangerInformation.id = response.item.id;
-          this.station.idManager = response.item.id;
-          this.station.managerName = response.item.name + ' ' + response.item.lastName;
-          this._api.savePersonInformation(this.mangerInformation).subscribe(response=>{
-            switch (response.code){
-              case 200:
-                this.createStation();
-                break;
-            }
-          });
-          break;
-      }
-    })
+    if (!this.manger.id){
+      this._api.createReferencedPerson(this.manger).subscribe(response=>{
+        switch (response.code){
+          case 200:
+            this.manger.id = response.item.id;
+            this.mangerInformation.id = response.item.id;
+            this.managerId = response.item.id;
+            this.managerName = response.item.name + ' ' + response.item.lastName;
+            this._api.savePersonInformation(this.mangerInformation).subscribe(response=>{
+              switch (response.code){
+                case 200:
+                  this.newStation.patchValue({
+                    manager: this.managerName
+                  });
+                  this._dialogService.confirmDialog(
+                    'Información',
+                    'Hemos enviado un email de validación de cuenta a: ' + this.manger.email,
+                    'ACEPTAR').afterClosed().subscribe(response=>{this.step = 0;});
+                  break;
+              }
+            });
+            break;
+        }
+      });
+    }else{
+      this._api.updatePersonWithDifferentEmail(this.manger).subscribe(response=>{
+        switch (response.code){
+          case 200:
+            this.managerName = response.item.name + ' ' + response.item.lastName;
+            this._api.savePersonInformation(this.mangerInformation).subscribe(response=>{
+              switch (response.code){
+                case 200:
+                  this.newStation.patchValue({
+                    manager: this.managerName
+                  });
+                  this._dialogService.confirmDialog(
+                    'Información',
+                    'Hemos enviado un email de validación de cuenta a: ' + this.manger.email,
+                    'ACEPTAR').afterClosed().subscribe(response=>{this.step = 0;});
+                  break;
+              }
+            });
+             break;
+        }
+      })
+    }
   }
 
   private createStation():void{
     this._api.createStation(this.station).subscribe(response=>{
       switch (response.code){
         case 200:
-          this.createStationTasks(response.item.id);
+          this.station.id = response.item.id;
+          this.step = 3;
           break;
       }
     })
   }
 
   public validateEmailExist(isManager: boolean):void{
-    let email: string;
+    let email: any = {
+      email: ''
+    };
     if (isManager){
-      email=this.newManager.controls['email'].value;
+      email.email = this.newManager.controls['email'].value;
     }else{
-      email=this.newLegalRep.controls['email'].value;
+      email.email = this.newLegalRep.controls['email'].value;
     }
     this._api.personExists(email).subscribe(response=>{
       switch (response.code){
         case 200:
-          this._dialogService.alertDialog('Información',
-            'El Email que está tratando de usar ya ha sido asociado a un usuario',
-            'ACEPTAR');
           if (isManager){
-            this.newManager.controls['email'].setErrors({emailUsed: true});
+            if(this.manger){
+              if(email.email !== this.manger.email){
+                this._dialogService.alertDialog('Información',
+                  'El Email que está tratando de usar ya ha sido asociado a un usuario',
+                  'ACEPTAR');
+                this.newManager.controls['email'].setErrors({emailUsed: true});
+              }
+            }else{
+              this._dialogService.alertDialog('Información',
+                'El Email que está tratando de usar ya ha sido asociado a un usuario',
+                'ACEPTAR');
+              this.newManager.controls['email'].setErrors({emailUsed: true});
+            }
           }else{
-            this.newLegalRep.controls['email'].setErrors({emailUsed: true});
+            if(this.legalRepresentative){
+              if(email.email !== this.legalRepresentative.email){
+                this._dialogService.alertDialog('Información',
+                  'El Email que está tratando de usar ya ha sido asociado a un usuario',
+                  'ACEPTAR');
+                this.newLegalRep.controls['email'].setErrors({emailUsed: true});
+              }
+            }else{
+              this._dialogService.alertDialog('Información',
+                'El Email que está tratando de usar ya ha sido asociado a un usuario',
+                'ACEPTAR');
+              this.newLegalRep.controls['email'].setErrors({emailUsed: true});
+            }
           }
           break;
         default:
@@ -768,18 +814,41 @@ export class AddGasStationComponent implements OnInit {
   }
 
   public closeAddStation():void{
-    this._dialogService.confirmDialog(
-      '¿Desea salir sin guardar cambios?',
-      '',
-      'ACEPTAR',
-      'CANCELAR'
-    ).afterClosed().subscribe(response=>{
-      switch (response.code){
-        case 1:
-          this._router.navigate(['/home']);
-          break;
-      }
-    })
+    switch (this.step){
+      case 0:
+        this._dialogService.confirmDialog(
+          '¿Desea salir sin guardar cambios?',
+          '',
+          'ACEPTAR',
+          'CANCELAR'
+        ).afterClosed().subscribe(response=>{
+          switch (response.code){
+            case 1:
+              this._dialogRef.close();
+              break;
+          }
+        });
+        break;
+      case 1:
+          this.step = 0;
+        break;
+      case 2:
+        this.step = 0;
+         break;
+      case 3:
+        this._dialogService.confirmDialog(
+          'Información',
+          'Aún no se ha calendarizado las tareas de la estación. ¿Desea hacerlo ahora?',
+          'SI',
+          'MÁS TARDE').afterClosed().subscribe(response=>{
+            switch (response.code){
+              case -1:
+                this._dialogRef.close();
+                break;
+            }
+        });
+         break;
+    }
   }
 
   private createStationTasks(stationId: string):void{
@@ -795,22 +864,20 @@ export class AddGasStationComponent implements OnInit {
       this.calendar[d] = Number(year+''+(month.length<2?'0'+month:month)+''+(day.length<2?'0'+day:day));
       editedTasks.push({startDate: this.calendar[d], differenceOfDays:(this.calendar[d]-today), type: this.tasks[d].id});
     }
-    for (let i = 0; i<this.tasks.length; i++){
-      let task: Task = {
-        creationDate: 0,
-        stationId: stationId,
-        progress: 0,
-        status: 2,
-        editedTasks: editedTasks
-      };
-      this._api.createStationTask(task).subscribe(response=>{
-        switch (response.code){
-          case 200:
-            this._router.navigate(['/home'],{queryParams:{station: stationId}});
-            break;
-        }
-      })
-    }
+    let task: Task = {
+      creationDate: 0,
+      stationId: stationId,
+      progress: 0,
+      status: 2,
+      editedTasks: editedTasks
+    };
+    this._api.createStationTask(task).subscribe(response=>{
+      switch (response.code){
+        case 200:
+          this._dialogRef.close();
+          break;
+      }
+    });
   }
 
   public validateCompleteCalendar():void{
@@ -818,15 +885,7 @@ export class AddGasStationComponent implements OnInit {
       this._snackBarService.openSnackBar('Por favor, calendarize todas las tareas','OK', 3000);
       return;
     }else{
-      this.step = 4;
-    }
-  }
-
-  public validateTurns(index:number):void{
-    if(this.workShifts[index].start && !this.workShifts[index].end){
-
-    }else if(!this.workShifts[index].start && this.workShifts[index].end) {
-
+      this.createStationTasks(this.station.id);
     }
   }
 
@@ -846,5 +905,57 @@ export class AddGasStationComponent implements OnInit {
       }
     }
     this._pdfVisor.open(options);
+  }
+
+  public openPersonForm(isManager: boolean):void{
+    if(isManager){
+      this.step = 2;
+    }else{
+      this.getListRepresentative();
+      this.step=1;
+    }
+  }
+
+  private validateStationArrays():boolean{
+    for (let i = 0; i<this.workShifts.length; i++){
+      if((this.workShifts[i].start && !this.workShifts[i].end) || (!this.workShifts[i].start && this.workShifts[i].end)){
+        this._snackBarService.openSnackBar('Complete los campos para el turno ' + (i+1),'OK',3000);
+        return false;
+      }
+    }
+    for(let j = 0; j<this.tanks.length; j++){
+      if((!this.tanks[j].capacity && this.tanks[j].fuelType) || (this.tanks[j].capacity && !this.tanks[j].fuelType)){
+        this._snackBarService.openSnackBar('Complete los campos para el tanque ' + (j+1),'OK',3000);
+        return false;
+      }
+    }
+    for (let k = 0; k<this.dispensers.length; k++){
+      if((this.dispensers[k].hoses || this.dispensers[k].identifier)&&(this.dispensers[k].magna === false && this.dispensers[k].premium === false && this.dispensers[k].diesel === false)){
+        this._snackBarService.openSnackBar('Complete los campos para el dispensario ' + (k+1),'OK',3000);
+        return false;
+      }else if((!this.dispensers[k].hoses || !this.dispensers[k].identifier)&&(this.dispensers[k].magna === true || this.dispensers[k].premium === true || this.dispensers[k].diesel === true)){
+        this._snackBarService.openSnackBar('Complete los campos para el dispensario ' + (k+1),'OK',3000);
+        return false;
+      }
+    }
+    return true;
+  }
+
+  private clearStationArray():void{
+    for (let i = 0; i<this.workShifts.length; i++){
+      if(!this.workShifts[i].start && !this.workShifts[i].end){
+        this.workShifts.splice(i, 1);
+      }
+    }
+    for(let j = 0; j<this.tanks.length; j++){
+      if(!this.tanks[j].capacity && !this.tanks[j].fuelType){
+        this.tanks.splice(j,1);
+      }
+    }
+    for (let k = 0; k<this.dispensers.length; k++){
+      if(!this.dispensers[k].hoses && !this.dispensers[k].identifier && this.dispensers[k].magna === false && this.dispensers[k].premium === false && this.dispensers[k].diesel === false){
+        this.dispensers.splice(k, 1);
+      }
+    }
   }
 }

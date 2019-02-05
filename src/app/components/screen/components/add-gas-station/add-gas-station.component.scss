@@ -6,11 +6,12 @@
 @import "../../../../../styles/colors";
 #create-station{
   position: absolute;
-  width: 100vw;
-  height: 100vh;
+  width: 40vw;
+  height: 80vh;
   background-color: #FFFFFF;
   display: flex;
   .background{
+    display: none;
     width: 600px;
     height: 300px;
     position: absolute;
@@ -24,27 +25,18 @@
       height: 150px;
     }
   }
-  .steps{
-    width: 50%;
-    height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-  }
   .forms-and-lists{
-    width: 50%;
+    width: 100%;
     height: 100%;
-    z-index: 1;
     overflow: auto;
     .form-station{
       display: flex;
       align-items: center;
       margin: 24px;
       flex-direction: column;
-      mat-card{
+      .station{
         height: auto;
-        mat-card-content{
+        .station-content{
           text-align: center;
           padding: 0 12px;
         }
@@ -55,9 +47,9 @@
       align-items: center;
       margin: 24px;
       flex-direction: column;
-      mat-card{
+      .new-person{
         height: auto;
-        mat-card-content{
+        .new-person-content{
           text-align: center;
           padding: 28px;
         }
@@ -68,7 +60,8 @@
       align-items: center;
       margin: 24px;
       flex-direction: column;
-      height: 90%;
+      height: 95%;
+      position: relative;
       .list{
         width: 90%;
         height: 100%;
@@ -86,37 +79,6 @@
       align-items: center;
       margin: 24px;
       flex-direction: column;
-    }
-    .done{
-      display: flex;
-      align-items: center;
-      flex-direction: column;
-      justify-content: center;
-      margin: 24px;
-      height: 90%;
-      .card{
-        width: 90%;
-        height: 100%;
-        .content{
-          height: 100%;
-          display: flex;
-          flex-direction: column;
-          justify-content: center;
-          align-items: center;
-          .head-done{
-            font-weight: 600;
-            font-size: 32px;
-            margin: 8px 0;
-            color: mat-color($primary);
-          }
-          .text-done{
-            font-weight: 600;
-            font-size: 16px;
-            margin: 8px 0;
-            color: #707070;
-          }
-        }
-      }
     }
   }
   .modal{
@@ -338,8 +300,9 @@
 
   .add-legal{
     position: absolute;
-    left: 16px;
-    bottom: 16px;
+    left: 0;
+    bottom: 0;
+    margin: 24px;
     z-index: 4;
     button{
       width: 56px;
@@ -387,7 +350,6 @@
     color: #707070;
     padding: 0 12px;
     cursor: pointer;
-    margin-top: -16px;
   }
   .task-title{
     margin: 4px 0;
@@ -440,5 +402,16 @@
       font-weight: 600;
       margin: 16px;
     }
+  }
+
+  .pointer{
+    cursor: pointer;
+  }
+
+  .content-modal{
+    height: 100%;
+  }
+  .modal-head{
+    padding: 0 24px;
   }
 }

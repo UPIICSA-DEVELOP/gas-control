@@ -13,6 +13,7 @@ import {Router} from '@angular/router';
 import {animate, keyframes, query, stagger, state, style, transition, trigger} from '@angular/animations';
 import {LocalStorageService} from '@app/core/services/local-storage/local-storage.service';
 import {UtilitiesService} from '@app/core/utilities/utilities.service';
+import {AddStationService} from '@app/components/screen/components/add-gas-station/add-station.service';
 
 @Component({
   selector: 'app-station-list',
@@ -51,7 +52,8 @@ export class StationListComponent implements OnInit, DoCheck {
   constructor(
     private _api: ApiService,
     private _dialogService: DialogService,
-    private _router: Router
+    private _router: Router,
+    private _addStation: AddStationService
   ) {
   }
 
@@ -140,5 +142,10 @@ export class StationListComponent implements OnInit, DoCheck {
       default:
         break;
     }
+  }
+  public addStation():void{
+    this._router.navigate(['/home']).then(() => {
+      this._addStation.open();
+    });
   }
 }
