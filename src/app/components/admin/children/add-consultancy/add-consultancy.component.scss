@@ -70,6 +70,18 @@
         overflow: hidden;
       }
 
+      .container-forms{
+        width: 100%;
+        height: inherit;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        flex-flow: wrap;
+        margin: 16px 0;
+        box-sizing: content-box;
+      }
+
       .progress{
         position: fixed;
         right: 0;
@@ -82,8 +94,10 @@
       }
 
       mat-card{
+        width: 100%;
         overflow: hidden;
         padding: 0;
+        margin: 16px 0;
       }
 
       mat-card-content{

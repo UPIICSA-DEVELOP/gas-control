@@ -79,16 +79,15 @@ export class AuthService implements Resolve<any>{
       maxAge: time
     });
     if(user.signature){
-      if(user.role===0){
+      this._router.navigate(['/home']).then(() => {});
+    }else{
+      if(user.role===7){
         this._router.navigate(['/admin']).then(() => {});
       }else{
-        this._router.navigate(['/home']).then(() => {});
-      }
-    }else{
-      this._dialog.alertDialog(
-        'Información',
-        'Para continuar es necesario registrar su firma digital',
-        'REGISTRAR').afterClosed().subscribe(response =>{
+        this._dialog.alertDialog(
+          'Información',
+          'Para continuar es necesario registrar su firma digital',
+          'REGISTRAR').afterClosed().subscribe(response =>{
           LocalStorageService.setItem('notSign', true);
           switch (user.role) {
             case 1:
@@ -103,7 +102,8 @@ export class AuthService implements Resolve<any>{
               this._router.navigate(['/profile/user']);
               break;
           }
-      })
+        })
+      }
     }
   }
 
@@ -124,6 +124,7 @@ export class AuthService implements Resolve<any>{
   }
 
   private goToHome(url: string): void{
+    const user = LocalStorageService.getItem(Constants.UserInSession);
     switch (url){
       case '/':
         if(AuthService.validateUser()){
@@ -135,14 +136,36 @@ export class AuthService implements Resolve<any>{
           case /home/.test(url):
             if(!AuthService.validateUser()){
               this._router.navigate(['/']).then();
+            }else{
+              if(user.role===7){
+                this._router.navigate(['/admin']).then(() => {});
+              }
             }
             break;
           case /profile/.test(url):
             if(!AuthService.validateUser()){
               this._router.navigate(['/']).then();
+            }else{
+              if(user.role===7){
+                this._router.navigate(['/admin']).then(() => {});
+              }
             }
             break;
-          }
+          case /add-station/.test(url):
+            if(!AuthService.validateUser()){
+              this._router.navigate(['/']).then();
+            }else{
+              if(user.role===7){
+                this._router.navigate(['/admin']).then(() => {});
+              }
+            }
+            break;
+          case /admin/.test(url):
+            if(!AuthService.validateUser()){
+              this._router.navigate(['/']).then();
+            }
+            break;
+        }
         break;
     }
   }
@@ -158,7 +181,11 @@ export class AuthService implements Resolve<any>{
               role: response.item.role,
               refId: (response.item.refId?response.item.refId:null)
             });
-            this._router.navigate(['/home']).then();
+            if(response.item.role===7){
+              this._router.navigate(['/admin']).then();
+            }else{
+              this._router.navigate(['/home']).then();
+            }
           }else{
             SessionStorageService.setItem(Constants.IdSession, response.item);
             this._router.navigate(['/home/updatepassword']).then();

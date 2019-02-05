@@ -20,7 +20,18 @@ export class UploadFileService {
     return new Observable((observable) => {
       this._api.uploadFileToBlob(formData).subscribe((response) => {
         observable.next(response);
+        observable.complete();
       });
     });
   }
+
+  delete(blobName: string): Observable<any>{
+    return new Observable((observable) => {
+      this._api.deleteFileToBlob(blobName).subscribe((response) => {
+        observable.next(response);
+        observable.complete();
+      });
+    });
+  }
+
 }

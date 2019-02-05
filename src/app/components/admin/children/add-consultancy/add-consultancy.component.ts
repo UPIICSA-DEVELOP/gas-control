@@ -45,7 +45,7 @@ export class AddConsultancyComponent implements OnInit {
   public showOwnerForm: boolean;
   public showConsultancyForm: boolean;
   public doneStep: boolean;
-  public infoBc: any;
+  public testUrl: any;
   private _location: any;
   private _ownerInfo: Person;
   private _consultancyInfo: any;
@@ -83,16 +83,16 @@ export class AddConsultancyComponent implements OnInit {
     this._apiLoader.getProgress().subscribe(load => {this.load = load});
     this.showOwnerForm = true;
     this.ownerForm = this._formBuilder.group({
-      name: ['aaaaa', [Validators.required]],
-      lastName: ['aaaaa', [Validators.required]],
-      email: ['aaaaa', [Validators.required, Validators.email]],
-      country:  ['aaaaa', [Validators.required]],
-      countryCode:  ['aaaaa', [Validators.required]],
-      phoneNumber: ['aaaaa', [Validators.required]],
+      name: ['', [Validators.required]],
+      lastName: ['', [Validators.required]],
+      email: ['', [Validators.required, Validators.email]],
+      country:  ['', [Validators.required]],
+      countryCode:  ['', [Validators.required]],
+      phoneNumber: ['', [Validators.required]],
       rol: [1, [Validators.required]],
-      jobTitle: ['aaaaa', [Validators.required]],
-      protocol: ['aaaaa', [Validators.required]],
-      website: ['aaaaa', [Validators.required]]
+      jobTitle: ['', [Validators.required]],
+      protocol: [''],
+      website: ['', [Validators.pattern(Constants.REGEX_WEBSITE)]]
     });
   }
 
@@ -331,18 +331,27 @@ export class AddConsultancyComponent implements OnInit {
   }
 
   public makeBusinessCard(): void{
-    const data = {
+    /*const data = {
       company: this._consultancyInfo.businessName,
       name: this._ownerInfo.name + ' ' + this._ownerInfo.lastName,
       workPosition: this._ownerInfo.jobTitle,
       phone: this._ownerInfo.countryCode + this._ownerInfo.phoneNumber,
       email: this._ownerInfo.email,
       website: this._ownerInfo.website
+    };*/
+    const data = {
+      company: 'ALX Developer',
+      name: 'Alejandro Lopez',
+      workPosition: 'CEO and Developer',
+      phone: '556518512',
+      email: 'program.alopez@gmail.com',
+      website: 'https://alx-developer.herokuapp.com'
     };
     this._api.businessCardService(data).subscribe(response => {
       const reader = new FileReader();
       reader.readAsDataURL(response);
       reader.onloadend = () => {
+        this.testUrl = reader.result;
         console.log(reader.result);
       }
     });

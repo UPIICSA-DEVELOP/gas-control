@@ -1,217 +1,179 @@
 <div id="list-collaborators">
   <mat-toolbar color="primary">
-    <h3>Lista de colaboradores</h3>
-    <div class="buttons">
-      <button mat-icon-button matTooltip="Añadir Colaborador"><mat-icon>person_add</mat-icon></button>
-      <button mat-icon-button matTooltip="Cerrar" (click)="close()"><mat-icon>close</mat-icon></button>
+    <div class="header-list" *ngIf="!addCollaboratorVisible">
+      <h3>Lista de colaboradores</h3>
+      <div class="buttons">
+        <button mat-icon-button matTooltip="Añadir Colaborador" (click)="showCreateCollaborator()"><mat-icon>person_add</mat-icon></button>
+        <button mat-icon-button matTooltip="Cerrar" (click)="close()"><mat-icon>close</mat-icon></button>
+      </div>
+    </div>
+    <div class="header-collaborator" *ngIf="addCollaboratorVisible">
+      <h3>Añadir nuevo colaborador</h3>
+      <div class="buttons">
+        <button mat-icon-button matTooltip="Cerrar" (click)="close()"><mat-icon>close</mat-icon></button>
+      </div>
     </div>
   </mat-toolbar>
 
 
 
-  <div class="list">
-    <div class="item">
-      <div class="image">
-        <img src="https://www.maplander.com/favicon.png">
-      </div>
-      <div class="info">
-        <h3>A falsis, fraticinida domesticus hydra.</h3>
-        <p>Heu. Pol, buxum! Castus historias ducunt ad nix.</p>
-        <p>Eheu, compater! Absolutio resisteres, tanquam regius tus.</p>
-      </div>
-      <div class="actions">
-        <button mat-icon-button><mat-icon>delete</mat-icon></button>
-        <button mat-icon-button><mat-icon>add</mat-icon></button>
-      </div>
+  <div class="list" *ngIf="!addCollaboratorVisible">
+
+    <div class="empty-list" *ngIf="collaboratorsList.length === 0">
+      <h3>Aún no tiene colaboradores agregados</h3>
     </div>
 
-    <div class="item">
-      <div class="image">
-        <img src="https://www.maplander.com/favicon.png">
-      </div>
-      <div class="info">
-        <h3>A falsis, fraticinida domesticus hydra.</h3>
-        <p>Heu. Pol, buxum! Castus historias ducunt ad nix.</p>
-        <p>Eheu, compater! Absolutio resisteres, tanquam regius tus.</p>
-      </div>
-      <div class="actions">
-        <button mat-icon-button><mat-icon>delete</mat-icon></button>
-        <button mat-icon-button><mat-icon>add</mat-icon></button>
-      </div>
-    </div>
-
-    <div class="item">
-      <div class="image">
-        <img src="https://www.maplander.com/favicon.png">
-      </div>
-      <div class="info">
-        <h3>A falsis, fraticinida domesticus hydra.</h3>
-        <p>Heu. Pol, buxum! Castus historias ducunt ad nix.</p>
-        <p>Eheu, compater! Absolutio resisteres, tanquam regius tus.</p>
-      </div>
-      <div class="actions">
-        <button mat-icon-button><mat-icon>delete</mat-icon></button>
-        <button mat-icon-button><mat-icon>add</mat-icon></button>
-      </div>
-    </div>
-
-    <div class="item">
-      <div class="image">
-        <img src="https://www.maplander.com/favicon.png">
-      </div>
-      <div class="info">
-        <h3>A falsis, fraticinida domesticus hydra.</h3>
-        <p>Heu. Pol, buxum! Castus historias ducunt ad nix.</p>
-        <p>Eheu, compater! Absolutio resisteres, tanquam regius tus.</p>
-      </div>
-      <div class="actions">
-        <button mat-icon-button><mat-icon>delete</mat-icon></button>
-        <button mat-icon-button><mat-icon>add</mat-icon></button>
-      </div>
-    </div>
-
-    <div class="item">
-      <div class="image">
-        <img src="https://www.maplander.com/favicon.png">
-      </div>
-      <div class="info">
-        <h3>A falsis, fraticinida domesticus hydra.</h3>
-        <p>Heu. Pol, buxum! Castus historias ducunt ad nix.</p>
-        <p>Eheu, compater! Absolutio resisteres, tanquam regius tus.</p>
-      </div>
-      <div class="actions">
-        <button mat-icon-button><mat-icon>delete</mat-icon></button>
-        <button mat-icon-button><mat-icon>add</mat-icon></button>
-      </div>
-    </div>
-
-    <div class="item">
-      <div class="image">
-        <img src="https://www.maplander.com/favicon.png">
-      </div>
-      <div class="info">
-        <h3>A falsis, fraticinida domesticus hydra.</h3>
-        <p>Heu. Pol, buxum! Castus historias ducunt ad nix.</p>
-        <p>Eheu, compater! Absolutio resisteres, tanquam regius tus.</p>
-      </div>
-      <div class="actions">
-        <button mat-icon-button><mat-icon>delete</mat-icon></button>
-        <button mat-icon-button><mat-icon>add</mat-icon></button>
-      </div>
-    </div>
-
-    <div class="item">
-      <div class="image">
-        <img src="https://www.maplander.com/favicon.png">
-      </div>
-      <div class="info">
-        <h3>A falsis, fraticinida domesticus hydra.</h3>
-        <p>Heu. Pol, buxum! Castus historias ducunt ad nix.</p>
-        <p>Eheu, compater! Absolutio resisteres, tanquam regius tus.</p>
-      </div>
-      <div class="actions">
-        <button mat-icon-button><mat-icon>delete</mat-icon></button>
-        <button mat-icon-button><mat-icon>add</mat-icon></button>
-      </div>
-    </div>
-
-    <div class="item">
-      <div class="image">
-        <img src="https://www.maplander.com/favicon.png">
-      </div>
-      <div class="info">
-        <h3>A falsis, fraticinida domesticus hydra.</h3>
-        <p>Heu. Pol, buxum! Castus historias ducunt ad nix.</p>
-        <p>Eheu, compater! Absolutio resisteres, tanquam regius tus.</p>
-      </div>
-      <div class="actions">
-        <button mat-icon-button><mat-icon>delete</mat-icon></button>
-        <button mat-icon-button><mat-icon>add</mat-icon></button>
-      </div>
-    </div>
-
-    <div class="item">
-      <div class="image">
-        <img src="https://www.maplander.com/favicon.png">
-      </div>
-      <div class="info">
-        <h3>A falsis, fraticinida domesticus hydra.</h3>
-        <p>Heu. Pol, buxum! Castus historias ducunt ad nix.</p>
-        <p>Eheu, compater! Absolutio resisteres, tanquam regius tus.</p>
-      </div>
-      <div class="actions">
-        <button mat-icon-button><mat-icon>delete</mat-icon></button>
-        <button mat-icon-button><mat-icon>add</mat-icon></button>
-      </div>
-    </div>
-
-    <div class="item">
-      <div class="image">
-        <img src="https://www.maplander.com/favicon.png">
-      </div>
-      <div class="info">
-        <h3>A falsis, fraticinida domesticus hydra.</h3>
-        <p>Heu. Pol, buxum! Castus historias ducunt ad nix.</p>
-        <p>Eheu, compater! Absolutio resisteres, tanquam regius tus.</p>
-      </div>
-      <div class="actions">
-        <button mat-icon-button><mat-icon>delete</mat-icon></button>
-        <button mat-icon-button><mat-icon>add</mat-icon></button>
-      </div>
-    </div>
-
-    <div class="item">
-      <div class="image">
-        <img src="https://www.maplander.com/favicon.png">
-      </div>
-      <div class="info">
-        <h3>A falsis, fraticinida domesticus hydra.</h3>
-        <p>Heu. Pol, buxum! Castus historias ducunt ad nix.</p>
-        <p>Eheu, compater! Absolutio resisteres, tanquam regius tus.</p>
-      </div>
-      <div class="actions">
-        <button mat-icon-button><mat-icon>delete</mat-icon></button>
-        <button mat-icon-button><mat-icon>add</mat-icon></button>
-      </div>
-    </div>
-
-    <div class="item">
-      <div class="image">
-        <img src="https://www.maplander.com/favicon.png">
-      </div>
-      <div class="info">
-        <h3>A falsis, fraticinida domesticus hydra.</h3>
-        <p>Heu. Pol, buxum! Castus historias ducunt ad nix.</p>
-        <p>Eheu, compater! Absolutio resisteres, tanquam regius tus.</p>
-      </div>
-      <div class="actions">
-        <button mat-icon-button><mat-icon>delete</mat-icon></button>
-        <button mat-icon-button><mat-icon>add</mat-icon></button>
-      </div>
-    </div>
-
-    <div class="item">
-      <div class="image">
-        <img src="https://www.maplander.com/favicon.png">
-      </div>
-      <div class="info">
-        <h3>A falsis, fraticinida domesticus hydra.</h3>
-        <p>Heu. Pol, buxum! Castus historias ducunt ad nix.</p>
-        <p>Eheu, compater! Absolutio resisteres, tanquam regius tus.</p>
-      </div>
-      <div class="actions">
-        <button mat-icon-button><mat-icon>delete</mat-icon></button>
-        <button mat-icon-button><mat-icon>add</mat-icon></button>
+    <div *ngIf="collaboratorsList.length > 0">
+      <div class="item" *ngFor="let item of collaboratorsList">
+        <div class="image">
+          <mat-icon class="icon" *ngIf="!item.profileImage" >account_circle</mat-icon>
+          <img  *ngIf="item.profileImage" [src]="item.profileImage.thumbnail">
+        </div>
+        <div class="info">
+          <h3>{{item.name}} {{item.lastName}}</h3>
+          <p>{{item.jobTitle}}</p>
+          <p>
+            <a [href]="'mailto:'+item.email"><span>{{item.email}}</span></a> |
+            <a [href]="'tel:'+item.countryCode+item.phoneNumber"><span>{{item.phoneNumber}}</span></a>
+          </p>
+        </div>
+        <div class="actions" *ngIf="item.role!==1">
+          <button mat-icon-button matTooltip="Eliminar" (click)="deleteCollaborator(item)"><mat-icon>delete</mat-icon></button>
+          <button mat-icon-button matTooltip="Actualizar rol" (click)="changeRole(item)"><mat-icon svgIcon="icons:change_role"></mat-icon></button>
+        </div>
       </div>
     </div>
 
   </div>
 
-  <div class="add-collaborator">
+  <div id="add-collaborator" *ngIf="addCollaboratorVisible">
+    <form [formGroup]="userForm" (ngSubmit)="getDataCollaborator(userForm.value)">
 
+      <div class="header">
+
+        <div class="mask"></div>
+
+        <mat-card>
+          <app-upload-file [layoutTemplate]="img" [type]="'image'"
+          (onLoad)="onLoadImage($event)" (onRemove)="onRemoveImage()"></app-upload-file>
+          <ng-template #img>
+            <mat-icon class="default" *ngIf="!userImage.base64">account_circle</mat-icon>
+            <img *ngIf="userImage.base64" [src]="userImage.base64" alt="User image">
+          </ng-template>
+        </mat-card>
+      </div>
+
+      <mat-card-content>
+        <mat-form-field>
+          <input formControlName="name" matInput placeholder="Nombre" type="text" required
+                 aria-label="User name">
+          <mat-error *ngIf="userForm.controls['name'].hasError('required')">
+            Este campo es obligatorio
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field>
+          <input formControlName="lastName" matInput placeholder="Apellido (s)" type="text" required
+                 aria-label="User last name">
+          <mat-error *ngIf="userForm.controls['lastName'].hasError('required')">
+            Este campo es obligatorio
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field>
+          <input formControlName="email" matInput placeholder="Email comercial" type="email" required
+                 aria-label="User email">
+          <mat-error *ngIf="userForm.controls['email'].hasError('required')">
+            Este campo es obligatorio
+          </mat-error>
+          <mat-error *ngIf="userForm.controls['email'].hasError('email')">
+            La dirección de Email no es valida
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field>
+          <input formControlName="country" (input)="addCountry()" matInput placeholder="País" type="text" required
+                 aria-label="User country">
+          <mat-error *ngIf="userForm.controls['country'].hasError('required')">
+            Este campo es obligatorio
+          </mat-error>
+        </mat-form-field>
+
+        <div class="phone-number">
+
+          <mat-form-field class="country-code">
+            <input formControlName="countryCode" (input)="addCountry()" matInput placeholder="Codigo" type="text" required
+                   aria-label="User country code">
+            <mat-error *ngIf="userForm.controls['countryCode'].hasError('required')">
+              Este campo es obligatorio
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field class="number">
+            <input formControlName="phoneNumber" matInput placeholder="Numero celular" type="text" required
+                   aria-label="User phone number">
+            <mat-error *ngIf="userForm.controls['phoneNumber'].hasError('required')">
+              Este campo es obligatorio
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <mat-form-field>
+          <mat-select placeholder="Rol" formControlName="rol" required>
+            <mat-option *ngFor="let rol of roles" [value]="rol.value">
+              {{rol.name}}
+            </mat-option>
+          </mat-select>
+          <mat-error *ngIf="userForm.controls['rol'].hasError('required')">
+            Este campo es obligatorio
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field>
+          <input formControlName="jobTitle" matInput placeholder="Cargo" type="text" required
+                 aria-label="User job title">
+          <mat-error *ngIf="userForm.controls['jobTitle'].hasError('required')">
+            Este campo es obligatorio
+          </mat-error>
+        </mat-form-field>
+
+        <div class="website">
+          <mat-form-field class="protocol">
+            <mat-select placeholder="Protocolo" formControlName="protocol">
+              <mat-option *ngFor="let prot of protocols" [value]="prot.value">
+                {{prot.name}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <mat-form-field class="web">
+            <input formControlName="website" matInput placeholder="Website" type="text"
+                   aria-label="User website">
+            <mat-error *ngIf="userForm.controls['website'].hasError('pattern')">
+              Ingrese un sitio web válido
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="signature">
+          <p>Firma</p>
+          <div class="panel" (click)="addSignature()">
+            <div *ngIf="signature.path; then withSignature else withoutSignature"></div>
+            <ng-template #withoutSignature>
+              <p>Registre firma digital</p>
+            </ng-template>
+            <ng-template #withSignature>
+              <img [src]="signature.path">
+            </ng-template>
+          </div>
+        </div>
+
+      </mat-card-content>
+      <mat-card-actions>
+       <div class="footer">
+         <button mat-flat-button [color]="'primary'">Añadir</button>
+       </div>
+      </mat-card-actions>
+    </form>
   </div>
-
-  <!--<div class="add-collaborator-button">
-    <button mat-button>Añadir colaborador<mat-icon>add</mat-icon></button>
-  </div>-->
 </div>

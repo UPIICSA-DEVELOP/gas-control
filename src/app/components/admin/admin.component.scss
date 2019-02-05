@@ -41,6 +41,10 @@
         outline: none;
       }
     }
+    .actions{
+      position: absolute;
+      right: 16px;
+    }
   }
 
   .container {
@@ -68,6 +72,10 @@
         display: flex;
         flex-wrap: wrap;
         align-content: baseline;
+        @media screen and (max-width: 600px){
+          flex-wrap: inherit;
+          flex-direction: column;
+        }
       }
 
       .content{
@@ -82,6 +90,9 @@
         height: fit-content;
         background-color: white;
         cursor: pointer;
+        @media screen and (max-width: 600px){
+          width: 100%;
+        }
 
         .info {
           margin: 8px 0;
