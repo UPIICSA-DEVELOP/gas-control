@@ -79,16 +79,15 @@ export class AuthService implements Resolve<any>{
       maxAge: time
     });
     if(user.signature){
+      this._router.navigate(['/home']).then(() => {});
+    }else{
       if(user.role===0){
         this._router.navigate(['/admin']).then(() => {});
       }else{
-        this._router.navigate(['/home']).then(() => {});
-      }
-    }else{
-      this._dialog.alertDialog(
-        'Información',
-        'Para continuar es necesario registrar su firma digital',
-        'REGISTRAR').afterClosed().subscribe(response =>{
+        this._dialog.alertDialog(
+          'Información',
+          'Para continuar es necesario registrar su firma digital',
+          'REGISTRAR').afterClosed().subscribe(response =>{
           LocalStorageService.setItem('notSign', true);
           switch (user.role) {
             case 1:
@@ -103,7 +102,8 @@ export class AuthService implements Resolve<any>{
               this._router.navigate(['/profile/user']);
               break;
           }
-      })
+        })
+      }
     }
   }
 
