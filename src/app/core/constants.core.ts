@@ -10,6 +10,7 @@ export class Constants {
   public static UserInSession = 'UserInSession';
   public static SessionToken = 'SessionToken';
   public static UpdatePassword = 'UpdatePassword';
+  public static REGEX_WEBSITE = '[a-z0-9]+([\\-\\.]{1}[a-z0-9]+)*\\.[a-z]{2,5}(:[0-9]{1,5})?(\\/.*)?$';
   public static Priority_Task = {
     0: 'all',
     1: 'basic',
@@ -49,6 +50,10 @@ export class Constants {
   public static protocols = [
     {name: 'HTTP', value: 'https://'},
     {name: 'HTTPS', value: 'http://'}
+  ];
+  public static  rolesConsutancy = [
+    {name:'Gerente', value: 2},
+    {name:'Asistente', value: 3}
   ];
   public static  roles2 = [
     {name:'Director', value: 1},

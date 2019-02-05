@@ -155,6 +155,7 @@ export const appRoutes: Routes = [
   {
     path: 'admin',
     component: AdminComponent,
+    resolve: {data: AuthService},
     data: {
       title:'Administrador',
       url: URL_BASE

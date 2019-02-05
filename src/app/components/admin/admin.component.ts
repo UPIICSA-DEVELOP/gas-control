@@ -4,6 +4,8 @@ import {ApiLoaderService} from '@app/core/services/api/api-loader.service';
 import {ApiService} from '@app/core/services/api/api.service';
 import {DOCUMENT} from '@angular/common';
 import {ListCollaboratorsService} from '@app/components/admin/components/list-collaborators/list-collaborators.service';
+import {AuthService} from '@app/core/services/auth/auth.service';
+import {DialogService} from '@app/core/components/dialog/dialog.service';
 
 @Component({
   selector: 'app-admin',
@@ -18,6 +20,8 @@ export class AdminComponent implements OnInit {
   constructor(
     private _collaborators: ListCollaboratorsService,
     private _apiLoader: ApiLoaderService,
+    private _auth: AuthService,
+    private _dialog: DialogService,
     private _api: ApiService
   ) {
     this.consultancyList = [];
@@ -41,6 +45,19 @@ export class AdminComponent implements OnInit {
 
   public openCollaborators(id: string): void{
    this._collaborators.open(id);
+  }
+
+  public signOut(): void{
+    this._dialog.confirmDialog('Está a punto de cerrar sesión',
+      '¿Desea continuar?',
+      'ACEPTAR',
+      'CANCELAR').afterClosed().subscribe((response) => {
+      switch (response.code) {
+        case 1:
+          this._auth.logOut();
+          break;
+      }
+    });
   }
 
 }

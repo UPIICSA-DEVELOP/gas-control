@@ -29,12 +29,14 @@
                              (onRemove)="onRemoveImage()"></app-upload-file>
             <ng-template #profileImage>
               <mat-icon *ngIf="!userImage.blob">add_photo_alternate</mat-icon>
-              <img *ngIf="userImage.blob" [src]="userImage.base64">
+              <img *ngIf="userImage.blob" [src]="userImage.base64" alt="User image">
             </ng-template>
           </mat-card>
         </div>
 
         <mat-card>
+          <button mat-button=""  type="button" (click)="makeBusinessCard()">Test</button>
+          <img [src]="testUrl">
           <form *ngIf="showOwnerForm" [formGroup]="ownerForm" (ngSubmit)="addInfOwner(ownerForm.value)">
             <div class="owner-info">
               <mat-card-header>
@@ -114,22 +116,16 @@
 
                 <div class="website">
                   <mat-form-field class="protocol">
-                    <mat-select placeholder="Protocolo" formControlName="protocol" required>
+                    <mat-select placeholder="Protocolo" formControlName="protocol">
                       <mat-option *ngFor="let prot of protocols" [value]="prot.value">
                         {{prot.name}}
                       </mat-option>
                     </mat-select>
-                    <mat-error *ngIf="ownerForm.controls['protocol'].hasError('required')">
-                      Este campo es obligatorio
-                    </mat-error>
                   </mat-form-field>
 
                   <mat-form-field class="web">
-                    <input formControlName="website" matInput placeholder="Website" type="text" required
+                    <input formControlName="website" matInput placeholder="Website" type="text"
                            aria-label="User website">
-                    <mat-error *ngIf="ownerForm.controls['website'].hasError('required')">
-                      Este campo es obligatorio
-                    </mat-error>
                   </mat-form-field>
                 </div>
 
@@ -197,7 +193,7 @@
 
 
           <mat-card-actions  *ngIf="doneStep">
-            <button mat-flat-button (click)="makeScreenShot()" [disabled]="load" [color]="'primary'">Listo</button>
+            <button mat-flat-button (click)="done()" [disabled]="load" [color]="'primary'">Listo</button>
           </mat-card-actions>
         </mat-card>
       </div>

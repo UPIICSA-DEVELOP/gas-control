@@ -83,8 +83,10 @@ export class ApiService {
     return this._http.post('https://schedule-maplander.appspot.com/upload', part);
   }
 
-  public deleteFileToBlob(blob: FormData): Observable<any> {
-    return this._http.post('https://schedule-maplander.appspot.com/upload', blob);
+  public deleteFileToBlob(blobName: string): Observable<any> {
+    let params = new HttpParams();
+    params = params.append('blobName', blobName);
+    return this._http.delete('https://schedule-maplander.appspot.com/upload', {params: params});
   }
 
   public savePersonInformation(infoPerson: any): Observable<any>{
