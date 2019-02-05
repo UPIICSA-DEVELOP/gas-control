@@ -49,6 +49,7 @@
     "nodemailer": "^4.6.8",
     "dom-parser": "^0.1.5",
     "xml-js": "^1.6.8",
+    "webshot": "^0.18.0",
     "chart.js": "^2.7.3"
   },
   "private": true

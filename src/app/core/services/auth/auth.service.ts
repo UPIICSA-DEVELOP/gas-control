@@ -79,7 +79,11 @@ export class AuthService implements Resolve<any>{
       maxAge: time
     });
     if(user.signature){
-      this._router.navigate(['/home']).then(() => {});
+      if(user.role===0){
+        this._router.navigate(['/admin']).then(() => {});
+      }else{
+        this._router.navigate(['/home']).then(() => {});
+      }
     }else{
       this._dialog.alertDialog(
         'Información',

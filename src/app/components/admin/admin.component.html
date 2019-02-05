@@ -1,0 +1,41 @@
+<div id="admin">
+
+  <mat-toolbar [color]="'primary'">
+   <div class="logo">
+     <img src="../../../assets/Images/logo.png">
+   </div>
+  </mat-toolbar>
+
+  <div class="container">
+
+    <div class="list" id="list">
+
+      <h2 class="title">Listado de consultoras</h2>
+
+      <div class="empty-list" *ngIf="consultancyList.length === 0">
+        <h2>Aún no tiene consultoras agregadas a su lista</h2>
+      </div>
+
+      <div class="items" *ngIf="consultancyList.length > 0">
+
+        <div class="item" matRipple *ngFor="let item of consultancyList" (click)="openCollaborators(item.id)">
+          <div class="info">
+            <h3>{{item.businessName}}</h3>
+            <p>{{item.address}}</p>
+            <p>{{item.officePhone}}</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+    <div class="add-consultancy">
+      <a mat-button routerLink="add-consultancy">Añadir consultora<mat-icon>add</mat-icon></a>
+    </div>
+
+    <div class="progress" *ngIf="load">
+      <mat-spinner [diameter]="35"></mat-spinner>
+    </div>
+  </div>
+
+  <router-outlet></router-outlet>
+</div>

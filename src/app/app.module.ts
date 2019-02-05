@@ -42,6 +42,10 @@ import { AddGasStationComponent } from './components/screen/components/add-gas-s
 import { DocumentationComponent } from './components/screen/components/documentation/documentation.component';
 import { ProceduresComponent } from './components/screen/components/procedures/procedures.component';
 import { PrivacyComponent } from './components/screen/child/privacy/privacy.component';
+import { AdminComponent } from './components/admin/admin.component';
+import { AddConsultancyComponent } from './components/admin/children/add-consultancy/add-consultancy.component';
+import { ListCollaboratorsComponent } from './components/admin/components/list-collaborators/list-collaborators.component';
+import {ListCollaboratorsService} from '@app/components/admin/components/list-collaborators/list-collaborators.service';
 import {DatepickerComponent} from './components/screen/components/datepicker/datepicker.component';
 import {TaskFilterComponent} from './components/screen/components/task-filter/task-filter.component';
 
@@ -72,6 +76,11 @@ import {TaskFilterComponent} from './components/screen/components/task-filter/ta
     PrivacyComponent,
     DatepickerComponent,
     TaskFilterComponent
+    PrivacyComponent,
+    ProceduresComponent,
+    AdminComponent,
+    AddConsultancyComponent,
+    ListCollaboratorsComponent
   ],
   imports: [
     CoreModule,
@@ -99,6 +108,7 @@ import {TaskFilterComponent} from './components/screen/components/task-filter/ta
     AddGasStationComponent,
     DatepickerComponent,
     TaskFilterComponent
+    ListCollaboratorsComponent
   ],
   providers: [
     {
@@ -110,6 +120,7 @@ import {TaskFilterComponent} from './components/screen/components/task-filter/ta
       provide: HAMMER_GESTURE_CONFIG,
       useClass: GestureConfig
     },
+    ListCollaboratorsService
   ],
   bootstrap: [AppComponent]
 })

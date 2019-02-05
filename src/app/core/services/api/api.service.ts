@@ -215,6 +215,46 @@ export class ApiService {
     return this._http.get(url, {responseType: 'arraybuffer' as 'json', headers: headers});
   }
 
+  public createConsultancy(data: any): Observable<any>{
+    const request = {
+      address: data.address,
+      businessName: data.businessName,
+      location:
+        {
+          latitude: data.location.latitude,
+          longitude: data.location.longitude
+        },
+      officePhone: data.officePhone,
+      rfc: data.rfc
+    };
+    return this._http.post(ApiService.API_URL_COMPLETE + 'createConsultancy', request);
+  }
+
+  public createPerson(person: any): Observable<any>{
+    return this._http.post(ApiService.API_URL_COMPLETE + 'createPerson', person);
+  }
+
+  public listConsultancy(): Observable<any>{
+    return this._http.get(ApiService.API_URL_COMPLETE + 'listConsultancy',);
+  }
+
+  public businessCardService(data: any): Observable<any>{
+    let params = new HttpParams();
+    params = params.append('imageUrl', data.imageUrl || '');
+    params = params.append('company', data.company || '');
+    params = params.append('name', data.name || '');
+    params = params.append('workPosition', data.workPosition || '');
+    params = params.append('phone', data.phone || '');
+    params = params.append('email', data.email || '');
+    params = params.append('website', data.website || '');
+    const headers = new HttpHeaders().set('Content-Type', 'text/plain; charset=utf-8');
+    return this._http.get('https://inspector-maplander-develop.appspot.com/bc', {
+      responseType: 'blob' as 'json',
+      headers: headers,
+      params: params
+    });
+  }
+
   public getCompleteInfoDashboard(userId: string, refId: string, role: number, onlyOneStationId?: any): Observable<any>{
     let response1 = null;
     let response2 = this.getUtils();

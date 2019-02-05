@@ -4,7 +4,7 @@
  *  Proprietary and confidential
  */
 
-import {AfterViewInit, Component, DoCheck, ElementRef, Inject, OnInit, PLATFORM_ID, ViewChild} from '@angular/core';
+import {Component, DoCheck, Inject, OnInit, PLATFORM_ID} from '@angular/core';
 import {AuthService} from '@app/core/services/auth/auth.service';
 import {DialogService} from '@app/core/components/dialog/dialog.service';
 import {MatSidenav} from '@angular/material';
@@ -19,9 +19,8 @@ import {ApiLoaderService} from '@app/core/services/api/api-loader.service';
   templateUrl: './nav-bar.component.html',
   styleUrls: ['./nav-bar.component.scss']
 })
-export class NavBarComponent implements OnInit, AfterViewInit, DoCheck  {
+export class NavBarComponent implements OnInit, DoCheck  {
 
-  @ViewChild('progress') private _progress: ElementRef;
   public menu: MatSidenav;
   public user: any = {};
   public load: boolean;
@@ -39,12 +38,6 @@ export class NavBarComponent implements OnInit, AfterViewInit, DoCheck  {
 
   ngOnInit() {
     this._apiLoader.getProgress().subscribe(load => this.load = load);
-  }
-
-  ngAfterViewInit(): void {
-    let circle = this._progress.nativeElement.firstChild.firstChild.getElementsByTagName('circle');
-    circle = circle[0];
-    circle.style.stroke = '#fff';
   }
 
   ngDoCheck(): void {

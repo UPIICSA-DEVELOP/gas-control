@@ -8,9 +8,7 @@ import { Injectable } from '@angular/core';
 import {MatDialog, MatDialogRef} from '@angular/material';
 import {SignaturePadComponent} from '@app/core/components/signature-pad/signature-pad.component';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 export class SignaturePadService {
 
   constructor(

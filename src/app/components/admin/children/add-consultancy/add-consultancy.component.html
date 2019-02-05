@@ -1,0 +1,212 @@
+<div id="add-consultancy">
+
+  <div class="container">
+
+    <div class="back">
+      <button mat-icon-button matTooltip="Regresar" (click)="exit(false)"><mat-icon>arrow_back</mat-icon></button>
+    </div>
+
+    <div class="stepper">
+      <h2>Registrar nueva Consultora</h2>
+      <mat-vertical-stepper  #stepper [linear]="true" (selectionChange)="onSelectionChange($event)">
+        <mat-step [stepControl]="ownerForm">
+          <ng-template matStepLabel>Registro del Director</ng-template>
+        </mat-step>
+        <mat-step [stepControl]="consultancyForm">
+          <ng-template matStepLabel>Registro de Consultora</ng-template>
+        </mat-step>
+        <mat-step>
+          <ng-template matStepLabel>Hecho</ng-template>
+        </mat-step>
+      </mat-vertical-stepper>
+    </div>
+
+    <div class="forms">
+      <div class="container-forms">
+        <div class="header-image" *ngIf="showOwnerForm">
+          <mat-card>
+            <app-upload-file [layoutTemplate]="profileImage" [type]="'image'" (onLoad)="onLoadImage($event)"
+                             (onRemove)="onRemoveImage()"></app-upload-file>
+            <ng-template #profileImage>
+              <mat-icon *ngIf="!userImage.blob">add_photo_alternate</mat-icon>
+              <img *ngIf="userImage.blob" [src]="userImage.base64">
+            </ng-template>
+          </mat-card>
+        </div>
+
+        <mat-card>
+          <form *ngIf="showOwnerForm" [formGroup]="ownerForm" (ngSubmit)="addInfOwner(ownerForm.value)">
+            <div class="owner-info">
+              <mat-card-header>
+                <h3>Registro del Director</h3>
+              </mat-card-header>
+              <mat-card-content>
+
+                <mat-form-field>
+                  <input formControlName="name" matInput placeholder="Nombre" type="text" required
+                         aria-label="User name">
+                  <mat-error *ngIf="ownerForm.controls['name'].hasError('required')">
+                    Este campo es obligatorio
+                  </mat-error>
+                </mat-form-field>
+
+                <mat-form-field>
+                  <input formControlName="lastName" matInput placeholder="Apellido (s)" type="text" required
+                         aria-label="User last name">
+                  <mat-error *ngIf="ownerForm.controls['lastName'].hasError('required')">
+                    Este campo es obligatorio
+                  </mat-error>
+                </mat-form-field>
+
+                <mat-form-field>
+                  <input formControlName="email" matInput placeholder="Email comercial" type="email" required
+                         aria-label="User email">
+                  <mat-error *ngIf="ownerForm.controls['email'].hasError('required')">
+                    Este campo es obligatorio
+                  </mat-error>
+                  <mat-error *ngIf="ownerForm.controls['email'].hasError('email')">
+                    La dirección de Email no es valida
+                  </mat-error>
+                </mat-form-field>
+
+                <mat-form-field>
+                  <input formControlName="country" (input)="addCountry()" matInput placeholder="País" type="text" required
+                         aria-label="User country">
+                  <mat-error *ngIf="ownerForm.controls['country'].hasError('required')">
+                    Este campo es obligatorio
+                  </mat-error>
+                </mat-form-field>
+
+                <div class="phone-number">
+
+                  <mat-form-field class="country-code">
+                    <input formControlName="countryCode" (input)="addCountry()" matInput placeholder="Codigo" type="text" required
+                           aria-label="User country code">
+                    <mat-error *ngIf="ownerForm.controls['countryCode'].hasError('required')">
+                      Este campo es obligatorio
+                    </mat-error>
+                  </mat-form-field>
+
+                  <mat-form-field class="number">
+                    <input formControlName="phoneNumber" matInput placeholder="Numero celular" type="text" required
+                           aria-label="User phone number">
+                    <mat-error *ngIf="ownerForm.controls['phoneNumber'].hasError('required')">
+                      Este campo es obligatorio
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+
+                <mat-form-field>
+                  <mat-select placeholder="Rol" formControlName="rol" required disabled="">
+                    <mat-option *ngFor="let rol of roles" [value]="rol.value">
+                      {{rol.name}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+
+                <mat-form-field>
+                  <input formControlName="jobTitle" matInput placeholder="Cargo" type="text" required
+                         aria-label="User job title">
+                  <mat-error *ngIf="ownerForm.controls['jobTitle'].hasError('required')">
+                    Este campo es obligatorio
+                  </mat-error>
+                </mat-form-field>
+
+                <div class="website">
+                  <mat-form-field class="protocol">
+                    <mat-select placeholder="Protocolo" formControlName="protocol" required>
+                      <mat-option *ngFor="let prot of protocols" [value]="prot.value">
+                        {{prot.name}}
+                      </mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="ownerForm.controls['protocol'].hasError('required')">
+                      Este campo es obligatorio
+                    </mat-error>
+                  </mat-form-field>
+
+                  <mat-form-field class="web">
+                    <input formControlName="website" matInput placeholder="Website" type="text" required
+                           aria-label="User website">
+                    <mat-error *ngIf="ownerForm.controls['website'].hasError('required')">
+                      Este campo es obligatorio
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+
+                <div class="signature">
+                  <p>Firma</p>
+                  <div class="panel" (click)="addSignature()">
+                    <div *ngIf="signature.path; then withSignature else withoutSignature"></div>
+                    <ng-template #withoutSignature>
+                      <p>Registre firma digital</p>
+                    </ng-template>
+                    <ng-template #withSignature>
+                      <img [src]="signature.path">
+                    </ng-template>
+                  </div>
+                </div>
+
+              </mat-card-content>
+              <mat-card-actions *ngIf="!doneStep">
+                <button mat-flat-button [disabled]="load" [color]="'primary'">Siguiente</button>
+              </mat-card-actions>
+
+            </div>
+
+          </form>
+
+          <form *ngIf="showConsultancyForm" [formGroup]="consultancyForm"
+                (ngSubmit)="addInfoConsultancy(consultancyForm.value)">
+            <div class="consultancy-info">
+              <mat-card-header>
+                <h3>Información Consultora</h3>
+              </mat-card-header>
+              <mat-card-content>
+                <mat-form-field>
+                  <input formControlName="company" matInput placeholder="Razón Social" type="text" required
+                         aria-label="Comapany">
+                  <mat-error *ngIf="consultancyForm.controls['company'].hasError('required')">
+                    Este campo es obligatorio
+                  </mat-error>
+                </mat-form-field>
+
+                <mat-form-field>
+                  <input formControlName="rfc" matInput placeholder="RFC" type="text" required aria-label="RFC">
+                  <mat-error *ngIf="consultancyForm.controls['rfc'].hasError('required')">
+                    Este campo es obligatorio
+                  </mat-error>
+                </mat-form-field>
+
+                <mat-form-field>
+                  <input formControlName="address" (input)="addLocation()" matInput placeholder="Dirección" type="text" required
+                         aria-label="Address">
+                  <mat-error *ngIf="consultancyForm.controls['address'].hasError('required')">
+                    Este campo es obligatorio
+                  </mat-error>
+                </mat-form-field>
+                <mat-form-field>
+                  <input formControlName="consultancyNumber" matInput placeholder="Numero de la consultora" type="text"
+                         aria-label="Consultancy Number">
+                </mat-form-field>
+              </mat-card-content>
+              <mat-card-actions *ngIf="!doneStep">
+                <button mat-flat-button [disabled]="load" [color]="'primary'">Siguiente</button>
+              </mat-card-actions>
+            </div>
+          </form>
+
+
+          <mat-card-actions  *ngIf="doneStep">
+            <button mat-flat-button (click)="makeScreenShot()" [disabled]="load" [color]="'primary'">Listo</button>
+          </mat-card-actions>
+        </mat-card>
+      </div>
+
+      <div class="progress" *ngIf="load">
+        <mat-progress-spinner [mode]="'indeterminate'" [diameter]="35" [color]="'primary'"></mat-progress-spinner>
+      </div>
+    </div>
+  </div>
+
+
+</div>

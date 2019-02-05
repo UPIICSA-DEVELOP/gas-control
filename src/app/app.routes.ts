@@ -24,6 +24,8 @@ import {AddGasStationComponent} from '@app/components/screen/components/add-gas-
 import {ProceduresComponent} from '@app/components/screen/components/procedures/procedures.component';
 import {UserProfileService} from '@app/core/services/profiles/user-profile.service';
 import {PrivacyComponent} from '@app/components/screen/child/privacy/privacy.component';
+import {AdminComponent} from '@app/components/admin/admin.component';
+import {AddConsultancyComponent} from '@app/components/admin/children/add-consultancy/add-consultancy.component';
 const URL_BASE = environment.url;
 
 export const appRoutes: Routes = [
@@ -140,6 +142,23 @@ export const appRoutes: Routes = [
       schema: 'true',
       canonical: 'true'
     }
+  },
+  {
+    path: 'admin',
+    component: AdminComponent,
+    data: {
+      title:'Administrador',
+      url: URL_BASE
+    },
+    children: [
+      {
+        path: 'add-consultancy',
+        component: AddConsultancyComponent,
+        data:{
+          title: 'Añadir consultora'
+        }
+      }
+    ]
   },
   {
     path: 'signin',
