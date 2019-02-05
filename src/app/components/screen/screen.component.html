@@ -10,7 +10,7 @@
 <!-- Nav Bar [END]-->
 
 <div id="home">
-
+  <div class="background" *ngIf="!stationActive && !stationList"></div>
   <div *ngIf="!stationActive && !stationList; then emptyDash else dashboard"></div>
     <ng-template #emptyDash>
       <div class="empty">
