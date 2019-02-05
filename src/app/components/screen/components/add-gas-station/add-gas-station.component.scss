@@ -10,6 +10,11 @@
   height: 80vh;
   background-color: #FFFFFF;
   display: flex;
+  flex-direction: column;
+  mat-toolbar{
+    display: flex;
+    justify-content: space-between;
+  }
   .background{
     display: none;
     width: 600px;
@@ -38,7 +43,7 @@
         height: auto;
         .station-content{
           text-align: center;
-          padding: 0 12px;
+          padding: 0 28px;
         }
       }
     }
@@ -51,7 +56,7 @@
         height: auto;
         .new-person-content{
           text-align: center;
-          padding: 28px;
+          padding: 0 28px;
         }
       }
     }
@@ -196,8 +201,7 @@
   .signatureContainer {
     display: flex;
     justify-content: center;
-    background-color: black;
-    margin: 0 10%;
+    background-color: #000000;
 
     .signature {
       margin: 1px;
@@ -245,8 +249,11 @@
   }
   .submit{
     color: #707070;
-    padding: 8px 0;
     display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid gray;
+    margin: 8px 0 16px 0;
   }
   .image-list {
     display: flex;
@@ -263,7 +270,7 @@
       justify-content: center;
     }
     mat-icon{
-      color: mat-color($primary);
+      color: #707070;
       font-size: 40px;
     }
   }
@@ -281,26 +288,9 @@
     }
   }
 
-  .btn-close {
-    position: absolute;
-    top: 0;
-    right: 0;
-    margin: 24px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 5;
-    button{
-      background-color: #707070;
-    }
-    mat-icon{
-      color: #FFFFFF;
-    }
-  }
-
   .add-legal{
     position: absolute;
-    left: 0;
+    right: 0;
     bottom: 0;
     margin: 24px;
     z-index: 4;
@@ -329,7 +319,7 @@
   }
   .progress {
     position: absolute;
-    top: 0;
+    top: 56px;
     z-index: 4;
   }
 
@@ -375,7 +365,7 @@
   }
   .formHead{
     margin: 8px 0 4px 0;
-    font-weight: 600;
+    font-weight: 500;
     color: #707070;
     text-align: left;
   }
@@ -411,7 +401,7 @@
   .content-modal{
     height: 100%;
   }
-  .modal-head{
-    padding: 0 24px;
+  .extra-data{
+    margin-left: 24px;
   }
 }
