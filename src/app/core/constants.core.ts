@@ -19,14 +19,14 @@ export class Constants {
   public static Level = [
     'Básico',
     'Intermedio',
-    'Critico'
+    'Crítico'
   ];
   public static Zones = [
     'Dispensarios',
     'Islas',
     'Patio',
     'Tanques',
-    'Cuarto de maquinas',
+    'Cuarto de máquinas',
     'Cuarto eléctrico',
     'Cisternas tinacos y bombas de agua',
     'Cuarto de RP',

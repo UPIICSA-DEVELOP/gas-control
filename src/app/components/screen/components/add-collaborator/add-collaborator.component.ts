@@ -12,7 +12,7 @@ import {CountryCodeService} from '@app/core/components/country-code/country-code
 import {UploadFileService} from '@app/core/components/upload-file/upload-file.service';
 import {SignaturePadService} from '@app/core/components/signature-pad/signature-pad.service';
 import {SnackBarService} from '@app/core/services/snackbar/snackbar.service';
-import {Router} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {ApiLoaderService} from '@app/core/services/api/api-loader.service';
 import {UploadFileResponse} from '@app/core/components/upload-file/upload-file.component';
@@ -21,6 +21,7 @@ import {Constants} from '@app/core/constants.core';
 import {User} from 'firebase';
 import {LocalStorageService} from '@app/core/services/local-storage/local-storage.service';
 import {PdfVisorService} from '@app/core/components/pdf-visor/pdf-visor.service';
+import {SharedService, SharedTypeNotification} from '@app/core/services/shared/shared.service';
 
 export interface Person {
   name: string;
@@ -99,7 +100,9 @@ export class AddCollaboratorComponent implements OnInit {
     private _snackBarService: SnackBarService,
     private _formBuilder: FormBuilder,
     private _router: Router,
-    private _pdfVisor: PdfVisorService
+    private _pdfVisor: PdfVisorService,
+    private _sharedService: SharedService,
+    private _activateRoute: ActivatedRoute
   ) {
     this.changes=false;
     this.roleType = Constants.roles;
@@ -108,10 +111,12 @@ export class AddCollaboratorComponent implements OnInit {
     this.addSign = false;
     this.newFile = false;
     this.protocol = 'http://';
-    this._refId = SessionStorageService.getItem('refId');
   }
 
   ngOnInit() {
+    if (this._activateRoute.snapshot.queryParams.stationId) {
+      this._refId = this._activateRoute.snapshot.queryParams.stationId;
+    }
     this.user= LocalStorageService.getItem(Constants.UserInSession);
     this._apiLoader.getProgress().subscribe(load => {this.load = load; });
     this.initForm();
@@ -323,8 +328,9 @@ export class AddCollaboratorComponent implements OnInit {
       switch (response.code){
         case 200:
           SessionStorageService.removeItem('refId');
-          LocalStorageService.setItem('newCollaborator', true);
-          this._router.navigate(['/home']);
+          this._router.navigate(['/home']).then(() => {
+            this._sharedService.setNotification({value: true, type: SharedTypeNotification.Directory});
+          });
           break;
         default:
           this._dialogService.alertDialog('No se pudo acceder', 'Se produjo un error de comunicación con el servidor', 'ACEPTAR');

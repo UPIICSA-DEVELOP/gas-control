@@ -24,7 +24,6 @@ export class ScreenComponent implements OnInit{
   public role: number;
   public menu: boolean;
   public utils: any;
-  private _stationId;
   constructor(
     private _api: ApiService,
     private _router: Router,
@@ -33,98 +32,48 @@ export class ScreenComponent implements OnInit{
   }
 
   ngOnInit() {
-    this.getUtilities();
+    // this.getUtilities();
     this.menu = true;
     this.stationList = [];
     if (this._activateRoute.snapshot.queryParams.station) {
-      this._stationId = this._activateRoute.snapshot.queryParams.station;
-      this.getStation();
+      this.getDashboardInformation(this._activateRoute.snapshot.queryParams.station);
     } else {
-      this.getStationList();
+      this.getDashboardInformation();
     }
-  }
-
-  private getStationList(): void {
-    const userId = CookieService.getCookie(Constants.IdSession);
-    const user = LocalStorageService.getItem(Constants.UserInSession);
-    this.role = user.role;
-    switch (user.role) {
-      case 1:
-      case 2:
-      case 3:
-        this._api.getConsultancyBasicData(userId, user.refId).subscribe(response => {
-          switch (response.code) {
-            case 200:
-              this.stationList = response.item.stationLites;
-              if (!this.stationActive && this.stationList) {
-                this.stationActive = this.stationList[0];
-              }
-              break;
-            default:
-              break;
-          }
-        });
-        break;
-      case 4:
-        this._api.getLegalRepresentativeBasicData(user.refId, userId).subscribe(response=>{
-          switch (response.code) {
-            case 200:
-              this.stationList = response.item.stationLites;
-              if (!this.stationActive && this.stationList) {
-                this.stationActive = this.stationList[0];
-              }
-              break;
-            default:
-              break;
-          }
-        });
-        break;
-      case 5:
-      case 6:
-      case 7:
-        this._api.getStationBasicData(userId).subscribe(response=>{
-          switch (response.code) {
-            case 200:
-              this.stationList = response.item.station;
-              if(this.stationList){
-                this.stationActive = this.stationList;
-              }
-              break;
-            default:
-              break;
-          }
-        });
-        break;
-    }
-  }
-
-  public getStation(): void {
-    this._api.getStation(this._stationId).subscribe(response => {
-      switch (response.code) {
-        case 200:
-          this.stationActive = response.item;
-          this.getStationList();
-          break;
-        default:
-          break;
-      }
-    });
-  }
-
-  private getUtilities(): void{
-    this._api.getUtils().subscribe(response=>{
-      switch (response.code) {
-        case 200:
-          this.utils = response.item;
-          break;
-        default:
-          break;
-      }
-    })
   }
 
   public addCollaborator():void{
-    SessionStorageService.setItem('refId', this.stationActive.id);
-    this._router.navigate(['/home/add-collaborator'])
+    this._router.navigate(['/home/add-collaborator'], {queryParams:{stationId: this.stationActive.id}});
+  }
+
+  private getDashboardInformation(onlyOneStationId?: any): void{
+    const userId = CookieService.getCookie(Constants.IdSession);
+    const user = LocalStorageService.getItem(Constants.UserInSession);
+    this.role = user.role;
+    this._api.getCompleteInfoDashboard(userId,user.refId,this.role,onlyOneStationId).subscribe(response=>{
+      if (response){
+        this.utils = response[1].item;
+        switch (this.role){
+          case 1:
+          case 2:
+          case 3:
+          case 4:
+            if(onlyOneStationId){
+              this.stationList = response[0].item;
+              this.stationActive = this.stationList;
+              console.log('station active', this.stationActive);
+            }else{
+              this.stationList = response[0].item.stationLites;
+              this.stationActive = this.stationList[0];
+            }
+            break;
+          case 5:
+          case 6:
+            this.stationList = response[0].item.station;
+            this.stationActive = this.stationList;
+            break;
+        }
+      }
+    });
   }
 }

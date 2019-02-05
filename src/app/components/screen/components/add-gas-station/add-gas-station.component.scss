@@ -338,10 +338,12 @@
 
   .add-legal{
     position: absolute;
-    right: 16px;
-    bottom: 40px;
+    left: 16px;
+    bottom: 16px;
     z-index: 4;
     button{
+      width: 56px;
+      height: 56px;
       background-color: #FFAA00;
       color: #FFFFFF;
     }
@@ -434,5 +436,9 @@
     margin-top: -16px;
     justify-content: flex-end;
     border-radius: 4px;
+    .text-validate{
+      font-weight: 600;
+      margin: 16px;
+    }
   }
 }
