@@ -16,7 +16,7 @@
               <app-upload-file [layoutTemplate]="icon" (onLoad)="onLoadImage($event)" (onRemove)="onRemoveImage()" [type]="'image'">
                 <ng-template #icon>
                   <img *ngIf="profileImage" [src]="profileImage" class="profileImage" alt="User profile image">
-                  <mat-icon *ngIf="!profileImage" class="defaultProfileImage">account_circle</mat-icon>
+                  <mat-icon *ngIf="!profileImage" class="defaultProfileImage">add_photo_alternate</mat-icon>
                 </ng-template>
               </app-upload-file>
             </div>
