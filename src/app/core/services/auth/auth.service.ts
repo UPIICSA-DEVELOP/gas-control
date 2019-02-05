@@ -81,7 +81,7 @@ export class AuthService implements Resolve<any>{
     if(user.signature){
       this._router.navigate(['/home']).then(() => {});
     }else{
-      if(user.role===0){
+      if(user.role===7){
         this._router.navigate(['/admin']).then(() => {});
       }else{
         this._dialog.alertDialog(
