@@ -42,6 +42,10 @@ import { AddGasStationComponent } from './components/screen/components/add-gas-s
 import { DocumentationComponent } from './components/screen/components/documentation/documentation.component';
 import { ProceduresComponent } from './components/screen/components/procedures/procedures.component';
 import { PrivacyComponent } from './components/screen/child/privacy/privacy.component';
+import { AdminComponent } from './components/admin/admin.component';
+import { AddConsultancyComponent } from './components/admin/children/add-consultancy/add-consultancy.component';
+import { ListCollaboratorsComponent } from './components/admin/components/list-collaborators/list-collaborators.component';
+import {ListCollaboratorsService} from '@app/components/admin/components/list-collaborators/list-collaborators.service';
 
 
 @NgModule({
@@ -67,7 +71,11 @@ import { PrivacyComponent } from './components/screen/child/privacy/privacy.comp
     AddGasStationComponent,
     DocumentationComponent,
     ProceduresComponent,
-    PrivacyComponent
+    PrivacyComponent,
+    ProceduresComponent,
+    AdminComponent,
+    AddConsultancyComponent,
+    ListCollaboratorsComponent
   ],
   imports: [
     CoreModule,
@@ -92,7 +100,7 @@ import { PrivacyComponent } from './components/screen/child/privacy/privacy.comp
 
   ],
   entryComponents: [
-
+    ListCollaboratorsComponent
   ],
   providers: [
     {
@@ -104,6 +112,7 @@ import { PrivacyComponent } from './components/screen/child/privacy/privacy.comp
       provide: HAMMER_GESTURE_CONFIG,
       useClass: GestureConfig
     },
+    ListCollaboratorsService
   ],
   bootstrap: [AppComponent]
 })

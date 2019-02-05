@@ -62,7 +62,9 @@
     "signature_pad": "^3.0.0-beta.3",
     "tslib": "^1.9.0",
     "webpack": "^4.27.1",
-    "zone.js": "0.8.26"
+    "webshot": "^0.18.0",
+    "zone.js": "0.8.26",
+    "express": "latest"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "~0.11.0",
@@ -72,8 +74,10 @@
     "@angular/language-service": "7.1.1",
     "@google-cloud/storage": "^2.0.3",
     "@types/chart.js": "^2.7.42",
+    "@types/compression": "0.0.36",
     "@types/jasmine": "~2.5.53",
     "@types/jasminewd2": "~2.0.2",
+    "@types/nconf": "^0.10.0",
     "@types/node": "^6.0.114",
     "axios": "^0.18.0",
     "browserify": "^16.2.2",
@@ -94,6 +98,7 @@
     "karma-jasmine-html-reporter": "^0.2.2",
     "nconf": "^0.10.0",
     "node-cmd": "^3.0.0",
+    "node-sass": "^4.10.0",
     "nodemailer": "^4.6.8",
     "protractor": "~5.1.2",
     "standard-version": "^4.4.0",
@@ -104,7 +109,6 @@
     "uglify-js": "^3.4.9",
     "webpack-bundle-analyzer": "^2.13.1",
     "webpack-cli": "^3.1.0",
-    "webpack-node-externals": "^1.7.2",
-    "node-sass": "^4.10.0"
+    "webpack-node-externals": "^1.7.2"
   }
 }
