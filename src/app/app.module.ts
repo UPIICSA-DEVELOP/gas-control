@@ -46,6 +46,8 @@ import { AdminComponent } from './components/admin/admin.component';
 import { AddConsultancyComponent } from './components/admin/children/add-consultancy/add-consultancy.component';
 import { ListCollaboratorsComponent } from './components/admin/components/list-collaborators/list-collaborators.component';
 import {ListCollaboratorsService} from '@app/components/admin/components/list-collaborators/list-collaborators.service';
+import {DatepickerComponent} from './components/screen/components/datepicker/datepicker.component';
+import {TaskFilterComponent} from './components/screen/components/task-filter/task-filter.component';
 
 
 @NgModule({
@@ -71,6 +73,9 @@ import {ListCollaboratorsService} from '@app/components/admin/components/list-co
     AddGasStationComponent,
     DocumentationComponent,
     ProceduresComponent,
+    PrivacyComponent,
+    DatepickerComponent,
+    TaskFilterComponent,
     PrivacyComponent,
     ProceduresComponent,
     AdminComponent,
@@ -100,6 +105,9 @@ import {ListCollaboratorsService} from '@app/components/admin/components/list-co
 
   ],
   entryComponents: [
+    AddGasStationComponent,
+    DatepickerComponent,
+    TaskFilterComponent,
     ListCollaboratorsComponent
   ],
   providers: [

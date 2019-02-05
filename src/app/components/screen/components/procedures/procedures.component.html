@@ -18,164 +18,21 @@
       </button>
     </div>
     <div class="container" *ngIf="procedures">
-      <div (click)="openFile(procedures[0].fileCS.thumbnail)" class="file">
-        <mat-card>
-          <mat-card-content>
-            <div class="icon">
-              <mat-icon>insert_drive_file</mat-icon>
-            </div>
-            <div class="divider">&nbsp;</div>
-            <div>
-              Recepción y descarga de autotanque
-            </div>
-          </mat-card-content>
-        </mat-card>
+      <div *ngFor="let procedure of procedures; let i = index">
+        <a [href]="procedure.fileCS.thumbnail" class="file">
+          <mat-card>
+            <mat-card-content>
+              <div class="icon">
+                <mat-icon>insert_drive_file</mat-icon>
+              </div>
+              <div class="divider">&nbsp;</div>
+              <div>
+                {{procedureTitle[i]}}
+              </div>
+            </mat-card-content>
+          </mat-card>
+        </a>
       </div>
-      <div (click)="openFile(procedures[1].fileCS.thumbnail)" class="file">
-        <mat-card>
-          <mat-card-content>
-            <div class="icon">
-              <mat-icon>insert_drive_file</mat-icon>
-            </div>
-            <div class="divider">&nbsp;</div>
-            <div>
-              Despacho al consumidor
-            </div>
-          </mat-card-content>
-        </mat-card>
-      </div>
-      <div (click)="openFile(procedures[2].fileCS.thumbnail)" class="file">
-        <mat-card>
-          <mat-card-content>
-            <div class="icon">
-              <mat-icon>insert_drive_file</mat-icon>
-            </div>
-            <div class="divider">&nbsp;</div>
-            <div>
-              Respuesta a emergencias
-            </div>
-          </mat-card-content>
-        </mat-card>
-      </div>
-      <div (click)="openFile(procedures[3].fileCS.thumbnail)" class="file">
-        <mat-card>
-          <mat-card-content>
-            <div class="icon">
-              <mat-icon>insert_drive_file</mat-icon>
-            </div>
-            <div class="divider">&nbsp;</div>
-            <div>
-              Investigación de accidentes e incidentes
-            </div>
-          </mat-card-content>
-        </mat-card>
-      </div>
-      <div (click)="openFile(procedures[4].fileCS.thumbnail)" class="file">
-        <mat-card>
-          <mat-card-content>
-            <div class="icon">
-              <mat-icon>insert_drive_file</mat-icon>
-            </div>
-            <div class="divider">&nbsp;</div>
-            <div>
-              Candadeo y bloque de líneas eléctricas y de producto
-            </div>
-          </mat-card-content>
-        </mat-card>
-      </div>
-      <div (click)="openFile(procedures[5].fileCS.thumbnail)" class="file">
-        <mat-card>
-          <mat-card-content>
-            <div class="icon">
-              <mat-icon>insert_drive_file</mat-icon>
-            </div>
-            <div class="divider">&nbsp;</div>
-            <div>
-              Trabajos con fuentes que generen ignición
-            </div>
-          </mat-card-content>
-        </mat-card>
-      </div>
-      <div (click)="openFile(procedures[6].fileCS.thumbnail)" class="file">
-        <mat-card>
-          <mat-card-content>
-            <div class="icon">
-              <mat-icon>insert_drive_file</mat-icon>
-            </div>
-            <div class="divider">&nbsp;</div>
-            <div>
-              Trabajos en alturas
-            </div>
-          </mat-card-content>
-        </mat-card>
-      </div>
-      <div (click)="openFile(procedures[7].fileCS.thumbnail)" class="file">
-        <mat-card>
-          <mat-card-content>
-            <div class="icon">
-              <mat-icon>insert_drive_file</mat-icon>
-            </div>
-            <div class="divider">&nbsp;</div>
-            <div>
-              Trabajos en áreas confinadas
-            </div>
-          </mat-card-content>
-        </mat-card>
-      </div>
-      <div (click)="openFile(procedures[8].fileCS.thumbnail)" class="file">
-        <mat-card>
-          <mat-card-content>
-            <div class="icon">
-              <mat-icon>insert_drive_file</mat-icon>
-            </div>
-            <div class="divider">&nbsp;</div>
-            <div>
-              Mantenimiento
-            </div>
-          </mat-card-content>
-        </mat-card>
-      </div>
-      <div (click)="openFile(procedures[9].fileCS.thumbnail)" class="file">
-        <mat-card>
-          <mat-card-content>
-            <div class="icon">
-              <mat-icon>insert_drive_file</mat-icon>
-            </div>
-            <div class="divider">&nbsp;</div>
-            <div>
-              Mantenimiento correctivo
-            </div>
-          </mat-card-content>
-        </mat-card>
-      </div>
-      <div (click)="openFile(procedures[10].fileCS.thumbnail)" class="file">
-        <mat-card>
-          <mat-card-content>
-            <div class="icon">
-              <mat-icon>insert_drive_file</mat-icon>
-            </div>
-            <div class="divider">&nbsp;</div>
-            <div>
-              Drenado de agua a tanques
-            </div>
-          </mat-card-content>
-        </mat-card>
-      </div>
-      <div (click)="openFile(procedures[11].fileCS.thumbnail)" class="file">
-        <mat-card>
-          <mat-card-content>
-            <div class="icon">
-              <mat-icon>insert_drive_file</mat-icon>
-            </div>
-            <div class="divider">&nbsp;</div>
-            <div>
-              Manejo y disposición de residuos peligrosos
-            </div>
-          </mat-card-content>
-        </mat-card>
-      </div>
-
-
     </div>
   </div>
 </div>

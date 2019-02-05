@@ -63,6 +63,20 @@ export class Constants {
     {name:'Encargado de Estación', value: 5},
     {name:'Coordinador de Estación', value: 6}
   ];
+  public static Files = [
+    "Recepción y descarga de autotanque",
+    "Despacho al consumidor",
+    "Respuesta a emergencias",
+    "Investigación de accidentes e incidentes",
+    "Candadeo y bloque de líneas eléctricas y de producto",
+    "Trabajos con fuentes que generen ignición",
+    "Trabajos en alturas",
+    "Trabajos en áreas confinadas",
+    "Mantenimiento",
+    "Mantenimiento correctivo",
+    "Drenado de agua a tanques",
+    "Manejo y disposición de residuos peligrosos"
+  ];
   public static  roles = [
       'Director',
       'Gerente',

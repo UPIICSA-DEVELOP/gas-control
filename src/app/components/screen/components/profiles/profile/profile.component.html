@@ -37,12 +37,17 @@
                 </mat-error>
               </mat-form-field>
               <mat-form-field class="inputs">
-                <input formControlName="email" matInput placeholder="Email comercial" type="email" aria-label="User email">
+                <input [attr.disabled]="load?true:null" formControlName="email" (blur)="validateEmailExist()" matInput placeholder="Email comercial" required type="email" aria-label="User email">
                 <mat-error *ngIf="profileForm.controls['email'].hasError('required')">
                   Este campo es obligatorio
                 </mat-error>
+                <mat-error *ngIf="profileForm.controls['email'].hasError('email')">
+                  La dirección email no es valida
+                </mat-error>
+                <mat-error *ngIf="profileForm.controls['email'].hasError('emailUsed')">
+                  Este email ya tiene un usuario asociado
+                </mat-error>
               </mat-form-field>
-
               <div class="country-code">
                 <div class="mask" (click)="openListCountry()"></div>
                 <mat-form-field class="inputs">

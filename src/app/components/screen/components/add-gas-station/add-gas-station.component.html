@@ -5,601 +5,603 @@
   -->
 
 <div id="create-station">
-  <div class="background"></div>
   <mat-progress-bar [mode]="'indeterminate'" *ngIf="load" class="progress"></mat-progress-bar>
-  <div class="steps">
-    <h4 *ngIf="step===0">Estación de servicio</h4>
-    <h4 *ngIf="step===1 || step===2">Registro de usuario</h4>
-    <h4 *ngIf="step===3">Agende las actividades</h4>
-    <h4 *ngIf="step===4">Hecho</h4>
-    <mat-vertical-stepper [linear]="true" #stepper style="width: 70%;"
-                          (selectionChange)="changeStep($event)">
-      <mat-step [stepControl]="newStation">
-        <ng-template matStepLabel >Información general</ng-template>
-      </mat-step>
-      <mat-step>
-        <ng-template matStepLabel> Seleccione o Registre a un Representante legal</ng-template>
-      </mat-step>
-      <mat-step [stepControl]="newManager">
-        <ng-template matStepLabel>Registre un Encargado de estación</ng-template>
-      </mat-step>
-      <mat-step>
-        <ng-template matStepLabel>Agende las actividades</ng-template>
-      </mat-step>
-      <mat-step>
-        <ng-template matStepLabel>Hecho</ng-template>
-      </mat-step>
-    </mat-vertical-stepper>
-  </div>
   <div class="forms-and-lists">
-    <div *ngIf="step===0" class="form-station">
-      <mat-card>
-        <mat-card-content>
-          <form [formGroup]="newStation" (ngSubmit)="validateStation(newStation.value)" aria-label="new station form">
-            <img src="../../../assets/Images/background.png" class="head-image" alt="background gas station">
-            <div class="station-image" (click)="openModal()">
-              <mat-icon *ngIf="!stationType" class="defaultProfileImage">local_gas_station</mat-icon>
-              <img *ngIf="stationType" [src]="stationType.fileCS.thumbnail" class="profileImage">
-            </div>
-            <mat-form-field class="inputs">
-              <input formControlName="businessName" matInput placeholder="Razón social" required>
-              <mat-error *ngIf="newStation.controls['businessName'].hasError('required')">
-                Este campo es obligatorio
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field class="inputs">
-              <input formControlName="rfc" matInput placeholder="R.F.C." required>
-              <mat-error *ngIf="newStation.controls['rfc'].hasError('required')">
-                Este campo es obligatorio
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field class="inputs">
-              <input formControlName="crePermission" matInput placeholder="Número de permiso de la CRE">
-            </mat-form-field>
-            <mat-form-field class="inputs">
-              <input formControlName="name" matInput placeholder="Nombre de la sucursal" required type="text" aria-label="Station name">
-              <mat-error *ngIf="newStation.controls['name'].hasError('required')">
-                Este campo es obligatorio
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field class="inputs">
-              <input formControlName="email" matInput placeholder="Email comercial" required type="email">
-              <mat-error *ngIf="newStation.controls['email'].hasError('required')">
-                Este campo es obligatorio
-              </mat-error>
-              <mat-error *ngIf="newStation.controls['email'].hasError('email')">
-                La dirección de email no es valida
-              </mat-error>
-            </mat-form-field>
-            <div class="modal">
-              <div class="mask" (click)="openLocation()"></div>
-              <mat-form-field class="inputs">
-                <input formControlName="address" matInput placeholder="Dirección" required>
-                <mat-error *ngIf="newStation.controls['address'].hasError('required')">
-                  Este campo es obligatorio
-                </mat-error>
-              </mat-form-field>
-            </div>
-            <mat-form-field class="inputs">
-              <input formControlName="phoneNumber" matInput placeholder="Télefono" required>
-              <mat-error *ngIf="newStation.controls['phoneNumber'].hasError('required')">
-                Este campo es obligatorio
-              </mat-error>
-              <mat-error *ngIf="newStation.controls['phoneNumber'].hasError('minlenght')">
-                Se requieren de 8 a 13 digitos
-              </mat-error>
-              <mat-error *ngIf="newStation.controls['phoneNumber'].hasError('maxlenght')">
-                Se requieren de 8 a 13 digitos
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field class="inputs">
-              <input formControlName="workers" matInput placeholder="No. de trabajadores">
-            </mat-form-field>
-            <mat-divider></mat-divider>
-            <div>
-              <div class="double-inputs">
-                <span>Turnos</span>
-                <button type="button" mat-icon-button (click)="addRemoveTurn(false, 1)"
-                >
-                  <mat-icon>add</mat-icon>
-                </button>
-              </div>
-              <div *ngFor="let turn of workShifts; let i = index">
-                <div class="input-content">
-                  <div class="address">
-                    <app-time-picker [(value)]="turn.start" [placeholder]="'Inicio'"></app-time-picker>
-                  </div>
-                  <div class="address">
-                    <app-time-picker [(value)]="turn.end" [placeholder]="'Fin'"></app-time-picker>
-                  </div>
-                  <button type="button" *ngIf="workShifts.length>1" mat-icon-button (click)="addRemoveTurn(true,1, i)" class="remove" [disabled]=" user.role===6 || user.role===7">
-                    <mat-icon>remove</mat-icon>
-                  </button>
+    <h4 class="modal-head" *ngIf="step===0">Estación de servicio</h4>
+    <h4 class="modal-head" *ngIf="step===1 || step===2">Registro de usuario</h4>
+    <h4 class="modal-head" *ngIf="step===3">Agende las actividades</h4>
+    <div [ngSwitch]="step" class="content-modal">
+      <div *ngSwitchCase="0">
+        <div class="form-station">
+          <div class="station">
+            <div class="station-content">
+              <form [formGroup]="newStation" (ngSubmit)="validateStation(newStation.value)" aria-label="new station form">
+                <img src="../../../assets/Images/background.png" class="head-image" alt="background gas station">
+                <div class="station-image" (click)="openModal()" matTooltip="Seleccione grupo gasolinero">
+                  <mat-icon *ngIf="!stationType" class="defaultProfileImage">local_gas_station</mat-icon>
+                  <img *ngIf="stationType" [src]="stationType.fileCS.thumbnail" class="profileImage">
                 </div>
-              </div>
-            </div>
-            <mat-divider></mat-divider>
-            <div>
-              <div class="text">
-                <span>No. de pozos</span>
-              </div>
-              <div class="fuel-selector">
-                <mat-form-field class="width-form">
-                  <input formControlName="monitoringWells" matInput placeholder="De monitoreo" type="text"
-                         aria-label="Station monitoring wells">
+                <mat-form-field class="inputs">
+                  <input formControlName="businessName" matInput placeholder="Razón social" required>
+                  <mat-error *ngIf="newStation.controls['businessName'].hasError('required')">
+                    Este campo es obligatorio
+                  </mat-error>
                 </mat-form-field>
-                <mat-form-field class="width-form">
-                  <input formControlName="observationWells" matInput placeholder="De observación" type="text"
-                         aria-label="Station observable wells">
+                <mat-form-field class="inputs">
+                  <input formControlName="rfc" matInput placeholder="R.F.C." required>
+                  <mat-error *ngIf="newStation.controls['rfc'].hasError('required')">
+                    Este campo es obligatorio
+                  </mat-error>
                 </mat-form-field>
-              </div>
-            </div>
-            <mat-divider></mat-divider>
-            <div>
-              <div class="double-inputs">
-                <span>Tanques de Combustible</span>
-                <button mat-icon-button type="button" (click)="addRemoveTurn(false, 2)">
-                  <mat-icon>add</mat-icon>
-                </button>
-              </div>
-              <div *ngFor="let tank of tanks; let i = index">
-                <div class="flex-box">
-                  <div class="fuel">
-                    <mat-form-field class="inputs">
-                      <input matInput placeholder="Capacidad (lts)" type="number"
-                             aria-label="Station tank fuel capacity" [(ngModel)]="tank.capacity"
-                             [ngModelOptions]="{standalone: true}">
-                    </mat-form-field>
-                    <mat-radio-group class="fuel-selector" aria-label="Station tank fuel type"
-                                     [(ngModel)]="tank.fuelType" [ngModelOptions]="{standalone: true}">
-                      <mat-radio-button [value]="1">Magna</mat-radio-button>
-                      <mat-radio-button [value]="2">Premium</mat-radio-button>
-                      <mat-radio-button [value]="3">Diesel</mat-radio-button>
-                    </mat-radio-group>
+                <mat-form-field class="inputs">
+                  <input formControlName="crePermission" matInput placeholder="Número de permiso de la CRE">
+                </mat-form-field>
+                <mat-form-field class="inputs">
+                  <input formControlName="name" matInput placeholder="Nombre de la sucursal" required type="text" aria-label="Station name">
+                  <mat-error *ngIf="newStation.controls['name'].hasError('required')">
+                    Este campo es obligatorio
+                  </mat-error>
+                </mat-form-field>
+                <div class="modal">
+                  <div class="mask" (click)="openPersonForm(false)"></div>
+                  <mat-form-field class="inputs">
+                    <input formControlName="legalRepresentative" matInput placeholder="Representante Legal" required type="text" (keyup)="openPersonForm(false)">
+                    <mat-error *ngIf="newStation.controls['legalRepresentative'].hasError('required')">
+                      Este campo es obligatorio
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+                <mat-form-field class="inputs">
+                  <input formControlName="email" matInput placeholder="Email comercial" required type="email">
+                  <mat-error *ngIf="newStation.controls['email'].hasError('required')">
+                    Este campo es obligatorio
+                  </mat-error>
+                  <mat-error *ngIf="newStation.controls['email'].hasError('email')">
+                    La dirección de email no es valida
+                  </mat-error>
+                </mat-form-field>
+                <div class="modal">
+                  <div class="mask" (click)="openLocation()"></div>
+                  <mat-form-field class="inputs">
+                    <input formControlName="address" matInput placeholder="Dirección" required>
+                    <mat-error *ngIf="newStation.controls['address'].hasError('required')">
+                      Este campo es obligatorio
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+                <mat-form-field class="inputs">
+                  <input formControlName="phoneNumber" matInput placeholder="Télefono" required>
+                  <mat-error *ngIf="newStation.controls['phoneNumber'].hasError('required')">
+                    Este campo es obligatorio
+                  </mat-error>
+                  <mat-error *ngIf="newStation.controls['phoneNumber'].hasError('minlength')">
+                    Se requieren de 8 a 13 digitos
+                  </mat-error>
+                  <mat-error *ngIf="newStation.controls['phoneNumber'].hasError('maxlength')">
+                    Se requieren de 8 a 13 digitos
+                  </mat-error>
+                </mat-form-field>
+                <div class="modal">
+                  <div class="mask" (click)="openPersonForm(true)"></div>
+                  <mat-form-field class="inputs">
+                    <input formControlName="manager" matInput placeholder="Encargado de estación" required type="text" (keyup)="openPersonForm(true)">
+                    <mat-error *ngIf="newStation.controls['manager'].hasError('required')">
+                      Este campo es obligatorio
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+                <mat-form-field class="inputs">
+                  <input formControlName="workers" matInput placeholder="No. de trabajadores">
+                </mat-form-field>
+                <mat-divider></mat-divider>
+                <div>
+                  <div class="double-inputs">
+                    <span>Turnos</span>
+                    <button type="button" mat-icon-button (click)="addRemoveTurn(false, 1)"
+                    >
+                      <mat-icon>add</mat-icon>
+                    </button>
                   </div>
-                  <div class="button-container">
-                    <button *ngIf="tanks.length>1" type="button" mat-icon-button (click)="addRemoveTurn(true,2, i)"
-                            class="remove">
-                      <mat-icon>remove</mat-icon>
+                  <div *ngFor="let turn of workShifts; let i = index">
+                    <div class="input-content">
+                      <div class="address">
+                        <app-time-picker [(value)]="turn.start" [placeholder]="'Inicio'"></app-time-picker>
+                      </div>
+                      <div class="address">
+                        <app-time-picker [(value)]="turn.end" [placeholder]="'Fin'"></app-time-picker>
+                      </div>
+                      <button type="button" *ngIf="workShifts.length>1" mat-icon-button (click)="addRemoveTurn(true,1, i)" class="remove" [disabled]=" user.role===6 || user.role===7">
+                        <mat-icon>remove</mat-icon>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+                <mat-divider></mat-divider>
+                <div>
+                  <div class="text">
+                    <span>No. de pozos</span>
+                  </div>
+                  <div class="fuel-selector">
+                    <mat-form-field class="width-form">
+                      <input formControlName="monitoringWells" matInput placeholder="De monitoreo" type="text"
+                             aria-label="Station monitoring wells">
+                    </mat-form-field>
+                    <mat-form-field class="width-form">
+                      <input formControlName="observationWells" matInput placeholder="De observación" type="text"
+                             aria-label="Station observable wells">
+                    </mat-form-field>
+                  </div>
+                </div>
+                <mat-divider></mat-divider>
+                <div>
+                  <div class="double-inputs">
+                    <span>Tanques de Combustible</span>
+                    <button mat-icon-button type="button" (click)="addRemoveTurn(false, 2)">
+                      <mat-icon>add</mat-icon>
+                    </button>
+                  </div>
+                  <div *ngFor="let tank of tanks; let i = index">
+                    <div class="flex-box">
+                      <div class="fuel">
+                        <mat-form-field class="inputs">
+                          <input matInput placeholder="Capacidad (lts)" type="number"
+                                 aria-label="Station tank fuel capacity" [(ngModel)]="tank.capacity"
+                                 [ngModelOptions]="{standalone: true}">
+                        </mat-form-field>
+                        <mat-radio-group class="fuel-selector" aria-label="Station tank fuel type"
+                                         [(ngModel)]="tank.fuelType" [ngModelOptions]="{standalone: true}">
+                          <mat-radio-button [value]="1">Magna</mat-radio-button>
+                          <mat-radio-button [value]="2">Premium</mat-radio-button>
+                          <mat-radio-button [value]="3">Diesel</mat-radio-button>
+                        </mat-radio-group>
+                      </div>
+                      <div class="button-container">
+                        <button *ngIf="tanks.length>1" type="button" mat-icon-button (click)="addRemoveTurn(true,2, i)"
+                                class="remove">
+                          <mat-icon>remove</mat-icon>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <mat-divider></mat-divider>
+                <div class="header-two">
+                  <div>
+                    <span>Dispensarios</span>
+                  </div>
+                  <div>
+                    <button type="button" mat-icon-button (click)="addRemoveTurn(false, 3)"
+                    >
+                      <mat-icon>add</mat-icon>
                     </button>
                   </div>
                 </div>
-              </div>
-            </div>
-            <mat-divider></mat-divider>
-            <div class="header-two">
-              <div>
-                <span>Dispensarios</span>
-              </div>
-              <div>
-                <button type="button" mat-icon-button (click)="addRemoveTurn(false, 3)"
-                >
-                  <mat-icon>add</mat-icon>
-                </button>
-              </div>
-            </div>
-            <div *ngFor="let dispenser of dispensers; let i = index">
-              <div class="dispensers">
-                <div style="width: 100%;">
-                  <div class="head">Dispensario {{i+1}}</div>
-                  <div class="hoses">
-                    <mat-form-field>
-                      <input matInput placeholder="No. de mangueras" type="number" aria-label="Station hoses number"
-                             [(ngModel)]="dispenser.hoses" [ngModelOptions]="{standalone: true}">
-                    </mat-form-field>
-                    <mat-form-field>
-                      <input matInput placeholder="No. de serie" type="text" aria-label="Station hoses cre id"
-                             [(ngModel)]="dispenser.identifier" [ngModelOptions]="{standalone: true}">
-                    </mat-form-field>
+                <div *ngFor="let dispenser of dispensers; let i = index">
+                  <div class="dispensers">
+                    <div class="inputs">
+                      <div class="head">Dispensario {{i+1}}</div>
+                      <div class="hoses">
+                        <mat-form-field>
+                          <input matInput placeholder="No. de mangueras" type="number" aria-label="Station hoses number"
+                                 [(ngModel)]="dispenser.hoses" [ngModelOptions]="{standalone: true}">
+                        </mat-form-field>
+                        <mat-form-field>
+                          <input matInput placeholder="No. de serie" type="text" aria-label="Station hoses cre id"
+                                 [(ngModel)]="dispenser.identifier" [ngModelOptions]="{standalone: true}">
+                        </mat-form-field>
+                      </div>
+                      <section class="hoses" aria-label="Station hoses fuel type">
+                        <mat-checkbox [(ngModel)]="dispenser.magna" [ngModelOptions]="{standalone: true}">
+                          Magna
+                        </mat-checkbox>
+                        <mat-checkbox [(ngModel)]="dispenser.premium" [ngModelOptions]="{standalone: true}">
+                          Premium
+                        </mat-checkbox>
+                        <mat-checkbox [(ngModel)]="dispenser.diesel" [ngModelOptions]="{standalone: true}">
+                          Diesel
+                        </mat-checkbox>
+                      </section>
+                    </div>
+                    <div class="button">
+                      <button type="button" *ngIf="dispensers.length>1" mat-icon-button (click)="addRemoveTurn(true,3, i)"
+                              class="remove">
+                        <mat-icon>remove</mat-icon>
+                      </button>
+                    </div>
                   </div>
-                  <section class="hoses" aria-label="Station hoses fuel type">
-                    <mat-checkbox [(ngModel)]="dispenser.magna" [ngModelOptions]="{standalone: true}">
-                      Magna
-                    </mat-checkbox>
-                    <mat-checkbox [(ngModel)]="dispenser.premium" [ngModelOptions]="{standalone: true}">
-                      Premium
-                    </mat-checkbox>
-                    <mat-checkbox [(ngModel)]="dispenser.diesel" [ngModelOptions]="{standalone: true}">
-                      Diesel
-                    </mat-checkbox>
-                  </section>
                 </div>
-                <div class="button">
-                  <button type="button" *ngIf="dispensers.length>1" mat-icon-button (click)="addRemoveTurn(true,3, i)"
-                          class="remove">
-                    <mat-icon>remove</mat-icon>
+                <div class="form-button">
+                  <button mat-flat-button aria-label="LogIn" [color]="'primary'" mat-button>CREAR</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div *ngSwitchCase="1" class="content-modal">
+        <div *ngIf="listExist; then repLegalList else legalRepForm" class="content-modal"></div>
+        <ng-template #repLegalList>
+          <div class="list-person">
+            <div *ngIf="listRepresentative.length>0; then list else empty"></div>
+            <ng-template #list>
+              <div class="list">
+                <div *ngFor="let representative of listRepresentative;">
+                  <div (click)="selectLegalRep(representative)" class="pointer">
+                    <mat-card class="card">
+                      <div class="notValidate" *ngIf="!representative.active">
+                        <div class="text-validate">Validación pendiente</div>
+                      </div>
+                      <mat-card-content>
+                        <div class="image-list">
+                          <img class="image-collaborator" *ngIf="representative.profileImage"
+                               [src]="representative.profileImage.thumbnail" alt="profile image">
+                          <mat-icon class="image-collaborator" *ngIf="!representative.profileImage">account_circle</mat-icon>
+                        </div>
+                        <div class="information">
+                          <div class="info-head"> {{representative.name}} {{representative.lastName}}</div>
+                          <div class="info"> {{representative.email}}</div>
+                        </div>
+                      </mat-card-content>
+                    </mat-card>
+                  </div>
+                </div>
+              </div>
+            </ng-template>
+            <ng-template #empty>
+              <mat-card class="list">
+                <div class="empty">
+                  <div class="text">Aún no tiene usuarios agregados en su lista</div>
+                  <button mat-button class="button" (click)="listExist = false;">
+                    <mat-icon>add</mat-icon>
+                    <span>AGREGAR USUARIO</span>
                   </button>
                 </div>
-              </div>
-            </div>
-            <div class="form-button">
-              <button mat-flat-button aria-label="LogIn" [color]="'primary'" mat-button>SIGUIENTE</button>
-            </div>
-          </form>
-        </mat-card-content>
-      </mat-card>
-    </div>
-    <div *ngIf="step===1 && listExist" class="list-person">
-      <div *ngIf="listRepresentative.length>0; then list else empty"></div>
-      <ng-template #list>
-        <mat-card class="list">
-          <div *ngFor="let representative of listRepresentative;">
-            <div (click)="selectLegalRep(representative)" style="cursor: pointer">
-              <mat-card class="card">
-                <div class="notValidate" *ngIf="!representative.active">
-                  <div class="text-validate">Validación pendiente</div>
-                </div>
-                <mat-card-content>
-                  <div class="image-list">
-                    <img class="image-collaborator" *ngIf="representative.profileImage"
-                         [src]="representative.profileImage.thumbnail" alt="profile image">
-                    <mat-icon class="image-collaborator" *ngIf="!representative.profileImage">account_circle</mat-icon>
-                  </div>
-                  <div class="information">
-                    <div class="info-head"> {{representative.name}} {{representative.lastName}}</div>
-                    <div class="info"> {{representative.email}}</div>
-                  </div>
-                </mat-card-content>
               </mat-card>
-            </div>
+            </ng-template>
           </div>
-          <div class="add-legal" >
-            <button mat-icon-button matTooltip="Añadir representante legal" (click)="listExist = false; legalRepAsign=false;">
-              <mat-icon>person_add</mat-icon>
-            </button>
-          </div>
-        </mat-card>
-      </ng-template>
-      <ng-template #empty>
-        <mat-card class="list">
-          <div class="empty">
-            <div class="text">Aún no tiene estaciones agregadas en su lista en su lista</div>
-            <button mat-button class="button" (click)="listExist = false; legalRepAsign=false;">
-              <mat-icon>add</mat-icon>
-              <span>AGREGAR USUARIO</span>
-            </button>
-          </div>
-        </mat-card>
-      </ng-template>
-    </div>
-    <div *ngIf="step===1 && !listExist" class="form-person">
-      <mat-card>
-        <mat-card-content>
-          <form [formGroup]="newLegalRep" (ngSubmit)="validateLegal(newLegalRep.value)">
-            <img src="../../../assets/Images/background.png" class="head-image" alt="background gas station">
-            <div class="image">
-              <app-upload-file [layoutTemplate]="icon" (onLoad)="onLoadImage($event, false)" (onRemove)="onRemoveImage(false)"
-                               [type]="'image'">
-                <ng-template #icon>
-                  <img *ngIf="profileImage" [src]="profileImage" class="profileImage" alt="User profile image">
-                  <mat-icon *ngIf="!profileImage" class="defaultProfileImage">account_circle</mat-icon>
-                </ng-template>
-              </app-upload-file>
-            </div>
-            <mat-form-field class="inputs">
-              <input formControlName="name" matInput placeholder="Nombre(s)"
-                     required type="text" aria-label="User name">
-              <mat-error *ngIf="newLegalRep.controls['name'].hasError('required')">
-                Este campo es obligatorio
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field class="inputs">
-              <input formControlName="lastName" matInput placeholder="Apellido(s)"
-                     required type="text" aria-label="User last-name">
-              <mat-error *ngIf="newLegalRep.controls['lastName'].hasError('required')">
-                Este campo es obligatorio
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field class="inputs">
-              <input formControlName="email" matInput placeholder="Email comercial"
-                     type="email" aria-label="User email" required (blur)="validateEmailExist(false)">
-              <mat-error *ngIf="newLegalRep.controls['email'].hasError('required')">
-                Este campo es obligatorio
-              </mat-error>
-              <mat-error *ngIf="newLegalRep.controls['email'].hasError('email')">
-                La dirección email no es valida
-              </mat-error>
-              <mat-error *ngIf="newLegalRep.controls['email'].hasError('emailUsed')">
-                Este email ya tiene un usuario asociado
-              </mat-error>
-            </mat-form-field>
-            <div class="modal">
-              <div class="mask" (click)="openListCountry(1)"></div>
-              <mat-form-field class="inputs">
-                <input (keyup)="openListCountry(1)" formControlName="country" matInput placeholder="País"
-                       type="text" required aria-label="User country">
-                <mat-error *ngIf="newLegalRep.controls['country'].hasError('required')">
-                  Este campo es obligatorio
-                </mat-error>
-              </mat-form-field>
-            </div>
-            <div style="display: flex">
-              <div class="modal">
-                <div class="mask" (click)="openListCountry(1)"></div>
-                <mat-form-field class="right-inputs">
-                  <input formControlName="code" matInput placeholder="Código"
-                         type="text" aria-label="Phone code">
-                </mat-form-field>
-              </div>
-              <mat-form-field class="inputs">
-                <input formControlName="phoneNumber" matInput
-                       placeholder="Número celular" required type="tel" aria-label="User cellphone number"
-                       #phoneNumber>
-                <mat-error *ngIf="newLegalRep.controls['phoneNumber'].hasError('required')">
-                  Este campo es obligatorio
-                </mat-error>
-                <mat-error *ngIf="newLegalRep.controls['phoneNumber'].hasError('minlength')">
-                  Se requieren de 8 a 13 dígitos
-                </mat-error>
-                <mat-error *ngIf="newLegalRep.controls['phoneNumber'].hasError('maxlength')">
-                  Se requieren de 8 a 13 dígitos
-                </mat-error>
-              </mat-form-field>
-            </div>
-            <mat-form-field class="inputs">
-              <input disabled placeholder="Rol" required aria-label="User role" value="Representante Legal" matInput>
-            </mat-form-field>
-            <mat-form-field class="inputs">
-              <input formControlName="jobTitle" matInput placeholder="Cargo"
-                     required type="text" aria-label="User job-title">
-              <mat-error *ngIf="newLegalRep.controls['jobTitle'].hasError('required')">
-                Este campo es obligatorio
-              </mat-error>
-            </mat-form-field>
-            <div style="display: flex">
-              <mat-form-field class="right-inputs">
-                <mat-select placeholder="Protocolo" aria-label="User website protocol"
-                            [(value)]="protocol">
-                  <mat-option value="http://">http://</mat-option>
-                  <mat-option value="https://">https://</mat-option>
-                </mat-select>
-              </mat-form-field>
-              <mat-form-field class="inputs">
-                <input placeholder="Website" formControlName="website" matInput
-                       type="url" aria-label="User website">
-                <mat-error *ngIf="newLegalRep.controls['website'].hasError('pattern')">
-                  Ingrese un sitio web válido
-                </mat-error>
-              </mat-form-field>
-            </div>
-            <div class="signature-input">
-              <div class="formHead">Firma digital</div>
-              <div class="signatureContainer">
-                <div class="signature" (click)="changeSignature(false)" matTooltip="Cambiar firma">
-                  <span *ngIf="!signature" class="formText">Registre firma digital</span>
-                  <img *ngIf="signature" [src]="signature" class="imageSignature" alt="User signature image">
-                </div>
-              </div>
-            </div>
-            <div class="title">Información adicional</div>
-            <div>
-              <mat-form-field class="inputs">
-                <input formControlName="ssn" matInput
-                       placeholder="Número de seguridad social" type="text" aria-label="User social security ID">
-              </mat-form-field>
-              <mat-form-field class="inputs">
-                <mat-select placeholder="Tipo de sangre" aria-label="User blood type"
-                            [(value)]="bloodType">
-                  <mat-option>-Seleccione un tipo de sangre-</mat-option>
-                  <mat-option *ngFor="let blood of bloodGroup" [value]="blood">{{blood}}</mat-option>
-                </mat-select>
-              </mat-form-field>
-              <div class="submit">
-                <app-upload-file style="width: 100%" [layoutTemplate]="button" (onLoad)="onLoadFile($event, false)" [type]="'file'">
-                  <ng-template #button>
-                    <div class="study">
-                      <span type="button">Estudio de toxicidad (Benceno)</span>
-                      <mat-icon class="file-icon" *ngIf="!file" svgIcon="icons:upload"></mat-icon>
-                      <mat-icon class="file-icon" *ngIf="file">autorenew</mat-icon>
+        </ng-template>
+        <ng-template #legalRepForm>
+          <div class="form-person">
+            <div class="new-person">
+              <div class="new-person-content">
+                <form [formGroup]="newLegalRep" (ngSubmit)="validateLegal(newLegalRep.value)">
+                  <img src="../../../assets/Images/background.png" class="head-image" alt="background gas station">
+                  <div class="image">
+                    <app-upload-file [layoutTemplate]="icon" (onLoad)="onLoadImage($event, false)" (onRemove)="onRemoveImage(false)"
+                                     [type]="'image'">
+                      <ng-template #icon>
+                        <img *ngIf="profileImage" [src]="profileImage" class="profileImage" alt="User profile image">
+                        <mat-icon *ngIf="!profileImage" class="defaultProfileImage">account_circle</mat-icon>
+                      </ng-template>
+                    </app-upload-file>
+                  </div>
+                  <mat-form-field class="inputs">
+                    <input formControlName="name" matInput placeholder="Nombre(s)"
+                           required type="text" aria-label="User name">
+                    <mat-error *ngIf="newLegalRep.controls['name'].hasError('required')">
+                      Este campo es obligatorio
+                    </mat-error>
+                  </mat-form-field>
+                  <mat-form-field class="inputs">
+                    <input formControlName="lastName" matInput placeholder="Apellido(s)"
+                           required type="text" aria-label="User last-name">
+                    <mat-error *ngIf="newLegalRep.controls['lastName'].hasError('required')">
+                      Este campo es obligatorio
+                    </mat-error>
+                  </mat-form-field>
+                  <mat-form-field class="inputs">
+                    <input formControlName="email" matInput placeholder="Email comercial"
+                           type="email" aria-label="User email" required (blur)="validateEmailExist(false)">
+                    <mat-error *ngIf="newLegalRep.controls['email'].hasError('required')">
+                      Este campo es obligatorio
+                    </mat-error>
+                    <mat-error *ngIf="newLegalRep.controls['email'].hasError('email')">
+                      La dirección email no es valida
+                    </mat-error>
+                    <mat-error *ngIf="newLegalRep.controls['email'].hasError('emailUsed')">
+                      Este email ya tiene un usuario asociado
+                    </mat-error>
+                  </mat-form-field>
+                  <div class="modal">
+                    <div class="mask" (click)="openListCountry(1)"></div>
+                    <mat-form-field class="inputs">
+                      <input (keyup)="openListCountry(1)" formControlName="country" matInput placeholder="País"
+                             type="text" required aria-label="User country">
+                      <mat-error *ngIf="newLegalRep.controls['country'].hasError('required')">
+                        Este campo es obligatorio
+                      </mat-error>
+                    </mat-form-field>
+                  </div>
+                  <div class="flex-box">
+                    <div class="modal">
+                      <div class="mask" (click)="openListCountry(1)"></div>
+                      <mat-form-field class="right-inputs">
+                        <input formControlName="code" matInput placeholder="Código"
+                               type="text" aria-label="Phone code">
+                      </mat-form-field>
                     </div>
-                  </ng-template>
-                </app-upload-file>
-                <button type="button" mat-icon-button matTooltip="Ver estudio" *ngIf="file" (click)="openStudy(false)">
-                  <mat-icon class="file-icon">visibility</mat-icon>
-                </button>
-              </div>
-              <div class="extra-data">
-                <div class="formHead">Contacto de emergencia</div>
-                <div class="extra-data">
+                    <mat-form-field class="inputs">
+                      <input formControlName="phoneNumber" matInput
+                             placeholder="Número celular" required type="tel" aria-label="User cellphone number"
+                             #phoneNumber>
+                      <mat-error *ngIf="newLegalRep.controls['phoneNumber'].hasError('required')">
+                        Este campo es obligatorio
+                      </mat-error>
+                      <mat-error *ngIf="newLegalRep.controls['phoneNumber'].hasError('minlength')">
+                        Se requieren de 8 a 13 dígitos
+                      </mat-error>
+                      <mat-error *ngIf="newLegalRep.controls['phoneNumber'].hasError('maxlength')">
+                        Se requieren de 8 a 13 dígitos
+                      </mat-error>
+                    </mat-form-field>
+                  </div>
                   <mat-form-field class="inputs">
-                    <input formControlName="contactName" matInput
-                           placeholder="Nombre" type="text" aria-label="User emergency contact name">
+                    <input disabled placeholder="Rol" required aria-label="User role" value="Representante Legal" matInput>
                   </mat-form-field>
                   <mat-form-field class="inputs">
-                    <input formControlName="contactPhoneNumber" matInput
-                           placeholder="Número celular" type="tel" aria-label="User emergency contact phone number">
-                    <mat-error *ngIf="newLegalRep.controls['contactPhoneNumber'].hasError('minlength')">
-                      Se requieren de 8 a 13 dígitos
+                    <input formControlName="jobTitle" matInput placeholder="Cargo"
+                           required type="text" aria-label="User job-title">
+                    <mat-error *ngIf="newLegalRep.controls['jobTitle'].hasError('required')">
+                      Este campo es obligatorio
                     </mat-error>
-                    <mat-error *ngIf="newLegalRep.controls['contactPhoneNumber'].hasError('maxlength')">
-                      Se requieren de 8 a 13 dígitos
-                    </mat-error>
                   </mat-form-field>
-                  <mat-form-field class="inputs">
-                    <input formControlName="contactKinship" matInput
-                           placeholder="Parentesco" type="text" aria-label="User emergency contact relationship">
-                  </mat-form-field>
-                </div>
-              </div>
-            </div>
-            <div class="form-button">
-              <button mat-flat-button aria-label="LogIn" [color]="'primary'" mat-button>SIGUIENTE</button>
-            </div>
-          </form>
-        </mat-card-content>
-      </mat-card>
-    </div>
-    <div *ngIf="step===2" class="form-person">
-      <mat-card>
-        <mat-card-content>
-          <form [formGroup]="newManager" (ngSubmit)="validateManager(newManager.value)">
-            <img src="../../../assets/Images/background.png" class="head-image" alt="background gas station">
-            <div class="image">
-              <app-upload-file [layoutTemplate]="icon" (onLoad)="onLoadImage($event, true)" (onRemove)="onRemoveImage(true)"
-                               [type]="'image'">
-                <ng-template #icon>
-                  <img *ngIf="profileImageTwo" [src]="profileImageTwo" class="profileImage" alt="User profile image">
-                  <mat-icon *ngIf="!profileImageTwo" class="defaultProfileImage">account_circle</mat-icon>
-                </ng-template>
-              </app-upload-file>
-            </div>
-            <mat-form-field class="inputs">
-              <input formControlName="name" matInput placeholder="Nombre(s)"
-                     required type="text" aria-label="User name">
-              <mat-error *ngIf="newManager.controls['name'].hasError('required')">
-                Este campo es obligatorio
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field class="inputs">
-              <input formControlName="lastName" matInput placeholder="Apellido(s)"
-                     required type="text" aria-label="User last-name">
-              <mat-error *ngIf="newManager.controls['lastName'].hasError('required')">
-                Este campo es obligatorio
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field class="inputs">
-              <input formControlName="email" matInput placeholder="Email comercial"
-                     type="email" aria-label="User email" required (blur)="validateEmailExist(true)">
-              <mat-error *ngIf="newManager.controls['email'].hasError('required')">
-                Este campo es obligatorio
-              </mat-error>
-              <mat-error *ngIf="newManager.controls['email'].hasError('required')">
-                La dirección email no es valida
-              </mat-error>
-              <mat-error *ngIf="newManager.controls['email'].hasError('emailUsed')">
-                Este email ya tiene un usuario asociado
-              </mat-error>
-            </mat-form-field>
-            <div class="modal">
-              <div class="mask" (click)="openListCountry(2)"></div>
-              <mat-form-field class="inputs">
-                <input (keyup)="openListCountry(2)" formControlName="country" matInput placeholder="País"
-                       type="text" required aria-label="User country">
-                <mat-error *ngIf="newManager.controls['country'].hasError('required')">
-                  Este campo es obligatorio
-                </mat-error>
-              </mat-form-field>
-            </div>
-            <div style="display: flex">
-              <div class="modal">
-                <div class="mask" (click)="openListCountry(2)"></div>
-                <mat-form-field class="right-inputs">
-                  <input formControlName="code" matInput placeholder="Código"
-                         type="text" aria-label="Phone code">
-                </mat-form-field>
-              </div>
-              <mat-form-field class="inputs">
-                <input formControlName="phoneNumber" matInput
-                       placeholder="Número celular" required type="tel" aria-label="User cellphone number"
-                       #phoneNumber>
-                <mat-error *ngIf="newManager.controls['phoneNumber'].hasError('required')">
-                  Este campo es obligatorio
-                </mat-error>
-                <mat-error *ngIf="newManager.controls['phoneNumber'].hasError('minlength')">
-                  Se requieren de 8 a 13 dígitos
-                </mat-error>
-                <mat-error *ngIf="newManager.controls['phoneNumber'].hasError('maxlength')">
-                  Se requieren de 8 a 13 dígitos
-                </mat-error>
-              </mat-form-field>
-            </div>
-            <mat-form-field class="inputs">
-              <input disabled placeholder="Rol" required aria-label="User role" value="Encargado de Estación" matInput>
-            </mat-form-field>
-            <mat-form-field class="inputs">
-              <input formControlName="jobTitle" matInput placeholder="Cargo"
-                     required type="text" aria-label="User job-title">
-              <mat-error *ngIf="newManager.controls['jobTitle'].hasError('required')">
-                Este campo es obligatorio
-              </mat-error>
-            </mat-form-field>
-            <div style="display: flex">
-              <mat-form-field class="right-inputs">
-                <mat-select placeholder="Protocolo" aria-label="User website protocol"
-                            [(value)]="protocolTwo">
-                  <mat-option value="http://">http://</mat-option>
-                  <mat-option value="https://">https://</mat-option>
-                </mat-select>
-              </mat-form-field>
-              <mat-form-field class="inputs">
-                <input placeholder="Website" formControlName="website" matInput
-                       type="url" aria-label="User website">
-                <mat-error *ngIf="newManager.controls['website'].hasError('pattern')">
-                  Ingrese un sitio web válido
-                </mat-error>
-              </mat-form-field>
-            </div>
-            <div class="signature-input">
-              <div class="formHead">Firma digital</div>
-              <div class="signatureContainer">
-                <div class="signature" (click)="changeSignature(true)" matTooltip="Cambiar firma">
-                  <span *ngIf="!signatureTwo" class="formText">Registre firma digital</span>
-                  <img *ngIf="signatureTwo" [src]="signatureTwo" class="imageSignature" alt="User signature image">
-                </div>
-              </div>
-            </div>
-            <div class="title">Información adicional</div>
-            <div>
-              <mat-form-field class="inputs">
-                <input formControlName="ssn" matInput
-                       placeholder="Número de seguridad social" type="text" aria-label="User social security ID">
-              </mat-form-field>
-              <mat-form-field class="inputs">
-                <mat-select placeholder="Tipo de sangre" aria-label="User blood type"
-                            [(value)]="bloodTypeTwo">
-                  <mat-option>-Seleccione un tipo de sangre-</mat-option>
-                  <mat-option *ngFor="let blood of bloodGroup" [value]="blood">{{blood}}</mat-option>
-                </mat-select>
-              </mat-form-field>
-              <div class="submit">
-                <app-upload-file style="width: 100%" [layoutTemplate]="button" (onLoad)="onLoadFile($event, true)" [type]="'file'">
-                  <ng-template #button>
-                    <div class="study">
-                      <span type="button">Estudio de toxicidad (Benceno)</span>
-                      <mat-icon class="file-icon" *ngIf="!fileTwo" svgIcon="icons:upload"></mat-icon>
-                      <mat-icon class="file-icon" *ngIf="fileTwo">autorenew</mat-icon>
+                  <div class="flex-box">
+                    <mat-form-field class="right-inputs">
+                      <mat-select placeholder="Protocolo" aria-label="User website protocol"
+                                  [(value)]="protocol">
+                        <mat-option value="http://">http://</mat-option>
+                        <mat-option value="https://">https://</mat-option>
+                      </mat-select>
+                    </mat-form-field>
+                    <mat-form-field class="inputs">
+                      <input placeholder="Website" formControlName="website" matInput
+                             type="url" aria-label="User website">
+                      <mat-error *ngIf="newLegalRep.controls['website'].hasError('pattern')">
+                        Ingrese un sitio web válido
+                      </mat-error>
+                    </mat-form-field>
+                  </div>
+                  <div class="signature-input">
+                    <div class="formHead">Firma digital</div>
+                    <div class="signatureContainer">
+                      <div class="signature" (click)="changeSignature(false)" matTooltip="Cambiar firma">
+                        <span *ngIf="!signature" class="formText">Registre firma digital</span>
+                        <img *ngIf="signature" [src]="signature" class="imageSignature" alt="User signature image">
+                      </div>
                     </div>
-                  </ng-template>
-                </app-upload-file>
-                <button type="button" mat-icon-button matTooltip="Ver estudio" *ngIf="fileTwo" (click)="openStudy(true)">
-                  <mat-icon class="file-icon">visibility</mat-icon>
-                </button>
+                  </div>
+                  <div class="title">Información adicional</div>
+                  <div>
+                    <mat-form-field class="inputs">
+                      <input formControlName="ssn" matInput
+                             placeholder="Número de seguridad social" type="text" aria-label="User social security ID">
+                    </mat-form-field>
+                    <mat-form-field class="inputs">
+                      <mat-select placeholder="Tipo de sangre" aria-label="User blood type"
+                                  [(value)]="bloodType">
+                        <mat-option>-Seleccione un tipo de sangre-</mat-option>
+                        <mat-option *ngFor="let blood of bloodGroup" [value]="blood">{{blood}}</mat-option>
+                      </mat-select>
+                    </mat-form-field>
+                    <div class="submit">
+                      <app-upload-file class="inputs" [layoutTemplate]="button" (onLoad)="onLoadFile($event, false)" [type]="'file'">
+                        <ng-template #button>
+                          <div class="study">
+                            <span type="button">Estudio de toxicidad (Benceno)</span>
+                            <mat-icon class="file-icon" *ngIf="!file" svgIcon="icons:upload"></mat-icon>
+                            <mat-icon class="file-icon" *ngIf="file">autorenew</mat-icon>
+                          </div>
+                        </ng-template>
+                      </app-upload-file>
+                      <button type="button" mat-icon-button matTooltip="Ver estudio" *ngIf="file" (click)="openStudy(false)">
+                        <mat-icon class="file-icon">visibility</mat-icon>
+                      </button>
+                    </div>
+                    <div class="extra-data">
+                      <div class="formHead">Contacto de emergencia</div>
+                      <div class="extra-data">
+                        <mat-form-field class="inputs">
+                          <input formControlName="contactName" matInput
+                                 placeholder="Nombre" type="text" aria-label="User emergency contact name">
+                        </mat-form-field>
+                        <mat-form-field class="inputs">
+                          <input formControlName="contactPhoneNumber" matInput
+                                 placeholder="Número celular" type="tel" aria-label="User emergency contact phone number">
+                          <mat-error *ngIf="newLegalRep.controls['contactPhoneNumber'].hasError('minlength')">
+                            Se requieren de 8 a 13 dígitos
+                          </mat-error>
+                          <mat-error *ngIf="newLegalRep.controls['contactPhoneNumber'].hasError('maxlength')">
+                            Se requieren de 8 a 13 dígitos
+                          </mat-error>
+                        </mat-form-field>
+                        <mat-form-field class="inputs">
+                          <input formControlName="contactKinship" matInput
+                                 placeholder="Parentesco" type="text" aria-label="User emergency contact relationship">
+                        </mat-form-field>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-button">
+                    <button mat-flat-button aria-label="LogIn" [color]="'primary'" mat-button>CREAR</button>
+                  </div>
+                </form>
               </div>
-              <div class="extra-data">
-                <div class="formHead">Contacto de emergencia</div>
-                <div class="extra-data">
+            </div>
+          </div>
+        </ng-template>
+      </div>
+      <div *ngSwitchCase="2">
+        <div class="form-person">
+          <div class="new-person">
+            <div class="new-person-content">
+              <form [formGroup]="newManager" (ngSubmit)="validateManager(newManager.value)">
+                <img src="../../../assets/Images/background.png" class="head-image" alt="background gas station">
+                <div class="image">
+                  <app-upload-file [layoutTemplate]="icon" (onLoad)="onLoadImage($event, true)" (onRemove)="onRemoveImage(true)"
+                                   [type]="'image'">
+                    <ng-template #icon>
+                      <img *ngIf="profileImageTwo" [src]="profileImageTwo" class="profileImage" alt="User profile image">
+                      <mat-icon *ngIf="!profileImageTwo" class="defaultProfileImage">account_circle</mat-icon>
+                    </ng-template>
+                  </app-upload-file>
+                </div>
+                <mat-form-field class="inputs">
+                  <input formControlName="name" matInput placeholder="Nombre(s)"
+                         required type="text" aria-label="User name">
+                  <mat-error *ngIf="newManager.controls['name'].hasError('required')">
+                    Este campo es obligatorio
+                  </mat-error>
+                </mat-form-field>
+                <mat-form-field class="inputs">
+                  <input formControlName="lastName" matInput placeholder="Apellido(s)"
+                         required type="text" aria-label="User last-name">
+                  <mat-error *ngIf="newManager.controls['lastName'].hasError('required')">
+                    Este campo es obligatorio
+                  </mat-error>
+                </mat-form-field>
+                <mat-form-field class="inputs">
+                  <input formControlName="email" matInput placeholder="Email comercial"
+                         type="email" aria-label="User email" required (blur)="validateEmailExist(true)">
+                  <mat-error *ngIf="newManager.controls['email'].hasError('required')">
+                    Este campo es obligatorio
+                  </mat-error>
+                  <mat-error *ngIf="newManager.controls['email'].hasError('email')">
+                    La dirección email no es valida
+                  </mat-error>
+                  <mat-error *ngIf="newManager.controls['email'].hasError('emailUsed')">
+                    Este email ya tiene un usuario asociado
+                  </mat-error>
+                </mat-form-field>
+                <div class="modal">
+                  <div class="mask" (click)="openListCountry(2)"></div>
                   <mat-form-field class="inputs">
-                    <input formControlName="contactName" matInput
-                           placeholder="Nombre" type="text" aria-label="User emergency contact name">
-                  </mat-form-field>
-                  <mat-form-field class="inputs">
-                    <input formControlName="contactPhoneNumber" matInput
-                           placeholder="Número celular" type="tel" aria-label="User emergency contact phone number">
-                    <mat-error *ngIf="newManager.controls['contactPhoneNumber'].hasError('minlength')">
-                      Se requieren de 8 a 13 dígitos
+                    <input (keyup)="openListCountry(2)" formControlName="country" matInput placeholder="País"
+                           type="text" required aria-label="User country">
+                    <mat-error *ngIf="newManager.controls['country'].hasError('required')">
+                      Este campo es obligatorio
                     </mat-error>
-                    <mat-error *ngIf="newManager.controls['contactPhoneNumber'].hasError('maxlength')">
-                      Se requieren de 8 a 13 dígitos
-                    </mat-error>
-                  </mat-form-field>
-                  <mat-form-field class="inputs">
-                    <input formControlName="contactKinship" matInput
-                           placeholder="Parentesco" type="text" aria-label="User emergency contact relationship">
                   </mat-form-field>
                 </div>
-              </div>
+                <div class="flex-box">
+                  <div class="modal">
+                    <div class="mask" (click)="openListCountry(2)"></div>
+                    <mat-form-field class="right-inputs">
+                      <input formControlName="code" matInput placeholder="Código"
+                             type="text" aria-label="Phone code">
+                    </mat-form-field>
+                  </div>
+                  <mat-form-field class="inputs">
+                    <input formControlName="phoneNumber" matInput
+                           placeholder="Número celular" required type="tel" aria-label="User cellphone number"
+                           #phoneNumber>
+                    <mat-error *ngIf="newManager.controls['phoneNumber'].hasError('required')">
+                      Este campo es obligatorio
+                    </mat-error>
+                    <mat-error *ngIf="newManager.controls['phoneNumber'].hasError('minlength')">
+                      Se requieren de 8 a 13 dígitos
+                    </mat-error>
+                    <mat-error *ngIf="newManager.controls['phoneNumber'].hasError('maxlength')">
+                      Se requieren de 8 a 13 dígitos
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+                <mat-form-field class="inputs">
+                  <input disabled placeholder="Rol" required aria-label="User role" value="Encargado de Estación" matInput>
+                </mat-form-field>
+                <mat-form-field class="inputs">
+                  <input formControlName="jobTitle" matInput placeholder="Cargo"
+                         required type="text" aria-label="User job-title">
+                  <mat-error *ngIf="newManager.controls['jobTitle'].hasError('required')">
+                    Este campo es obligatorio
+                  </mat-error>
+                </mat-form-field>
+                <div class="flex-box">
+                  <mat-form-field class="right-inputs">
+                    <mat-select placeholder="Protocolo" aria-label="User website protocol"
+                                [(value)]="protocolTwo">
+                      <mat-option value="http://">http://</mat-option>
+                      <mat-option value="https://">https://</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                  <mat-form-field class="inputs">
+                    <input placeholder="Website" formControlName="website" matInput
+                           type="url" aria-label="User website">
+                    <mat-error *ngIf="newManager.controls['website'].hasError('pattern')">
+                      Ingrese un sitio web válido
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+                <div class="signature-input">
+                  <div class="formHead">Firma digital</div>
+                  <div class="signatureContainer">
+                    <div class="signature" (click)="changeSignature(true)" matTooltip="Cambiar firma">
+                      <span *ngIf="!signatureTwo" class="formText">Registre firma digital</span>
+                      <img *ngIf="signatureTwo" [src]="signatureTwo" class="imageSignature" alt="User signature image">
+                    </div>
+                  </div>
+                </div>
+                <div class="title">Información adicional</div>
+                <div>
+                  <mat-form-field class="inputs">
+                    <input formControlName="ssn" matInput
+                           placeholder="Número de seguridad social" type="text" aria-label="User social security ID">
+                  </mat-form-field>
+                  <mat-form-field class="inputs">
+                    <mat-select placeholder="Tipo de sangre" aria-label="User blood type"
+                                [(value)]="bloodTypeTwo">
+                      <mat-option>-Seleccione un tipo de sangre-</mat-option>
+                      <mat-option *ngFor="let blood of bloodGroup" [value]="blood">{{blood}}</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                  <div class="submit">
+                    <app-upload-file class="inputs" [layoutTemplate]="button" (onLoad)="onLoadFile($event, true)" [type]="'file'">
+                      <ng-template #button>
+                        <div class="study">
+                          <span type="button">Estudio de toxicidad (Benceno)</span>
+                          <mat-icon class="file-icon" *ngIf="!fileTwo" svgIcon="icons:upload"></mat-icon>
+                          <mat-icon class="file-icon" *ngIf="fileTwo">autorenew</mat-icon>
+                        </div>
+                      </ng-template>
+                    </app-upload-file>
+                    <button type="button" mat-icon-button matTooltip="Ver estudio" *ngIf="fileTwo" (click)="openStudy(true)">
+                      <mat-icon class="file-icon">visibility</mat-icon>
+                    </button>
+                  </div>
+                  <div class="extra-data">
+                    <div class="formHead">Contacto de emergencia</div>
+                    <div class="extra-data">
+                      <mat-form-field class="inputs">
+                        <input formControlName="contactName" matInput
+                               placeholder="Nombre" type="text" aria-label="User emergency contact name">
+                      </mat-form-field>
+                      <mat-form-field class="inputs">
+                        <input formControlName="contactPhoneNumber" matInput
+                               placeholder="Número celular" type="tel" aria-label="User emergency contact phone number">
+                        <mat-error *ngIf="newManager.controls['contactPhoneNumber'].hasError('minlength')">
+                          Se requieren de 8 a 13 dígitos
+                        </mat-error>
+                        <mat-error *ngIf="newManager.controls['contactPhoneNumber'].hasError('maxlength')">
+                          Se requieren de 8 a 13 dígitos
+                        </mat-error>
+                      </mat-form-field>
+                      <mat-form-field class="inputs">
+                        <input formControlName="contactKinship" matInput
+                               placeholder="Parentesco" type="text" aria-label="User emergency contact relationship">
+                      </mat-form-field>
+                    </div>
+                  </div>
+                </div>
+                <div class="form-button">
+                  <button mat-flat-button aria-label="LogIn" [color]="'primary'" mat-button>CREAR</button>
+                </div>
+              </form>
             </div>
-            <div class="form-button">
-              <button mat-flat-button aria-label="LogIn" [color]="'primary'" mat-button>SIGUIENTE</button>
-            </div>
-          </form>
-        </mat-card-content>
-      </mat-card>
-    </div>
-    <div *ngIf="step===3" class="calendar">
-      <mat-card>
-        <mat-card-content>
-          <div *ngFor="let task of tasks; let i = index">
+          </div>
+        </div>
+      </div>
+      <div *ngSwitchCase="3">
+        <div class="calendar">
+          <div *ngFor="let task of tasks; let i = index" class="inputs">
             <mat-card style="margin: 8px 0;">
               <div class="priority" *ngIf="task.level===3" style="background-color:#E00000"></div>
               <div class="priority" *ngIf="task.level===2" style="background-color:#FFD800"></div>
@@ -639,29 +641,17 @@
               </mat-card-content>
             </mat-card>
           </div>
-        </mat-card-content>
-      </mat-card>
-      <div class="form-button">
-        <button mat-flat-button aria-label="LogIn" [color]="'primary'" (click)="validateCompleteCalendar()" mat-button>SIGUIENTE</button>
+          <div class="form-button">
+            <button mat-flat-button aria-label="LogIn" [color]="'primary'" (click)="validateCompleteCalendar()" mat-button>FINALIZAR</button>
+          </div>
+        </div>
       </div>
     </div>
-    <div *ngIf="step===4" class="done">
-      <mat-card class="card">
-        <mat-card-content class="content">
-          <img src="../../../assets/Images/background.png" class="head-image" alt="background gas station">
-          <div class="station-image">
-            <img [src]="stationType.fileCS.thumbnail" class="profileImage" alt="station image">
-          </div>
-          <div class="head-done">{{stationType.name}} - {{station.name}}</div>
-          <div class="text-done">{{name}}</div>
-          <div class="text-done">{{station.email}}</div>
-          <div class="text-done">{{station.phoneNumber}}</div>
-          <button mat-flat-button [color]="'primary'" (click)="createLegal()">
-            HECHO
-          </button>
-        </mat-card-content>
-      </mat-card>
-    </div>
+  </div>
+  <div class="add-legal" *ngIf="step===1 && listExist">
+    <button mat-icon-button matTooltip="Añadir representante legal" (click)="listExist = false;">
+      <mat-icon>person_add</mat-icon>
+    </button>
   </div>
   <div class="btn-close">
     <button mat-icon-button matTooltip="Cerrar" aria-label="Close-button" (click)="closeAddStation()">

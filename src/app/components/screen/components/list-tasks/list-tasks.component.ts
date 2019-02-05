@@ -5,8 +5,8 @@
  */
 
 import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
-import {DatepickerService} from '@app/core/components/datepicker/datepicker.service';
-import {TaskFilterService} from '@app/core/components/task-filter/task-filter.service';
+import {DatepickerService} from '@app/components/screen/components/datepicker/datepicker.service';
+import {TaskFilterService} from '@app/components/screen/components/task-filter/task-filter.service';
 
 @Component({
   selector: 'app-list-tasks',
