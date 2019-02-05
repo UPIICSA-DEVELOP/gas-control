@@ -251,7 +251,6 @@ export class ApiService {
     });
   }
 
-  public getCompleteInfoDashboard(userId: string, refId: string, role: number): Observable<any>{
   public getCompleteInfoDashboard(userId: string, refId: string, role: number, onlyOneStationId?: any): Observable<any>{
     let response1 = null;
     let response2 = this.getUtils();
