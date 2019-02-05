@@ -11,6 +11,7 @@ import {Constants} from '@app/core/constants.core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {SessionStorageService} from '@app/core/services/session-storage/session-storage.service';
 import {LocalStorageService} from '@app/core/services/local-storage/local-storage.service';
+import {AddStationService} from '@app/components/screen/components/add-gas-station/add-station.service';
 
 @Component({
   selector: 'app-screen',
@@ -27,12 +28,12 @@ export class ScreenComponent implements OnInit{
   constructor(
     private _api: ApiService,
     private _router: Router,
-    private _activateRoute: ActivatedRoute
+    private _activateRoute: ActivatedRoute,
+     private _addStationService: AddStationService
   ) {
   }
 
   ngOnInit() {
-    // this.getUtilities();
     this.menu = true;
     this.stationList = [];
     if (this._activateRoute.snapshot.queryParams.station) {
@@ -61,7 +62,6 @@ export class ScreenComponent implements OnInit{
             if(onlyOneStationId){
               this.stationList = response[0].item;
               this.stationActive = this.stationList;
-              console.log('station active', this.stationActive);
             }else{
               this.stationList = response[0].item.stationLites;
               this.stationActive = this.stationList[0];
@@ -75,5 +75,9 @@ export class ScreenComponent implements OnInit{
         }
       }
     });
+  }
+
+  public addStation():void{
+    this._addStationService.open();
   }
 }
