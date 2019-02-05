@@ -167,7 +167,7 @@ export class StationProfileComponent implements OnInit {
           if (this.station.dispensers) {
             this.dispensers = this.station.dispensers;
           }else{
-            this.dispensers.push({hoses: undefined, identifier: undefined, magna: undefined, premium: undefined, diesel: undefined});
+            this.dispensers.push({hoses: undefined, identifier: undefined, magna: false, premium: false, diesel: false});
           }
           if (this.station.fuelTanks){
             this.tanks = this.station.fuelTanks;
@@ -215,6 +215,10 @@ export class StationProfileComponent implements OnInit {
     if (this.stationForm.invalid) {
       return;
     }
+    if(!this.validateStationArrays()){
+      return;
+    }
+    this.clearStationArray();
     this.station.name = data.name;
     this.station.businessName = data.businessName;
     this.station.rfc = data.rfc;
@@ -226,9 +230,9 @@ export class StationProfileComponent implements OnInit {
       this.station.location.latitude = (this.latLng.latitude?this.latLng.latitude:19.432675);
       this.station.location.longitude = (this.latLng.longitude? this.latLng.longitude: -99.133461);
     }
-    this.station.workShifts = this.workShifts;
-    this.station.fuelTanks = this.tanks;
-    this.station.dispensers = this.dispensers;
+    this.station.workShifts = (this.workShifts.length>0 ? this.workShifts:undefined);
+    this.station.fuelTanks = (this.tanks.length>0 ? this.tanks:undefined);
+    this.station.dispensers = (this.dispensers.length>0 ? this.dispensers:undefined);
    this._api.updateStation(this.station).subscribe(response => {
       switch (response.code) {
         case 200:
@@ -247,13 +251,13 @@ export class StationProfileComponent implements OnInit {
     if(!remove){
       switch (type) {
         case 1:
-          this.workShifts.push({start: '0000', end: '1200'});
+          this.workShifts.push({start: undefined, end: undefined});
           break;
         case 2:
-          this.tanks.push({capacity: 0, fuelType: 1});
+          this.tanks.push({capacity: undefined, fuelType: undefined});
           break;
         case 3:
-          this.dispensers.push({hoses: 0, identifier: '', magna: false, premium: false, diesel: false});
+          this.dispensers.push({hoses: undefined, identifier: undefined, magna: false, premium: false, diesel: false});
           break;
       }
     }else {
@@ -277,6 +281,49 @@ export class StationProfileComponent implements OnInit {
     }
     if (this.station.fuelTanks.length != this.tanks) {
       this.change=true;
+    }
+  }
+
+  private validateStationArrays():boolean{
+    for (let i = 0; i<this.workShifts.length; i++){
+      if((this.workShifts[i].start && !this.workShifts[i].end) || (!this.workShifts[i].start && this.workShifts[i].end)){
+        this._snackBarService.openSnackBar('Complete los campos para el turno ' + (i+1),'OK',3000);
+        return false;
+      }
+    }
+    for(let j = 0; j<this.tanks.length; j++){
+      if((!this.tanks[j].capacity && this.tanks[j].fuelType) || (this.tanks[j].capacity && !this.tanks[j].fuelType)){
+        this._snackBarService.openSnackBar('Complete los campos para el tanque ' + (j+1),'OK',3000);
+        return false;
+      }
+    }
+    for (let k = 0; k<this.dispensers.length; k++){
+      if((this.dispensers[k].hoses || this.dispensers[k].identifier)&&(this.dispensers[k].magna === false && this.dispensers[k].premium === false && this.dispensers[k].diesel === false)){
+        this._snackBarService.openSnackBar('Complete los campos para el dispensario ' + (k+1),'OK',3000);
+        return false;
+      }else if((!this.dispensers[k].hoses || !this.dispensers[k].identifier)&&(this.dispensers[k].magna === true || this.dispensers[k].premium === true || this.dispensers[k].diesel === true)){
+        this._snackBarService.openSnackBar('Complete los campos para el dispensario ' + (k+1),'OK',3000);
+        return false;
+      }
+    }
+    return true;
+  }
+
+  private clearStationArray():void{
+    for (let i = 0; i<this.workShifts.length; i++){
+      if(!this.workShifts[i].start && !this.workShifts[i].end){
+        this.workShifts.splice(i, 1);
+      }
+    }
+    for(let j = 0; j<this.tanks.length; j++){
+      if(!this.tanks[j].capacity && !this.tanks[j].fuelType){
+        this.tanks.splice(j,1);
+      }
+    }
+    for (let k = 0; k<this.dispensers.length; k++){
+      if(!this.dispensers[k].hoses && !this.dispensers[k].identifier && this.dispensers[k].magna === false && this.dispensers[k].premium === false && this.dispensers[k].diesel === false){
+        this.dispensers.splice(k, 1);
+      }
     }
   }
 
