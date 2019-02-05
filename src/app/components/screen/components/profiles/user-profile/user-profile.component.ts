@@ -228,7 +228,12 @@ export class UserProfileComponent implements OnInit {
           blob: response.item.blobName || ''
         };
         this.newSignature = false;
-        this.updateProfile(this.profileForm.value);
+        if(LocalStorageService.getItem('notSign')){
+          this.user.signature = this.newSig;
+          this.saveUser(false);
+        }else{
+          this.updateProfile(this.profileForm.value);
+        }
       }
     });
   }
@@ -446,7 +451,19 @@ export class UserProfileComponent implements OnInit {
     });
     this.detectChange();
     if (LocalStorageService.getItem('notSign')) {
-      this.changeSignature();
+      this._signaturePad.open().afterClosed().subscribe(response=>{
+        switch (response.code){
+          case 1:
+            this.signature = response.base64;
+            this._formSignature = new FormData();
+            this._formSignature.append('path', '');
+            this._formSignature.append('fileName', 'signature-'+this.user.id+'-'+new Date().getTime()+'.png');
+            this._formSignature.append('isImage', 'true');
+            this._formSignature.append('file', response.blob);
+            this.uploadSignature();
+            break;
+        }
+      });
     }
   }
 
@@ -563,6 +580,7 @@ export class UserProfileComponent implements OnInit {
   public openStudy():void{
     this._pdfVisor.open({url: this.file, file: this.file, notIsUrl: this.newFile});
   }
+
   public validateEmailExist():void{
     let email: any = {
       email: this.profileForm.controls['email'].value
