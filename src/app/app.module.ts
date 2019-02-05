@@ -75,7 +75,7 @@ import {TaskFilterComponent} from './components/screen/components/task-filter/ta
     ProceduresComponent,
     PrivacyComponent,
     DatepickerComponent,
-    TaskFilterComponent
+    TaskFilterComponent,
     PrivacyComponent,
     ProceduresComponent,
     AdminComponent,
@@ -107,7 +107,7 @@ import {TaskFilterComponent} from './components/screen/components/task-filter/ta
   entryComponents: [
     AddGasStationComponent,
     DatepickerComponent,
-    TaskFilterComponent
+    TaskFilterComponent,
     ListCollaboratorsComponent
   ],
   providers: [
