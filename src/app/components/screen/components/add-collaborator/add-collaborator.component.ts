@@ -340,7 +340,9 @@ export class AddCollaboratorComponent implements OnInit {
   }
 
   public validateEmailExist():void{
-    let email = this.newPerson.controls['email'].value;
+    let email: any = {
+      email: this.newPerson.controls['email'].value
+    };
     this._api.personExists(email).subscribe(response=>{
       switch (response.code){
         case 200:

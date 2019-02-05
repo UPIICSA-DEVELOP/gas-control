@@ -308,7 +308,7 @@ export class UserProfileComponent implements OnInit {
     this.profileForm = this._formBuilder.group({
       name: ['', [Validators.required]],
       lastName: ['', [Validators.required]],
-      email: [{value: '', disabled: true}, [Validators.required, Validators.email]],
+      email: ['', [Validators.required, Validators.email]],
       country: ['', [Validators.required]],
       code: ['', []],
       phoneNumber: ['', [Validators.required, Validators.minLength(8), Validators.maxLength(13)]],
@@ -482,6 +482,7 @@ export class UserProfileComponent implements OnInit {
     data.code = data.code.replace('+','');
     this.user.name = data.name;
     this.user.lastName = data.lastName;
+    this.user.email = data.email;
     this.user.countryCode = data.code;
     this.user.country = this.country;
     this.user.phoneNumber = data.phoneNumber;
@@ -561,5 +562,24 @@ export class UserProfileComponent implements OnInit {
 
   public openStudy():void{
     this._pdfVisor.open({url: this.file, file: this.file, notIsUrl: this.newFile});
+  }
+  public validateEmailExist():void{
+    let email: any = {
+      email: this.profileForm.controls['email'].value
+    };
+    this._api.personExists(email).subscribe(response=>{
+      switch (response.code){
+        case 200:
+          if(this.user.email !== email.email){
+            this._dialogService.alertDialog('Información',
+              'El Email que está tratando de usar ya ha sido asociado a un usuario',
+              'ACEPTAR');
+            this.profileForm.controls['email'].setErrors({emailUsed: true});
+          }
+          break;
+        default:
+          break;
+      }
+    });
   }
 }
