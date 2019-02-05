@@ -138,11 +138,6 @@ export class AuthService implements Resolve<any>{
               this._router.navigate(['/']).then();
             }
             break;
-          case /add-station/.test(url):
-            if(!AuthService.validateUser()){
-              this._router.navigate(['/']).then();
-            }
-            break;
           }
         break;
     }

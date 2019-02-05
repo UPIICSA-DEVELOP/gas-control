@@ -33,16 +33,15 @@ import {UpdatePasswordComponent} from '@app/core/components/update-password/upda
 import {UpdatePasswordService} from '@app/core/components/update-password/update-password.service';
 import {SignaturePadComponent} from '@app/core/components/signature-pad/signature-pad.component';
 import {SignaturePadService} from '@app/core/components/signature-pad/signature-pad.service';
-import {DatepickerComponent} from '@app/core/components/datepicker/datepicker.component';
-import {DatepickerService} from '@app/core/components/datepicker/datepicker.service';
-import {TaskFilterComponent} from '@app/core/components/task-filter/task-filter.component';
-import {TaskFilterService} from '@app/core/components/task-filter/task-filter.service';
+import {DatepickerService} from '@app/components/screen/components/datepicker/datepicker.service';
+import {TaskFilterService} from '@app/components/screen/components/task-filter/task-filter.service';
 import { ModalStationComponent } from './components/modal-station/modal-station.component';
 import {ModalStationService} from '@app/core/components/modal-station/modal-station.service';
 import { PdfVisorComponent } from './components/pdf-visor/pdf-visor.component';
 import {PdfVisorService} from '@app/core/components/pdf-visor/pdf-visor.service';
 import {NgxMaterialTimepickerModule} from 'ngx-material-timepicker';
 import { TimePickerComponent } from './components/time-picker/time-picker.component';
+import {AddStationService} from '@app/components/screen/components/add-gas-station/add-station.service';
 
 @NgModule({
   imports: [
@@ -87,8 +86,6 @@ import { TimePickerComponent } from './components/time-picker/time-picker.compon
     LocationComponent,
     SearchBoxCoreComponent,
     SignaturePadComponent,
-    DatepickerComponent,
-    TaskFilterComponent,
     ModalStationComponent,
     PdfVisorComponent,
     TimePickerComponent
@@ -101,8 +98,6 @@ import { TimePickerComponent } from './components/time-picker/time-picker.compon
     CountryCodeComponent,
     LocationComponent,
     SignaturePadComponent,
-    DatepickerComponent,
-    TaskFilterComponent,
     ModalStationComponent,
     PdfVisorComponent
   ],
@@ -121,7 +116,8 @@ import { TimePickerComponent } from './components/time-picker/time-picker.compon
     DatepickerService,
     TaskFilterService,
     ModalStationService,
-    PdfVisorService
+    PdfVisorService,
+    AddStationService
   ]
 })
 export class CoreModule { }

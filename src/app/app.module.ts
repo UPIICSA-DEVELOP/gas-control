@@ -42,6 +42,8 @@ import { AddGasStationComponent } from './components/screen/components/add-gas-s
 import { DocumentationComponent } from './components/screen/components/documentation/documentation.component';
 import { ProceduresComponent } from './components/screen/components/procedures/procedures.component';
 import { PrivacyComponent } from './components/screen/child/privacy/privacy.component';
+import {DatepickerComponent} from './components/screen/components/datepicker/datepicker.component';
+import {TaskFilterComponent} from './components/screen/components/task-filter/task-filter.component';
 
 
 @NgModule({
@@ -67,7 +69,9 @@ import { PrivacyComponent } from './components/screen/child/privacy/privacy.comp
     AddGasStationComponent,
     DocumentationComponent,
     ProceduresComponent,
-    PrivacyComponent
+    PrivacyComponent,
+    DatepickerComponent,
+    TaskFilterComponent
   ],
   imports: [
     CoreModule,
@@ -92,7 +96,9 @@ import { PrivacyComponent } from './components/screen/child/privacy/privacy.comp
 
   ],
   entryComponents: [
-
+    AddGasStationComponent,
+    DatepickerComponent,
+    TaskFilterComponent
   ],
   providers: [
     {

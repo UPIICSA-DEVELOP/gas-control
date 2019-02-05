@@ -6,19 +6,18 @@
 
 import { Injectable } from '@angular/core';
 import {MatDialog, MatDialogRef} from '@angular/material';
-import {TaskFilterComponent} from '@app/core/components/task-filter/task-filter.component';
-
+import {DatepickerComponent} from 'app/components/screen/components/datepicker/datepicker.component';
 
 @Injectable({
   providedIn: 'root'
 })
-export class TaskFilterService {
+export class DatepickerService {
 
   constructor(
-    private _dialog: MatDialog
+    private _matDialog: MatDialog
   ) { }
 
-  public open(filter?:number):MatDialogRef<TaskFilterComponent>{
-    return this._dialog.open(TaskFilterComponent,{panelClass:'filter-panel', disableClose: true, data:filter || 0});
+  public open():MatDialogRef<DatepickerComponent>{
+    return this._matDialog.open(DatepickerComponent,{panelClass:'date-panel', disableClose: true})
   }
 }

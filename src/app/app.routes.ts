@@ -130,15 +130,6 @@ export const appRoutes: Routes = [
     ]
   },
   {
-    path: 'add-station',
-    component: AddGasStationComponent,
-    resolve: {data: AuthService},
-    data:{
-      url: URL_BASE+'add-station',
-      title: 'Agregar estación'
-    }
-  },
-  {
     path: '',
     component: LoginComponent,
     resolve: {data: AuthService},
