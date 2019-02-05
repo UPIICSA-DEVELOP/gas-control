@@ -16,7 +16,6 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {ApiLoaderService} from '@app/core/services/api/api-loader.service';
 import {UploadFileResponse} from '@app/core/components/upload-file/upload-file.component';
-import {SessionStorageService} from '@app/core/services/session-storage/session-storage.service';
 import {Constants} from '@app/core/constants.core';
 import {User} from 'firebase';
 import {LocalStorageService} from '@app/core/services/local-storage/local-storage.service';
@@ -130,7 +129,6 @@ export class AddCollaboratorComponent implements OnInit {
         'CANCELAR').afterClosed().subscribe(response=>{
         switch (response.code) {
           case 1:
-            SessionStorageService.removeItem('refId');
             this._router.navigate(['/home']);
             break;
         }
@@ -314,7 +312,7 @@ export class AddCollaboratorComponent implements OnInit {
         switch (response.code){
           case 200:
               personInformation.id=response.item.id;
-              this.createInformationCollaborator(personInformation);
+              this.createInformationCollaborator(personInformation, person.email);
              break;
           default:
             this._dialogService.alertDialog('No se pudo acceder', 'Se produjo un error de comunicación con el servidor', 'ACEPTAR');
@@ -323,12 +321,15 @@ export class AddCollaboratorComponent implements OnInit {
     })
   }
 
-  private createInformationCollaborator(personInfo: PersonInformation): void{
+  private createInformationCollaborator(personInfo: PersonInformation, email:string): void{
     this._api.savePersonInformation(personInfo).subscribe(response=>{
       switch (response.code){
         case 200:
-          SessionStorageService.removeItem('refId');
           this._router.navigate(['/home']).then(() => {
+            this._dialogService.confirmDialog(
+              'Información',
+              'Hemos enviado un email de validación de cuenta a: ' + email,
+              'ACEPTAR');
             this._sharedService.setNotification({value: true, type: SharedTypeNotification.Directory});
           });
           break;
