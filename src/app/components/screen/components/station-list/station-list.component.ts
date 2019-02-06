@@ -46,6 +46,7 @@ import {AddStationService} from '@app/components/screen/components/add-gas-stati
 export class StationListComponent implements OnInit, DoCheck {
 
   public stationList: any[];
+  public stations: any[];
   public notificationActive: boolean[] = [];
   public groupIcon: any;
   public user: any;
@@ -122,6 +123,7 @@ export class StationListComponent implements OnInit, DoCheck {
           switch (response.code) {
             case 200:
               this.stationList = UtilitiesService.sortJSON(response.item.stationLites,'progress','asc');
+              this.stations = this.stationList;
               break;
             default:
               break;
@@ -132,7 +134,8 @@ export class StationListComponent implements OnInit, DoCheck {
         this._api.getLegalRepresentativeBasicData(user.refId, CookieService.getCookie(Constants.IdSession)).subscribe(response=>{
           switch (response.code) {
             case 200:
-              this.stationList = response.item.stationLites;
+              this.stationList = UtilitiesService.sortJSON(response.item.stationLites,'progress','asc');
+              this.stations = this.stationList;
               break;
             default:
               break;
@@ -147,5 +150,30 @@ export class StationListComponent implements OnInit, DoCheck {
     this._router.navigate(['/home']).then(() => {
       this._addStation.open();
     });
+  }
+
+  public search(event: any): void{
+    const newArray = [];
+    const text = (event.srcElement.value).toLowerCase();
+    if(text === ''){
+      this.stationList = this.stations;
+    }else{
+      for(let x=0; x < this.stations.length; x++){
+        if(UtilitiesService.removeDiacritics(this.stations[x].managerName).toLowerCase().includes(text) || this.stations[x].email.toLowerCase().includes(text) || this.stations[x].phoneNumber.includes(text) || UtilitiesService.removeDiacritics(this.stations[x].crePermission).toLowerCase().includes(text) || UtilitiesService.removeDiacritics(this.stations[x].name).toLowerCase().includes(text)){
+          newArray.push(this.stations[x]);
+        }else {
+          for (let i= 0; i<this.groupIcon.groupIcons.length; i++){
+            if(UtilitiesService.removeDiacritics(this.groupIcon.groupIcons[i].name).toLowerCase().includes(text) && this.stations[x].type === i+1){
+              newArray.push(this.stations[x]);
+            }
+          }
+        }
+      }
+      if(newArray.length > 0){
+        this.stationList = newArray;
+      }else{
+        this.stationList = this.stations;
+      }
+    }
   }
 }

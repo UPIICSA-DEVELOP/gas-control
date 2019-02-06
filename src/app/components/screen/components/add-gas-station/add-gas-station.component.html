@@ -5,11 +5,18 @@
   -->
 
 <div id="create-station">
+  <mat-toolbar [color]="'primary'">
+    <span *ngIf="step===0">Agregar Estación</span>
+    <span *ngIf="step===1 && listExist">Listado de usuarios</span>
+    <span *ngIf="step===1 && !listExist">Nuevo registro</span>
+    <span *ngIf="step===2">Nuevo registro</span>
+    <span *ngIf="step===3">Programación de tareas</span>
+    <button mat-icon-button (click)="closeAddStation()">
+      <mat-icon>close</mat-icon>
+    </button>
+  </mat-toolbar>
   <mat-progress-bar [mode]="'indeterminate'" *ngIf="load" class="progress"></mat-progress-bar>
   <div class="forms-and-lists">
-    <h4 class="modal-head" *ngIf="step===0">Estación de servicio</h4>
-    <h4 class="modal-head" *ngIf="step===1 || step===2">Registro de usuario</h4>
-    <h4 class="modal-head" *ngIf="step===3">Agende las actividades</h4>
     <div [ngSwitch]="step" class="content-modal">
       <div *ngSwitchCase="0">
         <div class="form-station">
@@ -18,7 +25,7 @@
               <form [formGroup]="newStation" (ngSubmit)="validateStation(newStation.value)" aria-label="new station form">
                 <img src="../../../assets/Images/background.png" class="head-image" alt="background gas station">
                 <div class="station-image" (click)="openModal()" matTooltip="Seleccione grupo gasolinero">
-                  <mat-icon *ngIf="!stationType" class="defaultProfileImage">local_gas_station</mat-icon>
+                  <mat-icon *ngIf="!stationType" class="defaultProfileImage">add_photo_alternate</mat-icon>
                   <img *ngIf="stationType" [src]="stationType.fileCS.thumbnail" class="profileImage">
                 </div>
                 <mat-form-field class="inputs">
@@ -97,8 +104,7 @@
                 <div>
                   <div class="double-inputs">
                     <span>Turnos</span>
-                    <button type="button" mat-icon-button (click)="addRemoveTurn(false, 1)"
-                    >
+                    <button type="button" mat-icon-button (click)="addRemoveTurn(false, 1)">
                       <mat-icon>add</mat-icon>
                     </button>
                   </div>
@@ -119,7 +125,7 @@
                 <mat-divider></mat-divider>
                 <div>
                   <div class="text">
-                    <span>No. de pozos</span>
+                    <span>Número de pozos</span>
                   </div>
                   <div class="fuel-selector">
                     <mat-form-field class="width-form">
@@ -182,7 +188,7 @@
                       <div class="head">Dispensario {{i+1}}</div>
                       <div class="hoses">
                         <mat-form-field>
-                          <input matInput placeholder="No. de mangueras" type="number" aria-label="Station hoses number"
+                          <input matInput placeholder="No. de Mangueras" type="number" aria-label="Station hoses number"
                                  [(ngModel)]="dispenser.hoses" [ngModelOptions]="{standalone: true}">
                         </mat-form-field>
                         <mat-form-field>
@@ -211,7 +217,7 @@
                   </div>
                 </div>
                 <div class="form-button">
-                  <button mat-flat-button aria-label="LogIn" [color]="'primary'" mat-button>CREAR</button>
+                  <button mat-flat-button aria-label="LogIn" [color]="'primary'" mat-button>AÑADIR</button>
                 </div>
               </form>
             </div>
@@ -235,7 +241,7 @@
                         <div class="image-list">
                           <img class="image-collaborator" *ngIf="representative.profileImage"
                                [src]="representative.profileImage.thumbnail" alt="profile image">
-                          <mat-icon class="image-collaborator" *ngIf="!representative.profileImage">account_circle</mat-icon>
+                          <mat-icon class="image-collaborator" *ngIf="!representative.profileImage">add_photo_alternate</mat-icon>
                         </div>
                         <div class="information">
                           <div class="info-head"> {{representative.name}} {{representative.lastName}}</div>
@@ -271,7 +277,7 @@
                                      [type]="'image'">
                       <ng-template #icon>
                         <img *ngIf="profileImage" [src]="profileImage" class="profileImage" alt="User profile image">
-                        <mat-icon *ngIf="!profileImage" class="defaultProfileImage">account_circle</mat-icon>
+                        <mat-icon *ngIf="!profileImage" class="defaultProfileImage">add_photo_alternate</mat-icon>
                       </ng-template>
                     </app-upload-file>
                   </div>
@@ -317,7 +323,7 @@
                       <div class="mask" (click)="openListCountry(1)"></div>
                       <mat-form-field class="right-inputs">
                         <input formControlName="code" matInput placeholder="Código"
-                               type="text" aria-label="Phone code">
+                               type="text" required aria-label="Phone code">
                       </mat-form-field>
                     </div>
                     <mat-form-field class="inputs">
@@ -374,7 +380,7 @@
                   <div>
                     <mat-form-field class="inputs">
                       <input formControlName="ssn" matInput
-                             placeholder="Número de seguridad social" type="text" aria-label="User social security ID">
+                             placeholder="Número de Seguridad Social" type="text" aria-label="User social security ID">
                     </mat-form-field>
                     <mat-form-field class="inputs">
                       <mat-select placeholder="Tipo de sangre" aria-label="User blood type"
@@ -397,7 +403,7 @@
                         <mat-icon class="file-icon">visibility</mat-icon>
                       </button>
                     </div>
-                    <div class="extra-data">
+                    <div>
                       <div class="formHead">Contacto de emergencia</div>
                       <div class="extra-data">
                         <mat-form-field class="inputs">
@@ -422,7 +428,7 @@
                     </div>
                   </div>
                   <div class="form-button">
-                    <button mat-flat-button aria-label="LogIn" [color]="'primary'" mat-button>CREAR</button>
+                    <button mat-flat-button aria-label="LogIn" [color]="'primary'" mat-button>AGREGAR</button>
                   </div>
                 </form>
               </div>
@@ -441,7 +447,7 @@
                                    [type]="'image'">
                     <ng-template #icon>
                       <img *ngIf="profileImageTwo" [src]="profileImageTwo" class="profileImage" alt="User profile image">
-                      <mat-icon *ngIf="!profileImageTwo" class="defaultProfileImage">account_circle</mat-icon>
+                      <mat-icon *ngIf="!profileImageTwo" class="defaultProfileImage">add_photo_alternate</mat-icon>
                     </ng-template>
                   </app-upload-file>
                 </div>
@@ -487,7 +493,7 @@
                     <div class="mask" (click)="openListCountry(2)"></div>
                     <mat-form-field class="right-inputs">
                       <input formControlName="code" matInput placeholder="Código"
-                             type="text" aria-label="Phone code">
+                             type="text" required aria-label="Phone code">
                     </mat-form-field>
                   </div>
                   <mat-form-field class="inputs">
@@ -544,7 +550,7 @@
                 <div>
                   <mat-form-field class="inputs">
                     <input formControlName="ssn" matInput
-                           placeholder="Número de seguridad social" type="text" aria-label="User social security ID">
+                           placeholder="Número de Seguridad Social" type="text" aria-label="User social security ID">
                   </mat-form-field>
                   <mat-form-field class="inputs">
                     <mat-select placeholder="Tipo de sangre" aria-label="User blood type"
@@ -567,7 +573,7 @@
                       <mat-icon class="file-icon">visibility</mat-icon>
                     </button>
                   </div>
-                  <div class="extra-data">
+                  <div>
                     <div class="formHead">Contacto de emergencia</div>
                     <div class="extra-data">
                       <mat-form-field class="inputs">
@@ -592,7 +598,7 @@
                   </div>
                 </div>
                 <div class="form-button">
-                  <button mat-flat-button aria-label="LogIn" [color]="'primary'" mat-button>CREAR</button>
+                  <button mat-flat-button aria-label="LogIn" [color]="'primary'" mat-button>AGREGAR</button>
                 </div>
               </form>
             </div>
@@ -651,11 +657,6 @@
   <div class="add-legal" *ngIf="step===1 && listExist">
     <button mat-icon-button matTooltip="Añadir representante legal" (click)="listExist = false;">
       <mat-icon>person_add</mat-icon>
-    </button>
-  </div>
-  <div class="btn-close">
-    <button mat-icon-button matTooltip="Cerrar" aria-label="Close-button" (click)="closeAddStation()">
-      <mat-icon>close</mat-icon>
     </button>
   </div>
 </div>

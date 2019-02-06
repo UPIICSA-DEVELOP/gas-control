@@ -5,19 +5,19 @@
  */
 @import "../../../../../styles/colors";
 #list-tasks{
-
   width: 100%;
   position: absolute;
   top: 0;
   bottom: 0;
-
-
   .header {
     padding-bottom: 8px;
     width: 100%;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+  }
+  .flex-box{
+    display: flex;
   }
   .container{
     height: 100%;
@@ -54,7 +54,6 @@
         }
       }
     }
-
     mat-card-content{
       height: 100%;
       .sub-container{
@@ -63,7 +62,7 @@
         .task{
           padding: 0;
           display: flex;
-          margin: 12px 0;
+          margin: 18px 0;
           mat-card-content{
             display: flex;
             width: 100%;
@@ -114,7 +113,6 @@
         }
       }
     }
-
   }
   .priority{
     width: 1%;
@@ -126,5 +124,91 @@
   }
   .inputs{
     width: 100%;
+  }
+  .divider{
+    width: 100%;
+    height: 1px;
+    background-color: #707070;
+  }
+  .default-image{
+    font-size: 56px;
+    height: 56px;
+    width: 56px;
+    color: #707070;
+  }
+  .image-header{
+    color: #707070;
+    font-size: 14px;
+    margin: 12px 0;
+  }
+  .image-container{
+    display: flex;
+    justify-content:center;
+    align-items:center;
+    width: 100%;
+    height: 200px;
+    border: 1px solid #707070;
+  }
+  .text{
+    font-size: 14px;
+    color: #707070;
+  }
+  .columns{
+    width: 50%;
+    margin: 12px;
+  }
+  .times{
+    display: flex;
+    justify-content: space-around;
+    margin-top: 12px;
+    .clock{
+      width: 120px;
+    }
+  }
+  .task-header{
+    display: flex;
+    justify-content: space-between;
+    margin: 8px 0;
+  }
+  .head-bold{
+    font-weight: 600;
+  }
+  .some-select{
+    display: flex;
+    margin: 0 0 0 18px;
+    justify-content: flex-start;
+    .select{
+      width: 120px;
+    }
+  }
+  .performance{
+    display: flex;
+    flex-direction: column;
+    margin: 12px;
+    width: 100%;
+    color: #707070;
+    font-size: 14px;
+  }
+  .checkbox-list{
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    margin: 0 8px;
+  }
+  .text-divider{
+    margin: 8px 0;
+    color: #707070;
+  }
+
+  .space-box{
+    display: flex;
+    justify-content: space-between;
+  }
+  .color{
+    color: #707070;
+  }
+  .right-head{
+    display: flex;
+    justify-content: flex-end;
   }
 }

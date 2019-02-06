@@ -282,7 +282,12 @@ export class ProfileComponent implements OnInit {
           blob: response.item.blobName || ''
         };
         this.newSignature = false;
-        this.updateProfile(this.profileForm.value);
+        if(LocalStorageService.getItem('notSign')){
+          this.user.signature = this.newSig;
+          this.saveProfileData(false);
+        }else{
+          this.updateProfile(this.profileForm.value);
+        }
       }
     });
   }
@@ -397,7 +402,19 @@ export class ProfileComponent implements OnInit {
     this.validateDisabledInputs();
     this.detectChange();
     if (LocalStorageService.getItem('notSign')) {
-      this.changeSignature();
+      this._signaturePad.open().afterClosed().subscribe(response=>{
+        switch (response.code){
+          case 1:
+            this.signature = response.base64;
+            this._formSignature = new FormData();
+            this._formSignature.append('path', '');
+            this._formSignature.append('fileName', 'signature-'+this.user.id+'-'+new Date().getTime()+'.png');
+            this._formSignature.append('isImage', 'true');
+            this._formSignature.append('file', response.blob);
+            this.uploadSignature();
+            break;
+        }
+      });
     }
   }
 

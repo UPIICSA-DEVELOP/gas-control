@@ -25,6 +25,10 @@
           <mat-icon>close</mat-icon>
         </button>
       </div>
+      <mat-form-field class="search" *ngIf="stationList && stationList.length!==0">
+        <input matInput placeholder="Buscar" aria-label="Search input" (input)="search($event)">
+        <mat-icon matPrefix class="icons">search</mat-icon>
+      </mat-form-field>
       <div class="content">
         <div *ngIf="stationList; then list else loading"></div>
         <ng-template #list>
