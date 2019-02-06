@@ -1,7 +1,7 @@
 #admin{
   width: 100vw;
   height: 100vh;
-  background-color: white;
+  background-color: #F2F2F2;
 
 
   .empty-list{
@@ -15,6 +15,17 @@
       width: 300px;
       text-align: center;
     }
+  }
+
+
+  .mask{
+    width: 600px;
+    height: 300px;
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    background: url("https://lh3.googleusercontent.com/EIWxZIbTAHZ1C1Eg9lIL7lUwrLC5EAH1_d_khzBrbf-VUDqvn8tclbPaOYlAGw0AoPZyEDIteEN-CbjRtt5X2EMfpMSaX-gM") no-repeat center;
+    background-size: contain;
   }
 
   .progress{
@@ -66,6 +77,15 @@
         padding: 8px;
       }
 
+      .list-header{
+        display: flex;
+        justify-content: space-between;
+
+        input{
+          width: 50%;
+        }
+      }
+
       .items{
         width: 100%;
         height: 100%;
@@ -84,21 +104,33 @@
       }
 
       .item {
-        width: 50%;
-        padding: 0 8px;
+        width: calc(50% - 32px);
         display: flex;
-        height: fit-content;
         background-color: white;
         cursor: pointer;
+        margin: 8px;
         @media screen and (max-width: 600px){
           width: 100%;
         }
 
+        .image{
+          img{
+            width: 60px;
+            height: 60px;
+          }
+        }
+
         .info {
-          margin: 8px 0;
-          padding: 8px;
+          width: calc(100% - 60px);
+          margin: 8px 0 8px 8px;
           h3, p {
             margin: 0;
+          }
+          p{
+            color: rgba(0, 0, 0, 0.54);
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
           }
         }
       }
@@ -110,7 +142,7 @@
     position: absolute;
     bottom: 0;
     margin: 0 0 16px calc(50% - 72.5px);
-    a{
+    button{
       background-color: #FFAA00;
       color: white;
       border-radius: 16px;

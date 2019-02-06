@@ -9,7 +9,8 @@ export class ListCollaboratorsService {
     private _dialog: MatDialog
   ) { }
 
-  public open(id: string): void{
-    this._dialog.open(ListCollaboratorsComponent, {disableClose: true, panelClass: 'list-collaborators-panel', data: {id: id}});
+  public open(id: string, name: string): void{
+    this._dialog.open(ListCollaboratorsComponent,
+      {disableClose: true, panelClass: 'list-collaborators-panel', data: {id: id, name: name}});
   }
 }

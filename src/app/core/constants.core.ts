@@ -48,8 +48,8 @@ export class Constants {
     'Anual'
   ];
   public static protocols = [
-    {name: 'HTTP', value: 'https://'},
-    {name: 'HTTPS', value: 'http://'}
+    {name: 'http://', value: 'http://'},
+    {name: 'https://', value: 'https://'}
   ];
   public static  rolesConsutancy = [
     {name:'Gerente', value: 2},
