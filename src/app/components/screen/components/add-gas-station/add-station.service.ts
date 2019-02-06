@@ -8,6 +8,12 @@ import { Injectable } from '@angular/core';
 import {MatDialog, MatDialogRef} from '@angular/material';
 import {AddGasStationComponent} from '@app/components/screen/components/add-gas-station/add-gas-station.component';
 
+export interface ConfigAddStation{
+  stepActive: number;
+  stationId: string;
+  disableClose: boolean;
+}
+
 @Injectable()
 export class AddStationService {
 
@@ -15,7 +21,7 @@ export class AddStationService {
     private _dialog: MatDialog
   ) { }
 
-  public open():MatDialogRef<AddGasStationComponent>{
-    return this._dialog.open(AddGasStationComponent,{panelClass:'add-station-panel', disableClose: true});
+  public open(openConfig?:ConfigAddStation):MatDialogRef<AddGasStationComponent>{
+    return this._dialog.open(AddGasStationComponent,{panelClass:'add-station-panel', disableClose: true, data: openConfig || null});
   }
 }

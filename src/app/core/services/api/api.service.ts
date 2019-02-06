@@ -143,7 +143,6 @@ export class ApiService {
     return this._http.get(ApiService.API_URL_COMPLETE + 'getLegalRepresentativeBasicData',{params: params});
   }
 
-
   public getStationBasicData(personId: string): Observable<any>{
     let params = new HttpParams();
     params = params.append('personId', personId);
@@ -238,6 +237,12 @@ export class ApiService {
 
   public listConsultancy(): Observable<any>{
     return this._http.get(ApiService.API_URL_COMPLETE + 'listConsultancy',);
+  }
+
+  public listTaskDateStatus(stationTaskId: string): Observable<any>{
+    let params = new HttpParams();
+    params = params.append('stationTaskId', stationTaskId);
+    return this._http.get(ApiService.API_URL_COMPLETE + 'listTaskDateStatus', {params: params});
   }
 
   public businessCardService(data: any): Observable<any>{

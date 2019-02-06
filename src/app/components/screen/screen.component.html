@@ -68,12 +68,12 @@
         <div class="col-1">
           <button mat-button style="display: none" (click)="menu=!menu">Holi</button>
           <div class="title" *ngIf="stationActive && utils">
-            <h1>{{utils.groupIcons[stationActive.type-1].name}} {{stationActive.name}}</h1>
+            <h1>{{utils.groupIcons[stationActive.type-1].name}} - {{stationActive.name}}</h1>
             <h2>{{stationActive.managerName}}</h2>
             <p>90/120 actividades</p>
           </div>
           <div class="tasks">
-            <app-list-tasks></app-list-tasks>
+            <app-list-tasks [taskTemplate]="utils" [station]="stationActive"></app-list-tasks>
           </div>
         </div>
         <div class="col-2">

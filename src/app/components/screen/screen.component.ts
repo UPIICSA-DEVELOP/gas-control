@@ -12,6 +12,7 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {SessionStorageService} from '@app/core/services/session-storage/session-storage.service';
 import {LocalStorageService} from '@app/core/services/local-storage/local-storage.service';
 import {AddStationService} from '@app/components/screen/components/add-gas-station/add-station.service';
+import {DialogService} from '@app/core/components/dialog/dialog.service';
 
 @Component({
   selector: 'app-screen',
@@ -29,7 +30,8 @@ export class ScreenComponent implements OnInit{
     private _api: ApiService,
     private _router: Router,
     private _activateRoute: ActivatedRoute,
-     private _addStationService: AddStationService
+    private _addStationService: AddStationService,
+    private _dialogService: DialogService
   ) {
   }
 
@@ -60,21 +62,56 @@ export class ScreenComponent implements OnInit{
           case 3:
           case 4:
             if(onlyOneStationId){
-              this.stationList = response[0].item;
-              this.stationActive = this.stationList;
+              switch(response[0].code){
+                case 200:
+                  this.stationList = response[0].item;
+                  this.stationActive = this.stationList;
+                  if(!this.validateTaskCreated()){
+                    this.openTaskCalendar();
+                  }
+                  break;
+                default:
+                  this._router.navigate(['/home']);
+                  this.getDashboardInformation(null);
+                  break;
+              }
             }else{
               this.stationList = response[0].item.stationLites;
               this.stationActive = this.stationList[0];
+              if(!this.validateTaskCreated()){
+                this.openTaskCalendar();
+              }
             }
             break;
           case 5:
           case 6:
             this.stationList = response[0].item.station;
             this.stationActive = this.stationList;
+            if(!this.validateTaskCreated()){
+              this.openTaskCalendar();
+            }
             break;
         }
       }
     });
+  }
+
+  public validateTaskCreated():boolean{
+    return this.stationActive.stationTaskId;
+  }
+
+  public openTaskCalendar():void{
+    this._dialogService.alertDialog(
+      'Información',
+      'Aún no se ha calendarizado las tareas de la estación. ¿Desea hacerlo ahora?',
+      'SI'
+    ).afterClosed().subscribe(response=>{
+      switch (response.code){
+        case 1:
+          this._addStationService.open({disableClose: true, stationId: this.stationActive.id, stepActive: 3});
+          break;
+      }
+    })
   }
 
   public addStation():void{

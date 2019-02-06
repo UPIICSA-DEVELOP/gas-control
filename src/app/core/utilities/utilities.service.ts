@@ -12,6 +12,9 @@ declare var google: any;
 export class UtilitiesService {
 
   static forEach(collection, callback, scope): void {
+    /**
+     * ForEach for objects {}
+     * */
     if (Object.prototype.toString.call(collection) === '[object Object]') {
       for (const prop in collection) {
         if (Object.prototype.hasOwnProperty.call(collection, prop)) {
@@ -124,6 +127,70 @@ export class UtilitiesService {
           { visibility: 'off' }
         ]}]
     }
+  }
+
+  static convertDate(date: number): string[]{
+    /**
+     *
+     * @return string[]
+     *
+     * Position 0: Day
+     * Position 1: Month
+     * Position 2: Year
+     * */
+    let result = [];
+    try {
+      const dateForSplit = date.toString();
+      const year = dateForSplit.slice(0, 4);
+      let month = dateForSplit.slice(4, 6);
+      const day = dateForSplit.slice(6, 8);
+      switch (month) {
+        case '01':
+          month = 'ene';
+          break;
+        case '02':
+          month = 'feb';
+          break;
+        case '03':
+          month = 'mar';
+          break;
+        case '04':
+          month = 'abr';
+          break;
+        case '05':
+          month = 'may';
+          break;
+        case '06':
+          month = 'jun';
+          break;
+        case '07':
+          month = 'jul';
+          break;
+        case '08':
+          month = 'ago';
+          break;
+        case '09':
+          month = 'sep';
+          break;
+        case '10':
+          month = 'oct';
+          break;
+        case '11':
+          month = 'nov';
+          break;
+        case '12':
+          month = 'dic';
+          break;
+      }
+      result.push(day.toString());
+      result.push(month.toString());
+      result.push(year.toString());
+      return result;
+    } catch (e) {
+      console.error(e);
+      return null;
+    }
+
   }
 
   static round(value: number, precision: number): number{

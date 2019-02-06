@@ -35,8 +35,7 @@ import {SignaturePadComponent} from '@app/core/components/signature-pad/signatur
 import {SignaturePadService} from '@app/core/components/signature-pad/signature-pad.service';
 import {DatepickerService} from '@app/components/screen/components/datepicker/datepicker.service';
 import {TaskFilterService} from '@app/components/screen/components/task-filter/task-filter.service';
-import { ModalStationComponent } from './components/modal-station/modal-station.component';
-import {ModalStationService} from '@app/core/components/modal-station/modal-station.service';
+import {ModalStationService} from '@app/components/screen/components/modal-station/modal-station.service';
 import { PdfVisorComponent } from './components/pdf-visor/pdf-visor.component';
 import {PdfVisorService} from '@app/core/components/pdf-visor/pdf-visor.service';
 import {NgxMaterialTimepickerModule} from 'ngx-material-timepicker';
@@ -86,7 +85,6 @@ import {AddStationService} from '@app/components/screen/components/add-gas-stati
     LocationComponent,
     SearchBoxCoreComponent,
     SignaturePadComponent,
-    ModalStationComponent,
     PdfVisorComponent,
     TimePickerComponent
   ],
@@ -98,7 +96,6 @@ import {AddStationService} from '@app/components/screen/components/add-gas-stati
     CountryCodeComponent,
     LocationComponent,
     SignaturePadComponent,
-    ModalStationComponent,
     PdfVisorComponent
   ],
   providers: [

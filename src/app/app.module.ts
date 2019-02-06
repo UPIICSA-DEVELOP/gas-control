@@ -48,6 +48,7 @@ import { ListCollaboratorsComponent } from './components/admin/components/list-c
 import {ListCollaboratorsService} from '@app/components/admin/components/list-collaborators/list-collaborators.service';
 import {DatepickerComponent} from './components/screen/components/datepicker/datepicker.component';
 import {TaskFilterComponent} from './components/screen/components/task-filter/task-filter.component';
+import {ModalStationComponent} from '@app/components/screen/components/modal-station/modal-station.component';
 import {AddConsultancyService} from '@app/components/admin/components/add-consultancy/add-consultancy.service';
 
 
@@ -81,7 +82,8 @@ import {AddConsultancyService} from '@app/components/admin/components/add-consul
     ProceduresComponent,
     AdminComponent,
     AddConsultancyComponent,
-    ListCollaboratorsComponent
+    ListCollaboratorsComponent,
+    ModalStationComponent
   ],
   imports: [
     CoreModule,
@@ -109,6 +111,8 @@ import {AddConsultancyService} from '@app/components/admin/components/add-consul
     AddGasStationComponent,
     DatepickerComponent,
     TaskFilterComponent,
+    ListCollaboratorsComponent,
+    ModalStationComponent,
     ListCollaboratorsComponent,
     AddConsultancyComponent
   ],
