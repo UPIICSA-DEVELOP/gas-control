@@ -43,11 +43,12 @@ import { DocumentationComponent } from './components/screen/components/documenta
 import { ProceduresComponent } from './components/screen/components/procedures/procedures.component';
 import { PrivacyComponent } from './components/screen/child/privacy/privacy.component';
 import { AdminComponent } from './components/admin/admin.component';
-import { AddConsultancyComponent } from './components/admin/children/add-consultancy/add-consultancy.component';
+import { AddConsultancyComponent } from './components/admin/components/add-consultancy/add-consultancy.component';
 import { ListCollaboratorsComponent } from './components/admin/components/list-collaborators/list-collaborators.component';
 import {ListCollaboratorsService} from '@app/components/admin/components/list-collaborators/list-collaborators.service';
 import {DatepickerComponent} from './components/screen/components/datepicker/datepicker.component';
 import {TaskFilterComponent} from './components/screen/components/task-filter/task-filter.component';
+import {AddConsultancyService} from '@app/components/admin/components/add-consultancy/add-consultancy.service';
 
 
 @NgModule({
@@ -108,7 +109,8 @@ import {TaskFilterComponent} from './components/screen/components/task-filter/ta
     AddGasStationComponent,
     DatepickerComponent,
     TaskFilterComponent,
-    ListCollaboratorsComponent
+    ListCollaboratorsComponent,
+    AddConsultancyComponent
   ],
   providers: [
     {
@@ -120,7 +122,8 @@ import {TaskFilterComponent} from './components/screen/components/task-filter/ta
       provide: HAMMER_GESTURE_CONFIG,
       useClass: GestureConfig
     },
-    ListCollaboratorsService
+    ListCollaboratorsService,
+    AddConsultancyService
   ],
   bootstrap: [AppComponent]
 })

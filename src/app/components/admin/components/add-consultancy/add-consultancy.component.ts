@@ -1,17 +1,15 @@
 import {Component, Inject, OnInit, ViewChild} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {Constants} from '@app/core/constants.core';
-import {SignaturePadService} from '@app/core/components/signature-pad/signature-pad.service';
-import {LocationService} from '@app/core/components/location/location.service';
-import {CountryCodeService} from '@app/core/components/country-code/country-code.service';
-import {MatStepper} from '@angular/material';
-import {SnackBarService} from '@app/core/services/snackbar/snackbar.service';
-import {ApiService} from '@app/core/services/api/api.service';
-import {UploadFileResponse} from '@app/core/components/upload-file/upload-file.component';
-import {UploadFileService} from '@app/core/components/upload-file/upload-file.service';
-import {ApiLoaderService} from '@app/core/services/api/api-loader.service';
-import {Router} from '@angular/router';
-import {DOCUMENT} from '@angular/common';
+import {Constants} from 'app/core/constants.core';
+import {SignaturePadService} from 'app/core/components/signature-pad/signature-pad.service';
+import {LocationService} from 'app/core/components/location/location.service';
+import {CountryCodeService} from 'app/core/components/country-code/country-code.service';
+import {MatDialogRef, MatStepper} from '@angular/material';
+import {SnackBarService} from 'app/core/services/snackbar/snackbar.service';
+import {ApiService} from 'app/core/services/api/api.service';
+import {UploadFileResponse} from 'app/core/components/upload-file/upload-file.component';
+import {UploadFileService} from 'app/core/components/upload-file/upload-file.service';
+import {ApiLoaderService} from 'app/core/services/api/api-loader.service';
 
 export interface Person {
   name: string;
@@ -45,12 +43,11 @@ export class AddConsultancyComponent implements OnInit {
   public showOwnerForm: boolean;
   public showConsultancyForm: boolean;
   public doneStep: boolean;
-  public testUrl: any;
   private _location: any;
   private _ownerInfo: Person;
   private _consultancyInfo: any;
   constructor(
-    @Inject(DOCUMENT) private _document: Document,
+    private _dialog: MatDialogRef<AddConsultancyComponent>,
     private _formBuilder: FormBuilder,
     private _apiLoader: ApiLoaderService,
     private _signatureService: SignaturePadService,
@@ -58,8 +55,7 @@ export class AddConsultancyComponent implements OnInit {
     private _snackBar: SnackBarService,
     private _countryCode: CountryCodeService,
     private _uploadFile: UploadFileService,
-    private _api: ApiService,
-    private _router: Router
+    private _api: ApiService
   ) {
     this.signature = {
       path: null,
@@ -86,8 +82,8 @@ export class AddConsultancyComponent implements OnInit {
       name: ['', [Validators.required]],
       lastName: ['', [Validators.required]],
       email: ['', [Validators.required, Validators.email]],
-      country:  ['', [Validators.required]],
-      countryCode:  ['', [Validators.required]],
+      country:  ['México', [Validators.required]],
+      countryCode:  ['+52', [Validators.required]],
       phoneNumber: ['', [Validators.required]],
       rol: [1, [Validators.required]],
       jobTitle: ['', [Validators.required]],
@@ -140,7 +136,7 @@ export class AddConsultancyComponent implements OnInit {
       lastName: data.lastName,
       email: data.email,
       phoneNumber: data.phoneNumber,
-      countryCode: data.countryCode,
+      countryCode: data.countryCode.replace('+', ''),
       country: data.country,
       role: 1,
       jobTitle: data.jobTitle,
@@ -304,6 +300,10 @@ export class AddConsultancyComponent implements OnInit {
     }
   }
 
+  private uploadBusinessCard(): void{
+
+  }
+
   private finishCreateConsultancy(): void{
     if(this.userImage.original){
       this._ownerInfo.profileImage = this.userImage.original;
@@ -319,11 +319,10 @@ export class AddConsultancyComponent implements OnInit {
   }
 
   public exit(snack: boolean): void{
-    this._router.navigate(['/admin']).then(() => {
-      if(snack){
-        this._snackBar.openSnackBar('Consultora creada con éxito', 'OK', 3000);
-      }
-    });
+    if(snack){
+      this._snackBar.openSnackBar('Consultora creada con éxito', 'OK', 3000);
+    }
+    this._dialog.close();
   }
 
   private onErrorOccurred(): void{
@@ -331,28 +330,19 @@ export class AddConsultancyComponent implements OnInit {
   }
 
   public makeBusinessCard(): void{
-    /*const data = {
+    const data = {
       company: this._consultancyInfo.businessName,
       name: this._ownerInfo.name + ' ' + this._ownerInfo.lastName,
       workPosition: this._ownerInfo.jobTitle,
       phone: this._ownerInfo.countryCode + this._ownerInfo.phoneNumber,
       email: this._ownerInfo.email,
       website: this._ownerInfo.website
-    };*/
-    const data = {
-      company: 'ALX Developer',
-      name: 'Alejandro Lopez',
-      workPosition: 'CEO and Developer',
-      phone: '556518512',
-      email: 'program.alopez@gmail.com',
-      website: 'https://alx-developer.herokuapp.com'
     };
-    this._api.businessCardService(data).subscribe(response => {
+    this._api.businessCardService(data).subscribe((response: Blob) => {
       const reader = new FileReader();
       reader.readAsDataURL(response);
       reader.onloadend = () => {
-        this.testUrl = reader.result;
-        console.log(reader.result);
+
       }
     });
   }

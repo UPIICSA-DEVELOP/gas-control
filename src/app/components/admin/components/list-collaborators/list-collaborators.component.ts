@@ -8,7 +8,7 @@ import {CountryCodeService} from '@app/core/components/country-code/country-code
 import {SignaturePadService} from '@app/core/components/signature-pad/signature-pad.service';
 import {UploadFileResponse} from '@app/core/components/upload-file/upload-file.component';
 import {UploadFileService} from '@app/core/components/upload-file/upload-file.service';
-import {Person} from '@app/components/admin/children/add-consultancy/add-consultancy.component';
+import {Person} from '@app/components/admin/components/add-consultancy/add-consultancy.component';
 import {DialogService} from '@app/core/components/dialog/dialog.service';
 
 @Component({
@@ -25,6 +25,7 @@ export class ListCollaboratorsComponent implements OnInit {
   public userImage: any;
   public roles: any[];
   public protocols: any[];
+  public title: string;
   private _location: any;
   private _userInfo: Person;
 
@@ -39,6 +40,7 @@ export class ListCollaboratorsComponent implements OnInit {
     private _dialogService: DialogService,
     private _api: ApiService
   ) {
+    this.title = this._data.name;
     this.collaboratorsList = [];
     this.signature = {
       path: null,
@@ -139,12 +141,12 @@ export class ListCollaboratorsComponent implements OnInit {
         name: ['', [Validators.required]],
         lastName: ['', [Validators.required]],
         email: ['', [Validators.required, Validators.email]],
-        country:  ['', [Validators.required]],
-        countryCode:  ['', [Validators.required]],
+        country:  ['México', [Validators.required]],
+        countryCode:  ['+52', [Validators.required]],
         phoneNumber: ['', [Validators.required]],
         rol: ['', [Validators.required]],
         jobTitle: ['', [Validators.required]],
-        protocol: [''],
+        protocol: ['http://'],
         website: ['', [Validators.pattern(Constants.REGEX_WEBSITE)]]
       });
     }
@@ -179,7 +181,7 @@ export class ListCollaboratorsComponent implements OnInit {
       lastName: data.lastName,
       email: data.email,
       phoneNumber: data.phoneNumber,
-      countryCode: data.countryCode,
+      countryCode: data.countryCode.replace('+', ''),
       country: data.country,
       role: data.rol,
       jobTitle: data.jobTitle,

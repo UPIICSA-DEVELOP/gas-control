@@ -27,7 +27,20 @@ body{
 }
 
 .list-collaborators-panel{
-  width: 50vw;
+  width: 60vw;
+  height: 90vh;
+  overflow: hidden;
+  mat-dialog-container{
+    padding: 0 !important;
+  }
+  @media screen and (max-width: 600px){
+    max-width: 90vw !important;
+    width: 100vw;
+  }
+}
+
+.add-consultancy-panel{
+  width: 60vw;
   height: 90vh;
   overflow: hidden;
   mat-dialog-container{

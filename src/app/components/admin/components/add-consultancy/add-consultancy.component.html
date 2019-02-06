@@ -7,18 +7,20 @@
     </div>
 
     <div class="stepper">
-      <h2>Registrar nueva Consultora</h2>
-      <mat-vertical-stepper  #stepper [linear]="true" (selectionChange)="onSelectionChange($event)">
-        <mat-step [stepControl]="ownerForm">
-          <ng-template matStepLabel>Registro del Director</ng-template>
-        </mat-step>
-        <mat-step [stepControl]="consultancyForm">
-          <ng-template matStepLabel>Registro de Consultora</ng-template>
-        </mat-step>
-        <mat-step>
-          <ng-template matStepLabel>Hecho</ng-template>
-        </mat-step>
-      </mat-vertical-stepper>
+      <div class="container-stepper">
+        <h2>Registrar nueva Consultora</h2>
+        <mat-vertical-stepper  #stepper [linear]="true" (selectionChange)="onSelectionChange($event)">
+          <mat-step [stepControl]="ownerForm">
+            <ng-template matStepLabel>Registro del Director</ng-template>
+          </mat-step>
+          <mat-step [stepControl]="consultancyForm">
+            <ng-template matStepLabel>Registro de Consultora</ng-template>
+          </mat-step>
+          <mat-step>
+            <ng-template matStepLabel>Hecho</ng-template>
+          </mat-step>
+        </mat-vertical-stepper>
+      </div>
     </div>
 
     <div class="forms">
@@ -35,8 +37,6 @@
         </div>
 
         <mat-card>
-          <button mat-button=""  type="button" (click)="makeBusinessCard()">Test</button>
-          <img [src]="testUrl">
           <form *ngIf="showOwnerForm" [formGroup]="ownerForm" (ngSubmit)="addInfOwner(ownerForm.value)">
             <div class="owner-info">
               <mat-card-header>

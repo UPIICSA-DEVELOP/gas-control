@@ -6,6 +6,7 @@ import {DOCUMENT} from '@angular/common';
 import {ListCollaboratorsService} from '@app/components/admin/components/list-collaborators/list-collaborators.service';
 import {AuthService} from '@app/core/services/auth/auth.service';
 import {DialogService} from '@app/core/components/dialog/dialog.service';
+import {AddConsultancyService} from '@app/components/admin/components/add-consultancy/add-consultancy.service';
 
 @Component({
   selector: 'app-admin',
@@ -19,6 +20,7 @@ export class AdminComponent implements OnInit {
 
   constructor(
     private _collaborators: ListCollaboratorsService,
+    private _addConsultancy: AddConsultancyService,
     private _apiLoader: ApiLoaderService,
     private _auth: AuthService,
     private _dialog: DialogService,
@@ -43,8 +45,12 @@ export class AdminComponent implements OnInit {
     });
   }
 
-  public openCollaborators(id: string): void{
-   this._collaborators.open(id);
+  public openCollaborators(id: string, name: string): void{
+   this._collaborators.open(id, name);
+  }
+
+  public addConsultancy(): void{
+    this._addConsultancy.open();
   }
 
   public signOut(): void{
