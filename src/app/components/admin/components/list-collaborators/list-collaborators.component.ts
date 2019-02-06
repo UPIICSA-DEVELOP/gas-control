@@ -19,6 +19,7 @@ import {DialogService} from '@app/core/components/dialog/dialog.service';
 export class ListCollaboratorsComponent implements OnInit {
 
   public collaboratorsList: any[];
+  public collaboratorsListCopy: any[];
   public addCollaboratorVisible: boolean;
   public userForm: FormGroup;
   public signature: any;
@@ -26,6 +27,7 @@ export class ListCollaboratorsComponent implements OnInit {
   public roles: any[];
   public protocols: any[];
   public title: string;
+  public notResults: boolean;
   private _location: any;
   private _userInfo: Person;
 
@@ -42,6 +44,7 @@ export class ListCollaboratorsComponent implements OnInit {
   ) {
     this.title = this._data.name;
     this.collaboratorsList = [];
+    this.collaboratorsListCopy = [];
     this.signature = {
       path: null,
       blob: null,
@@ -195,6 +198,7 @@ export class ListCollaboratorsComponent implements OnInit {
       switch (response.code){
         case 200:
           this.collaboratorsList = response.items;
+          this.collaboratorsListCopy = this.collaboratorsList;
           break;
         default:
           this.onErrorOccurred();
@@ -297,6 +301,25 @@ export class ListCollaboratorsComponent implements OnInit {
 
   private onErrorOccurred(): void{
     this._snackBar.openSnackBar('Ha ocurrido un error, por favor, intente de nuevo', 'OK', 3000);
+  }
+
+  public search(ev: any): void{
+    const text = ev.srcElement.value.toLowerCase();
+    if(text === ''){
+      this.collaboratorsList = this.collaboratorsListCopy;
+    }else{
+      const listCopy = this.collaboratorsListCopy;
+      const newResults = [];
+      listCopy.forEach(item => {
+        if(item.name.toLowerCase().includes(text) || item.lastName.toLowerCase().includes(text) || item.email.toLowerCase().includes(text)
+          || item.jobTitle.toLowerCase().includes(text) || item.phoneNumber.toLowerCase().includes(text)){
+          newResults.push(item)
+        }
+      });
+      this.collaboratorsList = newResults;
+      this.notResults = (newResults.length===0);
+    }
+
   }
 
 }

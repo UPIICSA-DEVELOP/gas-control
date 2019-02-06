@@ -24,6 +24,7 @@ export interface Person {
   refId: string;
   signature?:any;
   profileImage?: any;
+  bCard?: any;
 }
 
 @Component({
@@ -218,7 +219,8 @@ export class AddConsultancyComponent implements OnInit {
       switch (response.code){
         case 200:
           this._consultancyInfo = response.item;
-          this.createPerson(this._consultancyInfo.id);
+          this.makeBusinessCard();
+          //this.createPerson(this._consultancyInfo.id);
           break;
         default:
           this.onErrorOccurred();
@@ -300,8 +302,16 @@ export class AddConsultancyComponent implements OnInit {
     }
   }
 
-  private uploadBusinessCard(): void{
-
+  private uploadBusinessCard(blob: Blob): void{
+    const form = new FormData();
+    form.append('file', blob);
+    this._uploadFile.uploadToBusinessCard(form).subscribe(response => {
+      console.log(response);
+     this._ownerInfo.bCard = {
+        cardThumbnail: response
+      };
+      this.createPerson(this._consultancyInfo.id);
+    });
   }
 
   private finishCreateConsultancy(): void{
@@ -339,11 +349,7 @@ export class AddConsultancyComponent implements OnInit {
       website: this._ownerInfo.website
     };
     this._api.businessCardService(data).subscribe((response: Blob) => {
-      const reader = new FileReader();
-      reader.readAsDataURL(response);
-      reader.onloadend = () => {
-
-      }
+      this.uploadBusinessCard(response);
     });
   }
 

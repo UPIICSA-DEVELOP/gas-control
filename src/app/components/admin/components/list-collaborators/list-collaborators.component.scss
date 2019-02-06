@@ -36,6 +36,8 @@
     height: calc(100% - 64px);
     padding: 0 16px;
     overflow-y: auto;
+    z-index: 2;
+    background-color: #F2F2F2;
 
     h4{
       color: rgba(0, 0, 0, 0.54);
@@ -48,6 +50,31 @@
       display: flex;
       justify-content: center;
       align-items: center;
+    }
+
+    .header-list{
+      display: flex;
+      justify-content: space-between;
+      padding: 0 8px;
+      .search-box{
+        width: 45%;
+        height: 30px;
+        display: flex;
+        margin: auto 0;
+        border-radius: 8px;
+        background-color: white;
+        mat-icon{
+          margin: auto 8px;
+        }
+        input{
+          width: 100%;
+          border-radius: 8px;
+          border: none;
+          margin-top: .5px;
+          padding: 8px;
+          background-color: white;
+        }
+      }
     }
 
     .container-list{

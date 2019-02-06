@@ -17,6 +17,8 @@ export class AdminComponent implements OnInit {
 
   public load: boolean;
   public consultancyList: any[];
+  public consultancyListCopy: any[];
+  public notResults: boolean;
 
   constructor(
     private _collaborators: ListCollaboratorsService,
@@ -27,6 +29,7 @@ export class AdminComponent implements OnInit {
     private _api: ApiService
   ) {
     this.consultancyList = [];
+    this.consultancyListCopy = [];
   }
 
   ngOnInit() {
@@ -38,8 +41,8 @@ export class AdminComponent implements OnInit {
     this._api.listConsultancy().subscribe(response => {
       switch (response.code){
         case 200:
-          console.log(response.items);
           this.consultancyList = response.items;
+          this.consultancyListCopy = this.consultancyList;
           break;
       }
     });
@@ -64,6 +67,25 @@ export class AdminComponent implements OnInit {
           break;
       }
     });
+  }
+
+
+  public search(ev: any): void{
+    const text = ev.srcElement.value.toLowerCase();
+    if(text === ''){
+      this.consultancyList = this.consultancyListCopy;
+    }else{
+      const listCopy = this.consultancyListCopy;
+      const newResults = [];
+      listCopy.forEach(item => {
+        if(item.businessName.toLowerCase().includes(text) || item.address.toLowerCase().includes(text) || item.officePhone.toLowerCase().includes(text)){
+          newResults.push(item)
+        }
+      });
+      this.consultancyList = newResults;
+      this.notResults = (newResults.length===0);
+    }
+
   }
 
 }

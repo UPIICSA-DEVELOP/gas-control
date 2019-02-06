@@ -19,11 +19,23 @@
 
   <div class="list" *ngIf="!addCollaboratorVisible">
 
-    <h4>Lista de colaboradores</h4>
+    <div class="header-list">
+      <h4>Lista de colaboradores</h4>
+      <div class="search-box">
+        <mat-icon>search</mat-icon>
+        <input matInput placeholder="Buscar" (input)="search($event)">
+      </div>
+    </div>
 
-    <div class="empty-list" *ngIf="collaboratorsList.length === 0">
+    <div class="empty-list" *ngIf="collaboratorsListCopy.length === 0">
       <h3>Aún no tiene colaboradores agregados</h3>
     </div>
+
+
+    <div class="empty-list" *ngIf="notResults">
+      <h3>No hay resultados de su búsqueda</h3>
+    </div>
+
 
     <div class="container-list" *ngIf="collaboratorsList.length > 0">
       <mat-card class="item" *ngFor="let item of collaboratorsList">
@@ -41,7 +53,7 @@
             <a [href]="'tel:'+item.countryCode+item.phoneNumber"><span>{{item.phoneNumber}}</span></a>
           </p>
         </div>
-        <div class="actions">
+        <div class="actions" *ngIf="item.role!==1">
           <button mat-icon-button matTooltip="Eliminar" (click)="deleteCollaborator(item)"><mat-icon>delete</mat-icon></button>
           <button mat-icon-button matTooltip="Actualizar rol" (click)="changeRole(item)"><mat-icon svgIcon="icons:change_role"></mat-icon></button>
         </div>
