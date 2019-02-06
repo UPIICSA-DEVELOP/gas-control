@@ -14,6 +14,8 @@ import {LocalStorageService} from '@app/core/services/local-storage/local-storag
 import {Router} from '@angular/router';
 import {SessionStorageService} from '@app/core/services/session-storage/session-storage.service';
 
+const md5 = require('md5');
+
 @Component({
   selector: 'app-reset-pass',
   templateUrl: './reset-pass.component.html',
@@ -43,7 +45,7 @@ export class ResetPassComponent implements OnInit, AfterViewInit {
         'ACEPTAR',
         '',
         '').afterClosed().subscribe(response => {
-        const newPassword = response.data.password;
+        const newPassword = md5(response.data.password);
         switch (response.code) {
           case 1:
             this._snackBarService.openSnackBar('Espere un momento', '', 0);

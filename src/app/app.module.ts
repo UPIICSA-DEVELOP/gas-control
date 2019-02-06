@@ -112,7 +112,7 @@ import {AddConsultancyService} from '@app/components/admin/components/add-consul
     DatepickerComponent,
     TaskFilterComponent,
     ListCollaboratorsComponent,
-    ModalStationComponent
+    ModalStationComponent,
     ListCollaboratorsComponent,
     AddConsultancyComponent
   ],
