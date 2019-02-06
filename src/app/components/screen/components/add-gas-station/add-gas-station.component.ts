@@ -16,7 +16,7 @@ import {SnackBarService} from '@app/core/services/snackbar/snackbar.service';
 import {UploadFileService} from '@app/core/components/upload-file/upload-file.service';
 import {CountryCodeService} from '@app/core/components/country-code/country-code.service';
 import {LocationOptions, LocationService} from '@app/core/components/location/location.service';
-import {ModalStationService} from '@app/core/components/modal-station/modal-station.service';
+import {ModalStationService} from '@app/components/screen/components/modal-station/modal-station.service';
 import {UploadFileResponse} from '@app/core/components/upload-file/upload-file.component';
 import {DialogService} from '@app/core/components/dialog/dialog.service';
 import {PdfVisorOptions, PdfVisorService} from '@app/core/components/pdf-visor/pdf-visor.service';

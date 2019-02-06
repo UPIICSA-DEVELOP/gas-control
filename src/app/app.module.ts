@@ -48,6 +48,7 @@ import { ListCollaboratorsComponent } from './components/admin/components/list-c
 import {ListCollaboratorsService} from '@app/components/admin/components/list-collaborators/list-collaborators.service';
 import {DatepickerComponent} from './components/screen/components/datepicker/datepicker.component';
 import {TaskFilterComponent} from './components/screen/components/task-filter/task-filter.component';
+import {ModalStationComponent} from '@app/components/screen/components/modal-station/modal-station.component';
 
 
 @NgModule({
@@ -80,7 +81,8 @@ import {TaskFilterComponent} from './components/screen/components/task-filter/ta
     ProceduresComponent,
     AdminComponent,
     AddConsultancyComponent,
-    ListCollaboratorsComponent
+    ListCollaboratorsComponent,
+    ModalStationComponent
   ],
   imports: [
     CoreModule,
@@ -108,7 +110,8 @@ import {TaskFilterComponent} from './components/screen/components/task-filter/ta
     AddGasStationComponent,
     DatepickerComponent,
     TaskFilterComponent,
-    ListCollaboratorsComponent
+    ListCollaboratorsComponent,
+    ModalStationComponent
   ],
   providers: [
     {

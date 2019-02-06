@@ -6,7 +6,7 @@
 
 import { Injectable } from '@angular/core';
 import {MatDialog, MatDialogRef} from '@angular/material';
-import {ModalStationComponent} from '@app/core/components/modal-station/modal-station.component';
+import {ModalStationComponent} from 'app/components/screen/components/modal-station/modal-station.component';
 
 @Injectable({
   providedIn: 'root'
