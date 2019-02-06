@@ -6,12 +6,17 @@
 
 <div id="create-station">
   <mat-toolbar [color]="'primary'">
-    <span *ngIf="step===0">Agregar Estación</span>
-    <span *ngIf="step===1 && listExist">Listado de usuarios</span>
-    <span *ngIf="step===1 && !listExist">Nuevo registro</span>
-    <span *ngIf="step===2">Nuevo registro</span>
-    <span *ngIf="step===3">Programación de tareas</span>
-    <button mat-icon-button (click)="closeAddStation()">
+    <div [ngSwitch]="step">
+      <div *ngSwitchCase="0">Agregar Estación</div>
+      <div *ngSwitchCase="1">
+        <div *ngIf="listExist; then legalList else legalForm"></div>
+        <ng-template #legalList>Listado de usuarios</ng-template>
+        <ng-template #legalForm>Nuevo registro</ng-template>
+      </div>
+      <div *ngSwitchCase="2">Nuevo registro</div>
+      <div *ngSwitchCase="3">Programación de tareas</div>
+    </div>
+    <button mat-icon-button (click)="closeAddStation()" *ngIf="!disableClose">
       <mat-icon>close</mat-icon>
     </button>
   </mat-toolbar>

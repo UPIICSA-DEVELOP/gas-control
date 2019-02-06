@@ -4,7 +4,7 @@
  * Proprietary and confidential
  */
 
-import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
+import {Component, ElementRef, Inject, OnInit, ViewChild} from '@angular/core';
 import {ApiService} from '@app/core/services/api/api.service';
 import {ApiLoaderService} from '@app/core/services/api/api-loader.service';
 import {Router} from '@angular/router';
@@ -20,7 +20,7 @@ import {ModalStationService} from '@app/components/screen/components/modal-stati
 import {UploadFileResponse} from '@app/core/components/upload-file/upload-file.component';
 import {DialogService} from '@app/core/components/dialog/dialog.service';
 import {PdfVisorOptions, PdfVisorService} from '@app/core/components/pdf-visor/pdf-visor.service';
-import {MatDialogRef} from '@angular/material';
+import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
 
 interface Person {
   id?: string;
@@ -89,6 +89,7 @@ interface Task {
 export class AddGasStationComponent implements OnInit {
   @ViewChild('phoneNumber') private _phoneNumberInput: ElementRef;
   public step: number;
+  public disableClose: boolean;
   public utils: any[];
   public tasks: any[];
   public manger: Person;
@@ -142,8 +143,10 @@ export class AddGasStationComponent implements OnInit {
   private _formImageTwo:FormData;
   private _formSignatureTwo: FormData;
   private _formFileTwo: FormData;
+  private _stationId: string;
 
   constructor(
+    @Inject(MAT_DIALOG_DATA) private _data: any,
     private _api: ApiService,
     private _apiLoaderService: ApiLoaderService,
     private _router: Router,
@@ -176,7 +179,9 @@ export class AddGasStationComponent implements OnInit {
     this.protocol = 'http://';
     this.protocolTwo = 'http://';
     this.startDate = new Date();
-    this.step = 0;
+    this.step = this._data?this._data.stepActive:0;
+    this.disableClose = this._data?this._data.disableClose:false;
+    this._stationId = this._data?this._data.stationId:null;
   }
 
   ngOnInit() {
@@ -881,12 +886,13 @@ export class AddGasStationComponent implements OnInit {
   }
 
   public validateCompleteCalendar():void{
-    if(this.calendar.length !== this.tasks.length){
-      this._snackBarService.openSnackBar('Por favor, calendarize todas las tareas','OK', 3000);
-      return;
-    }else{
-      this.createStationTasks(this.station.id);
+    for(let i = 0; i<this.calendar.length; i++){
+      if(!this.calendar[i]){
+        this._snackBarService.openSnackBar('Para continuar es necesario programar todas las tareas','OK', 3000);
+        return;
+      }
     }
+    this.createStationTasks(this._stationId?this._stationId:this.station.id);
   }
 
   public openStudy(isManager: boolean):void{
