@@ -22,13 +22,16 @@ export class ListTasksComponent implements OnInit, OnChanges {
   @Input() public station: any;
   @Input() public taskTemplate: any;
   @ViewChild('searchBox') private _searchBox: ElementRef;
+  @ViewChild('input') private _input: ElementRef;
   public startDate: string = new Date().toLocaleDateString();
   public endDate: string = new Date().toLocaleDateString();
   public today: boolean = false;
   public showSearchBox: boolean;
   public tasks: any[];
   public tasksFilterd: any[];
+  public copyTasks: any[];
   public zones: any[];
+  public priority: any[];
   public typeFilter: string[] = ['Todas','Atrasadas','Terminadas','Vencidas','Incidencias'];
   public filterApply:string;
   public filter: number = 0;
@@ -40,10 +43,12 @@ export class ListTasksComponent implements OnInit, OnChanges {
     private _apiLoader: ApiLoaderService
   ) {
     this.tasksFilterd = [];
+    this.copyTasks = [];
+    this.priority = Constants.Level;
+    this.zones = Constants.Zones;
   }
 
   ngOnInit() {
-    this.zones = Constants.Zones;
     this._apiLoader.getProgress().subscribe(load=>{this.load=load});
     if (this.startDate === this.endDate) {
       this.today = true;
@@ -57,11 +62,13 @@ export class ListTasksComponent implements OnInit, OnChanges {
   }
 
   private getStationTask():void{
-    this._api.listTaskDateStatus(this.station.stationTaskId).subscribe(response=>{
+    this._api.listTaskDateStatus(this.station.stationTaskId || '123').subscribe(response=>{
       switch (response.code){
         case 200:
           this.tasks = response.items;
-          this.tasksCompare();
+          if(response.items){
+            this.tasksCompare();
+          }
           break;
         default:
           this.tasks=[];
@@ -79,9 +86,11 @@ export class ListTasksComponent implements OnInit, OnChanges {
             date: UtilitiesService.convertDate(task.date),
             name: template.name,
             zone: template.zone,
-            level: template.level
+            level: template.level,
+            typeReport: template.typeReport
           });
         }
+        this.copyTasks = this.tasksFilterd;
       });
     });
   }
@@ -126,10 +135,32 @@ export class ListTasksComponent implements OnInit, OnChanges {
       this.showSearchBox = !this.showSearchBox;
       this._searchBox.nativeElement.style.width = '100%';
     }else{
+      console.log(this._input.nativeElement.value);
+      this._input.nativeElement.value = '';
+      console.log(this._input.nativeElement.value);
       this._searchBox.nativeElement.style.width = '0';
       setTimeout(() => {
         this.showSearchBox = !this.showSearchBox;
       }, 250);
+    }
+  }
+
+  public searchTask(event:any):void{
+    const newArray = [];
+    const text = (event.srcElement.value).toLowerCase();
+    if(text === ''){
+      this.tasksFilterd = this.copyTasks;
+    }else{
+      for(let x=0; x < this.copyTasks.length; x++){
+        if(UtilitiesService.removeDiacritics(this.copyTasks[x].name).toLowerCase().includes(text)){
+          newArray.push(this.copyTasks[x]);
+        }
+      }
+      if(newArray.length > 0){
+        this.tasksFilterd = newArray;
+      }else{
+        this.tasksFilterd = this.copyTasks;
+      }
     }
   }
 }
