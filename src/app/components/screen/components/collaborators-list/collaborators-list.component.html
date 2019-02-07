@@ -35,7 +35,7 @@
         <mat-icon matPrefix class="icons">search</mat-icon>
       </mat-form-field>
       <div class="container-1" *ngIf="!register">
-        <div *ngIf="collaborators; then view else load"></div>
+        <div *ngIf="collaborators; then view else loading"></div>
         <ng-template #view>
           <div *ngIf="collaborators.length>0; then list else empty"></div>
           <ng-template #list>
@@ -99,7 +99,7 @@
             </div>
           </ng-template>
         </ng-template>
-        <ng-template #load>
+        <ng-template #loading>
           <div class="load">
             <mat-spinner></mat-spinner>
           </div>
