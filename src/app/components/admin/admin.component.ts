@@ -53,7 +53,13 @@ export class AdminComponent implements OnInit {
   }
 
   public addConsultancy(): void{
-    this._addConsultancy.open();
+    this._addConsultancy.open().afterClosed().subscribe(response => {
+      switch (response.code){
+        case 200:
+          this.getConsultancyList();
+          break;
+      }
+    });
   }
 
   public signOut(): void{

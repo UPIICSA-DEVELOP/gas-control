@@ -80,16 +80,16 @@ export class AddConsultancyComponent implements OnInit {
     this._apiLoader.getProgress().subscribe(load => {this.load = load});
     this.showOwnerForm = true;
     this.ownerForm = this._formBuilder.group({
-      name: ['', [Validators.required]],
-      lastName: ['', [Validators.required]],
-      email: ['', [Validators.required, Validators.email]],
+      name: ['aaaaa', [Validators.required]],
+      lastName: ['aaaaa', [Validators.required]],
+      email: ['aaaaa', [Validators.required, Validators.email]],
       country:  ['México', [Validators.required]],
       countryCode:  ['+52', [Validators.required]],
-      phoneNumber: ['', [Validators.required]],
+      phoneNumber: ['aaaaa', [Validators.required]],
       rol: [1, [Validators.required]],
-      jobTitle: ['', [Validators.required]],
-      protocol: [''],
-      website: ['', [Validators.pattern(Constants.REGEX_WEBSITE)]]
+      jobTitle: ['aaaaa', [Validators.required]],
+      protocol: ['aaaaa'],
+      website: ['aaaaa', [Validators.pattern(Constants.REGEX_WEBSITE)]]
     });
   }
 
@@ -201,10 +201,10 @@ export class AddConsultancyComponent implements OnInit {
   private initFormConsultancy(next: boolean): void{
     if(!this.consultancyForm){
       this.consultancyForm = this._formBuilder.group({
-        company: ['', [Validators.required]],
-        rfc: ['', [Validators.required]],
+        company: ['aaa', [Validators.required]],
+        rfc: ['aaa', [Validators.required]],
         address: ['', [Validators.required]],
-        consultancyNumber: ['']
+        consultancyNumber: ['aaa']
       });
     }else{
       this.consultancyForm.enable();
@@ -219,8 +219,7 @@ export class AddConsultancyComponent implements OnInit {
       switch (response.code){
         case 200:
           this._consultancyInfo = response.item;
-          this.makeBusinessCard();
-          //this.createPerson(this._consultancyInfo.id);
+          this.createPerson(this._consultancyInfo.id);
           break;
         default:
           this.onErrorOccurred();
@@ -255,7 +254,7 @@ export class AddConsultancyComponent implements OnInit {
     this._api.updatePerson(person).subscribe(response => {
       switch (response.code){
         case 200:
-         this.exit(true);
+         this.exit(true, 200);
           break;
         default:
           this.onErrorOccurred();
@@ -275,14 +274,21 @@ export class AddConsultancyComponent implements OnInit {
       form.append('isImage', 'true');
       form.append('file', this.userImage.blob);
       this._uploadFile.upload(form).subscribe(response => {
-        this.userImage.original = response.item;
-        this.validateSignature();
+        switch (response.code){
+          case 200:
+            this.userImage.original = response.item;
+            this.makeBusinessCard();
+            break;
+          default:
+            this.onErrorOccurred();
+            break;
+        }
       }, error => {
         console.error(error);
         this.onErrorOccurred();
       });
     }else{
-      this.validateSignature();
+      this.makeBusinessCard();
     }
   }
 
@@ -294,8 +300,15 @@ export class AddConsultancyComponent implements OnInit {
       form.append('isImage', 'true');
       form.append('file', this.signature.blob);
       this._uploadFile.upload(form).subscribe(response => {
-        this.signature.original = response.item;
-        this.finishCreateConsultancy();
+        switch (response.code){
+          case 200:
+            this.signature.original = response.item;
+            this.finishCreateConsultancy();
+            break;
+          default:
+            this.onErrorOccurred();
+            break;
+        }
       });
     }else{
       this.finishCreateConsultancy();
@@ -304,13 +317,19 @@ export class AddConsultancyComponent implements OnInit {
 
   private uploadBusinessCard(blob: Blob): void{
     const form = new FormData();
-    form.append('file', blob);
+    form.append('file', blob, 'bc'+new Date().getTime()+'.png');
     this._uploadFile.uploadToBusinessCard(form).subscribe(response => {
-      console.log(response);
-     this._ownerInfo.bCard = {
-        cardThumbnail: response
-      };
-      this.createPerson(this._consultancyInfo.id);
+      if(response.success && response.success === 'true'){
+        this._ownerInfo.bCard = {
+          cardThumbnail: response.secondaryUrl
+        };
+        this.validateSignature();
+      }else{
+        this.onErrorOccurred();
+      }
+    }, error => {
+      console.error(error);
+      this.onErrorOccurred();
     });
   }
 
@@ -321,18 +340,14 @@ export class AddConsultancyComponent implements OnInit {
     if(this.signature.original){
       this._ownerInfo.signature = this.signature.original;
     }
-    if(this.userImage.original || this.signature.original){
-      this.updatePerson(this._ownerInfo);
-    }else{
-      this.exit(true);
-    }
+    this.updatePerson(this._ownerInfo);
   }
 
-  public exit(snack: boolean): void{
+  public exit(snack: boolean, code: number): void{
     if(snack){
       this._snackBar.openSnackBar('Consultora creada con éxito', 'OK', 3000);
     }
-    this._dialog.close();
+    this._dialog.close({code: code});
   }
 
   private onErrorOccurred(): void{
@@ -346,7 +361,8 @@ export class AddConsultancyComponent implements OnInit {
       workPosition: this._ownerInfo.jobTitle,
       phone: this._ownerInfo.countryCode + this._ownerInfo.phoneNumber,
       email: this._ownerInfo.email,
-      website: this._ownerInfo.website
+      website: this._ownerInfo.website,
+      imageUrl: (this.userImage.original)?this.userImage.original.thumbnail + '=s1200':null
     };
     this._api.businessCardService(data).subscribe((response: Blob) => {
       this.uploadBusinessCard(response);

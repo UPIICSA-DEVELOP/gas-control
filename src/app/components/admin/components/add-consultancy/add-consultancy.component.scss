@@ -50,6 +50,7 @@
       height: 100%;
       padding: 0 5%;
       overflow-y: auto;
+      position: relative;
       @media screen and (max-width: 1024px){
         width: 60%;
       }

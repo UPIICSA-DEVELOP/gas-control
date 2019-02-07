@@ -287,12 +287,8 @@ export class ApiService {
     return forkJoin(response1, response2);
   }
 
-  public getBlobStoreBusinessCard(): Observable<any>{
-    return this._http.get('https://business-card-74ca5.appspot.com/upload', {responseType: 'text' as 'json'});
-  }
-
-  public uploadFileToBlobBusinessCard(url, body: any): Observable<any>{
-    return this._http.post(url, body);
+  public uploadToBusinessCard(form: FormData): Observable<any>{
+    return this._http.post('https://business-card-74ca5.appspot.com/upload', form);
   }
 
   private initNetwork(): void {
