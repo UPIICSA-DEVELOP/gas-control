@@ -13,6 +13,7 @@ import {SessionStorageService} from '@app/core/services/session-storage/session-
 import {LocalStorageService} from '@app/core/services/local-storage/local-storage.service';
 import {AddStationService} from '@app/components/screen/components/add-gas-station/add-station.service';
 import {DialogService} from '@app/core/components/dialog/dialog.service';
+import {AuthService} from '@app/core/services/auth/auth.service';
 
 @Component({
   selector: 'app-screen',
@@ -31,7 +32,8 @@ export class ScreenComponent implements OnInit{
     private _router: Router,
     private _activateRoute: ActivatedRoute,
     private _addStationService: AddStationService,
-    private _dialogService: DialogService
+    private _dialogService: DialogService,
+    private _auth: AuthService
   ) {
   }
 
@@ -101,17 +103,32 @@ export class ScreenComponent implements OnInit{
   }
 
   public openTaskCalendar():void{
-    this._dialogService.alertDialog(
-      'Información',
-      'Aún no se ha calendarizado las tareas de la estación. ¿Desea hacerlo ahora?',
-      'SI'
-    ).afterClosed().subscribe(response=>{
-      switch (response.code){
-        case 1:
-          this._addStationService.open({disableClose: true, stationId: this.stationActive.id, stepActive: 3});
-          break;
-      }
-    })
+    const user = LocalStorageService.getItem(Constants.UserInSession);
+    if(user.role!==6){
+      this._dialogService.alertDialog(
+        'Información',
+        'Aún no se ha calendarizado las tareas de la estación. ¿Desea hacerlo ahora?',
+        'ACEPTAR'
+      ).afterClosed().subscribe(response=>{
+        switch (response.code){
+          case 1:
+            this._addStationService.open({disableClose: true, stationId: this.stationActive.id, stepActive: 3});
+            break;
+        }
+      });
+    }else{
+      this._dialogService.alertDialog(
+        'Información',
+        'No se han calendarizado las tareas de esta Estación. Por favor notifíquelo a su superior',
+        'ACEPTAR'
+      ).afterClosed().subscribe(response=>{
+        switch (response.code){
+          case 1:
+            this._auth.logOut();
+            break;
+        }
+      });
+    }
   }
 
   public addStation():void{
