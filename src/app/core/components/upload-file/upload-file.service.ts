@@ -34,4 +34,13 @@ export class UploadFileService {
     });
   }
 
+  uploadToBusinessCard(formData: FormData): Observable<any>{
+    return new Observable((observable) => {
+      this._api.uploadToBusinessCard(formData).subscribe((response) => {
+        observable.next(response);
+        observable.complete();
+      });
+    });
+  }
+
 }

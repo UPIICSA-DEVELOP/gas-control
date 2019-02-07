@@ -15,13 +15,23 @@
 
       <div class="list-header">
         <h2 class="title">Listado de consultoras</h2>
+        <div class="search-box">
+          <mat-icon>search</mat-icon>
+          <input matInput placeholder="Buscar" (input)="search($event)">
+        </div>
       </div>
 
-      <div class="empty-list" *ngIf="consultancyList.length === 0">
-        <h2>Aún no tiene consultoras agregadas a su lista</h2>
-      </div>
 
-      <div class="items" *ngIf="consultancyList.length > 0">
+      <div class="items">
+
+        <div class="empty-list" *ngIf="consultancyListCopy.length === 0">
+          <h2>Aún no tiene consultoras agregadas a su lista</h2>
+        </div>
+
+        <div class="empty-list" *ngIf="notResults">
+          <h3>No hay resultados de su búsqueda</h3>
+        </div>
+
 
         <mat-card class="item" matRipple *ngFor="let item of consultancyList" (click)="openCollaborators(item.id, item.businessName)">
           <div class="image">
