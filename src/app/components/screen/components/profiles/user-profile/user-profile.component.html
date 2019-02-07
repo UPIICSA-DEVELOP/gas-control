@@ -13,14 +13,12 @@
       <div class="information">
         <mat-card class="content">
           <div class="head">
-            <div class="image">
-              <app-upload-file [layoutTemplate]="icon" (onLoad)="onLoadImage($event)" (onRemove)="onRemoveImage()" [type]="'image'">
-                <ng-template #icon>
-                  <img *ngIf="profileImage" [src]="profileImage" class="profileImage" alt="User profile image">
-                  <mat-icon *ngIf="!profileImage" class="defaultProfileImage">add_photo_alternate</mat-icon>
-                </ng-template>
-              </app-upload-file>
-            </div>
+            <app-upload-file [layoutTemplate]="icon" (onLoad)="onLoadImage($event)" (onRemove)="onRemoveImage()" [type]="'image'">
+              <ng-template #icon>
+                <img *ngIf="profileImage" [src]="profileImage" class="profileImage" alt="User profile image">
+                <mat-icon *ngIf="!profileImage" class="defaultProfileImage">add_photo_alternate</mat-icon>
+              </ng-template>
+            </app-upload-file>
           </div>
           <mat-card-content class="user-form">
             <h2 class="title">Mi información</h2>

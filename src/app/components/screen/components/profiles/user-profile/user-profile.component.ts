@@ -15,7 +15,6 @@ import {CountryCodeService} from '@app/core/components/country-code/country-code
 import {SnackBarService} from '@app/core/services/snackbar/snackbar.service';
 import {UploadFileService} from '@app/core/components/upload-file/upload-file.service';
 import {ApiLoaderService} from '@app/core/services/api/api-loader.service';
-import {CookieService} from '@app/core/services/cookie/cookie.service';
 import {Constants} from '@app/core/constants.core';
 import {UploadFileResponse} from '@app/core/components/upload-file/upload-file.component';
 import {SignaturePadService} from '@app/core/components/signature-pad/signature-pad.service';
@@ -496,6 +495,7 @@ export class UserProfileComponent implements OnInit {
   }
 
   private saveProfileInformation(data: any): void{
+    const emailUpdate = this.user.email !== data.email;
     data.code = data.code.replace('+','');
     this.user.name = data.name;
     this.user.lastName = data.lastName;
@@ -543,7 +543,11 @@ export class UserProfileComponent implements OnInit {
         thumbnail: this.newSig.thumbnail
       }
     }
-    this.saveUser();
+    if(emailUpdate){
+      this.updateProfileDataWithNewEmail();
+    }else{
+      this.saveUser();
+    }
   }
 
   private saveUser(redirect?:boolean):void{
@@ -552,6 +556,8 @@ export class UserProfileComponent implements OnInit {
         case 200:
           if(!redirect){
             this.saveInformation();
+          }else{
+            this._snackBarService.openSnackBar('Contraseña Actualizada','OK',3000);
           }
           break;
         default:
@@ -559,6 +565,19 @@ export class UserProfileComponent implements OnInit {
           break;
       }
     })
+  }
+
+  private updateProfileDataWithNewEmail():void{
+    this._api.updatePersonWithDifferentEmail(this.user).subscribe(response=>{
+      switch (response.code){
+        case 200:
+          this.saveInformation();
+          break;
+        default:
+          this._dialogService.alertDialog('No se pudo acceder', 'Se produjo un error de comunicación con el servidor', 'ACEPTAR');
+          break;
+      }
+    });
   }
 
   private saveInformation():void{

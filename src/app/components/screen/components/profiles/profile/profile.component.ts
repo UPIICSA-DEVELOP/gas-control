@@ -461,6 +461,7 @@ export class ProfileComponent implements OnInit {
   }
 
   private saveInfoUserAndConsultancy(data: any): void{
+    const emailUpdate = this.user.email !== data.email;
     data.code = data.code.replace('+','');
     this.user.name = data.name;
     this.user.lastName = data.lastName;
@@ -502,7 +503,11 @@ export class ProfileComponent implements OnInit {
         thumbnail: this.newSig.thumbnail
       }
     }
-    this.saveProfileData();
+    if(emailUpdate){
+      this.updateProfileDataWithNewEmail();
+    }else{
+      this.saveProfileData();
+    }
   }
 
   private saveProfileData(redirect?:boolean):void{
@@ -514,7 +519,23 @@ export class ProfileComponent implements OnInit {
         case 200:
           if(!redirect){
             this.saveConsultancyData();
+          }else{
+            this._snackBarService.openSnackBar('Contraseña Actualizada','OK',3000);
           }
+          break;
+        default:
+          this._dialogService.alertDialog('No se pudo acceder', 'Se produjo un error de comunicación con el servidor', 'ACEPTAR');
+          break;
+      }
+    });
+  }
+
+  private updateProfileDataWithNewEmail():void{
+    this.validateDisabledInputs(true);
+    this._api.updatePersonWithDifferentEmail(this.user).subscribe(response=>{
+      switch (response.code){
+        case 200:
+            this.saveConsultancyData();
           break;
         default:
           this._dialogService.alertDialog('No se pudo acceder', 'Se produjo un error de comunicación con el servidor', 'ACEPTAR');
@@ -529,7 +550,6 @@ export class ProfileComponent implements OnInit {
       switch (response.code){
         case 200:
           this.change = false;
-          LocalStorageService.removeItem('notSign');
           this._snackBarService.openSnackBar('Información actualizada','OK',3000);
           this._router.navigate(['/home']);
           break;
