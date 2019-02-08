@@ -69,11 +69,9 @@ export class UtilitiesService {
     return data.sort(function (a, b) {
       let x = a[key],
         y = b[key];
-
       if (order === 'asc') {
         return ((x < y) ? -1 : ((x > y) ? 1 : 0));
       }
-
       if (order === 'desc') {
         return ((x > y) ? -1 : ((x < y) ? 1 : 0));
       }
@@ -126,6 +124,62 @@ export class UtilitiesService {
         stylers: [
           { visibility: 'off' }
         ]}]
+    }
+  }
+
+  static createPersonalTimeStamp(date: Date): any{
+    let formatDate:any = {};
+    try {
+      const day:string = date.getDate().toString();
+      const month:string = (date.getMonth()+1).toString();
+      const year:string = date.getFullYear().toString();
+      let monthText:string = '';
+      switch (month){
+        case '1':
+          monthText = 'Ene';
+          break;
+        case '2':
+          monthText = 'Feb';
+          break;
+        case '3':
+          monthText = 'Mar';
+          break;
+        case '4':
+          monthText = 'Abr';
+          break;
+        case '5':
+          monthText = 'May';
+          break;
+        case '6':
+          monthText = 'Jun';
+          break;
+        case '7':
+          monthText = 'Jul';
+          break;
+        case '8':
+          monthText = 'Ago';
+          break;
+        case '9':
+          monthText = 'Sep';
+          break;
+        case '10':
+          monthText = 'Oct';
+          break;
+        case '11':
+          monthText = 'Nov';
+          break;
+        case '12':
+          monthText = 'Dec';
+          break;
+      }
+      formatDate = {
+        timeStamp: Number(year+''+(month.length<2?'0'+month:month)+''+(day.length<2?'0'+day:day)),
+        textDate: (day.length<2?'0'+day:day)+'/'+monthText+'/'+year
+      };
+      return formatDate;
+    }catch (e){
+      console.error(e);
+      return null;
     }
   }
 

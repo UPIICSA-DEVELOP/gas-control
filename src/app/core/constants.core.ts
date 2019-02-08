@@ -11,6 +11,16 @@ export class Constants {
   public static SessionToken = 'SessionToken';
   public static UpdatePassword = 'UpdatePassword';
   public static REGEX_WEBSITE = '[a-z0-9]+([\\-\\.]{1}[a-z0-9]+)*\\.[a-z]{2,5}(:[0-9]{1,5})?(\\/.*)?$';
+
+  public static Filters = [
+    'Todas',
+    'Activa',
+    'Atrasadas',
+    'Terminadas',
+    'Vencidas',
+    'Incidencias'
+  ];
+
   public static Priority_Task = {
     0: 'all',
     1: 'basic',

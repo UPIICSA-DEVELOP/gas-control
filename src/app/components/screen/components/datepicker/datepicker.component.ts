@@ -4,8 +4,8 @@
  * Proprietary and confidential
  */
 
-import { Component, OnInit } from '@angular/core';
-import {MatDialogRef} from '@angular/material';
+import {Component, Inject, OnInit} from '@angular/core';
+import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
 import {FormBuilder, FormGroup} from '@angular/forms';
 import {SnackBarService} from '@app/core/services/snackbar/snackbar.service';
 
@@ -19,6 +19,7 @@ export class DatepickerComponent implements OnInit {
   public startDate: Date = new Date();
   public endDate: Date = new Date();
   constructor(
+  @Inject(MAT_DIALOG_DATA) public range: any,
     private _dialogRef: MatDialogRef<DatepickerComponent>,
     private _formBuilder: FormBuilder,
     private _snackBarService: SnackBarService
@@ -46,9 +47,7 @@ export class DatepickerComponent implements OnInit {
       this._snackBarService.openSnackBar('La fecha de termino no puede se mayor a la fecha de inicio','OK',3000);
       return;
     }
-    let startDate = this.startDate.toLocaleDateString();
-    let endDate = this.endDate.toLocaleDateString();
-    this._dialogRef.close({code: 1, startDate: startDate, endDate: endDate});
+    this._dialogRef.close({code: 1, startDate: this.startDate, endDate: this.endDate});
   }
 
 }

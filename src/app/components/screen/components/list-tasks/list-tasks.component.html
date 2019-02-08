@@ -14,21 +14,22 @@
           <mat-chip-list *ngIf="!showSearchBox">
             <mat-chip [color]="'primary'" selected (click)="taskFilter()">
               Filtro por tareas:
-              <span>&nbsp;{{filterApply}}&nbsp;</span>
+              <span>&nbsp;{{typeFilter[filter]}}&nbsp;</span>
               <mat-icon>edit</mat-icon>
             </mat-chip>
             <mat-chip [color]="'primary'" selected (click)="dateFilter()">
               Fecha:
-              <span *ngIf="today">&nbsp;{{startDate}}&nbsp;</span>
-              <span *ngIf="!today">&nbsp;{{startDate}} - {{endDate}}&nbsp;</span>
+              <span *ngIf="today">&nbsp;{{start.textDate}}&nbsp;</span>
+              <span *ngIf="!today">&nbsp;{{start.textDate}} - {{end.textDate}}&nbsp;</span>
               <mat-icon>edit</mat-icon>
             </mat-chip>
           </mat-chip-list>
           <div #searchBox class="search-box">
-            <input matInput placeholder="Buscar" (input)="searchTask($event)" #input>
+            <input matInput placeholder="Buscar" (input)="searchTask($event)">
           </div>
         </div>
         <div class="search">
+          <mat-spinner [color]="'primary'" *ngIf="load" [diameter]="24"></mat-spinner>
           <button mat-icon-button *ngIf="!showSearchBox" (click)="resetFilters()">
             <mat-icon>refresh</mat-icon>
           </button>
@@ -41,7 +42,7 @@
     </div>
     <mat-card-content>
       <div class="sub-container">
-        <div *ngFor="let task of tasksFilterd">
+        <div style="width: 95%" *ngFor="let task of tasksFilterd">
           <mat-card class="task">
             <div class="priority" *ngIf="task.level === 3" style="background-color:#E00000"></div>
             <div class="priority" *ngIf="task.level === 1" style="background-color:#257602"></div>
@@ -90,13 +91,25 @@
                             <mat-option value="opt 3">3</mat-option>
                           </mat-select>
                         </mat-form-field>
-                        <mat-form-field class="inputs">
-                          <mat-select placeholder="Seleccione actividad a realizar">
-                            <mat-option value="opt 1">1</mat-option>
-                            <mat-option value="opt 2">2</mat-option>
-                            <mat-option value="opt 3">3</mat-option>
-                          </mat-select>
-                        </mat-form-field>
+                        <div class="text-divider">
+                          Equipo de protección utilizado
+                        </div>
+                        <div class="space-box">
+                          <div class="checkbox-list">
+                            <mat-checkbox>Monitoreo de pozos y detección de fugas</mat-checkbox>
+                            <mat-checkbox>Revisión de pozos</mat-checkbox>
+                            <mat-checkbox>Albañolería, herreria, etc</mat-checkbox>
+                            <mat-checkbox>Pruebas de eficiencia</mat-checkbox>
+                            <mat-checkbox>Limpieza</mat-checkbox>
+                          </div>
+                          <div class="checkbox-list">
+                            <mat-checkbox>Eléctrico</mat-checkbox>
+                            <mat-checkbox>Mecánico</mat-checkbox>
+                            <mat-checkbox>Hidrosanitario</mat-checkbox>
+                            <mat-checkbox>Vista de autoridad</mat-checkbox>
+                            <mat-checkbox>Otros</mat-checkbox>
+                          </div>
+                        </div>
                         <mat-form-field class="inputs">
                           <mat-select placeholder="Procedencia del personal">
                             <mat-option value="opt 1">1</mat-option>
@@ -453,7 +466,7 @@
             </div>
           </mat-card>
         </div>
-
+<!--
         <mat-card class="task">
           <div class="priority" style="background-color: #0d47a1;"></div>
           <mat-accordion class="inputs">
@@ -585,7 +598,7 @@
             </mat-expansion-panel>
           </mat-accordion>
         </mat-card>
-
+-->
       </div>
     </mat-card-content>
   </mat-card>

@@ -47,6 +47,8 @@
           }
         }
         .search{
+          display: flex;
+          align-items: flex-start;
           button{
             margin: -8px 8px 0 0;
             color: mat-color($primary);
@@ -59,10 +61,14 @@
       .sub-container{
         overflow: auto;
         height: calc(100% - 72px);
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
         .task{
           padding: 0;
           display: flex;
-          margin: 18px 0;
+          margin-bottom: 12px;
           mat-card-content{
             display: flex;
             width: 100%;
@@ -116,7 +122,7 @@
   }
   .priority{
     width: 1%;
-    height: 100%;
+    height: 88px;
     position: absolute;
     top: 0;
     left: 0;
@@ -161,7 +167,7 @@
     display: flex;
     justify-content: space-between;
     .clock{
-      width: 120px;
+      width: 45%;
     }
   }
   .task-header{
@@ -176,7 +182,7 @@
     display: flex;
     justify-content: flex-start;
     .select{
-      width: 120px;
+      width: 45%;
     }
   }
   .performance{
@@ -188,10 +194,15 @@
     font-size: 14px;
   }
   .checkbox-list{
-    width: 50%;
+    width: 45%;
     display: flex;
     flex-direction: column;
     margin: 0 8px;
+    /deep/.mat-checkbox-layout{
+      text-overflow: ellipsis;
+      overflow: hidden;
+      display: block;
+    }
   }
   .text-divider{
     margin: 8px 0;

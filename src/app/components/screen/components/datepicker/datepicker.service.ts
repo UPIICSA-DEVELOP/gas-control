@@ -8,16 +8,19 @@ import { Injectable } from '@angular/core';
 import {MatDialog, MatDialogRef} from '@angular/material';
 import {DatepickerComponent} from 'app/components/screen/components/datepicker/datepicker.component';
 
-@Injectable({
-  providedIn: 'root'
-})
+export interface DateRangeOptions {
+  minDate: Date;
+  maxDate: Date;
+}
+
+@Injectable()
 export class DatepickerService {
 
   constructor(
     private _matDialog: MatDialog
   ) { }
 
-  public open():MatDialogRef<DatepickerComponent>{
-    return this._matDialog.open(DatepickerComponent,{panelClass:'date-panel', disableClose: true})
+  public open(dateConfig?: DateRangeOptions):MatDialogRef<DatepickerComponent>{
+    return this._matDialog.open(DatepickerComponent,{panelClass:'date-panel', disableClose: true, data: dateConfig})
   }
 }

@@ -5,12 +5,11 @@
  */
 
 import {Component, ElementRef, Input, OnChanges, OnInit, SimpleChanges, ViewChild} from '@angular/core';
-import {DatepickerService} from '@app/components/screen/components/datepicker/datepicker.service';
+import {DatepickerService, DateRangeOptions} from '@app/components/screen/components/datepicker/datepicker.service';
 import {TaskFilterService} from '@app/components/screen/components/task-filter/task-filter.service';
 import {ApiService} from '@app/core/services/api/api.service';
 import {ApiLoaderService} from '@app/core/services/api/api-loader.service';
 import {Constants} from '@app/core/constants.core';
-import {template} from '@angular/core/src/render3';
 import {UtilitiesService} from '@app/core/utilities/utilities.service';
 
 @Component({
@@ -19,22 +18,29 @@ import {UtilitiesService} from '@app/core/utilities/utilities.service';
   styleUrls: ['./list-tasks.component.scss']
 })
 export class ListTasksComponent implements OnInit, OnChanges {
-  @Input() public station: any;
+  public station: any;
+  @Input() set stationInfo(stationObj:any){
+    if(stationObj){
+      this.station = stationObj;
+    }
+  }
   @Input() public taskTemplate: any;
   @ViewChild('searchBox') private _searchBox: ElementRef;
-  @ViewChild('input') private _input: ElementRef;
-  public startDate: string = new Date().toLocaleDateString();
-  public endDate: string = new Date().toLocaleDateString();
-  public today: boolean = false;
+  public startDate: Date;
+  public endDate: Date;
+  public filters: any;
+  public start: any;
+  public end: any;
+  public today: boolean;
   public showSearchBox: boolean;
   public tasks: any[];
   public tasksFilterd: any[];
   public copyTasks: any[];
   public zones: any[];
   public priority: any[];
-  public typeFilter: string[] = ['Todas','Atrasadas','Terminadas','Vencidas','Incidencias'];
-  public filterApply:string;
-  public filter: number = 0;
+  public typeFilter: string[];
+  public filter: number;
+  public creationDate: number;
   public load: boolean;
   constructor(
     private _dateService: DatepickerService,
@@ -42,17 +48,25 @@ export class ListTasksComponent implements OnInit, OnChanges {
     private _api: ApiService,
     private _apiLoader: ApiLoaderService
   ) {
+    this.today = false;
+    this.filter = 0;
+    this.startDate = new Date();
+    this.endDate = new Date();
     this.tasksFilterd = [];
     this.copyTasks = [];
     this.priority = Constants.Level;
     this.zones = Constants.Zones;
+    this.typeFilter = Constants.Filters;
   }
 
   ngOnInit() {
+    //this.getStationTaskInformation();
     this._apiLoader.getProgress().subscribe(load=>{this.load=load});
-    if (this.startDate === this.endDate) {
+    if (this.startDate.toLocaleDateString() === this.endDate.toLocaleDateString()) {
       this.today = true;
-    }this.filterApply = this.typeFilter[this.filter];
+    }
+    this.start = UtilitiesService.createPersonalTimeStamp(this.startDate);
+    this.end = UtilitiesService.createPersonalTimeStamp(this.endDate);
   }
 
   ngOnChanges(changes: SimpleChanges):void{
@@ -62,7 +76,13 @@ export class ListTasksComponent implements OnInit, OnChanges {
   }
 
   private getStationTask():void{
-    this._api.listTaskDateStatus(this.station.stationTaskId || '123').subscribe(response=>{
+    this.filters = {
+      stationTaskId: this.station.stationTaskId || '0',
+      startDate: (this.start.timeStamp).toString(),
+      status: (this.filter).toString(),
+      endDate: (this.end.timeStamp).toString()
+    };
+    this._api.listTaskDateStatus(this.filters).subscribe(response=>{
       switch (response.code){
         case 200:
           this.tasks = response.items;
@@ -78,6 +98,7 @@ export class ListTasksComponent implements OnInit, OnChanges {
   }
 
   private tasksCompare():void{
+    this.tasksFilterd = [];
     this.tasks.forEach(task => {
       this.taskTemplate.taskTemplates.forEach(template => {
         if(task.type === Number(template.id)){
@@ -90,22 +111,32 @@ export class ListTasksComponent implements OnInit, OnChanges {
             typeReport: template.typeReport
           });
         }
-        this.copyTasks = this.tasksFilterd;
       });
     });
+    this.copyTasks = this.tasksFilterd;
   }
 
   public dateFilter():void{
-    this._dateService.open().afterClosed().subscribe(response=>{
-      switch (response.code) {
-        case 1:
-          if (response.startDate == response.endDate) {
-            this.today = true;
-          } else {
-            this.today=false;
-            this.startDate = response.startDate;
-            this.endDate = response.endDate;
-          }
+    this._api.getStationTask(this.station.stationTaskId).subscribe(response=>{
+      switch (response.code){
+        case 200:
+          this.creationDate = response.item.creationDate;
+          const config: DateRangeOptions = {
+            minDate: new Date((this.creationDate).toString().slice(0,4)+'-'+(this.creationDate).toString().slice(4,6)+'-'+(this.creationDate).toString().slice(6,8)),
+            maxDate: new Date(((Number((this.creationDate).toString().slice(0,4)))+1).toString()+'-'+(this.creationDate).toString().slice(4,6)+'-'+(this.creationDate).toString().slice(6,8))
+          };
+          this._dateService.open(config).afterClosed().subscribe(response=>{
+            switch (response.code) {
+              case 1:
+                this.today = response.startDate == response.endDate;
+                this.startDate = response.startDate;
+                this.endDate = response.endDate;
+                this.start = UtilitiesService.createPersonalTimeStamp(this.startDate);
+                this.end = UtilitiesService.createPersonalTimeStamp(this.endDate);
+                this.getStationTask();
+                break;
+            }
+          });
           break;
       }
     });
@@ -116,7 +147,7 @@ export class ListTasksComponent implements OnInit, OnChanges {
       switch (response.code) {
         case 1:
           this.filter = response.filter;
-          this.filterApply = this.typeFilter[this.filter];
+          this.getStationTask();
           break;
       }
     })
@@ -124,10 +155,12 @@ export class ListTasksComponent implements OnInit, OnChanges {
 
   public resetFilters():void{
     this.filter=0;
-    this.filterApply = this.typeFilter[this.filter];
-    this.startDate = new Date().toLocaleDateString();
-    this.endDate = new Date().toLocaleDateString();
+    this.startDate = new Date();
+    this.endDate = new Date();
+    this.start = UtilitiesService.createPersonalTimeStamp(this.startDate);
+    this.end = UtilitiesService.createPersonalTimeStamp(this.endDate);
     this.today = true;
+    this.getStationTask()
   }
 
   public search(): void{
@@ -135,9 +168,6 @@ export class ListTasksComponent implements OnInit, OnChanges {
       this.showSearchBox = !this.showSearchBox;
       this._searchBox.nativeElement.style.width = '100%';
     }else{
-      console.log(this._input.nativeElement.value);
-      this._input.nativeElement.value = '';
-      console.log(this._input.nativeElement.value);
       this._searchBox.nativeElement.style.width = '0';
       setTimeout(() => {
         this.showSearchBox = !this.showSearchBox;
@@ -147,6 +177,9 @@ export class ListTasksComponent implements OnInit, OnChanges {
 
   public searchTask(event:any):void{
     const newArray = [];
+    if(!this.showSearchBox){
+      event.srcElement.value = '';
+    }
     const text = (event.srcElement.value).toLowerCase();
     if(text === ''){
       this.tasksFilterd = this.copyTasks;

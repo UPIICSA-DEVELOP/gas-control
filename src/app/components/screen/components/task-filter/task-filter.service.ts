@@ -9,9 +9,7 @@ import {MatDialog, MatDialogRef} from '@angular/material';
 import {TaskFilterComponent} from 'app/components/screen/components/task-filter/task-filter.component';
 
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 export class TaskFilterService {
 
   constructor(

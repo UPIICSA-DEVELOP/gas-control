@@ -239,10 +239,21 @@ export class ApiService {
     return this._http.get(ApiService.API_URL_COMPLETE + 'listConsultancy',);
   }
 
-  public listTaskDateStatus(stationTaskId: string): Observable<any>{
+  public listTaskDateStatus(filters: any): Observable<any>{
     let params = new HttpParams();
-    params = params.append('stationTaskId', stationTaskId);
+    params = params.append('stationTaskId', filters.stationTaskId);
+    params = params.append('fromDate', filters.startDate);
+    if(filters.status !== '5'){
+      params = params.append('status', filters.status);
+    }
+    params = params.append('untilDate', filters.endDate);
     return this._http.get(ApiService.API_URL_COMPLETE + 'listTaskDateStatus', {params: params});
+  }
+
+  public getStationTask(stationTaskId: string):Observable<any>{
+    let params = new HttpParams();
+    params = params.append('id', stationTaskId);
+    return this._http.get(ApiService.API_URL_COMPLETE + 'getStationTask', {params: params});
   }
 
   public businessCardService(data: any): Observable<any>{
