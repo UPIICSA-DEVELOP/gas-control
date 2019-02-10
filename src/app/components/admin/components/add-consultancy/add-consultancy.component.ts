@@ -1,4 +1,10 @@
-import {Component, Inject, OnInit, ViewChild} from '@angular/core';
+/*
+ * Copyright (C) MapLander S de R.L de C.V - All Rights Reserved
+ * Unauthorized copying of this file, via any medium is strictly prohibited
+ * Proprietary and confidential
+ */
+
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Constants} from 'app/core/constants.core';
 import {SignaturePadService} from 'app/core/components/signature-pad/signature-pad.service';
@@ -80,16 +86,16 @@ export class AddConsultancyComponent implements OnInit {
     this._apiLoader.getProgress().subscribe(load => {this.load = load});
     this.showOwnerForm = true;
     this.ownerForm = this._formBuilder.group({
-      name: ['aaaaa', [Validators.required]],
-      lastName: ['aaaaa', [Validators.required]],
-      email: ['aaaaa', [Validators.required, Validators.email]],
+      name: ['', [Validators.required]],
+      lastName: ['', [Validators.required]],
+      email: ['', [Validators.required, Validators.email]],
       country:  ['México', [Validators.required]],
       countryCode:  ['+52', [Validators.required]],
-      phoneNumber: ['aaaaa', [Validators.required]],
+      phoneNumber: ['', [Validators.required]],
       rol: [1, [Validators.required]],
-      jobTitle: ['aaaaa', [Validators.required]],
-      protocol: ['aaaaa'],
-      website: ['aaaaa', [Validators.pattern(Constants.REGEX_WEBSITE)]]
+      jobTitle: ['', [Validators.required]],
+      protocol: [''],
+      website: ['', [Validators.pattern(Constants.REGEX_WEBSITE)]]
     });
   }
 
@@ -201,10 +207,10 @@ export class AddConsultancyComponent implements OnInit {
   private initFormConsultancy(next: boolean): void{
     if(!this.consultancyForm){
       this.consultancyForm = this._formBuilder.group({
-        company: ['aaa', [Validators.required]],
-        rfc: ['aaa', [Validators.required]],
+        company: ['', [Validators.required]],
+        rfc: ['', [Validators.required]],
         address: ['', [Validators.required]],
-        consultancyNumber: ['aaa']
+        consultancyNumber: ['']
       });
     }else{
       this.consultancyForm.enable();
