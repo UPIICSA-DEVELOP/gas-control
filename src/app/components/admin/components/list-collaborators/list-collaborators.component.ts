@@ -1,15 +1,20 @@
+/*
+ * Copyright (C) MapLander S de R.L de C.V - All Rights Reserved
+ * Unauthorized copying of this file, via any medium is strictly prohibited
+ * Proprietary and confidential
+ */
+
 import {Component, Inject, OnInit} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
 import {ApiService} from '@app/core/services/api/api.service';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Constants} from '@app/core/constants.core';
 import {SnackBarService} from '@app/core/services/snackbar/snackbar.service';
-import {CountryCodeService} from '@app/core/components/country-code/country-code.service';
-import {SignaturePadService} from '@app/core/components/signature-pad/signature-pad.service';
-import {UploadFileResponse} from '@app/core/components/upload-file/upload-file.component';
-import {UploadFileService} from '@app/core/components/upload-file/upload-file.service';
-import {Person} from '@app/components/admin/components/add-consultancy/add-consultancy.component';
 import {DialogService} from '@app/core/components/dialog/dialog.service';
+import {CookieService} from '@app/core/services/cookie/cookie.service';
+import {UtilitiesService} from '@app/core/utilities/utilities.service';
+import {AddStationService} from '@app/components/screen/components/add-gas-station/add-station.service';
+import {LocalStorageService} from '@app/core/services/local-storage/local-storage.service';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-list-collaborators',
@@ -18,308 +23,107 @@ import {DialogService} from '@app/core/components/dialog/dialog.service';
 })
 export class ListCollaboratorsComponent implements OnInit {
 
-  public collaboratorsList: any[];
-  public collaboratorsListCopy: any[];
-  public addCollaboratorVisible: boolean;
-  public userForm: FormGroup;
-  public signature: any;
-  public userImage: any;
-  public roles: any[];
-  public protocols: any[];
+  public stationList: any[];
+  public stationListCopy: any[];
   public title: string;
   public notResults: boolean;
-  private _location: any;
-  private _userInfo: Person;
+  public utils: any;
 
   constructor(
     @Inject(MAT_DIALOG_DATA) private _data: any,
     private _dialog: MatDialogRef<ListCollaboratorsComponent>,
-    private _formBuilder: FormBuilder,
-    private _signatureService: SignaturePadService,
-    private _uploadService: UploadFileService,
     private _snackBar: SnackBarService,
-    private _countryCode: CountryCodeService,
     private _dialogService: DialogService,
-    private _api: ApiService
+    private _api: ApiService,
+    private _addStation: AddStationService,
+    private _router: Router
   ) {
     this.title = this._data.name;
-    this.collaboratorsList = [];
-    this.collaboratorsListCopy = [];
-    this.signature = {
-      path: null,
-      blob: null,
-      original: null
-    };
-    this.userImage = {
-      base64: null,
-      blob: null,
-      original: null
-    };
-    this._location = {
-      address: null,
-      location: null
-    };
-    this.roles = Constants.rolesConsutancy;
-    this.protocols = Constants.protocols;
+    this.stationList = [];
+    this.stationListCopy = [];
   }
 
   ngOnInit() {
     this.getList(this._data.id);
+    this.getUtilities();
   }
 
   public close(): void{
-    if(this.addCollaboratorVisible){
-      this.userForm = null;
-      this.userImage.blob = null;
-      this.userImage.base64 = null;
-      this.userImage.original = null;
-      this.signature.blob = null;
-      this.signature.path = null;
-      this.signature.original = null;
-      this.addCollaboratorVisible = false;
+    this._dialog.close();
+  }
+
+  public search(ev: any): void{
+    const newArray = [];
+    const text = (ev.srcElement.value).toLowerCase();
+    if(text === ''){
+      this.stationList = this.stationListCopy;
     }else{
-      this._dialog.close();
-    }
-  }
-
-  public deleteCollaborator(person: any): void{
-    this._dialogService.confirmDialog('¿Desea elminar este registro?', '').afterClosed().subscribe(response => {
-      switch (response.code){
-        case 1:
-          this._uploadService.delete(person.profileImage.blobName).subscribe(response => {
-            console.log(response);
-          });
-
-          this._api.deletePerson(person.id).subscribe((response) => {
-            switch (response.code){
-              case 200:
-                this.getList(this._data.id);
-                break;
+      for(let x=0; x < this.stationListCopy.length; x++){
+        if(UtilitiesService.removeDiacritics(this.stationListCopy[x].managerName).toLowerCase().includes(text) || this.stationListCopy[x].email.toLowerCase().includes(text) || this.stationListCopy[x].phoneNumber.includes(text) || UtilitiesService.removeDiacritics(this.stationListCopy[x].crePermission).toLowerCase().includes(text) || UtilitiesService.removeDiacritics(this.stationListCopy[x].name).toLowerCase().includes(text)){
+          newArray.push(this.stationListCopy[x]);
+        }else {
+          for (let i= 0; i<this.utils.length; i++){
+            if(UtilitiesService.removeDiacritics(this.utils[i].name).toLowerCase().includes(text) && this.stationListCopy[x].type === i+1){
+              newArray.push(this.stationListCopy[x]);
             }
-          }, error => {
-            console.error(error);
-            this.onErrorOccurred();
-          });
-          break;
+          }
+        }
       }
-    });
-  }
-
-  public changeRole(person: any): void{
-    let title = '¿Desea cambiar el rol de ' + person.name + ' ' + person.lastName + ' a ';
-    title += ((person.role===2)?'Asistente':'Gerente') + '?';
-    this._dialogService.confirmDialog(title, '').afterClosed().subscribe(response => {
-      switch (response.code){
-        case 1:
-          person.role = (person.role===2)?3:2;
-          this._api.updatePerson(person).subscribe(response => {
-            switch (response.code){
-              case 200:
-                this._snackBar.openSnackBar('Usuario actualizado', 'OK', 3000);
-                break;
-              default:
-                this.onErrorOccurred();
-                break;
-            }
-          });
-          break;
-      }
-    });
-  }
-
-  public onLoadImage(ev: UploadFileResponse): void{
-    this.userImage.blob = ev.blob;
-    this.userImage.base64 = ev.url;
-  }
-
-  public onRemoveImage(): void{
-    this.userImage.blob = null;
-    this.userImage.base64 = null;
-  }
-
-  public showCreateCollaborator(): void{
-    this.addCollaboratorVisible = !this.addCollaboratorVisible;
-    if(!this.userForm){
-      this.userForm = this._formBuilder.group({
-        name: ['', [Validators.required]],
-        lastName: ['', [Validators.required]],
-        email: ['', [Validators.required, Validators.email]],
-        country:  ['México', [Validators.required]],
-        countryCode:  ['+52', [Validators.required]],
-        phoneNumber: ['', [Validators.required]],
-        rol: ['', [Validators.required]],
-        jobTitle: ['', [Validators.required]],
-        protocol: ['http://'],
-        website: ['', [Validators.pattern(Constants.REGEX_WEBSITE)]]
-      });
+      this.stationList = newArray;
+      this.notResults = (newArray.length===0);
     }
   }
 
-  public addSignature(): void{
-    this._signatureService.open().afterClosed().subscribe((response) => {
+  public addStation():void{
+    LocalStorageService.setItem(Constants.UserInSession,{profileImage: null, role: 7, refId: this._data.id});
+    this.close();
+    this._addStation.open().afterClosed().subscribe( res=>{
+      LocalStorageService.setItem(Constants.UserInSession,{profileImage: null, role: 7});
+    });
+  }
+
+  public goToDashboard(id: string): void{
+    LocalStorageService.setItem(Constants.UserInSession,{profileImage: null, role: 7, refId: this._data.id});
+    this._dialog.close();
+    this._router.navigate(['/home'], {queryParams:{
+      station: id,
+      admin: true
+    }}).then();
+  }
+
+  private getUtilities():void{
+    this._api.getUtils().subscribe(response=>{
       switch (response.code){
-        case 1:
-          this.signature.path = response.base64;
-          this.signature.blob = response.blob;
+        case 200:
+          this.utils = response.item.groupIcons;
+          break;
+        default:
           break;
       }
-    });
-  }
-
-  public addCountry(): void{
-    this._countryCode.openDialog().afterClosed().subscribe(response => {
-      if(response){
-        this.userForm.patchValue({country: response.name, countryCode: response.code});
-      }
-    });
-  }
-
-  public getDataCollaborator(data: any): void{
-    if(this.userForm.invalid){
-      return;
-    }
-    this._userInfo = {
-      refId: this._data.id,
-      name: data.name,
-      lastName: data.lastName,
-      email: data.email,
-      phoneNumber: data.phoneNumber,
-      countryCode: data.countryCode.replace('+', ''),
-      country: data.country,
-      role: data.rol,
-      jobTitle: data.jobTitle,
-      website: data.website
-    };
-    this.createCollaborator(this._userInfo);
+    })
   }
 
   private getList(id: any): void{
-    this._api.listCollaborators(id, 'true').subscribe(response => {
+    this._api.getConsultancyBasicData(CookieService.getCookie(Constants.IdSession), id).subscribe(response => {
       switch (response.code){
         case 200:
-          this.collaboratorsList = response.items;
-          this.collaboratorsListCopy = this.collaboratorsList;
+          if(response.item.stationLites){
+            this.stationList = response.item.stationLites;
+            this.stationListCopy = this.stationList;
+          }else{
+            this.stationList = [];
+            this.stationListCopy = this.stationList;
+          }
           break;
         default:
           this.onErrorOccurred();
           break;
       }
     });
-  }
-
-  private validateProfileImage(): void{
-    if(this.userImage.blob){
-      const form = new FormData();
-      form.append('path', 'rfc');
-      form.append('fileName', 'profileImage-'+this._data.id+'-'+new Date().getTime()+'.png');
-      form.append('isImage', 'true');
-      form.append('file', this.userImage.blob);
-      this._uploadService.upload(form).subscribe(response => {
-        this.userImage.original = response.item;
-        this.validateSignature();
-      }, error => {
-        console.error(error);
-        this.onErrorOccurred();
-      });
-    }else{
-      this.validateSignature();
-    }
-  }
-
-  private validateSignature(): void{
-    if(this.signature.blob){
-      const form = new FormData();
-      form.append('path', 'rfc');
-      form.append('fileName', 'signature-'+this._data.id+'-'+new Date().getTime()+'.png');
-      form.append('isImage', 'true');
-      form.append('file', this.signature.blob);
-      this._uploadService.upload(form).subscribe(response => {
-        this.signature.original = response.item;
-        this.validateImages();
-      }, error => {
-        console.error(error);
-        this.onErrorOccurred();
-      });
-    }else{
-     this.validateImages();
-    }
-  }
-
-  private validateImages(): void{
-    if(this.userImage.original){
-      this._userInfo.profileImage = this.userImage.original;
-    }
-    if(this.signature.original){
-      this._userInfo.signature = this.signature.original;
-    }
-    if(this.userImage.original || this.signature.original){
-      this.updateCollaborator(this._userInfo);
-    }else{
-      this.finishCreationCollaborator();
-    }
-  }
-
-  private createCollaborator(person: any): void{
-    this.userForm.disable();
-    this._api.createReferencedPerson(person).subscribe(response => {
-        switch (response.code){
-          case 200:
-            this._userInfo = response.item;
-            this.validateProfileImage();
-            break;
-          default:
-            this.onErrorOccurred();
-            break;
-        }
-    }, error => {
-      console.error(error);
-      this.onErrorOccurred();
-    });
-  }
-
-  private updateCollaborator(person: any): void{
-    this._api.updatePerson(person).subscribe(response => {
-      switch (response.code){
-        case 200:
-          this.finishCreationCollaborator();
-          break;
-        default:
-          this.onErrorOccurred();
-          break;
-      }
-    }, error => {
-      console.error(error);
-      this.onErrorOccurred();
-    });
-  }
-
-  private finishCreationCollaborator(): void{
-    this._snackBar.openSnackBar('Colaborador creado con éxito', 'OK', 3000);
-    this.close();
-    this.getList(this._data.id);
   }
 
   private onErrorOccurred(): void{
     this._snackBar.openSnackBar('Ha ocurrido un error, por favor, intente de nuevo', 'OK', 3000);
-  }
-
-  public search(ev: any): void{
-    const text = ev.srcElement.value.toLowerCase();
-    if(text === ''){
-      this.collaboratorsList = this.collaboratorsListCopy;
-    }else{
-      const listCopy = this.collaboratorsListCopy;
-      const newResults = [];
-      listCopy.forEach(item => {
-        if(item.name.toLowerCase().includes(text) || item.lastName.toLowerCase().includes(text) || item.email.toLowerCase().includes(text)
-          || item.jobTitle.toLowerCase().includes(text) || item.phoneNumber.toLowerCase().includes(text)){
-          newResults.push(item)
-        }
-      });
-      this.collaboratorsList = newResults;
-      this.notResults = (newResults.length===0);
-    }
-
   }
 
 }

@@ -1,14 +1,13 @@
+<!--
+  ~ Copyright (C) MapLander S de R.L de C.V - All Rights Reserved
+  ~ Unauthorized copying of this file, via any medium is strictly prohibited
+  ~ Proprietary and confidential
+  -->
+
 <div id="list-collaborators">
   <mat-toolbar>
-    <div class="header-list" *ngIf="!addCollaboratorVisible">
+    <div class="header-list">
       <h3 class="title">{{title}}</h3>
-      <div class="buttons">
-        <button mat-icon-button matTooltip="Añadir Colaborador" (click)="showCreateCollaborator()"><mat-icon>person_add</mat-icon></button>
-        <button mat-icon-button matTooltip="Cerrar" (click)="close()"><mat-icon>close</mat-icon></button>
-      </div>
-    </div>
-    <div class="header-collaborator" *ngIf="addCollaboratorVisible">
-      <h3>Registro de usuario</h3>
       <div class="buttons">
         <button mat-icon-button matTooltip="Cerrar" (click)="close()"><mat-icon>close</mat-icon></button>
       </div>
@@ -17,18 +16,22 @@
 
 
 
-  <div class="list" *ngIf="!addCollaboratorVisible">
+  <div class="list">
 
     <div class="header-list">
-      <h4>Lista de colaboradores</h4>
+      <h4>Lista de Estaciones</h4>
       <div class="search-box">
         <mat-icon>search</mat-icon>
         <input matInput placeholder="Buscar" (input)="search($event)">
       </div>
     </div>
 
-    <div class="empty-list" *ngIf="collaboratorsListCopy.length === 0">
-      <h3>Aún no tiene colaboradores agregados</h3>
+    <div class="empty-list" *ngIf="stationListCopy.length === 0">
+      <h3>Aún no tiene estaciones agregadas en su lista en su lista</h3>
+      <button mat-button class="add-station" (click)="addStation()">
+        <mat-icon>add</mat-icon>
+        <span>AGREGAR ESTACIÓN</span>
+      </button>
     </div>
 
 
@@ -37,162 +40,30 @@
     </div>
 
 
-    <div class="container-list" *ngIf="collaboratorsList.length > 0">
-      <mat-card class="item" *ngFor="let item of collaboratorsList">
+    <div class="container-list" *ngIf="stationList.length > 0">
+      <mat-card class="item" *ngFor="let item of stationList">
         <div class="image">
-          <mat-icon class="icon" *ngIf="!item.profileImage" >account_circle</mat-icon>
-          <img  *ngIf="item.profileImage" [src]="item.profileImage.thumbnail">
+          <mat-icon class="icon" *ngIf="!utils" >local_gas_station</mat-icon>
+          <img  *ngIf="utils" [src]="utils[item.type-1].fileCS.thumbnail">
         </div>
-        <div class="info">
-          <p>{{item.name}} {{item.lastName}}</p>
-          <p class="plugin">{{item.jobTitle}}</p>
+        <div class="info" *ngIf="utils">
+          <p>{{utils[item.type-1].name}} - {{item.name}}</p>
+          <p class="plugin">{{item.managerName}}</p>
+          <p class="sub-title">
+            {{item.crePermission}}
+          </p>
           <p class="sub-title">
             <a [href]="'mailto:'+item.email"><span>{{item.email}}</span></a>
           </p>
           <p class="sub-title">
-            <a [href]="'tel:'+item.countryCode+item.phoneNumber"><span>{{item.phoneNumber}}</span></a>
+            <a [href]="'tel:'+item.phoneNumber"><span>{{item.phoneNumber}}</span></a>
           </p>
         </div>
-        <div class="actions" *ngIf="item.role!==1">
-          <button mat-icon-button matTooltip="Eliminar" (click)="deleteCollaborator(item)"><mat-icon>delete</mat-icon></button>
-          <button mat-icon-button matTooltip="Actualizar rol" (click)="changeRole(item)"><mat-icon svgIcon="icons:change_role"></mat-icon></button>
+        <div class="actions">
+          <button mat-button (click)="goToDashboard(item.id)">VER ESTACIÓN</button>
         </div>
       </mat-card>
     </div>
 
-  </div>
-
-  <div id="add-collaborator" *ngIf="addCollaboratorVisible">
-
-    <mat-card>
-      <form [formGroup]="userForm" (ngSubmit)="getDataCollaborator(userForm.value)">
-
-        <div class="header">
-
-          <div class="mask"></div>
-
-          <mat-card>
-            <app-upload-file [layoutTemplate]="img" [type]="'image'"
-                             (onLoad)="onLoadImage($event)" (onRemove)="onRemoveImage()"></app-upload-file>
-            <ng-template #img>
-              <mat-icon class="default" *ngIf="!userImage.base64">account_circle</mat-icon>
-              <img *ngIf="userImage.base64" [src]="userImage.base64" alt="User image">
-            </ng-template>
-          </mat-card>
-        </div>
-
-        <mat-card-content>
-          <mat-form-field>
-            <input formControlName="name" matInput placeholder="Nombre (s)" type="text" required
-                   aria-label="User name">
-            <mat-error *ngIf="userForm.controls['name'].hasError('required')">
-              Este campo es obligatorio
-            </mat-error>
-          </mat-form-field>
-
-          <mat-form-field>
-            <input formControlName="lastName" matInput placeholder="Apellido (s)" type="text" required
-                   aria-label="User last name">
-            <mat-error *ngIf="userForm.controls['lastName'].hasError('required')">
-              Este campo es obligatorio
-            </mat-error>
-          </mat-form-field>
-
-          <mat-form-field>
-            <input formControlName="email" matInput placeholder="Email comercial" type="email" required
-                   aria-label="User email">
-            <mat-error *ngIf="userForm.controls['email'].hasError('required')">
-              Este campo es obligatorio
-            </mat-error>
-            <mat-error *ngIf="userForm.controls['email'].hasError('email')">
-              La dirección de Email no es valida
-            </mat-error>
-          </mat-form-field>
-
-          <mat-form-field>
-            <input formControlName="country" (input)="addCountry()" matInput placeholder="País" type="text" required
-                   aria-label="User country">
-            <mat-error *ngIf="userForm.controls['country'].hasError('required')">
-              Este campo es obligatorio
-            </mat-error>
-          </mat-form-field>
-
-          <div class="phone-number">
-
-            <mat-form-field class="country-code">
-              <input formControlName="countryCode" (input)="addCountry()" matInput placeholder="Código" type="text" required
-                     aria-label="User country code">
-              <mat-error *ngIf="userForm.controls['countryCode'].hasError('required')">
-                Este campo es obligatorio
-              </mat-error>
-            </mat-form-field>
-
-            <mat-form-field class="number">
-              <input formControlName="phoneNumber" matInput placeholder="Número celular" type="text" required
-                     aria-label="User phone number">
-              <mat-error *ngIf="userForm.controls['phoneNumber'].hasError('required')">
-                Este campo es obligatorio
-              </mat-error>
-            </mat-form-field>
-          </div>
-
-          <mat-form-field>
-            <mat-select placeholder="Rol" formControlName="rol" required>
-              <mat-option *ngFor="let rol of roles" [value]="rol.value">
-                {{rol.name}}
-              </mat-option>
-            </mat-select>
-            <mat-error *ngIf="userForm.controls['rol'].hasError('required')">
-              Este campo es obligatorio
-            </mat-error>
-          </mat-form-field>
-
-          <mat-form-field>
-            <input formControlName="jobTitle" matInput placeholder="Cargo" type="text" required
-                   aria-label="User job title">
-            <mat-error *ngIf="userForm.controls['jobTitle'].hasError('required')">
-              Este campo es obligatorio
-            </mat-error>
-          </mat-form-field>
-
-          <div class="website">
-            <mat-form-field class="protocol">
-              <mat-select placeholder="Protocolo" formControlName="protocol">
-                <mat-option *ngFor="let prot of protocols" [value]="prot.value">
-                  {{prot.name}}
-                </mat-option>
-              </mat-select>
-            </mat-form-field>
-
-            <mat-form-field class="web">
-              <input formControlName="website" matInput placeholder="Website" type="text"
-                     aria-label="User website">
-              <mat-error *ngIf="userForm.controls['website'].hasError('pattern')">
-                Ingrese un sitio web válido
-              </mat-error>
-            </mat-form-field>
-          </div>
-
-          <div class="signature">
-            <p>Firma</p>
-            <div class="panel" (click)="addSignature()">
-              <div *ngIf="signature.path; then withSignature else withoutSignature"></div>
-              <ng-template #withoutSignature>
-                <p>Registre firma digital</p>
-              </ng-template>
-              <ng-template #withSignature>
-                <img [src]="signature.path">
-              </ng-template>
-            </div>
-          </div>
-
-        </mat-card-content>
-        <mat-card-actions>
-          <div class="footer">
-            <button mat-flat-button [color]="'primary'">AGREGAR</button>
-          </div>
-        </mat-card-actions>
-      </form>
-    </mat-card>
   </div>
 </div>
