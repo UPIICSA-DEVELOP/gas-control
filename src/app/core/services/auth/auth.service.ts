@@ -136,10 +136,6 @@ export class AuthService implements Resolve<any>{
           case /home/.test(url):
             if(!AuthService.validateUser()){
               this._router.navigate(['/']).then();
-            }else{
-              if(user.role===7){
-                this._router.navigate(['/admin']).then(() => {});
-              }
             }
             break;
           case /profile/.test(url):
@@ -151,18 +147,13 @@ export class AuthService implements Resolve<any>{
               }
             }
             break;
-          case /add-station/.test(url):
-            if(!AuthService.validateUser()){
-              this._router.navigate(['/']).then();
-            }else{
-              if(user.role===7){
-                this._router.navigate(['/admin']).then(() => {});
-              }
-            }
-            break;
           case /admin/.test(url):
             if(!AuthService.validateUser()){
               this._router.navigate(['/']).then();
+            }else{
+              if(user.role!==7){
+                this._router.navigate(['/']).then();
+              }
             }
             break;
         }

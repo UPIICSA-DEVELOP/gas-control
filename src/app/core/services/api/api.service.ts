@@ -283,6 +283,7 @@ export class ApiService {
         case 1:
         case 2:
         case 3:
+        case 7:
           response1 = this.getConsultancyBasicData(userId, refId);
           break;
         case 4:
@@ -290,7 +291,6 @@ export class ApiService {
           break;
         case 5:
         case 6:
-        case 7:
           response1 = this.getStationBasicData(userId);
           break;
       }

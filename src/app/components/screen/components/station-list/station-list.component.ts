@@ -119,6 +119,7 @@ export class StationListComponent implements OnInit, DoCheck {
       case 1:
       case 2:
       case 3:
+      case 7:
         this._api.getConsultancyBasicData(CookieService.getCookie(Constants.IdSession),user.refId).subscribe(response=>{
           switch (response.code) {
             case 200:

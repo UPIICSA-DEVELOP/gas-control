@@ -21,11 +21,9 @@ import {ApiLoaderService} from '@app/core/services/api/api-loader.service';
 })
 export class NavBarComponent implements OnInit, DoCheck  {
 
-  public menu: MatSidenav;
   public user: any = {};
   public load: boolean;
   public imageExist: boolean = false;
-  public barVisible: boolean = false;
   constructor(
     @Inject(DOCUMENT) private _document: Document,
     @Inject(PLATFORM_ID) private _platformId: string,
@@ -67,7 +65,6 @@ export class NavBarComponent implements OnInit, DoCheck  {
       case 4:
       case 5:
       case 6:
-      case 7:
         this._router.navigate(['/profile/user']);
         break;
       default:
@@ -82,12 +79,4 @@ export class NavBarComponent implements OnInit, DoCheck  {
     }
   }
 
-
-  public openSearchBar():void{
-    this.barVisible = true;
-  }
-
-  public closeSearchBar():void{
-    this.barVisible = false;
-  }
 }

@@ -14,15 +14,15 @@
         <div id="progress" #progress *ngIf="load">
           <mat-spinner [diameter]="25" [mode]="'indeterminate'"></mat-spinner>
         </div>
-        <button id="btn-collaborators" *ngIf="user.role<=3" mat-button routerLink="/home/collaborators">
-          <div>Colaboradores</div>
+        <button id="btn-collaborators" *ngIf="user.role<=3 || user.role==7" mat-button routerLink="/home/collaborators">
+          Colaboradores
           <mat-icon>group</mat-icon>
         </button>
         <button mat-button (click)="logOut()" class="btn-logout">
           <mat-icon>exit_to_app</mat-icon>
         </button>
         <div class="user">
-          <button class="button-user" mat-button (click)="navigateProfile()">
+          <button class="button-user" mat-button (click)="navigateProfile()" *ngIf="user.role!==7">
             <img class="image-user" *ngIf="imageExist" [src]="user.profileImage" alt="User profile image">
             <mat-icon *ngIf="!imageExist">account_circle</mat-icon>
           </button>
@@ -33,7 +33,7 @@
           <mat-icon>more_vert</mat-icon>
         </button>
         <mat-menu #menu_one>
-          <button mat-menu-item *ngIf="user.role<=3" routerLink="/home/collaborators">Colaboradores</button>
+          <button mat-menu-item *ngIf="user.role<=3 || user.role===7" routerLink="/home/collaborators">Colaboradores</button>
         </mat-menu>
         <div class="user">
           <button mat-button [mat-menu-trigger-for]="menu_two" class="button-user">
@@ -41,7 +41,7 @@
             <mat-icon *ngIf="!imageExist">account_circle</mat-icon>
           </button>
           <mat-menu #menu_two>
-            <button mat-menu-item (click)="navigateProfile()">Perfil</button>
+            <button mat-menu-item *ngIf="user.role!==7" (click)="navigateProfile()">Perfil</button>
             <button mat-menu-item (click)="logOut()">Salir</button>
           </mat-menu>
         </div>

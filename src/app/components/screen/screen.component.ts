@@ -63,6 +63,7 @@ export class ScreenComponent implements OnInit{
           case 2:
           case 3:
           case 4:
+          case 7:
             if(onlyOneStationId){
               switch(response[0].code){
                 case 200:
