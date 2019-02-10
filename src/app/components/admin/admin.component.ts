@@ -1,3 +1,9 @@
+/*
+ * Copyright (C) MapLander S de R.L de C.V - All Rights Reserved
+ * Unauthorized copying of this file, via any medium is strictly prohibited
+ * Proprietary and confidential
+ */
+
 import {Component, Inject, OnInit} from '@angular/core';
 import {PdfVisorService} from '@app/core/components/pdf-visor/pdf-visor.service';
 import {ApiLoaderService} from '@app/core/services/api/api-loader.service';
