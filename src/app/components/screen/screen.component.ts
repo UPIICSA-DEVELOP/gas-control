@@ -9,7 +9,6 @@ import {ApiService} from '@app/core/services/api/api.service';
 import {CookieService} from '@app/core/services/cookie/cookie.service';
 import {Constants} from '@app/core/constants.core';
 import {ActivatedRoute, Router} from '@angular/router';
-import {SessionStorageService} from '@app/core/services/session-storage/session-storage.service';
 import {LocalStorageService} from '@app/core/services/local-storage/local-storage.service';
 import {AddStationService} from '@app/components/screen/components/add-gas-station/add-station.service';
 import {DialogService} from '@app/core/components/dialog/dialog.service';
@@ -71,6 +70,8 @@ export class ScreenComponent implements OnInit{
                   this.stationActive = this.stationList;
                   if(!this.validateTaskCreated()){
                     this.openTaskCalendar();
+                  }else{
+                    this.createTasks();
                   }
                   break;
                 default:
@@ -83,6 +84,8 @@ export class ScreenComponent implements OnInit{
               this.stationActive = this.stationList[0];
               if(!this.validateTaskCreated()){
                 this.openTaskCalendar();
+              }else{
+                this.createTasks();
               }
             }
             break;
@@ -92,6 +95,8 @@ export class ScreenComponent implements OnInit{
             this.stationActive = this.stationList;
             if(!this.validateTaskCreated()){
               this.openTaskCalendar();
+            }else{
+              this.createTasks();
             }
             break;
         }
@@ -108,7 +113,7 @@ export class ScreenComponent implements OnInit{
     if(user.role!==6){
       this._dialogService.alertDialog(
         'Información',
-        'Aún no se ha calendarizado las tareas de la estación. ¿Desea hacerlo ahora?',
+        'Aún no se ha calendarizado las tareas de la Estación. ¿Desea hacerlo ahora?',
         'ACEPTAR'
       ).afterClosed().subscribe(response=>{
         switch (response.code){
@@ -130,6 +135,18 @@ export class ScreenComponent implements OnInit{
         }
       });
     }
+  }
+
+  private createTasks():void{
+    this._api.buildTaskByStation(this.stationActive.stationTaskId).subscribe(response=>{
+      switch (response.code){
+        case 200:
+          if(!response.item.complete){
+            this.createTasks();
+          }
+          break;
+      }
+    })
   }
 
   public addStation():void{
