@@ -269,6 +269,7 @@ export class AddCollaboratorComponent implements OnInit {
       jobTitle:['',[Validators.required]],
       website:['',[Validators.pattern('[a-z0-9]+([\\-\\.]{1}[a-z0-9]+)*\\.[a-z]{2,5}(:[0-9]{1,5})?(\\/.*)?$')]],
       ssn:['',[]],
+      bloodType:['',[]],
       contactName:['',[]],
       contactPhoneNumber:['',[Validators.minLength(8), Validators.maxLength(13)]],
       contactKinship:['',[]]

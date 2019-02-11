@@ -128,7 +128,7 @@
             <input formControlName="ssn" matInput placeholder="Número de Seguridad Social" aria-label="New collaborator ssn">
           </mat-form-field>
           <mat-form-field class="inputs">
-            <mat-select placeholder="Tipo de sangre" aria-label="User blood type" [(value)]="bloodType">
+            <mat-select formControlName="bloodType" placeholder="Tipo de sangre" aria-label="User blood type" [(value)]="bloodType">
               <mat-option>-Seleccione un tipo de sangre-</mat-option>
               <mat-option *ngFor="let blood of bloodGroup" [value]="blood">{{blood}}</mat-option>
             </mat-select>
@@ -136,9 +136,11 @@
           <div class="submit">
             <app-upload-file style="width: 100%" [layoutTemplate]="button" (onLoad)="onLoadFile($event)" [type]="'file'">
               <ng-template #button>
-                <div type="button">Estudio de toxicidad (Benceno)</div>
-                <mat-icon class="file-icon" *ngIf="!file" svgIcon="icons:upload"></mat-icon>
-                <mat-icon class="file-icon" *ngIf="file">autorenew</mat-icon>
+                <div class="study">
+                  <span type="button">Estudio de toxicidad (Benceno)</span>
+                  <mat-icon class="file-icon" *ngIf="!file" svgIcon="icons:upload"></mat-icon>
+                  <mat-icon class="file-icon" *ngIf="file">autorenew</mat-icon>
+                </div>
               </ng-template>
             </app-upload-file>
             <button type="button" mat-icon-button matTooltip="Ver estudio" *ngIf="file" (click)="openStudy()">
