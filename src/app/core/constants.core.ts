@@ -27,11 +27,40 @@ export class Constants {
     2: 'medium',
     3: 'critical'
   };
+
+  public static Capacities = [
+    {
+      text: '20000',
+      value: 20000
+    },
+    {
+      text: '40000',
+      value: 40000
+    },
+    {
+      text: '60000',
+      value: 60000
+    },
+    {
+      text: '80000',
+      value: 80000
+    },
+    {
+      text: '100000',
+      value: 100000
+    },
+    {
+      text: '120000',
+      value: 120000
+    }
+  ];
+
   public static Level = [
     'Básico',
     'Intermedio',
     'Crítico'
   ];
+
   public static Zones = [
     'Dispensarios',
     'Islas',
@@ -45,6 +74,7 @@ export class Constants {
     'Dispensarios',
     'Otros'
   ];
+
   public static Frecuency = [
     'Diario',
     'Cada 3 días',
@@ -57,14 +87,17 @@ export class Constants {
     'Semestral',
     'Anual'
   ];
+
   public static protocols = [
     {name: 'http://', value: 'http://'},
     {name: 'https://', value: 'https://'}
   ];
+
   public static  rolesConsutancy = [
     {name:'Gerente', value: 2},
     {name:'Asistente', value: 3}
   ];
+
   public static  roles2 = [
     {name:'Director', value: 1},
     {name:'Gerente', value: 2},
@@ -73,6 +106,7 @@ export class Constants {
     {name:'Encargado de Estación', value: 5},
     {name:'Coordinador de Estación', value: 6}
   ];
+
   public static Files = [
     "Recepción y descarga de autotanque",
     "Despacho al consumidor",
@@ -87,6 +121,7 @@ export class Constants {
     "Drenado de agua a tanques",
     "Manejo y disposición de residuos peligrosos"
   ];
+
   public static  roles = [
       'Director',
       'Gerente',
@@ -96,6 +131,7 @@ export class Constants {
       'Coordinador de Estación',
       'Coordinador de Estación',
   ];
+
   public static bloodGroup = [
     'O-',
     'O+',
@@ -106,6 +142,7 @@ export class Constants {
     'AB-',
     'AB+'
   ];
+
   public static countries = [
     {
       name: 'Afghanistan',

@@ -48,6 +48,7 @@ export class StationProfileComponent implements OnInit {
   public workShifts = [];
   public tanks = [];
   public dispensers = [];
+  public capacities: any[];
   public stationForm: FormGroup;
   public station: any;
   public gasImage: string;
@@ -66,7 +67,9 @@ export class StationProfileComponent implements OnInit {
     private _snackBarService: SnackBarService,
     private _dialogService: DialogService,
     private _activatedRouter: ActivatedRoute
-  ) { }
+  ) {
+    this.capacities = Constants.Capacities;
+  }
 
   ngOnInit() {
     this.user = LocalStorageService.getItem(Constants.UserInSession);
@@ -200,7 +203,7 @@ export class StationProfileComponent implements OnInit {
             legalRepresentative: this.station.legalRepresentativeName
           });
           this.getUtils();
-          if (this.user.role===6 || this.user.role===7){
+          if (this.user.role===6){
             this.stationForm.disable();
           }
           this.detectChanges();
@@ -248,6 +251,7 @@ export class StationProfileComponent implements OnInit {
   }
 
   public addRemoveTurn(remove: boolean, type: number, index?: number): void{
+    this.change = true;
     if(!remove){
       switch (type) {
         case 1:
@@ -272,15 +276,6 @@ export class StationProfileComponent implements OnInit {
           this.dispensers.splice(index, 1);
           break;
       }
-    }
-    if (this.station.workShifts.length != this.workShifts.length){
-      this.change=true;
-    }
-    if (this.station.dispensers.length != this.dispensers) {
-      this.change=true;
-    }
-    if (this.station.fuelTanks.length != this.tanks) {
-      this.change=true;
     }
   }
 

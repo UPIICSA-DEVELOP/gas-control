@@ -141,10 +141,6 @@ export class AuthService implements Resolve<any>{
           case /profile/.test(url):
             if(!AuthService.validateUser()){
               this._router.navigate(['/']).then();
-            }else{
-              if(user.role===7){
-                this._router.navigate(['/admin']).then(() => {});
-              }
             }
             break;
           case /admin/.test(url):

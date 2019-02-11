@@ -89,7 +89,7 @@
         margin: 0 40px;
         .head{
           color: #707070;
-          padding-left: 16px;
+          margin: 0 0 8px 16px;
         }
         .hoses{
           display: flex;
@@ -273,12 +273,7 @@
   }
 
   .input-turns{
-    width: 100%;
-    height: 60px;
-    display: flex;
-    justify-content: space-between;
-    .time{
-      width: 45%;
-    }
+    width: 45%;
+    position: relative;
   }
 }
