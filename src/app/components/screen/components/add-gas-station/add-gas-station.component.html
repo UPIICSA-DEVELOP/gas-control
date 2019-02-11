@@ -627,18 +627,7 @@
                   <mat-datepicker #picker></mat-datepicker>
                   <div *ngIf="calendar[i]" class="date" (click)="picker.open()">
                     <div>{{calendar[i].getDate()}}</div>
-                    <div *ngIf="calendar[i].getMonth() === 0">Ene</div>
-                    <div *ngIf="calendar[i].getMonth() === 1">Feb</div>
-                    <div *ngIf="calendar[i].getMonth() === 2">Mar</div>
-                    <div *ngIf="calendar[i].getMonth() === 3">Abr</div>
-                    <div *ngIf="calendar[i].getMonth() === 4">May</div>
-                    <div *ngIf="calendar[i].getMonth() === 5">Jun</div>
-                    <div *ngIf="calendar[i].getMonth() === 6">Jul</div>
-                    <div *ngIf="calendar[i].getMonth() === 7">Ago</div>
-                    <div *ngIf="calendar[i].getMonth() === 8">Sep</div>
-                    <div *ngIf="calendar[i].getMonth() === 9">Oct</div>
-                    <div *ngIf="calendar[i].getMonth() === 10">Nov</div>
-                    <div *ngIf="calendar[i].getMonth() === 11">Dic</div>
+                    <div>{{calendar[i] | formatDate: calendar[i]}}</div>
                   </div>
                 </div>
                 <div style="display: flex; flex-direction: column; width: 100%;">

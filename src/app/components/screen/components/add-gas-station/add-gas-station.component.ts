@@ -185,6 +185,7 @@ export class AddGasStationComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.initCalendar();
     this.initManagerForm();
     this.initStationForm();
     this.initRepresentativeForm();
@@ -676,7 +677,7 @@ export class AddGasStationComponent implements OnInit {
                   this.newStation.patchValue({
                     legalRepresentative: this.legalName
                   });
-                  this._dialogService.confirmDialog(
+                  this._dialogService.alertDialog(
                     'Información',
                     'Hemos enviado un email de validación de cuenta a: ' + this.legalRepresentative.email,
                     'ACEPTAR').afterClosed().subscribe(response=>{this.step = 0; this.listExist = true;});
@@ -697,7 +698,7 @@ export class AddGasStationComponent implements OnInit {
                   this.newStation.patchValue({
                     legalRepresentative: this.legalName
                   });
-                  this._dialogService.confirmDialog(
+                  this._dialogService.alertDialog(
                     'Información',
                     'Hemos enviado un email de validación de cuenta a: ' + this.legalRepresentative.email,
                     'ACEPTAR').afterClosed().subscribe(response=>{this.step = 0; this.listExist = true;});
@@ -725,7 +726,7 @@ export class AddGasStationComponent implements OnInit {
                   this.newStation.patchValue({
                     manager: this.managerName
                   });
-                  this._dialogService.confirmDialog(
+                  this._dialogService.alertDialog(
                     'Información',
                     'Hemos enviado un email de validación de cuenta a: ' + this.manger.email,
                     'ACEPTAR').afterClosed().subscribe(response=>{this.step = 0;});
@@ -746,7 +747,7 @@ export class AddGasStationComponent implements OnInit {
                   this.newStation.patchValue({
                     manager: this.managerName
                   });
-                  this._dialogService.confirmDialog(
+                  this._dialogService.alertDialog(
                     'Información',
                     'Hemos enviado un email de validación de cuenta a: ' + this.manger.email,
                     'ACEPTAR').afterClosed().subscribe(response=>{this.step = 0;});
@@ -962,6 +963,12 @@ export class AddGasStationComponent implements OnInit {
       if(!this.dispensers[k].hoses && !this.dispensers[k].identifier && this.dispensers[k].magna === false && this.dispensers[k].premium === false && this.dispensers[k].diesel === false){
         this.dispensers.splice(k, 1);
       }
+    }
+  }
+
+  private initCalendar():void{
+    for (let i =0; i<26; i++){
+      this.calendar.push(undefined);
     }
   }
 }
