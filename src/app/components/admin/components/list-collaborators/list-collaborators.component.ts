@@ -14,7 +14,6 @@ import {CookieService} from '@app/core/services/cookie/cookie.service';
 import {UtilitiesService} from '@app/core/utilities/utilities.service';
 import {AddStationService} from '@app/components/screen/components/add-gas-station/add-station.service';
 import {LocalStorageService} from '@app/core/services/local-storage/local-storage.service';
-import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-list-collaborators',
@@ -36,7 +35,6 @@ export class ListCollaboratorsComponent implements OnInit {
     private _dialogService: DialogService,
     private _api: ApiService,
     private _addStation: AddStationService,
-    private _router: Router
   ) {
     this.title = this._data.name;
     this.stationList = [];
@@ -82,13 +80,8 @@ export class ListCollaboratorsComponent implements OnInit {
     });
   }
 
-  public goToDashboard(id: string): void{
+  public goToDashboard(): void{
     LocalStorageService.setItem(Constants.UserInSession,{profileImage: null, role: 7, refId: this._data.id});
-    this._dialog.close();
-    this._router.navigate(['/home'], {queryParams:{
-      station: id,
-      admin: true
-    }}).then();
   }
 
   private getUtilities():void{

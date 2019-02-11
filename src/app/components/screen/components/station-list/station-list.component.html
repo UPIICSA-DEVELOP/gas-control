@@ -12,7 +12,7 @@
           <mat-icon>keyboard_arrow_right</mat-icon>
         </button>
       </div>
-      <div *ngIf="user.role<4" class="add">
+      <div *ngIf="user.role<4 || user.role===7" class="add">
         <div matTooltip="Añadir Estación de Servicio" (click)="addStation()">
           <img src="../../../../../assets/Images/Add_station_48px.png">
         </div>
