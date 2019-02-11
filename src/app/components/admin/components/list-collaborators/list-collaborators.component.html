@@ -40,16 +40,16 @@
     </div>
 
 
-    <div class="container-list" *ngIf="stationList.length > 0">
+    <div class="container-list" *ngIf="stationList.length > 0 && utils">
       <mat-card class="item" *ngFor="let item of stationList">
         <div class="image">
           <mat-icon class="icon" *ngIf="!utils" >local_gas_station</mat-icon>
           <img  *ngIf="utils" [src]="utils[item.type-1].fileCS.thumbnail">
         </div>
         <div class="info" *ngIf="utils">
-          <p>{{utils[item.type-1].name}} - {{item.name}}</p>
-          <p class="plugin">{{item.managerName}}</p>
-          <p class="sub-title">
+          <p class="bold-text">{{utils[item.type-1].name}} - {{item.name}}</p>
+          <p class="bold-text-plugin">{{item.managerName}}</p>
+          <p class="plugin">
             {{item.crePermission}}
           </p>
           <p class="sub-title">
@@ -60,7 +60,7 @@
           </p>
         </div>
         <div class="actions">
-          <button mat-button (click)="goToDashboard(item.id)">VER ESTACIÓN</button>
+          <a href="/home?station={{item.id}}&admin=true" target="_blank">VER ESTACIÓN</a>
         </div>
       </mat-card>
     </div>

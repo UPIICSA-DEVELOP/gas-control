@@ -54,6 +54,13 @@ export class ApiService {
     return this._http.post(ApiService.API_URL_COMPLETE + 'signInWithLink', options);
    }
 
+   public buildTaskByStation(stationTaskId:string):Observable<any>{
+    const options = {
+      stationTaskId: stationTaskId
+    };
+    return this._http.post(ApiService.API_URL_COMPLETE+'buildTaskByStation', options);
+   }
+
   public ipApi(): Observable<any> {
     return this._http.get('https://ipapi.co/json/');
   }

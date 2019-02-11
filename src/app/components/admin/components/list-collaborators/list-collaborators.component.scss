@@ -104,32 +104,33 @@
 
 
       .image, img, .icon{
-        width: 60px;
-        height: 60px;
+        width: 80px;
+        height: 80px;
         margin: auto;
-        font-size: 60px;
+        font-size: 80px;
         border-radius: 50%;
         color: rgba(0, 0, 0, 0.54);
         @include mat-elevation(2);
       }
       .info{
-        margin: 8px 0 42px 0;
+        margin: 8px 0 52px 0;
         text-align: center;
       }
       .actions{
         position: absolute;
-        bottom: 8px;
-        left: calc(50% - (135.2px / 2));
+        bottom: 16px;
+        left: calc(50% - (117.95px / 2));
         display: flex;
         justify-content: space-around;
         align-items: center;
         color: rgba(0, 0, 0, 0.54);
+        a{
+          text-decoration: none;
+          color: mat-color($primary);
+        }
       }
       p{
         margin: 0;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
       }
       a{
         text-decoration: none;
@@ -141,7 +142,12 @@
       .plugin{
         font-size: 14px;
       }
-
+      .bold-text{
+        font-weight: 600;
+      }
+      .bold-text-plugin{
+        font-size: 14px;
+      }
     }
 
   }
