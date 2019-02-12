@@ -111,14 +111,18 @@ export class ScreenComponent implements OnInit{
   public openTaskCalendar():void{
     const user = LocalStorageService.getItem(Constants.UserInSession);
     if(user.role!==6){
-      this._dialogService.alertDialog(
+      this._dialogService.confirmDialog(
         'Información',
         'Aún no se ha calendarizado las tareas de la Estación. ¿Desea hacerlo ahora?',
-        'ACEPTAR'
+        'SI',
+        'MÁS TARDE'
       ).afterClosed().subscribe(response=>{
         switch (response.code){
           case 1:
             this._addStationService.open({disableClose: true, stationId: this.stationActive.id, stepActive: 3});
+            break;
+          case -1:
+            LocalStorageService.setItem('notCalendar', true);
             break;
         }
       });

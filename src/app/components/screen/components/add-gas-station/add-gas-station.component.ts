@@ -133,6 +133,7 @@ export class AddGasStationComponent implements OnInit {
   public zone: string[];
   public frequency: string[];
   public priority: string[];
+  public capacities: any[];
   public legalId: string;
   public managerId: string;
   public legalName: string;
@@ -162,6 +163,7 @@ export class AddGasStationComponent implements OnInit {
     private _dialogRef: MatDialogRef<AddGasStationComponent>
   ) {
     this.listExist = true;
+    this.capacities = Constants.Capacities;
     this.bloodGroup = Constants.bloodGroup;
     this.frequency = Constants.Frecuency;
     this.priority = Constants.Level;
@@ -767,6 +769,11 @@ export class AddGasStationComponent implements OnInit {
           this.station.id = response.item.id;
           this.step = 3;
           break;
+        case 470:
+          this._snackBarService.openSnackBar('Ya existe una estación con esta información', 'OK',3000);
+          break;
+        default:
+          break;
       }
     })
   }
@@ -863,23 +870,25 @@ export class AddGasStationComponent implements OnInit {
     let actuallyYear = (this.startDate.getFullYear()).toString();
     let today = Number(actuallyYear+''+(actuallyMonth.length<2?'0'+actuallyMonth:actuallyMonth)+''+(actuallyDay.length<2?'0'+actuallyDay:actuallyDay));
     let editedTasks: any[] = [];
-    for (let d=0;d<this.calendar.length; d++){
-      let year = (this.calendar[d].getFullYear()).toString();
-      let month = (this.calendar[d].getMonth()+1).toString();
-      let day = (this.calendar[d].getDate());
-      this.calendar[d] = Number(year+''+(month.length<2?'0'+month:month)+''+(day.length<2?'0'+day:day));
-      editedTasks.push({startDate: this.calendar[d], differenceOfDays:(this.calendar[d]-today), type: this.tasks[d].id});
+    let copyCalendar: any[] = Object.assign([], this.calendar);
+    for (let d=0;d<copyCalendar.length; d++){
+      let year = (copyCalendar[d].getFullYear()).toString();
+      let month = (copyCalendar[d].getMonth()+1).toString();
+      let day = (copyCalendar[d].getDate());
+      copyCalendar[d] = Number(year+''+(month.length<2?'0'+month:month)+''+(day.length<2?'0'+day:day));
+      editedTasks.push({startDate: copyCalendar[d], differenceOfDays:(copyCalendar[d]-today), type: this.tasks[d].id});
     }
     let task: Task = {
       creationDate: 0,
       stationId: stationId,
       progress: 0,
-      status: 2,
+      status: 3,
       editedTasks: editedTasks
     };
     this._api.createStationTask(task).subscribe(response=>{
       switch (response.code){
         case 200:
+          LocalStorageService.removeItem('notCalendar');
           this._dialogRef.close();
           break;
       }
@@ -970,5 +979,14 @@ export class AddGasStationComponent implements OnInit {
     for (let i =0; i<26; i++){
       this.calendar.push(undefined);
     }
+  }
+
+  public blockEnd():boolean{
+    for(let i = 0; i<this.calendar.length; i++){
+      if(!this.calendar[i]){
+        return true;
+      }
+    }
+    return false;
   }
 }

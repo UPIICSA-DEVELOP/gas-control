@@ -155,9 +155,9 @@
                     <div class="flex-box">
                       <div class="fuel">
                         <mat-form-field class="inputs">
-                          <input matInput placeholder="Capacidad (lts)" type="number"
-                                 aria-label="Station tank fuel capacity" [(ngModel)]="tank.capacity"
-                                 [ngModelOptions]="{standalone: true}">
+                          <mat-select placeholder="Capacidad (lts)" type="number" aria-label="Station tank fuel capacity" [(ngModel)]="tank.capacity" [ngModelOptions]="{standalone: true}">
+                            <mat-option *ngFor="let item of capacities" [value]="item.value">{{item.text}}</mat-option>
+                          </mat-select>
                         </mat-form-field>
                         <mat-radio-group class="fuel-selector" aria-label="Station tank fuel type"
                                          [(ngModel)]="tank.fuelType" [ngModelOptions]="{standalone: true}">
@@ -626,8 +626,8 @@
                   <div *ngIf="!calendar[i]">Asignar</div>
                   <mat-datepicker #picker></mat-datepicker>
                   <div *ngIf="calendar[i]" class="date" (click)="picker.open()">
-                    <div>{{calendar[i].getDate()}}</div>
-                    <div>{{calendar[i] | formatDate: calendar[i]}}</div>
+                    <div>{{calendar[i] | formatDate: true}}</div>
+                    <div>{{calendar[i] | formatDate: false}}</div>
                   </div>
                 </div>
                 <div style="display: flex; flex-direction: column; width: 100%;">
@@ -642,7 +642,7 @@
             </mat-card>
           </div>
           <div class="form-button">
-            <button mat-flat-button aria-label="LogIn" [color]="'primary'" (click)="validateCompleteCalendar()" mat-button>FINALIZAR</button>
+            <button mat-flat-button aria-label="LogIn" [color]="'primary'" [disabled]="blockEnd()" (click)="validateCompleteCalendar()" mat-button>FINALIZAR</button>
           </div>
         </div>
       </div>
