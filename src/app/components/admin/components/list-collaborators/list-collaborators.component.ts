@@ -57,13 +57,18 @@ export class ListCollaboratorsComponent implements OnInit {
       this.stationList = this.stationListCopy;
     }else{
       for(let x=0; x < this.stationListCopy.length; x++){
-        if(UtilitiesService.removeDiacritics(this.stationListCopy[x].managerName).toLowerCase().includes(text) || this.stationListCopy[x].email.toLowerCase().includes(text) || this.stationListCopy[x].phoneNumber.includes(text) || UtilitiesService.removeDiacritics(this.stationListCopy[x].crePermission).toLowerCase().includes(text) || UtilitiesService.removeDiacritics(this.stationListCopy[x].name).toLowerCase().includes(text)){
+        if(UtilitiesService.removeDiacritics(this.stationListCopy[x].managerName).toLowerCase().includes(text) || this.stationListCopy[x].email.toLowerCase().includes(text) || this.stationListCopy[x].phoneNumber.includes(text) || UtilitiesService.removeDiacritics(this.stationListCopy[x].name).toLowerCase().includes(text)){
           newArray.push(this.stationListCopy[x]);
         }else {
           for (let i= 0; i<this.utils.length; i++){
             if(UtilitiesService.removeDiacritics(this.utils[i].name).toLowerCase().includes(text) && this.stationListCopy[x].type === i+1){
               newArray.push(this.stationListCopy[x]);
             }
+          }
+        }
+        if(this.stationListCopy[x].crePermission){
+          if(UtilitiesService.removeDiacritics(this.stationListCopy[x].crePermission).toLowerCase().includes(text)){
+            newArray.push(this.stationListCopy[x]);
           }
         }
       }
