@@ -16,13 +16,30 @@
       height: 100%;
       display: flex;
       align-items: center;
+      justify-content: space-between;
       .title{
         font-size: 34px;
       }
       .buttons{
-        position: absolute;
-        right: 0;
+        .add-station-btn{
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          background-color: #FFAA00;
+          img{
+            left: 0;
+            top: 0;
+            width: 40px;
+            height: 40px;
+            position: absolute;
+          }
+        }
+        display: flex;
+        align-items: center;
         margin: 0 16px 0 0;
+        button{
+          margin: 0 8px;
+        }
       }
     }
 
