@@ -56,7 +56,7 @@
               </button>
             </div>
           </div>
-          <div class="change-station" *ngIf="role===5 || role !== 6">
+          <div class="change-station" *ngIf="role<=4 || role === 7">
             <button mat-button routerLink="/home/station-list">
               <mat-icon>compare_arrows</mat-icon>
               <span>Cambiar Estación de Servicio</span>

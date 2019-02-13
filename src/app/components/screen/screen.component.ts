@@ -34,20 +34,32 @@ export class ScreenComponent implements OnInit{
     private _dialogService: DialogService,
     private _auth: AuthService
   ) {
+    this.menu = true;
+    this.stationList = [];
   }
 
   ngOnInit() {
-    this.menu = true;
-    this.stationList = [];
-    if (this._activateRoute.snapshot.queryParams.station) {
-      this.getDashboardInformation(this._activateRoute.snapshot.queryParams.station);
+    this._activateRoute.url.subscribe(() => {
+     if(this._router.url.includes('/home?station')){
+       this.initView(this._activateRoute.snapshot.queryParams.station);
+     }else{
+       if(!this.stationActive){
+         this.initView();
+       }
+     }
+    });
+  }
+
+  public initView(id?: string): void{
+    if (id) {
+      this.getDashboardInformation(id);
     } else {
       this.getDashboardInformation();
     }
   }
 
   public addCollaborator():void{
-    this._router.navigate(['/home/add-collaborator'], {queryParams:{stationId: this.stationActive.id}});
+    this._router.navigate(['/home/add-collaborator'], {queryParams:{stationId: this.stationActive.id}}).then();
   }
 
   private getDashboardInformation(onlyOneStationId?: any): void{
@@ -75,7 +87,7 @@ export class ScreenComponent implements OnInit{
                   }
                   break;
                 default:
-                  this._router.navigate(['/home']);
+                  this._router.navigate(['/home']).then();
                   this.getDashboardInformation(null);
                   break;
               }
@@ -91,12 +103,22 @@ export class ScreenComponent implements OnInit{
             break;
           case 5:
           case 6:
-            this.stationList = response[0].item.station;
-            this.stationActive = this.stationList;
-            if(!this.validateTaskCreated()){
-              this.openTaskCalendar();
+            if(onlyOneStationId){
+              this.stationList = response[0].item;
+              this.stationActive = this.stationList;
+              if(!this.validateTaskCreated()){
+                this.openTaskCalendar();
+              }else{
+                this.createTasks();
+              }
             }else{
-              this.createTasks();
+              this.stationList = response[0].item.station;
+              this.stationActive = this.stationList;
+              if(!this.validateTaskCreated()){
+                this.openTaskCalendar();
+              }else{
+                this.createTasks();
+              }
             }
             break;
         }
@@ -110,23 +132,7 @@ export class ScreenComponent implements OnInit{
 
   public openTaskCalendar():void{
     const user = LocalStorageService.getItem(Constants.UserInSession);
-    if(user.role!==6){
-      this._dialogService.confirmDialog(
-        'Información',
-        'Aún no se ha calendarizado las tareas de la Estación. ¿Desea hacerlo ahora?',
-        'SI',
-        'MÁS TARDE'
-      ).afterClosed().subscribe(response=>{
-        switch (response.code){
-          case 1:
-            this._addStationService.open({disableClose: true, stationId: this.stationActive.id, stepActive: 3});
-            break;
-          case -1:
-            LocalStorageService.setItem('notCalendar', true);
-            break;
-        }
-      });
-    }else{
+    if(user.role===6){
       this._dialogService.alertDialog(
         'Información',
         'No se han calendarizado las tareas de esta Estación. Por favor notifíquelo a su superior',
@@ -138,6 +144,8 @@ export class ScreenComponent implements OnInit{
             break;
         }
       });
+    }else{
+      LocalStorageService.setItem('notCalendar',true);
     }
   }
 
@@ -145,7 +153,7 @@ export class ScreenComponent implements OnInit{
     this._api.buildTaskByStation(this.stationActive.stationTaskId).subscribe(response=>{
       switch (response.code){
         case 200:
-          if(!response.item.complete){
+          if(response.item.progress<115){
             this.createTasks();
           }
           break;
