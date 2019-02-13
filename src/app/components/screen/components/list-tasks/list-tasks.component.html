@@ -42,430 +42,499 @@
     </div>
     <mat-card-content>
       <div class="sub-container">
-        <div style="width: 95%" *ngFor="let task of tasksFilterd">
-          <mat-card class="task">
-            <div class="priority" *ngIf="task.level === 3" style="background-color:#E00000"></div>
-            <div class="priority" *ngIf="task.level === 1" style="background-color:#257602"></div>
-            <div class="priority" *ngIf="task.level === 2" style="background-color:#FFD800"></div>
-            <div class="inputs" [ngSwitch]="task.typeReport">
-              <div class="inputs" *ngSwitchCase="1">
-                <mat-accordion class="inputs">
-                  <mat-expansion-panel>
-                    <mat-expansion-panel-header [collapsedHeight]="'88px'" [expandedHeight]="'88px'">
-                      <mat-panel-title>
-                        <div class="date">
+        <div *ngIf="tasksFilterd.length>0 || !notCalendar; then list else message"></div>
+        <ng-template #list>
+          <div class="card-list" *ngFor="let task of tasksFilterd">
+            <mat-card class="task">
+              <div class="priority" *ngIf="task.level === 3" style="background-color:#E00000"></div>
+              <div class="priority" *ngIf="task.level === 1" style="background-color:#257602"></div>
+              <div class="priority" *ngIf="task.level === 2" style="background-color:#FFD800"></div>
+              <div class="inputs" [ngSwitch]="task.typeReport">
+                <div class="inputs" *ngSwitchCase="1">
+                  <mat-accordion class="inputs">
+                    <mat-expansion-panel>
+                      <mat-expansion-panel-header [collapsedHeight]="'88px'" [expandedHeight]="'88px'">
+                        <mat-panel-title>
+                          <div class="date">
+                            <div>
+                              <div class="text-bold">{{task.date[0]}}</div>
+                              <div class="text-bold">{{task.date[1]}}</div>
+                            </div>
+                          </div>
+                          <div class="content">
+                            <div class="head">{{task.name}}</div>
+                            <div class="text">{{zones[task.zone-1]}}</div>
+                            <div class="text">{{priority[task.level-1]}}</div>
+                          </div>
+                        </mat-panel-title>
+                      </mat-expansion-panel-header>
+                      <div class="divider"></div>
+                      <div class="task-header">
+                        <div class="head-bold">Operación y mantenimiento</div>
+                        <div class="control-data">
+                          <div>Fecha: {{task.date[0]}} {{task.date[1]}} {{task.date[2]}}&nbsp;&nbsp;</div>
+                          <div>Folio: </div>
+                        </div>
+                      </div>
+                      <div class="flex-box">
+                        <div class="columns">
+                          <div class="times">
+                            <mat-form-field class="clock">
+                              <input matInput placeholder="Hora de inicio">
+                            </mat-form-field>
+                            <mat-form-field class="clock">
+                              <input matInput placeholder="Hora de fin">
+                            </mat-form-field>
+                          </div>
+                          <mat-form-field class="inputs">
+                            <mat-select placeholder="Tipo de mantenimiento">
+                              <mat-option value="opt 1">1</mat-option>
+                              <mat-option value="opt 2">2</mat-option>
+                              <mat-option value="opt 3">3</mat-option>
+                            </mat-select>
+                          </mat-form-field>
+                          <div class="text-divider">
+                            Equipo de protección utilizado
+                          </div>
+                          <div class="inputs">
+                            <div class="space-box">
+                              <div class="checks-row">
+                                <mat-checkbox>Monitoreo de pozos y detección de fugas</mat-checkbox>
+                              </div>
+                              <div class="checks-row">
+                                <mat-checkbox>Eléctrico</mat-checkbox>
+                              </div>
+                            </div>
+                            <div class="space-box">
+                              <div class="checks-row">
+                                <mat-checkbox>Revisión de pozos</mat-checkbox>
+                              </div>
+                              <div class="checks-row">
+                                <mat-checkbox>Mecánico</mat-checkbox>
+                              </div>
+                            </div>
+                            <div class="space-box">
+                              <div class="checks-row">
+                                <mat-checkbox>Albañilería, herreria, etc</mat-checkbox>
+                              </div>
+                              <div class="checks-row">
+                                <mat-checkbox>Hidrosanitario</mat-checkbox>
+                              </div>
+                            </div>
+                            <div class="space-box">
+                              <div class="checks-row">
+                                <mat-checkbox>Pruebas de eficiencia</mat-checkbox>
+                              </div>
+                              <div class="checks-row">
+                                <mat-checkbox>Vista de autoridad</mat-checkbox>
+                              </div>
+                            </div>
+                            <div class="space-box">
+                              <div class="checks-row">
+                                <mat-checkbox>Limpieza</mat-checkbox>
+                              </div>
+                              <div class="checks-row">
+                                <mat-checkbox>Otros</mat-checkbox>
+                              </div>
+                            </div>
+                          </div>
+                          <mat-form-field class="inputs">
+                            <mat-select placeholder="Procedencia del personal">
+                              <mat-option value="opt 1">1</mat-option>
+                              <mat-option value="opt 2">2</mat-option>
+                              <mat-option value="opt 3">3</mat-option>
+                            </mat-select>
+                          </mat-form-field>
+                          <div class="color">
+                            <span>Personal involucrado</span>
+                          </div>
+                          <mat-form-field class="inputs">
+                            <input matInput placeholder="1.- Nombre">
+                          </mat-form-field>
+                          <div class="text-divider">
+                            Equipo de protección utilizado
+                          </div>
+                          <div class="inputs">
+                            <div class="space-box">
+                              <div class="checks-row">
+                                <mat-checkbox>Ropa de algodón</mat-checkbox>
+                              </div>
+                              <div class="checks-row">
+                                <mat-checkbox>Guantes</mat-checkbox>
+                              </div>
+                            </div>
+                            <div class="space-box">
+                              <div class="checks-row">
+                                <mat-checkbox>Goggles</mat-checkbox>
+                              </div>
+                              <div class="checks-row">
+                                <mat-checkbox>Rodilleras</mat-checkbox>
+                              </div>
+                            </div>
+                            <div class="space-box">
+                              <div class="checks-row">
+                                <mat-checkbox>Zapato industrial</mat-checkbox>
+                              </div>
+                              <div class="checks-row">
+                                <mat-checkbox>Cubrebocas</mat-checkbox>
+                              </div>
+                            </div>
+                            <div class="space-box">
+                              <div class="checks-row">
+                                <mat-checkbox>Lentes de protección</mat-checkbox>
+                              </div>
+                              <div class="checks-row">
+                                <mat-checkbox>Cascos</mat-checkbox>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="columns">
+                          <mat-form-field class="inputs">
+                            <input matInput placeholder="Herramientas y materiales utilizados">
+                          </mat-form-field>
+                          <mat-form-field class="inputs">
+                            <input matInput placeholder="Procedimientos utilizados">
+                          </mat-form-field>
+                          <div class="text">
+                            Si la actividad requiere de autorización del gerente, anote el nombre a continuación
+                          </div>
+                          <mat-form-field class="inputs">
+                            <input matInput placeholder="Nombre completo">
+                          </mat-form-field>
+                          <mat-form-field class="inputs">
+                            <input matInput placeholder="Observaciones">
+                          </mat-form-field>
+                          <div class="image-header">
+                            Captura fotográfica de evidencia
+                          </div>
+                          <div class="image-container">
+                            <mat-icon class="default-image">
+                              image
+                            </mat-icon>
+                          </div>
+                          <div class="finish" *ngIf="user.role === 7">
+                            <button mat-flat-button [color]="'primary'">FINALZAR</button>
+                          </div>
+                        </div>
+                      </div>
+                    </mat-expansion-panel>
+                  </mat-accordion>
+                </div>
+                <div class="inputs" *ngSwitchCase="2">
+                  <mat-accordion class="inputs">
+                    <mat-expansion-panel>
+                      <mat-expansion-panel-header [collapsedHeight]="'88px'" [expandedHeight]="'88px'">
+                        <mat-panel-title>
+                          <div class="date">
+                            <div>
+                              <div class="text-bold">{{task.date[0]}}</div>
+                              <div class="text-bold">{{task.date[1]}}</div>
+                            </div>
+                          </div>
+                          <div class="content">
+                            <div class="head">{{task.name}}</div>
+                            <div class="text">{{zones[task.zone-1]}}</div>
+                            <div class="text">{{priority[task.level-1]}}</div>
+                          </div>
+                        </mat-panel-title>
+                      </mat-expansion-panel-header>
+                      <div class="divider"></div>
+                      <div class="task-header">
+                        <div class="head-bold">Compresor</div>
+                        <div class="control-data">
+                          <div>Fecha: {{task.date[0]}} {{task.date[1]}} {{task.date[2]}}</div>
+                          <div>Folio: </div>
+                        </div>
+                      </div>
+                      <div class="flex-box">
+                        <div class="columns">
+                          <div class="times">
+                            <mat-form-field class="clock">
+                              <input matInput placeholder="Hora de inicio">
+                            </mat-form-field>
+                            <mat-form-field class="clock">
+                              <input matInput placeholder="Hora de término">
+                            </mat-form-field>
+                          </div>
+                          <mat-form-field class="inputs">
+                            <input matInput placeholder="Marca">
+                          </mat-form-field>
+                          <mat-form-field class="inputs">
+                            <input matInput placeholder="Modelo">
+                          </mat-form-field>
+                          <mat-form-field class="inputs">
+                            <input matInput placeholder="No. de control">
+                          </mat-form-field>
+                          <mat-form-field class="inputs">
+                            <input matInput placeholder="Turno">
+                          </mat-form-field>
+                          <mat-form-field class="inputs">
+                            <input matInput placeholder="Presión manómetro">
+                          </mat-form-field>
+                          <mat-form-field class="inputs">
+                            <input matInput placeholder="Purga o descarga">
+                          </mat-form-field>
+                          <mat-form-field class="inputs">
+                            <input matInput placeholder="Disparo manual de válvula de seguridad">
+                          </mat-form-field>
+                        </div>
+                        <div class="columns">
+                          <mat-form-field class="inputs">
+                            <input matInput placeholder="Modificaciones y medidas correctivas">
+                          </mat-form-field>
+                          <mat-form-field class="inputs">
+                            <input matInput placeholder="Observaciones">
+                          </mat-form-field>
+                          <div class="image-header">
+                            Captura fotográfica de evidencia
+                          </div>
+                          <div class="image-container">
+                            <mat-icon class="default-image">
+                              image
+                            </mat-icon>
+                          </div>
+                          <div class="finish" *ngIf="user.role === 7">
+                            <button mat-flat-button [color]="'primary'">FINALZAR</button>
+                          </div>
+                        </div>
+                      </div>
+                    </mat-expansion-panel>
+                  </mat-accordion>
+                </div>
+                <div class="inputs" *ngSwitchCase="3">
+                  <mat-accordion class="inputs">
+                    <mat-expansion-panel>
+                      <mat-expansion-panel-header [collapsedHeight]="'88px'" [expandedHeight]="'88px'">
+                        <mat-panel-title>
+                          <div class="date">
+                            <div>
+                              <div class="text-bold">{{task.date[0]}}</div>
+                              <div class="text-bold">{{task.date[1]}}</div>
+                            </div>
+                          </div>
+                          <div class="content">
+                            <div class="head">{{task.name}}</div>
+                            <div class="text">{{zones[task.zone-1]}}</div>
+                            <div class="text">{{priority[task.level-1]}}</div>
+                          </div>
+                        </mat-panel-title>
+                      </mat-expansion-panel-header>
+                      <div class="divider"></div>
+                      <div class="task-header">
+                        <div class="head-bold">Residuos peligrosos</div>
+                        <div class="control-data">
+                          <div>Fecha: {{task.date[0]}} {{task.date[1]}} {{task.date[2]}}</div>
+                          <div>Folio: </div>
+                        </div>
+                      </div>
+                      <div class="flex-box">
+                        <div class="columns">
+                          <mat-form-field class="inputs">
+                            <input matInput placeholder="Lugar de generación">
+                          </mat-form-field>
+                          <mat-form-field class="inputs">
+                            <input matInput placeholder="Residuo generado">
+                          </mat-form-field>
+                          <div class="text-divider">
+                            Características
+                          </div>
+                          <div class="space-box">
+                            <div class="checkbox-list">
+                              <mat-checkbox>Corrosivo</mat-checkbox>
+                              <mat-checkbox>Explosivo</mat-checkbox>
+                              <mat-checkbox>Inflamable</mat-checkbox>
+                            </div>
+                            <div class="checkbox-list">
+                              <mat-checkbox>Reactivo</mat-checkbox>
+                              <mat-checkbox>Tóxico</mat-checkbox>
+                            </div>
+                          </div>
+                          <mat-form-field class="inputs">
+                            <input matInput placeholder="Cantidad generada">
+                          </mat-form-field>
+                          <mat-form-field class="inputs">
+                            <input matInput placeholder="Almacenamiento temporal">
+                          </mat-form-field>
+                        </div>
+                        <div class="columns">
+                          <div class="image-header">
+                            Captura fotográfica de evidencia
+                          </div>
+                          <div class="image-container">
+                            <mat-icon class="default-image">
+                              image
+                            </mat-icon>
+                          </div>
+                          <div class="finish" *ngIf="user.role === 7">
+                            <button mat-flat-button [color]="'primary'">FINALZAR</button>
+                          </div>
+                        </div>
+                      </div>
+                    </mat-expansion-panel>
+                  </mat-accordion>
+                </div>
+                <div class="inputs" *ngSwitchCase="4">
+                  <mat-accordion class="inputs">
+                    <mat-expansion-panel>
+                      <mat-expansion-panel-header [collapsedHeight]="'88px'" [expandedHeight]="'88px'">
+                        <mat-panel-title>
+                          <div class="date">
+                            <div>
+                              <div class="text-bold">{{task.date[0]}}</div>
+                              <div class="text-bold">{{task.date[1]}}</div>
+                            </div>
+                          </div>
+                          <div class="content">
+                            <div class="head">{{task.name}}</div>
+                            <div class="text">{{zones[task.zone-1]}}</div>
+                            <div class="text">{{priority[task.level-1]}}</div>
+                          </div>
+                        </mat-panel-title>
+                      </mat-expansion-panel-header>
+                      <div class="divider"></div>
+                      <div class="task-header">
+                        <div class="head-bold">Sistema de recuperación de vapores</div>
+                        <div class="control-data">
+                          <div>Fecha: {{task.date[0]}} {{task.date[1]}} {{task.date[2]}}</div>
+                          <div>Folio: </div>
+                        </div>
+                      </div>
+                      <div class="flex-box">
+                        <div class="columns">
+                          <div class="performance">
+                            <div>Funcionamiento Satisfactorio = S</div>
+                            <div>Funcionamiento No Satisfactorio = N/S</div>
+                            <div>Funcionamiento No Determinado = N/D</div>
+                          </div>
+                          <div>Dispensarios</div>
+                          <div class="divider"></div>
+                          <div>Magna/Premium</div>
+                          <div class="times">
+                            <mat-form-field class="clock">
+                              <mat-select placeholder="Pistola">
+                                <mat-option value="1">opt 1</mat-option>
+                                <mat-option value="2">opt 2</mat-option>
+                                <mat-option value="3">opt 3</mat-option>
+                              </mat-select>
+                            </mat-form-field>
+                            <mat-form-field class="clock">
+                              <mat-select placeholder="Manguera larga">
+                                <mat-option value="1">opt 1</mat-option>
+                                <mat-option value="2">opt 2</mat-option>
+                                <mat-option value="3">opt 3</mat-option>
+                              </mat-select>
+                            </mat-form-field>
+                          </div>
+                          <div class="times">
+                            <mat-form-field class="clock">
+                              <mat-select placeholder="Break away">
+                                <mat-option value="1">opt 1</mat-option>
+                                <mat-option value="2">opt 2</mat-option>
+                                <mat-option value="3">opt 3</mat-option>
+                              </mat-select>
+                            </mat-form-field>
+                            <mat-form-field class="clock">
+                              <mat-select placeholder="Manguera corta">
+                                <mat-option value="1">opt 1</mat-option>
+                                <mat-option value="2">opt 2</mat-option>
+                                <mat-option value="3">opt 3</mat-option>
+                              </mat-select>
+                            </mat-form-field>
+                          </div>
+                          <div class="some-select">
+                            <mat-form-field class="select">
+                              <mat-select placeholder="Bomba vacío">
+                                <mat-option value="1">opt 1</mat-option>
+                                <mat-option value="2">opt 2</mat-option>
+                                <mat-option value="3">opt 3</mat-option>
+                              </mat-select>
+                            </mat-form-field>
+                          </div>
+                          <div>Tanques</div>
+                          <div class="divider"></div>
+                          <div>Magna/Premium</div>
+                          <mat-form-field class="inputs">
+                            <mat-select placeholder="Tapa y adaptador de vapor">
+                              <mat-option value="1">opt1</mat-option>
+                              <mat-option value="2">opt 2</mat-option>
+                              <mat-option value="3">opt 3</mat-option>
+                            </mat-select>
+                          </mat-form-field>
+                          <mat-form-field class="inputs">
+                            <mat-select placeholder="Tapa y adaptador de llenado">
+                              <mat-option value="1">opt1</mat-option>
+                              <mat-option value="2">opt 2</mat-option>
+                              <mat-option value="3">opt 3</mat-option>
+                            </mat-select>
+                          </mat-form-field>
+                          <mat-form-field class="inputs">
+                            <mat-select placeholder="Válvula de sobrellenado">
+                              <mat-option value="1">opt1</mat-option>
+                              <mat-option value="2">opt 2</mat-option>
+                              <mat-option value="3">opt 3</mat-option>
+                            </mat-select>
+                          </mat-form-field>
+                          <mat-form-field class="inputs">
+                            <mat-select placeholder="Válvula de presión-vacio">
+                              <mat-option value="1">opt1</mat-option>
+                              <mat-option value="2">opt 2</mat-option>
+                              <mat-option value="3">opt 3</mat-option>
+                            </mat-select>
+                          </mat-form-field>
+                        </div>
+                        <div class="columns">
+                          <mat-form-field class="inputs">
+                            <mat-select placeholder="Alarma SRV Encendido">
+                              <mat-option value="1">opt1</mat-option>
+                              <mat-option value="2">opt 2</mat-option>
+                              <mat-option value="3">opt 3</mat-option>
+                            </mat-select>
+                          </mat-form-field>
                           <div>
-                            <div class="text-bold">{{task.date[0]}}</div>
-                            <div class="text-bold">{{task.date[1]}}</div>
+                            Mantenimiento
                           </div>
-                        </div>
-                        <div class="content">
-                          <div class="head">{{task.name}}</div>
-                          <div class="text">{{zones[task.zone-1]}}</div>
-                          <div class="text">{{priority[task.level-1]}}</div>
-                        </div>
-                      </mat-panel-title>
-                    </mat-expansion-panel-header>
-                    <div class="task-header">
-                      <div class="head-bold">{{task.name}}</div>
-                      <div class="contorl-data">
-                        <div>Fecha: {{task.date[0]}} {{task.date[1]}} {{task.date[2]}}&nbsp;&nbsp;</div>
-                        <div>Folio: </div>
-                      </div>
-                    </div>
-                    <div class="divider"></div>
-                    <div class="flex-box">
-                      <div class="columns">
-                        <div class="times">
-                          <mat-form-field class="clock">
-                            <input matInput placeholder="Hora de inicio">
-                          </mat-form-field>
-                          <mat-form-field class="clock">
-                            <input matInput placeholder="Hora de fin">
-                          </mat-form-field>
-                        </div>
-                        <mat-form-field class="inputs">
-                          <mat-select placeholder="Tipo de mantenimiento">
-                            <mat-option value="opt 1">1</mat-option>
-                            <mat-option value="opt 2">2</mat-option>
-                            <mat-option value="opt 3">3</mat-option>
-                          </mat-select>
-                        </mat-form-field>
-                        <div class="text-divider">
-                          Equipo de protección utilizado
-                        </div>
-                        <div class="space-box">
-                          <div class="checkbox-list">
-                            <mat-checkbox>Monitoreo de pozos y detección de fugas</mat-checkbox>
-                            <mat-checkbox>Revisión de pozos</mat-checkbox>
-                            <mat-checkbox>Albañilería, herreria, etc</mat-checkbox>
-                            <mat-checkbox>Pruebas de eficiencia</mat-checkbox>
-                            <mat-checkbox>Limpieza</mat-checkbox>
-                          </div>
-                          <div class="checkbox-list">
-                            <mat-checkbox>Eléctrico</mat-checkbox>
-                            <mat-checkbox>Mecánico</mat-checkbox>
-                            <mat-checkbox>Hidrosanitario</mat-checkbox>
-                            <mat-checkbox>Vista de autoridad</mat-checkbox>
-                            <mat-checkbox>Otros</mat-checkbox>
-                          </div>
-                        </div>
-                        <mat-form-field class="inputs">
-                          <mat-select placeholder="Procedencia del personal">
-                            <mat-option value="opt 1">1</mat-option>
-                            <mat-option value="opt 2">2</mat-option>
-                            <mat-option value="opt 3">3</mat-option>
-                          </mat-select>
-                        </mat-form-field>
-                        <div class="color">
-                          <span>Personal involucrado</span>
-                        </div>
-                        <mat-form-field class="inputs">
-                          <input matInput placeholder="1.- Nombre">
-                        </mat-form-field>
-                        <div class="text-divider">
-                          Equipo de protección utilizado
-                        </div>
-                        <div class="space-box">
-                          <div class="checkbox-list">
-                            <mat-checkbox>Ropa de algodón</mat-checkbox>
-                            <mat-checkbox>Goggles</mat-checkbox>
-                            <mat-checkbox>Zapato industrial</mat-checkbox>
-                            <mat-checkbox>Lentes de protección</mat-checkbox>
-                          </div>
-                          <div class="checkbox-list">
-                            <mat-checkbox>Guantes</mat-checkbox>
-                            <mat-checkbox>Rodilleras</mat-checkbox>
-                            <mat-checkbox>Cubrebocas</mat-checkbox>
-                            <mat-checkbox>Cascos</mat-checkbox>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="columns">
-                        <mat-form-field class="inputs">
-                          <input matInput placeholder="Herramientas y materailes utilizados">
-                        </mat-form-field>
-                        <mat-form-field class="inputs">
-                          <input matInput placeholder="Procedimientos utilizados">
-                        </mat-form-field>
-                        <div class="text">
-                          Si la actividad requiere de autorización del gerente, anote el nombre a continuación
-                        </div>
-                        <mat-form-field class="inputs">
-                          <input matInput placeholder="Nombre completo">
-                        </mat-form-field>
-                        <mat-form-field class="inputs">
-                          <input matInput placeholder="Observaciones">
-                        </mat-form-field>
-                        <div class="image-header">
-                          Captura fotográfica de evidencia
-                        </div>
-                        <div class="image-container">
-                          <mat-icon class="default-image">
-                            image
-                          </mat-icon>
-                        </div>
-                      </div>
-                    </div>
-                  </mat-expansion-panel>
-                </mat-accordion>
-              </div>
-              <div class="inputs" *ngSwitchCase="2">
-                <mat-accordion class="inputs">
-                  <mat-expansion-panel>
-                    <mat-expansion-panel-header [collapsedHeight]="'88px'" [expandedHeight]="'88px'">
-                      <mat-panel-title>
-                        <div class="date">
-                          <div>
-                            <div class="text-bold">{{task.date[0]}}</div>
-                            <div class="text-bold">{{task.date[1]}}</div>
-                          </div>
-                        </div>
-                        <div class="content">
-                          <div class="head">{{task.name}}</div>
-                          <div class="text">{{zones[task.zone-1]}}</div>
-                          <div class="text">{{priority[task.level-1]}}</div>
-                        </div>
-                      </mat-panel-title>
-                    </mat-expansion-panel-header>
-                    <div class="task-header">
-                      <div class="head-bold">{{task.name}}</div>
-                      <div class="contorl-data">
-                        <div>Fecha: {{task.date[0]}} {{task.date[1]}} {{task.date[2]}}</div>
-                        <div>Folio: </div>
-                      </div>
-                    </div>
-                    <div class="divider"></div>
-                    <div class="flex-box">
-                      <div class="columns">
-                        <div class="times">
-                          <mat-form-field class="clock">
-                            <input matInput placeholder="Hora de inicio">
-                          </mat-form-field>
-                          <mat-form-field class="clock">
-                            <input matInput placeholder="Hora de término">
-                          </mat-form-field>
-                        </div>
-                        <mat-form-field class="inputs">
-                          <input matInput placeholder="Marca">
-                        </mat-form-field>
-                        <mat-form-field class="inputs">
-                          <input matInput placeholder="Modelo">
-                        </mat-form-field>
-                        <mat-form-field class="inputs">
-                          <input matInput placeholder="No. de control">
-                        </mat-form-field>
-                        <mat-form-field class="inputs">
-                          <input matInput placeholder="Turno">
-                        </mat-form-field>
-                        <mat-form-field class="inputs">
-                          <input matInput placeholder="Presión manómetro">
-                        </mat-form-field>
-                        <mat-form-field class="inputs">
-                          <input matInput placeholder="Purga o descarga">
-                        </mat-form-field>
-                        <mat-form-field class="inputs">
-                          <input matInput placeholder="Disparo manual de válvula de seguridad">
-                        </mat-form-field>
-                      </div>
-                      <div class="columns">
-                        <mat-form-field class="inputs">
-                          <input matInput placeholder="Modificaciones y medidas correctivas">
-                        </mat-form-field>
-                        <mat-form-field class="inputs">
-                          <input matInput placeholder="Observaciones">
-                        </mat-form-field>
-                        <div class="image-header">
-                          Captura fotográfica de evidencia
-                        </div>
-                        <div class="image-container">
-                          <mat-icon class="default-image">
-                            image
-                          </mat-icon>
-                        </div>
-                      </div>
-                    </div>
-                  </mat-expansion-panel>
-                </mat-accordion>
-              </div>
-              <div class="inputs" *ngSwitchCase="3">
-                <mat-accordion class="inputs">
-                  <mat-expansion-panel>
-                    <mat-expansion-panel-header [collapsedHeight]="'88px'" [expandedHeight]="'88px'">
-                      <mat-panel-title>
-                        <div class="date">
-                          <div>
-                            <div class="text-bold">{{task.date[0]}}</div>
-                            <div class="text-bold">{{task.date[1]}}</div>
-                          </div>
-                        </div>
-                        <div class="content">
-                          <div class="head">{{task.name}}</div>
-                          <div class="text">{{zones[task.zone-1]}}</div>
-                          <div class="text">{{priority[task.level-1]}}</div>
-                        </div>
-                      </mat-panel-title>
-                    </mat-expansion-panel-header>
-                    <div class="task-header">
-                      <div class="head-bold">{{task.name}}</div>
-                      <div class="contorl-data">
-                        <div>Fecha: {{task.date[0]}} {{task.date[1]}} {{task.date[2]}}</div>
-                        <div>Folio: </div>
-                      </div>
-                    </div>
-                    <div class="divider"></div>
-                    <div class="flex-box">
-                      <div class="columns">
-                        <mat-form-field class="inputs">
-                          <input matInput placeholder="Lugar de generación">
-                        </mat-form-field>
-                        <mat-form-field class="inputs">
-                          <input matInput placeholder="Residuo generado">
-                        </mat-form-field>
-                        <div class="text-divider">
-                          Características
-                        </div>
-                        <div class="space-box">
-                          <div class="checkbox-list">
-                            <mat-checkbox>Corrosivo</mat-checkbox>
-                            <mat-checkbox>Explosivo</mat-checkbox>
-                            <mat-checkbox>Inflamable</mat-checkbox>
-                          </div>
-                          <div class="checkbox-list">
-                            <mat-checkbox>Reactivo</mat-checkbox>
-                            <mat-checkbox>Tóxico</mat-checkbox>
-                          </div>
-                        </div>
-                        <mat-form-field class="inputs">
-                          <input matInput placeholder="Cantidad generada">
-                        </mat-form-field>
-                        <mat-form-field class="inputs">
-                          <input matInput placeholder="Almacenamiento temporal">
-                        </mat-form-field>
-                      </div>
-                      <div class="columns">
-                        <div class="image-header">
-                          Captura fotográfica de evidencia
-                        </div>
-                        <div class="image-container">
-                          <mat-icon class="default-image">
-                            image
-                          </mat-icon>
-                        </div>
-                      </div>
-                    </div>
-                  </mat-expansion-panel>
-                </mat-accordion>
-              </div>
-              <div class="inputs" *ngSwitchCase="4">
-                <mat-accordion class="inputs">
-                  <mat-expansion-panel>
-                    <mat-expansion-panel-header [collapsedHeight]="'88px'" [expandedHeight]="'88px'">
-                      <mat-panel-title>
-                        <div class="date">
-                          <div>
-                            <div class="text-bold">{{task.date[0]}}</div>
-                            <div class="text-bold">{{task.date[1]}}</div>
-                          </div>
-                        </div>
-                        <div class="content">
-                          <div class="head">{{task.name}}</div>
-                          <div class="text">{{zones[task.zone-1]}}</div>
-                          <div class="text">{{priority[task.level-1]}}</div>
-                        </div>
-                      </mat-panel-title>
-                    </mat-expansion-panel-header>
-                    <div class="task-header">
-                      <div class="head-bold">{{task.name}}</div>
-                      <div class="contorl-data">
-                        <div>Fecha: {{task.date[0]}} {{task.date[1]}} {{task.date[2]}}</div>
-                        <div>Folio: </div>
-                      </div>
-                    </div>
-                    <div class="divider"></div>
-                    <div class="flex-box">
-                      <div class="columns">
-                        <div class="performance">
-                          <div>Funcionamiento Satisfactorio = S</div>
-                          <div>Funcionamiento No Satisfactorio = N/S</div>
-                          <div>Funcionamiento No Determinado = N/D</div>
-                        </div>
-                        <div>Dispensarios</div>
-                        <div class="divider"></div>
-                        <div>Magna/Premium</div>
-                        <div class="times">
-                          <mat-form-field class="clock">
-                            <mat-select placeholder="Pistola">
-                              <mat-option value="1">opt 1</mat-option>
+                          <mat-form-field class="inputs">
+                            <mat-select placeholder="Paro de emergencia">
+                              <mat-option value="1">opt1</mat-option>
                               <mat-option value="2">opt 2</mat-option>
                               <mat-option value="3">opt 3</mat-option>
                             </mat-select>
                           </mat-form-field>
-                          <mat-form-field class="clock">
-                            <mat-select placeholder="Manguera larga">
-                              <mat-option value="1">opt 1</mat-option>
-                              <mat-option value="2">opt 2</mat-option>
-                              <mat-option value="3">opt 3</mat-option>
-                            </mat-select>
+                          <mat-form-field class="inputs">
+                            <input matInput placeholder="Observaciones">
                           </mat-form-field>
-                        </div>
-                        <div class="times">
-                          <mat-form-field class="clock">
-                            <mat-select placeholder="Break away">
-                              <mat-option value="1">opt 1</mat-option>
-                              <mat-option value="2">opt 2</mat-option>
-                              <mat-option value="3">opt 3</mat-option>
-                            </mat-select>
-                          </mat-form-field>
-                          <mat-form-field class="clock">
-                            <mat-select placeholder="Manguera corta">
-                              <mat-option value="1">opt 1</mat-option>
-                              <mat-option value="2">opt 2</mat-option>
-                              <mat-option value="3">opt 3</mat-option>
-                            </mat-select>
-                          </mat-form-field>
-                        </div>
-                        <div class="some-select">
-                          <mat-form-field class="select">
-                            <mat-select placeholder="Bomba vacío">
-                              <mat-option value="1">opt 1</mat-option>
-                              <mat-option value="2">opt 2</mat-option>
-                              <mat-option value="3">opt 3</mat-option>
-                            </mat-select>
-                          </mat-form-field>
-                        </div>
-                        <div>Tanques</div>
-                        <div class="divider"></div>
-                        <div>Magna/Premium</div>
-                        <mat-form-field class="inputs">
-                          <mat-select placeholder="Tapa y adaptador de vapor">
-                            <mat-option value="1">opt1</mat-option>
-                            <mat-option value="2">opt 2</mat-option>
-                            <mat-option value="3">opt 3</mat-option>
-                          </mat-select>
-                        </mat-form-field>
-                        <mat-form-field class="inputs">
-                          <mat-select placeholder="Tapa y adaptador de llenado">
-                            <mat-option value="1">opt1</mat-option>
-                            <mat-option value="2">opt 2</mat-option>
-                            <mat-option value="3">opt 3</mat-option>
-                          </mat-select>
-                        </mat-form-field>
-                        <mat-form-field class="inputs">
-                          <mat-select placeholder="Válvula de sobrellenado">
-                            <mat-option value="1">opt1</mat-option>
-                            <mat-option value="2">opt 2</mat-option>
-                            <mat-option value="3">opt 3</mat-option>
-                          </mat-select>
-                        </mat-form-field>
-                        <mat-form-field class="inputs">
-                          <mat-select placeholder="Válvula de presión-vacio">
-                            <mat-option value="1">opt1</mat-option>
-                            <mat-option value="2">opt 2</mat-option>
-                            <mat-option value="3">opt 3</mat-option>
-                          </mat-select>
-                        </mat-form-field>
-                      </div>
-                      <div class="columns">
-                        <mat-form-field class="inputs">
-                          <mat-select placeholder="Alarma SRV Encendido">
-                            <mat-option value="1">opt1</mat-option>
-                            <mat-option value="2">opt 2</mat-option>
-                            <mat-option value="3">opt 3</mat-option>
-                          </mat-select>
-                        </mat-form-field>
-                        <div>
-                          Mantenimiento
-                        </div>
-                        <mat-form-field class="inputs">
-                          <mat-select placeholder="Paro de emergencia">
-                            <mat-option value="1">opt1</mat-option>
-                            <mat-option value="2">opt 2</mat-option>
-                            <mat-option value="3">opt 3</mat-option>
-                          </mat-select>
-                        </mat-form-field>
-                        <mat-form-field class="inputs">
-                          <input matInput placeholder="Observaciones">
-                        </mat-form-field>
-                        <div class="image-header">
-                          Captura fotográfica de evidencia
-                        </div>
-                        <div class="image-container">
-                          <mat-icon class="default-image">
-                            image
-                          </mat-icon>
+                          <div class="image-header">
+                            Captura fotográfica de evidencia
+                          </div>
+                          <div class="image-container">
+                            <mat-icon class="default-image">
+                              image
+                            </mat-icon>
+                          </div>
+                          <div class="finish" *ngIf="user.role === 7">
+                            <button mat-flat-button [color]="'primary'">FINALZAR</button>
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  </mat-expansion-panel>
-                </mat-accordion>
-              </div>
-              <div class="inputs" *ngSwitchCase="5">
+                    </mat-expansion-panel>
+                  </mat-accordion>
+                </div>
+                <div class="inputs" *ngSwitchCase="5">
 
+                </div>
               </div>
+            </mat-card>
+          </div>
+        </ng-template>
+        <ng-template #message>
+          <div class="empty-list">
+            <div class="message">Para continuar, es necesario calendarizar las tareas faltantes de la Estación</div>
+            <div class="action">
+              <button mat-flat-button type="button" (click)="createStationTasks()">IR A TAREAS</button>
             </div>
-          </mat-card>
-        </div>
+          </div>
+        </ng-template>
 <!--
         <mat-card class="task">
           <div class="priority" style="background-color: #0d47a1;"></div>

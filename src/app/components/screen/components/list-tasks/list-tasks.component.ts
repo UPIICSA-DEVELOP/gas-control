@@ -4,20 +4,22 @@
  *  Proprietary and confidential
  */
 
-import {Component, ElementRef, Input, OnChanges, OnInit, SimpleChanges, ViewChild} from '@angular/core';
+import {Component, DoCheck, ElementRef, Input, OnChanges, OnInit, SimpleChanges, ViewChild} from '@angular/core';
 import {DatepickerService, DateRangeOptions} from '@app/components/screen/components/datepicker/datepicker.service';
 import {TaskFilterService} from '@app/components/screen/components/task-filter/task-filter.service';
 import {ApiService} from '@app/core/services/api/api.service';
 import {ApiLoaderService} from '@app/core/services/api/api-loader.service';
 import {Constants} from '@app/core/constants.core';
 import {UtilitiesService} from '@app/core/utilities/utilities.service';
+import {LocalStorageService} from '@app/core/services/local-storage/local-storage.service';
+import {AddStationService} from '@app/components/screen/components/add-gas-station/add-station.service';
 
 @Component({
   selector: 'app-list-tasks',
   templateUrl: './list-tasks.component.html',
   styleUrls: ['./list-tasks.component.scss']
 })
-export class ListTasksComponent implements OnInit, OnChanges {
+export class ListTasksComponent implements OnInit, OnChanges, DoCheck {
   public station: any;
   @Input() set stationInfo(stationObj:any){
     if(stationObj){
@@ -42,13 +44,17 @@ export class ListTasksComponent implements OnInit, OnChanges {
   public filter: number;
   public creationDate: number;
   public load: boolean;
+  public user: any;
+  public notCalendar: boolean;
   constructor(
     private _dateService: DatepickerService,
     private _filterService: TaskFilterService,
     private _api: ApiService,
-    private _apiLoader: ApiLoaderService
+    private _apiLoader: ApiLoaderService,
+    private _addStationService: AddStationService
   ) {
     this.today = false;
+    this.notCalendar = false;
     this.filter = 0;
     this.startDate = new Date();
     this.endDate = new Date();
@@ -60,7 +66,7 @@ export class ListTasksComponent implements OnInit, OnChanges {
   }
 
   ngOnInit() {
-    //this.getStationTaskInformation();
+    this.user = LocalStorageService.getItem(Constants.UserInSession);
     this._apiLoader.getProgress().subscribe(load=>{this.load=load});
     if (this.startDate.toLocaleDateString() === this.endDate.toLocaleDateString()) {
       this.today = true;
@@ -73,6 +79,10 @@ export class ListTasksComponent implements OnInit, OnChanges {
     if (this.station){
       this.getStationTask();
     }
+  }
+
+  ngDoCheck():void{
+      this.notCalendar = LocalStorageService.getItem('notCalendar');
   }
 
   private getStationTask():void{
@@ -195,5 +205,13 @@ export class ListTasksComponent implements OnInit, OnChanges {
         this.tasksFilterd = this.copyTasks;
       }
     }
+  }
+
+  public createStationTasks():void{
+    this._addStationService.open({
+      stepActive: 3,
+      stationId: this.station.id,
+      disableClose: true
+    });
   }
 }

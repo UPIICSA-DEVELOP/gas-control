@@ -96,15 +96,12 @@
             }
           }
           .content{
-            width: 70%;
+            width: 75%;
             height: 100%;
             .head{
               color: #000000;
               font-weight: 700;
               font-size: 14px;
-              white-space: nowrap;
-              overflow: hidden;
-              text-overflow: ellipsis;
             }
             .text{
               color: #707070;
@@ -177,12 +174,14 @@
   }
   .head-bold{
     font-weight: 600;
-    width: 75%;
+    width: 50%;
     display: flex;
     align-items: flex-end;
   }
   .control-data{
-    width: 25%;
+    width: 50%;
+    display: flex;
+    justify-content: flex-end;
   }
   .some-select{
     display: flex;
@@ -204,11 +203,6 @@
     display: flex;
     flex-direction: column;
     margin: 0 8px;
-    /deep/.mat-checkbox-layout{
-      text-overflow: ellipsis;
-      overflow: hidden;
-      display: block;
-    }
   }
   .text-divider{
     margin: 8px 0;
@@ -226,4 +220,44 @@
     display: flex;
     justify-content: flex-end;
   }
+  .finish{
+    display: flex;
+    justify-content: center;
+    margin: 12px 0;
+  }
+  .checks-row{
+    width: 45%;
+    margin: 0 8px;
+  }
+  .empty-list{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    .message{
+      margin: 12px 0;
+      font-size: 20px;
+      text-align: center;
+      width: 75%;
+    }
+    .action{
+      display: flex;
+      justify-content: center;
+      button{
+        background-color: #FFAA00;
+        color: #FFFFFF;
+        margin-top: 24px;
+      }
+    }
+  }
+  .card-list{
+    width: 95%;
+  }
+  /deep/.mat-checkbox-layout{
+    white-space: normal;
+    display: block;
+  }
 }
+
