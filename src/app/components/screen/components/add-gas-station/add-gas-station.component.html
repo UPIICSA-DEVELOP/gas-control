@@ -75,7 +75,7 @@
                 <div class="modal">
                   <div class="mask" (click)="openLocation()"></div>
                   <mat-form-field class="inputs">
-                    <input formControlName="address" matInput placeholder="Dirección" required>
+                    <textarea formControlName="address" cdkTextareaAutosize matInput placeholder="Dirección" required></textarea>
                     <mat-error *ngIf="newStation.controls['address'].hasError('required')">
                       Este campo es obligatorio
                     </mat-error>
@@ -619,7 +619,7 @@
               <div class="priority" *ngIf="task.level===1" style="background-color:#257602"></div>
               <mat-card-content style="display: flex; align-items: center;">
                 <div class="calendar-task">
-                  <input [min]="startDate" [matDatepicker]="picker" style="width: 0;border: 0;" [(ngModel)]="calendar[i]">
+                  <input [min]="tomorrow" [matDatepicker]="picker" style="width: 0;border: 0;" [(ngModel)]="calendar[i]">
                   <button mat-icon-button *ngIf="!calendar[i]" (click)="picker.open()">
                     <mat-icon>update</mat-icon>
                   </button>

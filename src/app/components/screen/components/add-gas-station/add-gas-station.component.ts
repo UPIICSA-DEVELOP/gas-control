@@ -21,6 +21,7 @@ import {UploadFileResponse} from '@app/core/components/upload-file/upload-file.c
 import {DialogService} from '@app/core/components/dialog/dialog.service';
 import {PdfVisorOptions, PdfVisorService} from '@app/core/components/pdf-visor/pdf-visor.service';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
+import {UtilitiesService} from '@app/core/utilities/utilities.service';
 
 interface Person {
   id?: string;
@@ -79,6 +80,7 @@ interface Task {
   stationId: string;
   status: number;
   progress: number;
+  startDate: number;
 }
 
 @Component({
@@ -129,7 +131,8 @@ export class AddGasStationComponent implements OnInit {
   public bloodType: string;
   public bloodTypeTwo: string;
   public load: boolean;
-  public startDate: any;
+  public startDate: Date;
+  public tomorrow: Date;
   public zone: string[];
   public frequency: string[];
   public priority: string[];
@@ -181,6 +184,7 @@ export class AddGasStationComponent implements OnInit {
     this.protocol = 'http://';
     this.protocolTwo = 'http://';
     this.startDate = new Date();
+    this.tomorrow = new Date(this.startDate.getTime() + (24 * 60 * 60 * 1000));
     this.step = this._data?this._data.stepActive:0;
     this.disableClose = this._data?this._data.disableClose:false;
     this._stationId = this._data?this._data.stationId:null;
@@ -865,25 +869,21 @@ export class AddGasStationComponent implements OnInit {
   }
 
   private createStationTasks(stationId: string):void{
-    let actuallyDay = (this.startDate.getDate()).toString();
-    let actuallyMonth = (this.startDate.getMonth()+1).toString();
-    let actuallyYear = (this.startDate.getFullYear()).toString();
-    let today = Number(actuallyYear+''+(actuallyMonth.length<2?'0'+actuallyMonth:actuallyMonth)+''+(actuallyDay.length<2?'0'+actuallyDay:actuallyDay));
+    const date = new Date();
+    const today = UtilitiesService.createPersonalTimeStamp(date).timeStamp;
     let editedTasks: any[] = [];
     let copyCalendar: any[] = Object.assign([], this.calendar);
     for (let d=0;d<copyCalendar.length; d++){
-      let year = (copyCalendar[d].getFullYear()).toString();
-      let month = (copyCalendar[d].getMonth()+1).toString();
-      let day = (copyCalendar[d].getDate());
-      copyCalendar[d] = Number(year+''+(month.length<2?'0'+month:month)+''+(day.length<2?'0'+day:day));
+      copyCalendar[d] = UtilitiesService.createPersonalTimeStamp(copyCalendar[d]).timeStamp;
       editedTasks.push({startDate: copyCalendar[d], differenceOfDays:(copyCalendar[d]-today), type: this.tasks[d].id});
     }
     let task: Task = {
-      creationDate: 0,
+      creationDate: today,
       stationId: stationId,
       progress: 0,
       status: 3,
-      editedTasks: editedTasks
+      editedTasks: editedTasks,
+      startDate: today
     };
     this._api.createStationTask(task).subscribe(response=>{
       switch (response.code){
