@@ -855,16 +855,8 @@ export class AddGasStationComponent implements OnInit {
         this.step = 0;
          break;
       case 3:
-        this._dialogService.confirmDialog(
-          'Información',
-          'Aún no se ha calendarizado las tareas de la estación. ¿Desea hacerlo ahora?',
-          'SI',
-          'MÁS TARDE').afterClosed().subscribe(response=>{
-            switch (response.code){
-              case -1:
-                this._dialogRef.close();
-                break;
-            }
+        this._router.navigate(['/home'],{queryParams:{station: this._stationId?this._stationId:this.station.id}}).then(()=>{
+          this._dialogRef.close();
         });
          break;
     }

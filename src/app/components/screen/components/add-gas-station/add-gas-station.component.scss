@@ -70,7 +70,6 @@
       .list{
         width: 90%;
         height: 100%;
-        overflow: auto;
         .card{
           margin: 8px 0;
           mat-card-content{
@@ -362,6 +361,7 @@
   .study{
     display: flex;
     align-items: center;
+    width: 100%;
   }
   .formHead{
     margin: 8px 0 4px 0;
