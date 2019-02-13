@@ -36,7 +36,7 @@
           <ng-template #cards>
             <div *ngFor="let stations of stationList; let i=index">
               <mat-card class="notify">
-                <a href="/home?station={{stations.id}}" style="display: flex; width: 90%; text-decoration-line: none">
+                <div (click)="changeStation(stations.id)" style="display: flex; width: 90%; text-decoration-line: none">
                   <div class="image">
                     <img class="image-station" *ngIf="groupIcon" [src]="groupIcon.groupIcons[stations.type-1].fileCS.thumbnail" alt="station image">
                     <mat-icon *ngIf="!groupIcon" class="image-station">local_gas_station</mat-icon>
@@ -58,7 +58,7 @@
                       <span class="content-text"> {{stations.phoneNumber}}</span>
                     </div>
                   </div>
-                </a>
+                </div>
                 <div class="end">
                   <button mat-icon-button (click)="changeNotificationsStatus(stations.id, notificationActive[i], i)">
                     <mat-icon class="icon" svgIcon="icons:notifications_available" *ngIf="notificationActive[i]"></mat-icon>

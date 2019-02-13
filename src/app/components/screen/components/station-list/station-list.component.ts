@@ -4,13 +4,13 @@
  * Proprietary and confidential
  */
 
-import {AfterViewInit, Component, DoCheck, OnInit} from '@angular/core';
+import {Component, DoCheck, OnInit} from '@angular/core';
 import {ApiService} from '@app/core/services/api/api.service';
 import {DialogService} from '@app/core/components/dialog/dialog.service';
 import {CookieService} from '@app/core/services/cookie/cookie.service';
 import {Constants} from '@app/core/constants.core';
 import {Router} from '@angular/router';
-import {animate, keyframes, query, stagger, state, style, transition, trigger} from '@angular/animations';
+import {animate, state, style, transition, trigger} from '@angular/animations';
 import {LocalStorageService} from '@app/core/services/local-storage/local-storage.service';
 import {UtilitiesService} from '@app/core/utilities/utilities.service';
 import {AddStationService} from '@app/components/screen/components/add-gas-station/add-station.service';
@@ -109,7 +109,7 @@ export class StationListComponent implements OnInit, DoCheck {
   }
 
   public onCloseList():void{
-    this._router.navigate(['/home']);
+    this._router.navigate(['/home']).then();
   }
 
   private getStationList():void{
@@ -176,5 +176,11 @@ export class StationListComponent implements OnInit, DoCheck {
         this.stationList = this.stations;
       }
     }
+  }
+
+  public changeStation(id: string):void{
+    this._router.navigate(['/home'], {queryParams:{station: id}}).then(()=>{
+      LocalStorageService.removeItem('notCalendar');
+    });
   }
 }
