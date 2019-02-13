@@ -67,7 +67,7 @@
                 </mat-form-field>
 
                 <mat-form-field>
-                  <input formControlName="email" matInput placeholder="Email comercial" type="email" required
+                  <input (blur)="validateEmailExist()" formControlName="email" matInput placeholder="Email comercial" type="email" required
                          aria-label="User email">
                   <mat-error *ngIf="ownerForm.controls['email'].hasError('required')">
                     Este campo es obligatorio
@@ -75,31 +75,47 @@
                   <mat-error *ngIf="ownerForm.controls['email'].hasError('email')">
                     La dirección de Email no es valida
                   </mat-error>
-                </mat-form-field>
-
-                <mat-form-field>
-                  <input formControlName="country" (input)="addCountry()" matInput placeholder="País" type="text" required
-                         aria-label="User country">
-                  <mat-error *ngIf="ownerForm.controls['country'].hasError('required')">
-                    Este campo es obligatorio
+                  <mat-error *ngIf="ownerForm.controls['email'].hasError('emailUsed')">
+                    Este email ya tiene un usuario asociado
                   </mat-error>
                 </mat-form-field>
 
-                <div class="phone-number">
-
-                  <mat-form-field class="country-code">
-                    <input formControlName="countryCode" (input)="addCountry()" matInput placeholder="Codigo" type="text" required
-                           aria-label="User country code">
-                    <mat-error *ngIf="ownerForm.controls['countryCode'].hasError('required')">
+                <div class="modal-two">
+                  <div class="mask" (click)="addCountry()"></div>
+                  <mat-form-field>
+                    <input formControlName="country" (keyup)="addCountry()" matInput placeholder="País" type="text" required
+                           aria-label="User country">
+                    <mat-error *ngIf="ownerForm.controls['country'].hasError('required')">
                       Este campo es obligatorio
                     </mat-error>
                   </mat-form-field>
+                </div>
+
+                <div class="phone-number">
+                    <div class="country-code">
+                      <div class="modal">
+                        <div class="mask" (click)="addCountry()"></div>
+                        <mat-form-field>
+                          <input formControlName="countryCode" (keyup)="addCountry()" matInput placeholder="Codigo" type="text" required
+                                 aria-label="User country code">
+                          <mat-error *ngIf="ownerForm.controls['countryCode'].hasError('required')">
+                            Este campo es obligatorio
+                          </mat-error>
+                        </mat-form-field>
+                      </div>
+                    </div>
 
                   <mat-form-field class="number">
                     <input formControlName="phoneNumber" matInput placeholder="Numero celular" type="text" required
-                           aria-label="User phone number">
+                           aria-label="User phone number" #phoneNumber>
                     <mat-error *ngIf="ownerForm.controls['phoneNumber'].hasError('required')">
                       Este campo es obligatorio
+                    </mat-error>
+                    <mat-error *ngIf="ownerForm.controls['phoneNumber'].hasError('minlength')">
+                      Se requieren de 8 a 13 dígitos
+                    </mat-error>
+                    <mat-error *ngIf="ownerForm.controls['phoneNumber'].hasError('maxlength')">
+                      Se requieren de 8 a 13 dígitos
                     </mat-error>
                   </mat-form-field>
                 </div>
@@ -150,7 +166,7 @@
 
               </mat-card-content>
               <mat-card-actions *ngIf="!doneStep">
-                <button mat-flat-button [disabled]="load" [color]="'primary'">Siguiente</button>
+                <button mat-flat-button [disabled]="load" [color]="'primary'">SIGUIENTE</button>
               </mat-card-actions>
 
             </div>
@@ -165,8 +181,7 @@
               </mat-card-header>
               <mat-card-content>
                 <mat-form-field>
-                  <input formControlName="company" matInput placeholder="Razón Social" type="text" required
-                         aria-label="Comapany">
+                  <input formControlName="company" matInput placeholder="Razón Social" type="text" required aria-label="Comapany">
                   <mat-error *ngIf="consultancyForm.controls['company'].hasError('required')">
                     Este campo es obligatorio
                   </mat-error>
@@ -178,28 +193,34 @@
                     Este campo es obligatorio
                   </mat-error>
                 </mat-form-field>
-
+                <div class="modal-two">
+                  <div (click)="addLocation()" class="mask"></div>
+                  <mat-form-field>
+                    <textarea formControlName="address" cdkTextareaAutosize matInput placeholder="Dirección" type="text" required aria-label="Address"></textarea>
+                    <mat-error *ngIf="consultancyForm.controls['address'].hasError('required')">
+                      Este campo es obligatorio
+                    </mat-error>
+                  </mat-form-field>
+                </div>
                 <mat-form-field>
-                  <input formControlName="address" (input)="addLocation()" matInput placeholder="Dirección" type="text" required
-                         aria-label="Address">
-                  <mat-error *ngIf="consultancyForm.controls['address'].hasError('required')">
-                    Este campo es obligatorio
+                  <input formControlName="consultancyNumber" matInput placeholder="Numero de la consultora" type="text" aria-label="Consultancy Number" maxlength="13">
+                  <mat-error *ngIf="consultancyForm.controls['consultancyNumber'].hasError('minlength')">
+                    Se requieren de 8 a 13 dígitos
                   </mat-error>
-                </mat-form-field>
-                <mat-form-field>
-                  <input formControlName="consultancyNumber" matInput placeholder="Numero de la consultora" type="text"
-                         aria-label="Consultancy Number">
+                  <mat-error *ngIf="consultancyForm.controls['consultancyNumber'].hasError('maxlength')">
+                    Se requieren de 8 a 13 dígitos
+                  </mat-error>
                 </mat-form-field>
               </mat-card-content>
               <mat-card-actions *ngIf="!doneStep">
-                <button mat-flat-button [disabled]="load" [color]="'primary'">Siguiente</button>
+                <button mat-flat-button [disabled]="load" [color]="'primary'">SIGUIENTE</button>
               </mat-card-actions>
             </div>
           </form>
 
 
           <mat-card-actions  *ngIf="doneStep">
-            <button mat-flat-button (click)="done()" [disabled]="load" [color]="'primary'">Listo</button>
+            <button mat-flat-button (click)="done()" [disabled]="progress" [color]="'primary'">LISTO</button>
           </mat-card-actions>
         </mat-card>
       </div>

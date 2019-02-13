@@ -181,4 +181,30 @@
       }
     }
   }
+  .modal{
+    position: relative;
+    .mask{
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 2;
+      cursor: pointer;
+    }
+  }
+  .modal-two{
+    position: relative;
+    width: 100%;
+    margin-left: 32px;
+    .mask{
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 2;
+      cursor: pointer;
+    }
+  }
 }

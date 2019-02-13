@@ -4,7 +4,7 @@
  * Proprietary and confidential
  */
 
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Constants} from 'app/core/constants.core';
 import {SignaturePadService} from 'app/core/components/signature-pad/signature-pad.service';
@@ -40,6 +40,7 @@ export interface Person {
 })
 export class AddConsultancyComponent implements OnInit {
   @ViewChild('stepper') private _stepper: MatStepper;
+  @ViewChild('phoneNumber') private _phoneNumberInput: ElementRef;
   public load: boolean;
   public roles: any[];
   public protocols: any[];
@@ -50,6 +51,8 @@ export class AddConsultancyComponent implements OnInit {
   public showOwnerForm: boolean;
   public showConsultancyForm: boolean;
   public doneStep: boolean;
+  public progress: boolean;
+  public country: string;
   private _location: any;
   private _ownerInfo: Person;
   private _consultancyInfo: any;
@@ -64,6 +67,7 @@ export class AddConsultancyComponent implements OnInit {
     private _uploadFile: UploadFileService,
     private _api: ApiService
   ) {
+    this.progress = false;
     this.signature = {
       path: null,
       blob: null,
@@ -85,16 +89,17 @@ export class AddConsultancyComponent implements OnInit {
   ngOnInit() {
     this._apiLoader.getProgress().subscribe(load => {this.load = load});
     this.showOwnerForm = true;
+    this.country = 'MX';
     this.ownerForm = this._formBuilder.group({
       name: ['', [Validators.required]],
       lastName: ['', [Validators.required]],
       email: ['', [Validators.required, Validators.email]],
       country:  ['México', [Validators.required]],
       countryCode:  ['+52', [Validators.required]],
-      phoneNumber: ['', [Validators.required]],
+      phoneNumber: ['', [Validators.required, Validators.maxLength(13),Validators.minLength(8)]],
       rol: [1, [Validators.required]],
       jobTitle: ['', [Validators.required]],
-      protocol: [''],
+      protocol: ['http://',[]],
       website: ['', [Validators.pattern(Constants.REGEX_WEBSITE)]]
     });
   }
@@ -144,10 +149,10 @@ export class AddConsultancyComponent implements OnInit {
       email: data.email,
       phoneNumber: data.phoneNumber,
       countryCode: data.countryCode.replace('+', ''),
-      country: data.country,
+      country: this.country,
       role: 1,
       jobTitle: data.jobTitle,
-      website: data.website
+      website: (data.website?data.protocol+data.website:undefined)
     };
     this.initFormConsultancy(true);
   }
@@ -167,6 +172,8 @@ export class AddConsultancyComponent implements OnInit {
   }
 
   public done(): void{
+    this.progress = true;
+    this._snackBar.openSnackBar('Espere un momento...','',0);
     this.createConsultancy();
   }
 
@@ -199,7 +206,9 @@ export class AddConsultancyComponent implements OnInit {
   public addCountry(): void{
     this._countryCode.openDialog().afterClosed().subscribe(response => {
       if(response){
+        this.country = response.iso;
         this.ownerForm.patchValue({country: response.name, countryCode: response.code});
+        this._phoneNumberInput.nativeElement.focus();
       }
     });
   }
@@ -210,7 +219,7 @@ export class AddConsultancyComponent implements OnInit {
         company: ['', [Validators.required]],
         rfc: ['', [Validators.required]],
         address: ['', [Validators.required]],
-        consultancyNumber: ['']
+        consultancyNumber: ['',[Validators.minLength(8), Validators.maxLength(13)]]
       });
     }else{
       this.consultancyForm.enable();
@@ -260,6 +269,7 @@ export class AddConsultancyComponent implements OnInit {
     this._api.updatePerson(person).subscribe(response => {
       switch (response.code){
         case 200:
+          this._snackBar.closeSnackBar();
          this.exit(true, 200);
           break;
         default:
@@ -375,4 +385,16 @@ export class AddConsultancyComponent implements OnInit {
     });
   }
 
+  public validateEmailExist():void{
+    const option = {
+      email: this.ownerForm.controls['email'].value
+    };
+    this._api.personExists(option).subscribe(response=>{
+      switch (response.code){
+        case 200:
+          this.ownerForm.controls['email'].setErrors({emailUsed: true});
+          break;
+      }
+    })
+  }
 }
