@@ -19,7 +19,6 @@ export class StationStatusComponent implements OnInit{
   @Input() set station(stationObj: any){
     if(stationObj){
       this.createConfigGraphic(stationObj);
-      this.createGraphic(stationObj.progress);
     }
   } ;
   @ViewChild('canvas') private _canvas: ElementRef;
@@ -27,13 +26,10 @@ export class StationStatusComponent implements OnInit{
   public showGraphic: boolean;
   public data: any;
   public chart: any;
-  public chartConfig: any;
+  private _chartConfig: any;
   constructor(
     @Inject(PLATFORM_ID) private _platformId
   ){
-    if(isPlatformBrowser(this._platformId)){
-      this.showGraphic = true;
-    }
     this.showGraphic = isPlatformBrowser(this._platformId);
   }
 
@@ -42,7 +38,7 @@ export class StationStatusComponent implements OnInit{
   }
 
   private createConfigGraphic(station: any){
-    this.chartConfig = {
+    this._chartConfig = {
       type: 'doughnut',
       data: {
         labels: ["Completas", "Incompletas"],
@@ -69,15 +65,9 @@ export class StationStatusComponent implements OnInit{
           text.push('</ul>');
           return text.join("");
         }
-      }
-    }
-  }
-
-  private createGraphic(progress: any): void{
-    if(isPlatformBrowser(this._platformId)){
-      this.chart = new Chart(this._canvas.nativeElement, this.chartConfig);
-      Chart.pluginService.register({
-        beforeDraw: (chart: any) => {
+      },
+      plugins:{
+        beforeDraw: (chart) => {
           let width = chart.chart.width,
             height = chart.chart.height,
             ctx = chart.chart.ctx;
@@ -88,14 +78,27 @@ export class StationStatusComponent implements OnInit{
           ctx.textBaseline = "middle";
           ctx.fillStyle = '#0d47a1';
 
-          let text = progress + '%',
+          let text = station.progress + '%',
             textX = Math.round((width - ctx.measureText(text).width) / 2),
             textY = height / 2;
 
           ctx.fillText(text, textX, textY);
           ctx.save();
         }
-      });
+      }
+    };
+
+    this.createGraphic();
+  }
+
+  private createGraphic(): void{
+    if(isPlatformBrowser(this._platformId)){
+      if(this.chart){
+        this.chart.render();
+        this.chart.destroy();
+        this.chart = null;
+      }
+      this.chart = new Chart(this._canvas.nativeElement, this._chartConfig);
       this._legend.nativeElement.innerHTML = this.chart.generateLegend();
     }
   }
