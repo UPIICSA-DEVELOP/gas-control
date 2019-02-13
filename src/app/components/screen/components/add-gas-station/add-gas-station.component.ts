@@ -181,6 +181,8 @@ export class AddGasStationComponent implements OnInit {
     this.tanks = [];
     this.dispensers = [];
     this.calendar=[];
+    this.countryTwo = 'MX';
+    this.countryTwo = 'MX';
     this.protocol = 'http://';
     this.protocolTwo = 'http://';
     this.startDate = new Date();
