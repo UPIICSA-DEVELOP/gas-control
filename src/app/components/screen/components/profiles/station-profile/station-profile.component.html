@@ -52,7 +52,7 @@
             <div class="address">
               <div class="mask" (click)="openLocation()" *ngIf="user.role!==6"></div>
               <mat-form-field class="inputs">
-                <textarea formControlName="address" matInput placeholder="Dirección" required type="text" aria-label="Station address"></textarea>
+                <textarea formControlName="address" cdkTextareaAutosize matInput placeholder="Dirección" required type="text" aria-label="Station address"></textarea>
                 <mat-error *ngIf="stationForm.controls['address'].hasError('required')">
                   Este campo es obligatorio
                 </mat-error>

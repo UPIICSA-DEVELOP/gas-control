@@ -78,6 +78,27 @@ export class UtilitiesService {
     });
   }
 
+  static compareJSON(object1: any, object2:any): boolean{
+    let flag = false;
+    try{
+      if(Object.keys(object1).length==Object.keys(object2).length){
+        for(let key in object1) {
+          if(object1[key] !== object2[key]) {
+            flag = true;
+            break;
+          }
+        }
+      }
+      else {
+        flag = true;
+      }
+    }catch (e){
+      console.error(e);
+      return null;
+    }
+    return flag;
+  }
+
   static makeRandomHash(): string {
     let text = "";
     const possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";

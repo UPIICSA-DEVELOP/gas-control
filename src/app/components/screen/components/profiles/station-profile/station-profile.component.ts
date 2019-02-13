@@ -15,6 +15,7 @@ import {SnackBarService} from '@app/core/services/snackbar/snackbar.service';
 import {DialogService} from '@app/core/components/dialog/dialog.service';
 import {Constants} from '@app/core/constants.core';
 import {LocalStorageService} from '@app/core/services/local-storage/local-storage.service';
+import {UtilitiesService} from '@app/core/utilities/utilities.service';
 
 @Component({
   selector: 'app-station-profile',
@@ -45,9 +46,12 @@ import {LocalStorageService} from '@app/core/services/local-storage/local-storag
   host: {'[@fadeInAnimation]': ''}
 })
 export class StationProfileComponent implements OnInit {
-  public workShifts = [];
-  public tanks = [];
-  public dispensers = [];
+  public workShifts:any[];
+  public tanks:any[];
+  public dispensers:any[];
+  public workShiftsCopy:any[];
+  public tanksCopy:any[];
+  public dispensersCopy:any[];
   public capacities: any[];
   public stationForm: FormGroup;
   public station: any;
@@ -72,6 +76,12 @@ export class StationProfileComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.workShifts = [];
+    this.tanks = [];
+    this.dispensers = [];
+    this.workShiftsCopy = [];
+    this.tanksCopy = [];
+    this.dispensersCopy = [];
     this.user = LocalStorageService.getItem(Constants.UserInSession);
     if (this._activatedRouter.snapshot.queryParams.id) {
       this.id = this._activatedRouter.snapshot.queryParams.id;
@@ -96,12 +106,25 @@ export class StationProfileComponent implements OnInit {
       ).afterClosed().subscribe(response=>{
         switch (response.code) {
           case 1:
-            this._router.navigate(['/home']).then();
+            this._router.navigate(['/home'], {queryParams:{station: this.id}}).then();
             break;
         }
-      })
-    } else {
-      this._router.navigate(['/home']).then();
+      });
+    } else if(this.validateChangesOnArrays()){
+      this._dialogService.confirmDialog(
+        '¿Desea salir sin guardar cambios?',
+        '',
+        'ACEPTAR',
+        'CANCELAR'
+      ).afterClosed().subscribe(response=>{
+        switch (response.code) {
+          case 1:
+            this._router.navigate(['/home'], {queryParams:{station: this.id}}).then();
+            break;
+        }
+      });
+    } else{
+      this._router.navigate(['/home'], {queryParams:{station: this.id}}).then();
     }
   }
 
@@ -169,18 +192,24 @@ export class StationProfileComponent implements OnInit {
           this.station = response.item;
           if (this.station.dispensers) {
             this.dispensers = this.station.dispensers;
+            this.dispensersCopy = this.station.dispensers;
           }else{
             this.dispensers.push({hoses: undefined, identifier: undefined, magna: false, premium: false, diesel: false});
+            this.dispensersCopy.push({hoses: undefined, identifier: undefined, magna: false, premium: false, diesel: false});
           }
           if (this.station.fuelTanks){
             this.tanks = this.station.fuelTanks;
+            this.tanksCopy = this.station.fuelTanks;
           }else{
             this.tanks.push({capacity: undefined, fuelType: undefined});
+            this.tanksCopy.push({capacity: undefined, fuelType: undefined});
           }
           if (this.station.workShifts){
             this.workShifts = this.station.workShifts;
+            this.workShiftsCopy = this.station.workShifts;
           }else{
             this.workShifts.push({start: undefined, end: undefined});
+            this.workShiftsCopy.push({start: undefined, end: undefined});
           }
           if (this.station.location) {
             this.latLng = {
@@ -241,7 +270,7 @@ export class StationProfileComponent implements OnInit {
         case 200:
           this.change = false;
           this._snackBarService.openSnackBar('Información actualizada','OK',3000);
-          this._router.navigate(['/home'],{queryParams:{station: this.station.id}});
+          this._router.navigate(['/home'],{queryParams:{station: this.station.id}}).then();
           break;
         default:
           this._dialogService.alertDialog('No se pudo acceder', 'Se produjo un error de comunicación con el servidor', 'ACEPTAR');
@@ -320,6 +349,43 @@ export class StationProfileComponent implements OnInit {
         this.dispensers.splice(k, 1);
       }
     }
+  }
+
+  private validateChangesOnArrays():boolean {
+    let changeDispensers: boolean;
+    let changeWorkShifts: boolean;
+    let changeTanks: boolean;
+    if(this.workShifts.length !== this.workShiftsCopy.length){
+      return true;
+    }else{
+      for (let i = 0; i<this.workShifts.length;i++){
+        changeWorkShifts = UtilitiesService.compareJSON(this.workShifts[i], this.workShiftsCopy[i]);
+        if(changeWorkShifts){
+          break;
+        }
+      }
+    }
+    if(this.tanks.length !== this.tanksCopy.length){
+      return true;
+    }else{
+      for (let i = 0; i<this.tanks.length;i++){
+        changeTanks = UtilitiesService.compareJSON(this.tanks[i], this.tanksCopy[i]);
+        if(changeTanks){
+          break;
+        }
+      }
+    }
+    if(this.dispensers.length !== this.dispensersCopy.length){
+      return true;
+    }else{
+      for (let i = 0; i<this.dispensers.length;i++){
+        changeDispensers = UtilitiesService.compareJSON(this.dispensers[i], this.dispensersCopy[i]);
+        if(changeDispensers){
+          break;
+        }
+      }
+    }
+    return (changeTanks || changeWorkShifts || changeDispensers);
   }
 
 }
