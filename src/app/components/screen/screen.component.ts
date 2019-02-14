@@ -80,10 +80,12 @@ export class ScreenComponent implements OnInit{
                 case 200:
                   this.stationList = response[0].item;
                   this.stationActive = this.stationList;
-                  if(!this.validateTaskCreated()){
-                    this.openTaskCalendar();
-                  }else{
-                    this.createTasks();
+                  if (this.stationActive){
+                    if(!this.validateTaskCreated()){
+                      this.openTaskCalendar();
+                    }else{
+                      this.createTasks();
+                    }
                   }
                   break;
                 default:
@@ -93,11 +95,13 @@ export class ScreenComponent implements OnInit{
               }
             }else{
               this.stationList = response[0].item.stationLites;
-              this.stationActive = this.stationList[0];
-              if(!this.validateTaskCreated()){
-                this.openTaskCalendar();
-              }else{
-                this.createTasks();
+              this.stationActive = (Array.isArray(this.stationList)?this.stationList[0]:this.stationList);
+              if (this.stationActive){
+                if(!this.validateTaskCreated()){
+                  this.openTaskCalendar();
+                }else{
+                  this.createTasks();
+                }
               }
             }
             break;
@@ -153,7 +157,7 @@ export class ScreenComponent implements OnInit{
     this._api.buildTaskByStation(this.stationActive.stationTaskId).subscribe(response=>{
       switch (response.code){
         case 200:
-          if(response.item.progress<115){
+          if(response.item.status!==3){
             this.createTasks();
           }
           break;
