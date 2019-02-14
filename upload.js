@@ -25,7 +25,7 @@ function upload(fileName, directory, directoryDestination) {
       destination: directoryDestination+fileName,
       gzip: true,
       metadata: {
-        cacheControl: 'public, max-age='+(process.env.NODE_ENV === 'prod')?'86400':'300',
+        cacheControl: 'public, max-age=0',
       },
     })
     .then(() => {
