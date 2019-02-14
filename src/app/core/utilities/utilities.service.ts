@@ -83,8 +83,6 @@ export class UtilitiesService {
     try{
       if(Object.keys(object1).length===Object.keys(object2).length){
         for(let key in object1) {
-          console.log('original',object1[key]);
-          console.log('copy', object2[key]);
           if(object1[key] !== object2[key]) {
             flag = true;
             break;
