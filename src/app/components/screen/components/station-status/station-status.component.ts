@@ -19,7 +19,7 @@ export class StationStatusComponent implements OnInit, AfterViewInit{
   @Input() set station(stationObj: any){
     if(stationObj){
       this._station = stationObj;
-      if(this._canvas && !this.chart){
+      if(this._canvas){
         this.createConfigGraphic(this._station);
       }
     }
