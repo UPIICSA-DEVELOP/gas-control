@@ -4,7 +4,7 @@
  *  Proprietary and confidential
  */
 
-import {Component, ElementRef, Inject, Input, OnInit, PLATFORM_ID, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, ElementRef, Inject, Input, OnInit, PLATFORM_ID, ViewChild} from '@angular/core';
 import {isPlatformBrowser} from '@angular/common';
 import { Chart } from 'chart.js';
 
@@ -14,11 +14,14 @@ import { Chart } from 'chart.js';
   templateUrl: './station-status.component.html',
   styleUrls: ['./station-status.component.scss']
 })
-export class StationStatusComponent implements OnInit{
-
+export class StationStatusComponent implements OnInit, AfterViewInit{
+  private _station: any;
   @Input() set station(stationObj: any){
     if(stationObj){
-      this.createConfigGraphic(stationObj);
+      this._station = stationObj;
+      if(this._canvas && !this.chart){
+        this.createConfigGraphic(this._station);
+      }
     }
   } ;
   @ViewChild('canvas') private _canvas: ElementRef;
@@ -35,6 +38,12 @@ export class StationStatusComponent implements OnInit{
 
   ngOnInit(): void {
 
+  }
+
+  ngAfterViewInit():void{
+    if(this._station){
+      this.createConfigGraphic(this._station);
+    }
   }
 
   private createConfigGraphic(station: any){
