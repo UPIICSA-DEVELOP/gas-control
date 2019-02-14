@@ -160,13 +160,18 @@ export class StationListComponent implements OnInit, DoCheck {
       this.stationList = this.stations;
     }else{
       for(let x=0; x < this.stations.length; x++){
-        if(UtilitiesService.removeDiacritics(this.stations[x].managerName).toLowerCase().includes(text) || this.stations[x].email.toLowerCase().includes(text) || this.stations[x].phoneNumber.includes(text) || UtilitiesService.removeDiacritics(this.stations[x].crePermission).toLowerCase().includes(text) || UtilitiesService.removeDiacritics(this.stations[x].name).toLowerCase().includes(text)){
+        if(UtilitiesService.removeDiacritics(this.stations[x].managerName).toLowerCase().includes(text) || this.stations[x].email.toLowerCase().includes(text) || this.stations[x].phoneNumber.includes(text) || UtilitiesService.removeDiacritics(this.stations[x].name).toLowerCase().includes(text)){
           newArray.push(this.stations[x]);
         }else {
           for (let i= 0; i<this.groupIcon.groupIcons.length; i++){
             if(UtilitiesService.removeDiacritics(this.groupIcon.groupIcons[i].name).toLowerCase().includes(text) && this.stations[x].type === i+1){
               newArray.push(this.stations[x]);
             }
+          }
+        }
+        if(this.stations[x].crePermission){
+          if(UtilitiesService.removeDiacritics(this.stations[x].crePermission).toLowerCase().includes(text)){
+            newArray.push(this.stations[x]);
           }
         }
       }
