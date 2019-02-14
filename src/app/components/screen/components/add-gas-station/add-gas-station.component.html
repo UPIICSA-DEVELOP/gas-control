@@ -21,7 +21,7 @@
     </button>
   </mat-toolbar>
   <mat-progress-bar [mode]="'indeterminate'" *ngIf="load" class="progress"></mat-progress-bar>
-  <div class="forms-and-lists">
+  <div id="forms-and-lists" #modalScroll>
     <div [ngSwitch]="step" class="content-modal">
       <div *ngSwitchCase="0">
         <div class="form-station">

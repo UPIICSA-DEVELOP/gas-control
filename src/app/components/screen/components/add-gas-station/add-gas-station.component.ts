@@ -90,6 +90,7 @@ interface Task {
 })
 export class AddGasStationComponent implements OnInit {
   @ViewChild('phoneNumber') private _phoneNumberInput: ElementRef;
+  @ViewChild('modalScroll') private _modalScroll: ElementRef;
   public step: number;
   public disableClose: boolean;
   public utils: any[];
@@ -498,6 +499,7 @@ export class AddGasStationComponent implements OnInit {
     this.newStation.patchValue({
       legalRepresentative: this.legalName
     });
+    this._modalScroll.nativeElement.scroll({top: 0});
     this.step = 0
   }
 
@@ -688,7 +690,10 @@ export class AddGasStationComponent implements OnInit {
                   this._dialogService.alertDialog(
                     'Información',
                     'Hemos enviado un email de validación de cuenta a: ' + this.legalRepresentative.email,
-                    'ACEPTAR').afterClosed().subscribe(response=>{this.step = 0; this.listExist = true;});
+                    'ACEPTAR').afterClosed().subscribe(response=>{
+                      this.step = 0; this.listExist = true;
+                      this._modalScroll.nativeElement.scroll({top: 0});
+                    });
                   break;
               }
             });
@@ -709,7 +714,10 @@ export class AddGasStationComponent implements OnInit {
                   this._dialogService.alertDialog(
                     'Información',
                     'Hemos enviado un email de validación de cuenta a: ' + this.legalRepresentative.email,
-                    'ACEPTAR').afterClosed().subscribe(response=>{this.step = 0; this.listExist = true;});
+                    'ACEPTAR').afterClosed().subscribe(response=>{
+                      this.step = 0; this.listExist = true;
+                      this._modalScroll.nativeElement.scroll({top: 0});
+                    });
                   break;
               }
             });
@@ -737,7 +745,10 @@ export class AddGasStationComponent implements OnInit {
                   this._dialogService.alertDialog(
                     'Información',
                     'Hemos enviado un email de validación de cuenta a: ' + this.manger.email,
-                    'ACEPTAR').afterClosed().subscribe(response=>{this.step = 0;});
+                    'ACEPTAR').afterClosed().subscribe(response=>{
+                      this.step = 0;
+                      this._modalScroll.nativeElement.scroll({top: 0});
+                    });
                   break;
               }
             });
@@ -758,7 +769,10 @@ export class AddGasStationComponent implements OnInit {
                   this._dialogService.alertDialog(
                     'Información',
                     'Hemos enviado un email de validación de cuenta a: ' + this.manger.email,
-                    'ACEPTAR').afterClosed().subscribe(response=>{this.step = 0;});
+                    'ACEPTAR').afterClosed().subscribe(response=>{
+                      this.step = 0;
+                      this._modalScroll.nativeElement.scroll({top: 0});
+                    });
                   break;
               }
             });
@@ -849,9 +863,11 @@ export class AddGasStationComponent implements OnInit {
         });
         break;
       case 1:
+        this._modalScroll.nativeElement.scroll({top: 0});
           this.step = 0;
         break;
       case 2:
+        this._modalScroll.nativeElement.scroll({top: 0});
         this.step = 0;
          break;
       case 3:
@@ -918,6 +934,7 @@ export class AddGasStationComponent implements OnInit {
   }
 
   public openPersonForm(isManager: boolean):void{
+    this._modalScroll.nativeElement.scroll({top: 0});
     if(isManager){
       this.step = 2;
     }else{
