@@ -875,7 +875,7 @@ export class AddGasStationComponent implements OnInit {
       creationDate: today,
       stationId: stationId,
       progress: 0,
-      status: 3,
+      status: 0,
       editedTasks: editedTasks,
       startDate: today
     };
