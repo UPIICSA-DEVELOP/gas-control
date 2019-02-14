@@ -4,7 +4,7 @@
  *  Proprietary and confidential
  */
 
-import {Component, DoCheck, ElementRef, Input, OnChanges, OnInit, SimpleChanges, ViewChild} from '@angular/core';
+import {Component, DoCheck, ElementRef, Input, OnInit, ViewChild} from '@angular/core';
 import {DatepickerService, DateRangeOptions} from '@app/components/screen/components/datepicker/datepicker.service';
 import {TaskFilterService} from '@app/components/screen/components/task-filter/task-filter.service';
 import {ApiService} from '@app/core/services/api/api.service';
@@ -19,11 +19,12 @@ import {AddStationService} from '@app/components/screen/components/add-gas-stati
   templateUrl: './list-tasks.component.html',
   styleUrls: ['./list-tasks.component.scss']
 })
-export class ListTasksComponent implements OnInit, OnChanges, DoCheck {
+export class ListTasksComponent implements OnInit, DoCheck {
   public station: any;
   @Input() set stationInfo(stationObj:any){
     if(stationObj){
       this.station = stationObj;
+      this.getStationTask();
     }
   }
   @Input() public taskTemplate: any;
@@ -75,11 +76,6 @@ export class ListTasksComponent implements OnInit, OnChanges, DoCheck {
     this.end = UtilitiesService.createPersonalTimeStamp(this.endDate);
   }
 
-  ngOnChanges(changes: SimpleChanges):void{
-    if (this.station){
-      this.getStationTask();
-    }
-  }
 
   ngDoCheck():void{
       this.notCalendar = LocalStorageService.getItem('notCalendar');

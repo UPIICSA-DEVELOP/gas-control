@@ -126,7 +126,7 @@
     border-radius: 4px 0 0 4px;
   }
   .inputs{
-    width: 100%;
+    width: 90%;
   }
   .divider{
     width: 100%;
@@ -143,26 +143,33 @@
     color: #707070;
     font-size: 14px;
     margin: 12px 0;
+    width: 90%;
   }
   .image-container{
     display: flex;
     justify-content:center;
     align-items:center;
-    width: 100%;
+    width: 90%;
     height: 200px;
     border: 1px solid #707070;
   }
   .text{
+    width: 90%;
     font-size: 14px;
     color: #707070;
+    text-align: justify;
   }
   .columns{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     width: 50%;
     margin: 12px;
   }
   .times{
     display: flex;
     justify-content: space-between;
+    width: 90%;
     .clock{
       width: 45%;
     }
@@ -179,13 +186,14 @@
     align-items: flex-end;
   }
   .control-data{
-    width: 50%;
+    width: 35%;
     display: flex;
-    justify-content: flex-end;
+    justify-content: space-between;
   }
   .some-select{
     display: flex;
-    justify-content: flex-start;
+    justify-content: start;
+    width: 90%;
     .select{
       width: 45%;
     }
@@ -207,11 +215,14 @@
   .text-divider{
     margin: 8px 0;
     color: #707070;
+    width: 90%;
   }
 
   .space-box{
     display: flex;
     justify-content: space-between;
+    margin: 16px 0;
+    align-items: center;
   }
   .color{
     color: #707070;
@@ -255,9 +266,29 @@
   .card-list{
     width: 95%;
   }
+  .text-sign{
+    color: #707070;
+    margin: 24px 0 8px 0;
+    text-align: center;
+  }
+  .signature-element{
+    display: flex;
+    justify-content: center;
+    img{
+      width: 60%;
+      height: 60px;
+    }
+  }
+  .name{
+    display: flex;
+    justify-content: center;
+  }
   /deep/.mat-checkbox-layout{
     white-space: normal;
     display: block;
+  }
+  .containerTask{
+    width: 100%;
   }
 }
 
