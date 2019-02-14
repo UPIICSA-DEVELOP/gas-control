@@ -7,7 +7,9 @@
 <div id="list-collaborators">
   <mat-toolbar>
     <div class="header-list">
-      <h3 class="title">{{title}}</h3>
+      <div style="width: 80%; white-space: normal;">
+        <h3 class="title">{{title}}</h3>
+      </div>
       <div class="buttons">
         <button *ngIf="stationList.length!==0" mat-icon-button matTooltip="Añadir Estación de Servicio" (click)="addStation()" class="add-station-btn">
           <img src="../../../../../assets/Images/Add_station_48px.png">
