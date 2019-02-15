@@ -78,7 +78,7 @@ export class ListTasksComponent implements OnInit, DoCheck {
 
 
   ngDoCheck():void{
-      this.notCalendar = LocalStorageService.getItem('notCalendar');
+      this.notCalendar = LocalStorageService.getItem(Constants.NotCalendarTask);
   }
 
   private getStationTask():void{
@@ -114,7 +114,8 @@ export class ListTasksComponent implements OnInit, DoCheck {
             name: template.name,
             zone: template.zone,
             level: template.level,
-            typeReport: template.typeReport
+            hwg: template.hwg,
+            typeReport: this.filter===5?9:template.typeReport
           });
         }
       });
