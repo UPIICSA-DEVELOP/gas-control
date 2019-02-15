@@ -236,6 +236,10 @@ export class AddConsultancyComponent implements OnInit {
           this._consultancyInfo = response.item;
           this.createPerson(this._consultancyInfo.id);
           break;
+        case 470:
+          this.progress = false;
+          this._snackBar.openSnackBar('Ya existe una consultora registrada con esta información','OK',3000);
+          break;
         default:
           this.onErrorOccurred();
           break;
@@ -249,7 +253,7 @@ export class AddConsultancyComponent implements OnInit {
 
   private createPerson(refId: any): void{
     this._ownerInfo.refId = refId;
-    this._api.createPerson(this._ownerInfo).subscribe(response => {
+    this._api.createReferencedPerson(this._ownerInfo).subscribe(response => {
       switch (response.code){
         case 200:
           this._ownerInfo = response.item;
