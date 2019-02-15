@@ -18,11 +18,11 @@
           Colaboradores
           <mat-icon>group</mat-icon>
         </button>
-        <button mat-button (click)="logOut()" class="btn-logout">
+        <button mat-button (click)="logOut()" matTooltip="Cerrar Sesión" class="btn-logout">
           <mat-icon>exit_to_app</mat-icon>
         </button>
         <div class="user">
-          <button class="button-user" mat-button (click)="navigateProfile()" *ngIf="user.role!==7">
+          <button class="button-user" matTooltip="Mi Perfil" mat-button (click)="navigateProfile()" *ngIf="user.role!==7">
             <img class="image-user" *ngIf="imageExist" [src]="user.profileImage" alt="User profile image">
             <mat-icon *ngIf="!imageExist">account_circle</mat-icon>
           </button>
