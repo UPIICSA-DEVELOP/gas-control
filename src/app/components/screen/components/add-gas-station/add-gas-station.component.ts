@@ -898,7 +898,7 @@ export class AddGasStationComponent implements OnInit {
     this._api.createStationTask(task).subscribe(response=>{
       switch (response.code){
         case 200:
-          LocalStorageService.removeItem('notCalendar');
+          LocalStorageService.removeItem(Constants.NotCalendarTask);
           this._dialogRef.close();
           break;
       }

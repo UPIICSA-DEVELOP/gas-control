@@ -149,7 +149,7 @@ export class ScreenComponent implements OnInit{
         }
       });
     }else{
-      LocalStorageService.setItem('notCalendar',true);
+      LocalStorageService.setItem(Constants.NotCalendarTask,true);
     }
   }
 

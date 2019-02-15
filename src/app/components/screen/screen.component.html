@@ -14,7 +14,7 @@
   <div *ngIf="!stationActive && !stationList; then emptyDash else dashboard"></div>
     <ng-template #emptyDash>
       <div class="empty">
-        <div class="text">Aún no tiene estaciones agregadas en su lista en su lista</div>
+        <div class="text">Aún no existen Estaciones de Servicio a cargo de la Consultora</div>
         <button mat-button class="button" (click)="addStation()">
           <mat-icon>add</mat-icon>
           <span>AGREGAR ESTACIÓN</span>

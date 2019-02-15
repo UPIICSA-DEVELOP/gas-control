@@ -185,7 +185,7 @@ export class StationListComponent implements OnInit, DoCheck {
 
   public changeStation(id: string):void{
     this._router.navigate(['/home'], {queryParams:{station: id}}).then(()=>{
-      LocalStorageService.removeItem('notCalendar');
+      LocalStorageService.removeItem(Constants.NotCalendarTask);
     });
   }
 }

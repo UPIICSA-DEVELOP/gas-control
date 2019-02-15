@@ -112,6 +112,7 @@ export class AuthService implements Resolve<any>{
     LocalStorageService.removeItem('notSign');
     CookieService.deleteCookie(Constants.IdSession);
     LocalStorageService.removeItem(Constants.UserInSession);
+    LocalStorageService.removeItem(Constants.NotCalendarTask);
     this._router.navigate(['/']).then(() => {});
   }
 
