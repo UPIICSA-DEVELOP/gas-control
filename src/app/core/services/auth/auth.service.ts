@@ -88,7 +88,7 @@ export class AuthService implements Resolve<any>{
           'Información',
           'Para continuar es necesario registrar su firma digital',
           'REGISTRAR').afterClosed().subscribe(response =>{
-          LocalStorageService.setItem('notSign', true);
+          LocalStorageService.setItem(Constants.NotSignature, true);
           switch (user.role) {
             case 1:
             case 2:
@@ -109,7 +109,7 @@ export class AuthService implements Resolve<any>{
 
   public logOut(): void{
     LocalStorageService.removeItem(Constants.SessionToken);
-    LocalStorageService.removeItem('notSign');
+    LocalStorageService.removeItem(Constants.NotSignature);
     CookieService.deleteCookie(Constants.IdSession);
     LocalStorageService.removeItem(Constants.UserInSession);
     LocalStorageService.removeItem(Constants.NotCalendarTask);

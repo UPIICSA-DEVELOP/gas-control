@@ -9,6 +9,9 @@ export interface SharedNotification {
 
 export enum SharedTypeNotification {
   Directory,
+  ListTask,
+  Home,
+  Status,
   Other
 }
 

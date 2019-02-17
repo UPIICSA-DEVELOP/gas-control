@@ -138,7 +138,7 @@ export class UserProfileComponent implements OnInit {
   }
 
   public closeProfile():void{
-    if (LocalStorageService.getItem('notSign')){
+    if (LocalStorageService.getItem(Constants.NotSignature)){
       this._snackBarService.openSnackBar('Por favor, guarde su firma antes de salir','OK', 3000);
       return;
     }
@@ -227,7 +227,7 @@ export class UserProfileComponent implements OnInit {
           blob: response.item.blobName || ''
         };
         this.newSignature = false;
-        if(LocalStorageService.getItem('notSign')){
+        if(LocalStorageService.getItem(Constants.NotSignature)){
           this.user.signature = this.newSig;
           this.saveUser(false);
         }else{
@@ -449,7 +449,7 @@ export class UserProfileComponent implements OnInit {
       ssn: this.userInformation.ssn
     });
     this.detectChange();
-    if (LocalStorageService.getItem('notSign')) {
+    if (LocalStorageService.getItem(Constants.NotSignature)) {
       this._signaturePad.open().afterClosed().subscribe(response=>{
         switch (response.code){
           case 1:
@@ -585,7 +585,7 @@ export class UserProfileComponent implements OnInit {
       switch (response.code){
         case 200:
           this.change = false;
-          LocalStorageService.removeItem('notSign');
+          LocalStorageService.removeItem(Constants.NotSignature);
           this._snackBarService.openSnackBar('Información actualizada','OK',3000);
           this._router.navigate(['/home']);
           break;

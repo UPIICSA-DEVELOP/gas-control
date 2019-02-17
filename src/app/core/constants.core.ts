@@ -11,6 +11,7 @@ export class Constants {
   public static SessionToken = 'SessionToken';
   public static UpdatePassword = 'UpdatePassword';
   public static NotCalendarTask = 'notCalendar';
+  public static NotSignature = 'notSign';
   public static REGEX_WEBSITE = '[a-z0-9]+([\\-\\.]{1}[a-z0-9]+)*\\.[a-z]{2,5}(:[0-9]{1,5})?(\\/.*)?$';
 
   public static Filters = [
