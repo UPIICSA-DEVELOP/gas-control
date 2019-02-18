@@ -31,13 +31,12 @@ import {Constants} from '@app/core/constants.core';
 })
 export class ProceduresComponent implements OnInit {
   public procedures: any;
-  public procedureTitle: any;
   constructor(
     private _api: ApiService,
     private _route: Router,
     private _pdf: PdfVisorService
   ) {
-    this.procedureTitle = Constants.Files;
+
   }
 
   ngOnInit() {
