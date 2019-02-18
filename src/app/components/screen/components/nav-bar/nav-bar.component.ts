@@ -60,12 +60,12 @@ export class NavBarComponent implements OnInit, DoCheck  {
       case 1:
       case 2:
       case 3:
-        this._router.navigate(['/profile/consultancy']);
+        this._router.navigate(['/home/profile/consultancy']);
         break;
       case 4:
       case 5:
       case 6:
-        this._router.navigate(['/profile/user']);
+        this._router.navigate(['/home/profile/user']);
         break;
       default:
         break

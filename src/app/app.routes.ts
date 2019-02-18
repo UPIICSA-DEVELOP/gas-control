@@ -94,41 +94,41 @@ export const appRoutes: Routes = [
           url: URL_BASE + 'home/procedures'
         }
       },
-    ]
-  },
-  {
-    path: 'profile',
-    resolve: {data: AuthService},
-    data:{
-      url: URL_BASE + 'profile',
-      title: 'Perfil'
-    },
-    children:[
       {
-        path: 'consultancy',
-        component: ProfileComponent,
+        path: 'profile',
+        resolve: {data: AuthService},
         data:{
-          title: 'Perfil',
-          url: URL_BASE + '/profile/consultancy'
-        }
+          url: URL_BASE + 'home/profile',
+          title: 'Perfil'
+        },
+        children:[
+          {
+            path: 'consultancy',
+            component: ProfileComponent,
+            data:{
+              title: 'Perfil',
+              url: URL_BASE + 'home/profile/consultancy'
+            }
+          },
+          {
+            path: 'user',
+            component: UserProfileComponent,
+            resolve: {data: UserProfileService},
+            data:{
+              title: 'Perfil',
+              url: URL_BASE + 'home/profile/user'
+            }
+          },
+          {
+            path: 'gas-station',
+            component: StationProfileComponent,
+            data:{
+              title: 'Estación de servicio',
+              url: URL_BASE + 'home/profile/gas-station'
+            }
+          }
+        ]
       },
-      {
-        path: 'user',
-        component: UserProfileComponent,
-        resolve: {data: UserProfileService},
-        data:{
-          title: 'Perfil',
-          url: URL_BASE + '/profile/user'
-        }
-      },
-      {
-        path: 'gas-station',
-        component: StationProfileComponent,
-        data:{
-          title: 'Estación de servicio',
-          url: URL_BASE + '/profile/gas-station'
-        }
-      }
     ]
   },
   {

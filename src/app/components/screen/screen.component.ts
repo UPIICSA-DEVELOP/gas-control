@@ -43,7 +43,7 @@ export class ScreenComponent implements OnInit{
      if(this._router.url.includes('/home?station')){
        this.initView(this._activateRoute.snapshot.queryParams.station);
      }else{
-       if(!this._router.url.includes('/home/documents')){
+       if(!this._router.url.includes('/home/documents') || !this._router.url.includes('/home/profile/gas-station')){
          if(!this.stationActive){
            this.initView();
          }
@@ -126,6 +126,7 @@ export class ScreenComponent implements OnInit{
                 this.createTasks();
               }
             }
+            LocalStorageService.setItem(Constants.StationInDashboard, this.stationActive.businessName);
             break;
         }
       }
