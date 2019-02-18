@@ -215,6 +215,6 @@ export class DocumentationComponent implements OnInit {
   }
 
   public closeDocumentation():void{
-    this._router.navigate(['/profile/gas-station'], {queryParams:{id: this.stationId}}).then();
+    this._router.navigate(['/home/profile/gas-station'], {queryParams:{id: this.stationId}}).then();
   }
 }
