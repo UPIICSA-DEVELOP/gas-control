@@ -43,7 +43,7 @@ export class ScreenComponent implements OnInit{
      if(this._router.url.includes('/home?station')){
        this.initView(this._activateRoute.snapshot.queryParams.station);
      }else{
-       if(this._router.url.includes('/home/documentation')){
+       if(!this._router.url.includes('/home/documents')){
          if(!this.stationActive){
            this.initView();
          }
