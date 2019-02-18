@@ -8,9 +8,7 @@ import { Injectable } from '@angular/core';
 import {MatDialog, MatDialogRef} from '@angular/material';
 import {ModalStationComponent} from 'app/components/screen/components/modal-station/modal-station.component';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 export class ModalStationService {
 
   constructor(
