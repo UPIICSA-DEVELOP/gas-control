@@ -503,11 +503,7 @@ export class ProfileComponent implements OnInit {
         thumbnail: this.newSig.thumbnail
       }
     }
-    if(emailUpdate){
-      this.updateProfileDataWithNewEmail();
-    }else{
-      this.saveProfileData();
-    }
+    this.updateBusiness(emailUpdate);
   }
 
   private saveProfileData(redirect?:boolean):void{
@@ -559,6 +555,37 @@ export class ProfileComponent implements OnInit {
       }
     });
   }
+
+  private updateBusiness(isNewEmail: boolean):void{
+    this._snackBarService.openSnackBar('Epere un momento...','',0);
+    const data = {
+      company: this.consultancy.businessName,
+      name: this.user.name + ' ' + this.user.lastName,
+      workPosition: this.user.jobTitle,
+      phone: this.user.phoneNumber,
+      email: this.user.email,
+      website: this.user.website,
+      imageUrl: this.user.profileImage ? this.user.profileImage.thumbnail + '=s1200':null
+
+    };
+    this._api.businessCardService(data).subscribe((response: Blob) => {
+      const form = new FormData();
+      form.append('file', response, 'bc'+new Date().getTime()+'.png');
+      this._uploadImage.uploadToBusinessCard(form).subscribe(response=>{
+        if(response.success && response.success === 'true'){
+          this._snackBarService.closeSnackBar();
+          this.user.bCard = {
+            cardThumbnail: response.secondaryUrl
+          };
+          if (isNewEmail){
+            this.updateProfileDataWithNewEmail()
+          }else{
+            this.saveProfileData();
+          }
+        }
+      })
+    });
+  };
 
   private validateDisabledInputs(disable?: boolean): void{
     if(this.user.role !== 1){

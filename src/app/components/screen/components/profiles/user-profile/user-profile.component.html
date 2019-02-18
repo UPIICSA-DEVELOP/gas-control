@@ -93,7 +93,7 @@
               </div>
               <div style="display: flex">
                 <mat-form-field class="right-inputs">
-                  <mat-select [disabled]="load" placeholder="Protocolo" aria-label="User website protocol" [(value)]="protocol">
+                  <mat-select [disabled]="load" placeholder="Protocolo" (selectionChange)="change = true" aria-label="User website protocol" [(value)]="protocol">
                     <mat-option value="http://">http://</mat-option>
                     <mat-option value="https://">https://</mat-option>
                   </mat-select>

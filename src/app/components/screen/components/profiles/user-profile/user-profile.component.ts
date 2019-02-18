@@ -543,12 +543,40 @@ export class UserProfileComponent implements OnInit {
         thumbnail: this.newSig.thumbnail
       }
     }
-    if(emailUpdate){
-      this.updateProfileDataWithNewEmail();
-    }else{
-      this.saveUser();
-    }
+    this.updateBusiness(emailUpdate);
   }
+
+
+  private updateBusiness(isNewEmail: boolean):void{
+    this._snackBarService.openSnackBar('Epere un momento...','',0);
+    const data = {
+      company: (this.user.role===4 ? '':LocalStorageService.getItem(Constants.StationInDashboard)),
+      name: this.user.name + ' ' + this.user.lastName,
+      workPosition: this.user.jobTitle,
+      phone: this.user.phoneNumber,
+      email: this.user.email,
+      website: this.user.website,
+      imageUrl: this.user.profileImage ? this.user.profileImage.thumbnail + '=s1200':null
+
+    };
+    this._api.businessCardService(data).subscribe((response: Blob) => {
+      const form = new FormData();
+      form.append('file', response, 'bc'+new Date().getTime()+'.png');
+      this._uploadFile.uploadToBusinessCard(form).subscribe(response=>{
+        if(response.success && response.success === 'true'){
+          this._snackBarService.closeSnackBar();
+          this.user.bCard = {
+            cardThumbnail: response.secondaryUrl
+          };
+          if (isNewEmail){
+            this.updateProfileDataWithNewEmail()
+          }else{
+            this.saveUser();
+          }
+        }
+      })
+    });
+  };
 
   private saveUser(redirect?:boolean):void{
     this._api.updatePerson(this.user).subscribe(response=>{
