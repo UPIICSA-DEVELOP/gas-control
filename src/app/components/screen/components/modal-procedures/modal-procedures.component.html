@@ -1,0 +1,36 @@
+<!--
+  ~ Copyright (C) MapLander S de R.L de C.V - All Rights Reserved
+  ~ Unauthorized copying of this file, via any medium is strictly prohibited
+  ~ Proprietary and confidential
+  -->
+
+<div id="modal-procedures">
+  <mat-toolbar [color]="'primary'" style="justify-content: space-between;">
+    Procedimientos
+    <button mat-icon-button (click)="closeModal()">
+      <mat-icon>close</mat-icon>
+    </button>
+  </mat-toolbar>
+  <mat-dialog-content>
+    <div style="width: 100%" *ngFor="let procedure of procedures; let i = index">
+      <div  style="display: flex; width: 100%; justify-content: space-around; align-items: center">
+        <mat-card>
+          <mat-card-content>
+            <div class="icon">
+              <mat-icon>insert_drive_file</mat-icon>
+            </div>
+            <a class="divider" [href]="procedure.fileCS.thumbnail">
+              {{procedure.name}}
+            </a>
+          </mat-card-content>
+        </mat-card>
+        <mat-checkbox [(ngModel)]="selected[i]"></mat-checkbox>
+      </div>
+    </div>
+    <div style="display: flex; justify-content: center; margin: 8px 0">
+      <button mat-flat-button [color]="'primary'" (click)="finishSelectProcedures()">
+        ACEPTAR
+      </button>
+    </div>
+  </mat-dialog-content>
+</div>

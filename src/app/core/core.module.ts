@@ -41,6 +41,7 @@ import {PdfVisorService} from '@app/core/components/pdf-visor/pdf-visor.service'
 import {NgxMaterialTimepickerModule} from 'ngx-material-timepicker';
 import { TimePickerComponent } from './components/time-picker/time-picker.component';
 import {AddStationService} from '@app/components/screen/components/add-gas-station/add-station.service';
+import {ModalProceduresService} from '@app/components/screen/components/modal-procedures/modal-procedures.service';
 
 @NgModule({
   imports: [
@@ -114,7 +115,8 @@ import {AddStationService} from '@app/components/screen/components/add-gas-stati
     TaskFilterService,
     ModalStationService,
     PdfVisorService,
-    AddStationService
+    AddStationService,
+    ModalProceduresService
   ]
 })
 export class CoreModule { }

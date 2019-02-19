@@ -1,0 +1,43 @@
+/*!
+ * Copyright (C) MapLander S de R.L de C.V - All Rights Reserved
+ * Unauthorized copying of this file, via any medium is strictly prohibited
+ * Proprietary and confidential
+ */
+
+#modal-procedures{
+  height: 100%;
+  mat-dialog-content{
+    height: 100%;
+    margin: 0;
+    overflow: auto;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: 8px 0;
+    mat-card{
+      margin: 8px 0;
+      width: 85%;
+      mat-card-content{
+        align-items: center;
+        display: flex;
+        color: #707070;
+        font-weight: 500;
+        min-height: 32px;
+        .icon{
+          margin: 0 4px;
+        }
+        .divider{
+          min-height: 32px;
+          padding: 0 8px;
+          border-left: 1px solid;
+          display: flex;
+          align-items: center;
+        }
+      }
+    }
+  }
+  a{
+    color: #707070;
+    text-decoration: none;
+  }
+}

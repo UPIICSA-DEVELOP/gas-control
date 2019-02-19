@@ -50,6 +50,7 @@ import {DatepickerComponent} from './components/screen/components/datepicker/dat
 import {TaskFilterComponent} from './components/screen/components/task-filter/task-filter.component';
 import {ModalStationComponent} from '@app/components/screen/components/modal-station/modal-station.component';
 import {AddConsultancyService} from '@app/components/admin/components/add-consultancy/add-consultancy.service';
+import { ModalProceduresComponent } from './components/screen/components/modal-procedures/modal-procedures.component';
 
 
 @NgModule({
@@ -83,7 +84,8 @@ import {AddConsultancyService} from '@app/components/admin/components/add-consul
     AdminComponent,
     AddConsultancyComponent,
     ListCollaboratorsComponent,
-    ModalStationComponent
+    ModalStationComponent,
+    ModalProceduresComponent
   ],
   imports: [
     CoreModule,
@@ -114,7 +116,8 @@ import {AddConsultancyService} from '@app/components/admin/components/add-consul
     ListCollaboratorsComponent,
     ModalStationComponent,
     ListCollaboratorsComponent,
-    AddConsultancyComponent
+    AddConsultancyComponent,
+    ModalProceduresComponent
   ],
   providers: [
     {
