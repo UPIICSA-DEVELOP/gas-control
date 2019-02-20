@@ -89,15 +89,14 @@ export class App {
     res.setHeader('Content-Type', 'image/png');
     try {
       const info = {
-        imageUrl:  req.query.imageUrl || 'https://www.maplander.com/favicon.png',
-        company:  req.query.company || '',
-        name:  req.query.name || '',
-        workPosition: req.query.workPosition || '',
-        phone:  req.query.phone || '',
-        email:  req.query.email || '',
-        website:  req.query.website || ''
+        imageUrl:  req.query.imageUrl || null,
+        company:  req.query.company || null,
+        name:  req.query.name || null,
+        workPosition: req.query.workPosition || null,
+        phone:  req.query.phone || null,
+        email:  req.query.email || null,
+        website:  req.query.website || null
       };
-
       const { fork } = require('child_process');
       const process = fork(path.resolve(__dirname, 'bc.js'));
       process.on('message', (data) => {
