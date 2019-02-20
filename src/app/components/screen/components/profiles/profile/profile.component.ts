@@ -13,7 +13,7 @@ import {ApiLoaderService} from '@app/core/services/api/api-loader.service';
 import {DialogService} from '@app/core/components/dialog/dialog.service';
 import {SnackBarService} from '@app/core/services/snackbar/snackbar.service';
 import {CountryCodeService} from '@app/core/components/country-code/country-code.service';
-import {LocationService} from '@app/core/components/location/location.service';
+import {LocationOptions, LocationService} from '@app/core/components/location/location.service';
 import {UploadFileService} from '@app/core/components/upload-file/upload-file.service';
 import {Router} from '@angular/router';
 import {UpdatePasswordService} from '@app/core/components/update-password/update-password.service';
@@ -208,7 +208,17 @@ export class ProfileComponent implements OnInit {
   }
 
   public openSelectAddress(): void{
-    this._locationService.open().afterClosed().subscribe(response => {
+    let latLng: LocationOptions = {
+      lat: 19.432675,
+      lng: -99.133461
+    };
+    if (this.latLong){
+      latLng = {
+        lat: this.latLong.latitude,
+        lng: this.latLong.longitude
+      }
+    }
+    this._locationService.open(latLng).afterClosed().subscribe(response => {
       switch (response.code) {
         case 1:
           this.latLong ={
