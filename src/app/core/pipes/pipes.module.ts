@@ -8,22 +8,26 @@
 import { NgModule} from '@angular/core';
 import {ConvertTimeAndCapacityPipe} from '@app/core/pipes/convert-time-and-capacity/convert-time-and-capacity.pipe';
 import {FormatDatePipe} from '@app/core/pipes/format-date/format-date.pipe';
+import {FormatTimePipe} from '@app/core/pipes/format-time/format-time.pipe';
 
 @NgModule({
   declarations: [
     ConvertTimeAndCapacityPipe,
-    FormatDatePipe
+    FormatDatePipe,
+    FormatTimePipe
   ],
   imports: [
 
   ],
   exports: [
     ConvertTimeAndCapacityPipe,
-    FormatDatePipe
+    FormatDatePipe,
+    FormatTimePipe
   ],
   providers: [
     ConvertTimeAndCapacityPipe,
-    FormatDatePipe
+    FormatDatePipe,
+    FormatTimePipe
   ]
 })
 export class PipesModule {

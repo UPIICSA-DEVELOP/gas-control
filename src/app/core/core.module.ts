@@ -38,10 +38,10 @@ import {TaskFilterService} from '@app/components/screen/components/task-filter/t
 import {ModalStationService} from '@app/components/screen/components/modal-station/modal-station.service';
 import { PdfVisorComponent } from './components/pdf-visor/pdf-visor.component';
 import {PdfVisorService} from '@app/core/components/pdf-visor/pdf-visor.service';
-import {NgxMaterialTimepickerModule} from 'ngx-material-timepicker';
-import { TimePickerComponent } from './components/time-picker/time-picker.component';
 import {AddStationService} from '@app/components/screen/components/add-gas-station/add-station.service';
 import {ModalProceduresService} from '@app/components/screen/components/modal-procedures/modal-procedures.service';
+import {AmazingTimePickerModule} from 'amazing-time-picker';
+import {TimePickerService} from '@app/core/components/time-picker/time-picker.service';
 
 @NgModule({
   imports: [
@@ -53,7 +53,7 @@ import {ModalProceduresService} from '@app/components/screen/components/modal-pr
     FormsModule,
     ReactiveFormsModule,
     ImageCropperModule,
-    NgxMaterialTimepickerModule.forRoot(),
+    AmazingTimePickerModule,
     AgmCoreModule.forRoot({
       apiKey: Constants.GoogleApiKey,
       libraries: [
@@ -73,8 +73,7 @@ import {ModalProceduresService} from '@app/components/screen/components/modal-pr
     CropImageComponent,
     CountryCodeComponent,
     LocationComponent,
-    SearchBoxCoreComponent,
-    TimePickerComponent
+    SearchBoxCoreComponent
   ],
   declarations: [
     DialogComponent,
@@ -86,8 +85,7 @@ import {ModalProceduresService} from '@app/components/screen/components/modal-pr
     LocationComponent,
     SearchBoxCoreComponent,
     SignaturePadComponent,
-    PdfVisorComponent,
-    TimePickerComponent
+    PdfVisorComponent
   ],
   entryComponents: [
     DialogComponent,
@@ -116,7 +114,8 @@ import {ModalProceduresService} from '@app/components/screen/components/modal-pr
     ModalStationService,
     PdfVisorService,
     AddStationService,
-    ModalProceduresService
+    ModalProceduresService,
+    TimePickerService
   ]
 })
 export class CoreModule { }
