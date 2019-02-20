@@ -9,6 +9,7 @@
 /dist/package-lock.json
 /dist/server.js
 /dist/bot.js
+/dist/bc.js
 /dist/config.json
 package-lock.json
 
@@ -51,3 +52,6 @@ Thumbs.db
 
 # log Files
 *.log
+
+#others
+package-lock.json
