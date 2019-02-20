@@ -250,6 +250,7 @@ export class StationProfileComponent implements OnInit {
       return;
     }
     this.clearStationArray();
+    this.station.crePermission = (data.crePermission ? data.crePermission: undefined);
     this.station.name = data.name;
     this.station.businessName = data.businessName;
     this.station.rfc = data.rfc;
@@ -366,4 +367,13 @@ export class StationProfileComponent implements OnInit {
     this.change = true;
   }
 
+
+  public changeDate(ev: any, index: number, isStart: boolean):void{
+    this.change = true;
+    if(isStart){
+      this.workShifts[index].start = ev;
+    }else{
+      this.workShifts[index].end = ev;
+    }
+  }
 }

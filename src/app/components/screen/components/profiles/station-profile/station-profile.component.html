@@ -86,12 +86,12 @@
               </div>
               <div *ngFor="let turn of workShifts; let i = index">
                 <div class="input-content">
-                  <div class="input-turns">
-                    <app-time-picker [(value)]="turn.start" [disabled]="user.role===6" (value|Change)="onArrayChange($event)" [placeholder]="'Inicio'"></app-time-picker>
-                  </div>
-                  <div class="input-turns">
-                    <app-time-picker [(value)]="turn.end" [disabled]="user.role===6" (valueChange)="onArrayChange($event)" [placeholder]="'Fin'"></app-time-picker>
-                  </div>
+                  <mat-form-field class="input-turns">
+                    <input placeholder="Inicio" matInput [disabled]="user.role===6" (time)="changeDate($event,i,true)" appDisableWrite value="{{turn.start | formatTime}}" >
+                  </mat-form-field>
+                  <mat-form-field class="input-turns">
+                    <input placeholder="Fin" matInput [disabled]="user.role===6" (time)="changeDate($event,i,false)" appDisableWrite value="{{turn.end | formatTime}}">
+                  </mat-form-field>
                   <button type="button" *ngIf="workShifts.length>1" mat-icon-button (click)="addRemoveTurn(true,1, i)" class="remove" [disabled]=" user.role===6">
                     <mat-icon>remove</mat-icon>
                   </button>
