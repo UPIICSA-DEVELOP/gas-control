@@ -53,7 +53,7 @@
               <div class="containerTask" [ngSwitch]="task.typeReport">
                 <div class="containerTask" *ngSwitchCase="1">
                   <mat-accordion class="containerTask">
-                    <mat-expansion-panel>
+                    <mat-expansion-panel  (afterExpand)="getTaskInformation(task.id, task.typeReport, task.hwg)">
                       <mat-expansion-panel-header [collapsedHeight]="'88px'" [expandedHeight]="'88px'">
                         <mat-panel-title>
                           <div class="date">
@@ -78,146 +78,168 @@
                         </div>
                       </div>
                       <div class="flex-box">
-                        <div class="columns">
-                          <div class="times">
-                            <mat-form-field class="clock">
-                              <input matInput placeholder="Hora de inicio">
+                        <form [formGroup]="taskForm[0]" class="flex-box">
+                          <div class="columns">
+                            <div class="times">
+                              <mat-form-field class="clock">
+                                <input
+                                  formControlName="startTime"
+                                  placeholder="Hora de inicio"
+                                  matInput
+                                  required
+                                  appDisableWrite
+                                  (time)="test($event, 'startTime')"
+                                  value="{{taskForm[0].controls['startTime'].value | formatTime}}">
+                                <mat-error *ngIf="taskForm[0].controls['startTime'].hasError('required')">
+                                  Este campo es obligatorio
+                                </mat-error>
+                              </mat-form-field>
+                              <mat-form-field class="clock">
+                                <input
+                                  formControlName="endTime"
+                                  placeholder="Hora de término"
+                                  matInput
+                                  required
+                                  appDisableWrite
+                                  (time)="test($event, 'endTime')"
+                                  value="{{taskForm[0].controls['endTime'].value | formatTime}}">
+                                <mat-error *ngIf="taskForm[0].controls['endTime'].hasError('required')">
+                                  Este campo es obligatorio
+                                </mat-error>
+                              </mat-form-field>
+                            </div>
+                            <mat-form-field class="inputs">
+                              <mat-select formControlName="maintenanceType" placeholder="Tipo de mantenimiento" required>
+                                <mat-option value="Mantenimiento preventivo">Mantenimiento preventivo</mat-option>
+                                <mat-option value="Mantenimiento correctivo">Mantenimiento correctivo</mat-option>
+                              </mat-select>
                             </mat-form-field>
-                            <mat-form-field class="clock">
-                              <input matInput placeholder="Hora de término">
+                            <mat-form-field class="inputs">
+                              <mat-select formControlName="activityType" placeholder="Seleccione actividad" required>
+                                <mat-option value="Monitoreo de pozos y detección de fugas">Monitoreo de pozos y detección de fugas</mat-option>
+                                <mat-option value="Albañilería, herreria, etc">Albañilería, herreria, etc</mat-option>
+                                <mat-option value="Pruebas de eficiencia">Pruebas de eficiencia</mat-option>
+                                <mat-option value="Auditoria externa e interna">Auditoria externa e interna</mat-option>
+                                <mat-option value="Hidrosanitario">Hidrosanitario</mat-option>
+                                <mat-option value="Limpieza">Limpieza</mat-option>
+                                <mat-option value="Mantenimiento de la E.S.">Mantenimiento de la E.S.</mat-option>
+                                <mat-option value="Mécanico">Mécanico</mat-option>
+                                <mat-option value="Visita de autoridad">Visita de autoridad</mat-option>
+                                <mat-option value="Eléctrico">Eléctrico</mat-option>
+                                <mat-option value="Otro">Otro</mat-option>
+                              </mat-select>
                             </mat-form-field>
-                          </div>
-                          <mat-form-field class="inputs">
-                            <mat-select placeholder="Tipo de mantenimiento">
-                              <mat-option value="1">Mantenimiento preventivo</mat-option>
-                              <mat-option value="2">Mantenimiento correctivo</mat-option>
-                            </mat-select>
-                          </mat-form-field>
-                          <mat-form-field class="inputs">
-                            <mat-select placeholder="Seleccione actividad">
-                              <mat-option value="1">Monitoreo de pozos y detección de fugas</mat-option>
-                              <mat-option value="2">Albañilería, herreria, etc</mat-option>
-                              <mat-option value="3">Pruebas de eficiencia</mat-option>
-                              <mat-option value="4">Aauditoria externa e interna</mat-option>
-                              <mat-option value="5">Hidrosanitario</mat-option>
-                              <mat-option value="6">Limpieza</mat-option>
-                              <mat-option value="7">Mantenimiento de la E.S.</mat-option>
-                              <mat-option value="8">Mécanico</mat-option>
-                              <mat-option value="9">Visita de autoridad</mat-option>
-                              <mat-option value="10">Eléctrico</mat-option>
-                              <mat-option value="11">Otro</mat-option>
-                            </mat-select>
-                          </mat-form-field>
-                          <mat-form-field class="inputs">
-                            <mat-select placeholder="Procedencia del personal">
-                              <mat-option value="1">Personal interno</mat-option>
-                              <mat-option value="2">Personal externo</mat-option>
-                            </mat-select>
-                          </mat-form-field>
-                          <div class="text-divider">
-                            <span>Personal involucrado</span>
-                          </div>
-                          <mat-form-field class="inputs">
-                            <input matInput placeholder="1.- Nombre">
-                          </mat-form-field>
-                          <div class="text-divider">
-                            Equipo de protección utilizado
-                          </div>
-                          <div class="inputs">
-                            <div class="space-box">
-                              <div class="checks-row">
-                                <mat-checkbox>Ropa de algodón</mat-checkbox>
-                              </div>
-                              <div class="checks-row">
-                                <mat-checkbox>Goggles</mat-checkbox>
-                              </div>
+                            <mat-form-field class="inputs">
+                              <mat-select formControlName="personnelType" placeholder="Procedencia del personal" required="">
+                                <mat-option value="Personal interno">Personal interno</mat-option>
+                                <mat-option value="Personal externo">Personal externo</mat-option>
+                              </mat-select>
+                            </mat-form-field>
+                            <div class="text-divider">
+                              <span>Personal involucrado <sup>*</sup></span>
                             </div>
-                            <div class="space-box">
-                              <div class="checks-row">
-                                <mat-checkbox>Zapato industrial</mat-checkbox>
-                              </div>
-                              <div class="checks-row">
-                                <mat-checkbox>Lentes de protección</mat-checkbox>
-                              </div>
+                            <mat-form-field class="inputs">
+                              <input matInput placeholder="1.- Nombre">
+                            </mat-form-field>
+                            <div class="text-divider">
+                              Equipo de protección utilizado <sup>*</sup>
                             </div>
-                            <div class="space-box">
-                              <div class="checks-row">
-                                <mat-checkbox>Guantes</mat-checkbox>
+                            <div class="inputs">
+                              <div class="space-box">
+                                <div class="checks-row">
+                                  <mat-checkbox formControlName="cottonClothes">Ropa de algodón</mat-checkbox>
+                                </div>
+                                <div class="checks-row">
+                                  <mat-checkbox formControlName="goggles">Goggles</mat-checkbox>
+                                </div>
                               </div>
-                              <div class="checks-row">
-                                <mat-checkbox>Rodilleras</mat-checkbox>
+                              <div class="space-box">
+                                <div class="checks-row">
+                                  <mat-checkbox formControlName="industrialShoes">Zapato industrial</mat-checkbox>
+                                </div>
+                                <div class="checks-row">
+                                  <mat-checkbox formControlName="protectiveGoggles">Lentes de protección</mat-checkbox>
+                                </div>
                               </div>
-                            </div>
-                            <div class="space-box">
-                              <div class="checks-row">
-                                <mat-checkbox>Cubrebocas</mat-checkbox>
+                              <div class="space-box">
+                                <div class="checks-row">
+                                  <mat-checkbox formControlName="gloves">Guantes</mat-checkbox>
+                                </div>
+                                <div class="checks-row">
+                                  <mat-checkbox formControlName="kneepads">Rodilleras</mat-checkbox>
+                                </div>
                               </div>
-                              <div class="checks-row">
-                                <mat-checkbox>Cascos</mat-checkbox>
+                              <div class="space-box">
+                                <div class="checks-row">
+                                  <mat-checkbox formControlName="faceMask">Cubrebocas</mat-checkbox>
+                                </div>
+                                <div class="checks-row">
+                                  <mat-checkbox formControlName="helmet">Cascos</mat-checkbox>
+                                </div>
                               </div>
                             </div>
                           </div>
-                        </div>
-                        <div class="columns">
-                          <mat-form-field class="inputs">
-                            <input matInput placeholder="Herramientas y materiales utilizados">
-                          </mat-form-field>
-                          <mat-form-field class="inputs">
-                            <input matInput placeholder="Procedimientos utilizados">
-                          </mat-form-field>
-                          <div class="text" style="font-size: 12px !important;">
-                            Si la actividad requiere de autorización del gerente, anote el nombre a continuación
-                          </div>
-                          <mat-form-field class="inputs">
-                            <input matInput placeholder="Nombre completo">
-                          </mat-form-field>
-                          <mat-form-field class="inputs">
-                            <input matInput placeholder="Observaciones">
-                          </mat-form-field>
-                          <div class="image-header">
-                            Captura fotográfica de evidencia.
-                          </div>
-                          <div class="image-container">
-                            <mat-icon class="default-image">
-                              image
-                            </mat-icon>
-                          </div>
-                          <div class="text-sign">
-                            Nombre y firma del responsable
-                          </div>
-                          <div>
-                            <div class="signature-element">
-                              <img src="https://lh3.googleusercontent.com/pAVkMKw5PWzy67CaKieL-C6URUgMHsMgY1U9MIMG_vkjUeKbR9WNB7Lx7EAz_nAoQgmK42xy3uoTmM8mng_eKEjuXNLpM-welQ">
+                          <div class="columns">
+                            <mat-form-field class="inputs">
+                              <input formControlName="toolsAndMaterials" matInput placeholder="Herramientas y materiales utilizados">
+                            </mat-form-field>
+                            <div class="text-divider">
+                              Procedimientos utilizados
                             </div>
-                            <div class="divider"></div>
-                            <div class="name">Test Name</div>
+                            <div class="text" style="font-size: 12px !important;">
+                              Si la actividad requiere de autorización del gerente, anote el nombre a continuación
+                            </div>
+                            <mat-form-field class="inputs">
+                              <input formControlName="managerName" matInput placeholder="Nombre completo">
+                            </mat-form-field>
+                            <mat-form-field class="inputs">
+                              <input formControlName="observations" matInput placeholder="Observaciones">
+                            </mat-form-field>
+                            <div class="image-header">
+                              Captura fotográfica de evidencia.
+                            </div>
+                            <div class="image-container">
+                              <mat-icon class="default-image">
+                                image
+                              </mat-icon>
+                            </div>
+                            <div class="text-sign">
+                              Nombre y firma del responsable
+                            </div>
+                            <div>
+                              <div class="signature-element">
+                                <img src="https://lh3.googleusercontent.com/pAVkMKw5PWzy67CaKieL-C6URUgMHsMgY1U9MIMG_vkjUeKbR9WNB7Lx7EAz_nAoQgmK42xy3uoTmM8mng_eKEjuXNLpM-welQ">
+                              </div>
+                              <div class="divider"></div>
+                              <div class="name">Test Name</div>
+                            </div>
+                            <div class="finish" *ngIf="user.role === 7">
+                              <button mat-flat-button [color]="'primary'">FINALZAR</button>
+                            </div>
                           </div>
-                          <div class="finish" *ngIf="user.role === 7">
-                            <button mat-flat-button [color]="'primary'">FINALZAR</button>
-                          </div>
-                        </div>
+                        </form>
                       </div>
                       <div class="divider" *ngIf="task.hwg"></div>
                       <div *ngIf="task.hwg" class="flex-box">
                         <div class="columns">
                           <mat-form-field class="inputs">
-                            <mat-select placeholder="Lugar de generación">
-                              <mat-option value="1">Zona de despacho</mat-option>
-                              <mat-option value="2">Zona de tanques</mat-option>
-                              <mat-option value="3">Cuarto de máquinas</mat-option>
-                              <mat-option value="4">Trampa de combustible</mat-option>
+                            <mat-select placeholder="Lugar de generación" required>
+                              <mat-option value="Zona de despacho">Zona de despacho</mat-option>
+                              <mat-option value="Zona de tanques">Zona de tanques</mat-option>
+                              <mat-option value="Cuarto de máquinas">Cuarto de máquinas</mat-option>
+                              <mat-option value="Trampa de combustible">Trampa de combustible</mat-option>
                             </mat-select>
                           </mat-form-field>
                           <mat-form-field class="inputs">
-                            <mat-select placeholder="Residuo generado">
-                              <mat-option value="1">Envases contaminados con aceite</mat-option>
-                              <mat-option value="2">Natas y grasas de la trampa de combustible</mat-option>
-                              <mat-option value="3">Filtros de gasolina y diesel</mat-option>
-                              <mat-option value="4">Residuos de aceite y pintura</mat-option>
+                            <mat-select placeholder="Residuo generado" required>
+                              <mat-option value="Envases contaminados con aceite">Envases contaminados con aceite</mat-option>
+                              <mat-option value="Natas y grasas de la trampa de combustible">Natas y grasas de la trampa de combustible</mat-option>
+                              <mat-option value="Filtros de gasolina y diesel">Filtros de gasolina y diesel</mat-option>
+                              <mat-option value="Residuos de aceite y pintura">Residuos de aceite y pintura</mat-option>
                             </mat-select>
                           </mat-form-field>
                           <div class="text-divider">
-                            Características
+                            Características<sup>*</sup>
                           </div>
                           <div class="inputs">
                             <div class="space-box">
@@ -245,10 +267,10 @@
                           </div>
                           <div style="display: flex; justify-content: space-between; width: 90%">
                             <mat-form-field style="width: 65%">
-                              <input matInput placeholder="Cantidad generada">
+                              <input matInput placeholder="Cantidad generada" required>
                             </mat-form-field>
                             <mat-form-field style="width: 30%;">
-                              <mat-select placeholder="Unidad">
+                              <mat-select placeholder="Unidad" required>
                                 <mat-option value="1">Pzas.</mat-option>
                                 <mat-option value="2">kg</mat-option>
                                 <mat-option value="3">gr</mat-option>
@@ -259,7 +281,7 @@
                         </div>
                         <div class="columns">
                           <mat-form-field class="inputs">
-                            <mat-select placeholder="Almacenamiento temporal">
+                            <mat-select placeholder="Almacenamiento temporal" required>
                               <mat-option value="1">Tambo metálico</mat-option>
                               <mat-option value="2">Bolsas plásticas</mat-option>
                             </mat-select>
@@ -292,7 +314,7 @@
                 </div>
                 <div class="containerTask" *ngSwitchCase="2">
                   <mat-accordion class="containerTask">
-                    <mat-expansion-panel>
+                    <mat-expansion-panel  (afterExpand)="getTaskInformation(task.id, task.typeReport, task.hwg)">
                       <mat-expansion-panel-header [collapsedHeight]="'88px'" [expandedHeight]="'88px'">
                         <mat-panel-title>
                           <div class="date">
@@ -318,6 +340,14 @@
                       </div>
                       <div class="flex-box">
                         <div class="columns">
+                          <div class="times">
+                            <div class="clock">
+                              <!--app-time-picker [placeholder]="'Hora de inicio'" [required]="true"></app-time-picker-->
+                            </div>
+                            <div class="clock">
+                              <!--app-time-picker [placeholder]="'Hora de término'" [required]="true"></app-time-picker-->
+                            </div>
+                          </div>
                           <mat-form-field class="inputs">
                             <input matInput placeholder="Marca">
                           </mat-form-field>
@@ -329,20 +359,20 @@
                           </mat-form-field>
                           <div style="display: flex; align-items: center; width: 90%;">
                             <mat-form-field>
-                              <input matInput placeholder="Presión del manómetro">
+                              <input matInput placeholder="Presión del manómetro" required>
                             </mat-form-field>
                             <div class="color" style="margin-left: 16px">Kg/cm<sup>2</sup></div>
                           </div>
                           <mat-form-field class="inputs">
-                            <mat-select placeholder="Purga">
-                              <mat-option value="1">Satisfactorio</mat-option>
-                              <mat-option value="2">No saatisfactorio</mat-option>
+                            <mat-select placeholder="Purga" required>
+                              <mat-option value="Satisfactorio">Satisfactorio</mat-option>
+                              <mat-option value="No satisfactorio">No satisfactorio</mat-option>
                             </mat-select>
                           </mat-form-field>
                           <mat-form-field class="inputs">
-                            <mat-select placeholder="Disparo manual de válvula de seguridad">
-                              <mat-option value="1">Función correcta</mat-option>
-                              <mat-option value="2">Función incorrecta</mat-option>
+                            <mat-select placeholder="Disparo manual de válvula de seguridad" required>
+                              <mat-option value="Función correcta">Función correcta</mat-option>
+                              <mat-option value="Función incorrecta">Función incorrecta</mat-option>
                             </mat-select>
                           </mat-form-field>
                           <mat-form-field class="inputs">
@@ -380,23 +410,23 @@
                       <div *ngIf="task.hwg" class="flex-box">
                         <div class="columns">
                           <mat-form-field class="inputs">
-                            <mat-select placeholder="Lugar de generación">
-                              <mat-option value="1">Zona de despacho</mat-option>
-                              <mat-option value="2">Zona de tanques</mat-option>
-                              <mat-option value="3">Cuarto de máquinas</mat-option>
-                              <mat-option value="4">Trampa de combustible</mat-option>
+                            <mat-select placeholder="Lugar de generación" required>
+                              <mat-option value="Zona de despacho">Zona de despacho</mat-option>
+                              <mat-option value="Zona de tanques">Zona de tanques</mat-option>
+                              <mat-option value="Cuarto de máquinas">Cuarto de máquinas</mat-option>
+                              <mat-option value="Trampa de combustible">Trampa de combustible</mat-option>
                             </mat-select>
                           </mat-form-field>
                           <mat-form-field class="inputs">
-                            <mat-select placeholder="Residuo generado">
-                              <mat-option value="1">Envases contaminados con aceite</mat-option>
-                              <mat-option value="2">Natas y grasas de la trampa de combustible</mat-option>
-                              <mat-option value="3">Filtros de gasolina y diesel</mat-option>
-                              <mat-option value="4">Residuos de aceite y pintura</mat-option>
+                            <mat-select placeholder="Residuo generado" required>
+                              <mat-option value="Envases contaminados con aceite">Envases contaminados con aceite</mat-option>
+                              <mat-option value="Natas y grasas de la trampa de combustible">Natas y grasas de la trampa de combustible</mat-option>
+                              <mat-option value="Filtros de gasolina y diesel">Filtros de gasolina y diesel</mat-option>
+                              <mat-option value="Residuos de aceite y pintura">Residuos de aceite y pintura</mat-option>
                             </mat-select>
                           </mat-form-field>
                           <div class="text-divider">
-                            Características
+                            Características<sup>*</sup>
                           </div>
                           <div class="inputs">
                             <div class="space-box">
@@ -424,10 +454,10 @@
                           </div>
                           <div style="display: flex; justify-content: space-between; width: 90%">
                             <mat-form-field style="width: 65%">
-                              <input matInput placeholder="Cantidad generada">
+                              <input matInput placeholder="Cantidad generada" required>
                             </mat-form-field>
                             <mat-form-field style="width: 30%;">
-                              <mat-select placeholder="Unidad">
+                              <mat-select placeholder="Unidad" required>
                                 <mat-option value="1">Pzas.</mat-option>
                                 <mat-option value="2">kg</mat-option>
                                 <mat-option value="3">gr</mat-option>
@@ -438,7 +468,7 @@
                         </div>
                         <div class="columns">
                           <mat-form-field class="inputs">
-                            <mat-select placeholder="Almacenamiento temporal">
+                            <mat-select placeholder="Almacenamiento temporal" required>
                               <mat-option value="1">Tambo metálico</mat-option>
                               <mat-option value="2">Bolsas plásticas</mat-option>
                             </mat-select>
@@ -471,7 +501,7 @@
                 </div>
                 <div class="containerTask" *ngSwitchCase="4">
                   <mat-accordion class="containerTask">
-                    <mat-expansion-panel>
+                    <mat-expansion-panel  (afterExpand)="getTaskInformation(task.id, task.typeReport, task.hwg)">
                       <mat-expansion-panel-header [collapsedHeight]="'88px'" [expandedHeight]="'88px'">
                         <mat-panel-title>
                           <div class="date">
@@ -497,14 +527,6 @@
                       </div>
                       <div class="flex-box">
                         <div class="columns">
-                          <div class="times">
-                            <mat-form-field class="clock">
-                              <input matInput placeholder="Hora de inicio">
-                            </mat-form-field>
-                            <mat-form-field class="clock">
-                              <input matInput placeholder="Hora de término">
-                            </mat-form-field>
-                          </div>
                           <div class="inputs">
                             <h3 style="margin: 4px 0; font-size: 14px">Dispensarios</h3>
                           </div>
@@ -517,51 +539,45 @@
                                 <mat-checkbox>Premium</mat-checkbox>
                               </div>
                             </div>
-                            <div class="space-box">
-                              <div class="checks-row">
-                                <mat-checkbox>Diesel</mat-checkbox>
-                              </div>
-                              <div class="checks-row"></div>
-                            </div>
                           </div>
                           <div class="times">
                             <mat-form-field class="clock">
-                              <mat-select placeholder="Pistola">
-                                <mat-option value="1">Satisfactorio</mat-option>
-                                <mat-option value="2">No satisfactorio</mat-option>
-                                <mat-option value="3">No definido</mat-option>
+                              <mat-select placeholder="Pistola" required>
+                                <mat-option value="Satisfactorio">Satisfactorio</mat-option>
+                                <mat-option value="No satisfactorio">No satisfactorio</mat-option>
+                                <mat-option value="No definido">No definido</mat-option>
                               </mat-select>
                             </mat-form-field>
                             <mat-form-field class="clock">
-                              <mat-select placeholder="Manguera larga">
-                                <mat-option value="1">Satisfactorio</mat-option>
-                                <mat-option value="2">No satisfactorio</mat-option>
-                                <mat-option value="3">No definido</mat-option>
+                              <mat-select placeholder="Manguera larga" required>
+                                <mat-option value="Satisfactorio">Satisfactorio</mat-option>
+                                <mat-option value="No satisfactorio">No satisfactorio</mat-option>
+                                <mat-option value="No definido">No definido</mat-option>
                               </mat-select>
                             </mat-form-field>
                           </div>
                           <div class="times">
                             <mat-form-field class="clock">
-                              <mat-select placeholder="Break away">
-                                <mat-option value="1">Satisfactorio</mat-option>
-                                <mat-option value="2">No satisfactorio</mat-option>
-                                <mat-option value="3">No definido</mat-option>
+                              <mat-select placeholder="Break away" required>
+                                <mat-option value="Satisfactorio">Satisfactorio</mat-option>
+                                <mat-option value="No satisfactorio">No satisfactorio</mat-option>
+                                <mat-option value="No definido">No definido</mat-option>
                               </mat-select>
                             </mat-form-field>
                             <mat-form-field class="clock">
-                              <mat-select placeholder="Manguera corta">
-                                <mat-option value="1">Satisfactorio</mat-option>
-                                <mat-option value="2">No satisfactorio</mat-option>
-                                <mat-option value="3">No definido</mat-option>
+                              <mat-select placeholder="Manguera corta" required>
+                                <mat-option value="Satisfactorio">Satisfactorio</mat-option>
+                                <mat-option value="No satisfactorio">No satisfactorio</mat-option>
+                                <mat-option value="No definido">No definido</mat-option>
                               </mat-select>
                             </mat-form-field>
                           </div>
                           <div class="times">
                             <mat-form-field class="clock">
-                              <mat-select placeholder="Equipo">
-                                <mat-option value="1">Motor de succión</mat-option>
-                                <mat-option value="2">Turbina</mat-option>
-                                <mat-option value="3">Quemador</mat-option>
+                              <mat-select placeholder="Equipo" required>
+                                <mat-option value="Motor de succión">Motor de succión</mat-option>
+                                <mat-option value="Turbina">Turbina</mat-option>
+                                <mat-option value="Quemador">Quemador</mat-option>
                               </mat-select>
                             </mat-form-field>
                             <div class="clock"></div>
@@ -570,55 +586,54 @@
                             <h3 style="margin: 8px 0; font-size: 14px">Tanque 1</h3>
                           </div>
                           <mat-radio-group style="display: flex;width: 90%;justify-content: space-between; flex-wrap: wrap">
-                            <mat-radio-button value="1">Magna</mat-radio-button>
-                            <mat-radio-button value="2">Premium</mat-radio-button>
-                            <mat-radio-button value="3">Diesel</mat-radio-button>
+                            <mat-radio-button value="Magna">Magna</mat-radio-button>
+                            <mat-radio-button value="Premium">Premium</mat-radio-button>
                           </mat-radio-group>
                           <mat-form-field class="inputs">
-                            <mat-select placeholder="Tapa y adaptador de vapor">
-                              <mat-option value="1">Satisfactorio</mat-option>
-                              <mat-option value="2">No satisfactorio</mat-option>
-                              <mat-option value="3">No determinado</mat-option>
+                            <mat-select placeholder="Tapa y adaptador de vapor" required>
+                              <mat-option value="Satisfactorio">Satisfactorio</mat-option>
+                              <mat-option value="No satisfactorio">No satisfactorio</mat-option>
+                              <mat-option value="No determinado">No determinado</mat-option>
                             </mat-select>
                           </mat-form-field>
                           <mat-form-field class="inputs">
-                            <mat-select placeholder="Tapa y adaptador de llenado">
-                              <mat-option value="1">Satisfactorio</mat-option>
-                              <mat-option value="2">No satisfactorio</mat-option>
-                              <mat-option value="3">No determinado</mat-option>
+                            <mat-select placeholder="Tapa y adaptador de llenado" required>
+                              <mat-option value="Satisfactorio">Satisfactorio</mat-option>
+                              <mat-option value="No satisfactorio">No satisfactorio</mat-option>
+                              <mat-option value="No determinado">No determinado</mat-option>
                             </mat-select>
                           </mat-form-field>
                           <mat-form-field class="inputs">
-                            <mat-select placeholder="Válvula de sobrellenado">
-                              <mat-option value="1">Satisfactorio</mat-option>
-                              <mat-option value="2">No satisfactorio</mat-option>
-                              <mat-option value="3">No determinado</mat-option>
+                            <mat-select placeholder="Válvula de sobrellenado" required>
+                              <mat-option value="Satisfactorio">Satisfactorio</mat-option>
+                              <mat-option value="No satisfactorio">No satisfactorio</mat-option>
+                              <mat-option value="No determinado">No determinado</mat-option>
                             </mat-select>
                           </mat-form-field>
                           <mat-form-field class="inputs">
-                            <mat-select placeholder="Válvula de presión-vacio">
-                              <mat-option value="1">Satisfactorio</mat-option>
-                              <mat-option value="2">No satisfactorio</mat-option>
-                              <mat-option value="3">No determinado</mat-option>
+                            <mat-select placeholder="Válvula de presión-vacio" required>
+                              <mat-option value="Satisfactorio">Satisfactorio</mat-option>
+                              <mat-option value="No satisfactorio">No satisfactorio</mat-option>
+                              <mat-option value="No determinado">No determinado</mat-option>
                             </mat-select>
                           </mat-form-field>
                         </div>
                         <div class="columns">
                           <mat-form-field class="inputs">
-                            <mat-select placeholder="Alarma SRV Encendido">
-                              <mat-option value="1">Satisfactorio</mat-option>
-                              <mat-option value="2">No satisfactorio</mat-option>
-                              <mat-option value="3">No determinado</mat-option>
+                            <mat-select placeholder="Alarma SRV Encendido" required>
+                              <mat-option value="Satisfactorio">Satisfactorio</mat-option>
+                              <mat-option value="No satisfactorio">No satisfactorio</mat-option>
+                              <mat-option value="No determinado">No determinado</mat-option>
                             </mat-select>
                           </mat-form-field>
                           <div class="inputs">
                             <h3 style="margin: 8px 0; font-size: 14px;">Mantenimiento</h3>
                           </div>
                           <mat-form-field class="inputs">
-                            <mat-select placeholder="Paro de emergencia">
-                              <mat-option value="1">opt1</mat-option>
-                              <mat-option value="2">opt 2</mat-option>
-                              <mat-option value="3">opt 3</mat-option>
+                            <mat-select placeholder="Paro de emergencia" required>
+                              <mat-option value="Satisfactorio">Satisfactorio</mat-option>
+                              <mat-option value="No satisfactorio">No satisfactorio</mat-option>
+                              <mat-option value="No determinado">No determinado</mat-option>
                             </mat-select>
                           </mat-form-field>
                           <mat-form-field class="inputs">
@@ -652,7 +667,7 @@
                 </div>
                 <div class="containerTask" *ngSwitchCase="5">
                   <mat-accordion class="containerTask">
-                    <mat-expansion-panel>
+                    <mat-expansion-panel  (afterExpand)="getTaskInformation(task.id, task.typeReport, task.hwg)">
                       <mat-expansion-panel-header [collapsedHeight]="'88px'" [expandedHeight]="'88px'">
                         <mat-panel-title>
                           <div class="date">
@@ -703,19 +718,19 @@
                       <div *ngIf="task.hwg" class="flex-box">
                         <div class="columns">
                           <mat-form-field class="inputs">
-                            <mat-select placeholder="Lugar de generación">
-                              <mat-option value="1">Zona de despacho</mat-option>
-                              <mat-option value="2">Zona de tanques</mat-option>
-                              <mat-option value="3">Cuarto de máquinas</mat-option>
-                              <mat-option value="4">Trampa de combustible</mat-option>
+                            <mat-select placeholder="Lugar de generación" required>
+                              <mat-option value="Zona de despacho">Zona de despacho</mat-option>
+                              <mat-option value="Zona de tanques">Zona de tanques</mat-option>
+                              <mat-option value="Cuarto de máquinas">Cuarto de máquinas</mat-option>
+                              <mat-option value="Trampa de combustible">Trampa de combustible</mat-option>
                             </mat-select>
                           </mat-form-field>
                           <mat-form-field class="inputs">
-                            <mat-select placeholder="Residuo generado">
-                              <mat-option value="1">Envases contaminados con aceite</mat-option>
-                              <mat-option value="2">Natas y grasas de la trampa de combustible</mat-option>
-                              <mat-option value="3">Filtros de gasolina y diesel</mat-option>
-                              <mat-option value="4">Residuos de aceite y pintura</mat-option>
+                            <mat-select placeholder="Residuo generado" required>
+                              <mat-option value="Envases contaminados con aceite">Envases contaminados con aceite</mat-option>
+                              <mat-option value="Natas y grasas de la trampa de combustible">Natas y grasas de la trampa de combustible</mat-option>
+                              <mat-option value="Filtros de gasolina y diesel">Filtros de gasolina y diesel</mat-option>
+                              <mat-option value="Residuos de aceite y pintura">Residuos de aceite y pintura</mat-option>
                             </mat-select>
                           </mat-form-field>
                           <div class="text-divider">
@@ -794,7 +809,7 @@
                 </div>
                 <div class="containerTask" *ngSwitchCase="6">
                   <mat-accordion class="containerTask">
-                    <mat-expansion-panel>
+                    <mat-expansion-panel  (afterExpand)="getTaskInformation(task.id, task.typeReport, task.hwg)">
                       <mat-expansion-panel-header [collapsedHeight]="'88px'" [expandedHeight]="'88px'">
                         <mat-panel-title>
                           <div class="date">
@@ -821,18 +836,18 @@
                       <div class="flex-box">
                         <div class="columns">
                           <mat-form-field class="inputs">
-                            <mat-select placeholder="Residuo recolectado">
-                              <mat-option value="1">1</mat-option>
-                              <mat-option value="2">2</mat-option>
-                              <mat-option value="3">3</mat-option>
+                            <mat-select placeholder="Residuo recolectado" required>
+                              <mat-option value="Natas y grasas de la tampa de combustibles">Natas y grasas de la tampa de combustibles</mat-option>
+                              <mat-option value="Filtros de gasolina y diesel">Filtros de gasolina y diesel</mat-option>
+                              <mat-option value="Residuos de aceite y pintura">Residuos de aceite y pintura</mat-option>
                             </mat-select>
                           </mat-form-field>
                           <div style="display: flex; justify-content: space-between; width: 90%">
                             <mat-form-field style="width: 65%">
-                              <input matInput placeholder="Cantidad generada">
+                              <input matInput placeholder="Cantidad recolectada" required>
                             </mat-form-field>
                             <mat-form-field style="width: 30%;">
-                              <mat-select placeholder="Unidad">
+                              <mat-select placeholder="Unidad" required>
                                 <mat-option value="1">Pzas.</mat-option>
                                 <mat-option value="2">kg</mat-option>
                                 <mat-option value="3">gr</mat-option>
@@ -841,16 +856,10 @@
                             </mat-form-field>
                           </div>
                           <mat-form-field class="inputs">
-                            <input matInput placeholder="Empresa transportista">
+                            <input matInput placeholder="Empresa transportista" required>
                           </mat-form-field>
                           <mat-form-field class="inputs">
-                            <input matInput placeholder="Destino final">
-                          </mat-form-field>
-                          <mat-form-field class="inputs">
-                            <input matInput placeholder="Fase de manejo siguiente a la salida del almacén">
-                          </mat-form-field>
-                          <mat-form-field class="inputs">
-                            <input matInput placeholder="No. de manifiesto">
+                            <input matInput placeholder="Destino final" required>
                           </mat-form-field>
                         </div>
                         <div class="columns" style="display: flex; flex-direction: column; justify-content: center">
@@ -887,7 +896,7 @@
                 </div>
                 <div class="containerTask" *ngSwitchCase="7">
                   <mat-accordion class="containerTask">
-                    <mat-expansion-panel>
+                    <mat-expansion-panel  (afterExpand)="getTaskInformation(task.id, task.typeReport, task.hwg)">
                       <mat-expansion-panel-header [collapsedHeight]="'88px'" [expandedHeight]="'88px'">
                         <mat-panel-title>
                           <div class="date">
@@ -914,23 +923,23 @@
                       <div class="flex-box">
                         <div class="columns">
                           <div class="times">
-                            <mat-form-field class="clock">
-                              <input matInput placeholder="Hora de inicio">
-                            </mat-form-field>
-                            <mat-form-field class="clock">
-                              <input matInput placeholder="Hora de término">
-                            </mat-form-field>
+                            <div class="clock">
+                              <!--app-time-picker [placeholder]="'Hora de inicio'" [required]="true"></app-time-picker-->
+                            </div>
+                            <div class="clock">
+                              <!--app-time-picker [placeholder]="'Hora de término'" [required]="true"></app-time-picker-->
+                            </div>
                           </div>
                           <mat-form-field class="inputs">
-                            <input matInput placeholder="No. de remisión">
+                            <input matInput placeholder="No. de remisión" required>
                           </mat-form-field>
                           <div class="text-divider">Cantidad en:</div>
                           <div class="times">
                             <mat-form-field class="clock">
-                              <input matInput placeholder="Remisión (lts)">
+                              <input matInput placeholder="Remisión (lts)" required>
                             </mat-form-field>
                             <mat-form-field class="clock">
-                              <input matInput placeholder="Volumétrico (lts)">
+                              <input matInput placeholder="Volumétrico (lts)" required>
                             </mat-form-field>
                           </div>
                           <div class="text-divider">
@@ -957,9 +966,6 @@
                           </div>
                           <mat-form-field class="inputs">
                             <input matInput placeholder="1.- Nombre del que recibe">
-                          </mat-form-field>
-                          <mat-form-field class="inputs">
-                            <input matInput placeholder="2.- Nombre del responsable">
                           </mat-form-field>
                         </div>
                         <div class="columns">
@@ -993,7 +999,7 @@
                 </div>
                 <div class="containerTask" *ngSwitchCase="8">
                   <mat-accordion class="containerTask">
-                    <mat-expansion-panel>
+                    <mat-expansion-panel  (afterExpand)="getTaskInformation(task.id, task.typeReport, task.hwg)">
                       <mat-expansion-panel-header [collapsedHeight]="'88px'" [expandedHeight]="'88px'">
                         <mat-panel-title>
                           <div class="date">
@@ -1020,56 +1026,56 @@
                       <div class="flex-box">
                         <div class="columns">
                           <div class="times">
-                            <mat-form-field class="clock">
-                              <input matInput placeholder="Hora de inicio">
-                            </mat-form-field>
-                            <mat-form-field class="clock">
-                              <input matInput placeholder="Hora de término">
-                            </mat-form-field>
+                            <div class="clock">
+                              <!--app-time-picker [placeholder]="'Hora de inicio'" [required]="true"></app-time-picker-->
+                            </div>
+                            <div class="clock">
+                              <!--app-time-picker [placeholder]="'Hora de término'" [required]="true"></app-time-picker-->
+                            </div>
                           </div>
                           <div class="color">
                             Extintor 1
                           </div>
                           <mat-form-field class="inputs">
-                            <mat-select placeholder="Área">
-                              <mat-option value="1">Zona de despacho</mat-option>
-                              <mat-option value="2">Zona de tanques</mat-option>
-                              <mat-option value="3">Oficina</mat-option>
-                              <mat-option value="4">Patio</mat-option>
-                              <mat-option value="5">Cuarto eléctrico</mat-option>
-                              <mat-option value="6">Cuarto de máquinas</mat-option>
-                              <mat-option value="7">Cuarto de residuos peligrosos</mat-option>
+                            <mat-select placeholder="Área" required>
+                              <mat-option value="Zona de despacho">Zona de despacho</mat-option>
+                              <mat-option value="Zona de tanques">Zona de tanques</mat-option>
+                              <mat-option value="Oficina">Oficina</mat-option>
+                              <mat-option value="Patio">Patio</mat-option>
+                              <mat-option value="Cuarto eléctrico">Cuarto eléctrico</mat-option>
+                              <mat-option value="Cuarto de máquinas">Cuarto de máquinas</mat-option>
+                              <mat-option value="Cuarto de residuos peligrosos">Cuarto de residuos peligrosos</mat-option>
                             </mat-select>
                           </mat-form-field>
                           <mat-form-field class="inputs">
-                            <input matInput placeholder="Capacidad">
+                            <input matInput placeholder="Capacidad" required>
                           </mat-form-field>
                           <div class="times">
                             <mat-form-field class="clock">
-                              <mat-select placeholder="Vencimiento">
-                                <mat-option value="1">Vigente</mat-option>
-                                <mat-option value="2">Caducao</mat-option>
+                              <mat-select placeholder="Vencimiento" required>
+                                <mat-option value="Vigente">Vigente</mat-option>
+                                <mat-option value="Caducado">Caducao</mat-option>
                               </mat-select>
                             </mat-form-field>
                             <mat-form-field class="clock">
-                              <mat-select placeholder="Manómetro">
-                                <mat-option value="1">Descargado</mat-option>
-                                <mat-option value="2">Óptimo</mat-option>
-                                <mat-option value="3">Sobrecargado</mat-option>
+                              <mat-select placeholder="Manómetro" required>
+                                <mat-option value="Descargado">Descargado</mat-option>
+                                <mat-option value="Óptimo">Óptimo</mat-option>
+                                <mat-option value="Sobrecargado">Sobrecargado</mat-option>
                               </mat-select>
                             </mat-form-field>
                           </div>
                           <div class="times">
                             <mat-form-field class="clock">
-                              <mat-select placeholder="Manguera">
-                                <mat-option value="1">Satisfactorio</mat-option>
-                                <mat-option value="2">No satisfactorio</mat-option>
+                              <mat-select placeholder="Manguera" required>
+                                <mat-option value="Satisfactorio">Satisfactorio</mat-option>
+                                <mat-option value="No satisfactorio">No satisfactorio</mat-option>
                               </mat-select>
                             </mat-form-field>
                             <mat-form-field class="clock">
-                              <mat-select placeholder="Cincho">
-                                <mat-option value="1">Satisfactorio</mat-option>
-                                <mat-option value="2">No satisfactorio</mat-option>
+                              <mat-select placeholder="Cincho" required>
+                                <mat-option value="Satisfactorio">Satisfactorio</mat-option>
+                                <mat-option value="No satisfactorio">No satisfactorio</mat-option>
                               </mat-select>
                             </mat-form-field>
                           </div>
@@ -1117,7 +1123,7 @@
                 </div>
                 <div class="containerTask" *ngSwitchCase="9">
                   <mat-accordion class="containerTask">
-                    <mat-expansion-panel>
+                    <mat-expansion-panel  (afterExpand)="getTaskInformation(task.id, task.typeReport, task.hwg)">
                       <mat-expansion-panel-header [collapsedHeight]="'88px'" [expandedHeight]="'88px'">
                         <mat-panel-title>
                           <div class="date">
@@ -1138,16 +1144,16 @@
                       <div class="flex-box">
                         <div class="columns">
                           <mat-form-field class="inputs">
-                            <mat-select placeholder="Lugar de generación">
-                              <mat-option value="1">Zona de despacho</mat-option>
-                              <mat-option value="2">Zona de tanques</mat-option>
-                              <mat-option value="3">Oficinas</mat-option>
-                              <mat-option value="4">Cuarto eléctrico</mat-option>
-                              <mat-option value="5">Cuarto de maquinas</mat-option>
+                            <mat-select placeholder="Lugar de generación" required>
+                              <mat-option value="Zona de despacho">Zona de despacho</mat-option>
+                              <mat-option value="Zona de tanques">Zona de tanques</mat-option>
+                              <mat-option value="Oficinas">Oficinas</mat-option>
+                              <mat-option value="Cuarto eléctrico">Cuarto eléctrico</mat-option>
+                              <mat-option value="Cuarto de maquinas">Cuarto de maquinas</mat-option>
                             </mat-select>
                           </mat-form-field>
                           <mat-form-field class="inputs">
-                            <input matInput placeholder="Descripción">
+                            <input matInput placeholder="Descripción" required>
                           </mat-form-field>
                           <mat-form-field class="inputs">
                             <input matInput placeholder="Procedimientos utilizados">

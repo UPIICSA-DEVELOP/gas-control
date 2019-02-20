@@ -13,6 +13,10 @@ import {Constants} from '@app/core/constants.core';
 import {UtilitiesService} from '@app/core/utilities/utilities.service';
 import {LocalStorageService} from '@app/core/services/local-storage/local-storage.service';
 import {AddStationService} from '@app/components/screen/components/add-gas-station/add-station.service';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {ModalProceduresService} from '@app/components/screen/components/modal-procedures/modal-procedures.service';
+import {Observable, Subject} from 'rxjs/index';
+import {TimePickerService} from '@app/core/components/time-picker/time-picker.service';
 
 @Component({
   selector: 'app-list-tasks',
@@ -47,13 +51,17 @@ export class ListTasksComponent implements OnInit, DoCheck {
   public load: boolean;
   public user: any;
   public notCalendar: boolean;
+  public taskForm: FormGroup[];
   constructor(
     private _dateService: DatepickerService,
     private _filterService: TaskFilterService,
     private _api: ApiService,
     private _apiLoader: ApiLoaderService,
-    private _addStationService: AddStationService
+    private _addStationService: AddStationService,
+    private _formBuilder: FormBuilder,
+    private _modalProceduresService: ModalProceduresService
   ) {
+    this.taskForm = [undefined,undefined,undefined,undefined,undefined,undefined,undefined,undefined];
     this.today = false;
     this.notCalendar = false;
     this.filter = 0;
@@ -67,6 +75,7 @@ export class ListTasksComponent implements OnInit, DoCheck {
   }
 
   ngOnInit() {
+    this.initForms();
     this.user = LocalStorageService.getItem(Constants.UserInSession);
     this._apiLoader.getProgress().subscribe(load=>{this.load=load});
     if (this.startDate.toLocaleDateString() === this.endDate.toLocaleDateString()) {
@@ -79,6 +88,12 @@ export class ListTasksComponent implements OnInit, DoCheck {
 
   ngDoCheck():void{
       this.notCalendar = LocalStorageService.getItem(Constants.NotCalendarTask);
+  }
+
+  public test(ev: string, type: string):void{
+    this.taskForm[0].patchValue({
+      [type]: ev
+    });
   }
 
   private getStationTask():void{
@@ -109,6 +124,7 @@ export class ListTasksComponent implements OnInit, DoCheck {
       this.taskTemplate.taskTemplates.forEach(template => {
         if(task.type === Number(template.id)){
           this.tasksFilterd.push({
+            id: task.id,
             type: task.type,
             date: UtilitiesService.convertDate(task.date),
             name: template.name,
@@ -210,5 +226,68 @@ export class ListTasksComponent implements OnInit, DoCheck {
       stationId: this.station.id,
       disableClose: true
     });
+  }
+
+  public getTaskInformation(id: string, type: number, hwg: boolean): void{
+    this._api.getTaskInformation(id, type).subscribe(response=>{
+      console.log(response)
+    })
+  }
+
+  private initForms():void{
+    this.initOMForm();
+  }
+
+  private initOMForm():void{
+    this.taskForm[0] = this._formBuilder.group({
+      startTime:['',[Validators.required]],
+      endTime:['',[Validators.required]],
+      maintenanceType:['',[Validators.required]],
+      activityType:['',[Validators.required]],
+      personnelType:['',[Validators.required]],
+      cottonClothes:[false, [Validators.required]],
+      faceMask:[false, [Validators.required]],
+      gloves:[false, [Validators.required]],
+      kneepads:[false, [Validators.required]],
+      protectiveGoggles:[false, [Validators.required]],
+      industrialShoes:[false, [Validators.required]],
+      goggles:[false, [Validators.required]],
+      helmet:[false, [Validators.required]],
+      toolsAndMaterials: ['',[]],
+      managerName:['',[]],
+      observations:['',[]]
+    })
+  }
+
+  private initCompresorForm():void{
+    this.taskForm[1] = this._formBuilder.group({})
+  }
+
+  private initHWCForm():void{
+    this.taskForm[2] = this._formBuilder.group({})
+  }
+
+  private initVRSForm():void{
+    this.taskForm[3] = this._formBuilder.group({})
+  }
+
+  private initScannedForm():void{
+    this.taskForm[4] = this._formBuilder.group({})
+  }
+
+  private initFRForm():void{
+    this.taskForm[5] = this._formBuilder.group({})
+  }
+
+  private initFEForm():void{
+    this.taskForm[6] = this._formBuilder.group({})
+  }
+
+  private initInceidenceForm():void{
+    this.taskForm[7] = this._formBuilder.group({})
+  }
+
+  public openProcedures():void{
+    this._modalProceduresService.open(this.taskTemplate.procedures)
   }
 }
