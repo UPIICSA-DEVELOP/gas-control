@@ -15,6 +15,9 @@ export class FormatTimePipe implements PipeTransform {
     let time;
     let hr;
     let min;
+    if(value === '' || value === undefined){
+      return '';
+    }
     try{
       time = Number(value);
       hr = value.slice(0,2);
