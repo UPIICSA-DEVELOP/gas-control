@@ -1000,4 +1000,12 @@ export class AddGasStationComponent implements OnInit {
     }
     return false;
   }
+
+  public changeDate(ev: any, index: number, isStart: boolean):void{
+    if(isStart){
+      this.workShifts[index].start = ev;
+    }else{
+      this.workShifts[index].end = ev;
+    }
+  }
 }
