@@ -43,6 +43,27 @@ export class UtilitiesService {
       (window.innerWidth / 2)  + ',height=' + (window.innerHeight / 2));
   }
 
+  static createTimeString(date: string): string{
+    let newDate: string[], suffix:string, hours, minutes;
+    try{
+      newDate = date.split(':');
+      suffix = null;
+      hours = newDate[0];
+      minutes = newDate[1];
+      if(Number(hours) > 12){
+        hours = UtilitiesService.round(Number(hours)-12, 0).toString();
+        hours = hours.length === 1 ? '0'+hours: hours;
+        suffix = ' p.m.';
+      }else{
+        suffix = ' a.m.'
+      }
+    }catch (e){
+      console.error(e);
+      return null;
+    }
+    return hours+':'+minutes+suffix;
+  }
+
   static removeItemOfArray(array: Array<any>, toRemove: any): any {
     try {
       const index = array.indexOf(toRemove);

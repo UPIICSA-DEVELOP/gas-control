@@ -13,6 +13,8 @@ import {LocalStorageService} from '@app/core/services/local-storage/local-storag
 import {AddStationService} from '@app/components/screen/components/add-gas-station/add-station.service';
 import {DialogService} from '@app/core/components/dialog/dialog.service';
 import {AuthService} from '@app/core/services/auth/auth.service';
+import {response} from 'express';
+import {environment} from '@env/environment';
 
 @Component({
   selector: 'app-screen',
@@ -39,9 +41,21 @@ export class ScreenComponent implements OnInit{
   }
 
   ngOnInit() {
+    this._auth.onNotificationsRecived().subscribe(response=>{
+      console.log(response);
+      const notification = new Notification(response.notification.title, {
+        icon: environment.url+'favicon.png',
+        body: response.notification.body,
+      });
+      notification.onclick = function () {
+        window.open("http://stackoverflow.com/a/13328397/1269037");
+      };
+    });
     this._activateRoute.url.subscribe(() => {
      if(this._router.url.includes('/home?station')){
-       this.initView(this._activateRoute.snapshot.queryParams.station);
+       if(!this.stationActive){
+         this.initView(this._activateRoute.snapshot.queryParams.station);
+       }
      }else{
        if(!this._router.url.includes('/home/documents') || !this._router.url.includes('/home/profile/gas-station')){
          if(!this.stationActive){
@@ -82,6 +96,7 @@ export class ScreenComponent implements OnInit{
                 case 200:
                   this.stationList = response[0].item;
                   this.stationActive = this.stationList;
+                  LocalStorageService.setItem(Constants.StationInDashboard, this.stationActive.businessName);
                   if (this.stationActive){
                     if(!this.validateTaskCreated()){
                       this.openTaskCalendar();
@@ -98,6 +113,8 @@ export class ScreenComponent implements OnInit{
             }else{
               this.stationList = response[0].item.stationLites;
               this.stationActive = (Array.isArray(this.stationList)?this.stationList[0]:this.stationList);
+              LocalStorageService.setItem(Constants.ConsultancyInSession, response[0].item.consultancy.businessName);
+              LocalStorageService.setItem(Constants.StationInDashboard, this.stationActive.businessName);
               if (this.stationActive){
                 if(!this.validateTaskCreated()){
                   this.openTaskCalendar();
@@ -112,6 +129,7 @@ export class ScreenComponent implements OnInit{
             if(onlyOneStationId){
               this.stationList = response[0].item;
               this.stationActive = this.stationList;
+              LocalStorageService.setItem(Constants.StationInDashboard, this.stationActive.businessName);
               if(!this.validateTaskCreated()){
                 this.openTaskCalendar();
               }else{
@@ -120,13 +138,13 @@ export class ScreenComponent implements OnInit{
             }else{
               this.stationList = response[0].item.station;
               this.stationActive = this.stationList;
+              LocalStorageService.setItem(Constants.StationInDashboard, this.stationActive.businessName);
               if(!this.validateTaskCreated()){
                 this.openTaskCalendar();
               }else{
                 this.createTasks();
               }
             }
-            LocalStorageService.setItem(Constants.StationInDashboard, this.stationActive.businessName);
             break;
         }
       }

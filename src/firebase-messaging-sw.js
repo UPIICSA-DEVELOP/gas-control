@@ -29,9 +29,7 @@ messaging.setBackgroundMessageHandler(function (payload)  {
   const title = data.title;
   const options = {
     body: data.body,
-    icon: data.icon,
-    image: data.main_picture,
-    data: data
+    icon: 'favicon.png'
   };
   return self.registration.showNotification(title, options);
 });
