@@ -18,150 +18,36 @@
       </button>
     </div>
     <div class="container">
-      <mat-card>
-        <mat-card-content>
-          <div>
-            <div class="title">Estación de Servicio</div>
-            <div class="body">Mensaje de notificación</div>
+      <div *ngIf="notifications; then notificationsList else loading"></div>
+      <ng-template #notificationsList>
+        <div *ngIf="notifications.length > 0; then cards else emptyList"></div>
+        <ng-template #cards>
+            <mat-card *ngFor="let item of notifications; let i = index">
+              <mat-card-content>
+                <div>
+                  <div class="title">{{item.title}}</div>
+                  <div class="body">{{item.body}}</div>
+                </div>
+                <div class="priority">
+                  <button mat-icon-button matTooltip="Eliminar" (click)="deleteNotification(item.id, i)">
+                    <mat-icon>delete</mat-icon>
+                  </button>
+                  <div class="date">{{item.date[0]}} {{item.date[1]}} {{item.date[2]}}</div>
+                </div>
+              </mat-card-content>
+            </mat-card>
+        </ng-template>
+        <ng-template #emptyList>
+          <div class="empty">
+            <div>No tiene notificaciones en su lista</div>
           </div>
-          <div class="priority">
-            <mat-icon>delete</mat-icon>
-            <div class="date">01 Ene 2019</div>
-          </div>
-        </mat-card-content>
-      </mat-card>
-      <mat-card>
-        <mat-card-content>
-          <div>
-            <div class="title">Estación de Servicio</div>
-            <div class="body">Mensaje de notificación</div>
-          </div>
-          <div class="priority">
-            <mat-icon>delete</mat-icon>
-            <div class="date">02 Feb 2019</div>
-          </div>
-        </mat-card-content>
-      </mat-card>
-      <mat-card>
-        <mat-card-content>
-          <div>
-            <div class="title">Estación de Servicio</div>
-            <div class="body">Mensaje de notificación</div>
-          </div>
-          <div class="priority">
-            <mat-icon>delete</mat-icon>
-            <div class="date">03 Mar 2019</div>
-          </div>
-        </mat-card-content>
-      </mat-card>
-      <mat-card>
-        <mat-card-content>
-          <div>
-            <div class="title">Estación de Servicio</div>
-            <div class="body">Mensaje de notificación</div>
-          </div>
-          <div class="priority">
-            <mat-icon>delete</mat-icon>
-            <div class="date">04 Abr 2019</div>
-          </div>
-        </mat-card-content>
-      </mat-card>
-      <mat-card>
-        <mat-card-content>
-          <div>
-            <div class="title">Estación de Servicio</div>
-            <div class="body">Mensaje de notificación</div>
-          </div>
-          <div class="priority">
-            <mat-icon>delete</mat-icon>
-            <div class="date">05 May 2019</div>
-          </div>
-        </mat-card-content>
-      </mat-card>
-      <mat-card>
-        <mat-card-content>
-          <div>
-            <div class="title">Estación de Servicio</div>
-            <div class="body">Mensaje de notificación</div>
-          </div>
-          <div class="priority">
-            <mat-icon>delete</mat-icon>
-            <div class="date">06 Jun 2019</div>
-          </div>
-        </mat-card-content>
-      </mat-card>
-      <mat-card>
-        <mat-card-content>
-          <div>
-            <div class="title">Estación de Servicio</div>
-            <div class="body">Mensaje de notificación</div>
-          </div>
-          <div class="priority">
-            <mat-icon>delete</mat-icon>
-            <div class="date">07 Jul 2019</div>
-          </div>
-        </mat-card-content>
-      </mat-card>
-      <mat-card>
-        <mat-card-content>
-          <div>
-            <div class="title">Estación de Servicio</div>
-            <div class="body">Mensaje de notificación</div>
-          </div>
-          <div class="priority">
-            <mat-icon>delete</mat-icon>
-            <div class="date">08 Ago 2019</div>
-          </div>
-        </mat-card-content>
-      </mat-card>
-      <mat-card>
-        <mat-card-content>
-          <div>
-            <div class="title">Estación de Servicio</div>
-            <div class="body">Mensaje de notificación</div>
-          </div>
-          <div class="priority">
-            <mat-icon>delete</mat-icon>
-            <div class="date">09 Sep 2019</div>
-          </div>
-        </mat-card-content>
-      </mat-card>
-      <mat-card>
-        <mat-card-content>
-          <div>
-            <div class="title">Estación de Servicio</div>
-            <div class="body">Mensaje de notificación</div>
-          </div>
-          <div class="priority">
-            <mat-icon>delete</mat-icon>
-            <div class="date">10 Oct 2019</div>
-          </div>
-        </mat-card-content>
-      </mat-card>
-      <mat-card>
-        <mat-card-content>
-          <div>
-            <div class="title">Estación de Servicio</div>
-            <div class="body">Mensaje de notificación</div>
-          </div>
-          <div class="priority">
-            <mat-icon>delete</mat-icon>
-            <div class="date">11 Nov 2019</div>
-          </div>
-        </mat-card-content>
-      </mat-card>
-      <mat-card>
-        <mat-card-content>
-          <div>
-            <div class="title">Estación de Servicio</div>
-            <div class="body">Mensaje de notificación</div>
-          </div>
-          <div class="priority">
-            <mat-icon>delete</mat-icon>
-            <div class="date">12 Dic 2019</div>
-          </div>
-        </mat-card-content>
-      </mat-card>
+        </ng-template>
+      </ng-template>
+      <ng-template #loading>
+        <div class="load">
+          <mat-spinner></mat-spinner>
+        </div>
+      </ng-template>
     </div>
   </div>
 </div>

@@ -5,8 +5,13 @@
  */
 
 import {Component, OnInit} from '@angular/core';
-import {Router} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {animate, style, transition, trigger} from '@angular/animations';
+import {ApiService} from '@app/core/services/api/api.service';
+import {DialogService} from '@app/core/components/dialog/dialog.service';
+import {CookieService} from '@app/core/services/cookie/cookie.service';
+import {Constants} from '@app/core/constants.core';
+import {UtilitiesService} from '@app/core/utilities/utilities.service';
 
 @Component({
   selector: 'app-notifications',
@@ -27,17 +32,68 @@ import {animate, style, transition, trigger} from '@angular/animations';
   host: {'[@fadeInAnimation]': ''}
 })
 export class NotificationsComponent implements OnInit{
-
+  public notifications: any[];
+  private _station: string;
   constructor(
-    private _route: Router
+    private _route: Router,
+    private _activateRouter: ActivatedRoute,
+    private _api: ApiService,
+    private _dialogService: DialogService
   ) {
+    this.notifications = [];
   }
 
   ngOnInit() {
+    if (this._activateRouter.snapshot.queryParams.id) {
+      this._station = this._activateRouter.snapshot.queryParams.id;
+      this.getNotifications();
+    }
+  }
+
+  private getNotifications():void{
+    this._api.listNotifications(CookieService.getCookie(Constants.IdSession), this._station).subscribe(response=>{
+      switch (response.code){
+        case 200:
+          if(response.items){
+            this.notifications = response.items;
+            for(let i = 0; i<this.notifications.length;i++){
+              this.notifications[i].date = UtilitiesService.convertDate(this.notifications[i].date)
+            }
+            console.log(this.notifications);
+          }else{
+            this.notifications = [];
+          }
+          break;
+        default:
+          this.notifications = [];
+          break;
+      }
+    })
+  }
+
+  public deleteNotification(id: string, index: number):void{
+    this._dialogService.confirmDialog(
+      '¿Desea eliminar esta notificación?',
+      '',
+      'ACEPTAR',
+      'CANCELAR'
+    ).afterClosed().subscribe(response=>{
+      switch (response.code){
+        case 1:
+          this._api.deleteNotification(id).subscribe(response=>{
+            switch (response.code){
+              case 200:
+                this.notifications.splice(index, 1);
+                break;
+            }
+          });
+          break;
+      }
+    });
   }
 
   public onCloseNotifications(): void {
-    this._route.navigate(['/home']);
+    this._route.navigate(['/home'],{queryParams:{station: this._station}}).then();
   }
 
 }

@@ -309,6 +309,143 @@ export class ApiService {
     return this._http.post('https://business-card-74ca5.appspot.com/upload', form);
   }
 
+  public listNotifications(personId: string, stationId: string): Observable<any>{
+    let params = new HttpParams();
+    params = params.append('personId',personId);
+    params = params.append('stationId',stationId);
+    return this._http.get(ApiService.API_URL_COMPLETE + 'listNotifications',{params: params});
+  }
+
+  public deleteNotification(id: string):Observable<any>{
+    let params = new HttpParams();
+    params = params.append('id',id);
+    return this._http.delete(ApiService.API_URL_COMPLETE + 'deleteNotification', {params: params});
+  }
+
+  /**
+   * Start: list reports by reportType
+   */
+
+  public getTaskInformation(taskId: string, typeReport: number): Observable<any>{
+    let response = null;
+    let params = new HttpParams();
+    params = params.append('taskId', taskId);
+    switch (typeReport){
+      case 1:
+        response = this.listOMReport(params);
+        break;
+      case 2:
+        response = this.listCompressorReport(params);
+        break;
+      case 3:
+        response = this.listHWCReport(params);
+        break;
+      case 4:
+        response = this.listVRSReport(params);
+        break;
+      case 5:
+        response = this.listScannedReport(params);
+        break;
+      case 6:
+        break;
+      case 7:
+        response = this.listFRReport(params);
+        break;
+      case 8:
+        response = this.listFEReport(params);
+        break;
+      case 9:
+        response = this.listIncidenceReport(params);
+        break;
+    }
+    return response;
+  };
+
+  /**
+   * TypeReport = 1 | Operación y mantenimiento
+   * @param {HttpParams} params
+   * @return {Observable<any>}
+   */
+  private  listOMReport(params: HttpParams): Observable<any>{
+    return this._http.get(ApiService.API_URL_COMPLETE + 'listOMReport',{params: params});
+  }
+
+  /**
+   * TypeReport = 2 | Compresor
+   * @param {HttpParams} params
+   * @return {Observable<any>}
+   */
+  private listCompressorReport(params: HttpParams): Observable<any>{
+    return this._http.get(ApiService.API_URL_COMPLETE + 'listCompressorReport', {params: params});
+  }
+
+  /**
+   * TypeReport = 3 | Generación de residuos peligrosos
+   * @param {HttpParams} params
+   * @return {Observable<any>}
+   */
+  private listHWCReport(params: HttpParams): Observable<any>{
+    return this._http.get(ApiService.API_URL_COMPLETE + 'listHWCReport', {params: params});
+  }
+
+  /**
+   * TypeReport = 4 | Sistema de recuperación de vapores
+   * @param {HttpParams} params
+   * @return {Observable<any>}
+   */
+  private listVRSReport(params: HttpParams): Observable<any>{
+    return this._http.get(ApiService.API_URL_COMPLETE + 'listVRSReport', {params: params});
+  }
+
+  /**
+   * TypeReport = 5 | Limpieza ecológica
+   * @param {HttpParams} params
+   * @return {Observable<any>}
+   */
+  private listScannedReport(params: HttpParams): Observable<any>{
+    return this._http.get(ApiService.API_URL_COMPLETE + 'listScannedReport',{params: params});
+  }
+
+  /**
+   * TypeReport = 7 | Recepción y descarga de combustible
+   * @param {HttpParams} params
+   * @return {Observable<any>}
+   */
+  private listFRReport(params: HttpParams): Observable<any>{
+    return this._http.get(ApiService.API_URL_COMPLETE + 'listFRReport', {params: params});
+  }
+
+  /**
+   * TypeReport = 8 | Revisión de extintores
+   * @param {HttpParams} params
+   * @return {Observable<any>}
+   */
+  private  listFEReport(params: HttpParams): Observable<any>{
+    return this._http.get(ApiService.API_URL_COMPLETE + 'listFEReport', {params: params});
+  }
+
+  /**
+   * TypeReport = 9 | Incidencia
+   * @param {HttpParams} params
+   * @return {Observable<any>}
+   */
+  private listIncidenceReport(params: HttpParams): Observable <any>{
+    return this._http.get(ApiService.API_URL_COMPLETE + 'listIncidenceReport', {params: params});
+  }
+
+  /**
+   * End: list reports by reportType
+   */
+
+
+  /**
+   * Start: create reports by reportTyé
+   */
+
+  /**
+   * End: create reports by reportTyé
+   */
+
   private initNetwork(): void {
     this._networkService.getChangesNetwork().subscribe(status => {
       const text = (!status) ? 'La conexión a internet se ha perdido' : 'De nuevo en linea';
