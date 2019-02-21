@@ -77,6 +77,76 @@ export class ScreenComponent implements OnInit{
   private getDashboardInformation(onlyOneStationId?: any): void{
     const userId = CookieService.getCookie(Constants.IdSession);
     const user = LocalStorageService.getItem(Constants.UserInSession);
+    if(user && userId){
+      this.role = user.role;
+      this._api.getCompleteInfoDashboard(userId,user.refId,this.role,onlyOneStationId).subscribe(response=>{
+        if (response){
+          this.utils = response[1].item;
+          switch (this.role){
+            case 1:
+            case 2:
+            case 3:
+            case 4:
+            case 7:
+              if(onlyOneStationId){
+                switch(response[0].code){
+                  case 200:
+                    this.stationList = response[0].item;
+                    this.stationActive = this.stationList;
+                    LocalStorageService.setItem(Constants.StationInDashboard, this.stationActive.businessName);
+                    if (this.stationActive){
+                      if(!this.validateTaskCreated()){
+                        this.openTaskCalendar();
+                      }else{
+                        this.createTasks();
+                      }
+                    }
+                    break;
+                  default:
+                    this._router.navigate(['/home']).then();
+                    this.getDashboardInformation(null);
+                    break;
+                }
+              }else{
+                this.stationList = response[0].item.stationLites;
+                this.stationActive = (Array.isArray(this.stationList)?this.stationList[0]:this.stationList);
+                LocalStorageService.setItem(Constants.ConsultancyInSession, response[0].item.consultancy.businessName);
+                LocalStorageService.setItem(Constants.StationInDashboard, this.stationActive.businessName);
+                if (this.stationActive){
+                  if(!this.validateTaskCreated()){
+                    this.openTaskCalendar();
+                  }else{
+                    this.createTasks();
+                  }
+                }
+              }
+              break;
+            case 5:
+            case 6:
+              if(onlyOneStationId){
+                this.stationList = response[0].item;
+                this.stationActive = this.stationList;
+                LocalStorageService.setItem(Constants.StationInDashboard, this.stationActive.businessName);
+                if(!this.validateTaskCreated()){
+                  this.openTaskCalendar();
+                }else{
+                  this.createTasks();
+                }
+              }else{
+                this.stationList = response[0].item.station;
+                this.stationActive = this.stationList;
+                LocalStorageService.setItem(Constants.StationInDashboard, this.stationActive.businessName);
+                if(!this.validateTaskCreated()){
+                  this.openTaskCalendar();
+                }else{
+                  this.createTasks();
+                }
+              }
+              break;
+          }
+        }
+      });
+    }
     this.role = user.role;
     this._api.getCompleteInfoDashboard(userId,user.refId,this.role,onlyOneStationId).subscribe(response=>{
       if (response){
