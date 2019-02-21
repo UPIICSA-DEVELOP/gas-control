@@ -26,6 +26,7 @@ import {UserProfileService} from '@app/core/services/profiles/user-profile.servi
 import {PrivacyComponent} from '@app/components/screen/child/privacy/privacy.component';
 import {AdminComponent} from '@app/components/admin/admin.component';
 import {AddConsultancyComponent} from '@app/components/admin/components/add-consultancy/add-consultancy.component';
+import {TermsComponent} from '@app/components/screen/child/terms/terms.component';
 const URL_BASE = environment.url;
 
 export const appRoutes: Routes = [
@@ -167,6 +168,17 @@ export const appRoutes: Routes = [
     data:{
       title:'Privacidad',
       url: URL_BASE + 'privacidad',
+      robots: 'true',
+      canonical: 'true'
+    }
+  },
+  {
+    path: 'terminos',
+    component: TermsComponent,
+    resolve:{data: AuthService},
+    data:{
+      title:'Términos y Condiciones',
+      url: URL_BASE + 'terminos',
       robots: 'true',
       canonical: 'true'
     }

@@ -51,6 +51,7 @@ import {TaskFilterComponent} from './components/screen/components/task-filter/ta
 import {ModalStationComponent} from '@app/components/screen/components/modal-station/modal-station.component';
 import {AddConsultancyService} from '@app/components/admin/components/add-consultancy/add-consultancy.service';
 import { ModalProceduresComponent } from './components/screen/components/modal-procedures/modal-procedures.component';
+import { TermsComponent } from './components/screen/child/terms/terms.component';
 
 
 @NgModule({
@@ -85,7 +86,8 @@ import { ModalProceduresComponent } from './components/screen/components/modal-p
     AddConsultancyComponent,
     ListCollaboratorsComponent,
     ModalStationComponent,
-    ModalProceduresComponent
+    ModalProceduresComponent,
+    TermsComponent
   ],
   imports: [
     CoreModule,
