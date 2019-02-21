@@ -52,6 +52,7 @@ import {ModalStationComponent} from '@app/components/screen/components/modal-sta
 import {AddConsultancyService} from '@app/components/admin/components/add-consultancy/add-consultancy.service';
 import { ModalProceduresComponent } from './components/screen/components/modal-procedures/modal-procedures.component';
 import { TermsComponent } from './components/screen/child/terms/terms.component';
+import { CookiesComponent } from './components/screen/child/cookies/cookies.component';
 
 
 @NgModule({
@@ -87,7 +88,8 @@ import { TermsComponent } from './components/screen/child/terms/terms.component'
     ListCollaboratorsComponent,
     ModalStationComponent,
     ModalProceduresComponent,
-    TermsComponent
+    TermsComponent,
+    CookiesComponent
   ],
   imports: [
     CoreModule,

@@ -27,6 +27,7 @@ import {PrivacyComponent} from '@app/components/screen/child/privacy/privacy.com
 import {AdminComponent} from '@app/components/admin/admin.component';
 import {AddConsultancyComponent} from '@app/components/admin/components/add-consultancy/add-consultancy.component';
 import {TermsComponent} from '@app/components/screen/child/terms/terms.component';
+import {CookiesComponent} from '@app/components/screen/child/cookies/cookies.component';
 const URL_BASE = environment.url;
 
 export const appRoutes: Routes = [
@@ -179,6 +180,17 @@ export const appRoutes: Routes = [
     data:{
       title:'Términos y Condiciones',
       url: URL_BASE + 'terminos',
+      robots: 'true',
+      canonical: 'true'
+    }
+  },
+  {
+    path: 'cookies',
+    component: CookiesComponent,
+    resolve:{data: AuthService},
+    data:{
+      title:'Política de Cookies',
+      url: URL_BASE + 'cookies',
       robots: 'true',
       canonical: 'true'
     }
