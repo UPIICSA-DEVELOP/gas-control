@@ -5,9 +5,9 @@
  *
  */
 
-import {Inject, Injectable, PLATFORM_ID} from '@angular/core';
+import {Injectable, PLATFORM_ID} from '@angular/core';
+import {InjectorInstance} from '@app/core/services/services.module';
 import {isPlatformBrowser} from '@angular/common';
-import {CompileSummaryKind} from '@angular/compiler';
 
 export enum MaxAge {
   DAY,
@@ -76,6 +76,7 @@ export class CookieService {
   }
 
   private static validate(): boolean {
-    return document !== null || document !== undefined || document.cookie !== undefined || document.cookie !== null ;
+    const platformId = InjectorInstance.get<any>(PLATFORM_ID);
+    return isPlatformBrowser(platformId);
   }
 }
