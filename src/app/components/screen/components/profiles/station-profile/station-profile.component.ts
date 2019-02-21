@@ -105,7 +105,7 @@ export class StationProfileComponent implements OnInit {
       ).afterClosed().subscribe(response=>{
         switch (response.code) {
           case 1:
-            this._router.navigate(['/home'], {queryParams:{station: this.id}}).then();
+            this._router.navigate(['/home']).then();
             break;
         }
       });
@@ -118,12 +118,12 @@ export class StationProfileComponent implements OnInit {
       ).afterClosed().subscribe(response=>{
         switch (response.code) {
           case 1:
-            this._router.navigate(['/home'], {queryParams:{station: this.id}}).then();
+            this._router.navigate(['/home']).then();
             break;
         }
       });
     } else{
-      this._router.navigate(['/home'], {queryParams:{station: this.id}}).then();
+      this._router.navigate(['/home']).then();
     }
   }
 
@@ -270,7 +270,7 @@ export class StationProfileComponent implements OnInit {
         case 200:
           this.change = false;
           this._snackBarService.openSnackBar('Información actualizada','OK',3000);
-          this._router.navigate(['/home'],{queryParams:{station: this.station.id}}).then();
+          this._router.navigate(['/home']).then();
           break;
         default:
           this._dialogService.alertDialog('No se pudo acceder', 'Se produjo un error de comunicación con el servidor', 'ACEPTAR');
