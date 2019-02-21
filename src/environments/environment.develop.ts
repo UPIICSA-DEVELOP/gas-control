@@ -1,6 +1,6 @@
 export const environment = {
   production: true,
-  url: '',
+  url: 'https://inspector-maplander-develop.appspot.com/',
   develop: true,
   VERSION: require('../../package.json').version,
   firebase: {
