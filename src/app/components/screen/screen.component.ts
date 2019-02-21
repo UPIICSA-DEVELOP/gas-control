@@ -13,7 +13,6 @@ import {LocalStorageService} from '@app/core/services/local-storage/local-storag
 import {AddStationService} from '@app/components/screen/components/add-gas-station/add-station.service';
 import {DialogService} from '@app/core/components/dialog/dialog.service';
 import {AuthService} from '@app/core/services/auth/auth.service';
-import {response} from 'express';
 import {environment} from '@env/environment';
 
 @Component({
@@ -93,7 +92,7 @@ export class ScreenComponent implements OnInit{
                 case 200:
                   this.stationList = response[0].item;
                   this.stationActive = this.stationList;
-                  LocalStorageService.setItem(Constants.StationInDashboard, this.stationActive.businessName);
+                  LocalStorageService.setItem(Constants.StationInDashboard, {id: this.stationActive.id, name: this.stationActive.businessName});
                   if (this.stationActive){
                     if(!this.validateTaskCreated()){
                       this.openTaskCalendar();
@@ -110,8 +109,8 @@ export class ScreenComponent implements OnInit{
             }else{
               this.stationList = response[0].item.stationLites;
               this.stationActive = (Array.isArray(this.stationList)?this.stationList[0]:this.stationList);
-              LocalStorageService.setItem(Constants.ConsultancyInSession, response[0].item.consultancy.businessName);
-              LocalStorageService.setItem(Constants.StationInDashboard, this.stationActive.businessName);
+              LocalStorageService.setItem(Constants.ConsultancyInSession, {id: response[0].item.consultancy.id, name: response[0].item.consultancy.businessName});
+              LocalStorageService.setItem(Constants.StationInDashboard, {id: this.stationActive.id, name: this.stationActive.businessName});
               if (this.stationActive){
                 if(!this.validateTaskCreated()){
                   this.openTaskCalendar();
@@ -126,7 +125,7 @@ export class ScreenComponent implements OnInit{
             if(onlyOneStationId){
               this.stationList = response[0].item;
               this.stationActive = this.stationList;
-              LocalStorageService.setItem(Constants.StationInDashboard, this.stationActive.businessName);
+              LocalStorageService.setItem(Constants.StationInDashboard, {id: this.stationActive.id, name: this.stationActive.businessName});
               if(!this.validateTaskCreated()){
                 this.openTaskCalendar();
               }else{
@@ -135,7 +134,7 @@ export class ScreenComponent implements OnInit{
             }else{
               this.stationList = response[0].item.station;
               this.stationActive = this.stationList;
-              LocalStorageService.setItem(Constants.StationInDashboard, this.stationActive.businessName);
+              LocalStorageService.setItem(Constants.StationInDashboard, {id: this.stationActive.id, name: this.stationActive.businessName});
               if(!this.validateTaskCreated()){
                 this.openTaskCalendar();
               }else{

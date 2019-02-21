@@ -27,7 +27,7 @@ export class ListCollaboratorsComponent implements OnInit {
   public title: string;
   public notResults: boolean;
   public utils: any;
-
+  private _completeName: string;
   constructor(
     @Inject(MAT_DIALOG_DATA) private _data: any,
     private _dialog: MatDialogRef<ListCollaboratorsComponent>,
@@ -36,6 +36,7 @@ export class ListCollaboratorsComponent implements OnInit {
     private _api: ApiService,
     private _addStation: AddStationService,
   ) {
+    this._completeName = LocalStorageService.getItem(Constants.IdSession).completeName;
     this.title = this._data.name;
     this.stationList = [];
     this.stationListCopy = [];
@@ -78,15 +79,15 @@ export class ListCollaboratorsComponent implements OnInit {
   }
 
   public addStation():void{
-    LocalStorageService.setItem(Constants.UserInSession,{profileImage: null, role: 7, refId: this._data.id});
+    LocalStorageService.setItem(Constants.UserInSession,{profileImage: null, role: 7, refId: this._data.id, completeName: this._completeName});
     this.close();
     this._addStation.open().afterClosed().subscribe( res=>{
-      LocalStorageService.setItem(Constants.UserInSession,{profileImage: null, role: 7});
+      LocalStorageService.setItem(Constants.UserInSession,{profileImage: null, role: 7, completeName: this._completeName});
     });
   }
 
   public goToDashboard(): void{
-    LocalStorageService.setItem(Constants.UserInSession,{profileImage: null, role: 7, refId: this._data.id});
+    LocalStorageService.setItem(Constants.UserInSession,{profileImage: null, role: 7, refId: this._data.id, completeName: this._completeName});
   }
 
   private getUtilities():void{

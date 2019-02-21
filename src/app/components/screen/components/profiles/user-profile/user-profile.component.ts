@@ -519,6 +519,7 @@ export class UserProfileComponent implements OnInit {
         thumbnail: this.newImageProfile.thumbnail
       };
       LocalStorageService.setItem(Constants.UserInSession, {
+        completeName: this.user.name+' '+this.user.lastName,
         profileImage: this.user.profileImage.thumbnail,
         role: this.user.role,
         refId: (this.user.refId? this.user.refId:null)
@@ -526,6 +527,7 @@ export class UserProfileComponent implements OnInit {
     }else if(!this.profileImage){
       this.user.profileImage = null;
       LocalStorageService.setItem(Constants.UserInSession, {
+        completeName: this.user.name+' '+this.user.lastName,
         profileImage: null,
         role: this.user.role,
         refId: (this.user.refId? this.user.refId:null)
@@ -550,7 +552,7 @@ export class UserProfileComponent implements OnInit {
   private updateBusiness(isNewEmail: boolean):void{
     this._snackBarService.openSnackBar('Epere un momento...','',0);
     const data = {
-      company: (this.user.role===4 ? '':LocalStorageService.getItem(Constants.StationInDashboard)),
+      company: (this.user.role===4 ? '':LocalStorageService.getItem(Constants.StationInDashboard).name),
       name: this.user.name + ' ' + this.user.lastName,
       workPosition: this.user.jobTitle,
       phone: this.user.phoneNumber,

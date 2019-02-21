@@ -495,6 +495,7 @@ export class ProfileComponent implements OnInit {
         thumbnail: this.newImageProfile.thumbnail
       };
       LocalStorageService.setItem(Constants.UserInSession, {
+        completeName: this.user.name+' '+this.user.lastName,
         profileImage: this.user.profileImage.thumbnail,
         role: this.user.role,
         refId: (this.user.refId? this.user.refId:null)
@@ -502,6 +503,7 @@ export class ProfileComponent implements OnInit {
     }else if(!this.profileImage){
       this.user.profileImage = null;
       LocalStorageService.setItem(Constants.UserInSession, {
+        completeName: this.user.name+' '+this.user.lastName,
         profileImage: null,
         role: this.user.role,
         refId: (this.user.refId? this.user.refId:null)

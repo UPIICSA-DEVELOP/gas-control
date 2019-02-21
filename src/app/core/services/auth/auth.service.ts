@@ -69,6 +69,7 @@ export class AuthService implements Resolve<any>{
       LocalStorageService.setItem(Constants.SessionToken, token);
     }
     LocalStorageService.setItem(Constants.UserInSession, {
+      completeName: user.name+' '+user.lastName,
       profileImage: (user.profileImage)?user.profileImage.thumbnail:null,
       role: user.role,
       refId: user.refId
@@ -140,11 +141,6 @@ export class AuthService implements Resolve<any>{
               this._router.navigate(['/']).then();
             }
             break;
-          case /profile/.test(url):
-            if(!AuthService.validateUser()){
-              this._router.navigate(['/']).then();
-            }
-            break;
           case /admin/.test(url):
             if(!AuthService.validateUser()){
               this._router.navigate(['/']).then();
@@ -152,6 +148,11 @@ export class AuthService implements Resolve<any>{
               if(user.role!==7){
                 this._router.navigate(['/']).then();
               }
+            }
+            break;
+          case /terminos/.test(url):
+            if(!AuthService.validateUser()){
+              this._router.navigate(['/']).then();
             }
             break;
         }
@@ -166,6 +167,7 @@ export class AuthService implements Resolve<any>{
         case 200:
           if (navigateHome) {
             LocalStorageService.setItem(Constants.UserInSession, {
+              completeName: response.item.name+' '+response.item.lastName,
               profileImage: (response.item.profileImage)?response.item.profileImage.thumbnail:null,
               role: response.item.role,
               refId: (response.item.refId?response.item.refId:null)
@@ -182,6 +184,7 @@ export class AuthService implements Resolve<any>{
           break;
         default:
           LocalStorageService.setItem(Constants.UserInSession, {
+            completeName: null,
             profileImage: null,
             role: null,
             refId: null
