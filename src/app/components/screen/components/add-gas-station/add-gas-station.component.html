@@ -624,7 +624,7 @@
                     <mat-icon>update</mat-icon>
                   </button>
                   <div *ngIf="!calendar[i]">Asignar</div>
-                  <mat-datepicker #picker></mat-datepicker>
+                  <mat-datepicker touchUi #picker></mat-datepicker>
                   <div *ngIf="calendar[i]" class="date" (click)="picker.open()">
                     <div>{{calendar[i] | formatDate: true}}</div>
                     <div>{{calendar[i] | formatDate: false}}</div>

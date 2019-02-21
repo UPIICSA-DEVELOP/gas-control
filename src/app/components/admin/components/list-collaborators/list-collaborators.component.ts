@@ -36,13 +36,14 @@ export class ListCollaboratorsComponent implements OnInit {
     private _api: ApiService,
     private _addStation: AddStationService,
   ) {
-    this._completeName = LocalStorageService.getItem(Constants.IdSession).completeName;
+    this._completeName = '';
     this.title = this._data.name;
     this.stationList = [];
     this.stationListCopy = [];
   }
 
   ngOnInit() {
+    this._completeName = LocalStorageService.getItem(Constants.UserInSession).completeName;
     this.getList(this._data.id);
     this.getUtilities();
   }
