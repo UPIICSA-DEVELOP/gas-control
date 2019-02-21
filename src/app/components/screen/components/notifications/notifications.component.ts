@@ -93,7 +93,7 @@ export class NotificationsComponent implements OnInit{
   }
 
   public onCloseNotifications(): void {
-    this._route.navigate(['/home'],{queryParams:{station: this._station}}).then();
+    this._route.navigate(['/home']).then();
   }
 
 }

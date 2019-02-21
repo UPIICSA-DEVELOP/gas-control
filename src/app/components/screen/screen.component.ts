@@ -42,7 +42,6 @@ export class ScreenComponent implements OnInit{
 
   ngOnInit() {
     this._auth.onNotificationsRecived().subscribe(response=>{
-      console.log(response);
       const notification = new Notification(response.notification.title, {
         icon: environment.url+'favicon.png',
         body: response.notification.body,
@@ -53,9 +52,7 @@ export class ScreenComponent implements OnInit{
     });
     this._activateRoute.url.subscribe(() => {
      if(this._router.url.includes('/home?station')){
-       if(!this.stationActive){
-         this.initView(this._activateRoute.snapshot.queryParams.station);
-       }
+       this.initView(this._activateRoute.snapshot.queryParams.station);
      }else{
        if(!this._router.url.includes('/home/documents') || !this._router.url.includes('/home/profile/gas-station')){
          if(!this.stationActive){
