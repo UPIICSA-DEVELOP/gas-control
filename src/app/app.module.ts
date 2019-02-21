@@ -6,7 +6,7 @@
  */
 
 import {BrowserModule, BrowserTransferStateModule, HAMMER_GESTURE_CONFIG} from '@angular/platform-browser';
-import {NgModule} from '@angular/core';
+import {Injector, NgModule} from '@angular/core';
 import { AppComponent } from './app.component';
 import {HTTP_INTERCEPTORS, HttpClient, HttpClientModule} from '@angular/common/http';
 import {RouterModule} from '@angular/router';
@@ -54,6 +54,7 @@ import { ModalProceduresComponent } from './components/screen/components/modal-p
 import { TermsComponent } from './components/screen/child/terms/terms.component';
 import { CookiesComponent } from './components/screen/child/cookies/cookies.component';
 
+export let InjectorInstance: Injector;
 
 @NgModule({
   declarations: [
@@ -138,7 +139,14 @@ import { CookiesComponent } from './components/screen/child/cookies/cookies.comp
   ],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {
+  constructor(
+    private injector: Injector
+  ){
+    InjectorInstance = this.injector;
+  }
+
+}
 
 
 export function createTranslateLoader(http: HttpClient) {

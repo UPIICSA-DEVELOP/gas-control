@@ -6,8 +6,8 @@
  */
 
 import {Injectable, PLATFORM_ID} from '@angular/core';
-import {InjectorInstance} from '@app/core/services/services.module';
 import {isPlatformBrowser} from '@angular/common';
+import {InjectorInstance} from '@app/app.module';
 
 export enum MaxAge {
   DAY,

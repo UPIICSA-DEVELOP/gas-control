@@ -5,7 +5,7 @@
  *
  */
 
-import {Injector, NgModule, PLATFORM_ID} from '@angular/core';
+import {NgModule} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {IconsService} from './icons/icons.service';
 import {MetaService} from './meta/meta.service';
@@ -26,7 +26,7 @@ import {ResetPassService} from '@app/core/services/reset-pass/reset-pass.service
 import {UserProfileService} from '@app/core/services/profiles/user-profile.service';
 import {SharedService} from '@app/core/services/shared/shared.service';
 
-export let InjectorInstance: Injector;
+
 
 @NgModule({
   imports: [
@@ -59,10 +59,8 @@ export class ServicesModule {
     private _icons: IconsService,
     private _meta: MetaService,
     private _routerState: RouterStateService,
-    private _networkService: NetworkService,
-    private injector: Injector
+    private _networkService: NetworkService
   ) {
-    InjectorInstance = this.injector;
     this._routerState.loadRouting();
     this._networkService.init();
     this._meta.init();
