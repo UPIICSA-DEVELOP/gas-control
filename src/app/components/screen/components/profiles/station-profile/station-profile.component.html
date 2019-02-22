@@ -49,15 +49,15 @@
                 La dirección de email no es valida
               </mat-error>
             </mat-form-field>
-            <div class="address">
-              <div class="mask" (click)="openLocation()" *ngIf="user.role!==6"></div>
-              <mat-form-field class="inputs">
-                <textarea formControlName="address" cdkTextareaAutosize matInput placeholder="Dirección" required type="text" aria-label="Station address"></textarea>
-                <mat-error *ngIf="stationForm.controls['address'].hasError('required')">
-                  Este campo es obligatorio
-                </mat-error>
-              </mat-form-field>
-            </div>
+            <mat-form-field class="inputs">
+              <textarea formControlName="address" cdkTextareaAutosize matInput placeholder="Dirección" required type="text" aria-label="Station address"></textarea>
+              <button matSuffix matTooltip="Ubicación" type="button" mat-icon-button (click)="openLocation()">
+                <mat-icon class="map">map</mat-icon>
+              </button>
+              <mat-error *ngIf="stationForm.controls['address'].hasError('required')">
+                Este campo es obligatorio
+              </mat-error>
+            </mat-form-field>
             <mat-form-field class="inputs">
               <input formControlName="phoneNumber" matInput placeholder="Teléfono" required type="text" aria-label="Station phone number">
               <mat-error *ngIf="stationForm.controls['phoneNumber'].hasError('required')">
@@ -124,11 +124,18 @@
                 <div class="head">Tanque {{i+1}}</div>
                 <div class="flex-box">
                   <div class="fuel">
-                    <mat-form-field class="inputs">
-                      <mat-select placeholder="Capacidad (lts)" type="number" aria-label="Station tank fuel capacity" (selectionChange)="onArrayChange($event)" [(ngModel)]="tank.capacity" [ngModelOptions]="{standalone: true}" [disabled]=" user.role===6">
-                        <mat-option *ngFor="let item of capacities" [value]="item.value">{{item.text}}</mat-option>
-                      </mat-select>
-                    </mat-form-field>
+                    <div class="fuel-selector">
+                      <mat-form-field class="width-form">
+                        <mat-select placeholder="Capacidad (lts)" type="number" aria-label="Station tank fuel capacity" (selectionChange)="onArrayChange($event)" [(ngModel)]="tank.capacity" [ngModelOptions]="{standalone: true}" [disabled]=" user.role===6">
+                          <mat-option *ngFor="let item of capacities" [value]="item.value">{{item.text}}</mat-option>
+                        </mat-select>
+                      </mat-form-field>
+                      <mat-form-field class="width-form">
+                        <mat-select placeholder="Año de instalación" (selectionChange)="onArrayChange($event)" [(ngModel)]="tank.year" [ngModelOptions]="{standalone: true}" [disabled]="user.role===6">
+                          <mat-option *ngFor="let year of yearSelector" [value]="year">{{year}}</mat-option>
+                        </mat-select>
+                      </mat-form-field>
+                    </div>
                     <mat-radio-group class="fuel-selector" aria-label="Station tank fuel type" (change)="onArrayChange($event)" [(ngModel)]="tank.fuelType" [ngModelOptions]="{standalone: true}" [disabled]=" user.role===6">
                       <mat-radio-button [value]="1" >Magna</mat-radio-button>
                       <mat-radio-button [value]="2">Premium</mat-radio-button>

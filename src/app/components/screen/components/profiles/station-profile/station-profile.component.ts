@@ -61,6 +61,7 @@ export class StationProfileComponent implements OnInit {
   public gasName: string;
   private id: string;
   public user: any;
+  public yearSelector: number[];
   constructor(
     private _router: Router,
     private _formBuilder: FormBuilder,
@@ -71,10 +72,7 @@ export class StationProfileComponent implements OnInit {
     private _dialogService: DialogService,
     private _activatedRouter: ActivatedRoute
   ) {
-    this.capacities = Constants.Capacities;
-  }
-
-  ngOnInit() {
+    this.yearSelector = [];
     this.workShifts = [];
     this.tanks = [];
     this.dispensers = [];
@@ -82,6 +80,11 @@ export class StationProfileComponent implements OnInit {
     this.tanksCopy = [];
     this.dispensersCopy = [];
     this.user = LocalStorageService.getItem(Constants.UserInSession);
+    this.capacities = Constants.Capacities;
+  }
+
+  ngOnInit() {
+    this.initYears();
     if (this._activatedRouter.snapshot.queryParams.id) {
       this.id = this._activatedRouter.snapshot.queryParams.id;
       this.initForm();
@@ -200,8 +203,8 @@ export class StationProfileComponent implements OnInit {
             this.tanks = Object.assign([], this.station.fuelTanks);
             this.tanksCopy = Object.assign([], this.station.fuelTanks);
           }else{
-            this.tanks.push({capacity: undefined, fuelType: undefined});
-            this.tanksCopy.push({capacity: undefined, fuelType: undefined});
+            this.tanks.push({capacity: undefined, fuelType: undefined, year: undefined});
+            this.tanksCopy.push({capacity: undefined, fuelType: undefined, year: undefined});
           }
           if (this.station.workShifts){
             this.workShifts = Object.assign([],this.station.workShifts);
@@ -286,7 +289,7 @@ export class StationProfileComponent implements OnInit {
           this.workShifts.push({start: undefined, end: undefined});
           break;
         case 2:
-          this.tanks.push({capacity: undefined, fuelType: undefined});
+          this.tanks.push({capacity: undefined, fuelType: undefined, year: undefined});
           break;
         case 3:
           this.dispensers.push({hoses: undefined, identifier: undefined, magna: false, premium: false, diesel: false});
@@ -315,7 +318,7 @@ export class StationProfileComponent implements OnInit {
       }
     }
     for(let j = 0; j<this.tanks.length; j++){
-      if((!this.tanks[j].capacity && this.tanks[j].fuelType) || (this.tanks[j].capacity && !this.tanks[j].fuelType)){
+      if(((!this.tanks[j].capacity || !this.tanks[j].year) && this.tanks[j].fuelType) || ((this.tanks[j].capacity || this.tanks[j].year) && !this.tanks[j].fuelType)){
         this._snackBarService.openSnackBar('Complete los campos para el tanque ' + (j+1),'OK',3000);
         return false;
       }
@@ -339,7 +342,7 @@ export class StationProfileComponent implements OnInit {
       }
     }
     for(let j = 0; j<this.tanks.length; j++){
-      if(!this.tanks[j].capacity && !this.tanks[j].fuelType){
+      if(!this.tanks[j].capacity && !this.tanks[j].fuelType && !this.tanks[j].year){
         this.tanks.splice(j,1);
       }
     }
@@ -374,6 +377,13 @@ export class StationProfileComponent implements OnInit {
       this.workShifts[index].start = ev;
     }else{
       this.workShifts[index].end = ev;
+    }
+  }
+
+  private initYears():void{
+    const year = new Date();
+    for(let x = 0; x<50; x++){
+      this.yearSelector.push(year.getFullYear() - x);
     }
   }
 }

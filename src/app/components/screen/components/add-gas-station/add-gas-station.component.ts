@@ -142,6 +142,7 @@ export class AddGasStationComponent implements OnInit {
   public managerId: string;
   public legalName: string;
   public managerName: string;
+  public yearSelector: number[];
   private _formImage:FormData;
   private _formSignature: FormData;
   private _formFile: FormData;
@@ -166,6 +167,7 @@ export class AddGasStationComponent implements OnInit {
     private _pdfVisor: PdfVisorService,
     private _dialogRef: MatDialogRef<AddGasStationComponent>
   ) {
+    this.yearSelector = [];
     this.listExist = true;
     this.capacities = Constants.Capacities;
     this.bloodGroup = Constants.bloodGroup;
@@ -194,6 +196,7 @@ export class AddGasStationComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.initYears();
     this.initCalendar();
     this.initManagerForm();
     this.initStationForm();
@@ -201,7 +204,7 @@ export class AddGasStationComponent implements OnInit {
     this.user = LocalStorageService.getItem(Constants.UserInSession);
     this.getUtilities();
     this.dispensers.push({hoses: undefined, identifier: undefined, magna: false, premium: false, diesel: false});
-    this.tanks.push({capacity: undefined, fuelType: undefined});
+    this.tanks.push({capacity: undefined, fuelType: undefined, year: undefined});
     this.workShifts.push({start: undefined, end: undefined});
     this.getListRepresentative();
     this._apiLoaderService.getProgress().subscribe(load=>{this.load = load});
@@ -283,7 +286,7 @@ export class AddGasStationComponent implements OnInit {
           this.workShifts.push({start: undefined, end: undefined});
           break;
         case 2:
-          this.tanks.push({capacity: undefined, fuelType: undefined});
+          this.tanks.push({capacity: undefined, fuelType: undefined, year: undefined});
           break;
         case 3:
           this.dispensers.push({hoses: undefined, identifier: undefined, magna: false, premium: false, diesel: false});
@@ -951,7 +954,7 @@ export class AddGasStationComponent implements OnInit {
       }
     }
     for(let j = 0; j<this.tanks.length; j++){
-      if((!this.tanks[j].capacity && this.tanks[j].fuelType) || (this.tanks[j].capacity && !this.tanks[j].fuelType)){
+      if(((!this.tanks[j].capacity || !this.tanks[j].year) && this.tanks[j].fuelType) || ((this.tanks[j].capacity || this.tanks[j].year) && !this.tanks[j].fuelType)){
         this._snackBarService.openSnackBar('Complete los campos para el tanque ' + (j+1),'OK',3000);
         return false;
       }
@@ -975,7 +978,7 @@ export class AddGasStationComponent implements OnInit {
       }
     }
     for(let j = 0; j<this.tanks.length; j++){
-      if(!this.tanks[j].capacity && !this.tanks[j].fuelType){
+      if(!this.tanks[j].capacity && !this.tanks[j].fuelType && !this.tanks[j].year){
         this.tanks.splice(j,1);
       }
     }
@@ -1006,6 +1009,13 @@ export class AddGasStationComponent implements OnInit {
       this.workShifts[index].start = ev;
     }else{
       this.workShifts[index].end = ev;
+    }
+  }
+
+  private initYears():void{
+    const year = new Date();
+    for(let x = 0; x<50; x++){
+      this.yearSelector.push(year.getFullYear() - x);
     }
   }
 }

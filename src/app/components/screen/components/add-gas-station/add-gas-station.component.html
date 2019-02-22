@@ -154,11 +154,18 @@
                   <div *ngFor="let tank of tanks; let i = index">
                     <div class="flex-box">
                       <div class="fuel">
-                        <mat-form-field class="inputs">
-                          <mat-select placeholder="Capacidad (lts)" type="number" aria-label="Station tank fuel capacity" [(ngModel)]="tank.capacity" [ngModelOptions]="{standalone: true}">
-                            <mat-option *ngFor="let item of capacities" [value]="item.value">{{item.text}}</mat-option>
-                          </mat-select>
-                        </mat-form-field>
+                        <div class="fuel-selector">
+                          <mat-form-field class="width-form">
+                            <mat-select placeholder="Capacidad (lts)" type="number" aria-label="Station tank fuel capacity" [(ngModel)]="tank.capacity" [ngModelOptions]="{standalone: true}">
+                              <mat-option *ngFor="let item of capacities" [value]="item.value">{{item.text}}</mat-option>
+                            </mat-select>
+                          </mat-form-field>
+                          <mat-form-field class="width-form">
+                            <mat-select placeholder="Año de instalación" [(ngModel)]="tank.year" [ngModelOptions]="{standalone: true}">
+                              <mat-option *ngFor="let year of yearSelector" [value]="year">{{year}}</mat-option>
+                            </mat-select>
+                          </mat-form-field>
+                        </div>
                         <mat-radio-group class="fuel-selector" aria-label="Station tank fuel type"
                                          [(ngModel)]="tank.fuelType" [ngModelOptions]="{standalone: true}">
                           <mat-radio-button [value]="1">Magna</mat-radio-button>
