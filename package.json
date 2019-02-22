@@ -13,7 +13,7 @@
     "test:ssr": "gulp clean && ng build -c develop --stats-json && ng run com.maplander.inspector.front:server:develop && npm run postbuild:test:ssr",
     "postbuild:test:ssr": "npm run webpack:server",
     "build:develop": "gulp clean && ng build -c develop ---deploy-url https://storage.googleapis.com/inspector-maplander-develop.appspot.com/cdn/ && ng run com.maplander.inspector.front:server:develop && npm run postbuild:develop",
-    "postbuild:develop": "npm run upload:cdn:dev && gulp clean:source && npm run create:nconfig:dev && npm run webpack:server",
+    "postbuild:develop": "npm run upload:cdn:dev && gulp clean:source && npm run create:nconfig:dev && npm run copy:bc && npm run webpack:server",
     "prebuild": "npm run version | gulp clean",
     "build": "ng build --prod ---deploy-url https://storage.googleapis.com/maplander-public.appspot.com/cdn/ && ng run com.maplander.inspector.front:server:production",
     "postbuild": "npm run upload:cdn:prod && gulp clean:source && npm run create:nconfig:prod && npm run webpack:server",
@@ -28,7 +28,8 @@
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "version": "start cmd.exe /K node version"
+    "version": "start cmd.exe /K node version",
+    "copy:bc": "gulp copy:bc"
   },
   "dependencies": {
     "@agm/core": "^1.0.0-beta.3",
