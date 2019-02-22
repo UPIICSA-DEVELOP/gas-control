@@ -72,15 +72,15 @@
                     La dirección de email no es valida
                   </mat-error>
                 </mat-form-field>
-                <div class="modal">
-                  <div class="mask" (click)="openLocation()"></div>
-                  <mat-form-field class="inputs">
-                    <textarea formControlName="address" cdkTextareaAutosize matInput placeholder="Dirección" required></textarea>
-                    <mat-error *ngIf="newStation.controls['address'].hasError('required')">
-                      Este campo es obligatorio
-                    </mat-error>
-                  </mat-form-field>
-                </div>
+                <mat-form-field class="inputs">
+                  <textarea formControlName="address" cdkTextareaAutosize matInput placeholder="Dirección" required></textarea>
+                  <button matSuffix matTooltip="Ubicación" type="button" mat-icon-button (click)="openLocation()">
+                    <mat-icon class="map">map</mat-icon>
+                  </button>
+                  <mat-error *ngIf="newStation.controls['address'].hasError('required')">
+                    Este campo es obligatorio
+                  </mat-error>
+                </mat-form-field>
                 <mat-form-field class="inputs">
                   <input formControlName="phoneNumber" matInput placeholder="Télefono" required>
                   <mat-error *ngIf="newStation.controls['phoneNumber'].hasError('required')">
