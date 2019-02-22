@@ -53,6 +53,8 @@ import {AddConsultancyService} from '@app/components/admin/components/add-consul
 import { ModalProceduresComponent } from './components/screen/components/modal-procedures/modal-procedures.component';
 import { TermsComponent } from './components/screen/child/terms/terms.component';
 import { CookiesComponent } from './components/screen/child/cookies/cookies.component';
+import { SasisopaComponent } from './components/screen/components/sasisopa/sasisopa.component';
+import { TaskFilterNameComponent } from './components/screen/components/task-filter-name/task-filter-name.component';
 
 export let InjectorInstance: Injector;
 
@@ -90,7 +92,9 @@ export let InjectorInstance: Injector;
     ModalStationComponent,
     ModalProceduresComponent,
     TermsComponent,
-    CookiesComponent
+    CookiesComponent,
+    SasisopaComponent,
+    TaskFilterNameComponent
   ],
   imports: [
     CoreModule,
@@ -122,7 +126,9 @@ export let InjectorInstance: Injector;
     ModalStationComponent,
     ListCollaboratorsComponent,
     AddConsultancyComponent,
-    ModalProceduresComponent
+    ModalProceduresComponent,
+    SasisopaComponent,
+    TaskFilterNameComponent
   ],
   providers: [
     {

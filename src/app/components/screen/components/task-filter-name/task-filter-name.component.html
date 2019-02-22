@@ -1,0 +1,30 @@
+<!--
+  ~ Copyright (C) MapLander S de R.L de C.V - All Rights Reserved
+  ~ Unauthorized copying of this file, via any medium is strictly prohibited
+  ~ Proprietary and confidential
+  -->
+
+<div id="task-filter-name">
+  <mat-toolbar [color]="'primary'">
+    Filtro por tareas
+  </mat-toolbar>
+  <mat-dialog-content>
+    <mat-form-field class="search">
+      <input matInput placeholder="Buscar" (input)="searchTask($event)">
+      <mat-icon matPrefix class="icons">search</mat-icon>
+    </mat-form-field>
+    <div class="listTask">
+      <mat-radio-group [(ngModel)]="taskSelected">
+        <mat-radio-button *ngFor="let task of taskName" [value]="task.id">{{task.name}}</mat-radio-button>
+      </mat-radio-group>
+    </div>
+  </mat-dialog-content>
+  <div class="buttons">
+    <button mat-button type="button" (click)="canel()">
+      CANCELAR
+    </button>
+    <button mat-button (click)="apply()">
+      APLICAR
+    </button>
+  </div>
+</div>

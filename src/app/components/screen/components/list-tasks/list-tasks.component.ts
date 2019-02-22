@@ -4,7 +4,7 @@
  *  Proprietary and confidential
  */
 
-import {Component, DoCheck, ElementRef, Input, OnInit, ViewChild} from '@angular/core';
+import {Component, DoCheck, ElementRef, Inject, Input, OnInit, ViewChild} from '@angular/core';
 import {DatepickerService, DateRangeOptions} from '@app/components/screen/components/datepicker/datepicker.service';
 import {TaskFilterService} from '@app/components/screen/components/task-filter/task-filter.service';
 import {ApiService} from '@app/core/services/api/api.service';
@@ -15,8 +15,9 @@ import {LocalStorageService} from '@app/core/services/local-storage/local-storag
 import {AddStationService} from '@app/components/screen/components/add-gas-station/add-station.service';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {ModalProceduresService} from '@app/components/screen/components/modal-procedures/modal-procedures.service';
-import {Observable, Subject} from 'rxjs/index';
-import {TimePickerService} from '@app/core/components/time-picker/time-picker.service';
+import {CompressorReport, FEReport, FRReport, HWCReport, HWGReport, IncidenceReport, OMReport, ScannedReport, VRSReport} from '@app/core/interfaces/interfaces';
+import {DOCUMENT} from '@angular/common';
+import {TaskFilterNameService} from '@app/components/screen/components/task-filter-name/task-filter-name.service';
 
 @Component({
   selector: 'app-list-tasks',
@@ -33,6 +34,7 @@ export class ListTasksComponent implements OnInit, DoCheck {
   }
   @Input() public taskTemplate: any;
   @ViewChild('searchBox') private _searchBox: ElementRef;
+  @ViewChild('listTask') private _listTask: ElementRef;
   public startDate: Date;
   public endDate: Date;
   public filters: any;
@@ -52,15 +54,34 @@ export class ListTasksComponent implements OnInit, DoCheck {
   public user: any;
   public notCalendar: boolean;
   public taskForm: FormGroup[];
-  constructor(
+  /**
+   *  Start: task entity
+   */
+  public reportOM: OMReport;
+  public reportComp: CompressorReport;
+  public reportHWG: HWGReport;
+  public reportVRS: VRSReport;
+  public reportScanned: ScannedReport;
+  public reportFE: FEReport;
+  /**
+   *  End: task entity
+   */
+  public personnelNames: string[];
+  public procedures: number[];
+  private _indexOldTaskExpanded: number;
+   constructor(
+    @Inject(DOCUMENT) private _document: Document,
     private _dateService: DatepickerService,
     private _filterService: TaskFilterService,
     private _api: ApiService,
     private _apiLoader: ApiLoaderService,
     private _addStationService: AddStationService,
     private _formBuilder: FormBuilder,
-    private _modalProceduresService: ModalProceduresService
+    private _modalProceduresService: ModalProceduresService,
+    private _taskFilterNameService: TaskFilterNameService
   ) {
+     this.personnelNames = [''];
+    this._indexOldTaskExpanded = 0;
     this.taskForm = [undefined,undefined,undefined,undefined,undefined,undefined,undefined,undefined];
     this.today = false;
     this.notCalendar = false;
@@ -131,7 +152,8 @@ export class ListTasksComponent implements OnInit, DoCheck {
             zone: template.zone,
             level: template.level,
             hwg: template.hwg,
-            typeReport: this.filter===5?9:template.typeReport
+            typeReport: template.typeReport,
+            expanded: false
           });
         }
       });
@@ -187,37 +209,7 @@ export class ListTasksComponent implements OnInit, DoCheck {
   }
 
   public search(): void{
-    if(!this.showSearchBox){
-      this.showSearchBox = !this.showSearchBox;
-      this._searchBox.nativeElement.style.width = '100%';
-    }else{
-      this._searchBox.nativeElement.style.width = '0';
-      setTimeout(() => {
-        this.showSearchBox = !this.showSearchBox;
-      }, 250);
-    }
-  }
-
-  public searchTask(event:any):void{
-    const newArray = [];
-    if(!this.showSearchBox){
-      event.srcElement.value = '';
-    }
-    const text = (event.srcElement.value).toLowerCase();
-    if(text === ''){
-      this.tasksFilterd = this.copyTasks;
-    }else{
-      for(let x=0; x < this.copyTasks.length; x++){
-        if(UtilitiesService.removeDiacritics(this.copyTasks[x].name).toLowerCase().includes(text)){
-          newArray.push(this.copyTasks[x]);
-        }
-      }
-      if(newArray.length > 0){
-        this.tasksFilterd = newArray;
-      }else{
-        this.tasksFilterd = this.copyTasks;
-      }
-    }
+    this._taskFilterNameService.open(this.taskTemplate.taskTemplates);
   }
 
   public createStationTasks():void{
@@ -228,14 +220,51 @@ export class ListTasksComponent implements OnInit, DoCheck {
     });
   }
 
-  public getTaskInformation(id: string, type: number, hwg: boolean): void{
+  public getTaskInformation(index: number, id: string, type: number, hwg: boolean): void{
+    this.tasksFilterd[index].expanded = true;
+    if(this._indexOldTaskExpanded !== null){
+      this.tasksFilterd[this._indexOldTaskExpanded].expanded = false;
+    }
+    this._indexOldTaskExpanded = index;
     this._api.getTaskInformation(id, type).subscribe(response=>{
-      console.log(response)
+      switch (response.code){
+        case 200:
+          if(response.items){
+            this.patchForms(type,response.items[0],hwg);
+          }else{
+            this.resetElements();
+          }
+          break;
+      }
     })
   }
 
   private initForms():void{
     this.initOMForm();
+    this.initCompressorForm();
+    this.initHWGForm();
+    this.initVRSForm();
+  }
+
+  private resetElements():void{
+     this.reportOM = null;
+     this.reportComp = null;
+     this.reportHWG = null;
+     this.reportVRS = null;
+     this.reportScanned = null;
+     this.reportFE = null;
+     this.taskForm[0].reset();
+     this.taskForm[1].reset();
+     this.taskForm[2].reset();
+     this.taskForm[3].reset();
+     if(this.user.role !== 7){
+       this.taskForm[0].disable();
+       this.taskForm[1].disable();
+       this.taskForm[2].disable();
+       this.taskForm[3].disable();
+       //this.taskForm[4].disable();
+     }
+     // this.taskForm[4].reset();
   }
 
   private initOMForm():void{
@@ -245,49 +274,171 @@ export class ListTasksComponent implements OnInit, DoCheck {
       maintenanceType:['',[Validators.required]],
       activityType:['',[Validators.required]],
       personnelType:['',[Validators.required]],
-      cottonClothes:[false, [Validators.required]],
-      faceMask:[false, [Validators.required]],
-      gloves:[false, [Validators.required]],
-      kneepads:[false, [Validators.required]],
-      protectiveGoggles:[false, [Validators.required]],
-      industrialShoes:[false, [Validators.required]],
-      goggles:[false, [Validators.required]],
-      helmet:[false, [Validators.required]],
+      cottonClothes:[false, []],
+      faceMask:[false, []],
+      gloves:[false, []],
+      kneepads:[false, []],
+      protectiveGoggles:[false, []],
+      industrialShoes:[false, []],
+      goggles:[false, []],
+      helmet:[false, []],
       toolsAndMaterials: ['',[]],
       managerName:['',[]],
       observations:['',[]]
     })
   }
 
-  private initCompresorForm():void{
-    this.taskForm[1] = this._formBuilder.group({})
+  private initCompressorForm():void{
+    this.taskForm[1] = this._formBuilder.group({
+      startTime:['',[Validators.required]],
+      endTime:['',[Validators.required]],
+      brand: ['',[]],
+      model:['',[]],
+      controlNumber:['',[]],
+      pressure:['',[Validators.required]],
+      purge:['',[Validators.required]],
+      securityValve:['',[Validators.required]],
+      modifications:['',[]],
+      observations:['',[]]
+    })
   }
 
-  private initHWCForm():void{
-    this.taskForm[2] = this._formBuilder.group({})
+  private initHWGForm():void{
+     this.taskForm[2] = this._formBuilder.group({
+       area:['',[Validators.required]],
+       waste:['',[Validators.required]],
+       corrosive:['',[]],
+       reactive:['',[]],
+       explosive:['',[]],
+       toxic:['',[]],
+       flammable:['',[]],
+       quantity:['',[Validators.required]],
+       unity:['',[Validators.required]],
+       temporaryStorage:['',[Validators.required]]
+     });
   }
 
   private initVRSForm():void{
-    this.taskForm[3] = this._formBuilder.group({})
-  }
-
-  private initScannedForm():void{
-    this.taskForm[4] = this._formBuilder.group({})
-  }
-
-  private initFRForm():void{
-    this.taskForm[5] = this._formBuilder.group({})
+    this.taskForm[3] = this._formBuilder.group({
+      magna:[false,[]],
+      premium:[false,[]],
+      fuelNozzle:['',[]],
+      longHose:['',[]],
+      breakAway:['',[]],
+      shortHose:['',[]],
+      equipment:['',[]],
+      vrsAlarm:['',[]],
+      emergencyStop:['',[]],
+      observations:['',[]]
+    })
   }
 
   private initFEForm():void{
-    this.taskForm[6] = this._formBuilder.group({})
-  }
-
-  private initInceidenceForm():void{
-    this.taskForm[7] = this._formBuilder.group({})
+    this.taskForm[4] = this._formBuilder.group({})
   }
 
   public openProcedures():void{
     this._modalProceduresService.open(this.taskTemplate.procedures)
   }
+
+  private patchForms(type: number, taskEntity: any, isHWG: boolean){
+    switch (type){
+      case 1:
+        this.patchOMForm(taskEntity);
+        break;
+      case 2:
+        this.patchCompressorForm(taskEntity);
+        break;
+      case 4:
+        this.patchVRSForm(taskEntity);
+        break;
+      case 5:
+        this.patchScannedForm(taskEntity);
+        break;
+      case 8:
+        this.patchFEForm(taskEntity);
+        break;
+    }
+  }
+
+  private patchOMForm(task:any):void{
+    this.reportOM = {
+      activityType: task.activityType,
+      cottonClothes: task.cottonClothes,
+      date: task.date,
+      endTime: task.endTime,
+      faceMask: task.faceMask,
+      fileCS: task.fileCS,
+      folio: task.folio,
+      gloves: task.gloves,
+      goggles: task.goggles,
+      helmet: task.helmet,
+      hwgReport: task.hwgReport,
+      id: task.id,
+      industrialShoes: task.industrialShoes,
+      kneepads: task.kneepads,
+      maintenanceType: task.maintenanceType,
+      managerName: task.managerName,
+      observations: task.observable,
+      personnelNames: task.personnelNames || [''],
+      personnelType: task.personnelType,
+      procedures: task.procedures,
+      protectiveGoggles: task.protectiveGoggles,
+      signature: task.signature,
+      startTime: task.startTime,
+      taskId: task.taskId,
+      toolsAndMaterials: task.toolsAndMaterials
+    };
+    console.log(this.reportOM);
+    this.taskForm[0].patchValue({
+      startTime: this.reportOM.startTime,
+      endTime: this.reportOM.endTime,
+      maintenanceType: this.reportOM.maintenanceType,
+      activityType: this.reportOM.activityType,
+      personnelType: this.reportOM.personnelType,
+      cottonClothes: this.reportOM.cottonClothes,
+      faceMask: this.reportOM.faceMask,
+      gloves: this.reportOM.gloves,
+      kneepads: this.reportOM.kneepads,
+      protectiveGoggles: this.reportOM.protectiveGoggles,
+      industrialShoes: this.reportOM.industrialShoes,
+      goggles: this.reportOM.goggles,
+      helmet: this.reportOM.helmet,
+      toolsAndMaterials: this.reportOM.toolsAndMaterials,
+      managerName: this.reportOM.managerName,
+      observations: this.reportOM.observations
+    });
+    if(this.user.role!==7){
+      this.taskForm[0].disable();
+    }
+  }
+
+  private patchCompressorForm(task:any):void{
+    this.taskForm[1].patchValue({
+
+    })
+  }
+
+  private patchHWGForm(task:any):void{
+     this.taskForm[2].patchValue({
+
+     })
+  }
+
+  private patchVRSForm(task:any):void{
+    this.taskForm[3].patchValue({
+
+    })
+  }
+
+  private patchScannedForm(task:any):void{
+
+  }
+
+  private patchFEForm(task:any):void{
+    this.taskForm[4].patchValue({
+
+    })
+  }
+
 }

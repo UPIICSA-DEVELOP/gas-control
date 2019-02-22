@@ -1,0 +1,49 @@
+/*!
+ * Copyright (C) MapLander S de R.L de C.V - All Rights Reserved
+ * Unauthorized copying of this file, via any medium is strictly prohibited
+ * Proprietary and confidential
+ */
+
+#task-filter-name {
+  //height: 100%;
+  mat-dialog-content {
+    height: 100%;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    padding: 8px 0;
+    .listTask{
+      overflow-y: auto;
+      overflow-x: hidden;
+      height: 100%;
+    }
+    mat-radio-group {
+      display: flex;
+      flex-direction: column;
+      padding: 0 24px;
+      width: 100%;
+      height: 100%;
+      mat-radio-button {
+        margin: 8px 0
+      }
+    }
+  }
+  .buttons {
+    display: flex;
+    justify-content: flex-end;
+    padding: 16px;
+    position: absolute;
+    bottom: 54px;
+  }
+  .search{
+    width: 100%;
+    padding: 0 24px;
+    .icons{
+      color:#707070;
+      margin: 0 12px;
+    }
+  }
+  /deep/.mat-radio-label{
+    white-space: normal;
+  }
+}

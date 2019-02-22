@@ -42,6 +42,8 @@ import {AddStationService} from '@app/components/screen/components/add-gas-stati
 import {ModalProceduresService} from '@app/components/screen/components/modal-procedures/modal-procedures.service';
 import {AmazingTimePickerModule} from 'amazing-time-picker';
 import {TimePickerService} from '@app/core/components/time-picker/time-picker.service';
+import {SasisopaService} from '@app/components/screen/components/sasisopa/sasisopa.service';
+import {TaskFilterNameService} from '@app/components/screen/components/task-filter-name/task-filter-name.service';
 
 @NgModule({
   imports: [
@@ -115,7 +117,9 @@ import {TimePickerService} from '@app/core/components/time-picker/time-picker.se
     PdfVisorService,
     AddStationService,
     ModalProceduresService,
-    TimePickerService
+    TimePickerService,
+    SasisopaService,
+    TaskFilterNameService
   ]
 })
 export class CoreModule { }
