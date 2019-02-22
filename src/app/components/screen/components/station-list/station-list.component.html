@@ -63,7 +63,8 @@
                   <button mat-icon-button (click)="changeNotificationsStatus(stations.id, notificationActive[i], i)">
                     <mat-icon class="icon" svgIcon="icons:notifications_available" *ngIf="notificationActive[i] && stations.newNotification" matBadge="&#8288;" matBadgeSize="small" matBadgeColor="warn"></mat-icon>
                     <mat-icon class="icon" svgIcon="icons:notifications_available" *ngIf="notificationActive[i] && !stations.newNotification"></mat-icon>
-                    <mat-icon class="icon" svgIcon="icons:disable_notification" *ngIf="!notificationActive[i]"></mat-icon>
+                    <mat-icon class="icon" svgIcon="icons:disable_notification" *ngIf="!notificationActive[i] && !stations.newNotification"></mat-icon>
+                    <mat-icon class="icon" svgIcon="icons:disable_notification" *ngIf="!notificationActive[i] && stations.newNotification" matBadge="&#8288;" matBadgeSize="small" matBadgeColor="warn"></mat-icon>
                   </button>
                   <div>
                     <span class="percent">{{stations.progress}}%</span>
