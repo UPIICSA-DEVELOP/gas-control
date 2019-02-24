@@ -41,6 +41,7 @@ export class App {
     this.app.use(App.handlerErrors);
     this.app.use(compression({level: 9}));
     //this.app.use('/.well-known', express.static(__dirname + '/.well-known'));
+    this.configEndPoints()
     this.configRender();
     this.app.use(express.static(App.DIR));
     this.views();
@@ -50,8 +51,18 @@ export class App {
     this.app.get('/', App.angularRouter);
   }
 
+  private configEndPoints(): void{
+    const swaggerUi = require('swagger-ui-express');
+    const swaggerDocument = require('../dist/endpoints/swagger.json');
+    const options = {
+      customCss: '.swagger-ui .topbar { display: none }'
+    };
+    this.app.use('/endpoints/v1/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument, options));
+    this.app.use('/endpoints/v1', require('../dist/endpoints/endpoints.js'));
+  }
+
   private views(): void{
-    const appServer = require('./dist/server/main');
+    const appServer = require('../dist/server/main');
     this.app.engine('html', ngUniversal.ngExpressEngine({
       bootstrap: appServer.AppServerModuleNgFactory
     }));
@@ -71,7 +82,6 @@ export class App {
 
   private router(): void{
     /* Direct all routes to index.html, where Angular will take care of routing */
-    this.app.get('/bc', App.bcRouter);
     this.app.get('*', App.angularRouter);
     this.start();
   }
@@ -82,33 +92,6 @@ export class App {
       console.log(`Listening on http://localhost:${this._port}`);
     });
   }
-
-  private static bcRouter(req, res): void{
-    res.setHeader("Access-Control-Allow-Origin", "*");
-    res.setHeader("Access-Control-Allow-Headers", "X-Requested-With");
-    res.setHeader('Content-Type', 'image/png');
-    try {
-      const info = {
-        imageUrl:  req.query.imageUrl || null,
-        company:  req.query.company || null,
-        name:  req.query.name || null,
-        workPosition: req.query.workPosition || null,
-        phone:  req.query.phone || null,
-        email:  req.query.email || null,
-        website:  req.query.website || null
-      };
-      const { fork } = require('child_process');
-      const process = fork(path.resolve(__dirname, 'bc.js'));
-      process.on('message', (data) => {
-        res.end(data, 'binary');
-      });
-      process.send(info);
-    }catch (e){
-      console.error(e);
-      res.send(null)
-    }
-  }
-
 
   private static angularRouter(req, res): void{
     /* Server-side rendering */

@@ -6,10 +6,12 @@
 /dist/node_modules
 /dist/browser
 /dist/server
+/dist/endpoints
 /dist/package-lock.json
 /dist/server.js
 /dist/bot.js
 /dist/bc.js
+/dist/pdf.js
 /dist/config.json
 package-lock.json
 

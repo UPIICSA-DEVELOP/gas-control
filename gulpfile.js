@@ -15,9 +15,9 @@ gulp.task('clean:source', function () {
   ]);
 });
 
-gulp.task('copy:bc', function() {
-  return gulp.src(['./bc.js'])
-    .pipe(gulp.dest('./dist'));
+gulp.task('copy:endpoints', function() {
+  return gulp.src(['./endpoints/**/*'])
+    .pipe(gulp.dest('./dist/endpoints'));
 });
 
 

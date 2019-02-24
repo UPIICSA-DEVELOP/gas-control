@@ -3,7 +3,7 @@ const webpack = require('webpack');
 const nodeExternals = require('webpack-node-externals');
 module.exports = {
   entry: {
-    server: './index.ts'
+    server: path.join(__dirname, 'index.ts')
   },
   resolve: {
     extensions: ['.ts', '.js']
@@ -30,7 +30,7 @@ module.exports = {
     __filename: false
   },
   output: {
-    path: path.join(__dirname, 'dist'),
+    path: path.resolve(__dirname, '../', 'dist'),
     filename: '[name].js'
   },
   module: {

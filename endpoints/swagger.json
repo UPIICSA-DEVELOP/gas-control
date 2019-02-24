@@ -1,0 +1,141 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "",
+    "version": "1.0.0",
+    "title": "inSpector FrontEnd API Rest"
+  },
+  "host": "localhost:8080",
+  "basePath": "/endpoints/v1",
+  "tags": [
+    {
+      "name": "Business Card",
+      "description": "Business Card Service"
+    },
+    {
+      "name": "SASISOPA",
+      "description": "SASISOPA Service generate attached files"
+    }
+  ],
+  "schemes": [
+    "https",
+    "http"
+  ],
+  "paths": {
+    "/bc": {
+      "get": {
+        "tags": [
+          "Business Card"
+        ],
+        "summary": "Create a new Business Card image",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "imageUrl",
+            "type": "string",
+            "required": true,
+            "description": "User company image"
+          },
+          {
+            "in": "query",
+            "name": "company",
+            "type": "string",
+            "required": true,
+            "description": "User company"
+          },
+          {
+            "in": "query",
+            "name": "name",
+            "type": "string",
+            "required": true,
+            "description": "User full name"
+          },
+          {
+            "in": "query",
+            "name": "workPosition",
+            "type": "string",
+            "required": true,
+            "description": "User work position"
+          },
+          {
+            "in": "query",
+            "name": "phone",
+            "type": "string",
+            "required": true,
+            "description": "User phone number"
+          },
+          {
+            "in": "query",
+            "name": "email",
+            "type": "string",
+            "required": true,
+            "description": "User email"
+          },
+          {
+            "in": "query",
+            "name": "website",
+            "type": "string",
+            "description": "User website"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "422": {
+            "description": "Incomplete params"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/pdf": {
+      "get": {
+        "tags": [
+          "SASISOPA"
+        ],
+        "summary": "Create a attached file with custom information",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "attachedType",
+            "type": "string",
+            "required": true,
+            "description": "Type attached file [1-5]"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "422": {
+            "description": "Incomplete params"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    }
+  }
+}
