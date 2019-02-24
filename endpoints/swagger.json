@@ -5,7 +5,7 @@
     "version": "1.0.0",
     "title": "inSpector FrontEnd API Rest"
   },
-  "host": "localhost:8080",
+  "host": "inspector-maplander-develop.appspot.com",
   "basePath": "/endpoints/v1",
   "tags": [
     {
