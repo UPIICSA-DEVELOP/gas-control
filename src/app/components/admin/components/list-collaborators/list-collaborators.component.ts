@@ -89,6 +89,7 @@ export class ListCollaboratorsComponent implements OnInit {
 
   public goToDashboard(): void{
     LocalStorageService.setItem(Constants.UserInSession,{profileImage: null, role: 7, refId: this._data.id, completeName: this._completeName});
+    LocalStorageService.setItem(Constants.ConsultancyInSession, this._data);
   }
 
   private getUtilities():void{
