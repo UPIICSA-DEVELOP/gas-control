@@ -17,35 +17,10 @@ import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {ApiLoaderService} from '@app/core/services/api/api-loader.service';
 import {UploadFileResponse} from '@app/core/components/upload-file/upload-file.component';
 import {Constants} from '@app/core/constants.core';
-import {User} from 'firebase';
 import {LocalStorageService} from '@app/core/services/local-storage/local-storage.service';
 import {PdfVisorService} from '@app/core/components/pdf-visor/pdf-visor.service';
 import {SharedService, SharedTypeNotification} from '@app/core/services/shared/shared.service';
-
-export interface Person {
-  name: string;
-  lastName: string
-  email: string;
-  country: string;
-  countryCode: string;
-  phoneNumber: string;
-  role: number;
-  jobTitle: string;
-  website?: string;
-  refId: string;
-  signature?:any;
-  profileImage?: any;
-}
-
-export interface PersonInformation {
-  id: string;
-  bloodType?:string;
-  concatcPhone?:string;
-  contactKinship?:string;
-  contactName?:string;
-  ssn?: string;
-  benzene?: any;
-}
+import {Person, PersonInformation} from '@app/core/interfaces/interfaces';
 
 @Component({
   selector: 'app-add-collaborator',
@@ -129,12 +104,12 @@ export class AddCollaboratorComponent implements OnInit {
         'CANCELAR').afterClosed().subscribe(response=>{
         switch (response.code) {
           case 1:
-            this._router.navigate(['/home']);
+            this._router.navigate(['/home']).then();
             break;
         }
       });
     }else{
-      this._router.navigate(['/home']);
+      this._router.navigate(['/home']).then();
     }
   }
 
@@ -298,7 +273,8 @@ export class AddCollaboratorComponent implements OnInit {
       jobTitle: data.jobTitle,
       phoneNumber: data.phoneNumber,
       profileImage:(this.profileImage?this.profileImage:undefined),
-      signature:(this.signature?this.signature:undefined)
+      signature:(this.signature?this.signature:undefined),
+      bCard: undefined
     };
     let personInformation: PersonInformation = {
       id: '',
@@ -309,17 +285,21 @@ export class AddCollaboratorComponent implements OnInit {
       concatcPhone:(data.contactPhoneNumber? data.contactPhoneNumber:undefined),
       contactKinship: (data.contactKinship?data.contactKinship:undefined)
     };
+    this.createBCard(person, personInformation);
+  }
+
+  private createPerson(person: any, personInformation: any):void{
     this._api.createReferencedPerson(person).subscribe(response=>{
-        switch (response.code){
-          case 200:
-              personInformation.id=response.item.id;
-              this.createInformationCollaborator(personInformation, person.email);
-             break;
-          default:
-            this._dialogService.alertDialog('No se pudo acceder', 'Se produjo un error de comunicación con el servidor', 'ACEPTAR');
-            break;
-        }
-    })
+      switch (response.code){
+        case 200:
+          personInformation.id=response.item.id;
+          this.createInformationCollaborator(personInformation, person.email);
+          break;
+        default:
+          this._dialogService.alertDialog('No se pudo acceder', 'Se produjo un error de comunicación con el servidor', 'ACEPTAR');
+          break;
+      }
+    });
   }
 
   private createInformationCollaborator(personInfo: PersonInformation, email:string): void{
@@ -360,5 +340,31 @@ export class AddCollaboratorComponent implements OnInit {
   }
   public openStudy():void{
     this._pdfVisor.open({url: this.file, file: this.file, notIsUrl: true});
+  }
+
+  private createBCard(person: any, personInformation: any):void{
+    this._snackBarService.openSnackBar('Epere un momento...','',0);
+    const data = {
+      company: LocalStorageService.getItem(Constants.StationInDashboard).name || '',
+      name: person.name + ' ' + person.lastName || '',
+      workPosition: person.jobTitle || '',
+      phone: person.phoneNumber || '',
+      email: person.email || '',
+      website: person.website || '',
+      imageUrl: person.profileImage ? person.profileImage.thumbnail + '=s1200' : 'Lorem ipsum'
+    };
+    this._api.businessCardService(data).subscribe((response: Blob)=>{
+      this._snackBarService.closeSnackBar();
+      const form = new FormData();
+      form.append('file', response, 'bc'+new Date().getTime()+'.png');
+      this._uploadFileService.uploadToBusinessCard(form).subscribe(response=>{
+        if(response.success && response.success === 'true'){
+          person.bCard = {
+            cardThumbnail: response.secondaryUrl
+          };
+          this.createPerson(person, personInformation);
+        }
+      })
+    })
   }
 }

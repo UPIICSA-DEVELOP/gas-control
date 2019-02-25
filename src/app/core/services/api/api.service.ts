@@ -249,11 +249,11 @@ export class ApiService {
   public listTaskDateStatus(filters: any): Observable<any>{
     let params = new HttpParams();
     params = params.append('stationTaskId', filters.stationTaskId);
-    params = params.append('fromDate', filters.startDate);
-    if(filters.status !== '5'){
+    if(!filters.firstOpen){
+      params = params.append('fromDate', filters.startDate);
       params = params.append('status', filters.status);
+      params = params.append('untilDate', filters.endDate);
     }
-    params = params.append('untilDate', filters.endDate);
     return this._http.get(ApiService.API_URL_COMPLETE + 'listTaskDateStatus', {params: params});
   }
 

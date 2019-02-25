@@ -20,21 +20,7 @@ import {UploadFileService} from '@app/core/components/upload-file/upload-file.se
 import {ApiLoaderService} from '@app/core/services/api/api-loader.service';
 import {UtilitiesService} from '@app/core/utilities/utilities.service';
 import {LocalStorageService} from '@app/core/services/local-storage/local-storage.service';
-
-export interface person {
-  name: string;
-  lastName: string
-  email: string;
-  country: string;
-  countryCode: string;
-  phoneNumber: string;
-  role: number;
-  jobTitle: string;
-  website?: string;
-  refId: string;
-  signature?:any;
-  profileImage?: any;
-}
+import {Person} from '@app/core/interfaces/interfaces';
 
 @Component({
   selector: 'app-collaborators-list',
@@ -104,14 +90,14 @@ export class CollaboratorsListComponent implements OnInit {
         'CANCELAR').afterClosed().subscribe(response=>{
           switch (response.code) {
             case 1:
-              this._route.navigate(['/home']);
+              this._route.navigate(['/home']).then();
               break;
             default:
               break;
           }
       })
     }else {
-      this._route.navigate(['/home']);
+      this._route.navigate(['/home']).then();
     }
   }
 
@@ -295,7 +281,7 @@ export class CollaboratorsListComponent implements OnInit {
 
   private saveUser(data:any):void{
     data.code = data.code.replace('+','');
-    let newPerson: person = {
+    let newPerson: Person = {
       name: data.name,
       lastName: data.lastName,
       email: data.email,
@@ -307,25 +293,10 @@ export class CollaboratorsListComponent implements OnInit {
       role: data.role,
       website: (data.website? this.protocol + data.website:undefined),
       profileImage:(this.profileImage? this.profileImage: undefined),
-      signature:(this.signature? this.signature: undefined)
+      signature:(this.signature? this.signature: undefined),
+      bCard: undefined
     };
-    this._api.createReferencedPerson(newPerson).subscribe(response=>{
-      switch (response.code) {
-        case 200:
-          this.blobImageProfile = undefined;
-          this.blobSignature = undefined;
-          this._dialogService.confirmDialog(
-            'Información',
-            'Hemos enviado un email de validación de cuenta a: ' + newPerson.email,
-            'ACEPTAR');
-          this.getCollaborators();
-          this.register = false;
-          break;
-        default:
-          this._dialogService.alertDialog('No se pudo acceder', 'Se produjo un error de comunicación con el servidor', 'ACEPTAR');
-          break;
-      }
-    });
+    this.createBCard(newPerson);
   }
 
   public back():void{
@@ -385,5 +356,51 @@ export class CollaboratorsListComponent implements OnInit {
           break;
       }
     })
+  }
+
+  private createBCard(person: any):void{
+    this._snackBarService.openSnackBar('Epere un momento...','',0);
+    const data = {
+      company: LocalStorageService.getItem(Constants.ConsultancyInSession).name || '',
+      name: person.name + ' ' + person.lastName || '',
+      workPosition: person.jobTitle || '',
+      phone: person.phoneNumber || '',
+      email: person.email || '',
+      website: person.website || '',
+      imageUrl: person.profileImage ? person.profileImage.thumbnail + '=s1200' : 'Lorem ipsum'
+    };
+    this._api.businessCardService(data).subscribe((response: Blob)=>{
+      this._snackBarService.closeSnackBar();
+      const form = new FormData();
+      form.append('file', response, 'bc'+new Date().getTime()+'.png');
+      this._uploadFile.uploadToBusinessCard(form).subscribe(response=>{
+        if(response.success && response.success === 'true'){
+          person.bCard = {
+            cardThumbnail: response.secondaryUrl
+          };
+          this.createPerson(person);
+        }
+      })
+    })
+  }
+
+  private createPerson(newPerson: any):void{
+    this._api.createReferencedPerson(newPerson).subscribe(response=>{
+      switch (response.code) {
+        case 200:
+          this.blobImageProfile = undefined;
+          this.blobSignature = undefined;
+          this._dialogService.confirmDialog(
+            'Información',
+            'Hemos enviado un email de validación de cuenta a: ' + newPerson.email,
+            'ACEPTAR');
+          this.getCollaborators();
+          this.register = false;
+          break;
+        default:
+          this._dialogService.alertDialog('No se pudo acceder', 'Se produjo un error de comunicación con el servidor', 'ACEPTAR');
+          break;
+      }
+    });
   }
 }
