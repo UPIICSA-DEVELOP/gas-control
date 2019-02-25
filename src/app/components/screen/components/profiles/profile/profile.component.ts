@@ -21,33 +21,7 @@ import {animate, keyframes, query, stagger, style, transition, trigger} from '@a
 import {UploadFileResponse} from '@app/core/components/upload-file/upload-file.component';
 import {SignaturePadService} from '@app/core/components/signature-pad/signature-pad.service';
 import {LocalStorageService} from '@app/core/services/local-storage/local-storage.service';
-
-export interface Person {
-  id: string;
-  refId: string;
-  name: string;
-  lastName: string;
-  email: string;
-  phoneNumber: string;
-  countryCode: string;
-  country: string;
-  role: number;
-  jobTitle: string;
-  website?: string;
-  profileImage?: any;
-  signature: any;
-  password: string;
-  bCard?: any;
-}
-
-export interface Consultancy {
-  id: string;
-  businessName: string;
-  rfc: string;
-  address: string;
-  location: any;
-  officePhone?: string;
-}
+import {Consultancy, Person} from '@app/core/interfaces/interfaces';
 
 @Component({
   selector: 'app-profile',
@@ -141,7 +115,7 @@ export class ProfileComponent implements OnInit {
       this._snackBarService.openSnackBar('Por favor, registre su firma','OK', 3000);
       return;
     }
-    this._router.navigate(['/home']);
+    this._router.navigate(['/home']).then();
   }
 
   public onLoadImage(event: UploadFileResponse): void{
@@ -261,7 +235,7 @@ export class ProfileComponent implements OnInit {
         switch (response.code) {
           case 1:
             this.change = false;
-            this._router.navigate(['/home']);
+            this._router.navigate(['/home']).then();
             break;
         }
       })
@@ -559,7 +533,7 @@ export class ProfileComponent implements OnInit {
         case 200:
           this.change = false;
           this._snackBarService.openSnackBar('Información actualizada','OK',3000);
-          this._router.navigate(['/home']);
+          this._router.navigate(['/home']).then();
           break;
         default:
           this._dialogService.alertDialog('No se pudo acceder', 'Se produjo un error de comunicación con el servidor', 'ACEPTAR');
@@ -571,14 +545,13 @@ export class ProfileComponent implements OnInit {
   private updateBusiness(isNewEmail: boolean):void{
     this._snackBarService.openSnackBar('Epere un momento...','',0);
     const data = {
-      company: this.consultancy.businessName,
-      name: this.user.name + ' ' + this.user.lastName,
-      workPosition: this.user.jobTitle,
-      phone: this.user.phoneNumber,
-      email: this.user.email,
-      website: this.user.website,
-      imageUrl: this.user.profileImage ? this.user.profileImage.thumbnail + '=s1200':null
-
+      company: this.consultancy.businessName || '',
+      name: this.user.name + ' ' + this.user.lastName || '',
+      workPosition: this.user.jobTitle || '',
+      phone: this.user.phoneNumber || '',
+      email: this.user.email || '',
+      website: this.user.website || '',
+      imageUrl: this.user.profileImage ? this.user.profileImage.thumbnail + '=s1200':'Lorem ipsum'
     };
     this._api.businessCardService(data).subscribe((response: Blob) => {
       const form = new FormData();

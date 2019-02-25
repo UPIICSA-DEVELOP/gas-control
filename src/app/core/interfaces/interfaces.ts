@@ -4,7 +4,7 @@
  * Proprietary and confidential
  */
 
-export interface Person{
+export interface Person {
   id?: string;
   refId: string;
   name: string;
@@ -18,21 +18,21 @@ export interface Person{
   website?: string;
   profileImage?: any;
   signature: any;
-  password: string;
+  password?: string;
   bCard?: any;
 }
 
-export interface PersonInformation{
+export interface PersonInformation {
   id: string;
-  bloodType?:string;
-  concatcPhone?:string;
-  contactKinship?:string;
-  contactName?:string;
+  bloodType?: string;
+  concatcPhone?: string;
+  contactKinship?: string;
+  contactName?: string;
   ssn?: string;
   benzene?: any;
 }
 
-export interface GasStation{
+export interface GasStation {
   id?: string;
   businessName: string;
   rfc: string;
@@ -52,12 +52,39 @@ export interface GasStation{
   idLegalRepresentative?: string;
   managerName?: string;
   legalRepresentativeName?: string;
-  workShifts?: any;
-  fuelTanks?: any;
-  dispensers?: any;
+  workShifts?: WorkShifts;
+  fuelTanks?: FuelTanks;
+  dispensers?: Dispensers;
 }
 
-export interface Consultancy{
+/**
+ * Start: Complement GasStation
+ */
+
+export interface WorkShifts {
+  start: string;
+  end: string;
+}
+
+export interface FuelTanks {
+  fuelType: number;
+  capacity: number;
+  year: number;
+}
+
+export interface Dispensers {
+  hoses: number;
+  identifier: string;
+  magna: boolean;
+  premium: boolean;
+  diesel: boolean;
+}
+
+/**
+ * End: Complement GasStation
+ */
+
+export interface Consultancy {
   id: string;
   businessName: string;
   rfc: string;
@@ -66,7 +93,7 @@ export interface Consultancy{
   officePhone?: string;
 }
 
-export interface Document{
+export interface Document {
   id?: string;
   idStation: string;
   regulationType: number;
@@ -74,12 +101,13 @@ export interface Document{
   file: any;
 }
 
-export interface Task{
+export interface Task {
   creationDate: number;
   editedTasks: any;
   stationId: string;
   status: number;
   progress: number;
+  startDate: number;
 }
 
 
@@ -87,7 +115,7 @@ export interface Task{
  * START: TaskReport Formats 1-9
  */
 
-export interface OMReport{
+export interface OMReport {
   activityType: string;
   cottonClothes: boolean;
   date: number;
@@ -103,9 +131,9 @@ export interface OMReport{
   industrialShoes: boolean;
   kneepads: boolean;
   maintenanceType: string;
-  managerName: string;
+  managerName?: string;
   observations?: string
-  personnelNames: string;
+  personnelNames: string[];
   personnelType: string;
   procedures?: number[];
   protectiveGoggles: boolean;
@@ -115,7 +143,7 @@ export interface OMReport{
   toolsAndMaterials?: string;
 }
 
-export interface CompressorReport{
+export interface CompressorReport {
   brand?: string;
   controlNumber?: string;
   date: number;
@@ -135,7 +163,7 @@ export interface CompressorReport{
   taskId: number;
 }
 
-export interface HWGReport{
+export interface HWGReport {
   area: string;
   corrosive: boolean;
   explosive: boolean;
@@ -149,7 +177,7 @@ export interface HWGReport{
   waste: string
 }
 
-export interface VRSReport{
+export interface VRSReport {
   date: number;
   emergencyStop: string;
   fileCS?: any;
@@ -168,7 +196,7 @@ export interface VRSReport{
  * --------------------------------- START: Complement VRSReport ---------------------------------
  */
 
-export interface VRSDispensary{
+export interface VRSDispensary {
   breakAway: string;
   diesel: boolean;
   equipment: string;
@@ -179,7 +207,7 @@ export interface VRSDispensary{
   shortHose: string;
 }
 
-export interface VRSTank{
+export interface VRSTank {
   capAndFillingAdapter: string;
   capAndSteamAdapter: string;
   fuelType: string;
@@ -191,7 +219,7 @@ export interface VRSTank{
  * --------------------------------- END: Complement VRSReport ---------------------------------
  */
 
-export interface ScannedReport{
+export interface ScannedReport {
   date: number;
   fileCS: any;
   folio: number;
@@ -217,7 +245,7 @@ export interface HWCReport {
   waste: string;
 }
 
-export interface FRReport{
+export interface FRReport {
   date: number;
   diesel: boolean;
   endTime: number;
@@ -236,7 +264,7 @@ export interface FRReport{
   volumetric: number;
 }
 
-export interface FEReport{
+export interface FEReport {
   date: number;
   endTime: number;
   fireExtinguishers: FireExtinguisher[];
@@ -251,7 +279,7 @@ export interface FEReport{
  * --------------------------------- START: Complement FEReport ---------------------------------
  */
 
-export interface FireExtinguisher{
+export interface FireExtinguisher {
   area: string;
   belt: string;
   capacity: number;
@@ -267,7 +295,7 @@ export interface FireExtinguisher{
  * --------------------------------- END: Complement FEReport ---------------------------------
  */
 
-export interface IncidenceReport{
+export interface IncidenceReport {
   area: string;
   date: number;
   description: string;

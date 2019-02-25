@@ -22,22 +22,7 @@ import {DialogService} from '@app/core/components/dialog/dialog.service';
 import {PdfVisorOptions, PdfVisorService} from '@app/core/components/pdf-visor/pdf-visor.service';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
 import {UtilitiesService} from '@app/core/utilities/utilities.service';
-
-interface Person {
-  id?: string;
-  name: string;
-  lastName: string
-  email: string;
-  country: string;
-  countryCode: string;
-  phoneNumber: string;
-  role: number;
-  jobTitle: string;
-  website?: string;
-  refId: string;
-  signature?: any;
-  profileImage?: any;
-}
+import {Person, PersonInformation, Task} from '@app/core/interfaces/interfaces';
 
 interface Station {
   id?: string;
@@ -62,25 +47,6 @@ interface Station {
   workShifts?: any;
   fuelTanks?: any;
   dispensers?: any;
-}
-
-interface PersonInformation {
-  id: string;
-  bloodType?: string;
-  concatcPhone?: string;
-  contactKinship?: string;
-  contactName?: string;
-  ssn?: string;
-  benzene?: any;
-}
-
-interface Task {
-  creationDate: number;
-  editedTasks: any;
-  stationId: string;
-  status: number;
-  progress: number;
-  startDate: number;
 }
 
 @Component({
@@ -620,6 +586,8 @@ export class AddGasStationComponent implements OnInit {
         website: (data.website?this.protocol+data.website: undefined),
         jobTitle: data.jobTitle,
         role: 4,
+        bCard: undefined,
+        id: undefined
       };
       this.legalRepresentativeInformation = {
         id:'',
@@ -649,7 +617,7 @@ export class AddGasStationComponent implements OnInit {
     }else{
       data.code = data.code.replace('+','');
       this.manger = {
-        refId: LocalStorageService.getItem(Constants.UserInSession).refId,
+        refId: undefined,
         signature: (this.signatureTwo?this.signatureTwo:undefined),
         profileImage:(this.profileImageTwo?this.profileImageTwo:undefined),
         name: data.name,
@@ -661,6 +629,7 @@ export class AddGasStationComponent implements OnInit {
         website: (data.website?this.protocolTwo+data.website: undefined),
         jobTitle: data.jobTitle,
         role: 5,
+        bCard: undefined
       };
       this.mangerInformation = {
         id:'',
@@ -860,7 +829,17 @@ export class AddGasStationComponent implements OnInit {
         ).afterClosed().subscribe(response=>{
           switch (response.code){
             case 1:
-              this._dialogRef.close();
+              if(this.manger){
+                this._api.deletePerson(this.manger.id).subscribe(response=>{
+                  switch (response.code){
+                    case 200:
+                      this._dialogRef.close();
+                      break;
+                    default:
+                      break;
+                  }
+                })
+              }
               break;
           }
         });

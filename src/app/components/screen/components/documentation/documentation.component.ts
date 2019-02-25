@@ -12,14 +12,7 @@ import {ApiService} from '@app/core/services/api/api.service';
 import {UploadFileResponse} from '@app/core/components/upload-file/upload-file.component';
 import {ApiLoaderService} from '@app/core/services/api/api-loader.service';
 import {SnackBarService} from '@app/core/services/snackbar/snackbar.service';
-
-interface Document{
-  id?: string;
-  idStation: string;
-  regulationType: number;
-  type: number;
-  file: any;
-}
+import {Document} from  '@app/core/interfaces/interfaces'
 
 @Component({
   selector: 'app-documentation',

@@ -273,7 +273,7 @@ export class StationProfileComponent implements OnInit {
         case 200:
           this.change = false;
           this._snackBarService.openSnackBar('Información actualizada','OK',3000);
-          this._router.navigate(['/home']).then();
+          this._router.navigate(['/home'], {queryParams:{station: this.station.id}}).then();
           break;
         default:
           this._dialogService.alertDialog('No se pudo acceder', 'Se produjo un error de comunicación con el servidor', 'ACEPTAR');

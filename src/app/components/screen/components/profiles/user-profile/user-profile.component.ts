@@ -20,34 +20,7 @@ import {UploadFileResponse} from '@app/core/components/upload-file/upload-file.c
 import {SignaturePadService} from '@app/core/components/signature-pad/signature-pad.service';
 import {LocalStorageService} from '@app/core/services/local-storage/local-storage.service';
 import {PdfVisorService} from '@app/core/components/pdf-visor/pdf-visor.service';
-
-export interface Person {
-  id: string;
-  refId?: string;
-  name: string;
-  lastName: string;
-  email: string;
-  phoneNumber: string;
-  countryCode: string;
-  country: string;
-  role: number;
-  jobTitle: string;
-  website?: string;
-  profileImage?: any;
-  signature: any;
-  password: string;
-  bCard?: any;
-}
-
-export interface PersonInformation {
-  id: string;
-  bloodType?:string;
-  concatcPhone?:string;
-  contactKinship?:string;
-  contactName?:string;
-  ssn?: string;
-  benzene?: any;
-}
+import {Person, PersonInformation} from '@app/core/interfaces/interfaces';
 
 @Component({
   selector: 'app-user-profile',
@@ -552,13 +525,13 @@ export class UserProfileComponent implements OnInit {
   private updateBusiness(isNewEmail: boolean):void{
     this._snackBarService.openSnackBar('Epere un momento...','',0);
     const data = {
-      company: (this.user.role===4 ? '':LocalStorageService.getItem(Constants.StationInDashboard).name),
-      name: this.user.name + ' ' + this.user.lastName,
-      workPosition: this.user.jobTitle,
-      phone: this.user.phoneNumber,
-      email: this.user.email,
-      website: this.user.website,
-      imageUrl: this.user.profileImage ? this.user.profileImage.thumbnail + '=s1200':null
+      company: (this.user.role===4 ? '':LocalStorageService.getItem(Constants.StationInDashboard).name) || '',
+      name: this.user.name + ' ' + this.user.lastName || '',
+      workPosition: this.user.jobTitle || '',
+      phone: this.user.phoneNumber || '',
+      email: this.user.email || '',
+      website: this.user.website || '',
+      imageUrl: this.user.profileImage ? this.user.profileImage.thumbnail + '=s1200':'Lorem ipsum'
 
     };
     this._api.businessCardService(data).subscribe((response: Blob) => {
