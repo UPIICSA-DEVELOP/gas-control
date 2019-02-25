@@ -11,14 +11,29 @@ import { Pipe, PipeTransform } from '@angular/core';
 })
 export class FormatTimePipe implements PipeTransform {
 
-  transform(value: string): string {
-    let time;
-    let hr;
-    let min;
+  transform(value: any): string {
     if(value === '' || value === undefined || value === null){
       return '';
     }
-    value = value.toString();
+    if(typeof value !== 'string'){
+      value = value.toString();
+    }
+    if(value.length < 4){
+      switch (value.length){
+        case 1:
+          value = '000' + value;
+          break;
+        case 2:
+          value = '00' + value;
+          break;
+        case 3:
+          value = '0' + value;
+          break;
+      }
+    }
+    let time;
+    let hr;
+    let min;
     try{
       time = Number(value);
       hr = value.slice(0,2);

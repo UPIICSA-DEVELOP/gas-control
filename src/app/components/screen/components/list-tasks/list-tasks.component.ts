@@ -15,7 +15,7 @@ import {LocalStorageService} from '@app/core/services/local-storage/local-storag
 import {AddStationService} from '@app/components/screen/components/add-gas-station/add-station.service';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {ModalProceduresService} from '@app/components/screen/components/modal-procedures/modal-procedures.service';
-import {CompressorReport, FEReport, FRReport, HWCReport, HWGReport, IncidenceReport, OMReport, ScannedReport, VRSReport} from '@app/core/interfaces/interfaces';
+import {CompressorReport, FEReport, HWGReport, OMReport, ScannedReport, VRSReport} from '@app/core/interfaces/interfaces';
 import {DOCUMENT} from '@angular/common';
 import {TaskFilterNameService} from '@app/components/screen/components/task-filter-name/task-filter-name.service';
 
@@ -44,7 +44,6 @@ export class ListTasksComponent implements OnInit, DoCheck {
   public showSearchBox: boolean;
   public tasks: any[];
   public tasksFilterd: any[];
-  public copyTasks: any[];
   public zones: any[];
   public priority: any[];
   public typeFilter: string[];
@@ -54,6 +53,7 @@ export class ListTasksComponent implements OnInit, DoCheck {
   public user: any;
   public notCalendar: boolean;
   public taskForm: FormGroup[];
+  public taskWithDivider: any[];
   /**
    *  Start: task entity
    */
@@ -69,6 +69,7 @@ export class ListTasksComponent implements OnInit, DoCheck {
   public personnelNames: string[];
   public procedures: number[];
   private _indexOldTaskExpanded: number;
+  private _firstOpen: boolean;
    constructor(
     @Inject(DOCUMENT) private _document: Document,
     private _dateService: DatepickerService,
@@ -80,19 +81,20 @@ export class ListTasksComponent implements OnInit, DoCheck {
     private _modalProceduresService: ModalProceduresService,
     private _taskFilterNameService: TaskFilterNameService
   ) {
-     this.personnelNames = [''];
+    this.personnelNames = [''];
+    this.taskWithDivider = [];
     this._indexOldTaskExpanded = 0;
-    this.taskForm = [undefined,undefined,undefined,undefined,undefined,undefined,undefined,undefined];
+    this.taskForm = [undefined,undefined,undefined,undefined,undefined];
     this.today = false;
     this.notCalendar = false;
     this.filter = 0;
     this.startDate = new Date();
     this.endDate = new Date();
     this.tasksFilterd = [];
-    this.copyTasks = [];
     this.priority = Constants.Level;
     this.zones = Constants.Zones;
     this.typeFilter = Constants.Filters;
+    this._firstOpen = true;
   }
 
   ngOnInit() {
@@ -105,7 +107,6 @@ export class ListTasksComponent implements OnInit, DoCheck {
     this.start = UtilitiesService.createPersonalTimeStamp(this.startDate);
     this.end = UtilitiesService.createPersonalTimeStamp(this.endDate);
   }
-
 
   ngDoCheck():void{
       this.notCalendar = LocalStorageService.getItem(Constants.NotCalendarTask);
@@ -122,7 +123,8 @@ export class ListTasksComponent implements OnInit, DoCheck {
       stationTaskId: this.station.stationTaskId || '0',
       startDate: (this.start.timeStamp).toString(),
       status: (this.filter).toString(),
-      endDate: (this.end.timeStamp).toString()
+      endDate: (this.end.timeStamp).toString(),
+      firstOpen: this._firstOpen
     };
     this._api.listTaskDateStatus(this.filters).subscribe(response=>{
       switch (response.code){
@@ -153,12 +155,75 @@ export class ListTasksComponent implements OnInit, DoCheck {
             level: template.level,
             hwg: template.hwg,
             typeReport: template.typeReport,
-            expanded: false
+            status: task.status,
+            evidence: template.evidence
           });
         }
       });
     });
-    this.copyTasks = this.tasksFilterd;
+    this.sortTaskArrayByStatus();
+  }
+
+  public sortTaskArrayByStatus():void{
+     this.taskWithDivider = [];
+     let headerPrevious = false, headerHistory = false;
+     this.tasksFilterd = UtilitiesService.sortJSON(this.tasksFilterd, 'status', 'asc');
+     this.taskWithDivider.push({
+       type: 1,
+       title: 'Hoy',
+       original: null,
+       id: '',
+       expanded: false,
+     });
+     this.tasksFilterd.forEach(item=>{
+       if(item.status === 1){
+         this.taskWithDivider.push({
+           type: 2,
+           title: '',
+           original: item,
+           id: item.id,
+           expanded: false,
+         });
+       }else if(item.status === 2){
+         if(!headerPrevious){
+           this.taskWithDivider.push({
+             type: 1,
+             title: 'Atrasadas',
+             original: null,
+             id: '',
+             expanded: false,
+           });
+           headerPrevious = true;
+         }else{
+           this.taskWithDivider.push({
+             type: 2,
+             title: '',
+             original: item,
+             id: item.id,
+             expanded: false,
+           })
+         }
+       }else if(item.status === 3 || item.status ===4){
+         if(!headerHistory){
+           this.taskWithDivider.push({
+             type: 1,
+             title: 'Historial',
+             original: null,
+             id: '',
+             expanded: false,
+           });
+           headerHistory = true;
+         }else{
+           this.taskWithDivider.push({
+             type: 2,
+             title: '',
+             original: item,
+             id: item.id,
+             expanded: false,
+           });
+         }
+       }
+     });
   }
 
   public dateFilter():void{
@@ -176,6 +241,10 @@ export class ListTasksComponent implements OnInit, DoCheck {
                 this.today = response.startDate == response.endDate;
                 this.startDate = response.startDate;
                 this.endDate = response.endDate;
+                if(this.startDate.toLocaleDateString() === this.endDate.toLocaleDateString()){
+                  this.today = true;
+                }
+                this._firstOpen = false;
                 this.start = UtilitiesService.createPersonalTimeStamp(this.startDate);
                 this.end = UtilitiesService.createPersonalTimeStamp(this.endDate);
                 this.getStationTask();
@@ -191,6 +260,7 @@ export class ListTasksComponent implements OnInit, DoCheck {
     this._filterService.open(this.filter).afterClosed().subscribe(response=>{
       switch (response.code) {
         case 1:
+          this._firstOpen = false;
           this.filter = response.filter;
           this.getStationTask();
           break;
@@ -204,6 +274,7 @@ export class ListTasksComponent implements OnInit, DoCheck {
     this.endDate = new Date();
     this.start = UtilitiesService.createPersonalTimeStamp(this.startDate);
     this.end = UtilitiesService.createPersonalTimeStamp(this.endDate);
+    this._firstOpen = true;
     this.today = true;
     this.getStationTask()
   }
@@ -221,12 +292,13 @@ export class ListTasksComponent implements OnInit, DoCheck {
   }
 
   public getTaskInformation(index: number, id: string, type: number, hwg: boolean): void{
-    this.tasksFilterd[index].expanded = true;
+    this.taskWithDivider[index].expanded = true;
     if(this._indexOldTaskExpanded !== null){
-      this.tasksFilterd[this._indexOldTaskExpanded].expanded = false;
+      this.taskWithDivider[this._indexOldTaskExpanded].expanded = false;
     }
     this._indexOldTaskExpanded = index;
     this._api.getTaskInformation(id, type).subscribe(response=>{
+      console.log(response);
       switch (response.code){
         case 200:
           if(response.items){
@@ -334,7 +406,9 @@ export class ListTasksComponent implements OnInit, DoCheck {
   }
 
   private initFEForm():void{
-    this.taskForm[4] = this._formBuilder.group({})
+    this.taskForm[4] = this._formBuilder.group({
+
+    });
   }
 
   public openProcedures():void{
@@ -359,37 +433,39 @@ export class ListTasksComponent implements OnInit, DoCheck {
         this.patchFEForm(taskEntity);
         break;
     }
+    if(isHWG){
+      this.patchHWGForm(taskEntity.hwgReport);
+    }
   }
 
   private patchOMForm(task:any):void{
     this.reportOM = {
-      activityType: task.activityType,
-      cottonClothes: task.cottonClothes,
-      date: task.date,
-      endTime: task.endTime,
-      faceMask: task.faceMask,
-      fileCS: task.fileCS,
-      folio: task.folio,
-      gloves: task.gloves,
-      goggles: task.goggles,
-      helmet: task.helmet,
-      hwgReport: task.hwgReport,
-      id: task.id,
-      industrialShoes: task.industrialShoes,
-      kneepads: task.kneepads,
-      maintenanceType: task.maintenanceType,
-      managerName: task.managerName,
-      observations: task.observable,
+      activityType: task.activityType || undefined,
+      cottonClothes: task.cottonClothes || false,
+      date: task.date || undefined,
+      endTime: task.endTime || undefined,
+      faceMask: task.faceMask || false,
+      fileCS: task.fileCS || undefined,
+      folio: task.folio || undefined,
+      gloves: task.gloves || false,
+      goggles: task.goggles || false,
+      helmet: task.helmet || false,
+      hwgReport: task.hwgReport || undefined,
+      id: task.id || undefined,
+      industrialShoes: task.industrialShoes || false,
+      kneepads: task.kneepads || false,
+      maintenanceType: task.maintenanceType || undefined,
+      managerName: task.managerName || undefined,
+      observations: task.observable || undefined,
       personnelNames: task.personnelNames || [''],
-      personnelType: task.personnelType,
-      procedures: task.procedures,
-      protectiveGoggles: task.protectiveGoggles,
-      signature: task.signature,
-      startTime: task.startTime,
-      taskId: task.taskId,
-      toolsAndMaterials: task.toolsAndMaterials
+      personnelType: task.personnelType || undefined,
+      procedures: task.procedures || [],
+      protectiveGoggles: task.protectiveGoggles || false,
+      signature: task.signature || undefined,
+      startTime: task.startTime || undefined,
+      taskId: task.taskId || undefined,
+      toolsAndMaterials: task.toolsAndMaterials || undefined
     };
-    console.log(this.reportOM);
     this.taskForm[0].patchValue({
       startTime: this.reportOM.startTime,
       endTime: this.reportOM.endTime,
@@ -414,31 +490,100 @@ export class ListTasksComponent implements OnInit, DoCheck {
   }
 
   private patchCompressorForm(task:any):void{
+     this.reportComp = {
+       brand: task.brand || undefined,
+       controlNumber: task.controlNumber || undefined,
+       date: task.date || undefined,
+       endTime: task.endTime || undefined,
+       fileCS: task.fileCS || undefined,
+       folio: task.folio || undefined,
+       hwgReport: task.hwgReport || undefined,
+       id: task.id || undefined,
+       model: task.model || undefined,
+       modifications: task.modifications || undefined,
+       observations: task.observations || undefined,
+       pressure: task.pressure || undefined,
+       purge: task.purge || undefined,
+       securityValve: task.securityValve || undefined,
+       signature: task.signature || undefined,
+       startTime: task.startTime || undefined,
+       taskId: task.taskId || undefined
+     };
     this.taskForm[1].patchValue({
 
-    })
+    });
+    if(this.user.role!==7){
+      this.taskForm[1].disable();
+    }
   }
 
   private patchHWGForm(task:any):void{
-     this.taskForm[2].patchValue({
+    this.reportHWG = {
+      area: task.area || undefined,
+      corrosive: task.corrosive || false,
+      explosive: task.explosive || false,
+      fileCS: task.fileCS || undefined,
+      flammable: task.flammable || false,
+      quantity: task.quantity || undefined,
+      reactive: task.reactive || false,
+      temporaryStorage: task.temporaryStorage || undefined,
+      toxic: task.toxic || false,
+      unity: task.unity || undefined,
+      waste: task.waste || undefined
+    };
+    this.taskForm[2].patchValue({
 
-     })
+    });
+    if(this.user.role!==7){
+      this.taskForm[2].disable();
+    }
   }
 
   private patchVRSForm(task:any):void{
+     this.reportVRS = {
+       date: task.date || undefined,
+       emergencyStop: task.emergencyStop || undefined,
+       fileCS: task.fileCS || undefined,
+       folio: task.folio || undefined,
+       id: task.id || undefined,
+       observations: task.observations || undefined,
+       signature: task.signature || undefined,
+       taskId: task.taskId || undefined,
+       vrsAlarm: task.vrsAlarm || undefined,
+       vrsDispensary: task.vrsDispensary || undefined,
+       vrsTanks: task.vrsTanks || undefined
+     }
     this.taskForm[3].patchValue({
 
-    })
+    });
   }
 
   private patchScannedForm(task:any):void{
-
+    this.reportScanned = {
+      date: task.date || undefined,
+      fileCS: task.fileCS || undefined,
+      folio: task.folio || undefined,
+      hwgReport: task.hwgReport || undefined,
+      id: task.id || undefined,
+      signature: task.signature || undefined,
+      taskId: task.taskId || undefined
+    };
   }
 
   private patchFEForm(task:any):void{
+     this.reportFE = {
+       date: task.date || undefined,
+       endTime: task.endTime || undefined,
+       fireExtinguishers: task.fireExtinguishers || undefined,
+       folio: task.folio || undefined,
+       id: task.id || undefined,
+       signature: task.signature || undefined,
+       startTime: task.startTime || undefined,
+       taskId: task.taskId || undefined
+     };
     this.taskForm[4].patchValue({
 
-    })
+    });
   }
 
 }
