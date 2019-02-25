@@ -273,7 +273,7 @@ export class ApiService {
     params = params.append('email', data.email || '');
     params = params.append('website', data.website || '');
     const headers = new HttpHeaders().set('Content-Type', 'text/plain; charset=utf-8');
-    return this._http.get('https://inspector-maplander-develop.appspot.com/bc', {
+    return this._http.get('https://inspector-maplander-develop.appspot.com/endpoints/v1/bc', {
       responseType: 'blob' as 'json',
       headers: headers,
       params: params
