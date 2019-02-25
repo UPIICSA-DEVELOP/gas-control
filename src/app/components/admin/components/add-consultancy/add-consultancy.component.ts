@@ -376,13 +376,13 @@ export class AddConsultancyComponent implements OnInit {
 
   public makeBusinessCard(): void{
     const data = {
-      company: this._consultancyInfo.businessName,
-      name: this._ownerInfo.name + ' ' + this._ownerInfo.lastName,
-      workPosition: this._ownerInfo.jobTitle,
-      phone: this._ownerInfo.countryCode + this._ownerInfo.phoneNumber,
-      email: this._ownerInfo.email,
-      website: this._ownerInfo.website,
-      imageUrl: (this.userImage.original)?this.userImage.original.thumbnail + '=s1200':null
+      company: this._consultancyInfo.businessName || ' ',
+      name: this._ownerInfo.name + ' ' + this._ownerInfo.lastName || ' ',
+      workPosition: this._ownerInfo.jobTitle || ' ',
+      phone: this._ownerInfo.countryCode + this._ownerInfo.phoneNumber || ' ',
+      email: this._ownerInfo.email || ' ',
+      website: this._ownerInfo.website || ' ',
+      imageUrl: (this.userImage.original)?this.userImage.original.thumbnail + '=s1200':'Lorem ipsum'
     };
     this._api.businessCardService(data).subscribe((response: Blob) => {
       this.uploadBusinessCard(response);
