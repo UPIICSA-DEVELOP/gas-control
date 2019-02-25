@@ -46,7 +46,7 @@ export class ScreenComponent implements OnInit{
         body: response.notification.body,
       });
       notification.onclick = function () {
-        window.open("http://stackoverflow.com/a/13328397/1269037");
+        window.open(environment.url);
       };
     });
     this._activateRoute.url.subscribe(() => {
@@ -93,7 +93,7 @@ export class ScreenComponent implements OnInit{
                   case 200:
                     this.stationList = response[0].item;
                     this.stationActive = this.stationList;
-                    LocalStorageService.setItem(Constants.StationInDashboard, this.stationActive.businessName);
+                    LocalStorageService.setItem(Constants.StationInDashboard, {id: this.stationActive.id, name: this.stationActive.businessName});
                     if (this.stationActive){
                       if(!this.validateTaskCreated()){
                         this.openTaskCalendar();
@@ -108,10 +108,15 @@ export class ScreenComponent implements OnInit{
                     break;
                 }
               }else{
-                this.stationList = response[0].item.stationLites;
-                this.stationActive = (Array.isArray(this.stationList)?this.stationList[0]:this.stationList);
-                LocalStorageService.setItem(Constants.ConsultancyInSession, response[0].item.consultancy.businessName);
-                LocalStorageService.setItem(Constants.StationInDashboard, this.stationActive.businessName);
+                if(response[0].item.stationLites){
+                  this.stationList = response[0].item.stationLites;
+                  this.stationActive = (Array.isArray(this.stationList)?this.stationList[0]:this.stationList);
+                  LocalStorageService.setItem(Constants.StationInDashboard, {id: this.stationActive.id, name: this.stationActive.businessName});
+                }else{
+                  this.stationList = undefined;
+                  this.stationActive = undefined;
+                }
+                LocalStorageService.setItem(Constants.ConsultancyInSession, {id:response[0].item.consultancy.id, name: response[0].item.consultancy.businessName});
                 if (this.stationActive){
                   if(!this.validateTaskCreated()){
                     this.openTaskCalendar();
@@ -126,7 +131,7 @@ export class ScreenComponent implements OnInit{
               if(onlyOneStationId){
                 this.stationList = response[0].item;
                 this.stationActive = this.stationList;
-                LocalStorageService.setItem(Constants.StationInDashboard, this.stationActive.businessName);
+                LocalStorageService.setItem(Constants.StationInDashboard, {id: this.stationActive.id, name: this.stationActive.businessName});
                 if(!this.validateTaskCreated()){
                   this.openTaskCalendar();
                 }else{
@@ -135,7 +140,7 @@ export class ScreenComponent implements OnInit{
               }else{
                 this.stationList = response[0].item.station;
                 this.stationActive = this.stationList;
-                LocalStorageService.setItem(Constants.StationInDashboard, this.stationActive.businessName);
+                LocalStorageService.setItem(Constants.StationInDashboard, {id: this.stationActive.id, name: this.stationActive.businessName});
                 if(!this.validateTaskCreated()){
                   this.openTaskCalendar();
                 }else{
@@ -177,10 +182,15 @@ export class ScreenComponent implements OnInit{
                   break;
               }
             }else{
-              this.stationList = response[0].item.stationLites;
-              this.stationActive = (Array.isArray(this.stationList)?this.stationList[0]:this.stationList);
+              if(response[0].item.stationLites){
+                this.stationList = response[0].item.stationLites;
+                this.stationActive = (Array.isArray(this.stationList)?this.stationList[0]:this.stationList);
+                LocalStorageService.setItem(Constants.StationInDashboard, {id: this.stationActive.id, name: this.stationActive.businessName});
+              }else{
+                this.stationList = undefined;
+                this.stationActive = undefined;
+              }
               LocalStorageService.setItem(Constants.ConsultancyInSession, {id: response[0].item.consultancy.id, name: response[0].item.consultancy.businessName});
-              LocalStorageService.setItem(Constants.StationInDashboard, {id: this.stationActive.id, name: this.stationActive.businessName});
               if (this.stationActive){
                 if(!this.validateTaskCreated()){
                   this.openTaskCalendar();

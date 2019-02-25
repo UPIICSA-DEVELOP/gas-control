@@ -40,8 +40,8 @@ export class App {
     this.app.use(App.headers);
     this.app.use(App.handlerErrors);
     this.app.use(compression({level: 9}));
-    //this.app.use('/.well-known', express.static(__dirname + '/.well-known'));
-    this.configEndPoints()
+    this.app.use('/.well-known', express.static(__dirname + '/.well-known'));
+    this.configEndPoints();
     this.configRender();
     this.app.use(express.static(App.DIR));
     this.views();
