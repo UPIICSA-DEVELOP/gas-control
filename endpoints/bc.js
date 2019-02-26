@@ -45,7 +45,7 @@
 
       JSDOM.fromFile(path.resolve(__dirname, 'templates', 'bc.html')).then(jsdom => {
         const document = jsdom.window.document;
-        document.getElementById('image').src = dataForBC.profileImageThumbnail;
+        document.getElementById('image').src = dataForBC.urlLogoThumbnail;
         document.getElementById('company').textContent = dataForBC.company;
         document.getElementById('name').textContent = dataForBC.name + ' ' + dataForBC.lastName;
         document.getElementById('workPosition').textContent = dataForBC.workPosition;
