@@ -15,7 +15,7 @@ import {DialogService} from '@app/core/components/dialog/dialog.service';
 import {AuthService} from '@app/core/services/auth/auth.service';
 import {environment} from '@env/environment';
 import {filter} from 'rxjs/internal/operators';
-import {Subscription} from 'rxjs/Rx';
+import {Subscription} from 'rxjs';
 
 @Component({
   selector: 'app-screen',

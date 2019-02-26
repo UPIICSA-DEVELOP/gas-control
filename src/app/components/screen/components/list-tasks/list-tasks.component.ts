@@ -26,15 +26,15 @@ import {TaskFilterNameService} from '@app/components/screen/components/task-filt
 })
 export class ListTasksComponent implements OnInit, DoCheck {
   public station: any;
-  @Input() set stationInfo(stationObj:any){
-    if(stationObj){
+
+  @Input() set stationInfo(stationObj: any) {
+    if (stationObj) {
       this.station = stationObj;
       this.getStationTask();
     }
   }
+
   @Input() public taskTemplate: any;
-  @ViewChild('searchBox') private _searchBox: ElementRef;
-  @ViewChild('listTask') private _listTask: ElementRef;
   public startDate: Date;
   public endDate: Date;
   public filters: any;
@@ -54,6 +54,7 @@ export class ListTasksComponent implements OnInit, DoCheck {
   public notCalendar: boolean;
   public taskForm: FormGroup[];
   public taskWithDivider: any[];
+  public date: any[];
   /**
    *  Start: task entity
    */
@@ -70,21 +71,22 @@ export class ListTasksComponent implements OnInit, DoCheck {
   public procedures: number[];
   private _indexOldTaskExpanded: number;
   private _firstOpen: boolean;
-   constructor(
-    @Inject(DOCUMENT) private _document: Document,
-    private _dateService: DatepickerService,
-    private _filterService: TaskFilterService,
-    private _api: ApiService,
-    private _apiLoader: ApiLoaderService,
-    private _addStationService: AddStationService,
-    private _formBuilder: FormBuilder,
-    private _modalProceduresService: ModalProceduresService,
-    private _taskFilterNameService: TaskFilterNameService
-  ) {
+  private _taskType: string;
+
+  constructor(@Inject(DOCUMENT) private _document: Document,
+              private _dateService: DatepickerService,
+              private _filterService: TaskFilterService,
+              private _api: ApiService,
+              private _apiLoader: ApiLoaderService,
+              private _addStationService: AddStationService,
+              private _formBuilder: FormBuilder,
+              private _modalProceduresService: ModalProceduresService,
+              private _taskFilterNameService: TaskFilterNameService) {
+    this.date = [];
     this.personnelNames = [''];
     this.taskWithDivider = [];
     this._indexOldTaskExpanded = 0;
-    this.taskForm = [undefined,undefined,undefined,undefined,undefined];
+    this.taskForm = [undefined, undefined, undefined, undefined, undefined];
     this.today = false;
     this.notCalendar = false;
     this.filter = 0;
@@ -95,12 +97,15 @@ export class ListTasksComponent implements OnInit, DoCheck {
     this.zones = Constants.Zones;
     this.typeFilter = Constants.Filters;
     this._firstOpen = true;
+    this._taskType = '0';
   }
 
   ngOnInit() {
     this.initForms();
     this.user = LocalStorageService.getItem(Constants.UserInSession);
-    this._apiLoader.getProgress().subscribe(load=>{this.load=load});
+    this._apiLoader.getProgress().subscribe(load => {
+      this.load = load;
+    });
     if (this.startDate.toLocaleDateString() === this.endDate.toLocaleDateString()) {
       this.today = true;
     }
@@ -108,44 +113,45 @@ export class ListTasksComponent implements OnInit, DoCheck {
     this.end = UtilitiesService.createPersonalTimeStamp(this.endDate);
   }
 
-  ngDoCheck():void{
-      this.notCalendar = LocalStorageService.getItem(Constants.NotCalendarTask);
+  ngDoCheck(): void {
+    this.notCalendar = LocalStorageService.getItem(Constants.NotCalendarTask);
   }
 
-  public test(ev: string, type: string):void{
+  public test(ev: string, type: string): void {
     this.taskForm[0].patchValue({
       [type]: ev
     });
   }
 
-  private getStationTask():void{
+  private getStationTask(): void {
     this.filters = {
       stationTaskId: this.station.stationTaskId || '0',
       startDate: (this.start.timeStamp).toString(),
       status: (this.filter).toString(),
       endDate: (this.end.timeStamp).toString(),
-      firstOpen: this._firstOpen
+      firstOpen: this._firstOpen,
+      type: this._taskType || '0'
     };
-    this._api.listTaskDateStatus(this.filters).subscribe(response=>{
-      switch (response.code){
+    this._api.listTask(this.filters).subscribe(response => {
+      switch (response.code) {
         case 200:
           this.tasks = response.items;
-          if(response.items){
+          if (response.items) {
             this.tasksCompare();
           }
           break;
         default:
-          this.tasks=[];
+          this.tasks = [];
           break;
       }
     });
   }
 
-  private tasksCompare():void{
+  private tasksCompare(): void {
     this.tasksFilterd = [];
     this.tasks.forEach(task => {
       this.taskTemplate.taskTemplates.forEach(template => {
-        if(task.type === Number(template.id)){
+        if (task.type === Number(template.id)) {
           this.tasksFilterd.push({
             id: task.id,
             type: task.type,
@@ -164,84 +170,84 @@ export class ListTasksComponent implements OnInit, DoCheck {
     this.sortTaskArrayByStatus();
   }
 
-  public sortTaskArrayByStatus():void{
-     this.taskWithDivider = [];
-     let headerPrevious = false, headerHistory = false;
-     this.tasksFilterd = UtilitiesService.sortJSON(this.tasksFilterd, 'status', 'asc');
-     this.taskWithDivider.push({
-       type: 1,
-       title: 'Hoy',
-       original: null,
-       id: '',
-       expanded: false,
-     });
-     this.tasksFilterd.forEach(item=>{
-       if(item.status === 1){
-         this.taskWithDivider.push({
-           type: 2,
-           title: '',
-           original: item,
-           id: item.id,
-           expanded: false,
-         });
-       }else if(item.status === 2){
-         if(!headerPrevious){
-           this.taskWithDivider.push({
-             type: 1,
-             title: 'Atrasadas',
-             original: null,
-             id: '',
-             expanded: false,
-           });
-           headerPrevious = true;
-         }else{
-           this.taskWithDivider.push({
-             type: 2,
-             title: '',
-             original: item,
-             id: item.id,
-             expanded: false,
-           })
-         }
-       }else if(item.status === 3 || item.status ===4){
-         if(!headerHistory){
-           this.taskWithDivider.push({
-             type: 1,
-             title: 'Historial',
-             original: null,
-             id: '',
-             expanded: false,
-           });
-           headerHistory = true;
-         }else{
-           this.taskWithDivider.push({
-             type: 2,
-             title: '',
-             original: item,
-             id: item.id,
-             expanded: false,
-           });
-         }
-       }
-     });
+  public sortTaskArrayByStatus(): void {
+    this.taskWithDivider = [];
+    let headerPrevious = false, headerHistory = false;
+    this.tasksFilterd = UtilitiesService.sortJSON(this.tasksFilterd, 'status', 'asc');
+    this.taskWithDivider.push({
+      type: 1,
+      title: 'Hoy',
+      original: null,
+      id: '',
+      expanded: false,
+    });
+    this.tasksFilterd.forEach(item => {
+      if (item.status === 1) {
+        this.taskWithDivider.push({
+          type: 2,
+          title: '',
+          original: item,
+          id: item.id,
+          expanded: false,
+        });
+      } else if (item.status === 2) {
+        if (!headerPrevious) {
+          this.taskWithDivider.push({
+            type: 1,
+            title: 'Atrasadas',
+            original: null,
+            id: '',
+            expanded: false,
+          });
+          headerPrevious = true;
+        } else {
+          this.taskWithDivider.push({
+            type: 2,
+            title: '',
+            original: item,
+            id: item.id,
+            expanded: false,
+          });
+        }
+      } else if (item.status === 3 || item.status === 4) {
+        if (!headerHistory) {
+          this.taskWithDivider.push({
+            type: 1,
+            title: 'Historial',
+            original: null,
+            id: '',
+            expanded: false,
+          });
+          headerHistory = true;
+        } else {
+          this.taskWithDivider.push({
+            type: 2,
+            title: '',
+            original: item,
+            id: item.id,
+            expanded: false,
+          });
+        }
+      }
+    });
   }
 
-  public dateFilter():void{
-    this._api.getStationTask(this.station.stationTaskId).subscribe(response=>{
-      switch (response.code){
+  public dateFilter(): void {
+    this._api.getStationTask(this.station.stationTaskId).subscribe(response => {
+      switch (response.code) {
         case 200:
           this.creationDate = response.item.creationDate;
           const config: DateRangeOptions = {
-            minDate: new Date((this.creationDate).toString().slice(0,4)+'-'+(this.creationDate).toString().slice(4,6)+'-'+(this.creationDate).toString().slice(6,8)),
-            maxDate: new Date(((Number((this.creationDate).toString().slice(0,4)))+1).toString()+'-'+(this.creationDate).toString().slice(4,6)+'-'+(this.creationDate).toString().slice(6,8))
+            minDate: new Date((this.creationDate).toString().slice(0, 4) + '-' + (this.creationDate).toString().slice(4, 6) + '-' + (this.creationDate).toString().slice(6, 8)),
+            maxDate: new Date(((Number((this.creationDate).toString().slice(0, 4))) + 1).toString() + '-' + (this.creationDate).toString().slice(4, 6) + '-' + (this.creationDate).toString().slice(6, 8))
           };
-          this._dateService.open(config).afterClosed().subscribe(response=>{
+          this._dateService.open(config).afterClosed().subscribe(response => {
             switch (response.code) {
               case 1:
                 this.today = response.startDate == response.endDate;
                 this.startDate = response.startDate;
                 this.endDate = response.endDate;
-                if(this.startDate.toLocaleDateString() === this.endDate.toLocaleDateString()){
+                if (this.startDate.toLocaleDateString() === this.endDate.toLocaleDateString()) {
                   this.today = true;
                 }
                 this._firstOpen = false;
@@ -256,8 +262,8 @@ export class ListTasksComponent implements OnInit, DoCheck {
     });
   }
 
-  public taskFilter():void{
-    this._filterService.open(this.filter).afterClosed().subscribe(response=>{
+  public taskFilter(): void {
+    this._filterService.open(this.filter).afterClosed().subscribe(response => {
       switch (response.code) {
         case 1:
           this._firstOpen = false;
@@ -265,25 +271,35 @@ export class ListTasksComponent implements OnInit, DoCheck {
           this.getStationTask();
           break;
       }
-    })
+    });
   }
 
-  public resetFilters():void{
-    this.filter=0;
+  public resetFilters(): void {
+    this.filter = 0;
     this.startDate = new Date();
     this.endDate = new Date();
     this.start = UtilitiesService.createPersonalTimeStamp(this.startDate);
     this.end = UtilitiesService.createPersonalTimeStamp(this.endDate);
     this._firstOpen = true;
     this.today = true;
-    this.getStationTask()
+    this.getStationTask();
   }
 
-  public search(): void{
-    this._taskFilterNameService.open(this.taskTemplate.taskTemplates);
+  public search(): void {
+    this._taskFilterNameService.open(this.taskTemplate.taskTemplates).afterClosed().subscribe(response => {
+      console.log(response);
+      switch (response.code) {
+        case 1:
+          this._taskType = response.data.toString();
+          this.getStationTask();
+          break;
+        default:
+          break;
+      }
+    });
   }
 
-  public createStationTasks():void{
+  public createStationTasks(): void {
     this._addStationService.open({
       stepActive: 3,
       stationId: this.station.id,
@@ -291,132 +307,133 @@ export class ListTasksComponent implements OnInit, DoCheck {
     });
   }
 
-  public getTaskInformation(index: number, id: string, type: number, hwg: boolean): void{
+  public getTaskInformation(index: number, id: string, type: number, hwg: boolean): void {
     this.taskWithDivider[index].expanded = true;
-    if(this._indexOldTaskExpanded !== null){
+    if (this._indexOldTaskExpanded !== null) {
       this.taskWithDivider[this._indexOldTaskExpanded].expanded = false;
     }
     this._indexOldTaskExpanded = index;
-    this._api.getTaskInformation(id, type).subscribe(response=>{
+    this._api.getTaskInformation(id, type).subscribe(response => {
       console.log(response);
-      switch (response.code){
+      switch (response.code) {
         case 200:
-          if(response.items){
-            this.patchForms(type,response.items[0],hwg);
-          }else{
+          if (response.items) {
+            const items = UtilitiesService.sortJSON(response.items, 'folio', 'desc');
+            this.patchForms(type, items[0], hwg);
+          } else {
             this.resetElements();
           }
           break;
       }
-    })
+    });
   }
 
-  private initForms():void{
+  private initForms(): void {
     this.initOMForm();
     this.initCompressorForm();
     this.initHWGForm();
     this.initVRSForm();
   }
 
-  private resetElements():void{
-     this.reportOM = null;
-     this.reportComp = null;
-     this.reportHWG = null;
-     this.reportVRS = null;
-     this.reportScanned = null;
-     this.reportFE = null;
-     this.taskForm[0].reset();
-     this.taskForm[1].reset();
-     this.taskForm[2].reset();
-     this.taskForm[3].reset();
-     if(this.user.role !== 7){
-       this.taskForm[0].disable();
-       this.taskForm[1].disable();
-       this.taskForm[2].disable();
-       this.taskForm[3].disable();
-       //this.taskForm[4].disable();
-     }
-     // this.taskForm[4].reset();
+  private resetElements(): void {
+    this.reportOM = null;
+    this.reportComp = null;
+    this.reportHWG = null;
+    this.reportVRS = null;
+    this.reportScanned = null;
+    this.reportFE = null;
+    this.taskForm[0].reset();
+    this.taskForm[1].reset();
+    this.taskForm[2].reset();
+    this.taskForm[3].reset();
+    if (this.user.role !== 7) {
+      this.taskForm[0].disable();
+      this.taskForm[1].disable();
+      this.taskForm[2].disable();
+      this.taskForm[3].disable();
+      //this.taskForm[4].disable();
+    }
+    // this.taskForm[4].reset();
   }
 
-  private initOMForm():void{
+  private initOMForm(): void {
     this.taskForm[0] = this._formBuilder.group({
-      startTime:['',[Validators.required]],
-      endTime:['',[Validators.required]],
-      maintenanceType:['',[Validators.required]],
-      activityType:['',[Validators.required]],
-      personnelType:['',[Validators.required]],
-      cottonClothes:[false, []],
-      faceMask:[false, []],
-      gloves:[false, []],
-      kneepads:[false, []],
-      protectiveGoggles:[false, []],
-      industrialShoes:[false, []],
-      goggles:[false, []],
-      helmet:[false, []],
-      toolsAndMaterials: ['',[]],
-      managerName:['',[]],
-      observations:['',[]]
-    })
+      startTime: ['', [Validators.required]],
+      endTime: ['', [Validators.required]],
+      maintenanceType: ['', [Validators.required]],
+      activityType: ['', [Validators.required]],
+      personnelType: ['', [Validators.required]],
+      cottonClothes: [false, []],
+      faceMask: [false, []],
+      gloves: [false, []],
+      kneepads: [false, []],
+      protectiveGoggles: [false, []],
+      industrialShoes: [false, []],
+      goggles: [false, []],
+      helmet: [false, []],
+      toolsAndMaterials: ['', []],
+      managerName: ['', []],
+      observations: ['', []]
+    });
   }
 
-  private initCompressorForm():void{
+  private initCompressorForm(): void {
     this.taskForm[1] = this._formBuilder.group({
-      startTime:['',[Validators.required]],
-      endTime:['',[Validators.required]],
-      brand: ['',[]],
-      model:['',[]],
-      controlNumber:['',[]],
-      pressure:['',[Validators.required]],
-      purge:['',[Validators.required]],
-      securityValve:['',[Validators.required]],
-      modifications:['',[]],
-      observations:['',[]]
-    })
+      startTime: ['', [Validators.required]],
+      endTime: ['', [Validators.required]],
+      brand: ['', []],
+      model: ['', []],
+      controlNumber: ['', []],
+      pressure: ['', [Validators.required]],
+      purge: ['', [Validators.required]],
+      securityValve: ['', [Validators.required]],
+      modifications: ['', []],
+      observations: ['', []]
+    });
   }
 
-  private initHWGForm():void{
-     this.taskForm[2] = this._formBuilder.group({
-       area:['',[Validators.required]],
-       waste:['',[Validators.required]],
-       corrosive:['',[]],
-       reactive:['',[]],
-       explosive:['',[]],
-       toxic:['',[]],
-       flammable:['',[]],
-       quantity:['',[Validators.required]],
-       unity:['',[Validators.required]],
-       temporaryStorage:['',[Validators.required]]
-     });
+  private initHWGForm(): void {
+    this.taskForm[2] = this._formBuilder.group({
+      area: ['', [Validators.required]],
+      waste: ['', [Validators.required]],
+      corrosive: ['', []],
+      reactive: ['', []],
+      explosive: ['', []],
+      toxic: ['', []],
+      flammable: ['', []],
+      quantity: ['', [Validators.required]],
+      unity: ['', [Validators.required]],
+      temporaryStorage: ['', [Validators.required]]
+    });
   }
 
-  private initVRSForm():void{
+  private initVRSForm(): void {
     this.taskForm[3] = this._formBuilder.group({
-      magna:[false,[]],
-      premium:[false,[]],
-      fuelNozzle:['',[]],
-      longHose:['',[]],
-      breakAway:['',[]],
-      shortHose:['',[]],
-      equipment:['',[]],
-      vrsAlarm:['',[]],
-      emergencyStop:['',[]],
-      observations:['',[]]
-    })
+      magna: [false, []],
+      premium: [false, []],
+      fuelNozzle: ['', []],
+      longHose: ['', []],
+      breakAway: ['', []],
+      shortHose: ['', []],
+      equipment: ['', []],
+      vrsAlarm: ['', []],
+      emergencyStop: ['', []],
+      observations: ['', []]
+    });
   }
 
-  private initFEForm():void{
+  private initFEForm(): void {
     this.taskForm[4] = this._formBuilder.group({
 
     });
   }
 
-  public openProcedures():void{
-    this._modalProceduresService.open(this.taskTemplate.procedures)
+  public openProcedures(): void {
+    this._modalProceduresService.open(this.taskTemplate.procedures);
   }
 
-  private patchForms(type: number, taskEntity: any, isHWG: boolean){
-    switch (type){
+  private patchForms(type: number, taskEntity: any, isHWG: boolean) {
+    switch (type) {
       case 1:
         this.patchOMForm(taskEntity);
         break;
@@ -433,12 +450,12 @@ export class ListTasksComponent implements OnInit, DoCheck {
         this.patchFEForm(taskEntity);
         break;
     }
-    if(isHWG){
+    if (isHWG) {
       this.patchHWGForm(taskEntity.hwgReport);
     }
   }
 
-  private patchOMForm(task:any):void{
+  private patchOMForm(task: any): void {
     this.reportOM = {
       activityType: task.activityType || undefined,
       cottonClothes: task.cottonClothes || false,
@@ -456,6 +473,7 @@ export class ListTasksComponent implements OnInit, DoCheck {
       kneepads: task.kneepads || false,
       maintenanceType: task.maintenanceType || undefined,
       managerName: task.managerName || undefined,
+      name: task.name || undefined,
       observations: task.observable || undefined,
       personnelNames: task.personnelNames || [''],
       personnelType: task.personnelType || undefined,
@@ -484,40 +502,52 @@ export class ListTasksComponent implements OnInit, DoCheck {
       managerName: this.reportOM.managerName,
       observations: this.reportOM.observations
     });
-    if(this.user.role!==7){
+    this.date = UtilitiesService.convertDate(this.reportOM.date);
+    if (this.user.role !== 7) {
       this.taskForm[0].disable();
     }
   }
 
-  private patchCompressorForm(task:any):void{
-     this.reportComp = {
-       brand: task.brand || undefined,
-       controlNumber: task.controlNumber || undefined,
-       date: task.date || undefined,
-       endTime: task.endTime || undefined,
-       fileCS: task.fileCS || undefined,
-       folio: task.folio || undefined,
-       hwgReport: task.hwgReport || undefined,
-       id: task.id || undefined,
-       model: task.model || undefined,
-       modifications: task.modifications || undefined,
-       observations: task.observations || undefined,
-       pressure: task.pressure || undefined,
-       purge: task.purge || undefined,
-       securityValve: task.securityValve || undefined,
-       signature: task.signature || undefined,
-       startTime: task.startTime || undefined,
-       taskId: task.taskId || undefined
-     };
+  private patchCompressorForm(task: any): void {
+    this.reportComp = {
+      brand: task.brand || undefined,
+      controlNumber: task.controlNumber || undefined,
+      date: task.date || undefined,
+      endTime: task.endTime || undefined,
+      fileCS: task.fileCS || undefined,
+      folio: task.folio || undefined,
+      hwgReport: task.hwgReport || undefined,
+      id: task.id || undefined,
+      model: task.model || undefined,
+      modifications: task.modifications || undefined,
+      name: task.name || undefined,
+      observations: task.observations || undefined,
+      pressure: task.pressure || undefined,
+      purge: task.purge || undefined,
+      securityValve: task.securityValve || undefined,
+      signature: task.signature || undefined,
+      startTime: task.startTime || undefined,
+      taskId: task.taskId || undefined
+    };
+    this.date = UtilitiesService.convertDate(this.reportComp.date);
     this.taskForm[1].patchValue({
-
+      startTime: this.reportComp.startTime,
+      endTime: this.reportComp.endTime,
+      brand: this.reportComp.brand,
+      model: this.reportComp.model,
+      controlNumber: this.reportComp.controlNumber,
+      pressure: this.reportComp.pressure,
+      purge: this.reportComp.purge,
+      securityValve: this.reportComp.securityValve,
+      modifications: this.reportComp.modifications,
+      observations: this.reportComp.observations
     });
-    if(this.user.role!==7){
+    if (this.user.role !== 7) {
       this.taskForm[1].disable();
     }
   }
 
-  private patchHWGForm(task:any):void{
+  private patchHWGForm(task: any): void {
     this.reportHWG = {
       area: task.area || undefined,
       corrosive: task.corrosive || false,
@@ -532,58 +562,89 @@ export class ListTasksComponent implements OnInit, DoCheck {
       waste: task.waste || undefined
     };
     this.taskForm[2].patchValue({
-
+      area: this.reportHWG.area,
+      waste: this.reportHWG.waste,
+      corrosive: this.reportHWG.corrosive,
+      reactive: this.reportHWG.reactive,
+      explosive: this.reportHWG.explosive,
+      toxic: this.reportHWG.toxic,
+      flammable: this.reportHWG.flammable,
+      quantity: this.reportHWG.quantity,
+      unity: this.reportHWG.unity,
+      temporaryStorage: this.reportHWG.temporaryStorage
     });
-    if(this.user.role!==7){
+    if (this.user.role !== 7) {
       this.taskForm[2].disable();
     }
   }
 
-  private patchVRSForm(task:any):void{
-     this.reportVRS = {
-       date: task.date || undefined,
-       emergencyStop: task.emergencyStop || undefined,
-       fileCS: task.fileCS || undefined,
-       folio: task.folio || undefined,
-       id: task.id || undefined,
-       observations: task.observations || undefined,
-       signature: task.signature || undefined,
-       taskId: task.taskId || undefined,
-       vrsAlarm: task.vrsAlarm || undefined,
-       vrsDispensary: task.vrsDispensary || undefined,
-       vrsTanks: task.vrsTanks || undefined
-     }
+  private patchVRSForm(task: any): void {
+    this.reportVRS = {
+      date: task.date || undefined,
+      emergencyStop: task.emergencyStop || undefined,
+      fileCS: task.fileCS || undefined,
+      folio: task.folio || undefined,
+      id: task.id || undefined,
+      name: task.name || undefined,
+      observations: task.observations || undefined,
+      signature: task.signature || undefined,
+      taskId: task.taskId || undefined,
+      vrsAlarm: task.vrsAlarm || undefined,
+      vrsDispensary: task.vrsDispensary || undefined,
+      vrsTanks: task.vrsTanks || [{
+        capAndFillingAdapter: undefined,
+        capAndSteamAdapter: undefined,
+        fuelType: undefined,
+        overfillValve: undefined,
+        vacuumPressureValve: undefined
+      }]
+    };
+    this.date = UtilitiesService.convertDate(this.reportVRS.date);
     this.taskForm[3].patchValue({
-
+      magna: this.reportVRS.vrsDispensary.magna,
+      premium: this.reportVRS.vrsDispensary.premium,
+      fuelNozzle: this.reportVRS.vrsDispensary.fuelNozzle,
+      longHose: this.reportVRS.vrsDispensary.longHose,
+      breakAway: this.reportVRS.vrsDispensary.breakAway,
+      shortHose: this.reportVRS.vrsDispensary.shortHose,
+      equipment: this.reportVRS.vrsDispensary.equipment,
+      vrsAlarm: this.reportVRS.vrsAlarm,
+      emergencyStop: this.reportVRS.emergencyStop,
+      observations: this.reportVRS.observations
     });
+    if (this.user.role !== 7) {
+      this.taskForm[3].disable();
+    }
   }
 
-  private patchScannedForm(task:any):void{
+  private patchScannedForm(task: any): void {
     this.reportScanned = {
       date: task.date || undefined,
       fileCS: task.fileCS || undefined,
       folio: task.folio || undefined,
       hwgReport: task.hwgReport || undefined,
       id: task.id || undefined,
+      name: task.name || undefined,
       signature: task.signature || undefined,
       taskId: task.taskId || undefined
     };
+    this.date = UtilitiesService.convertDate(this.reportScanned.date);
   }
 
-  private patchFEForm(task:any):void{
-     this.reportFE = {
-       date: task.date || undefined,
-       endTime: task.endTime || undefined,
-       fireExtinguishers: task.fireExtinguishers || undefined,
-       folio: task.folio || undefined,
-       id: task.id || undefined,
-       signature: task.signature || undefined,
-       startTime: task.startTime || undefined,
-       taskId: task.taskId || undefined
-     };
-    this.taskForm[4].patchValue({
-
-    });
+  private patchFEForm(task: any): void {
+    this.reportFE = {
+      date: task.date || undefined,
+      endTime: task.endTime || undefined,
+      fireExtinguishers: task.fireExtinguishers || undefined,
+      folio: task.folio || undefined,
+      id: task.id || undefined,
+      name: task.name || undefined,
+      signature: task.signature || undefined,
+      startTime: task.startTime || undefined,
+      taskId: task.taskId || undefined
+    };
+    this.date = UtilitiesService.convertDate(this.reportFE.date);
+    this.taskForm[4].patchValue({});
   }
 
 }

@@ -132,6 +132,7 @@ export interface OMReport {
   kneepads: boolean;
   maintenanceType: string;
   managerName?: string;
+  name: string;
   observations?: string
   personnelNames: string[];
   personnelType: string;
@@ -154,6 +155,7 @@ export interface CompressorReport {
   id: number;
   model?: string;
   modifications?: string;
+  name: string;
   observations?: string;
   pressure: number;
   purge: string;
@@ -183,6 +185,7 @@ export interface VRSReport {
   fileCS?: any;
   folio: number;
   id: number;
+  name : string;
   observations?: string;
   signature: any;
   taskId: number
@@ -198,19 +201,19 @@ export interface VRSReport {
 
 export interface VRSDispensary {
   breakAway: string;
-  diesel: boolean;
+  diesel?: boolean;
   equipment: string;
   fuelNozzle: string;
   longHose: string;
-  magna: boolean;
-  premium: boolean;
+  magna?: boolean;
+  premium?: boolean;
   shortHose: string;
 }
 
 export interface VRSTank {
   capAndFillingAdapter: string;
   capAndSteamAdapter: string;
-  fuelType: string;
+  fuelType: number;
   overfillValve: string;
   vacuumPressureValve: string;
 }
@@ -225,6 +228,7 @@ export interface ScannedReport {
   folio: number;
   hwgReport?: HWGReport;
   id: number;
+  name: string;
   signature: any;
   taskId: number;
 }
@@ -237,6 +241,7 @@ export interface HWCReport {
   id: number;
   manifest?: any;
   manifestNumber?: string;
+  name: string;
   nextPhase?: string;
   quantity: number;
   signature: any;
@@ -254,6 +259,7 @@ export interface FRReport {
   id: number;
   magna: boolean;
   managerName: string;
+  name: string;
   premium: boolean;
   receiveName: string;
   remission: number;
@@ -270,6 +276,7 @@ export interface FEReport {
   fireExtinguishers: FireExtinguisher[];
   folio: number;
   id: number;
+  name: string;
   signature: any;
   startTime: number;
   taskId: number;
@@ -302,6 +309,7 @@ export interface IncidenceReport {
   fileCS: any;
   folio: number;
   id: number
+  name: string;
   procedures: number[];
   signature: any;
   taskId: number;

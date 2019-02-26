@@ -257,6 +257,20 @@ export class ApiService {
     return this._http.get(ApiService.API_URL_COMPLETE + 'listTaskDateStatus', {params: params});
   }
 
+  public listTask(filters: any): Observable<any>{
+    let params = new HttpParams();
+    params = params.append('stationTaskId', filters.stationTaskId);
+    if(!filters.firstOpen){
+      params = params.append('fromDate', filters.startDate);
+      params = params.append('status', filters.status);
+      params = params.append('untilDate', filters.endDate);
+    }
+    if(filters.type!== '0'){
+      params = params.append('type', filters.type);
+    }
+    return this._http.get(ApiService.API_URL_COMPLETE + 'listTask', {params: params});
+  }
+
   public getStationTask(stationTaskId: string):Observable<any>{
     let params = new HttpParams();
     params = params.append('id', stationTaskId);

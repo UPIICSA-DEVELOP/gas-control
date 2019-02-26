@@ -55,7 +55,7 @@
                     <mat-accordion class="containerTask">
                       <mat-expansion-panel [expanded]="task.expanded"  (afterExpand)="getTaskInformation(i,task.original.id, task.original.typeReport, task.original.hwg)">
                         <mat-expansion-panel-header [collapsedHeight]="'88px'" [expandedHeight]="'88px'">
-                          <mat-panel-title>
+                          <mat-panel-title style="position: relative">
                             <div class="date">
                               <div>
                                 <div class="text-bold">{{task.original.date[0]}}</div>
@@ -67,6 +67,14 @@
                               <div class="text">{{zones[task.original.zone-1]}}</div>
                               <div class="text">{{priority[task.original.level-1]}}</div>
                             </div>
+                            <div style="position: absolute; top: 0; right: 0;">
+                              <mat-icon style="color: #257602" *ngIf="task.original.status === 4">
+                                check
+                              </mat-icon>
+                              <mat-icon style="color: #E00000" *ngIf="task.original.status === 3 || task.original.status === 2">
+                                close
+                              </mat-icon>
+                            </div>
                           </mat-panel-title>
                         </mat-expansion-panel-header>
                         <div class="divider"></div>
@@ -75,7 +83,7 @@
                             <div class="task-header">
                               <div class="head-bold">Operación de la Estación de Servicio</div>
                               <div class="control-data">
-                                <div>Fecha: {{task.original.date[0]}} {{task.original.date[1]}} {{task.original.date[2]}}&nbsp;&nbsp;</div>
+                                <div *ngIf="reportOM">Fecha: {{date[0]}} {{date[1]}} {{date[2]}}&nbsp;&nbsp;</div>
                                 <div *ngIf="reportOM">Folio: {{reportOM.folio}}</div>
                               </div>
                             </div>
@@ -114,7 +122,7 @@
                                     <mat-option value="Auditoria externa e interna">Auditoria externa e interna</mat-option>
                                     <mat-option value="Hidrosanitario">Hidrosanitario</mat-option>
                                     <mat-option value="Limpieza">Limpieza</mat-option>
-                                    <mat-option value="Mantenimiento de la E.S.">Mantenimiento de la E.S.</mat-option>
+                                    <mat-option value="Mantenimiento de la Estación">Mantenimiento de la Estación</mat-option>
                                     <mat-option value="Mécanico">Mécanico</mat-option>
                                     <mat-option value="Visita de autoridad">Visita de autoridad</mat-option>
                                     <mat-option value="Eléctrico">Eléctrico</mat-option>
@@ -196,7 +204,23 @@
                                 <div class="text-divider">
                                   Procedimientos utilizados
                                 </div>
-                                <div class="text" style="font-size: 12px !important;">
+                                <div class="inputs" *ngIf="reportOM && reportOM.procedures">
+                                  <div *ngFor="let procedure of reportOM.procedures; let i = index;">
+                                    <div class="procedure" *ngIf="procedure === 1">1.- {{taskTemplate.procedures[procedure-1].name}}</div>
+                                    <div class="procedure" *ngIf="procedure === 2">2.- {{taskTemplate.procedures[procedure-1].name}}</div>
+                                    <div class="procedure" *ngIf="procedure === 3">3.- {{taskTemplate.procedures[procedure-1].name}}</div>
+                                    <div class="procedure" *ngIf="procedure === 4">4.- {{taskTemplate.procedures[procedure-1].name}}</div>
+                                    <div class="procedure" *ngIf="procedure === 5">5.- {{taskTemplate.procedures[procedure-1].name}}</div>
+                                    <div class="procedure" *ngIf="procedure === 6">6.- {{taskTemplate.procedures[procedure-1].name}}</div>
+                                    <div class="procedure" *ngIf="procedure === 7">7.- {{taskTemplate.procedures[procedure-1].name}}</div>
+                                    <div class="procedure" *ngIf="procedure === 8">8.- {{taskTemplate.procedures[procedure-1].name}}</div>
+                                    <div class="procedure" *ngIf="procedure === 9">9.- {{taskTemplate.procedures[procedure-1].name}}</div>
+                                    <div class="procedure" *ngIf="procedure === 10">10.- {{taskTemplate.procedures[procedure-1].name}}</div>
+                                    <div class="procedure" *ngIf="procedure === 11">11.- {{taskTemplate.procedures[procedure-1].name}}</div>
+                                    <div class="procedure" *ngIf="procedure === 12">12.- {{taskTemplate.procedures[procedure-1].name}}</div>
+                                  </div>
+                                </div>
+                                <div class="text" style="font-size: 12px !important; margin-top: 4px;">
                                   Si la actividad requiere de autorización del gerente, anote el nombre a continuación
                                 </div>
                                 <mat-form-field class="inputs">
@@ -209,20 +233,22 @@
                                   Captura fotográfica de evidencia.
                                 </div>
                                 <div class="image-container">
-                                  <mat-icon class="default-image">
+                                  <mat-icon *ngIf="!reportOM || !reportOM.fileCS" class="default-image">
                                     image
                                   </mat-icon>
+                                  <img class="evidence" *ngIf="reportOM && reportOM.fileCS" [src]="reportOM.fileCS.thumbnail" alt="Evidence capture">
                                 </div>
                                 <div class="text-sign">
                                   Nombre y firma del responsable
                                 </div>
                                 <div class="inputs">
                                   <div class="signature-element">
-                                    <img *ngIf="reportOM" [src]="reportOM.signature.thumbnail">
-                                    <div *ngIf="!reportOM" style="width: 60%; height: 60px"></div>
+                                    <img *ngIf="reportOM && reportOM.signature" [src]="reportOM.signature.thumbnail">
+                                    <div *ngIf="!reportOM || !reportOM.signature" style="width: 60%; height: 60px"></div>
                                   </div>
                                   <div class="divider"></div>
-                                  <div class="name">Nombre</div>
+                                  <div *ngIf="!reportOM || !reportOM.name" class="name">Nombre</div>
+                                  <div *ngIf="reportOM && reportOM.name" class="name">{{reportOM.name}}</div>
                                 </div>
                                 <div class="finish" *ngIf="user.role === 7">
                                   <button mat-flat-button [color]="'primary'">FINALZAR</button>
@@ -245,7 +271,7 @@
                                 </mat-form-field>
                                 <mat-form-field class="inputs">
                                   <mat-select formControlName="waste" placeholder="Residuo generado" required>
-                                    <mat-option value="Envases contaminados con aceite">Envases contaminados con aceite
+                                    <mat-option value="Envases contaminados con aceites">Envases contaminados con aceites
                                     </mat-option>
                                     <mat-option value="Natas y grasas de la trampa de combustible">Natas y grasas de la trampa
                                       de combustible
@@ -312,9 +338,10 @@
                                   Captura fotográfica de evidencia.
                                 </div>
                                 <div class="image-container">
-                                  <mat-icon class="default-image">
+                                  <mat-icon *ngIf="!reportHWG || !reportHWG.fileCS" class="default-image">
                                     image
                                   </mat-icon>
+                                  <img *ngIf="reportHWG && reportHWG.fileCS" class="evidence" [src]="reportHWG.fileCS.thumbnail" alt="Evidence capture">
                                 </div>
                               </div>
                             </form>
@@ -323,7 +350,7 @@
                             <div class="task-header">
                               <div class="head-bold">Compresor de aire</div>
                               <div class="control-data">
-                                <div>Fecha: {{task.original.date[0]}} {{task.original.date[1]}} {{task.original.date[2]}}</div>
+                                <div *ngIf="reportComp">Fecha: {{date[0]}} {{date[1]}} {{date[2]}}</div>
                                 <div *ngIf="reportComp">Folio: {{reportComp.folio}}</div>
                               </div>
                             </div>
@@ -388,20 +415,22 @@
                                   Captura fotográfica de evidencia
                                 </div>
                                 <div class="image-container">
-                                  <mat-icon class="default-image">
+                                  <mat-icon *ngIf="!reportComp || !reportComp.fileCS" class="default-image">
                                     image
                                   </mat-icon>
+                                  <img class="evidence" *ngIf="reportComp && reportComp.fileCS" [src]="reportComp.fileCS.thumbnail" alt="Evidence capture">
                                 </div>
                                 <div class="text-sign">
                                   Nombre y firma del responsable
                                 </div>
                                 <div class="inputs">
                                   <div class="signature-element">
-                                    <img
-                                      src="https://lh3.googleusercontent.com/pAVkMKw5PWzy67CaKieL-C6URUgMHsMgY1U9MIMG_vkjUeKbR9WNB7Lx7EAz_nAoQgmK42xy3uoTmM8mng_eKEjuXNLpM-welQ">
+                                    <img *ngIf="reportComp && reportComp.signature" [src]="reportComp.signature.thumbnail">
+                                    <div *ngIf="!reportComp || !reportComp.signature" style="width: 60%; height: 60px"></div>
                                   </div>
                                   <div class="divider"></div>
-                                  <div class="name">Nombre</div>
+                                  <div *ngIf="!reportComp || !reportComp.name" class="name">Nombre</div>
+                                  <div *ngIf="reportComp && reportComp.name" class="name">{{reportComp.name}}</div>
                                 </div>
                                 <div class="finish" *ngIf="user.role === 7">
                                   <button mat-flat-button [color]="'primary'">FINALZAR</button>
@@ -424,7 +453,7 @@
                                 </mat-form-field>
                                 <mat-form-field class="inputs">
                                   <mat-select formControlName="waste" placeholder="Residuo generado" required>
-                                    <mat-option value="Envases contaminados con aceite">Envases contaminados con aceite
+                                    <mat-option value="Envases contaminados con aceites">Envases contaminados con aceites
                                     </mat-option>
                                     <mat-option value="Natas y grasas de la trampa de combustible">Natas y grasas de la trampa
                                       de combustible
@@ -491,9 +520,10 @@
                                   Captura fotográfica de evidencia.
                                 </div>
                                 <div class="image-container">
-                                  <mat-icon class="default-image">
+                                  <mat-icon *ngIf="!reportHWG || !reportHWG.fileCS" class="default-image">
                                     image
                                   </mat-icon>
+                                  <img *ngIf="reportHWG && reportHWG.fileCS" class="evidence" [src]="reportHWG.fileCS.thumbnail" alt="Evidence capture">
                                 </div>
                               </div>
                             </form>
@@ -523,30 +553,14 @@
                                 </div>
                                 <div class="times">
                                   <mat-form-field class="clock">
-                                    <mat-select placeholder="Pistola" required>
+                                    <mat-select formControlName="fuelNozzle" placeholder="Pistola" required>
                                       <mat-option value="Satisfactorio">Satisfactorio</mat-option>
                                       <mat-option value="No satisfactorio">No satisfactorio</mat-option>
                                       <mat-option value="No definido">No definido</mat-option>
                                     </mat-select>
                                   </mat-form-field>
                                   <mat-form-field class="clock">
-                                    <mat-select placeholder="Manguera larga" required>
-                                      <mat-option value="Satisfactorio">Satisfactorio</mat-option>
-                                      <mat-option value="No satisfactorio">No satisfactorio</mat-option>
-                                      <mat-option value="No definido">No definido</mat-option>
-                                    </mat-select>
-                                  </mat-form-field>
-                                </div>
-                                <div class="times">
-                                  <mat-form-field class="clock">
-                                    <mat-select placeholder="Break away" required>
-                                      <mat-option value="Satisfactorio">Satisfactorio</mat-option>
-                                      <mat-option value="No satisfactorio">No satisfactorio</mat-option>
-                                      <mat-option value="No definido">No definido</mat-option>
-                                    </mat-select>
-                                  </mat-form-field>
-                                  <mat-form-field class="clock">
-                                    <mat-select placeholder="Manguera corta" required>
+                                    <mat-select formControlName="longHose" placeholder="Manguera larga" required>
                                       <mat-option value="Satisfactorio">Satisfactorio</mat-option>
                                       <mat-option value="No satisfactorio">No satisfactorio</mat-option>
                                       <mat-option value="No definido">No definido</mat-option>
@@ -555,7 +569,23 @@
                                 </div>
                                 <div class="times">
                                   <mat-form-field class="clock">
-                                    <mat-select placeholder="Equipo" required>
+                                    <mat-select formControlName="breakAway" placeholder="Break away" required>
+                                      <mat-option value="Satisfactorio">Satisfactorio</mat-option>
+                                      <mat-option value="No satisfactorio">No satisfactorio</mat-option>
+                                      <mat-option value="No definido">No definido</mat-option>
+                                    </mat-select>
+                                  </mat-form-field>
+                                  <mat-form-field class="clock">
+                                    <mat-select formControlName="shortHose" placeholder="Manguera corta" required>
+                                      <mat-option value="Satisfactorio">Satisfactorio</mat-option>
+                                      <mat-option value="No satisfactorio">No satisfactorio</mat-option>
+                                      <mat-option value="No definido">No definido</mat-option>
+                                    </mat-select>
+                                  </mat-form-field>
+                                </div>
+                                <div class="times">
+                                  <mat-form-field class="clock">
+                                    <mat-select formControlName="equipment" placeholder="Equipo" required>
                                       <mat-option value="Motor de succión">Motor de succión</mat-option>
                                       <mat-option value="Turbina">Turbina</mat-option>
                                       <mat-option value="Quemador">Quemador</mat-option>
@@ -563,46 +593,87 @@
                                   </mat-form-field>
                                   <div class="clock"></div>
                                 </div>
-                                <div class="inputs">
-                                  <h3 style="margin: 8px 0; font-size: 14px">Tanque 1</h3>
-                                </div>
-                                <mat-radio-group
-                                  style="display: flex;width: 90%;justify-content: space-between; flex-wrap: wrap">
-                                  <mat-radio-button value="Magna">Magna</mat-radio-button>
-                                  <mat-radio-button value="Premium">Premium</mat-radio-button>
-                                </mat-radio-group>
-                                <mat-form-field class="inputs">
-                                  <mat-select placeholder="Tapa y adaptador de vapor" required>
-                                    <mat-option value="Satisfactorio">Satisfactorio</mat-option>
-                                    <mat-option value="No satisfactorio">No satisfactorio</mat-option>
-                                    <mat-option value="No determinado">No determinado</mat-option>
-                                  </mat-select>
-                                </mat-form-field>
-                                <mat-form-field class="inputs">
-                                  <mat-select placeholder="Tapa y adaptador de llenado" required>
-                                    <mat-option value="Satisfactorio">Satisfactorio</mat-option>
-                                    <mat-option value="No satisfactorio">No satisfactorio</mat-option>
-                                    <mat-option value="No determinado">No determinado</mat-option>
-                                  </mat-select>
-                                </mat-form-field>
-                                <mat-form-field class="inputs">
-                                  <mat-select placeholder="Válvula de sobrellenado" required>
-                                    <mat-option value="Satisfactorio">Satisfactorio</mat-option>
-                                    <mat-option value="No satisfactorio">No satisfactorio</mat-option>
-                                    <mat-option value="No determinado">No determinado</mat-option>
-                                  </mat-select>
-                                </mat-form-field>
-                                <mat-form-field class="inputs">
-                                  <mat-select placeholder="Válvula de presión-vacio" required>
-                                    <mat-option value="Satisfactorio">Satisfactorio</mat-option>
-                                    <mat-option value="No satisfactorio">No satisfactorio</mat-option>
-                                    <mat-option value="No determinado">No determinado</mat-option>
-                                  </mat-select>
-                                </mat-form-field>
+                                <div *ngIf="reportVRS && reportVRS.vrsTanks && reportVRS.vrsTanks.length !== 0; then tanksList else emptyTankList"></div>
+                                <ng-template #tanksList>
+                                  <div *ngFor="let tankItem of reportVRS.vrsTanks; let i = index">
+                                    <div class="inputs">
+                                      <h3 style="margin: 8px 0; font-size: 14px">Tanque {{i+1}}</h3>
+                                    </div>
+                                    <mat-radio-group [(ngModel)]="tankItem.fuelType" [ngModelOptions]="{standalone: true}" [disabled]="user.role!==7"  style="display: flex;width: 90%;justify-content: space-between; flex-wrap: wrap">
+                                      <mat-radio-button [value]="1">Magna</mat-radio-button>
+                                      <mat-radio-button [value]="2">Premium</mat-radio-button>
+                                    </mat-radio-group>
+                                    <mat-form-field class="inputs">
+                                      <mat-select [(ngModel)]="tankItem.capAndSteamAdapter" [ngModelOptions]="{standalone: true}" [disabled]="user.role!==7" placeholder="Tapa y adaptador de vapor" required>
+                                        <mat-option [value]="'Satisfactorio'">Satisfactorio</mat-option>
+                                        <mat-option [value]="'No satisfactorio'">No satisfactorio</mat-option>
+                                        <mat-option [value]="'No determinado'">No determinado</mat-option>
+                                      </mat-select>
+                                    </mat-form-field>
+                                    <mat-form-field class="inputs">
+                                      <mat-select [(ngModel)]="tankItem.capAndFillingAdapter" [ngModelOptions]="{standalone: true}" [disabled]="user.role!==7" placeholder="Tapa y adaptador de llenado" required>
+                                        <mat-option [value]="'Satisfactorio'">Satisfactorio</mat-option>
+                                        <mat-option [value]="'No satisfactorio'">No satisfactorio</mat-option>
+                                        <mat-option [value]="'No determinado'">No determinado</mat-option>
+                                      </mat-select>
+                                    </mat-form-field>
+                                    <mat-form-field class="inputs">
+                                      <mat-select [(ngModel)]="tankItem.overfillValve" [ngModelOptions]="{standalone: true}" [disabled]="user.role!==7" placeholder="Válvula de sobrellenado" required>
+                                        <mat-option [value]="'Satisfactorio'">Satisfactorio</mat-option>
+                                        <mat-option [value]="'No satisfactorio'">No satisfactorio</mat-option>
+                                        <mat-option [value]="'No determinado'">No determinado</mat-option>
+                                      </mat-select>
+                                    </mat-form-field>
+                                    <mat-form-field class="inputs">
+                                      <mat-select [(ngModel)]="tankItem.vacuumPressureValve" [ngModelOptions]="{standalone: true}" [disabled]="user.role!==7" placeholder="Válvula de presión-vacio" required>
+                                        <mat-option [value]="'Satisfactorio'">Satisfactorio</mat-option>
+                                        <mat-option [value]="'No satisfactorio'">No satisfactorio</mat-option>
+                                        <mat-option [value]="'No determinado'">No determinado</mat-option>
+                                      </mat-select>
+                                    </mat-form-field>
+                                  </div>
+                                </ng-template>
+                                <ng-template #emptyTankList>
+                                  <div class="inputs">
+                                    <h3 style="margin: 8px 0; font-size: 14px">Tanque 1</h3>
+                                  </div>
+                                  <mat-radio-group [disabled]="user.role!==7" style="display: flex;width: 90%;justify-content: space-between; flex-wrap: wrap">
+                                    <mat-radio-button value="Magna">Magna</mat-radio-button>
+                                    <mat-radio-button value="Premium">Premium</mat-radio-button>
+                                  </mat-radio-group>
+                                  <mat-form-field class="inputs">
+                                    <mat-select [disabled]="user.role!==7" placeholder="Tapa y adaptador de vapor" required>
+                                      <mat-option value="Satisfactorio">Satisfactorio</mat-option>
+                                      <mat-option value="No satisfactorio">No satisfactorio</mat-option>
+                                      <mat-option value="No determinado">No determinado</mat-option>
+                                    </mat-select>
+                                  </mat-form-field>
+                                  <mat-form-field class="inputs">
+                                    <mat-select [disabled]="user.role!==7" placeholder="Tapa y adaptador de llenado" required>
+                                      <mat-option value="Satisfactorio">Satisfactorio</mat-option>
+                                      <mat-option value="No satisfactorio">No satisfactorio</mat-option>
+                                      <mat-option value="No determinado">No determinado</mat-option>
+                                    </mat-select>
+                                  </mat-form-field>
+                                  <mat-form-field class="inputs">
+                                    <mat-select [disabled]="user.role!==7" placeholder="Válvula de sobrellenado" required>
+                                      <mat-option value="Satisfactorio">Satisfactorio</mat-option>
+                                      <mat-option value="No satisfactorio">No satisfactorio</mat-option>
+                                      <mat-option value="No determinado">No determinado</mat-option>
+                                    </mat-select>
+                                  </mat-form-field>
+                                  <mat-form-field class="inputs">
+                                    <mat-select [disabled]="user.role!==7" placeholder="Válvula de presión-vacio" required>
+                                      <mat-option value="Satisfactorio">Satisfactorio</mat-option>
+                                      <mat-option value="No satisfactorio">No satisfactorio</mat-option>
+                                      <mat-option value="No determinado">No determinado</mat-option>
+                                    </mat-select>
+                                  </mat-form-field>
+                                </ng-template>
                               </div>
                               <div class="columns">
                                 <mat-form-field class="inputs">
-                                  <mat-select placeholder="Alarma SRV Encendido" required>
+                                  <mat-select formControlName="vrsAlarm" placeholder="Alarma SRV Encendido" required>
                                     <mat-option value="Satisfactorio">Satisfactorio</mat-option>
                                     <mat-option value="No satisfactorio">No satisfactorio</mat-option>
                                     <mat-option value="No determinado">No determinado</mat-option>
@@ -612,33 +683,35 @@
                                   <h3 style="margin: 8px 0; font-size: 14px;">Mantenimiento</h3>
                                 </div>
                                 <mat-form-field class="inputs">
-                                  <mat-select placeholder="Paro de emergencia" required>
+                                  <mat-select formControlName="emergencyStop" placeholder="Paro de emergencia" required>
                                     <mat-option value="Satisfactorio">Satisfactorio</mat-option>
                                     <mat-option value="No satisfactorio">No satisfactorio</mat-option>
                                     <mat-option value="No determinado">No determinado</mat-option>
                                   </mat-select>
                                 </mat-form-field>
                                 <mat-form-field class="inputs">
-                                  <input matInput placeholder="Observaciones">
+                                  <input matInput formControlName="observations" placeholder="Observaciones">
                                 </mat-form-field>
                                 <div class="image-header">
                                   Captura fotográfica de evidencia
                                 </div>
                                 <div class="image-container">
-                                  <mat-icon class="default-image">
+                                  <mat-icon *ngIf="!reportVRS || !reportVRS.fileCS" class="default-image">
                                     image
                                   </mat-icon>
+                                  <img class="evidence" *ngIf="reportVRS && reportVRS.fileCS" [src]="reportVRS.fileCS.thumbnail" alt="Evidence capture">
                                 </div>
                                 <div class="text-sign">
                                   Nombre y firma del responsable
                                 </div>
                                 <div class="inputs">
                                   <div class="signature-element">
-                                    <img
-                                      src="https://lh3.googleusercontent.com/pAVkMKw5PWzy67CaKieL-C6URUgMHsMgY1U9MIMG_vkjUeKbR9WNB7Lx7EAz_nAoQgmK42xy3uoTmM8mng_eKEjuXNLpM-welQ">
+                                    <img *ngIf="reportVRS && reportVRS.signature" [src]="reportVRS.signature.thumbnail">
+                                    <div *ngIf="!reportVRS || !reportVRS.signature" style="width: 60%; height: 60px"></div>
                                   </div>
                                   <div class="divider"></div>
-                                  <div class="name">Nombre</div>
+                                  <div *ngIf="!reportVRS || !reportVRS.name" class="name">Nombre</div>
+                                  <div *ngIf="reportVRS && reportVRS.name" class="name">{{reportVRS.name}}</div>
                                 </div>
                                 <div class="finish" *ngIf="user.role === 7">
                                   <button mat-flat-button [color]="'primary'">FINALZAR</button>
@@ -651,7 +724,7 @@
                               <div class="head-bold">Limpieza ecológica</div>
                               <div class="control-data">
                                 <div>Fecha: {{task.original.date[0]}} {{task.original.date[1]}} {{task.original.date[2]}}</div>
-                                <div>Folio:</div>
+                                <div *ngIf="reportScanned">Folio: {{reportScanned.folio}}</div>
                               </div>
                             </div>
                             <div style="display: flex; align-items: center; flex-direction: column">
@@ -668,11 +741,12 @@
                                 </div>
                                 <div class="inputs">
                                   <div class="signature-element">
-                                    <img
-                                      src="https://lh3.googleusercontent.com/pAVkMKw5PWzy67CaKieL-C6URUgMHsMgY1U9MIMG_vkjUeKbR9WNB7Lx7EAz_nAoQgmK42xy3uoTmM8mng_eKEjuXNLpM-welQ">
+                                    <img *ngIf="reportScanned && reportScanned.signature" [src]="reportScanned.signature.thumbnail">
+                                    <div *ngIf="!reportScanned || !reportScanned.signature" style="width: 60%; height: 60px"></div>
                                   </div>
                                   <div class="divider"></div>
-                                  <div class="name">Nombre</div>
+                                  <div *ngIf="!reportScanned || !reportScanned.name" class="name">Nombre</div>
+                                  <div *ngIf="reportScanned && reportScanned.name" class="name">{{reportScanned.name}}</div>
                                 </div>
                                 <div class="finish" *ngIf="user.role === 7">
                                   <button mat-flat-button [color]="'primary'">FINALZAR</button>
@@ -695,7 +769,7 @@
                                 </mat-form-field>
                                 <mat-form-field class="inputs">
                                   <mat-select formControlName="waste" placeholder="Residuo generado" required>
-                                    <mat-option value="Envases contaminados con aceite">Envases contaminados con aceite
+                                    <mat-option value="Envases contaminados con aceites">Envases contaminados con aceites
                                     </mat-option>
                                     <mat-option value="Natas y grasas de la trampa de combustible">Natas y grasas de la trampa
                                       de combustible
@@ -762,9 +836,10 @@
                                   Captura fotográfica de evidencia.
                                 </div>
                                 <div class="image-container">
-                                  <mat-icon class="default-image">
+                                  <mat-icon *ngIf="!reportHWG || !reportHWG.fileCS" class="default-image">
                                     image
                                   </mat-icon>
+                                  <img *ngIf="reportHWG && reportHWG.fileCS" class="evidence" [src]="reportHWG.fileCS.thumbnail" alt="Evidence capture">
                                 </div>
                               </div>
                             </form>

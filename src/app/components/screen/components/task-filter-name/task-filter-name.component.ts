@@ -40,7 +40,7 @@ export class TaskFilterNameComponent implements OnInit {
     this._taskCopy = this.taskName;
   }
 
-  public canel():void{
+  public cancel():void{
     this._dialogRef.close({code: -1});
   }
 

@@ -56,7 +56,8 @@
     "swagger-ui-express": "^4.0.2",
     "html-pdf": "^2.2.0",
     "jsdom": "^13.2.0",
-    "request": "^2.88.0"
+    "request": "^2.88.0",
+    "rxjs-compat":"6.3.3"
   },
   "private": true
 }
