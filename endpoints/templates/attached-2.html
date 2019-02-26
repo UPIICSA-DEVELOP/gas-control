@@ -6,79 +6,126 @@
         content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Document</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/paper-css/0.3.0/paper.css">
+  <style>@page { size: letter }</style>
   <style>
-    body {
-      background: red;
+    body{
+      font-family: 'Helvetice New', 'Arial', sans-serif;
+      min-height: 279mm !important;
     }
-    div.page {
-      position: relative;
-      background-color: white;
-      display: block;
-      box-sizing: border-box;
+    .sheet{
+      min-height: 279mm !important;
     }
-    div.page[size="A4"] {
-      width: 215.9mm;
-      min-height: 279.4mm;
-      padding: 2.5cm 2cm 2.5cm 2cm;
+    .title{
+      font-weight: normal;
+      margin: 0;
+      color: #8A2744;
+      font-size: 28pt;
     }
-    @media print {
-      body, page {
-        margin: 0;
-      }
+    .sub-title{
+      color: #2F5496;
+      font-size: 13pt;
+    }
+    .description{
+      margin-top: 32px;
+      color: #1F3763;
+      font-size: 12pt;
+    }
+    .info{
+      margin: 8px auto;
+      text-align: center;
+      color:#2F5496;
+      font-size: 12pt;
+      width: 50%;
+    }
+    .header{
+      font-size: 14pt;
+      color: #002364;
+    }
+    .center{
+      margin: 0;
+      text-align: center;
+    }
+    .table{
+      margin: 16px 0;
+    }
+    #list{
+      width: 100%;
+    }
+    #item{
+      margin: 8px 0;
+    }
+    .item-title{
+      text-align: center;
+      font-size: 14pt;
+      color: #194592;
+    }
+    .item-sub-title{
+      width: 49%;
+      margin: 0;
+      display: inline-block;
+      color: #194592;
+    }
+    .item-content, .table-title{
+      width: 49%;
+      margin: 0;
+      display: inline-block;
+      color: #194592;
     }
   </style>
 </head>
-<body style="padding: 0; margin: 0; font-family: 'Helvetice New', 'Arial', sans-serif;">
-<div size="A4" class="page">
-  <img style="position: absolute; top: 0; right: 0; width: 48px; margin: 36px;" src="https://lh3.googleusercontent.com/oFh60mqDiisIc6tzMZ-Q5KJ-QvKugmUhh0yg6N5gdKuiEgTc96yfXIdksqWD8ODG0LOi2aAP9pz0Zzqm9rsXertP9pnNqo1mzQ">
+<body class="letter">
 
-  <h1 style="font-weight: normal; margin: 0; color: #8A2744;">SASISOPA</h1>
-  <p style="color: #2F5496;">Anexo 2</p>
-  <p style="margin-top: 32px; color: #1F3763;">
-    SASISOPA Punto 3. La identificación de riesgos, análisis, evaluación, medidas deprevención, monitoreo,
-    mitigación y valuación de incidentes, accidentes, pérdidas esperadas en los distintos escenarios de riesgos,
-    así como las consecuencias que los riesgos representan a la población, medio ambiente, a las instalaciones y
-    edificaciones comprendidas dentro del perímetro de las instalaciones industriales y en las inmediaciones
-  </p>
-  <h2>Tabla 1. Sustancias químicas</h2>
-  <div style="margin: 16px 0;">
-    <div style="text-align: center;">
-      <p style="width: 49%; margin: 0; display: inline-block;">Forma de almacenamiento</p>
-      <p style="width: 49%; margin: 0; display: inline-block;">Área de uso</p>
-    </div>
-    <div style="text-align: center;">
-      <p style="width: 49%; margin: 0; display: inline-block;">Tanque</p>
-      <p style="width: 49%; margin: 0; display: inline-block;">Almacenamiento y venta de combustible</p>
-    </div>
-  </div>
-  <h2 style="margin: 0; font-size: 20px; text-align: center;">Características de almacenamiento o distribución</h2>
-  <p style="width: 80%; margin: 0 auto; font-size: 16px; text-align: center;">La sustancia química se encuentra almacenada en un tanque enterrado, posteriormente es transferido al despachador para su venta</p>
-  <div style="width: 100%;" id="list">
-    <h2>Tanques de combustible:</h2>
+<section class="sheet" style="padding: 0 25mm 25mm 25mm !important;">
 
-    <div class="item" id="item">
-      <p style="text-align: center" class="title">Tanque 1</p>
-      <div style="text-align: center;">
-        <p style="width: 49%; margin: 0; display: inline-block;">Capacidad</p>
-        <p style="width: 49%; margin: 0; display: inline-block;" class="capacity">Fortis clemens eleates est.</p>
+  <!-- Write HTML just like a web page -->
+  <article>
+
+
+    <img style="display: none;" src="https://lh3.googleusercontent.com/oFh60mqDiisIc6tzMZ-Q5KJ-QvKugmUhh0yg6N5gdKuiEgTc96yfXIdksqWD8ODG0LOi2aAP9pz0Zzqm9rsXertP9pnNqo1mzQ">
+
+    <h1 class="title">SASISOPA</h1>
+    <p class="sub-title">Anexo 2</p>
+    <p class="description">
+      SASISOPA Punto 3. La identificación de riesgos, análisis, evaluación, medidas deprevención, monitoreo,
+      mitigación y valuación de incidentes, accidentes, pérdidas esperadas en los distintos escenarios de riesgos,
+      así como las consecuencias que los riesgos representan a la población, medio ambiente, a las instalaciones y
+      edificaciones comprendidas dentro del perímetro de las instalaciones industriales y en las inmediaciones.
+    </p>
+    <h2 class="header">Tabla 1. Sustancias químicas</h2>
+    <div class="table">
+      <div class="center">
+        <p class="table-title">Forma de almacenamiento</p>
+        <p class="table-title">Área de uso</p>
       </div>
-      <div style="text-align: center;">
-        <p style="width: 49%; margin: 0; display: inline-block;">Combustible</p>
-        <p style="width: 49%; margin: 0; display: inline-block;" class="typeFuel">Altus indexs ducunt ad torquis.</p>
+      <div class="center">
+        <p class="table-title">Tanque</p>
+        <p class="table-title">Almacenamiento y venta de combustible</p>
       </div>
     </div>
+    <h2 class="header center">Características de almacenamiento o distribución</h2>
+    <p class="info">La sustancia química se encuentra almacenada en un tanque enterrado, posteriormente es transferido al despachador para su venta.</p>
+    <div id="list">
+      <h2 class="header">Tanques de combustible:</h2>
 
-  </div>
-  <div id="footer" style="position: absolute; bottom: 0; left: 0; right: 0;  text-align: center;">
-    <div style="display: inline-block; width: 49%;">
-      <p style="color: #002364;">Razón social</p>
-      <p style="color: #194592;" class="businessName">Cum assimilatio resistere, omnes cobaltumes</p>
+      <div id="item-to-select">
+        <div id="item">
+          <p class="item-title" id="title">Tanque 1</p>
+          <div class="center">
+            <p class="item-sub-title">Capacidad</p>
+            <p class="item-content" id="capacity">Fortis clemens eleates est.</p>
+          </div>
+          <div class="center">
+            <p class="item-sub-title">Combustible</p>
+            <p class="item-content" id="typeFuel">Altus indexs ducunt ad torquis.</p>
+          </div>
+        </div>
+      </div>
+
     </div>
-    <div style="display: inline-block; width: 49%;">
-      <p style="color: #002364;">No. de permiso CRE</p>
-      <p style="color: #194592;" class="cre" >Silva salvus lumen est.</p>
-    </div>
-  </div>
-</div>
+
+  </article>
+
+</section>
 </body>
 </html>

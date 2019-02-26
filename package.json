@@ -64,6 +64,7 @@
     "ng-connection-service": "^1.0.4",
     "ngx-image-cropper": "^1.2.2",
     "npm": "^6.7.0",
+    "request": "^2.88.0",
     "rxjs": "6.3.3",
     "signature_pad": "^3.0.0-beta.3",
     "swagger-ui-express": "^4.0.2",

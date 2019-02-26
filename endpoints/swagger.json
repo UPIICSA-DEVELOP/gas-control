@@ -27,7 +27,8 @@
         "tags": [
           "Business Card"
         ],
-        "summary": "Create a new Business Card image",
+        "summary": "Create a Business Card",
+        "description": "This method creates a first Business Card for any user, compatible with inSpector and Business Card applications, time response between 1-5s",
         "consumes": [
           "application/json"
         ],
@@ -37,24 +38,31 @@
         "parameters": [
           {
             "in": "query",
-            "name": "imageUrl",
+            "name": "name",
             "type": "string",
             "required": true,
-            "description": "User company image"
+            "description": "User name"
+          },
+          {
+            "in": "query",
+            "name": "lastName",
+            "type": "string",
+            "required": true,
+            "description": "User last name"
           },
           {
             "in": "query",
             "name": "company",
             "type": "string",
             "required": true,
-            "description": "User company"
+            "description": "User company name"
           },
           {
             "in": "query",
-            "name": "name",
+            "name": "phone",
             "type": "string",
             "required": true,
-            "description": "User full name"
+            "description": "User phone (without country code)"
           },
           {
             "in": "query",
@@ -65,13 +73,6 @@
           },
           {
             "in": "query",
-            "name": "phone",
-            "type": "string",
-            "required": true,
-            "description": "User phone number"
-          },
-          {
-            "in": "query",
             "name": "email",
             "type": "string",
             "required": true,
@@ -79,23 +80,61 @@
           },
           {
             "in": "query",
+            "name": "countryCode",
+            "type": "string",
+            "required": true,
+            "description": "User country code"
+          },
+          {
+            "in": "query",
+            "name": "industryCode",
+            "type": "string",
+            "required": true,
+            "description": "User industry code"
+          },
+          {
+            "in": "query",
             "name": "website",
             "type": "string",
             "description": "User website"
+          },
+          {
+            "in": "query",
+            "name": "profileImage",
+            "type": "string",
+            "description": "User profile blob image"
+          },
+          {
+            "in": "query",
+            "name": "profileImageThumbnail",
+            "type": "string",
+            "description": "User profile image thumbnail"
           }
         ],
         "responses": {
           "200": {
-            "description": "OK"
-          },
-          "422": {
-            "description": "Incomplete params"
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/DefaultResponse"
+            }
           },
           "400": {
-            "description": "Bad Request"
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/DefaultResponse"
+            }
+          },
+          "422": {
+            "description": "Incomplete params",
+            "schema": {
+              "$ref": "#/definitions/DefaultResponse"
+            }
           },
           "500": {
-            "description": "Internal Server Error"
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/DefaultResponse"
+            }
           }
         }
       }
@@ -125,15 +164,58 @@
           "200": {
             "description": "OK"
           },
-          "422": {
-            "description": "Incomplete params"
-          },
           "400": {
             "description": "Bad Request"
+          },
+          "422": {
+            "description": "Incomplete params"
           },
           "500": {
             "description": "Internal Server Error"
           }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "DefaultResponse": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "string",
+          "description": "Status code in the response"
+        },
+        "description": {
+          "type": "string",
+          "description": "Information on response"
+        },
+        "ubcLite": {
+          "$ref": "#/definitions/UBCLite"
+        }
+      }
+    },
+    "UBCLite": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Id of Entity BCard in Business Card BakcEnd"
+        },
+        "userId": {
+          "type": "string",
+          "description": "Id of Entity User in Business Card BackEnd"
+        },
+        "cardThumbnail": {
+          "type": "string",
+          "description": "URL image of Business Card"
+        },
+        "dynamicLink": {
+          "type": "string",
+          "description": "Dynamic link for share Business Card"
+        },
+        "dynamicSignIn": {
+          "type": "string",
+          "description": "Dynamic link for sign in Business Card"
         }
       }
     }
