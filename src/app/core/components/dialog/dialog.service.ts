@@ -78,7 +78,7 @@ export class DialogService {
             accept: (accept)?accept:'ACEPTAR',
             cancel: ''
           },
-        disableClose: false
+        disableClose: true
       }
     );
   }

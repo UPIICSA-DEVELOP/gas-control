@@ -4,29 +4,33 @@
  *  Proprietary and confidential
  */
 
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {ApiService} from '@app/core/services/api/api.service';
 import {CookieService} from '@app/core/services/cookie/cookie.service';
 import {Constants} from '@app/core/constants.core';
-import {ActivatedRoute, Router} from '@angular/router';
+import {ActivatedRoute, NavigationEnd, Router} from '@angular/router';
 import {LocalStorageService} from '@app/core/services/local-storage/local-storage.service';
 import {AddStationService} from '@app/components/screen/components/add-gas-station/add-station.service';
 import {DialogService} from '@app/core/components/dialog/dialog.service';
 import {AuthService} from '@app/core/services/auth/auth.service';
 import {environment} from '@env/environment';
+import {filter} from 'rxjs/internal/operators';
+import {Subscription} from 'rxjs/Rx';
 
 @Component({
   selector: 'app-screen',
   templateUrl: './screen.component.html',
   styleUrls: ['./screen.component.scss']
 })
-export class ScreenComponent implements OnInit{
+export class ScreenComponent implements OnInit, OnDestroy{
 
   public stationList: any[];
   public stationActive: any;
   public role: number;
   public menu: boolean;
   public utils: any;
+  private _stationId: any;
+  private _subscribe: Subscription;
   constructor(
     private _api: ApiService,
     private _router: Router,
@@ -40,6 +44,36 @@ export class ScreenComponent implements OnInit{
   }
 
   ngOnInit() {
+    this.validateSignatureUser();
+    this.initNotifications();
+
+
+    this._subscribe = this._router.events
+      .pipe(filter(event => event instanceof NavigationEnd))
+      .subscribe(response => {
+        if(this._router.url === '/home' || this._router.url.includes('/home?station')){
+          if(this._activateRoute.snapshot.queryParams['station']){
+            this._stationId = this._activateRoute.snapshot.queryParams['station'];
+          }
+          this.getDashboardInformation(this._stationId);
+        }
+
+
+    });
+    if(this._activateRoute.snapshot.queryParams['station']){
+      this._stationId = this._activateRoute.snapshot.queryParams['station'];
+    }
+  }
+
+  ngOnDestroy():void{
+    this._subscribe.unsubscribe();
+  }
+
+  public addCollaborator():void{
+    this._router.navigate(['/home/add-collaborator'], {queryParams:{stationId: this.stationActive.id}}).then();
+  }
+
+  private initNotifications(): void{
     this._auth.onNotificationsRecived().subscribe(response=>{
       const notification = new Notification(response.notification.title, {
         icon: environment.url+'favicon.png',
@@ -49,29 +83,33 @@ export class ScreenComponent implements OnInit{
         window.open(environment.url);
       };
     });
-    this._activateRoute.url.subscribe(() => {
-     if(this._router.url.includes('/home?station')){
-       this.initView(this._activateRoute.snapshot.queryParams.station);
-     }else{
-       if(!this._router.url.includes('/home/documents') || !this._router.url.includes('/home/profile/gas-station')){
-         if(!this.stationActive){
-           this.initView();
-         }
-       }
-     }
-    });
   }
 
-  public initView(id?: string): void{
-    if (id) {
-      this.getDashboardInformation(id);
-    } else {
-      this.getDashboardInformation();
+  private validateSignatureUser(): void{
+    if(LocalStorageService.getItem(Constants.NotSignature)){
+      const user = LocalStorageService.getItem(Constants.UserInSession);
+      this._dialogService.alertDialog(
+        'Información',
+        'Para continuar es necesario registrar su firma digital',
+        'REGISTRAR').afterClosed().subscribe(response =>{
+        LocalStorageService.setItem(Constants.NotSignature, true);
+        switch (user.role) {
+          case 1:
+          case 2:
+          case 3:
+            this._router.navigate(['/home/profile/consultancy']).then();
+            break;
+          case 4:
+          case 5:
+          case 6:
+          case 7:
+            this._router.navigate(['/home/profile/user']).then();
+            break;
+        }
+      })
+    }else{
+      this.getDashboardInformation(this._stationId);
     }
-  }
-
-  public addCollaborator():void{
-    this._router.navigate(['/home/add-collaborator'], {queryParams:{stationId: this.stationActive.id}}).then();
   }
 
   private getDashboardInformation(onlyOneStationId?: any): void{
@@ -152,88 +190,15 @@ export class ScreenComponent implements OnInit{
         }
       });
     }
-    this.role = user.role;
-    this._api.getCompleteInfoDashboard(userId,user.refId,this.role,onlyOneStationId).subscribe(response=>{
-      if (response){
-        this.utils = response[1].item;
-        switch (this.role){
-          case 1:
-          case 2:
-          case 3:
-          case 4:
-          case 7:
-            if(onlyOneStationId){
-              switch(response[0].code){
-                case 200:
-                  this.stationList = response[0].item;
-                  this.stationActive = this.stationList;
-                  LocalStorageService.setItem(Constants.StationInDashboard, {id: this.stationActive.id, name: this.stationActive.businessName});
-                  if (this.stationActive){
-                    if(!this.validateTaskCreated()){
-                      this.openTaskCalendar();
-                    }else{
-                      this.createTasks();
-                    }
-                  }
-                  break;
-                default:
-                  this._router.navigate(['/home']).then();
-                  this.getDashboardInformation(null);
-                  break;
-              }
-            }else{
-              if(response[0].item.stationLites){
-                this.stationList = response[0].item.stationLites;
-                this.stationActive = (Array.isArray(this.stationList)?this.stationList[0]:this.stationList);
-                LocalStorageService.setItem(Constants.StationInDashboard, {id: this.stationActive.id, name: this.stationActive.businessName});
-              }else{
-                this.stationList = undefined;
-                this.stationActive = undefined;
-              }
-              LocalStorageService.setItem(Constants.ConsultancyInSession, {id: response[0].item.consultancy.id, name: response[0].item.consultancy.businessName});
-              if (this.stationActive){
-                if(!this.validateTaskCreated()){
-                  this.openTaskCalendar();
-                }else{
-                  this.createTasks();
-                }
-              }
-            }
-            break;
-          case 5:
-          case 6:
-            if(onlyOneStationId){
-              this.stationList = response[0].item;
-              this.stationActive = this.stationList;
-              LocalStorageService.setItem(Constants.StationInDashboard, {id: this.stationActive.id, name: this.stationActive.businessName});
-              if(!this.validateTaskCreated()){
-                this.openTaskCalendar();
-              }else{
-                this.createTasks();
-              }
-            }else{
-              this.stationList = response[0].item.station;
-              this.stationActive = this.stationList;
-              LocalStorageService.setItem(Constants.StationInDashboard, {id: this.stationActive.id, name: this.stationActive.businessName});
-              if(!this.validateTaskCreated()){
-                this.openTaskCalendar();
-              }else{
-                this.createTasks();
-              }
-            }
-            break;
-        }
-      }
-    });
   }
+
 
   public validateTaskCreated():boolean{
     return this.stationActive.stationTaskId;
   }
 
   public openTaskCalendar():void{
-    const user = LocalStorageService.getItem(Constants.UserInSession);
-    if(user.role===6){
+    if(this.role===6){
       this._dialogService.alertDialog(
         'Información',
         'No se han calendarizado las tareas de esta Estación. Por favor notifíquelo a su superior',

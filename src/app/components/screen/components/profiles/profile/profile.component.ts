@@ -531,6 +531,7 @@ export class ProfileComponent implements OnInit {
     this._api.updateConsultancy(this.consultancy).subscribe(response=>{
       switch (response.code){
         case 200:
+          LocalStorageService.removeItem(Constants.NotSignature);
           this.change = false;
           this._snackBarService.openSnackBar('Información actualizada','OK',3000);
           this._router.navigate(['/home']).then();
