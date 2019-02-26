@@ -22,7 +22,7 @@ router.get('/bc', [ check(['company', 'name', 'lastName', 'workPosition', 'phone
         {
           code: 422,
           description: 'Incomplete params, consult https://inspector-maplander-develop.appspot.com/endpoints/v1/api-docs/#/Business%20Card/get_bc',
-          ubcLite: null
+          item: null
         }
       ))
     }else{
@@ -52,7 +52,7 @@ router.get('/bc', [ check(['company', 'name', 'lastName', 'workPosition', 'phone
       {
         code: 500,
         description: 'Internal server error',
-        ubcLite: null
+        item: null
       }
     ))
   }

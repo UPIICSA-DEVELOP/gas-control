@@ -3,7 +3,7 @@
   const response = {
     code: 200,
     description: 'OK',
-    ubcLite: null
+    item: null
   };
 
   const dataForBC  = {
@@ -146,7 +146,7 @@
         finish(response);
       }
       if(body.code === 200) {
-        response.ubcLite = {
+        response.item = {
           id: body.ubcLite.id,
           userId: body.ubcLite.userId,
           cardThumbnail: dataForBC.cardUrlThumbnail,
