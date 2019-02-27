@@ -88,7 +88,7 @@
           {
             "in": "query",
             "name": "industryCode",
-            "type": "string",
+            "type": "integer",
             "required": true,
             "description": "User industry code"
           },
@@ -182,7 +182,7 @@
       "type": "object",
       "properties": {
         "code": {
-          "type": "string",
+          "type": "integer",
           "description": "Status code in the response"
         },
         "description": {
