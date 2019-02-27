@@ -311,6 +311,11 @@
     right: 32px;
   }
 
+  /deep/.mat-tab-label .mat-tab-label-content{
+    white-space: normal;
+    display: flex;
+  }
+
   .containerTask{
     width: 100%;
   }

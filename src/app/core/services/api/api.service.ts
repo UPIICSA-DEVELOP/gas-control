@@ -246,17 +246,6 @@ export class ApiService {
     return this._http.get(ApiService.API_URL_COMPLETE + 'listConsultancy',);
   }
 
-  public listTaskDateStatus(filters: any): Observable<any>{
-    let params = new HttpParams();
-    params = params.append('stationTaskId', filters.stationTaskId);
-    if(!filters.firstOpen){
-      params = params.append('fromDate', filters.startDate);
-      params = params.append('status', filters.status);
-      params = params.append('untilDate', filters.endDate);
-    }
-    return this._http.get(ApiService.API_URL_COMPLETE + 'listTaskDateStatus', {params: params});
-  }
-
   public listTask(filters: any): Observable<any>{
     let params = new HttpParams();
     params = params.append('stationTaskId', filters.stationTaskId);
@@ -269,6 +258,17 @@ export class ApiService {
       params = params.append('type', filters.type);
     }
     return this._http.get(ApiService.API_URL_COMPLETE + 'listTask', {params: params});
+  }
+
+  public listUTask(filters: any): Observable<any>{
+    let params = new HttpParams();
+    params = params.append('stationTaskId', filters.stationTaskId);
+    params = params.append('type',filters.type);
+    if(!filters.firstOpen){
+      params = params.append('fromDate', filters.startDate);
+      params = params.append('untilDate', filters.endDate);
+    }
+    return this._http.get(ApiService.API_URL_COMPLETE + 'listUTask',{params: params});
   }
 
   public getStationTask(stationTaskId: string):Observable<any>{
