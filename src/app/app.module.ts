@@ -56,7 +56,6 @@ import { CookiesComponent } from './components/screen/child/cookies/cookies.comp
 import { SasisopaComponent } from './components/screen/components/sasisopa/sasisopa.component';
 import { TaskFilterNameComponent } from './components/screen/components/task-filter-name/task-filter-name.component';
 import {InjectorModule} from '@app/core/injector/injector.module';
-import {ServiceWorkerModule} from '@angular/pwa'
 
 @NgModule({
   declarations: [
@@ -104,7 +103,6 @@ import {ServiceWorkerModule} from '@angular/pwa'
     ConnectionServiceModule,
     BrowserTransferStateModule,
     TransferHttpCacheModule,
-    ServiceWorkerModule.register('/messaging.js', { enabled: environment.production }),
     AngularFireModule.initializeApp(environment.firebase),
     RouterModule.forRoot(appRoutes),
     AngularFireMessagingModule,

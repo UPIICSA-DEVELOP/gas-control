@@ -3,7 +3,7 @@
 importScripts('https://www.gstatic.com/firebasejs/5.5.0/firebase-app.js');
 importScripts('https://www.gstatic.com/firebasejs/5.5.0/firebase-messaging.js');
 
-console.log('is local');
+console.log('is dev');
 
 const config = {
   apiKey: "AIzaSyAQg07U_ZighMWpsym9Meu7qqqEhf5JP8Q",

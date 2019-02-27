@@ -3,15 +3,15 @@
 importScripts('https://www.gstatic.com/firebasejs/5.5.0/firebase-app.js');
 importScripts('https://www.gstatic.com/firebasejs/5.5.0/firebase-messaging.js');
 
-console.log('is local');
+console.log('is prod');
 
 const config = {
-  apiKey: "AIzaSyAQg07U_ZighMWpsym9Meu7qqqEhf5JP8Q",
-  authDomain: "inspector-maplander-develop.firebaseapp.com",
-  databaseURL: "https://inspector-maplander-develop.firebaseio.com",
-  projectId: "inspector-maplander-develop",
-  storageBucket: "inspector-maplander-develop.appspot.com",
-  messagingSenderId: "916184923713"
+  apiKey: "AIzaSyDTrMvI7rKzqvylqMFWitUTO2A2YKdEuWk",
+  authDomain: "inspector-maplander.firebaseapp.com",
+  databaseURL: "https://inspector-maplander.firebaseio.com",
+  projectId: "inspector-maplander",
+  storageBucket: "inspector-maplander.appspot.com",
+  messagingSenderId: "37596709859"
 };
 firebase.initializeApp(config);
 
