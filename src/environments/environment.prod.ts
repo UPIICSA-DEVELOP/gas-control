@@ -4,11 +4,11 @@ export const environment = {
   develop: false,
   VERSION: require('../../package.json').version,
   firebase: {
-    apiKey: "AIzaSyDq9HzuM0DMge7-LOrclM_OhmnhnrsCwLM",
-    authDomain: "schedule-maplander.firebaseapp.com",
-    databaseURL: "https://schedule-maplander.firebaseio.com",
-    projectId: "schedule-maplander",
-    storageBucket: "schedule-maplander.appspot.com",
-    messagingSenderId: "948220319278"
+    apiKey: "AIzaSyDTrMvI7rKzqvylqMFWitUTO2A2YKdEuWk",
+    authDomain: "inspector-maplander.firebaseapp.com",
+    databaseURL: "https://inspector-maplander.firebaseio.com",
+    projectId: "inspector-maplander",
+    storageBucket: "inspector-maplander.appspot.com",
+    messagingSenderId: "37596709859"
   }
 };
