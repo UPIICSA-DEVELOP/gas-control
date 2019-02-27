@@ -121,7 +121,7 @@
 
     const body = {
       industryCode: dataForBC.industryCode,
-      cardThumbnail: dataForBC.cardThumbnail,
+      cardThumbnail: dataForBC.cardUrlThumbnail,
       cardUrl: dataForBC.cardUrl,
       countryCode: dataForBC.countryCode,
       companyName: dataForBC.companyName,
