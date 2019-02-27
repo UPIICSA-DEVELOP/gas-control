@@ -6,7 +6,7 @@
  */
 
 import {BrowserModule, BrowserTransferStateModule, HAMMER_GESTURE_CONFIG} from '@angular/platform-browser';
-import {Injector, NgModule} from '@angular/core';
+import {NgModule} from '@angular/core';
 import { AppComponent } from './app.component';
 import {HTTP_INTERCEPTORS, HttpClient, HttpClientModule} from '@angular/common/http';
 import {RouterModule} from '@angular/router';
@@ -55,8 +55,8 @@ import { TermsComponent } from './components/screen/child/terms/terms.component'
 import { CookiesComponent } from './components/screen/child/cookies/cookies.component';
 import { SasisopaComponent } from './components/screen/components/sasisopa/sasisopa.component';
 import { TaskFilterNameComponent } from './components/screen/components/task-filter-name/task-filter-name.component';
-
-export let InjectorInstance: Injector;
+import {InjectorModule} from '@app/core/injector/injector.module';
+import {ServiceWorkerModule} from '@angular/pwa'
 
 @NgModule({
   declarations: [
@@ -98,11 +98,13 @@ export let InjectorInstance: Injector;
   ],
   imports: [
     CoreModule,
+    InjectorModule,
     ModuleMapLoaderModule,
     HttpClientModule,
     ConnectionServiceModule,
     BrowserTransferStateModule,
     TransferHttpCacheModule,
+    ServiceWorkerModule.register('/messaging.js', { enabled: environment.production }),
     AngularFireModule.initializeApp(environment.firebase),
     RouterModule.forRoot(appRoutes),
     AngularFireMessagingModule,
@@ -146,10 +148,8 @@ export let InjectorInstance: Injector;
   bootstrap: [AppComponent]
 })
 export class AppModule {
-  constructor(
-    private injector: Injector
-  ){
-    InjectorInstance = this.injector;
+  constructor(){
+
   }
 
 }
