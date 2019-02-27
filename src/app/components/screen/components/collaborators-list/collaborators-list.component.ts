@@ -359,29 +359,33 @@ export class CollaboratorsListComponent implements OnInit {
   }
 
   private createBCard(person: any):void{
-    this._snackBarService.openSnackBar('Epere un momento...','',0);
+    this._snackBarService.openSnackBar('Espere un momento...','',0);
     const data = {
+      name: person.name || '',
+      lastName: person.lastName  || '',
       company: LocalStorageService.getItem(Constants.ConsultancyInSession).name || '',
-      name: person.name + ' ' + person.lastName || '',
-      workPosition: person.jobTitle || '',
       phone: person.phoneNumber || '',
+      workPosition: person.jobTitle || '',
       email: person.email || '',
+      countryCode : person.countryCode || '',
+      industryCode: '1',
       website: person.website || '',
-      imageUrl: person.profileImage ? person.profileImage.thumbnail + '=s1200' : 'Lorem ipsum'
+      profileImage: person.profileImage ? person.profileImage.blobName : null,
+      profileImageThumbnail: person.profileImage ? person.profileImage.thumbnail + '=s1200': null
     };
-    this._api.businessCardService(data).subscribe((response: Blob)=>{
-      this._snackBarService.closeSnackBar();
-      const form = new FormData();
-      form.append('file', response, 'bc'+new Date().getTime()+'.png');
-      this._uploadFile.uploadToBusinessCard(form).subscribe(response=>{
-        if(response.success && response.success === 'true'){
-          person.bCard = {
-            cardThumbnail: response.secondaryUrl
-          };
+    this._api.businessCardService(data).subscribe(response=>{
+      switch (response.code){
+        case 200:
+          this._snackBarService.closeSnackBar();
+          person.bCard = response.item;
           this.createPerson(person);
-        }
-      })
-    })
+          break;
+        default:
+          this._snackBarService.closeSnackBar();
+          this._snackBarService.openSnackBar('Ha ocurrido un error, por favor, intente de nuevo', 'OK', 3000);
+          break;
+      }
+    });
   }
 
   private createPerson(newPerson: any):void{

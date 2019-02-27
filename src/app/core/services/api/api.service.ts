@@ -279,16 +279,19 @@ export class ApiService {
 
   public businessCardService(data: any): Observable<any>{
     let params = new HttpParams();
-    params = params.append('imageUrl', data.imageUrl || '');
-    params = params.append('company', data.company || '');
     params = params.append('name', data.name || '');
+    params = params.append('lastName', data.lastName || '');
+    params = params.append('company', data.company || '');
+    params = params.append('phone', data.phone);
     params = params.append('workPosition', data.workPosition || '');
-    params = params.append('phone', data.phone || '');
     params = params.append('email', data.email || '');
+    params = params.append('countryCode', data.countryCode || '');
+    params = params.append('industryCode', data.industryCode || '1');
     params = params.append('website', data.website || '');
+    params = params.append('profileImage', data.profileImage || '');
+    params = params.append('profileImageThumbnail', data.profileImageThumbnail || '');
     const headers = new HttpHeaders().set('Content-Type', 'text/plain; charset=utf-8');
     return this._http.get('https://inspector-maplander-develop.appspot.com/endpoints/v1/bc', {
-      responseType: 'blob' as 'json',
       headers: headers,
       params: params
     });

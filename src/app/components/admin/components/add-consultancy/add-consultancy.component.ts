@@ -335,22 +335,9 @@ export class AddConsultancyComponent implements OnInit {
     }
   }
 
-  private uploadBusinessCard(blob: Blob): void{
-    const form = new FormData();
-    form.append('file', blob, 'bc'+new Date().getTime()+'.png');
-    this._uploadFile.uploadToBusinessCard(form).subscribe(response => {
-      if(response.success && response.success === 'true'){
-        this._ownerInfo.bCard = {
-          cardThumbnail: response.secondaryUrl
-        };
-        this.validateSignature();
-      }else{
-        this.onErrorOccurred();
-      }
-    }, error => {
-      console.error(error);
-      this.onErrorOccurred();
-    });
+  private uploadBusinessCard(bCard: any): void{
+    this._ownerInfo.bCard = bCard;
+    this.validateSignature();
   }
 
   private finishCreateConsultancy(): void{
@@ -376,16 +363,28 @@ export class AddConsultancyComponent implements OnInit {
 
   public makeBusinessCard(): void{
     const data = {
-      company: this._consultancyInfo.businessName || ' ',
-      name: this._ownerInfo.name + ' ' + this._ownerInfo.lastName || ' ',
-      workPosition: this._ownerInfo.jobTitle || ' ',
-      phone: this._ownerInfo.countryCode + this._ownerInfo.phoneNumber || ' ',
-      email: this._ownerInfo.email || ' ',
-      website: this._ownerInfo.website || ' ',
-      imageUrl: (this.userImage.original)?this.userImage.original.thumbnail + '=s1200':'Lorem ipsum'
+      name: this._ownerInfo.name || '',
+      lastName: this._ownerInfo.lastName  || '',
+      company: this._consultancyInfo.businessName || '',
+      phone: this._ownerInfo.phoneNumber || '',
+      workPosition: this._ownerInfo.jobTitle || '',
+      email: this._ownerInfo.email || '',
+      countryCode : this._ownerInfo.countryCode || '',
+      industryCode: '1',
+      website: this._ownerInfo.website || '',
+      profileImage: this._ownerInfo.profileImage ? this._ownerInfo.profileImage.blobName : null,
+      profileImageThumbnail: this._ownerInfo.profileImage ? this._ownerInfo.profileImage.thumbnail + '=s1200': null
     };
-    this._api.businessCardService(data).subscribe((response: Blob) => {
-      this.uploadBusinessCard(response);
+    this._api.businessCardService(data).subscribe(response => {
+      switch (response.code){
+        case 200:
+          this.uploadBusinessCard(response.item);
+          break;
+        default:
+          this.progress = false;
+          this.onErrorOccurred();
+          break;
+      }
     });
   }
 

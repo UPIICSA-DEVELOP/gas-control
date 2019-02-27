@@ -50,6 +50,7 @@
         document.getElementById('name').textContent = dataForBC.name + ' ' + dataForBC.lastName;
         document.getElementById('workPosition').textContent = dataForBC.workPosition;
         document.getElementById('phone').textContent = dataForBC.countryCode + dataForBC.whatsApp;
+        document.getElementById('email').textContent = dataForBC.email;
         if(!dataForBC.website){
           document.getElementById('website').innerHTML = '';
         }else{

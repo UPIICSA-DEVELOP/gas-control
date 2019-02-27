@@ -598,7 +598,7 @@ export class AddGasStationComponent implements OnInit {
         contactName:(data.contactName?data.contactName:undefined),
         benzene:(this.file?this.file:undefined)
       };
-      this.createLegal();
+      this.createBC(false);
     }
   }
 
@@ -640,11 +640,63 @@ export class AddGasStationComponent implements OnInit {
         contactName:(data.contactName?data.contactName:undefined),
         benzene:(this.fileTwo?this.fileTwo:undefined)
       };
-      this.createManager();
+      this.createBC(true);
     }
   }
 
-  public createLegal():void{
+  private createBC(isManager: boolean):void{
+    let data = undefined;
+    this._snackBarService.openSnackBar('Espere un momento...','',0);
+    if(isManager){
+      data = {
+        name: this.manger.name || '',
+        lastName: this.manger.lastName  || '',
+        company: '',
+        phone: this.manger.phoneNumber || '',
+        workPosition: this.manger.jobTitle || '',
+        email: this.manger.email || '',
+        countryCode : this.manger.countryCode || '',
+        industryCode: '1',
+        website: this.manger.website || '',
+        profileImage: this.manger.profileImage ? this.manger.profileImage.blobName : null,
+        profileImageThumbnail: this.manger.profileImage ? this.manger.profileImage.thumbnail + '=s1200': null
+      }
+    }else{
+      data = {
+        name: this.manger.name || '',
+        lastName: this.manger.lastName  || '',
+        company: this.station.businessName,
+        phone: this.manger.phoneNumber || '',
+        workPosition: this.manger.jobTitle || '',
+        email: this.manger.email || '',
+        countryCode : this.manger.countryCode || '',
+        industryCode: '1',
+        website: this.manger.website || '',
+        profileImage: this.manger.profileImage ? this.manger.profileImage.blobName : null,
+        profileImageThumbnail: this.manger.profileImage ? this.manger.profileImage.thumbnail + '=s1200': null
+      }
+    }
+    this._api.businessCardService(data).subscribe(response=>{
+      switch(response.code){
+        case 200:
+          this._snackBarService.closeSnackBar();
+          if (isManager){
+            this.manger.bCard = response.item;
+            this.createManager()
+          }else {
+            this.legalRepresentative.bCard = response.item;
+            this.createLegal();
+          }
+          break;
+        default:
+          this._snackBarService.closeSnackBar();
+          this._snackBarService.openSnackBar('Ha ocurrido un error, por favor, intente de nuevo', 'OK', 3000);
+          break;
+      }
+    });
+  }
+
+  private createLegal():void{
     if(!this.legalRepresentative.id){
       this._api.createReferencedPerson(this.legalRepresentative).subscribe(response=>{
         switch (response.code){
@@ -699,7 +751,7 @@ export class AddGasStationComponent implements OnInit {
     }
   }
 
-  public createManager():void{
+  private createManager():void{
     if (!this.manger.id){
       this._api.createReferencedPerson(this.manger).subscribe(response=>{
         switch (response.code){

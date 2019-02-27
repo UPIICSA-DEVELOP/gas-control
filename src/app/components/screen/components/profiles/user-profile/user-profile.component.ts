@@ -123,12 +123,7 @@ export class UserProfileComponent implements OnInit {
       this._snackBarService.openSnackBar('Por favor, registre su firma','OK', 3000);
       return;
     }
-    if(this.profileForm.invalid){
-      this._snackBarService.openSnackBar('Por favor, complete todos los campos','OK', 3000);
-      return;
-    }
-
-    this._router.navigate(['/home']);
+    this._router.navigate(['/home']).then();
   }
 
   public saveChangeBeforeExit(): void{
@@ -141,7 +136,7 @@ export class UserProfileComponent implements OnInit {
       switch (response.code) {
         case 1:
           this.change = false;
-          this._router.navigate(['/home']);
+          this._router.navigate(['/home']).then();
           break;
       }
     })
@@ -439,7 +434,7 @@ export class UserProfileComponent implements OnInit {
     }
   }
 
-  public updateProfile(data: any, event?: any):void{
+  public updateProfile(data: any):void{
     if (this.profileForm.invalid){
       return;
     }
@@ -523,33 +518,36 @@ export class UserProfileComponent implements OnInit {
 
 
   private updateBusiness(isNewEmail: boolean):void{
-    this._snackBarService.openSnackBar('Epere un momento...','',0);
+    this._snackBarService.openSnackBar('Espere un momento...','',0);
     const data = {
+      name: this.user.name || '',
+      lastName: this.user.lastName  || '',
       company: (this.user.role===4 ? '':LocalStorageService.getItem(Constants.StationInDashboard).name) || '',
-      name: this.user.name + ' ' + this.user.lastName || '',
-      workPosition: this.user.jobTitle || '',
       phone: this.user.phoneNumber || '',
+      workPosition: this.user.jobTitle || '',
       email: this.user.email || '',
+      countryCode : this.user.countryCode || '',
+      industryCode: '1',
       website: this.user.website || '',
-      imageUrl: this.user.profileImage ? this.user.profileImage.thumbnail + '=s1200':'Lorem ipsum'
-
+      profileImage: this.user.profileImage ? this.user.profileImage.blobName : null,
+      profileImageThumbnail: this.user.profileImage ? this.user.profileImage.thumbnail + '=s1200': null
     };
-    this._api.businessCardService(data).subscribe((response: Blob) => {
-      const form = new FormData();
-      form.append('file', response, 'bc'+new Date().getTime()+'.png');
-      this._uploadFile.uploadToBusinessCard(form).subscribe(response=>{
-        if(response.success && response.success === 'true'){
+    this._api.businessCardService(data).subscribe(response => {
+      switch (response.code){
+        case 200:
           this._snackBarService.closeSnackBar();
-          this.user.bCard = {
-            cardThumbnail: response.secondaryUrl
-          };
+          this.user.bCard = response.item;
           if (isNewEmail){
             this.updateProfileDataWithNewEmail()
           }else{
             this.saveUser();
           }
-        }
-      })
+          break;
+        default:
+          this._snackBarService.closeSnackBar();
+          this._snackBarService.openSnackBar('Ha ocurrido un error, por favor, intente de nuevo', 'OK', 3000);
+          break;
+      }
     });
   };
 
@@ -590,7 +588,7 @@ export class UserProfileComponent implements OnInit {
           this.change = false;
           LocalStorageService.removeItem(Constants.NotSignature);
           this._snackBarService.openSnackBar('Información actualizada','OK',3000);
-          this._router.navigate(['/home']);
+          this._router.navigate(['/home']).then();
           break;
         default:
           this._dialogService.alertDialog('No se pudo acceder', 'Se produjo un error de comunicación con el servidor', 'ACEPTAR');

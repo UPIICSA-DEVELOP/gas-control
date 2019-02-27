@@ -544,32 +544,37 @@ export class ProfileComponent implements OnInit {
   }
 
   private updateBusiness(isNewEmail: boolean):void{
-    this._snackBarService.openSnackBar('Epere un momento...','',0);
+    this._snackBarService.openSnackBar('Espere un momento...','',0);
     const data = {
+      name: this.user.name || '',
+      lastName: this.user.lastName  || '',
       company: this.consultancy.businessName || '',
-      name: this.user.name + ' ' + this.user.lastName || '',
-      workPosition: this.user.jobTitle || '',
       phone: this.user.phoneNumber || '',
+      workPosition: this.user.jobTitle || '',
       email: this.user.email || '',
+      countryCode : this.user.countryCode || '',
+      industryCode: '1',
       website: this.user.website || '',
-      imageUrl: this.user.profileImage ? this.user.profileImage.thumbnail + '=s1200':'Lorem ipsum'
+      profileImage: this.user.profileImage ? this.user.profileImage.blobName : '',
+      profileImageThumbnail: this.user.profileImage ? this.user.profileImage.thumbnail + '=s1200': ''
     };
-    this._api.businessCardService(data).subscribe((response: Blob) => {
-      const form = new FormData();
-      form.append('file', response, 'bc'+new Date().getTime()+'.png');
-      this._uploadImage.uploadToBusinessCard(form).subscribe(response=>{
-        if(response.success && response.success === 'true'){
+    console.log(data);
+    this._api.businessCardService(data).subscribe(response => {
+      switch (response.code){
+        case 200:
           this._snackBarService.closeSnackBar();
-          this.user.bCard = {
-            cardThumbnail: response.secondaryUrl
-          };
+          this.user.bCard = response.item;
           if (isNewEmail){
             this.updateProfileDataWithNewEmail()
           }else{
             this.saveProfileData();
           }
-        }
-      })
+          break;
+        default:
+          this._snackBarService.closeSnackBar();
+          this._snackBarService.openSnackBar('Ha ocurrido un error, por favor, intente de nuevo', 'OK', 3000);
+          break;
+      }
     });
   };
 
