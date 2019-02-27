@@ -4,7 +4,7 @@
  *  Proprietary and confidential
  */
 
-import {Component, DoCheck, ElementRef, Inject, Input, OnInit, ViewChild} from '@angular/core';
+import {Component, DoCheck, Inject, Input, OnInit} from '@angular/core';
 import {DatepickerService, DateRangeOptions} from '@app/components/screen/components/datepicker/datepicker.service';
 import {TaskFilterService} from '@app/components/screen/components/task-filter/task-filter.service';
 import {ApiService} from '@app/core/services/api/api.service';
@@ -18,6 +18,7 @@ import {ModalProceduresService} from '@app/components/screen/components/modal-pr
 import {CompressorReport, FEReport, HWGReport, OMReport, ScannedReport, VRSReport} from '@app/core/interfaces/interfaces';
 import {DOCUMENT} from '@angular/common';
 import {TaskFilterNameService} from '@app/components/screen/components/task-filter-name/task-filter-name.service';
+import {SharedNotification, SharedService, SharedTypeNotification} from '@app/core/services/shared/shared.service';
 
 @Component({
   selector: 'app-list-tasks',
@@ -41,17 +42,17 @@ export class ListTasksComponent implements OnInit, DoCheck {
   public start: any;
   public end: any;
   public today: boolean;
-  public showSearchBox: boolean;
   public tasks: any[];
   public tasksFilterd: any[];
   public zones: any[];
   public priority: any[];
   public typeFilter: string[];
   public filter: number;
-  public creationDate: number;
+  private _creationDate: number;
   public load: boolean;
   public user: any;
   public notCalendar: boolean;
+  public taskCreated: boolean;
   public taskForm: FormGroup[];
   public taskWithDivider: any[];
   public date: any[];
@@ -73,15 +74,18 @@ export class ListTasksComponent implements OnInit, DoCheck {
   private _firstOpen: boolean;
   private _taskType: string;
 
-  constructor(@Inject(DOCUMENT) private _document: Document,
-              private _dateService: DatepickerService,
-              private _filterService: TaskFilterService,
-              private _api: ApiService,
-              private _apiLoader: ApiLoaderService,
-              private _addStationService: AddStationService,
-              private _formBuilder: FormBuilder,
-              private _modalProceduresService: ModalProceduresService,
-              private _taskFilterNameService: TaskFilterNameService) {
+  constructor(
+    @Inject(DOCUMENT) private _document: Document,
+    private _dateService: DatepickerService,
+    private _filterService: TaskFilterService,
+    private _api: ApiService,
+    private _apiLoader: ApiLoaderService,
+    private _addStationService: AddStationService,
+    private _formBuilder: FormBuilder,
+    private _modalProceduresService: ModalProceduresService,
+    private _taskFilterNameService: TaskFilterNameService,
+    private _sharedService: SharedService
+  ) {
     this.date = [];
     this.personnelNames = [''];
     this.taskWithDivider = [];
@@ -98,9 +102,12 @@ export class ListTasksComponent implements OnInit, DoCheck {
     this.typeFilter = Constants.Filters;
     this._firstOpen = true;
     this._taskType = '0';
+    this.taskCreated = false;
+    this.tasks = [];
   }
 
   ngOnInit() {
+    this.checkChanges();
     this.initForms();
     this.user = LocalStorageService.getItem(Constants.UserInSession);
     this._apiLoader.getProgress().subscribe(load => {
@@ -117,6 +124,16 @@ export class ListTasksComponent implements OnInit, DoCheck {
     this.notCalendar = LocalStorageService.getItem(Constants.NotCalendarTask);
   }
 
+  private checkChanges():void{
+    this._sharedService.getNotifications().subscribe((response: SharedNotification)=>{
+      switch (response.type){
+        case SharedTypeNotification.NotCalendarTask:
+          console.log('others is launch');
+          break;
+      }
+    })
+  }
+
   public test(ev: string, type: string): void {
     this.taskForm[0].patchValue({
       [type]: ev
@@ -125,30 +142,35 @@ export class ListTasksComponent implements OnInit, DoCheck {
 
   private getStationTask(): void {
     this.filters = {
-      stationTaskId: this.station.stationTaskId || '0',
+      stationTaskId: this.station.stationTaskId,
       startDate: (this.start.timeStamp).toString(),
       status: (this.filter).toString(),
       endDate: (this.end.timeStamp).toString(),
       firstOpen: this._firstOpen,
-      type: this._taskType || '0'
+      type: this._taskType || ''
     };
+    this.taskWithDivider = [];
+    this.tasksFilterd = [];
     this._api.listTask(this.filters).subscribe(response => {
       switch (response.code) {
         case 200:
-          this.tasks = response.items;
           if (response.items) {
+            this.tasks = response.items;
             this.tasksCompare();
+          }else{
+            //this.notCalendar = true;
+            //this.taskCreated = true;
           }
           break;
         default:
-          this.tasks = [];
+          //this.notCalendar = true;
+          //this.taskCreated = true;
           break;
       }
     });
   }
 
   private tasksCompare(): void {
-    this.tasksFilterd = [];
     this.tasks.forEach(task => {
       this.taskTemplate.taskTemplates.forEach(template => {
         if (task.type === Number(template.id)) {
@@ -171,7 +193,6 @@ export class ListTasksComponent implements OnInit, DoCheck {
   }
 
   public sortTaskArrayByStatus(): void {
-    this.taskWithDivider = [];
     let headerPrevious = false, headerHistory = false;
     this.tasksFilterd = UtilitiesService.sortJSON(this.tasksFilterd, 'status', 'asc');
     this.taskWithDivider.push({
@@ -236,10 +257,10 @@ export class ListTasksComponent implements OnInit, DoCheck {
     this._api.getStationTask(this.station.stationTaskId).subscribe(response => {
       switch (response.code) {
         case 200:
-          this.creationDate = response.item.creationDate;
+          this._creationDate = response.item._creationDate;
           const config: DateRangeOptions = {
-            minDate: new Date((this.creationDate).toString().slice(0, 4) + '-' + (this.creationDate).toString().slice(4, 6) + '-' + (this.creationDate).toString().slice(6, 8)),
-            maxDate: new Date(((Number((this.creationDate).toString().slice(0, 4))) + 1).toString() + '-' + (this.creationDate).toString().slice(4, 6) + '-' + (this.creationDate).toString().slice(6, 8))
+            minDate: new Date((this._creationDate).toString().slice(0, 4) + '-' + (this._creationDate).toString().slice(4, 6) + '-' + (this._creationDate).toString().slice(6, 8)),
+            maxDate: new Date(((Number((this._creationDate).toString().slice(0, 4))) + 1).toString() + '-' + (this._creationDate).toString().slice(4, 6) + '-' + (this._creationDate).toString().slice(6, 8))
           };
           this._dateService.open(config).afterClosed().subscribe(response => {
             switch (response.code) {
@@ -333,6 +354,7 @@ export class ListTasksComponent implements OnInit, DoCheck {
     this.initCompressorForm();
     this.initHWGForm();
     this.initVRSForm();
+    this.initFEForm();
   }
 
   private resetElements(): void {
@@ -346,14 +368,12 @@ export class ListTasksComponent implements OnInit, DoCheck {
     this.taskForm[1].reset();
     this.taskForm[2].reset();
     this.taskForm[3].reset();
-    if (this.user.role !== 7) {
-      this.taskForm[0].disable();
-      this.taskForm[1].disable();
-      this.taskForm[2].disable();
-      this.taskForm[3].disable();
-      //this.taskForm[4].disable();
-    }
-    // this.taskForm[4].reset();
+     this.taskForm[4].reset();
+    this.taskForm[0].disable();
+    this.taskForm[1].disable();
+    this.taskForm[2].disable();
+    this.taskForm[3].disable();
+    this.taskForm[4].disable();
   }
 
   private initOMForm(): void {
@@ -424,7 +444,8 @@ export class ListTasksComponent implements OnInit, DoCheck {
 
   private initFEForm(): void {
     this.taskForm[4] = this._formBuilder.group({
-
+      startTime: ['',[]],
+      endTime:['',[]]
     });
   }
 
@@ -644,7 +665,11 @@ export class ListTasksComponent implements OnInit, DoCheck {
       taskId: task.taskId || undefined
     };
     this.date = UtilitiesService.convertDate(this.reportFE.date);
-    this.taskForm[4].patchValue({});
+    this.taskForm[4].patchValue({
+      startTime: this.reportFE.startTime,
+      endTime: this.reportFE.endTime
+    });
+    this.taskForm[4].disable();
   }
 
 }

@@ -301,6 +301,16 @@
     white-space: normal;
   }
 
+  /deep/.mat-expansion-panel-header-title{
+    margin-right: 0;
+  }
+
+  /deep/.mat-expansion-indicator{
+    position: absolute;
+    bottom: 20px;
+    right: 32px;
+  }
+
   .containerTask{
     width: 100%;
   }

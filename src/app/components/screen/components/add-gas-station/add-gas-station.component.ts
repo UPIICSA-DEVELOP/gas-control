@@ -23,6 +23,7 @@ import {PdfVisorOptions, PdfVisorService} from '@app/core/components/pdf-visor/p
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
 import {UtilitiesService} from '@app/core/utilities/utilities.service';
 import {Person, PersonInformation, Task} from '@app/core/interfaces/interfaces';
+import {SharedService, SharedTypeNotification} from '@app/core/services/shared/shared.service';
 
 interface Station {
   id?: string;
@@ -116,7 +117,6 @@ export class AddGasStationComponent implements OnInit {
   private _formSignatureTwo: FormData;
   private _formFileTwo: FormData;
   private _stationId: string;
-
   constructor(
     @Inject(MAT_DIALOG_DATA) private _data: any,
     private _api: ApiService,
@@ -131,6 +131,7 @@ export class AddGasStationComponent implements OnInit {
     private _modalStation: ModalStationService,
     private _dialogService: DialogService,
     private _pdfVisor: PdfVisorService,
+    private _sharedService: SharedService,
     private _dialogRef: MatDialogRef<AddGasStationComponent>
   ) {
     this.yearSelector = [];
@@ -933,7 +934,10 @@ export class AddGasStationComponent implements OnInit {
       switch (response.code){
         case 200:
           LocalStorageService.removeItem(Constants.NotCalendarTask);
-          this._dialogRef.close();
+          this._router.navigate(['/home'], {queryParams: {station: stationId}}).then(()=>{
+            this._dialogRef.close();
+            this._sharedService.setNotification({type: SharedTypeNotification.CreationTask,value:response.item});
+          });
           break;
       }
     });
