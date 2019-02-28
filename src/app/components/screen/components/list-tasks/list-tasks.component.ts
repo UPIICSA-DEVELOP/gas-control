@@ -248,7 +248,7 @@ export class ListTasksComponent implements OnInit, DoCheck {
 
   public sortTaskArrayByStatus(): void {
     let headerPrevious = false, headerHistory = false;
-    this.tasksFilterd = UtilitiesService.sortJSON(this.tasksFilterd, 'originalDate', 'desc');
+    this.tasksFilterd = UtilitiesService.sortJSON(this.tasksFilterd, 'status', 'asc');
     this.taskWithDivider.push({
       type: this.filter!==0 ? 2 : 1,
       title: 'Hoy',
@@ -275,6 +275,13 @@ export class ListTasksComponent implements OnInit, DoCheck {
             expanded: false,
           });
           headerPrevious = true;
+          this.taskWithDivider.push({
+            type: 2,
+            title: '',
+            original: item,
+            id: item.id,
+            expanded: false,
+          });
         } else {
           this.taskWithDivider.push({
             type: 2,
@@ -294,6 +301,13 @@ export class ListTasksComponent implements OnInit, DoCheck {
             expanded: false,
           });
           headerHistory = true;
+          this.taskWithDivider.push({
+            type: 2,
+            title: '',
+            original: item,
+            id: item.id,
+            expanded: false,
+          });
         } else {
           this.taskWithDivider.push({
             type: 2,
