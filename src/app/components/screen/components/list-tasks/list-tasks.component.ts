@@ -195,6 +195,7 @@ export class ListTasksComponent implements OnInit, DoCheck {
             id: task.id,
             type: task.type,
             date: UtilitiesService.convertDate(task.date),
+            originalDate: task.date,
             name: template.name,
             zone: template.zone,
             level: template.level,
@@ -247,7 +248,7 @@ export class ListTasksComponent implements OnInit, DoCheck {
 
   public sortTaskArrayByStatus(): void {
     let headerPrevious = false, headerHistory = false;
-    this.tasksFilterd = UtilitiesService.sortJSON(this.tasksFilterd, 'status', 'asc');
+    this.tasksFilterd = UtilitiesService.sortJSON(this.tasksFilterd, 'originalDate', 'desc');
     this.taskWithDivider.push({
       type: this.filter!==0 ? 2 : 1,
       title: 'Hoy',
@@ -367,7 +368,6 @@ export class ListTasksComponent implements OnInit, DoCheck {
 
   public search(): void {
     this._taskFilterNameService.open(this.taskTemplate.taskTemplates).afterClosed().subscribe(response => {
-      console.log(response);
       switch (response.code) {
         case 1:
           this._taskType = response.data.toString();
@@ -395,7 +395,6 @@ export class ListTasksComponent implements OnInit, DoCheck {
       }
       this._indexOldTaskExpanded = index;
       this._api.getTaskInformation(id, type).subscribe(response => {
-        console.log(response);
         switch (response.code) {
           case 200:
             if (response.items) {
@@ -414,7 +413,6 @@ export class ListTasksComponent implements OnInit, DoCheck {
       }
       this._indexOldTaskExpanded = index;
       this._api.getTaskInformation(id, type).subscribe(response => {
-        console.log(response);
         switch (response.code) {
           case 200:
             if (response.items) {
@@ -801,7 +799,6 @@ export class ListTasksComponent implements OnInit, DoCheck {
         case 200:
           if(response.items){
             const tasks = response.items;
-            console.log(tasks);
             this.compareNotCalendarTasks(tasks)
           }else{
             this.notCalendarTasks = [];

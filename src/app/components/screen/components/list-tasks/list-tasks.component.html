@@ -58,8 +58,7 @@
                   <div class="containerTask">
                     <div class="containerTask">
                       <mat-accordion class="containerTask">
-                        <mat-expansion-panel [expanded]="task.expanded"
-                                             (afterExpand)="getTaskInformation(i,task.original.id, task.original.typeReport, task.original.hwg)">
+                        <mat-expansion-panel [expanded]="task.expanded" (afterExpand)="getTaskInformation(i,task.original.id, task.original.typeReport, task.original.hwg)">
                           <mat-expansion-panel-header [collapsedHeight]="'88px'" [expandedHeight]="'88px'">
                             <mat-panel-title style="position: relative">
                               <div class="date">
@@ -169,7 +168,7 @@
                                     <ng-container *ngFor="let item of reportOM.personnelNames; let i = index">
                                       <mat-form-field class="inputs">
                                         <input matInput placeholder="{{i+1}}.- Nombre" [(ngModel)]="item"
-                                               [ngModelOptions]="{standalone: true}" [disabled]=" user.role!==7">
+                                               [ngModelOptions]="{standalone: true}" [disabled]="true">
                                       </mat-form-field>
                                     </ng-container>
                                   </ng-template>
@@ -177,7 +176,7 @@
                                     <ng-container *ngFor="let item of personnelNames; let i = index">
                                       <mat-form-field class="inputs">
                                         <input matInput placeholder="{{i+1}}.- Nombre" [(ngModel)]="item"
-                                               [ngModelOptions]="{standalone: true}" [disabled]=" user.role!==7">
+                                               [ngModelOptions]="{standalone: true}" [disabled]="true">
                                       </mat-form-field>
                                     </ng-container>
                                   </ng-template>
@@ -677,14 +676,14 @@
                                         <h3 style="margin: 8px 0; font-size: 14px">Tanque {{i+1}}</h3>
                                       </div>
                                       <mat-radio-group [(ngModel)]="tankItem.fuelType"
-                                                       [ngModelOptions]="{standalone: true}" [disabled]="user.role!==7"
+                                                       [ngModelOptions]="{standalone: true}" [disabled]="true"
                                                        style="display: flex;width: 90%;justify-content: space-between; flex-wrap: wrap">
                                         <mat-radio-button [value]="1">Magna</mat-radio-button>
                                         <mat-radio-button [value]="2">Premium</mat-radio-button>
                                       </mat-radio-group>
                                       <mat-form-field class="inputs">
                                         <mat-select [(ngModel)]="tankItem.capAndSteamAdapter"
-                                                    [ngModelOptions]="{standalone: true}" [disabled]="user.role!==7"
+                                                    [ngModelOptions]="{standalone: true}" [disabled]="true"
                                                     placeholder="Tapa y adaptador de vapor" required>
                                           <mat-option [value]="'Satisfactorio'">Satisfactorio</mat-option>
                                           <mat-option [value]="'No satisfactorio'">No satisfactorio</mat-option>
@@ -693,7 +692,7 @@
                                       </mat-form-field>
                                       <mat-form-field class="inputs">
                                         <mat-select [(ngModel)]="tankItem.capAndFillingAdapter"
-                                                    [ngModelOptions]="{standalone: true}" [disabled]="user.role!==7"
+                                                    [ngModelOptions]="{standalone: true}" [disabled]="true"
                                                     placeholder="Tapa y adaptador de llenado" required>
                                           <mat-option [value]="'Satisfactorio'">Satisfactorio</mat-option>
                                           <mat-option [value]="'No satisfactorio'">No satisfactorio</mat-option>
@@ -702,7 +701,7 @@
                                       </mat-form-field>
                                       <mat-form-field class="inputs">
                                         <mat-select [(ngModel)]="tankItem.overfillValve"
-                                                    [ngModelOptions]="{standalone: true}" [disabled]="user.role!==7"
+                                                    [ngModelOptions]="{standalone: true}" [disabled]="true"
                                                     placeholder="Válvula de sobrellenado" required>
                                           <mat-option [value]="'Satisfactorio'">Satisfactorio</mat-option>
                                           <mat-option [value]="'No satisfactorio'">No satisfactorio</mat-option>
@@ -711,7 +710,7 @@
                                       </mat-form-field>
                                       <mat-form-field class="inputs">
                                         <mat-select [(ngModel)]="tankItem.vacuumPressureValve"
-                                                    [ngModelOptions]="{standalone: true}" [disabled]="user.role!==7"
+                                                    [ngModelOptions]="{standalone: true}" [disabled]="true"
                                                     placeholder="Válvula de presión-vacío" required>
                                           <mat-option [value]="'Satisfactorio'">Satisfactorio</mat-option>
                                           <mat-option [value]="'No satisfactorio'">No satisfactorio</mat-option>
@@ -724,13 +723,13 @@
                                     <div class="inputs">
                                       <h3 style="margin: 8px 0; font-size: 14px">Tanque 1</h3>
                                     </div>
-                                    <mat-radio-group [disabled]="user.role!==7"
+                                    <mat-radio-group [disabled]="true"
                                                      style="display: flex;width: 90%;justify-content: space-between; flex-wrap: wrap">
                                       <mat-radio-button value="Magna">Magna</mat-radio-button>
                                       <mat-radio-button value="Premium">Premium</mat-radio-button>
                                     </mat-radio-group>
                                     <mat-form-field class="inputs">
-                                      <mat-select [disabled]="user.role!==7" placeholder="Tapa y adaptador de vapor"
+                                      <mat-select [disabled]="true" placeholder="Tapa y adaptador de vapor"
                                                   required>
                                         <mat-option value="Satisfactorio">Satisfactorio</mat-option>
                                         <mat-option value="No satisfactorio">No satisfactorio</mat-option>
@@ -738,7 +737,7 @@
                                       </mat-select>
                                     </mat-form-field>
                                     <mat-form-field class="inputs">
-                                      <mat-select [disabled]="user.role!==7" placeholder="Tapa y adaptador de llenado"
+                                      <mat-select [disabled]="true" placeholder="Tapa y adaptador de llenado"
                                                   required>
                                         <mat-option value="Satisfactorio">Satisfactorio</mat-option>
                                         <mat-option value="No satisfactorio">No satisfactorio</mat-option>
@@ -746,7 +745,7 @@
                                       </mat-select>
                                     </mat-form-field>
                                     <mat-form-field class="inputs">
-                                      <mat-select [disabled]="user.role!==7" placeholder="Válvula de sobrellenado"
+                                      <mat-select [disabled]="true" placeholder="Válvula de sobrellenado"
                                                   required>
                                         <mat-option value="Satisfactorio">Satisfactorio</mat-option>
                                         <mat-option value="No satisfactorio">No satisfactorio</mat-option>
@@ -754,7 +753,7 @@
                                       </mat-select>
                                     </mat-form-field>
                                     <mat-form-field class="inputs">
-                                      <mat-select [disabled]="user.role!==7" placeholder="Válvula de presión-vacío"
+                                      <mat-select [disabled]="true" placeholder="Válvula de presión-vacío"
                                                   required>
                                         <mat-option value="Satisfactorio">Satisfactorio</mat-option>
                                         <mat-option value="No satisfactorio">No satisfactorio</mat-option>
@@ -988,7 +987,7 @@
                                       </div>
                                       <mat-form-field class="inputs">
                                         <mat-select [(ngModel)]="extinguisher.area"
-                                                    [ngModelOptions]="{standalone: true}" [disabled]="user.role!==7"
+                                                    [ngModelOptions]="{standalone: true}" [disabled]="true"
                                                     placeholder="Área" required>
                                           <mat-option [value]="'Zona de despacho'">Zona de despacho</mat-option>
                                           <mat-option [value]="'Zona de tanques'">Zona de tanques</mat-option>
@@ -1003,13 +1002,13 @@
                                       </mat-form-field>
                                       <mat-form-field class="inputs">
                                         <input matInput placeholder="Capacidad" [(ngModel)]="extinguisher.capacity"
-                                               [ngModelOptions]="{standalone: true}" [disabled]="user.role!==7"
+                                               [ngModelOptions]="{standalone: true}" [disabled]="true"
                                                required>
                                       </mat-form-field>
                                       <div class="times">
                                         <mat-form-field class="clock" [(ngModel)]="extinguisher.expiration"
                                                         [ngModelOptions]="{standalone: true}"
-                                                        [disabled]="user.role!==7">
+                                                        [disabled]="true">
                                           <mat-select placeholder="Vencimiento" required>
                                             <mat-option value="Vigente">Vigente</mat-option>
                                             <mat-option value="Caducado">Caducao</mat-option>
@@ -1017,7 +1016,7 @@
                                         </mat-form-field>
                                         <mat-form-field class="clock">
                                           <mat-select placeholder="Manómetro" [(ngModel)]="extinguisher.manometer"
-                                                      [ngModelOptions]="{standalone: true}" [disabled]="user.role!==7"
+                                                      [ngModelOptions]="{standalone: true}" [disabled]="true"
                                                       required>
                                             <mat-option value="Descargado">Descargado</mat-option>
                                             <mat-option value="Óptimo">Óptimo</mat-option>
@@ -1028,7 +1027,7 @@
                                       <div class="times">
                                         <mat-form-field class="clock">
                                           <mat-select placeholder="Manguera" [(ngModel)]="extinguisher.hose"
-                                                      [ngModelOptions]="{standalone: true}" [disabled]="user.role!==7"
+                                                      [ngModelOptions]="{standalone: true}" [disabled]="true"
                                                       required>
                                             <mat-option value="Satisfactorio">Satisfactorio</mat-option>
                                             <mat-option value="No satisfactorio">No satisfactorio</mat-option>
@@ -1036,7 +1035,7 @@
                                         </mat-form-field>
                                         <mat-form-field class="clock">
                                           <mat-select placeholder="Cincho" [(ngModel)]="extinguisher.belt"
-                                                      [ngModelOptions]="{standalone: true}" [disabled]="user.role!==7"
+                                                      [ngModelOptions]="{standalone: true}" [disabled]="true"
                                                       required>
                                             <mat-option value="Satisfactorio">Satisfactorio</mat-option>
                                             <mat-option value="No satisfactorio">No satisfactorio</mat-option>
@@ -1046,14 +1045,14 @@
                                       <div class="times">
                                         <mat-form-field class="clock">
                                           <mat-select placeholder="Collarín" [(ngModel)]="extinguisher.collar"
-                                                      [ngModelOptions]="{standalone: true}" [disabled]="user.role!==7">
+                                                      [ngModelOptions]="{standalone: true}" [disabled]="true">
                                             <mat-option value="Satisfactorio">Satisfactorio</mat-option>
                                             <mat-option value="No satisfactorio">No satisfactorio</mat-option>
                                           </mat-select>
                                         </mat-form-field>
                                         <mat-form-field class="clock">
                                           <mat-select placeholder="Seguro" [(ngModel)]="extinguisher.safe"
-                                                      [ngModelOptions]="{standalone: true}" [disabled]="user.role!==7">
+                                                      [ngModelOptions]="{standalone: true}" [disabled]="true">
                                             <mat-option value="Satisfactorio">Satisfactorio</mat-option>
                                             <mat-option value="No satisfactorio">No satisfactorio</mat-option>
                                           </mat-select>
@@ -1158,8 +1157,8 @@
             <div class="empty-list">
               <div *ngIf="!notCalendar; then taskInCreation else notTask"></div>
               <ng-template #taskInCreation>
-                <div class="message">La Estación no cuenta por el momento con tareas programadas, por favor consulte
-                  mañana
+                <div class="message">
+                  La Estación no cuenta por el momento con tareas programadas, por favor consulte mañana
                 </div>
               </ng-template>
               <ng-template #notTask>
