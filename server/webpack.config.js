@@ -3,7 +3,7 @@ const webpack = require('webpack');
 const nodeExternals = require('webpack-node-externals');
 module.exports = {
   entry: {
-    server: path.join(__dirname, 'index.ts')
+    server: path.join(__dirname, 'server.ts')
   },
   resolve: {
     extensions: ['.ts', '.js']

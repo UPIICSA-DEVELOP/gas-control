@@ -11,25 +11,25 @@
     "ng": "ng",
     "start": "ng serve --open",
     "test:ssr": "gulp clean && ng build -c develop --stats-json && ng run com.maplander.inspector.front:server:develop && npm run postbuild:test:ssr",
-    "postbuild:test:ssr": "npm run webpack:server",
-    "build:develop": "gulp clean && ng build -c develop ---deploy-url https://storage.googleapis.com/inspector-maplander-develop.appspot.com/cdn/ && ng run com.maplander.inspector.front:server:develop && npm run postbuild:develop",
-    "postbuild:develop": "npm run upload:cdn:dev && gulp clean:source && npm run create:nconfig:dev && npm run copy:endpoints && npm run webpack:server",
+    "postbuild:test:ssr": "npm run server",
+    "build:develop": "gulp clean && ng build -c develop && ng run com.maplander.inspector.front:server:develop && npm run postbuild:develop",
+    "postbuild:develop": "npm run nconfig:dev && npm run copy:dependencies && npm run copy:endpoints && npm run server",
     "prebuild": "npm run version | gulp clean",
-    "build": "ng build --prod ---deploy-url https://storage.googleapis.com/maplander-public.appspot.com/cdn/ && ng run com.maplander.inspector.front:server:production",
-    "postbuild": "npm run upload:cdn:prod && gulp clean:source && npm run create:nconfig:prod && npm run webpack:server",
-    "webpack:server": "webpack --mode production --config server/webpack.config.js --progress --colors && node dist/server",
+    "build": "ng build --prod && ng run com.maplander.inspector.front:server:production",
+    "postbuild": "npm run nconfig:prod && npm run copy:endpoints && npm run deep:links && npm run dependencies && npm run server",
+    "server": "webpack --mode production --config server/webpack.config.js --progress --colors",
     "bundle-report": "webpack-bundle-analyzer dist/browser/stats.json",
-    "deploy:develop": "gcloud app deploy ./dist/app.yaml --project=inspector-maplander-develop",
-    "deploy:production": "gcloud app deploy ./dist/app.yaml --project=maplander-public",
-    "upload:cdn:dev": "set NODE_ENV=dev&& node upload.js",
-    "upload:cdn:prod": "set NODE_ENV=prod&& node upload.js",
-    "create:nconfig:dev": "set NODE_ENV=dev&& node nconfig.js",
-    "create:nconfig:prod": "set NODE_ENV=prod&& node nconfig.js",
+    "deploy:develop": "gulp zip && node deploy/scp && node deploy/remotely -env=dev && gulp clean:zip",
+    "deploy:production": "gulp zip && node deploy/scp && node deploy/remotely -env=prod && gulp clean:zip",
+    "nconfig:dev": "set NODE_ENV=dev&& node nconfig.js",
+    "nconfig:prod": "set NODE_ENV=prod&& node nconfig.js",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
     "version": "start cmd.exe /K node version",
-    "copy:endpoints": "gulp copy:endpoints"
+    "copy:endpoints": "gulp copy:endpoints",
+    "copy:dependencies": "node server/copy-dependencies.js",
+    "deep:links": "node deep-links/deep-links.js"
   },
   "dependencies": {
     "@agm/core": "^1.0.0-beta.3",
@@ -71,7 +71,11 @@
     "tslib": "^1.9.0",
     "webpack": "^4.27.1",
     "webshot": "^0.18.0",
-    "zone.js": "0.8.26"
+    "zone.js": "0.8.26",
+    "winston": "^3.2.0",
+    "morgan": "^1.9.1",
+    "gulp-zip": "^4.2.0",
+    "remote-exec": "0.0.3"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "~0.11.0",
@@ -116,6 +120,7 @@
     "uglify-js": "^3.4.9",
     "webpack-bundle-analyzer": "^2.13.1",
     "webpack-cli": "^3.1.0",
-    "webpack-node-externals": "^1.7.2"
+    "webpack-node-externals": "^1.7.2",
+    "gulp-gzip": "^1.4.2"
   }
 }

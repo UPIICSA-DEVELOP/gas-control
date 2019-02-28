@@ -1,23 +1,26 @@
 const gulp = require('gulp');
 const del = require('del');
+const zip = require('gulp-zip');
 
 gulp.task('clean', function () {
-  return del(['./dist/browser', './dist/server', './dist/server.js', './dist/bot.js', './dist/sitemap.js']);
+  return del(['./dist']);
 });
 
-gulp.task('clean:source', function () {
-  return del([
-    './dist/browser/main.js',
-    './dist/browser/polyfills.js',
-    './dist/browser/runtime.js',
-    './dist/browser/vendor.js',
-    './dist/browser/styles.css'
-  ]);
+gulp.task('clean:zip', function () {
+  return del(['./dist/dist.zip']);
 });
 
 gulp.task('copy:endpoints', function() {
   return gulp.src(['./endpoints/**/*'])
     .pipe(gulp.dest('./dist/endpoints'));
 });
+
+gulp.task('zip', () => {
+  return gulp.src('./dist/**')
+    .pipe(zip('./dist.zip'))
+    .pipe(gulp.dest('./dist/'))
+});
+
+
 
 
