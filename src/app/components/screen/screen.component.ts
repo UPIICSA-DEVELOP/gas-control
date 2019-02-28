@@ -46,6 +46,9 @@ export class ScreenComponent implements OnInit, OnDestroy{
   }
 
   ngOnInit() {
+    if(this._activateRoute.snapshot.queryParams['station']){
+      this._stationId = this._activateRoute.snapshot.queryParams['station'];
+    }
     this.validateSignatureUser();
     this.initNotifications();
     this.checkChanges();
@@ -59,9 +62,6 @@ export class ScreenComponent implements OnInit, OnDestroy{
           this.getDashboardInformation(this._stationId);
         }
     });
-    if(this._activateRoute.snapshot.queryParams['station']){
-      this._stationId = this._activateRoute.snapshot.queryParams['station'];
-    }
   }
 
   ngOnDestroy():void{
