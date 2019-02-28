@@ -16,6 +16,6 @@ export class AddConsultancyService {
   ) { }
 
   public open(): MatDialogRef<AddConsultancyComponent>{
-    return this._dialog.open(AddConsultancyComponent, {panelClass: 'add-consultancy-panel'});
+    return this._dialog.open(AddConsultancyComponent, {panelClass: 'add-consultancy-panel', disableClose: true});
   }
 }
