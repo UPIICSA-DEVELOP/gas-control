@@ -301,6 +301,27 @@
     white-space: normal;
   }
 
+  /deep/.mat-expansion-panel-header-title{
+    margin-right: 0;
+  }
+
+  /deep/.mat-expansion-indicator{
+    position: absolute;
+    bottom: 20px;
+    right: 32px;
+  }
+
+  /deep/.mat-tab-label .mat-tab-label-content{
+    white-space: normal;
+    display: flex;
+  }
+
+  /deep/.mat-tab-body-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
   .containerTask{
     width: 100%;
   }

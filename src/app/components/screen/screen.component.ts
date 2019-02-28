@@ -16,6 +16,7 @@ import {AuthService} from '@app/core/services/auth/auth.service';
 import {environment} from '@env/environment';
 import {filter} from 'rxjs/internal/operators';
 import {Subscription} from 'rxjs';
+import {SharedNotification, SharedService, SharedTypeNotification} from '@app/core/services/shared/shared.service';
 
 @Component({
   selector: 'app-screen',
@@ -37,7 +38,8 @@ export class ScreenComponent implements OnInit, OnDestroy{
     private _activateRoute: ActivatedRoute,
     private _addStationService: AddStationService,
     private _dialogService: DialogService,
-    private _auth: AuthService
+    private _auth: AuthService,
+    private _sharedService: SharedService
   ) {
     this.menu = true;
     this.stationList = [];
@@ -46,8 +48,7 @@ export class ScreenComponent implements OnInit, OnDestroy{
   ngOnInit() {
     this.validateSignatureUser();
     this.initNotifications();
-
-
+    this.checkChanges();
     this._subscribe = this._router.events
       .pipe(filter(event => event instanceof NavigationEnd))
       .subscribe(response => {
@@ -57,8 +58,6 @@ export class ScreenComponent implements OnInit, OnDestroy{
           }
           this.getDashboardInformation(this._stationId);
         }
-
-
     });
     if(this._activateRoute.snapshot.queryParams['station']){
       this._stationId = this._activateRoute.snapshot.queryParams['station'];
@@ -68,6 +67,18 @@ export class ScreenComponent implements OnInit, OnDestroy{
   ngOnDestroy():void{
     this._subscribe.unsubscribe();
   }
+
+ private checkChanges():void{
+   this._sharedService.getNotifications().subscribe((response: SharedNotification)=>{
+     switch (response.type){
+       case SharedTypeNotification.CreationTask:
+         if(response.value){
+           this.createTasks(response.value.id);
+         }
+         break;
+     }
+   });
+ }
 
   public addCollaborator():void{
     this._router.navigate(['/home/add-collaborator'], {queryParams:{stationId: this.stationActive.id}}).then();
@@ -215,13 +226,20 @@ export class ScreenComponent implements OnInit, OnDestroy{
     }
   }
 
-  private createTasks():void{
-    this._api.buildTaskByStation(this.stationActive.stationTaskId).subscribe(response=>{
+  private createTasks(id?: string):void{
+    this._api.buildTaskByStation(id || this.stationActive.stationTaskId).subscribe(response=>{
       switch (response.code){
         case 200:
           if(response.item.status!==3){
-            this.createTasks();
+            this._sharedService.setNotification({type: SharedTypeNotification.ListTask, value: true});
+            this.createTasks(id);
           }
+          break;
+        case 400:
+          this.stationActive.stationTaskId = id ? id : response.item.id;
+          this._sharedService.setNotification({type: SharedTypeNotification.ListTask, value: false});
+          break;
+        default:
           break;
       }
     })
@@ -229,5 +247,9 @@ export class ScreenComponent implements OnInit, OnDestroy{
 
   public addStation():void{
     this._addStationService.open();
+  }
+
+  public openOtherTasks():void{
+    this._sharedService.setNotification({type: SharedTypeNotification.NotCalendarTask, value: true});
   }
 }

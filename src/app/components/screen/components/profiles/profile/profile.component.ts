@@ -268,10 +268,8 @@ export class ProfileComponent implements OnInit {
         this.newSignature = false;
         if(LocalStorageService.getItem(Constants.NotSignature)){
           this.user.signature = this.newSig;
-          this.saveProfileData(false);
-        }else{
-          this.updateProfile(this.profileForm.value);
         }
+        this.updateProfile(this.profileForm.value);
       }
     });
   }
@@ -441,7 +439,7 @@ export class ProfileComponent implements OnInit {
       this.uploadSignature();
       return;
     }
-      this.saveInfoUserAndConsultancy(data);
+    this.saveInfoUserAndConsultancy(data);
   }
 
   private saveInfoUserAndConsultancy(data: any): void{

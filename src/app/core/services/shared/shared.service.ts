@@ -12,6 +12,8 @@ export enum SharedTypeNotification {
   ListTask,
   Home,
   Status,
+  NotCalendarTask,
+  CreationTask,
   Other
 }
 

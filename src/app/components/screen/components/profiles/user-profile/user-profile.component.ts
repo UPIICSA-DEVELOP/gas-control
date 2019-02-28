@@ -197,10 +197,8 @@ export class UserProfileComponent implements OnInit {
         this.newSignature = false;
         if(LocalStorageService.getItem(Constants.NotSignature)){
           this.user.signature = this.newSig;
-          this.saveUser(false);
-        }else{
-          this.updateProfile(this.profileForm.value);
         }
+        this.updateProfile(this.profileForm.value);
       }
     });
   }

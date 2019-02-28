@@ -7,12 +7,12 @@
 <div id="list-tasks">
   <mat-card class="container">
     <div class="header">
-      <h4>TAREAS</h4>
+      <h4 *ngIf="!others">TAREAS</h4>
       <div class="filters">
         <div class="settings">
           <mat-icon class="filter-icon">filter_list</mat-icon>
-          <mat-chip-list *ngIf="!showSearchBox">
-            <mat-chip [color]="'primary'" selected (click)="taskFilter()">
+          <mat-chip-list>
+            <mat-chip *ngIf="!others" [color]="'primary'" selected (click)="taskFilter()">
               Filtro por tareas:
               <span>&nbsp;{{typeFilter[filter]}}&nbsp;</span>
               <mat-icon>edit</mat-icon>
@@ -30,1155 +30,1515 @@
           <button mat-icon-button (click)="resetFilters()">
             <mat-icon>refresh</mat-icon>
           </button>
-          <button mat-icon-button (click)="search()">
+          <button *ngIf="others" mat-icon-button (click)="others = false">
+            <mat-icon>close</mat-icon>
+          </button>
+          <button mat-icon-button *ngIf="!others" (click)="search()">
             <mat-icon>search</mat-icon>
           </button>
         </div>
       </div>
     </div>
     <mat-card-content>
-      <div class="sub-container">
-        <div *ngIf="!notCalendar; then list else message"></div>
-        <ng-template #list>
-          <div id="task-{{task.id}}" class="card-list" *ngFor="let task of taskWithDivider; let i = index">
-            <div *ngIf="task.type === 1; then dividerText else taskCard"></div>
-            <ng-template #dividerText>
-              <div class="head-bold" style="margin: 8px 0">{{task.title}}</div>
-            </ng-template>
-            <ng-template #taskCard>
-              <mat-card class="task">
-                <div class="priority" *ngIf="task.original.level === 3" style="background-color:#E00000"></div>
-                <div class="priority" *ngIf="task.original.level === 1" style="background-color:#257602"></div>
-                <div class="priority" *ngIf="task.original.level === 2" style="background-color:#FFD800"></div>
-                <div class="containerTask">
+      <div *ngIf="others; then secondList else firstList"></div>
+      <ng-template #firstList>
+        <div class="sub-container">
+          <div *ngIf="tasks.length === 0; then message else list"></div>
+          <ng-template #list>
+            <div id="task-{{task.id}}" class="card-list" *ngFor="let task of taskWithDivider; let i = index">
+              <div *ngIf="task.type === 1 && !task.original; then dividerText else taskCard"></div>
+              <ng-template #dividerText>
+                <div class="head-bold" style="margin: 8px 0">{{task.title}}</div>
+              </ng-template>
+              <ng-template #taskCard>
+                <mat-card class="task">
+                  <div class="priority" *ngIf="task.original.level === 3" style="background-color:#E00000"></div>
+                  <div class="priority" *ngIf="task.original.level === 1" style="background-color:#257602"></div>
+                  <div class="priority" *ngIf="task.original.level === 2" style="background-color:#FFD800"></div>
                   <div class="containerTask">
-                    <mat-accordion class="containerTask">
-                      <mat-expansion-panel [expanded]="task.expanded"  (afterExpand)="getTaskInformation(i,task.original.id, task.original.typeReport, task.original.hwg)">
-                        <mat-expansion-panel-header [collapsedHeight]="'88px'" [expandedHeight]="'88px'">
-                          <mat-panel-title style="position: relative">
-                            <div class="date">
-                              <div>
-                                <div class="text-bold">{{task.original.date[0]}}</div>
-                                <div class="text-bold">{{task.original.date[1]}}</div>
-                              </div>
-                            </div>
-                            <div class="content">
-                              <div class="head">{{task.original.name}}</div>
-                              <div class="text">{{zones[task.original.zone-1]}}</div>
-                              <div class="text">{{priority[task.original.level-1]}}</div>
-                            </div>
-                            <div style="position: absolute; top: 0; right: 0;">
-                              <mat-icon style="color: #257602" *ngIf="task.original.status === 4">
-                                check
-                              </mat-icon>
-                              <mat-icon style="color: #E00000" *ngIf="task.original.status === 3 || task.original.status === 2">
-                                close
-                              </mat-icon>
-                            </div>
-                          </mat-panel-title>
-                        </mat-expansion-panel-header>
-                        <div class="divider"></div>
-                        <ng-container [ngSwitch]="task.original.typeReport">
-                          <div class="containerTask" *ngSwitchCase="1">
-                            <div class="task-header">
-                              <div class="head-bold">Operación de la Estación de Servicio</div>
-                              <div class="control-data">
-                                <div *ngIf="reportOM">Fecha: {{date[0]}} {{date[1]}} {{date[2]}}&nbsp;&nbsp;</div>
-                                <div *ngIf="reportOM">Folio: {{reportOM.folio}}</div>
-                              </div>
-                            </div>
-                            <form [formGroup]="taskForm[0]" class="flex-box">
-                              <div class="columns">
-                                <div class="times">
-                                  <mat-form-field class="clock">
-                                    <input formControlName="startTime" placeholder="Hora de inicio" matInput required appDisableWrite (time)="test($event, 'startTime')"
-                                           value="{{taskForm[0].controls['startTime'].value | formatTime}}">
-                                    <mat-error *ngIf="taskForm[0].controls['startTime'].hasError('required')">
-                                      Este campo es obligatorio
-                                    </mat-error>
-                                  </mat-form-field>
-                                  <mat-form-field class="clock">
-                                    <input formControlName="endTime" placeholder="Hora de término" matInput required appDisableWrite (time)="test($event, 'endTime')"
-                                           value="{{taskForm[0].controls['endTime'].value | formatTime}}">
-                                    <mat-error *ngIf="taskForm[0].controls['endTime'].hasError('required')">
-                                      Este campo es obligatorio
-                                    </mat-error>
-                                  </mat-form-field>
+                    <div class="containerTask">
+                      <mat-accordion class="containerTask">
+                        <mat-expansion-panel [expanded]="task.expanded" (afterExpand)="getTaskInformation(i,task.original.id, task.original.typeReport, task.original.hwg)">
+                          <mat-expansion-panel-header [collapsedHeight]="'88px'" [expandedHeight]="'88px'">
+                            <mat-panel-title style="position: relative">
+                              <div class="date">
+                                <div>
+                                  <div class="text-bold">{{task.original.date[0]}}</div>
+                                  <div class="text-bold">{{task.original.date[1]}}</div>
                                 </div>
-                                <mat-form-field class="inputs">
-                                  <mat-select formControlName="maintenanceType" placeholder="Tipo de mantenimiento" required>
-                                    <mat-option value="Preventivo">Mantenimiento preventivo</mat-option>
-                                    <mat-option value="Correctivo">Mantenimiento correctivo</mat-option>
-                                  </mat-select>
-                                  <mat-error *ngIf="taskForm[0].controls['maintenanceType'].hasError('required')">
-                                    Este campo es obligatorio
-                                  </mat-error>
-                                </mat-form-field>
-                                <mat-form-field class="inputs">
-                                  <mat-select formControlName="activityType" placeholder="Seleccione actividad" required>
-                                    <mat-option value="Monitoreo de pozos y detección de fugas">Monitoreo de pozos y detección de fugas</mat-option>
-                                    <mat-option value="Albañilería, herreria, etc">Albañilería, herreria, etc</mat-option>
-                                    <mat-option value="Pruebas de eficiencia">Pruebas de eficiencia</mat-option>
-                                    <mat-option value="Auditoria externa e interna">Auditoria externa e interna</mat-option>
-                                    <mat-option value="Hidrosanitario">Hidrosanitario</mat-option>
-                                    <mat-option value="Limpieza">Limpieza</mat-option>
-                                    <mat-option value="Mantenimiento de la Estación">Mantenimiento de la Estación</mat-option>
-                                    <mat-option value="Mécanico">Mécanico</mat-option>
-                                    <mat-option value="Visita de autoridad">Visita de autoridad</mat-option>
-                                    <mat-option value="Eléctrico">Eléctrico</mat-option>
-                                    <mat-option value="Otro">Otro</mat-option>
-                                  </mat-select>
-                                  <mat-error *ngIf="taskForm[0].controls['activityType'].hasError('required')">
-                                    Este campo es obligatorio
-                                  </mat-error>
-                                </mat-form-field>
-                                <mat-form-field class="inputs">
-                                  <mat-select formControlName="personnelType" placeholder="Procedencia del personal" required>
-                                    <mat-option value="Interno">Personal interno</mat-option>
-                                    <mat-option value="Externo">Personal externo</mat-option>
-                                  </mat-select>
-                                  <mat-error *ngIf="taskForm[0].controls['personnelType'].hasError('required')">
-                                    Este campo es obligatorio
-                                  </mat-error>
-                                </mat-form-field>
-                                <div class="text-divider">
-                                  <span>Personal involucrado <sup>*</sup></span>
+                              </div>
+                              <div class="content">
+                                <div class="head">{{task.original.name}}</div>
+                                <div class="text">{{zones[task.original.zone-1]}}</div>
+                                <div class="text">{{priority[task.original.level-1]}}</div>
+                              </div>
+                              <div style="position: absolute; top: 0; right: 4px;">
+                                <mat-icon style="color: #257602; font-size: 16px; width: 16px; height: 16px;"
+                                          *ngIf="task.original.status === 4">
+                                  check
+                                </mat-icon>
+                                <mat-icon style="color: #E00000; font-size: 16px; width: 16px; height: 16px;"
+                                          *ngIf="task.original.status === 3">
+                                  close
+                                </mat-icon>
+                                <mat-icon style="color: #707070; font-size: 16px; width: 16px; height: 16px;"
+                                          svgIcon="icons:task_previous" *ngIf=" task.original.status === 2"></mat-icon>
+                              </div>
+                            </mat-panel-title>
+                          </mat-expansion-panel-header>
+                          <div class="divider"></div>
+                          <ng-container [ngSwitch]="task.original.typeReport">
+                            <div class="containerTask" *ngSwitchCase="1">
+                              <div class="task-header">
+                                <div class="head-bold">Operación de la Estación de Servicio</div>
+                                <div class="control-data">
+                                  <div *ngIf="reportOM">Fecha: {{date[0]}} {{date[1]}} {{date[2]}}&nbsp;&nbsp;</div>
+                                  <div *ngIf="reportOM">Folio: {{reportOM.folio | formatFolio}}</div>
                                 </div>
-                                <ng-container *ngIf="reportOM; then listComplete else listEmpty"></ng-container>
-                                <ng-template #listComplete>
-                                  <ng-container *ngFor="let item of reportOM.personnelNames; let i = index">
-                                    <mat-form-field class="inputs">
-                                      <input matInput placeholder="{{i+1}}.- Nombre" [(ngModel)]="item" [ngModelOptions]="{standalone: true}" [disabled]=" user.role!==7">
+                              </div>
+                              <form [formGroup]="taskForm[0]" class="flex-box">
+                                <div class="columns">
+                                  <div class="times">
+                                    <mat-form-field class="clock">
+                                      <input formControlName="startTime" placeholder="Hora de inicio" matInput required
+                                             appDisableWrite (time)="test($event, 'startTime')"
+                                             value="{{taskForm[0].controls['startTime'].value | formatTime}}">
+                                      <mat-error *ngIf="taskForm[0].controls['startTime'].hasError('required')">
+                                        Este campo es obligatorio
+                                      </mat-error>
                                     </mat-form-field>
-                                  </ng-container>
-                                </ng-template>
-                                <ng-template #listEmpty>
-                                  <ng-container *ngFor="let item of personnelNames; let i = index">
-                                    <mat-form-field class="inputs">
-                                      <input matInput placeholder="{{i+1}}.- Nombre" [(ngModel)]="item" [ngModelOptions]="{standalone: true}" [disabled]=" user.role!==7">
+                                    <mat-form-field class="clock">
+                                      <input formControlName="endTime" placeholder="Hora de término" matInput required
+                                             appDisableWrite (time)="test($event, 'endTime')"
+                                             value="{{taskForm[0].controls['endTime'].value | formatTime}}">
+                                      <mat-error *ngIf="taskForm[0].controls['endTime'].hasError('required')">
+                                        Este campo es obligatorio
+                                      </mat-error>
                                     </mat-form-field>
-                                  </ng-container>
-                                </ng-template>
-                                <div class="text-divider">
-                                  Equipo de protección utilizado <sup>*</sup>
-                                </div>
-                                <div class="inputs">
-                                  <div class="space-box">
-                                    <div class="checks-row">
-                                      <mat-checkbox formControlName="cottonClothes">Ropa de algodón</mat-checkbox>
-                                    </div>
-                                    <div class="checks-row">
-                                      <mat-checkbox formControlName="goggles">Goggles</mat-checkbox>
-                                    </div>
                                   </div>
-                                  <div class="space-box">
-                                    <div class="checks-row">
-                                      <mat-checkbox formControlName="industrialShoes">Zapato industrial</mat-checkbox>
-                                    </div>
-                                    <div class="checks-row">
-                                      <mat-checkbox formControlName="protectiveGoggles">Lentes de protección</mat-checkbox>
-                                    </div>
-                                  </div>
-                                  <div class="space-box">
-                                    <div class="checks-row">
-                                      <mat-checkbox formControlName="gloves">Guantes</mat-checkbox>
-                                    </div>
-                                    <div class="checks-row">
-                                      <mat-checkbox formControlName="kneepads">Rodilleras</mat-checkbox>
-                                    </div>
-                                  </div>
-                                  <div class="space-box">
-                                    <div class="checks-row">
-                                      <mat-checkbox formControlName="faceMask">Cubrebocas</mat-checkbox>
-                                    </div>
-                                    <div class="checks-row">
-                                      <mat-checkbox formControlName="helmet">Cascos</mat-checkbox>
-                                    </div>
-                                  </div>
-                                </div>
-                              </div>
-                              <div class="columns">
-                                <mat-form-field class="inputs">
-                                  <input formControlName="toolsAndMaterials" matInput placeholder="Herramientas y materiales utilizados">
-                                </mat-form-field>
-                                <div class="text-divider">
-                                  Procedimientos utilizados
-                                </div>
-                                <div class="inputs" *ngIf="reportOM && reportOM.procedures">
-                                  <div *ngFor="let procedure of reportOM.procedures; let i = index;">
-                                    <div class="procedure" *ngIf="procedure === 1">1.- {{taskTemplate.procedures[procedure-1].name}}</div>
-                                    <div class="procedure" *ngIf="procedure === 2">2.- {{taskTemplate.procedures[procedure-1].name}}</div>
-                                    <div class="procedure" *ngIf="procedure === 3">3.- {{taskTemplate.procedures[procedure-1].name}}</div>
-                                    <div class="procedure" *ngIf="procedure === 4">4.- {{taskTemplate.procedures[procedure-1].name}}</div>
-                                    <div class="procedure" *ngIf="procedure === 5">5.- {{taskTemplate.procedures[procedure-1].name}}</div>
-                                    <div class="procedure" *ngIf="procedure === 6">6.- {{taskTemplate.procedures[procedure-1].name}}</div>
-                                    <div class="procedure" *ngIf="procedure === 7">7.- {{taskTemplate.procedures[procedure-1].name}}</div>
-                                    <div class="procedure" *ngIf="procedure === 8">8.- {{taskTemplate.procedures[procedure-1].name}}</div>
-                                    <div class="procedure" *ngIf="procedure === 9">9.- {{taskTemplate.procedures[procedure-1].name}}</div>
-                                    <div class="procedure" *ngIf="procedure === 10">10.- {{taskTemplate.procedures[procedure-1].name}}</div>
-                                    <div class="procedure" *ngIf="procedure === 11">11.- {{taskTemplate.procedures[procedure-1].name}}</div>
-                                    <div class="procedure" *ngIf="procedure === 12">12.- {{taskTemplate.procedures[procedure-1].name}}</div>
-                                  </div>
-                                </div>
-                                <div class="text" style="font-size: 12px !important; margin-top: 4px;">
-                                  Si la actividad requiere de autorización del gerente, anote el nombre a continuación
-                                </div>
-                                <mat-form-field class="inputs">
-                                  <input formControlName="managerName" matInput placeholder="Nombre completo">
-                                </mat-form-field>
-                                <mat-form-field class="inputs">
-                                  <input formControlName="observations" matInput placeholder="Observaciones">
-                                </mat-form-field>
-                                <div class="image-header">
-                                  Captura fotográfica de evidencia.
-                                </div>
-                                <div class="image-container">
-                                  <mat-icon *ngIf="!reportOM || !reportOM.fileCS" class="default-image">
-                                    image
-                                  </mat-icon>
-                                  <img class="evidence" *ngIf="reportOM && reportOM.fileCS" [src]="reportOM.fileCS.thumbnail" alt="Evidence capture">
-                                </div>
-                                <div class="text-sign">
-                                  Nombre y firma del responsable
-                                </div>
-                                <div class="inputs">
-                                  <div class="signature-element">
-                                    <img *ngIf="reportOM && reportOM.signature" [src]="reportOM.signature.thumbnail">
-                                    <div *ngIf="!reportOM || !reportOM.signature" style="width: 60%; height: 60px"></div>
-                                  </div>
-                                  <div class="divider"></div>
-                                  <div *ngIf="!reportOM || !reportOM.name" class="name">Nombre</div>
-                                  <div *ngIf="reportOM && reportOM.name" class="name">{{reportOM.name}}</div>
-                                </div>
-                                <div class="finish" *ngIf="user.role === 7">
-                                  <button mat-flat-button [color]="'primary'">FINALZAR</button>
-                                </div>
-                              </div>
-                            </form>
-                            <div class="divider" *ngIf="task.original.hwg"></div>
-                            <form [formGroup]="taskForm[2]" *ngIf="task.original.hwg" class="flex-box">
-                              <div class="columns">
-                                <mat-form-field class="inputs">
-                                  <mat-select formControlName="area" placeholder="Lugar de generación" required>
-                                    <mat-option value="Zona de despacho">Zona de despacho</mat-option>
-                                    <mat-option value="Zona de tanques">Zona de tanques</mat-option>
-                                    <mat-option value="Cuarto de máquinas">Cuarto de máquinas</mat-option>
-                                    <mat-option value="Trampa de combustible">Trampa de combustible</mat-option>
-                                  </mat-select>
-                                  <mat-error *ngIf="taskForm[2].controls['area'].hasError('required')">
-                                    Este campo es obligatorio
-                                  </mat-error>
-                                </mat-form-field>
-                                <mat-form-field class="inputs">
-                                  <mat-select formControlName="waste" placeholder="Residuo generado" required>
-                                    <mat-option value="Envases contaminados con aceites">Envases contaminados con aceites
-                                    </mat-option>
-                                    <mat-option value="Natas y grasas de la trampa de combustible">Natas y grasas de la trampa
-                                      de combustible
-                                    </mat-option>
-                                    <mat-option value="Filtros de gasolina y diesel">Filtros de gasolina y diesel</mat-option>
-                                    <mat-option value="Residuos de aceite y pintura">Residuos de aceite y pintura</mat-option>
-                                  </mat-select>
-                                  <mat-error *ngIf="taskForm[2].controls['area'].hasError('required')"></mat-error>
-                                </mat-form-field>
-                                <div class="text-divider">
-                                  Características<sup>*</sup>
-                                </div>
-                                <div class="inputs">
-                                  <div class="space-box">
-                                    <div class="checks-row">
-                                      <mat-checkbox formControlName="corrosive">Corrosivo</mat-checkbox>
-                                    </div>
-                                    <div class="checks-row">
-                                      <mat-checkbox formControlName="reactive">Reactivo</mat-checkbox>
-                                    </div>
-                                  </div>
-                                  <div class="space-box">
-                                    <div class="checks-row">
-                                      <mat-checkbox formControlName="explosive">Explosivo</mat-checkbox>
-                                    </div>
-                                    <div class="checks-row">
-                                      <mat-checkbox formControlName="toxic">Tóxico</mat-checkbox>
-                                    </div>
-                                  </div>
-                                  <div class="space-box">
-                                    <div class="checks-row">
-                                      <mat-checkbox formControlName="flammable">Inflamable</mat-checkbox>
-                                    </div>
-                                    <div class="checks-row"></div>
-                                  </div>
-                                </div>
-                                <div style="display: flex; justify-content: space-between; width: 90%">
-                                  <mat-form-field style="width: 65%">
-                                    <input formControlName="quantity" matInput placeholder="Cantidad generada" required>
-                                    <mat-error *ngIf="taskForm[2].controls['quantity'].hasError('required')"></mat-error>
-                                  </mat-form-field>
-                                  <mat-form-field style="width: 30%;">
-                                    <mat-select formControlName="unity" placeholder="Unidad" required>
-                                      <mat-option value="Pzas">Pzas.</mat-option>
-                                      <mat-option value="kg">kg</mat-option>
-                                      <mat-option value="gr">gr</mat-option>
-                                      <mat-option value="lt">lt</mat-option>
+                                  <mat-form-field class="inputs">
+                                    <mat-select formControlName="maintenanceType" placeholder="Tipo de mantenimiento"
+                                                required>
+                                      <mat-option value="Preventivo">Mantenimiento preventivo</mat-option>
+                                      <mat-option value="Correctivo">Mantenimiento correctivo</mat-option>
                                     </mat-select>
-                                    <mat-error *ngIf="taskForm[2].controls['unity'].hasError('required')">
+                                    <mat-error *ngIf="taskForm[0].controls['maintenanceType'].hasError('required')">
                                       Este campo es obligatorio
                                     </mat-error>
                                   </mat-form-field>
+                                  <mat-form-field class="inputs">
+                                    <mat-select formControlName="activityType" placeholder="Seleccione actividad"
+                                                required>
+                                      <mat-option value="Monitoreo de pozos y detección de fugas">Monitoreo de pozos y
+                                        detección de fugas
+                                      </mat-option>
+                                      <mat-option value="Albañilería, herreria, etc">Albañilería, herreria, etc
+                                      </mat-option>
+                                      <mat-option value="Pruebas de eficiencia">Pruebas de eficiencia</mat-option>
+                                      <mat-option value="Auditoria externa e interna">Auditoria externa e interna
+                                      </mat-option>
+                                      <mat-option value="Hidrosanitario">Hidrosanitario</mat-option>
+                                      <mat-option value="Limpieza">Limpieza</mat-option>
+                                      <mat-option value="Mantenimiento de la Estación">Mantenimiento de la Estación
+                                      </mat-option>
+                                      <mat-option value="Mécanico">Mécanico</mat-option>
+                                      <mat-option value="Visita de autoridad">Visita de autoridad</mat-option>
+                                      <mat-option value="Eléctrico">Eléctrico</mat-option>
+                                      <mat-option value="Otro">Otro</mat-option>
+                                    </mat-select>
+                                    <mat-error *ngIf="taskForm[0].controls['activityType'].hasError('required')">
+                                      Este campo es obligatorio
+                                    </mat-error>
+                                  </mat-form-field>
+                                  <mat-form-field class="inputs">
+                                    <mat-select formControlName="personnelType" placeholder="Procedencia del personal"
+                                                required>
+                                      <mat-option value="Interno">Personal interno</mat-option>
+                                      <mat-option value="Externo">Personal externo</mat-option>
+                                    </mat-select>
+                                    <mat-error *ngIf="taskForm[0].controls['personnelType'].hasError('required')">
+                                      Este campo es obligatorio
+                                    </mat-error>
+                                  </mat-form-field>
+                                  <div class="text-divider">
+                                    <span>Personal involucrado <sup>*</sup></span>
+                                  </div>
+                                  <ng-container *ngIf="reportOM; then listComplete else listEmpty"></ng-container>
+                                  <ng-template #listComplete>
+                                    <ng-container *ngFor="let item of reportOM.personnelNames; let i = index">
+                                      <mat-form-field class="inputs">
+                                        <input matInput placeholder="{{i+1}}.- Nombre" [(ngModel)]="item"
+                                               [ngModelOptions]="{standalone: true}" [disabled]="true">
+                                      </mat-form-field>
+                                    </ng-container>
+                                  </ng-template>
+                                  <ng-template #listEmpty>
+                                    <ng-container *ngFor="let item of personnelNames; let i = index">
+                                      <mat-form-field class="inputs">
+                                        <input matInput placeholder="{{i+1}}.- Nombre" [(ngModel)]="item"
+                                               [ngModelOptions]="{standalone: true}" [disabled]="true">
+                                      </mat-form-field>
+                                    </ng-container>
+                                  </ng-template>
+                                  <div class="text-divider">
+                                    Equipo de protección utilizado <sup>*</sup>
+                                  </div>
+                                  <div class="inputs">
+                                    <div class="space-box">
+                                      <div class="checks-row">
+                                        <mat-checkbox formControlName="cottonClothes">Ropa de algodón</mat-checkbox>
+                                      </div>
+                                      <div class="checks-row">
+                                        <mat-checkbox formControlName="goggles">Goggles</mat-checkbox>
+                                      </div>
+                                    </div>
+                                    <div class="space-box">
+                                      <div class="checks-row">
+                                        <mat-checkbox formControlName="industrialShoes">Zapato industrial</mat-checkbox>
+                                      </div>
+                                      <div class="checks-row">
+                                        <mat-checkbox formControlName="protectiveGoggles">Lentes de protección
+                                        </mat-checkbox>
+                                      </div>
+                                    </div>
+                                    <div class="space-box">
+                                      <div class="checks-row">
+                                        <mat-checkbox formControlName="gloves">Guantes</mat-checkbox>
+                                      </div>
+                                      <div class="checks-row">
+                                        <mat-checkbox formControlName="kneepads">Rodilleras</mat-checkbox>
+                                      </div>
+                                    </div>
+                                    <div class="space-box">
+                                      <div class="checks-row">
+                                        <mat-checkbox formControlName="faceMask">Cubrebocas</mat-checkbox>
+                                      </div>
+                                      <div class="checks-row">
+                                        <mat-checkbox formControlName="helmet">Cascos</mat-checkbox>
+                                      </div>
+                                    </div>
+                                  </div>
                                 </div>
-                              </div>
-                              <div class="columns">
-                                <mat-form-field class="inputs">
-                                  <mat-select formControlName="temporaryStorage" placeholder="Almacenamiento temporal" required>
-                                    <mat-option value="1">Tambo metálico</mat-option>
-                                    <mat-option value="2">Bolsas plásticas</mat-option>
-                                  </mat-select>
-                                  <mat-error *ngIf="taskForm[2].controls['temporaryStorage'].hasError('required')"></mat-error>
-                                </mat-form-field>
-                                <div class="image-header">
-                                  Captura fotográfica de evidencia.
+                                <div class="columns">
+                                  <mat-form-field class="inputs">
+                                    <input formControlName="toolsAndMaterials" matInput
+                                           placeholder="Herramientas y materiales utilizados">
+                                  </mat-form-field>
+                                  <div class="text-divider">
+                                    Procedimientos utilizados
+                                  </div>
+                                  <div class="inputs" *ngIf="reportOM && reportOM.procedures">
+                                    <div *ngFor="let procedure of reportOM.procedures; let i = index;">
+                                      <div class="procedure" *ngIf="procedure === 1">1.-
+                                        {{taskTemplate.procedures[procedure-1].name}}
+                                      </div>
+                                      <div class="procedure" *ngIf="procedure === 2">2.-
+                                        {{taskTemplate.procedures[procedure-1].name}}
+                                      </div>
+                                      <div class="procedure" *ngIf="procedure === 3">3.-
+                                        {{taskTemplate.procedures[procedure-1].name}}
+                                      </div>
+                                      <div class="procedure" *ngIf="procedure === 4">4.-
+                                        {{taskTemplate.procedures[procedure-1].name}}
+                                      </div>
+                                      <div class="procedure" *ngIf="procedure === 5">5.-
+                                        {{taskTemplate.procedures[procedure-1].name}}
+                                      </div>
+                                      <div class="procedure" *ngIf="procedure === 6">6.-
+                                        {{taskTemplate.procedures[procedure-1].name}}
+                                      </div>
+                                      <div class="procedure" *ngIf="procedure === 7">7.-
+                                        {{taskTemplate.procedures[procedure-1].name}}
+                                      </div>
+                                      <div class="procedure" *ngIf="procedure === 8">8.-
+                                        {{taskTemplate.procedures[procedure-1].name}}
+                                      </div>
+                                      <div class="procedure" *ngIf="procedure === 9">9.-
+                                        {{taskTemplate.procedures[procedure-1].name}}
+                                      </div>
+                                      <div class="procedure" *ngIf="procedure === 10">10.-
+                                        {{taskTemplate.procedures[procedure-1].name}}
+                                      </div>
+                                      <div class="procedure" *ngIf="procedure === 11">11.-
+                                        {{taskTemplate.procedures[procedure-1].name}}
+                                      </div>
+                                      <div class="procedure" *ngIf="procedure === 12">12.-
+                                        {{taskTemplate.procedures[procedure-1].name}}
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div class="text" style="font-size: 12px !important; margin-top: 4px;">
+                                    Si la actividad requiere de autorización del gerente, anote el nombre a continuación
+                                  </div>
+                                  <mat-form-field class="inputs">
+                                    <input formControlName="managerName" matInput placeholder="Nombre completo">
+                                  </mat-form-field>
+                                  <mat-form-field class="inputs">
+                                    <input formControlName="observations" matInput placeholder="Observaciones">
+                                  </mat-form-field>
+                                  <div class="image-header">
+                                    Captura fotográfica de evidencia.
+                                  </div>
+                                  <div class="image-container">
+                                    <mat-icon *ngIf="!reportOM || !reportOM.fileCS" class="default-image">
+                                      image
+                                    </mat-icon>
+                                    <img class="evidence" *ngIf="reportOM && reportOM.fileCS"
+                                         [src]="reportOM.fileCS.thumbnail" alt="Evidence capture">
+                                  </div>
+                                  <div class="text-sign">
+                                    Nombre y firma del responsable
+                                  </div>
+                                  <div class="inputs">
+                                    <div class="signature-element">
+                                      <img *ngIf="reportOM && reportOM.signature" [src]="reportOM.signature.thumbnail">
+                                      <div *ngIf="!reportOM || !reportOM.signature"
+                                           style="width: 60%; height: 60px"></div>
+                                    </div>
+                                    <div class="divider"></div>
+                                    <div *ngIf="!reportOM || !reportOM.name" class="name">Nombre</div>
+                                    <div *ngIf="reportOM && reportOM.name" class="name">{{reportOM.name}}</div>
+                                  </div>
+                                  <!--div class="finish" *ngIf="user.role === 7">
+                                    <button mat-flat-button [color]="'primary'">FINALZAR</button>
+                                  </div-->
                                 </div>
-                                <div class="image-container">
-                                  <mat-icon *ngIf="!reportHWG || !reportHWG.fileCS" class="default-image">
-                                    image
-                                  </mat-icon>
-                                  <img *ngIf="reportHWG && reportHWG.fileCS" class="evidence" [src]="reportHWG.fileCS.thumbnail" alt="Evidence capture">
+                              </form>
+                              <div class="divider" *ngIf="task.original.hwg"></div>
+                              <form [formGroup]="taskForm[2]" *ngIf="task.original.hwg" class="flex-box">
+                                <div class="columns">
+                                  <mat-form-field class="inputs">
+                                    <mat-select formControlName="area" placeholder="Lugar de generación" required>
+                                      <mat-option value="Zona de despacho">Zona de despacho</mat-option>
+                                      <mat-option value="Zona de tanques">Zona de tanques</mat-option>
+                                      <mat-option value="Cuarto de máquinas">Cuarto de máquinas</mat-option>
+                                      <mat-option value="Trampa de combustible">Trampa de combustible</mat-option>
+                                    </mat-select>
+                                    <mat-error *ngIf="taskForm[2].controls['area'].hasError('required')">
+                                      Este campo es obligatorio
+                                    </mat-error>
+                                  </mat-form-field>
+                                  <mat-form-field class="inputs">
+                                    <mat-select formControlName="waste" placeholder="Residuo generado" required>
+                                      <mat-option value="Envases contaminados con aceites">Envases contaminados con
+                                        aceites
+                                      </mat-option>
+                                      <mat-option value="Natas y grasas de la trampa de combustible">Natas y grasas de
+                                        la trampa
+                                        de combustible
+                                      </mat-option>
+                                      <mat-option value="Filtros de gasolina y diesel">Filtros de gasolina y diesel
+                                      </mat-option>
+                                      <mat-option value="Residuos de aceite y pintura">Residuos de aceite y pintura
+                                      </mat-option>
+                                    </mat-select>
+                                    <mat-error *ngIf="taskForm[2].controls['area'].hasError('required')"></mat-error>
+                                  </mat-form-field>
+                                  <div class="text-divider">
+                                    Características<sup>*</sup>
+                                  </div>
+                                  <div class="inputs">
+                                    <div class="space-box">
+                                      <div class="checks-row">
+                                        <mat-checkbox formControlName="corrosive">Corrosivo</mat-checkbox>
+                                      </div>
+                                      <div class="checks-row">
+                                        <mat-checkbox formControlName="reactive">Reactivo</mat-checkbox>
+                                      </div>
+                                    </div>
+                                    <div class="space-box">
+                                      <div class="checks-row">
+                                        <mat-checkbox formControlName="explosive">Explosivo</mat-checkbox>
+                                      </div>
+                                      <div class="checks-row">
+                                        <mat-checkbox formControlName="toxic">Tóxico</mat-checkbox>
+                                      </div>
+                                    </div>
+                                    <div class="space-box">
+                                      <div class="checks-row">
+                                        <mat-checkbox formControlName="flammable">Inflamable</mat-checkbox>
+                                      </div>
+                                      <div class="checks-row"></div>
+                                    </div>
+                                  </div>
+                                  <div style="display: flex; justify-content: space-between; width: 90%">
+                                    <mat-form-field style="width: 65%">
+                                      <input formControlName="quantity" matInput placeholder="Cantidad generada"
+                                             required>
+                                      <mat-error
+                                        *ngIf="taskForm[2].controls['quantity'].hasError('required')"></mat-error>
+                                    </mat-form-field>
+                                    <mat-form-field style="width: 30%;">
+                                      <mat-select formControlName="unity" placeholder="Unidad" required>
+                                        <mat-option value="Pzas">Pzas.</mat-option>
+                                        <mat-option value="kg">kg</mat-option>
+                                        <mat-option value="gr">gr</mat-option>
+                                        <mat-option value="lt">lt</mat-option>
+                                      </mat-select>
+                                      <mat-error *ngIf="taskForm[2].controls['unity'].hasError('required')">
+                                        Este campo es obligatorio
+                                      </mat-error>
+                                    </mat-form-field>
+                                  </div>
                                 </div>
-                              </div>
-                            </form>
-                          </div>
-                          <div class="containerTask" *ngSwitchCase="2">
-                            <div class="task-header">
-                              <div class="head-bold">Compresor de aire</div>
-                              <div class="control-data">
-                                <div *ngIf="reportComp">Fecha: {{date[0]}} {{date[1]}} {{date[2]}}</div>
-                                <div *ngIf="reportComp">Folio: {{reportComp.folio}}</div>
-                              </div>
+                                <div class="columns">
+                                  <mat-form-field class="inputs">
+                                    <mat-select formControlName="temporaryStorage" placeholder="Almacenamiento temporal"
+                                                required>
+                                      <mat-option value="Tambo metálico">Tambo metálico</mat-option>
+                                      <mat-option value="Bolsas plásticas">Bolsas plásticas</mat-option>
+                                    </mat-select>
+                                    <mat-error
+                                      *ngIf="taskForm[2].controls['temporaryStorage'].hasError('required')"></mat-error>
+                                  </mat-form-field>
+                                  <div class="image-header">
+                                    Captura fotográfica de evidencia.
+                                  </div>
+                                  <div class="image-container">
+                                    <mat-icon *ngIf="!reportHWG || !reportHWG.fileCS" class="default-image">
+                                      image
+                                    </mat-icon>
+                                    <img *ngIf="reportHWG && reportHWG.fileCS" class="evidence"
+                                         [src]="reportHWG.fileCS.thumbnail" alt="Evidence capture">
+                                  </div>
+                                </div>
+                              </form>
                             </div>
-                            <form [formGroup]="taskForm[1]" class="flex-box">
-                              <div class="columns">
-                                <div class="times">
-                                  <mat-form-field class="clock">
-                                    <input formControlName="startTime" placeholder="Hora de inicio" matInput required appDisableWrite (time)="test($event, 'startTime')"
-                                           value="{{taskForm[1].controls['startTime'].value | formatTime}}">
-                                    <mat-error *ngIf="taskForm[1].controls['startTime'].hasError('required')">
-                                      Este campo es obligatorio
-                                    </mat-error>
-                                  </mat-form-field>
-                                  <mat-form-field class="clock">
-                                    <input formControlName="endTime" placeholder="Hora de término" matInput required appDisableWrite (time)="test($event, 'endTime')"
-                                           value="{{taskForm[1].controls['endTime'].value | formatTime}}">
-                                    <mat-error *ngIf="taskForm[1].controls['endTime'].hasError('required')">
-                                      Este campo es obligatorio
-                                    </mat-error>
-                                  </mat-form-field>
+                            <div class="containerTask" *ngSwitchCase="2">
+                              <div class="task-header">
+                                <div class="head-bold">Compresor de aire</div>
+                                <div class="control-data">
+                                  <div *ngIf="reportComp">Fecha: {{date[0]}} {{date[1]}} {{date[2]}}</div>
+                                  <div *ngIf="reportComp">Folio: {{reportComp.folio | formatFolio}}</div>
                                 </div>
-                                <mat-form-field class="inputs">
-                                  <input formControlName="brand" matInput placeholder="Marca">
-                                </mat-form-field>
-                                <mat-form-field class="inputs">
-                                  <input formControlName="model" matInput placeholder="Modelo">
-                                </mat-form-field>
-                                <mat-form-field class="inputs">
-                                  <input formControlName="controlNumber" matInput placeholder="No. de control">
-                                </mat-form-field>
-                                <div style="display: flex; align-items: center; width: 90%;">
-                                  <mat-form-field>
-                                    <mat-select formControlName="pressure" placeholder="Presión del manómetro" required>
-                                      <mat-option value="7">7</mat-option>
-                                      <mat-option value="8">8</mat-option>
-                                      <mat-option value="9">9</mat-option>
+                              </div>
+                              <form [formGroup]="taskForm[1]" class="flex-box">
+                                <div class="columns">
+                                  <div class="times">
+                                    <mat-form-field class="clock">
+                                      <input formControlName="startTime" placeholder="Hora de inicio" matInput required
+                                             appDisableWrite (time)="test($event, 'startTime')"
+                                             value="{{taskForm[1].controls['startTime'].value | formatTime}}">
+                                      <mat-error *ngIf="taskForm[1].controls['startTime'].hasError('required')">
+                                        Este campo es obligatorio
+                                      </mat-error>
+                                    </mat-form-field>
+                                    <mat-form-field class="clock">
+                                      <input formControlName="endTime" placeholder="Hora de término" matInput required
+                                             appDisableWrite (time)="test($event, 'endTime')"
+                                             value="{{taskForm[1].controls['endTime'].value | formatTime}}">
+                                      <mat-error *ngIf="taskForm[1].controls['endTime'].hasError('required')">
+                                        Este campo es obligatorio
+                                      </mat-error>
+                                    </mat-form-field>
+                                  </div>
+                                  <mat-form-field class="inputs">
+                                    <input formControlName="brand" matInput placeholder="Marca">
+                                  </mat-form-field>
+                                  <mat-form-field class="inputs">
+                                    <input formControlName="model" matInput placeholder="Modelo">
+                                  </mat-form-field>
+                                  <mat-form-field class="inputs">
+                                    <input formControlName="controlNumber" matInput placeholder="No. de control">
+                                  </mat-form-field>
+                                  <div style="display: flex; align-items: center; width: 90%;">
+                                    <mat-form-field>
+                                      <mat-select formControlName="pressure" placeholder="Presión del manómetro"
+                                                  required>
+                                        <mat-option value="7">7</mat-option>
+                                        <mat-option value="8">8</mat-option>
+                                        <mat-option value="9">9</mat-option>
+                                      </mat-select>
+                                    </mat-form-field>
+                                    <div class="color" style="margin-left: 16px">Kg/cm<sup>2</sup></div>
+                                  </div>
+                                  <mat-form-field class="inputs">
+                                    <mat-select formControlName="purge" placeholder="Purga" required>
+                                      <mat-option value="Satisfactorio">Satisfactorio</mat-option>
+                                      <mat-option value="No satisfactorio">No satisfactorio</mat-option>
                                     </mat-select>
                                   </mat-form-field>
-                                  <div class="color" style="margin-left: 16px">Kg/cm<sup>2</sup></div>
-                                </div>
-                                <mat-form-field class="inputs">
-                                  <mat-select formControlName="purge" placeholder="Purga" required>
-                                    <mat-option value="Satisfactorio">Satisfactorio</mat-option>
-                                    <mat-option value="No satisfactorio">No satisfactorio</mat-option>
-                                  </mat-select>
-                                </mat-form-field>
-                                <mat-form-field class="inputs">
-                                  <mat-select formControlName="securityValve" placeholder="Disparo manual de válvula de seguridad" required>
-                                    <mat-option value="Función correcta">Función correcta</mat-option>
-                                    <mat-option value="Función incorrecta">Función incorrecta</mat-option>
-                                  </mat-select>
-                                </mat-form-field>
-                                <mat-form-field class="inputs">
-                                  <input formControlName="modifications" matInput placeholder="Modificaciones y medidas correctivas">
-                                </mat-form-field>
-                              </div>
-                              <div class="columns">
-                                <mat-form-field class="inputs">
-                                  <input formControlName="observations" matInput placeholder="Observaciones">
-                                </mat-form-field>
-                                <div class="image-header">
-                                  Captura fotográfica de evidencia
-                                </div>
-                                <div class="image-container">
-                                  <mat-icon *ngIf="!reportComp || !reportComp.fileCS" class="default-image">
-                                    image
-                                  </mat-icon>
-                                  <img class="evidence" *ngIf="reportComp && reportComp.fileCS" [src]="reportComp.fileCS.thumbnail" alt="Evidence capture">
-                                </div>
-                                <div class="text-sign">
-                                  Nombre y firma del responsable
-                                </div>
-                                <div class="inputs">
-                                  <div class="signature-element">
-                                    <img *ngIf="reportComp && reportComp.signature" [src]="reportComp.signature.thumbnail">
-                                    <div *ngIf="!reportComp || !reportComp.signature" style="width: 60%; height: 60px"></div>
-                                  </div>
-                                  <div class="divider"></div>
-                                  <div *ngIf="!reportComp || !reportComp.name" class="name">Nombre</div>
-                                  <div *ngIf="reportComp && reportComp.name" class="name">{{reportComp.name}}</div>
-                                </div>
-                                <div class="finish" *ngIf="user.role === 7">
-                                  <button mat-flat-button [color]="'primary'">FINALZAR</button>
-                                </div>
-                              </div>
-                            </form>
-                            <div class="divider" *ngIf="task.original.hwg"></div>
-                            <form [formGroup]="taskForm[2]" *ngIf="task.original.hwg" class="flex-box">
-                              <div class="columns">
-                                <mat-form-field class="inputs">
-                                  <mat-select formControlName="area" placeholder="Lugar de generación" required>
-                                    <mat-option value="Zona de despacho">Zona de despacho</mat-option>
-                                    <mat-option value="Zona de tanques">Zona de tanques</mat-option>
-                                    <mat-option value="Cuarto de máquinas">Cuarto de máquinas</mat-option>
-                                    <mat-option value="Trampa de combustible">Trampa de combustible</mat-option>
-                                  </mat-select>
-                                  <mat-error *ngIf="taskForm[2].controls['area'].hasError('required')">
-                                    Este campo es obligatorio
-                                  </mat-error>
-                                </mat-form-field>
-                                <mat-form-field class="inputs">
-                                  <mat-select formControlName="waste" placeholder="Residuo generado" required>
-                                    <mat-option value="Envases contaminados con aceites">Envases contaminados con aceites
-                                    </mat-option>
-                                    <mat-option value="Natas y grasas de la trampa de combustible">Natas y grasas de la trampa
-                                      de combustible
-                                    </mat-option>
-                                    <mat-option value="Filtros de gasolina y diesel">Filtros de gasolina y diesel</mat-option>
-                                    <mat-option value="Residuos de aceite y pintura">Residuos de aceite y pintura</mat-option>
-                                  </mat-select>
-                                  <mat-error *ngIf="taskForm[2].controls['area'].hasError('required')"></mat-error>
-                                </mat-form-field>
-                                <div class="text-divider">
-                                  Características<sup>*</sup>
-                                </div>
-                                <div class="inputs">
-                                  <div class="space-box">
-                                    <div class="checks-row">
-                                      <mat-checkbox formControlName="corrosive">Corrosivo</mat-checkbox>
-                                    </div>
-                                    <div class="checks-row">
-                                      <mat-checkbox formControlName="reactive">Reactivo</mat-checkbox>
-                                    </div>
-                                  </div>
-                                  <div class="space-box">
-                                    <div class="checks-row">
-                                      <mat-checkbox formControlName="explosive">Explosivo</mat-checkbox>
-                                    </div>
-                                    <div class="checks-row">
-                                      <mat-checkbox formControlName="toxic">Tóxico</mat-checkbox>
-                                    </div>
-                                  </div>
-                                  <div class="space-box">
-                                    <div class="checks-row">
-                                      <mat-checkbox formControlName="flammable">Inflamable</mat-checkbox>
-                                    </div>
-                                    <div class="checks-row"></div>
-                                  </div>
-                                </div>
-                                <div style="display: flex; justify-content: space-between; width: 90%">
-                                  <mat-form-field style="width: 65%">
-                                    <input formControlName="quantity" matInput placeholder="Cantidad generada" required>
-                                    <mat-error *ngIf="taskForm[2].controls['quantity'].hasError('required')"></mat-error>
-                                  </mat-form-field>
-                                  <mat-form-field style="width: 30%;">
-                                    <mat-select formControlName="unity" placeholder="Unidad" required>
-                                      <mat-option value="Pzas">Pzas.</mat-option>
-                                      <mat-option value="kg">kg</mat-option>
-                                      <mat-option value="gr">gr</mat-option>
-                                      <mat-option value="lt">lt</mat-option>
+                                  <mat-form-field class="inputs">
+                                    <mat-select formControlName="securityValve"
+                                                placeholder="Disparo manual de válvula de seguridad" required>
+                                      <mat-option value="Función correcta">Función correcta</mat-option>
+                                      <mat-option value="Función incorrecta">Función incorrecta</mat-option>
                                     </mat-select>
-                                    <mat-error *ngIf="taskForm[2].controls['unity'].hasError('required')">
+                                  </mat-form-field>
+                                  <mat-form-field class="inputs">
+                                    <input formControlName="modifications" matInput
+                                           placeholder="Modificaciones y medidas correctivas">
+                                  </mat-form-field>
+                                </div>
+                                <div class="columns">
+                                  <mat-form-field class="inputs">
+                                    <input formControlName="observations" matInput placeholder="Observaciones">
+                                  </mat-form-field>
+                                  <div class="image-header">
+                                    Captura fotográfica de evidencia
+                                  </div>
+                                  <div class="image-container">
+                                    <mat-icon *ngIf="!reportComp || !reportComp.fileCS" class="default-image">
+                                      image
+                                    </mat-icon>
+                                    <img class="evidence" *ngIf="reportComp && reportComp.fileCS"
+                                         [src]="reportComp.fileCS.thumbnail" alt="Evidence capture">
+                                  </div>
+                                  <div class="text-sign">
+                                    Nombre y firma del responsable
+                                  </div>
+                                  <div class="inputs">
+                                    <div class="signature-element">
+                                      <img *ngIf="reportComp && reportComp.signature"
+                                           [src]="reportComp.signature.thumbnail">
+                                      <div *ngIf="!reportComp || !reportComp.signature"
+                                           style="width: 60%; height: 60px"></div>
+                                    </div>
+                                    <div class="divider"></div>
+                                    <div *ngIf="!reportComp || !reportComp.name" class="name">Nombre</div>
+                                    <div *ngIf="reportComp && reportComp.name" class="name">{{reportComp.name}}</div>
+                                  </div>
+                                  <!--div class="finish" *ngIf="user.role === 7">
+                                    <button mat-flat-button [color]="'primary'">FINALZAR</button>
+                                  </div-->
+                                </div>
+                              </form>
+                              <div class="divider" *ngIf="task.original.hwg"></div>
+                              <form [formGroup]="taskForm[2]" *ngIf="task.original.hwg" class="flex-box">
+                                <div class="columns">
+                                  <mat-form-field class="inputs">
+                                    <mat-select formControlName="area" placeholder="Lugar de generación" required>
+                                      <mat-option value="Zona de despacho">Zona de despacho</mat-option>
+                                      <mat-option value="Zona de tanques">Zona de tanques</mat-option>
+                                      <mat-option value="Cuarto de máquinas">Cuarto de máquinas</mat-option>
+                                      <mat-option value="Trampa de combustible">Trampa de combustible</mat-option>
+                                    </mat-select>
+                                    <mat-error *ngIf="taskForm[2].controls['area'].hasError('required')">
                                       Este campo es obligatorio
                                     </mat-error>
                                   </mat-form-field>
+                                  <mat-form-field class="inputs">
+                                    <mat-select formControlName="waste" placeholder="Residuo generado" required>
+                                      <mat-option value="Envases contaminados con aceites">Envases contaminados con
+                                        aceites
+                                      </mat-option>
+                                      <mat-option value="Natas y grasas de la trampa de combustible">Natas y grasas de
+                                        la trampa
+                                        de combustible
+                                      </mat-option>
+                                      <mat-option value="Filtros de gasolina y diesel">Filtros de gasolina y diesel
+                                      </mat-option>
+                                      <mat-option value="Residuos de aceite y pintura">Residuos de aceite y pintura
+                                      </mat-option>
+                                    </mat-select>
+                                    <mat-error *ngIf="taskForm[2].controls['area'].hasError('required')"></mat-error>
+                                  </mat-form-field>
+                                  <div class="text-divider">
+                                    Características<sup>*</sup>
+                                  </div>
+                                  <div class="inputs">
+                                    <div class="space-box">
+                                      <div class="checks-row">
+                                        <mat-checkbox formControlName="corrosive">Corrosivo</mat-checkbox>
+                                      </div>
+                                      <div class="checks-row">
+                                        <mat-checkbox formControlName="reactive">Reactivo</mat-checkbox>
+                                      </div>
+                                    </div>
+                                    <div class="space-box">
+                                      <div class="checks-row">
+                                        <mat-checkbox formControlName="explosive">Explosivo</mat-checkbox>
+                                      </div>
+                                      <div class="checks-row">
+                                        <mat-checkbox formControlName="toxic">Tóxico</mat-checkbox>
+                                      </div>
+                                    </div>
+                                    <div class="space-box">
+                                      <div class="checks-row">
+                                        <mat-checkbox formControlName="flammable">Inflamable</mat-checkbox>
+                                      </div>
+                                      <div class="checks-row"></div>
+                                    </div>
+                                  </div>
+                                  <div style="display: flex; justify-content: space-between; width: 90%">
+                                    <mat-form-field style="width: 65%">
+                                      <input formControlName="quantity" matInput placeholder="Cantidad generada"
+                                             required>
+                                      <mat-error
+                                        *ngIf="taskForm[2].controls['quantity'].hasError('required')"></mat-error>
+                                    </mat-form-field>
+                                    <mat-form-field style="width: 30%;">
+                                      <mat-select formControlName="unity" placeholder="Unidad" required>
+                                        <mat-option value="Pzas">Pzas.</mat-option>
+                                        <mat-option value="kg">kg</mat-option>
+                                        <mat-option value="gr">gr</mat-option>
+                                        <mat-option value="lt">lt</mat-option>
+                                      </mat-select>
+                                      <mat-error *ngIf="taskForm[2].controls['unity'].hasError('required')">
+                                        Este campo es obligatorio
+                                      </mat-error>
+                                    </mat-form-field>
+                                  </div>
                                 </div>
-                              </div>
-                              <div class="columns">
-                                <mat-form-field class="inputs">
-                                  <mat-select formControlName="temporaryStorage" placeholder="Almacenamiento temporal" required>
-                                    <mat-option value="1">Tambo metálico</mat-option>
-                                    <mat-option value="2">Bolsas plásticas</mat-option>
-                                  </mat-select>
-                                  <mat-error *ngIf="taskForm[2].controls['temporaryStorage'].hasError('required')"></mat-error>
-                                </mat-form-field>
-                                <div class="image-header">
-                                  Captura fotográfica de evidencia.
+                                <div class="columns">
+                                  <mat-form-field class="inputs">
+                                    <mat-select formControlName="temporaryStorage" placeholder="Almacenamiento temporal"
+                                                required>
+                                      <mat-option value="Tambo metálico">Tambo metálico</mat-option>
+                                      <mat-option value="Bolsas plásticas">Bolsas plásticas</mat-option>
+                                    </mat-select>
+                                    <mat-error
+                                      *ngIf="taskForm[2].controls['temporaryStorage'].hasError('required')"></mat-error>
+                                  </mat-form-field>
+                                  <div class="image-header">
+                                    Captura fotográfica de evidencia.
+                                  </div>
+                                  <div class="image-container">
+                                    <mat-icon *ngIf="!reportHWG || !reportHWG.fileCS" class="default-image">
+                                      image
+                                    </mat-icon>
+                                    <img *ngIf="reportHWG && reportHWG.fileCS" class="evidence"
+                                         [src]="reportHWG.fileCS.thumbnail" alt="Evidence capture">
+                                  </div>
                                 </div>
-                                <div class="image-container">
-                                  <mat-icon *ngIf="!reportHWG || !reportHWG.fileCS" class="default-image">
-                                    image
-                                  </mat-icon>
-                                  <img *ngIf="reportHWG && reportHWG.fileCS" class="evidence" [src]="reportHWG.fileCS.thumbnail" alt="Evidence capture">
-                                </div>
-                              </div>
-                            </form>
-                          </div>
-                          <div class="containerTask" *ngSwitchCase="4">
-                            <div class="task-header">
-                              <div class="head-bold">Sistema de Recuperación de Vapores</div>
-                              <div class="control-data">
-                                <div>Fecha: {{task.original.date[0]}} {{task.original.date[1]}} {{task.original.date[2]}}</div>
-                                <div>Folio:</div>
-                              </div>
+                              </form>
                             </div>
-                            <form [formGroup]="taskForm[3]" class="flex-box">
-                              <div class="columns">
-                                <div class="inputs">
-                                  <h3 style="margin: 4px 0; font-size: 14px">Dispensarios</h3>
+                            <div class="containerTask" *ngSwitchCase="4">
+                              <div class="task-header">
+                                <div class="head-bold">Sistema de Recuperación de Vapores</div>
+                                <div class="control-data">
+                                  <div *ngIf="reportVRS">Fecha: {{date[0]}} {{date[1]}} {{date[2]}}&nbsp;&nbsp;</div>
+                                  <div>Foli | formatFolioo:</div>
                                 </div>
-                                <div class="inputs">
-                                  <div class="space-box">
-                                    <div class="checks-row">
-                                      <mat-checkbox formControlName="magna">Magna</mat-checkbox>
-                                    </div>
-                                    <div class="checks-row">
-                                      <mat-checkbox formControlName="premium">Premium</mat-checkbox>
+                              </div>
+                              <form [formGroup]="taskForm[3]" class="flex-box">
+                                <div class="columns">
+                                  <div class="inputs">
+                                    <h3 style="margin: 4px 0; font-size: 14px">Dispensarios</h3>
+                                  </div>
+                                  <div class="inputs">
+                                    <div class="space-box">
+                                      <div class="checks-row">
+                                        <mat-checkbox formControlName="magna">Magna</mat-checkbox>
+                                      </div>
+                                      <div class="checks-row">
+                                        <mat-checkbox formControlName="premium">Premium</mat-checkbox>
+                                      </div>
                                     </div>
                                   </div>
-                                </div>
-                                <div class="times">
-                                  <mat-form-field class="clock">
-                                    <mat-select formControlName="fuelNozzle" placeholder="Pistola" required>
-                                      <mat-option value="Satisfactorio">Satisfactorio</mat-option>
-                                      <mat-option value="No satisfactorio">No satisfactorio</mat-option>
-                                      <mat-option value="No definido">No definido</mat-option>
-                                    </mat-select>
-                                  </mat-form-field>
-                                  <mat-form-field class="clock">
-                                    <mat-select formControlName="longHose" placeholder="Manguera larga" required>
-                                      <mat-option value="Satisfactorio">Satisfactorio</mat-option>
-                                      <mat-option value="No satisfactorio">No satisfactorio</mat-option>
-                                      <mat-option value="No definido">No definido</mat-option>
-                                    </mat-select>
-                                  </mat-form-field>
-                                </div>
-                                <div class="times">
-                                  <mat-form-field class="clock">
-                                    <mat-select formControlName="breakAway" placeholder="Break away" required>
-                                      <mat-option value="Satisfactorio">Satisfactorio</mat-option>
-                                      <mat-option value="No satisfactorio">No satisfactorio</mat-option>
-                                      <mat-option value="No definido">No definido</mat-option>
-                                    </mat-select>
-                                  </mat-form-field>
-                                  <mat-form-field class="clock">
-                                    <mat-select formControlName="shortHose" placeholder="Manguera corta" required>
-                                      <mat-option value="Satisfactorio">Satisfactorio</mat-option>
-                                      <mat-option value="No satisfactorio">No satisfactorio</mat-option>
-                                      <mat-option value="No definido">No definido</mat-option>
-                                    </mat-select>
-                                  </mat-form-field>
-                                </div>
-                                <div class="times">
-                                  <mat-form-field class="clock">
-                                    <mat-select formControlName="equipment" placeholder="Equipo" required>
-                                      <mat-option value="Motor de succión">Motor de succión</mat-option>
-                                      <mat-option value="Turbina">Turbina</mat-option>
-                                      <mat-option value="Quemador">Quemador</mat-option>
-                                    </mat-select>
-                                  </mat-form-field>
-                                  <div class="clock"></div>
-                                </div>
-                                <div *ngIf="reportVRS && reportVRS.vrsTanks && reportVRS.vrsTanks.length !== 0; then tanksList else emptyTankList"></div>
-                                <ng-template #tanksList>
-                                  <div *ngFor="let tankItem of reportVRS.vrsTanks; let i = index">
+                                  <div class="times">
+                                    <mat-form-field class="clock">
+                                      <mat-select formControlName="fuelNozzle" placeholder="Pistola" required>
+                                        <mat-option value="Satisfactorio">Satisfactorio</mat-option>
+                                        <mat-option value="No satisfactorio">No satisfactorio</mat-option>
+                                        <mat-option value="No definido">No definido</mat-option>
+                                      </mat-select>
+                                    </mat-form-field>
+                                    <mat-form-field class="clock">
+                                      <mat-select formControlName="longHose" placeholder="Manguera larga" required>
+                                        <mat-option value="Satisfactorio">Satisfactorio</mat-option>
+                                        <mat-option value="No satisfactorio">No satisfactorio</mat-option>
+                                        <mat-option value="No definido">No definido</mat-option>
+                                      </mat-select>
+                                    </mat-form-field>
+                                  </div>
+                                  <div class="times">
+                                    <mat-form-field class="clock">
+                                      <mat-select formControlName="breakAway" placeholder="Break away" required>
+                                        <mat-option value="Satisfactorio">Satisfactorio</mat-option>
+                                        <mat-option value="No satisfactorio">No satisfactorio</mat-option>
+                                        <mat-option value="No definido">No definido</mat-option>
+                                      </mat-select>
+                                    </mat-form-field>
+                                    <mat-form-field class="clock">
+                                      <mat-select formControlName="shortHose" placeholder="Manguera corta" required>
+                                        <mat-option value="Satisfactorio">Satisfactorio</mat-option>
+                                        <mat-option value="No satisfactorio">No satisfactorio</mat-option>
+                                        <mat-option value="No definido">No definido</mat-option>
+                                      </mat-select>
+                                    </mat-form-field>
+                                  </div>
+                                  <div class="times">
+                                    <mat-form-field class="clock">
+                                      <mat-select formControlName="equipment" placeholder="Equipo" required>
+                                        <mat-option value="Motor de succión">Motor de succión</mat-option>
+                                        <mat-option value="Turbina">Turbina</mat-option>
+                                        <mat-option value="Quemador">Quemador</mat-option>
+                                      </mat-select>
+                                    </mat-form-field>
+                                    <div class="clock"></div>
+                                  </div>
+                                  <div
+                                    *ngIf="reportVRS && reportVRS.vrsTanks && reportVRS.vrsTanks.length !== 0; then tanksList else emptyTankList"></div>
+                                  <ng-template #tanksList>
+                                    <div *ngFor="let tankItem of reportVRS.vrsTanks; let i = index">
+                                      <div class="inputs">
+                                        <h3 style="margin: 8px 0; font-size: 14px">Tanque {{i+1}}</h3>
+                                      </div>
+                                      <mat-radio-group [(ngModel)]="tankItem.fuelType"
+                                                       [ngModelOptions]="{standalone: true}" [disabled]="true"
+                                                       style="display: flex;width: 90%;justify-content: space-between; flex-wrap: wrap">
+                                        <mat-radio-button [value]="1">Magna</mat-radio-button>
+                                        <mat-radio-button [value]="2">Premium</mat-radio-button>
+                                      </mat-radio-group>
+                                      <mat-form-field class="inputs">
+                                        <mat-select [(ngModel)]="tankItem.capAndSteamAdapter"
+                                                    [ngModelOptions]="{standalone: true}" [disabled]="true"
+                                                    placeholder="Tapa y adaptador de vapor" required>
+                                          <mat-option [value]="'Satisfactorio'">Satisfactorio</mat-option>
+                                          <mat-option [value]="'No satisfactorio'">No satisfactorio</mat-option>
+                                          <mat-option [value]="'No determinado'">No determinado</mat-option>
+                                        </mat-select>
+                                      </mat-form-field>
+                                      <mat-form-field class="inputs">
+                                        <mat-select [(ngModel)]="tankItem.capAndFillingAdapter"
+                                                    [ngModelOptions]="{standalone: true}" [disabled]="true"
+                                                    placeholder="Tapa y adaptador de llenado" required>
+                                          <mat-option [value]="'Satisfactorio'">Satisfactorio</mat-option>
+                                          <mat-option [value]="'No satisfactorio'">No satisfactorio</mat-option>
+                                          <mat-option [value]="'No determinado'">No determinado</mat-option>
+                                        </mat-select>
+                                      </mat-form-field>
+                                      <mat-form-field class="inputs">
+                                        <mat-select [(ngModel)]="tankItem.overfillValve"
+                                                    [ngModelOptions]="{standalone: true}" [disabled]="true"
+                                                    placeholder="Válvula de sobrellenado" required>
+                                          <mat-option [value]="'Satisfactorio'">Satisfactorio</mat-option>
+                                          <mat-option [value]="'No satisfactorio'">No satisfactorio</mat-option>
+                                          <mat-option [value]="'No determinado'">No determinado</mat-option>
+                                        </mat-select>
+                                      </mat-form-field>
+                                      <mat-form-field class="inputs">
+                                        <mat-select [(ngModel)]="tankItem.vacuumPressureValve"
+                                                    [ngModelOptions]="{standalone: true}" [disabled]="true"
+                                                    placeholder="Válvula de presión-vacío" required>
+                                          <mat-option [value]="'Satisfactorio'">Satisfactorio</mat-option>
+                                          <mat-option [value]="'No satisfactorio'">No satisfactorio</mat-option>
+                                          <mat-option [value]="'No determinado'">No determinado</mat-option>
+                                        </mat-select>
+                                      </mat-form-field>
+                                    </div>
+                                  </ng-template>
+                                  <ng-template #emptyTankList>
                                     <div class="inputs">
-                                      <h3 style="margin: 8px 0; font-size: 14px">Tanque {{i+1}}</h3>
+                                      <h3 style="margin: 8px 0; font-size: 14px">Tanque 1</h3>
                                     </div>
-                                    <mat-radio-group [(ngModel)]="tankItem.fuelType" [ngModelOptions]="{standalone: true}" [disabled]="user.role!==7"  style="display: flex;width: 90%;justify-content: space-between; flex-wrap: wrap">
-                                      <mat-radio-button [value]="1">Magna</mat-radio-button>
-                                      <mat-radio-button [value]="2">Premium</mat-radio-button>
+                                    <mat-radio-group [disabled]="true"
+                                                     style="display: flex;width: 90%;justify-content: space-between; flex-wrap: wrap">
+                                      <mat-radio-button value="Magna">Magna</mat-radio-button>
+                                      <mat-radio-button value="Premium">Premium</mat-radio-button>
                                     </mat-radio-group>
                                     <mat-form-field class="inputs">
-                                      <mat-select [(ngModel)]="tankItem.capAndSteamAdapter" [ngModelOptions]="{standalone: true}" [disabled]="user.role!==7" placeholder="Tapa y adaptador de vapor" required>
-                                        <mat-option [value]="'Satisfactorio'">Satisfactorio</mat-option>
-                                        <mat-option [value]="'No satisfactorio'">No satisfactorio</mat-option>
-                                        <mat-option [value]="'No determinado'">No determinado</mat-option>
+                                      <mat-select [disabled]="true" placeholder="Tapa y adaptador de vapor"
+                                                  required>
+                                        <mat-option value="Satisfactorio">Satisfactorio</mat-option>
+                                        <mat-option value="No satisfactorio">No satisfactorio</mat-option>
+                                        <mat-option value="No determinado">No determinado</mat-option>
                                       </mat-select>
                                     </mat-form-field>
                                     <mat-form-field class="inputs">
-                                      <mat-select [(ngModel)]="tankItem.capAndFillingAdapter" [ngModelOptions]="{standalone: true}" [disabled]="user.role!==7" placeholder="Tapa y adaptador de llenado" required>
-                                        <mat-option [value]="'Satisfactorio'">Satisfactorio</mat-option>
-                                        <mat-option [value]="'No satisfactorio'">No satisfactorio</mat-option>
-                                        <mat-option [value]="'No determinado'">No determinado</mat-option>
+                                      <mat-select [disabled]="true" placeholder="Tapa y adaptador de llenado"
+                                                  required>
+                                        <mat-option value="Satisfactorio">Satisfactorio</mat-option>
+                                        <mat-option value="No satisfactorio">No satisfactorio</mat-option>
+                                        <mat-option value="No determinado">No determinado</mat-option>
                                       </mat-select>
                                     </mat-form-field>
                                     <mat-form-field class="inputs">
-                                      <mat-select [(ngModel)]="tankItem.overfillValve" [ngModelOptions]="{standalone: true}" [disabled]="user.role!==7" placeholder="Válvula de sobrellenado" required>
-                                        <mat-option [value]="'Satisfactorio'">Satisfactorio</mat-option>
-                                        <mat-option [value]="'No satisfactorio'">No satisfactorio</mat-option>
-                                        <mat-option [value]="'No determinado'">No determinado</mat-option>
+                                      <mat-select [disabled]="true" placeholder="Válvula de sobrellenado"
+                                                  required>
+                                        <mat-option value="Satisfactorio">Satisfactorio</mat-option>
+                                        <mat-option value="No satisfactorio">No satisfactorio</mat-option>
+                                        <mat-option value="No determinado">No determinado</mat-option>
                                       </mat-select>
                                     </mat-form-field>
                                     <mat-form-field class="inputs">
-                                      <mat-select [(ngModel)]="tankItem.vacuumPressureValve" [ngModelOptions]="{standalone: true}" [disabled]="user.role!==7" placeholder="Válvula de presión-vacio" required>
-                                        <mat-option [value]="'Satisfactorio'">Satisfactorio</mat-option>
-                                        <mat-option [value]="'No satisfactorio'">No satisfactorio</mat-option>
-                                        <mat-option [value]="'No determinado'">No determinado</mat-option>
+                                      <mat-select [disabled]="true" placeholder="Válvula de presión-vacío"
+                                                  required>
+                                        <mat-option value="Satisfactorio">Satisfactorio</mat-option>
+                                        <mat-option value="No satisfactorio">No satisfactorio</mat-option>
+                                        <mat-option value="No determinado">No determinado</mat-option>
                                       </mat-select>
                                     </mat-form-field>
-                                  </div>
-                                </ng-template>
-                                <ng-template #emptyTankList>
+                                  </ng-template>
+                                </div>
+                                <div class="columns">
+                                  <mat-form-field class="inputs">
+                                    <mat-select formControlName="vrsAlarm" placeholder="Alarma SRV Encendido" required>
+                                      <mat-option value="Satisfactorio">Satisfactorio</mat-option>
+                                      <mat-option value="No satisfactorio">No satisfactorio</mat-option>
+                                      <mat-option value="No determinado">No determinado</mat-option>
+                                    </mat-select>
+                                  </mat-form-field>
                                   <div class="inputs">
-                                    <h3 style="margin: 8px 0; font-size: 14px">Tanque 1</h3>
+                                    <h3 style="margin: 8px 0; font-size: 14px;">Mantenimiento</h3>
                                   </div>
-                                  <mat-radio-group [disabled]="user.role!==7" style="display: flex;width: 90%;justify-content: space-between; flex-wrap: wrap">
-                                    <mat-radio-button value="Magna">Magna</mat-radio-button>
-                                    <mat-radio-button value="Premium">Premium</mat-radio-button>
-                                  </mat-radio-group>
                                   <mat-form-field class="inputs">
-                                    <mat-select [disabled]="user.role!==7" placeholder="Tapa y adaptador de vapor" required>
+                                    <mat-select formControlName="emergencyStop" placeholder="Paro de emergencia"
+                                                required>
                                       <mat-option value="Satisfactorio">Satisfactorio</mat-option>
                                       <mat-option value="No satisfactorio">No satisfactorio</mat-option>
                                       <mat-option value="No determinado">No determinado</mat-option>
                                     </mat-select>
                                   </mat-form-field>
                                   <mat-form-field class="inputs">
-                                    <mat-select [disabled]="user.role!==7" placeholder="Tapa y adaptador de llenado" required>
-                                      <mat-option value="Satisfactorio">Satisfactorio</mat-option>
-                                      <mat-option value="No satisfactorio">No satisfactorio</mat-option>
-                                      <mat-option value="No determinado">No determinado</mat-option>
-                                    </mat-select>
+                                    <input matInput formControlName="observations" placeholder="Observaciones">
                                   </mat-form-field>
-                                  <mat-form-field class="inputs">
-                                    <mat-select [disabled]="user.role!==7" placeholder="Válvula de sobrellenado" required>
-                                      <mat-option value="Satisfactorio">Satisfactorio</mat-option>
-                                      <mat-option value="No satisfactorio">No satisfactorio</mat-option>
-                                      <mat-option value="No determinado">No determinado</mat-option>
-                                    </mat-select>
-                                  </mat-form-field>
-                                  <mat-form-field class="inputs">
-                                    <mat-select [disabled]="user.role!==7" placeholder="Válvula de presión-vacio" required>
-                                      <mat-option value="Satisfactorio">Satisfactorio</mat-option>
-                                      <mat-option value="No satisfactorio">No satisfactorio</mat-option>
-                                      <mat-option value="No determinado">No determinado</mat-option>
-                                    </mat-select>
-                                  </mat-form-field>
-                                </ng-template>
-                              </div>
-                              <div class="columns">
-                                <mat-form-field class="inputs">
-                                  <mat-select formControlName="vrsAlarm" placeholder="Alarma SRV Encendido" required>
-                                    <mat-option value="Satisfactorio">Satisfactorio</mat-option>
-                                    <mat-option value="No satisfactorio">No satisfactorio</mat-option>
-                                    <mat-option value="No determinado">No determinado</mat-option>
-                                  </mat-select>
-                                </mat-form-field>
-                                <div class="inputs">
-                                  <h3 style="margin: 8px 0; font-size: 14px;">Mantenimiento</h3>
-                                </div>
-                                <mat-form-field class="inputs">
-                                  <mat-select formControlName="emergencyStop" placeholder="Paro de emergencia" required>
-                                    <mat-option value="Satisfactorio">Satisfactorio</mat-option>
-                                    <mat-option value="No satisfactorio">No satisfactorio</mat-option>
-                                    <mat-option value="No determinado">No determinado</mat-option>
-                                  </mat-select>
-                                </mat-form-field>
-                                <mat-form-field class="inputs">
-                                  <input matInput formControlName="observations" placeholder="Observaciones">
-                                </mat-form-field>
-                                <div class="image-header">
-                                  Captura fotográfica de evidencia
-                                </div>
-                                <div class="image-container">
-                                  <mat-icon *ngIf="!reportVRS || !reportVRS.fileCS" class="default-image">
-                                    image
-                                  </mat-icon>
-                                  <img class="evidence" *ngIf="reportVRS && reportVRS.fileCS" [src]="reportVRS.fileCS.thumbnail" alt="Evidence capture">
-                                </div>
-                                <div class="text-sign">
-                                  Nombre y firma del responsable
-                                </div>
-                                <div class="inputs">
-                                  <div class="signature-element">
-                                    <img *ngIf="reportVRS && reportVRS.signature" [src]="reportVRS.signature.thumbnail">
-                                    <div *ngIf="!reportVRS || !reportVRS.signature" style="width: 60%; height: 60px"></div>
+                                  <div class="image-header">
+                                    Captura fotográfica de evidencia
                                   </div>
-                                  <div class="divider"></div>
-                                  <div *ngIf="!reportVRS || !reportVRS.name" class="name">Nombre</div>
-                                  <div *ngIf="reportVRS && reportVRS.name" class="name">{{reportVRS.name}}</div>
+                                  <div class="image-container">
+                                    <mat-icon *ngIf="!reportVRS || !reportVRS.fileCS" class="default-image">
+                                      image
+                                    </mat-icon>
+                                    <img class="evidence" *ngIf="reportVRS && reportVRS.fileCS"
+                                         [src]="reportVRS.fileCS.thumbnail" alt="Evidence capture">
+                                  </div>
+                                  <div class="text-sign">
+                                    Nombre y firma del responsable
+                                  </div>
+                                  <div class="inputs">
+                                    <div class="signature-element">
+                                      <img *ngIf="reportVRS && reportVRS.signature"
+                                           [src]="reportVRS.signature.thumbnail">
+                                      <div *ngIf="!reportVRS || !reportVRS.signature"
+                                           style="width: 60%; height: 60px"></div>
+                                    </div>
+                                    <div class="divider"></div>
+                                    <div *ngIf="!reportVRS || !reportVRS.name" class="name">Nombre</div>
+                                    <div *ngIf="reportVRS && reportVRS.name" class="name">{{reportVRS.name}}</div>
+                                  </div>
+                                  <!--div class="finish" *ngIf="user.role === 7">
+                                    <button mat-flat-button [color]="'primary'">FINALZAR</button>
+                                  </div-->
                                 </div>
-                                <div class="finish" *ngIf="user.role === 7">
-                                  <button mat-flat-button [color]="'primary'">FINALZAR</button>
-                                </div>
-                              </div>
-                            </form>
-                          </div>
-                          <div class="containerTask" *ngSwitchCase="5">
-                            <div class="task-header">
-                              <div class="head-bold">Limpieza ecológica</div>
-                              <div class="control-data">
-                                <div>Fecha: {{task.original.date[0]}} {{task.original.date[1]}} {{task.original.date[2]}}</div>
-                                <div *ngIf="reportScanned">Folio: {{reportScanned.folio}}</div>
-                              </div>
+                              </form>
                             </div>
-                            <div style="display: flex; align-items: center; flex-direction: column">
-                              <mat-card style="width: 95%">
-                                <mat-card-content
-                                  style="display: flex; align-items: center; font-weight: 600; color: #707070; padding: 0;">
-                                  <mat-icon style="margin: 0 12px">insert_drive_file</mat-icon>
-                                  <div>Documento 1</div>
-                                </mat-card-content>
-                              </mat-card>
-                              <div style="margin: 60px 32.5% 0 32.5%;">
-                                <div class="text-sign">
-                                  Nombre y firma del responsable
-                                </div>
-                                <div class="inputs">
-                                  <div class="signature-element">
-                                    <img *ngIf="reportScanned && reportScanned.signature" [src]="reportScanned.signature.thumbnail">
-                                    <div *ngIf="!reportScanned || !reportScanned.signature" style="width: 60%; height: 60px"></div>
+                            <div class="containerTask" *ngSwitchCase="5">
+                              <div class="task-header">
+                                <div class="head-bold">Limpieza ecológica</div>
+                                <div class="control-data">
+                                  <div *ngIf="reportScanned">Fecha: {{date[0]}} {{date[1]}} {{date[2]}}&nbsp;&nbsp;
                                   </div>
-                                  <div class="divider"></div>
-                                  <div *ngIf="!reportScanned || !reportScanned.name" class="name">Nombre</div>
-                                  <div *ngIf="reportScanned && reportScanned.name" class="name">{{reportScanned.name}}</div>
-                                </div>
-                                <div class="finish" *ngIf="user.role === 7">
-                                  <button mat-flat-button [color]="'primary'">FINALZAR</button>
+                                  <div *ngIf="reportScanned">Folio: {{reportScanned.folio | formatFolio}}</div>
                                 </div>
                               </div>
-                            </div>
-                            <div class="divider" *ngIf="task.original.hwg"></div>
-                            <form [formGroup]="taskForm[2]" *ngIf="task.original.hwg" class="flex-box">
-                              <div class="columns">
-                                <mat-form-field class="inputs">
-                                  <mat-select formControlName="area" placeholder="Lugar de generación" required>
-                                    <mat-option value="Zona de despacho">Zona de despacho</mat-option>
-                                    <mat-option value="Zona de tanques">Zona de tanques</mat-option>
-                                    <mat-option value="Cuarto de máquinas">Cuarto de máquinas</mat-option>
-                                    <mat-option value="Trampa de combustible">Trampa de combustible</mat-option>
-                                  </mat-select>
-                                  <mat-error *ngIf="taskForm[2].controls['area'].hasError('required')">
-                                    Este campo es obligatorio
-                                  </mat-error>
-                                </mat-form-field>
-                                <mat-form-field class="inputs">
-                                  <mat-select formControlName="waste" placeholder="Residuo generado" required>
-                                    <mat-option value="Envases contaminados con aceites">Envases contaminados con aceites
-                                    </mat-option>
-                                    <mat-option value="Natas y grasas de la trampa de combustible">Natas y grasas de la trampa
-                                      de combustible
-                                    </mat-option>
-                                    <mat-option value="Filtros de gasolina y diesel">Filtros de gasolina y diesel</mat-option>
-                                    <mat-option value="Residuos de aceite y pintura">Residuos de aceite y pintura</mat-option>
-                                  </mat-select>
-                                  <mat-error *ngIf="taskForm[2].controls['area'].hasError('required')"></mat-error>
-                                </mat-form-field>
-                                <div class="text-divider">
-                                  Características<sup>*</sup>
+                              <div style="display: flex; align-items: center; flex-direction: column">
+                                <mat-card style="width: 95%">
+                                  <mat-card-content
+                                    style="display: flex; align-items: center; font-weight: 600; color: #707070; padding: 0;">
+                                    <mat-icon style="margin: 0 12px">insert_drive_file</mat-icon>
+                                    <div *ngIf="!reportScanned || !reportScanned.fileCS">Documento 1</div>
+                                    <div *ngIf="reportScanned && reportScanned.fileCS"><a
+                                      style="text-decoration: none; color: #707070;"
+                                      [href]="reportScanned.fileCS.thumbnail">Documento 1</a></div>
+                                  </mat-card-content>
+                                </mat-card>
+                                <div style="margin: 60px 32.5% 0 32.5%;">
+                                  <div class="text-sign">
+                                    Nombre y firma del responsable
+                                  </div>
+                                  <div class="inputs">
+                                    <div class="signature-element">
+                                      <img *ngIf="reportScanned && reportScanned.signature"
+                                           [src]="reportScanned.signature.thumbnail">
+                                      <div *ngIf="!reportScanned || !reportScanned.signature"
+                                           style="width: 60%; height: 60px"></div>
+                                    </div>
+                                    <div class="divider"></div>
+                                    <div *ngIf="!reportScanned || !reportScanned.name" class="name">Nombre</div>
+                                    <div *ngIf="reportScanned && reportScanned.name" class="name">
+                                      {{reportScanned.name}}
+                                    </div>
+                                  </div>
+                                  <!--div class="finish" *ngIf="user.role === 7">
+                                    <button mat-flat-button [color]="'primary'">FINALZAR</button>
+                                  </div-->
                                 </div>
-                                <div class="inputs">
-                                  <div class="space-box">
-                                    <div class="checks-row">
-                                      <mat-checkbox formControlName="corrosive">Corrosivo</mat-checkbox>
-                                    </div>
-                                    <div class="checks-row">
-                                      <mat-checkbox formControlName="reactive">Reactivo</mat-checkbox>
-                                    </div>
-                                  </div>
-                                  <div class="space-box">
-                                    <div class="checks-row">
-                                      <mat-checkbox formControlName="explosive">Explosivo</mat-checkbox>
-                                    </div>
-                                    <div class="checks-row">
-                                      <mat-checkbox formControlName="toxic">Tóxico</mat-checkbox>
-                                    </div>
-                                  </div>
-                                  <div class="space-box">
-                                    <div class="checks-row">
-                                      <mat-checkbox formControlName="flammable">Inflamable</mat-checkbox>
-                                    </div>
-                                    <div class="checks-row"></div>
-                                  </div>
-                                </div>
-                                <div style="display: flex; justify-content: space-between; width: 90%">
-                                  <mat-form-field style="width: 65%">
-                                    <input formControlName="quantity" matInput placeholder="Cantidad generada" required>
-                                    <mat-error *ngIf="taskForm[2].controls['quantity'].hasError('required')"></mat-error>
-                                  </mat-form-field>
-                                  <mat-form-field style="width: 30%;">
-                                    <mat-select formControlName="unity" placeholder="Unidad" required>
-                                      <mat-option value="Pzas">Pzas.</mat-option>
-                                      <mat-option value="kg">kg</mat-option>
-                                      <mat-option value="gr">gr</mat-option>
-                                      <mat-option value="lt">lt</mat-option>
+                              </div>
+                              <div class="divider" *ngIf="task.original.hwg"></div>
+                              <form [formGroup]="taskForm[2]" *ngIf="task.original.hwg" class="flex-box">
+                                <div class="columns">
+                                  <mat-form-field class="inputs">
+                                    <mat-select formControlName="area" placeholder="Lugar de generación" required>
+                                      <mat-option value="Zona de despacho">Zona de despacho</mat-option>
+                                      <mat-option value="Zona de tanques">Zona de tanques</mat-option>
+                                      <mat-option value="Cuarto de máquinas">Cuarto de máquinas</mat-option>
+                                      <mat-option value="Trampa de combustible">Trampa de combustible</mat-option>
                                     </mat-select>
-                                    <mat-error *ngIf="taskForm[2].controls['unity'].hasError('required')">
+                                    <mat-error *ngIf="taskForm[2].controls['area'].hasError('required')">
                                       Este campo es obligatorio
                                     </mat-error>
                                   </mat-form-field>
+                                  <mat-form-field class="inputs">
+                                    <mat-select formControlName="waste" placeholder="Residuo generado" required>
+                                      <mat-option value="Envases contaminados con aceites">Envases contaminados con
+                                        aceites
+                                      </mat-option>
+                                      <mat-option value="Natas y grasas de la trampa de combustible">Natas y grasas de
+                                        la trampa
+                                        de combustible
+                                      </mat-option>
+                                      <mat-option value="Filtros de gasolina y diesel">Filtros de gasolina y diesel
+                                      </mat-option>
+                                      <mat-option value="Residuos de aceite y pintura">Residuos de aceite y pintura
+                                      </mat-option>
+                                    </mat-select>
+                                    <mat-error *ngIf="taskForm[2].controls['area'].hasError('required')"></mat-error>
+                                  </mat-form-field>
+                                  <div class="text-divider">
+                                    Características<sup>*</sup>
+                                  </div>
+                                  <div class="inputs">
+                                    <div class="space-box">
+                                      <div class="checks-row">
+                                        <mat-checkbox formControlName="corrosive">Corrosivo</mat-checkbox>
+                                      </div>
+                                      <div class="checks-row">
+                                        <mat-checkbox formControlName="reactive">Reactivo</mat-checkbox>
+                                      </div>
+                                    </div>
+                                    <div class="space-box">
+                                      <div class="checks-row">
+                                        <mat-checkbox formControlName="explosive">Explosivo</mat-checkbox>
+                                      </div>
+                                      <div class="checks-row">
+                                        <mat-checkbox formControlName="toxic">Tóxico</mat-checkbox>
+                                      </div>
+                                    </div>
+                                    <div class="space-box">
+                                      <div class="checks-row">
+                                        <mat-checkbox formControlName="flammable">Inflamable</mat-checkbox>
+                                      </div>
+                                      <div class="checks-row"></div>
+                                    </div>
+                                  </div>
+                                  <div style="display: flex; justify-content: space-between; width: 90%">
+                                    <mat-form-field style="width: 65%">
+                                      <input formControlName="quantity" matInput placeholder="Cantidad generada"
+                                             required>
+                                      <mat-error
+                                        *ngIf="taskForm[2].controls['quantity'].hasError('required')"></mat-error>
+                                    </mat-form-field>
+                                    <mat-form-field style="width: 30%;">
+                                      <mat-select formControlName="unity" placeholder="Unidad" required>
+                                        <mat-option value="Pzas">Pzas.</mat-option>
+                                        <mat-option value="kg">kg</mat-option>
+                                        <mat-option value="gr">gr</mat-option>
+                                        <mat-option value="lt">lt</mat-option>
+                                      </mat-select>
+                                      <mat-error *ngIf="taskForm[2].controls['unity'].hasError('required')">
+                                        Este campo es obligatorio
+                                      </mat-error>
+                                    </mat-form-field>
+                                  </div>
+                                </div>
+                                <div class="columns">
+                                  <mat-form-field class="inputs">
+                                    <mat-select formControlName="temporaryStorage" placeholder="Almacenamiento temporal"
+                                                required>
+                                      <mat-option value="Tambo metálico">Tambo metálico</mat-option>
+                                      <mat-option value="Bolsas plásticas">Bolsas plásticas</mat-option>
+                                    </mat-select>
+                                    <mat-error
+                                      *ngIf="taskForm[2].controls['temporaryStorage'].hasError('required')"></mat-error>
+                                  </mat-form-field>
+                                  <div class="image-header">
+                                    Captura fotográfica de evidencia.
+                                  </div>
+                                  <div class="image-container">
+                                    <mat-icon *ngIf="!reportHWG || !reportHWG.fileCS" class="default-image">
+                                      image
+                                    </mat-icon>
+                                    <img *ngIf="reportHWG && reportHWG.fileCS" class="evidence"
+                                         [src]="reportHWG.fileCS.thumbnail" alt="Evidence capture">
+                                  </div>
+                                </div>
+                              </form>
+                            </div>
+                            <div class="containerTask" *ngSwitchCase="8">
+                              <div class="task-header">
+                                <div class="head-bold">Revisión de extintores</div>
+                                <div class="control-data">
+                                  <div *ngIf="reportFE">Fecha: {{date[0]}} {{date[1]}} {{date[2]}}&nbsp;&nbsp;</div>
+                                  <div *ngIf="reportFE">Folio: {{reportFE.folio | formatFolio}}</div>
                                 </div>
                               </div>
-                              <div class="columns">
-                                <mat-form-field class="inputs">
-                                  <mat-select formControlName="temporaryStorage" placeholder="Almacenamiento temporal" required>
-                                    <mat-option value="1">Tambo metálico</mat-option>
-                                    <mat-option value="2">Bolsas plásticas</mat-option>
-                                  </mat-select>
-                                  <mat-error *ngIf="taskForm[2].controls['temporaryStorage'].hasError('required')"></mat-error>
-                                </mat-form-field>
-                                <div class="image-header">
-                                  Captura fotográfica de evidencia.
+                              <form [formGroup]="taskForm[4]" class="flex-box">
+                                <div class="columns">
+                                  <div class="times">
+                                    <div class="clock">
+                                      <input formControlName="startTime" placeholder="Hora de inicio" matInput required
+                                             appDisableWrite
+                                             value="{{taskForm[4].controls['startTime'].value | formatTime}}">
+                                    </div>
+                                    <div class="clock">
+                                      <input formControlName="endTime" placeholder="Hora de término" matInput required
+                                             appDisableWrite
+                                             value="{{taskForm[4].controls['endTime'].value | formatTime}}">
+                                    </div>
+                                  </div>
+                                  <div
+                                    *ngIf="reportFE && reportFE.fireExtinguishers && reportFE.fireExtinguishers.length!==0; then listFE else emptyListFE"></div>
+                                  <ng-template #listFE>
+                                    <div *ngFor="let extinguisher of reportFE.fireExtinguishers; let  i = index">
+                                      <div class="color">
+                                        Extintor {{i+1}}
+                                      </div>
+                                      <mat-form-field class="inputs">
+                                        <mat-select [(ngModel)]="extinguisher.area"
+                                                    [ngModelOptions]="{standalone: true}" [disabled]="true"
+                                                    placeholder="Área" required>
+                                          <mat-option [value]="'Zona de despacho'">Zona de despacho</mat-option>
+                                          <mat-option [value]="'Zona de tanques'">Zona de tanques</mat-option>
+                                          <mat-option [value]="'Oficina'">Oficina</mat-option>
+                                          <mat-option [value]="'Patio'">Patio</mat-option>
+                                          <mat-option [value]="'Cuarto eléctrico'">Cuarto eléctrico</mat-option>
+                                          <mat-option [value]="'Cuarto de máquinas'">Cuarto de máquinas</mat-option>
+                                          <mat-option [value]="'Cuarto de residuos peligrosos'">Cuarto de residuos
+                                            peligrosos
+                                          </mat-option>
+                                        </mat-select>
+                                      </mat-form-field>
+                                      <mat-form-field class="inputs">
+                                        <input matInput placeholder="Capacidad" [(ngModel)]="extinguisher.capacity"
+                                               [ngModelOptions]="{standalone: true}" [disabled]="true"
+                                               required>
+                                      </mat-form-field>
+                                      <div class="times">
+                                        <mat-form-field class="clock" [(ngModel)]="extinguisher.expiration"
+                                                        [ngModelOptions]="{standalone: true}"
+                                                        [disabled]="true">
+                                          <mat-select placeholder="Vencimiento" required>
+                                            <mat-option value="Vigente">Vigente</mat-option>
+                                            <mat-option value="Caducado">Caducao</mat-option>
+                                          </mat-select>
+                                        </mat-form-field>
+                                        <mat-form-field class="clock">
+                                          <mat-select placeholder="Manómetro" [(ngModel)]="extinguisher.manometer"
+                                                      [ngModelOptions]="{standalone: true}" [disabled]="true"
+                                                      required>
+                                            <mat-option value="Descargado">Descargado</mat-option>
+                                            <mat-option value="Óptimo">Óptimo</mat-option>
+                                            <mat-option value="Sobrecargado">Sobrecargado</mat-option>
+                                          </mat-select>
+                                        </mat-form-field>
+                                      </div>
+                                      <div class="times">
+                                        <mat-form-field class="clock">
+                                          <mat-select placeholder="Manguera" [(ngModel)]="extinguisher.hose"
+                                                      [ngModelOptions]="{standalone: true}" [disabled]="true"
+                                                      required>
+                                            <mat-option value="Satisfactorio">Satisfactorio</mat-option>
+                                            <mat-option value="No satisfactorio">No satisfactorio</mat-option>
+                                          </mat-select>
+                                        </mat-form-field>
+                                        <mat-form-field class="clock">
+                                          <mat-select placeholder="Cincho" [(ngModel)]="extinguisher.belt"
+                                                      [ngModelOptions]="{standalone: true}" [disabled]="true"
+                                                      required>
+                                            <mat-option value="Satisfactorio">Satisfactorio</mat-option>
+                                            <mat-option value="No satisfactorio">No satisfactorio</mat-option>
+                                          </mat-select>
+                                        </mat-form-field>
+                                      </div>
+                                      <div class="times">
+                                        <mat-form-field class="clock">
+                                          <mat-select placeholder="Collarín" [(ngModel)]="extinguisher.collar"
+                                                      [ngModelOptions]="{standalone: true}" [disabled]="true">
+                                            <mat-option value="Satisfactorio">Satisfactorio</mat-option>
+                                            <mat-option value="No satisfactorio">No satisfactorio</mat-option>
+                                          </mat-select>
+                                        </mat-form-field>
+                                        <mat-form-field class="clock">
+                                          <mat-select placeholder="Seguro" [(ngModel)]="extinguisher.safe"
+                                                      [ngModelOptions]="{standalone: true}" [disabled]="true">
+                                            <mat-option value="Satisfactorio">Satisfactorio</mat-option>
+                                            <mat-option value="No satisfactorio">No satisfactorio</mat-option>
+                                          </mat-select>
+                                        </mat-form-field>
+                                      </div>
+                                    </div>
+                                  </ng-template>
+                                  <ng-template #emptyListFE>
+                                    <div class="color">
+                                      Extintor 1
+                                    </div>
+                                    <mat-form-field class="inputs">
+                                      <mat-select placeholder="Área" required>
+                                        <mat-option value="Zona de despacho">Zona de despacho</mat-option>
+                                        <mat-option value="Zona de tanques">Zona de tanques</mat-option>
+                                        <mat-option value="Oficina">Oficina</mat-option>
+                                        <mat-option value="Patio">Patio</mat-option>
+                                        <mat-option value="Cuarto eléctrico">Cuarto eléctrico</mat-option>
+                                        <mat-option value="Cuarto de máquinas">Cuarto de máquinas</mat-option>
+                                        <mat-option value="Cuarto de residuos peligrosos">Cuarto de residuos peligrosos
+                                        </mat-option>
+                                      </mat-select>
+                                    </mat-form-field>
+                                    <mat-form-field class="inputs">
+                                      <input matInput placeholder="Capacidad" required>
+                                    </mat-form-field>
+                                    <div class="times">
+                                      <mat-form-field class="clock">
+                                        <mat-select placeholder="Vencimiento" required>
+                                          <mat-option value="Vigente">Vigente</mat-option>
+                                          <mat-option value="Caducado">Caducao</mat-option>
+                                        </mat-select>
+                                      </mat-form-field>
+                                      <mat-form-field class="clock">
+                                        <mat-select placeholder="Manómetro" required>
+                                          <mat-option value="Descargado">Descargado</mat-option>
+                                          <mat-option value="Óptimo">Óptimo</mat-option>
+                                          <mat-option value="Sobrecargado">Sobrecargado</mat-option>
+                                        </mat-select>
+                                      </mat-form-field>
+                                    </div>
+                                    <div class="times">
+                                      <mat-form-field class="clock">
+                                        <mat-select placeholder="Manguera" required>
+                                          <mat-option value="Satisfactorio">Satisfactorio</mat-option>
+                                          <mat-option value="No satisfactorio">No satisfactorio</mat-option>
+                                        </mat-select>
+                                      </mat-form-field>
+                                      <mat-form-field class="clock">
+                                        <mat-select placeholder="Cincho" required>
+                                          <mat-option value="Satisfactorio">Satisfactorio</mat-option>
+                                          <mat-option value="No satisfactorio">No satisfactorio</mat-option>
+                                        </mat-select>
+                                      </mat-form-field>
+                                    </div>
+                                    <div class="times">
+                                      <mat-form-field class="clock">
+                                        <mat-select placeholder="Collarín">
+                                          <mat-option value="Satisfactorio">Satisfactorio</mat-option>
+                                          <mat-option value="No satisfactorio">No satisfactorio</mat-option>
+                                        </mat-select>
+                                      </mat-form-field>
+                                      <mat-form-field class="clock">
+                                        <mat-select placeholder="Seguro">
+                                          <mat-option value="Satisfactorio">Satisfactorio</mat-option>
+                                          <mat-option value="No satisfactorio">No satisfactorio</mat-option>
+                                        </mat-select>
+                                      </mat-form-field>
+                                    </div>
+                                  </ng-template>
                                 </div>
-                                <div class="image-container">
-                                  <mat-icon *ngIf="!reportHWG || !reportHWG.fileCS" class="default-image">
-                                    image
-                                  </mat-icon>
-                                  <img *ngIf="reportHWG && reportHWG.fileCS" class="evidence" [src]="reportHWG.fileCS.thumbnail" alt="Evidence capture">
+                                <div class="columns">
+                                  <div class="text-sign">
+                                    Nombre y firma del responsable
+                                  </div>
+                                  <div class="inputs">
+                                    <div class="signature-element">
+                                      <img *ngIf="reportFE && reportFE.signature" [src]="reportFE.signature.thumbnail">
+                                      <div *ngIf="!reportFE || !reportFE.signature"
+                                           style="width: 60%; height: 60px"></div>
+                                    </div>
+                                    <div class="divider"></div>
+                                    <div *ngIf="!reportFE || !reportFE.name" class="name">Nombre</div>
+                                    <div *ngIf="reportFE && reportFE.name" class="name">{{reportFE.name}}</div>
+                                  </div>
+                                  <!--div class="finish" *ngIf="user.role === 7">
+                                    <button mat-flat-button [color]="'primary'">FINALZAR</button>
+                                  </div-->
+                                </div>
+                              </form>
+                            </div>
+                          </ng-container>
+                        </mat-expansion-panel>
+                      </mat-accordion>
+                    </div>
+                  </div>
+                </mat-card>
+              </ng-template>
+            </div>
+          </ng-template>
+          <ng-template #message>
+            <div class="empty-list">
+              <div *ngIf="!notCalendar; then taskInCreation else notTask"></div>
+              <ng-template #taskInCreation>
+                <div class="message">
+                  La Estación no cuenta por el momento con tareas programadas, por favor consulte mañana
+                </div>
+              </ng-template>
+              <ng-template #notTask>
+                <div class="message">Para continuar, es necesario calendarizar las tareas faltantes de la Estación</div>
+                <div class="action">
+                  <button mat-flat-button type="button" (click)="createStationTasks()">IR A TAREAS</button>
+                </div>
+              </ng-template>
+            </div>
+          </ng-template>
+        </div>
+      </ng-template>
+      <ng-template #secondList>
+        <div class="sub-container">
+          <mat-tab-group (selectedTabChange)="getNotCalendarTask($event)" style="width: 100%">
+            <mat-tab label="Recepción y descarga de combustible">
+              <div *ngIf="notCalendarTasks.length !== 0; then listFR else emptyFR"></div>
+              <ng-template #listFR>
+                <div id="task-{{task.id}}" class="card-list" *ngFor="let task of notCalendarTasks; let i = index">
+                  <mat-card class="task" style="margin-top: 8px">
+                    <div class="priority" style="background-color:#E00000"></div>
+                    <div class="containerTask">
+                      <div class="containerTask">
+                        <mat-accordion class="containerTask">
+                          <mat-expansion-panel [expanded]="task.expanded" (click)="getTaskInformation(i,task.id, 6)">
+                            <mat-expansion-panel-header [collapsedHeight]="'88px'" [expandedHeight]="'88px'">
+                              <mat-panel-title style="position: relative">
+                                <div class="date">
+                                  <div>
+                                    <div class="text-bold">{{task.date[0]}}</div>
+                                    <div class="text-bold">{{task.date[1]}}</div>
+                                  </div>
+                                </div>
+                                <div class="content">
+                                  <div class="head">Descarga de combustible</div>
+                                  <div class="text"></div>
+                                  <div class="text">Crítico</div>
+                                </div>
+                              </mat-panel-title>
+                            </mat-expansion-panel-header>
+                            <div class="divider"></div>
+                            <form [formGroup]="secondTaskForm[0]" class="containerTask">
+                              <div class="task-header">
+                                <div class="head-bold">Descarga de combustible</div>
+                                <div class="control-data">
+                                  <div *ngIf="reportFR">Fecha: {{date[0]}} {{date[1]}}
+                                    {{date[2]}}
+                                  </div>
+                                  <div *ngIf="reportFR">Folio: {{reportFR.folio | formatFolio}}</div>
+                                </div>
+                              </div>
+                              <div class="flex-box">
+                                <div class="columns">
+                                  <div class="times">
+                                    <div class="clock">
+                                      <input formControlName="startTime" matInput placeholder="Hora de inicio" required
+                                             appDisableWrite
+                                             value="{{secondTaskForm[0].controls['startTime'].value | formatTime}}">
+                                    </div>
+                                    <div class="clock">
+                                      <input formControlName="endTime" matInput placeholder="Hora de término" required
+                                             appDisableWrite
+                                             value="{{secondTaskForm[0].controls['endTime'].value | formatTime}}">
+                                    </div>
+                                  </div>
+                                  <mat-form-field class="inputs">
+                                    <input formControlName="remissionNumber" matInput placeholder="No. de remisión"
+                                           required>
+                                  </mat-form-field>
+                                  <div class="text-divider">Cantidad en:</div>
+                                  <div class="times">
+                                    <mat-form-field class="clock">
+                                      <input formControlName="remission" matInput placeholder="Remisión (lts)" required>
+                                    </mat-form-field>
+                                    <mat-form-field class="clock">
+                                      <input formControlName="volumetric" matInput placeholder="Volumétrico (lts)"
+                                             required>
+                                    </mat-form-field>
+                                  </div>
+                                </div>
+                                <div class="columns">
+                                  <div class="text-divider">
+                                    Tipo de combustible
+                                  </div>
+                                  <div class="inputs">
+                                    <div class="space-box">
+                                      <div class="checks-row">
+                                        <mat-checkbox formControlName="magna">Magna</mat-checkbox>
+                                      </div>
+                                      <div class="checks-row">
+                                        <mat-checkbox formControlName="premium">Premium</mat-checkbox>
+                                      </div>
+                                    </div>
+                                    <div class="space-box">
+                                      <div class="checks-row">
+                                        <mat-checkbox formControlName="diesel">Diesel</mat-checkbox>
+                                      </div>
+                                      <div class="checks-row"></div>
+                                    </div>
+                                  </div>
+                                  <mat-form-field class="inputs">
+                                    <input formControlName="receiveName" matInput placeholder="Personal que recibe">
+                                  </mat-form-field>
+                                  <div style="width: 90%; display: flex; flex-direction: column; justify-content: center;">
+                                    <div class="text-sign">
+                                      Nombre y firma del responsable
+                                    </div>
+                                    <div class=inputs>
+                                      <div class="signature-element">
+                                        <img class="evidence" *ngIf="reportFR && reportFR.signature"
+                                             [src]="reportFR.signature.thumbnail" alt="Evidence capture">
+                                        <div *ngIf="!reportFR || !reportFR.signature"
+                                             style="width: 60%; height: 60px"></div>
+                                      </div>
+                                      <div class="divider"></div>
+                                      <div *ngIf="!reportFR || !reportFR.name" class="name">Nombre</div>
+                                      <div *ngIf="reportFR && reportFR.name" class="name">{{reportFR.name}}</div>
+                                    </div>
+                                  </div>
                                 </div>
                               </div>
                             </form>
-                          </div>
-                          <div class="containerTask" *ngSwitchCase="8">
-                            <div class="task-header">
-                              <div class="head-bold">Revisión de extintores</div>
-                              <div class="control-data">
-                                <div>Fecha: {{task.original.date[0]}} {{task.original.date[1]}} {{task.original.date[2]}}&nbsp;&nbsp;</div>
-                                <div>Folio:</div>
-                              </div>
-                            </div>
-                            <div class="flex-box">
-                              <div class="columns">
-                                <div class="times">
-                                  <div class="clock">
-                                    <!--app-time-picker [placeholder]="'Hora de inicio'" [required]="true"></app-time-picker-->
-                                  </div>
-                                  <div class="clock">
-                                    <!--app-time-picker [placeholder]="'Hora de término'" [required]="true"></app-time-picker-->
-                                  </div>
-                                </div>
-                                <div class="color">
-                                  Extintor 1
-                                </div>
-                                <mat-form-field class="inputs">
-                                  <mat-select placeholder="Área" required>
-                                    <mat-option value="Zona de despacho">Zona de despacho</mat-option>
-                                    <mat-option value="Zona de tanques">Zona de tanques</mat-option>
-                                    <mat-option value="Oficina">Oficina</mat-option>
-                                    <mat-option value="Patio">Patio</mat-option>
-                                    <mat-option value="Cuarto eléctrico">Cuarto eléctrico</mat-option>
-                                    <mat-option value="Cuarto de máquinas">Cuarto de máquinas</mat-option>
-                                    <mat-option value="Cuarto de residuos peligrosos">Cuarto de residuos peligrosos
-                                    </mat-option>
-                                  </mat-select>
-                                </mat-form-field>
-                                <mat-form-field class="inputs">
-                                  <input matInput placeholder="Capacidad" required>
-                                </mat-form-field>
-                                <div class="times">
-                                  <mat-form-field class="clock">
-                                    <mat-select placeholder="Vencimiento" required>
-                                      <mat-option value="Vigente">Vigente</mat-option>
-                                      <mat-option value="Caducado">Caducao</mat-option>
-                                    </mat-select>
-                                  </mat-form-field>
-                                  <mat-form-field class="clock">
-                                    <mat-select placeholder="Manómetro" required>
-                                      <mat-option value="Descargado">Descargado</mat-option>
-                                      <mat-option value="Óptimo">Óptimo</mat-option>
-                                      <mat-option value="Sobrecargado">Sobrecargado</mat-option>
-                                    </mat-select>
-                                  </mat-form-field>
-                                </div>
-                                <div class="times">
-                                  <mat-form-field class="clock">
-                                    <mat-select placeholder="Manguera" required>
-                                      <mat-option value="Satisfactorio">Satisfactorio</mat-option>
-                                      <mat-option value="No satisfactorio">No satisfactorio</mat-option>
-                                    </mat-select>
-                                  </mat-form-field>
-                                  <mat-form-field class="clock">
-                                    <mat-select placeholder="Cincho" required>
-                                      <mat-option value="Satisfactorio">Satisfactorio</mat-option>
-                                      <mat-option value="No satisfactorio">No satisfactorio</mat-option>
-                                    </mat-select>
-                                  </mat-form-field>
-                                </div>
-                                <div class="times">
-                                  <mat-form-field class="clock">
-                                    <mat-select placeholder="Collarín">
-                                      <mat-option value="1">Satisfactorio</mat-option>
-                                      <mat-option value="2">No satisfactorio</mat-option>
-                                    </mat-select>
-                                  </mat-form-field>
-                                  <mat-form-field class="clock">
-                                    <mat-select placeholder="Seguro">
-                                      <mat-option value="1">Satisfactorio</mat-option>
-                                      <mat-option value="2">No satisfactorio</mat-option>
-                                    </mat-select>
-                                  </mat-form-field>
-                                </div>
-                              </div>
-                              <div class="columns">
-                                <div class="image-header">
-                                  Captura fotográfica de evidencia.
-                                </div>
-                                <div class="image-container">
-                                  <mat-icon class="default-image">
-                                    image
-                                  </mat-icon>
-                                </div>
-                                <div class="text-sign">
-                                  Nombre y firma del responsable
-                                </div>
-                                <div class="inputs">
-                                  <div class="signature-element">
-                                    <img
-                                      src="https://lh3.googleusercontent.com/pAVkMKw5PWzy67CaKieL-C6URUgMHsMgY1U9MIMG_vkjUeKbR9WNB7Lx7EAz_nAoQgmK42xy3uoTmM8mng_eKEjuXNLpM-welQ">
-                                  </div>
-                                  <div class="divider"></div>
-                                  <div class="name">Nombre</div>
-                                </div>
-                                <div class="finish" *ngIf="user.role === 7">
-                                  <button mat-flat-button [color]="'primary'">FINALZAR</button>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        </ng-container>
-                      </mat-expansion-panel>
-                    </mat-accordion>
-                  </div>
+                          </mat-expansion-panel>
+                        </mat-accordion>
+                      </div>
+                    </div>
+                  </mat-card>
                 </div>
-              </mat-card>
-            </ng-template>
-          </div>
-        </ng-template>
-        <ng-template #message>
-          <div class="empty-list">
-            <div class="message">Para continuar, es necesario calendarizar las tareas faltantes de la Estación</div>
-            <div class="action">
-              <button mat-flat-button type="button" (click)="createStationTasks()">IR A TAREAS</button>
-            </div>
-          </div>
-        </ng-template>
-      </div>
+              </ng-template>
+              <ng-template #emptyFR>
+                <div class="empty-list">
+                  <div class="message" style="margin-top: 128px;">Aún no hay reportes en su lista</div>
+                </div>
+              </ng-template>
+            </mat-tab>
+            <mat-tab label="Incidencias">
+              <div *ngIf="notCalendarTasks.length !== 0; then listIN else emptyIN"></div>
+              <ng-template #listIN>
+                <div id="task-{{task.id}}" class="card-list" *ngFor="let task of notCalendarTasks; let i = index">
+                  <mat-card class="task" style="margin-top: 8px">
+                    <div class="priority" style="background-color:#E00000"></div>
+                    <div class="containerTask">
+                      <div class="containerTask">
+                        <mat-accordion class="containerTask">
+                          <mat-expansion-panel [expanded]="task.expanded" (click)="getTaskInformation(i,task.id, 9)">
+                            <mat-expansion-panel-header [collapsedHeight]="'88px'" [expandedHeight]="'88px'">
+                              <mat-panel-title style="position: relative">
+                                <div class="date">
+                                  <div>
+                                    <div class="text-bold">{{task.date[0]}}</div>
+                                    <div class="text-bold">{{task.date[1]}}</div>
+                                  </div>
+                                </div>
+                                <div class="content">
+                                  <div class="head">Incidencia</div>
+                                  <div class="text"></div>
+                                  <div class="text">Crítico</div>
+                                </div>
+                              </mat-panel-title>
+                            </mat-expansion-panel-header>
+                            <div class="divider"></div>
+                            <div class="containerTask">
+                              <div style="width: 100%; display: flex; justify-content: flex-end">
+                                <div style="margin: 0 4px;" *ngIf="reportIncidence">Fecha: {{date[0]}} {{date[1]}} {{date[2]}}</div>
+                                <div style="margin: 0 4px;" *ngIf="reportIncidence">Folio:{{reportIncidence.folio | formatFolio}}</div>
+                              </div>
+                              <form [formGroup]="secondTaskForm[2]" class="flex-box">
+                                <div class="columns">
+                                  <mat-form-field class="inputs">
+                                    <input formControlName="time" matInput placeholder="Hora" appDisableWrite
+                                           value="{{secondTaskForm[2].controls['time'].value | formatTime}}">
+                                  </mat-form-field>
+                                  <mat-form-field class="inputs">
+                                    <mat-select formControlName="area" placeholder="Lugar de generación" required>
+                                      <mat-option value="Zona de despacho">Zona de despacho</mat-option>
+                                      <mat-option value="Zona de tanques">Zona de tanques</mat-option>
+                                      <mat-option value="Cuarto eléctrico">Cuarto eléctrico</mat-option>
+                                      <mat-option value="Cuarto de maquinas">Cuarto de maquinas</mat-option>
+                                    </mat-select>
+                                  </mat-form-field>
+                                  <mat-form-field class="inputs">
+                                    <textarea cdkTextareaAutosize formControlName="description" matInput placeholder="Descripción" required></textarea>
+                                  </mat-form-field>
+                                  <div class="text-divider">
+                                    Procedimientos utilizados
+                                  </div>
+                                  <div class="inputs" *ngIf="reportIncidence && reportIncidence.procedures">
+                                    <div *ngFor="let procedure of reportIncidence.procedures; let i = index;">
+                                      <div class="procedure" *ngIf="procedure === 1">1.-
+                                        {{taskTemplate.procedures[procedure-1].name}}
+                                      </div>
+                                      <div class="procedure" *ngIf="procedure === 2">2.-
+                                        {{taskTemplate.procedures[procedure-1].name}}
+                                      </div>
+                                      <div class="procedure" *ngIf="procedure === 3">3.-
+                                        {{taskTemplate.procedures[procedure-1].name}}
+                                      </div>
+                                      <div class="procedure" *ngIf="procedure === 4">4.-
+                                        {{taskTemplate.procedures[procedure-1].name}}
+                                      </div>
+                                      <div class="procedure" *ngIf="procedure === 5">5.-
+                                        {{taskTemplate.procedures[procedure-1].name}}
+                                      </div>
+                                      <div class="procedure" *ngIf="procedure === 6">6.-
+                                        {{taskTemplate.procedures[procedure-1].name}}
+                                      </div>
+                                      <div class="procedure" *ngIf="procedure === 7">7.-
+                                        {{taskTemplate.procedures[procedure-1].name}}
+                                      </div>
+                                      <div class="procedure" *ngIf="procedure === 8">8.-
+                                        {{taskTemplate.procedures[procedure-1].name}}
+                                      </div>
+                                      <div class="procedure" *ngIf="procedure === 9">9.-
+                                        {{taskTemplate.procedures[procedure-1].name}}
+                                      </div>
+                                      <div class="procedure" *ngIf="procedure === 10">10.-
+                                        {{taskTemplate.procedures[procedure-1].name}}
+                                      </div>
+                                      <div class="procedure" *ngIf="procedure === 11">11.-
+                                        {{taskTemplate.procedures[procedure-1].name}}
+                                      </div>
+                                      <div class="procedure" *ngIf="procedure === 12">12.-
+                                        {{taskTemplate.procedures[procedure-1].name}}
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                                <div class="columns">
+                                  <div class="image-header">
+                                    Captura fotográfica de evidencia
+                                  </div>
+                                  <div class="image-container">
+                                    <mat-icon *ngIf="!reportIncidence || !reportIncidence.fileCS" class="default-image">
+                                      image
+                                    </mat-icon>
+                                    <img class="evidence" *ngIf="reportIncidence && reportIncidence.fileCS"
+                                         [src]="reportIncidence.fileCS.thumbnail" alt="Evidence capture">
+                                  </div>
+                                  <div class="text-sign">
+                                    Nombre y firma del responsable
+                                  </div>
+                                  <div class=inputs>
+                                    <div class="signature-element">
+                                      <img class="evidence" *ngIf="reportIncidence && reportIncidence.signature"
+                                           [src]="reportIncidence.signature.thumbnail" alt="Evidence capture">
+                                      <div *ngIf="!reportIncidence || !reportIncidence.signature"
+                                           style="width: 60%; height: 60px"></div>
+                                    </div>
+                                    <div class="divider"></div>
+                                    <div *ngIf="!reportIncidence || !reportIncidence.name" class="name">Nombre</div>
+                                    <div *ngIf="reportIncidence && reportIncidence.name" class="name">
+                                      {{reportIncidence.name}}
+                                    </div>
+                                  </div>
+                                </div>
+                              </form>
+                            </div>
+                          </mat-expansion-panel>
+                        </mat-accordion>
+                      </div>
+                    </div>
+                  </mat-card>
+                </div>
+              </ng-template>
+              <ng-template #emptyIN>
+                <div class="empty-list">
+                  <div class="message" style="margin-top: 128px;">Aún no hay reportes en su lista</div>
+                </div>
+              </ng-template>
+            </mat-tab>
+            <mat-tab label="Recolección de residuos peligrosos">
+              <div *ngIf="notCalendarTasks.length !== 0; then listHWC else emptyHWC"></div>
+              <ng-template #listHWC>
+                <div id="task-{{task.id}}" class="card-list" *ngFor="let task of notCalendarTasks; let i = index">
+                  <mat-card class="task" style="margin-top: 8px">
+                    <div class="priority" style="background-color:#E00000"></div>
+                    <div class="containerTask">
+                      <div class="containerTask">
+                        <mat-accordion class="containerTask">
+                          <mat-expansion-panel [expanded]="task.expanded" (click)="getTaskInformation(i,task.id, 8)">
+                            <mat-expansion-panel-header [collapsedHeight]="'88px'" [expandedHeight]="'88px'">
+                              <mat-panel-title style="position: relative">
+                                <div class="date">
+                                  <div>
+                                    <div class="text-bold">{{task.date[0]}}</div>
+                                    <div class="text-bold">{{task.date[1]}}</div>
+                                  </div>
+                                </div>
+                                <div class="content">
+                                  <div class="head">Recolección de residuos peligrosos</div>
+                                  <div class="text"></div>
+                                  <div class="text">Crítico</div>
+                                </div>
+                              </mat-panel-title>
+                            </mat-expansion-panel-header>
+                            <div class="divider"></div>
+                            <form [formGroup]="secondTaskForm[1]" class="containerTask">
+                              <div class="task-header">
+                                <div class="head-bold">Recolección residuos peligrosos</div>
+                                <div class="control-data">
+                                  <div *ngIf="reportHWC">Fecha: {{date[0]}} {{date[1]}} {{date[2]}}</div>
+                                  <div *ngIf="reportHWC">Folio: {{reportHWC.folio | formatFolio}}</div>
+                                </div>
+                              </div>
+                              <div class="flex-box">
+                                <div class="columns">
+                                  <mat-form-field class="inputs">
+                                    <mat-select formControlName="waste" placeholder="Residuo recolectado" required>
+                                      <mat-option value="Natas y grasas de la tampa de combustibles">Natas y grasas de
+                                        la tampa de combustibles
+                                      </mat-option>
+                                      <mat-option value="Filtros de gasolina y diesel">Filtros de gasolina y diesel
+                                      </mat-option>
+                                      <mat-option value="Residuos de aceite y pintura">Residuos de aceite y pintura
+                                      </mat-option>
+                                    </mat-select>
+                                  </mat-form-field>
+                                  <div style="display: flex; justify-content: space-between; width: 90%">
+                                    <mat-form-field style="width: 65%">
+                                      <input formControlName="quantity" matInput placeholder="Cantidad recolectada"
+                                             required>
+                                    </mat-form-field>
+                                    <mat-form-field style="width: 30%;">
+                                      <mat-select formControlName="unity" placeholder="Unidad" required>
+                                        <mat-option value="1">Pzas.</mat-option>
+                                        <mat-option value="2">kg</mat-option>
+                                        <mat-option value="3">gr</mat-option>
+                                        <mat-option value="3">lt</mat-option>
+                                      </mat-select>
+                                    </mat-form-field>
+                                  </div>
+                                  <mat-form-field class="inputs">
+                                    <input formControlName="carrierCompany" matInput placeholder="Empresa transportista"
+                                           required>
+                                  </mat-form-field>
+                                  <mat-form-field class="inputs">
+                                    <input formControlName="finalDestination" matInput placeholder="Destino final"
+                                           required>
+                                  </mat-form-field>
+                                </div>
+                                <div class="columns"
+                                     style="display: flex; flex-direction: column; justify-content: center">
+                                  <div style="display: flex; width: 90%; justify-content: center">
+                                    <button mat-flat-button style="background-color: #707070; color: #FFFFFF">
+                                      VER MANIFIESTO
+                                    </button>
+                                  </div>
+                                  <div style="width: 100%;">
+                                    <div class="text-sign">
+                                      Nombre y firma del responsable
+                                    </div>
+                                    <div class=inputs>
+                                      <div class="signature-element">
+                                        <img *ngIf="reportHWC && reportHWC.signature"
+                                             [src]="reportHWC.signature.thumbnail">
+                                      </div>
+                                      <div class="divider"></div>
+                                      <div class="name">Nombre</div>
+                                      <div *ngIf="reportHWC && reportHWC.name" class="name">{{reportHWC.name}}</div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </form>
+                          </mat-expansion-panel>
+                        </mat-accordion>
+                      </div>
+                    </div>
+                  </mat-card>
+                </div>
+              </ng-template>
+              <ng-template #emptyHWC>
+                <div class="empty-list">
+                  <div class="message" style="margin-top: 128px;">Aún no hay reportes en su lista</div>
+                </div>
+              </ng-template>
+            </mat-tab>
+          </mat-tab-group>
+        </div>
+      </ng-template>
     </mat-card-content>
   </mat-card>
 </div>
-<!--
-<div class="containerTask" *ngSwitchCase="9">
-                          <div class="right-head">
-                            <div>Fecha: {{task.original.date[0]}} {{task.original.date[1]}} {{task.original.date[2]}} &nbsp;&nbsp;&nbsp;&nbsp;</div>
-                            <div>Folio: LKJSKJ-QWE-342</div>
-                          </div>
-                          <div class="flex-box">
-                            <div class="columns">
-                              <mat-form-field class="inputs">
-                                <mat-select placeholder="Lugar de generación" required>
-                                  <mat-option value="Zona de despacho">Zona de despacho</mat-option>
-                                  <mat-option value="Zona de tanques">Zona de tanques</mat-option>
-                                  <mat-option value="Oficinas">Oficinas</mat-option>
-                                  <mat-option value="Cuarto eléctrico">Cuarto eléctrico</mat-option>
-                                  <mat-option value="Cuarto de maquinas">Cuarto de maquinas</mat-option>
-                                </mat-select>
-                              </mat-form-field>
-                              <mat-form-field class="inputs">
-                                <input matInput placeholder="Descripción" required>
-                              </mat-form-field>
-                              <mat-form-field class="inputs">
-                                <input matInput placeholder="Procedimientos utilizados">
-                              </mat-form-field>
-                              <mat-form-field class="inputs">
-                                <textarea matInput cdkTextareaAutosize placeholder="Observaciones"></textarea>
-                              </mat-form-field>
-                            </div>
-                            <div class="columns">
-                              <div class="image-header">
-                                Captura fotográfica de evidencia
-                              </div>
-                              <div class="image-container">
-                                <mat-icon class="default-image">
-                                  image
-                                </mat-icon>
-                              </div>
-                              <div class="text-sign">
-                                Nombre y firma del responsable
-                              </div>
-                              <div class=inputs>
-                                <div class="signature-element">
-                                  <img
-                                    src="https://lh3.googleusercontent.com/pAVkMKw5PWzy67CaKieL-C6URUgMHsMgY1U9MIMG_vkjUeKbR9WNB7Lx7EAz_nAoQgmK42xy3uoTmM8mng_eKEjuXNLpM-welQ">
-                                </div>
-                                <div class="divider"></div>
-                                <div class="name">Nombre</div>
-                              </div>
-                              <div class="finish" *ngIf="user.role === 7">
-                                <button mat-flat-button [color]="'primary'">FINALZAR</button>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-<div class="containerTask" *ngSwitchCase="6">
-                          <div class="task-header">
-                            <div class="head-bold">Recolección residuos peligrosos</div>
-                            <div class="control-data">
-                              <div>Fecha: {{task.original.date[0]}} {{task.original.date[1]}} {{task.original.date[2]}}</div>
-                              <div>Folio:</div>
-                            </div>
-                          </div>
-                          <div class="flex-box">
-                            <div class="columns">
-                              <mat-form-field class="inputs">
-                                <mat-select placeholder="Residuo recolectado" required>
-                                  <mat-option value="Natas y grasas de la tampa de combustibles">Natas y grasas de la tampa
-                                    de combustibles
-                                  </mat-option>
-                                  <mat-option value="Filtros de gasolina y diesel">Filtros de gasolina y diesel</mat-option>
-                                  <mat-option value="Residuos de aceite y pintura">Residuos de aceite y pintura</mat-option>
-                                </mat-select>
-                              </mat-form-field>
-                              <div style="display: flex; justify-content: space-between; width: 90%">
-                                <mat-form-field style="width: 65%">
-                                  <input matInput placeholder="Cantidad recolectada" required>
-                                </mat-form-field>
-                                <mat-form-field style="width: 30%;">
-                                  <mat-select placeholder="Unidad" required>
-                                    <mat-option value="1">Pzas.</mat-option>
-                                    <mat-option value="2">kg</mat-option>
-                                    <mat-option value="3">gr</mat-option>
-                                    <mat-option value="3">lt</mat-option>
-                                  </mat-select>
-                                </mat-form-field>
-                              </div>
-                              <mat-form-field class="inputs">
-                                <input matInput placeholder="Empresa transportista" required>
-                              </mat-form-field>
-                              <mat-form-field class="inputs">
-                                <input matInput placeholder="Destino final" required>
-                              </mat-form-field>
-                            </div>
-                            <div class="columns" style="display: flex; flex-direction: column; justify-content: center">
-                              <div *ngIf="user.role === 7; then upload else see"></div>
-                              <ng-template #see>
-                                <div style="display: flex; width: 90%; justify-content: center">
-                                  <button mat-flat-button style="background-color: #707070; color: #FFFFFF">VER MANIFIESTO
-                                  </button>
-                                </div>
-                              </ng-template>
-                              <ng-template #upload>
-                                <div style="display: flex; width: 90%; justify-content: center">
-                                  <button mat-flat-button style="background-color: #707070; color: #FFFFFF">ESCANEAR
-                                    MANIFIESTO
-                                  </button>
-                                </div>
-                              </ng-template>
-                              <div style="width: 100%; position: absolute; bottom: 0;">
-                                <div class="text-sign">
-                                  Nombre y firma del responsable
-                                </div>
-                                <div class=inputs>
-                                  <div class="signature-element">
-                                    <img
-                                      src="https://lh3.googleusercontent.com/pAVkMKw5PWzy67CaKieL-C6URUgMHsMgY1U9MIMG_vkjUeKbR9WNB7Lx7EAz_nAoQgmK42xy3uoTmM8mng_eKEjuXNLpM-welQ">
-                                  </div>
-                                  <div class="divider"></div>
-                                  <div class="name">Nombre</div>
-                                </div>
-                                <div class="finish" *ngIf="user.role === 7">
-                                  <button mat-flat-button [color]="'primary'">FINALZAR</button>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                        <div class="containerTask" *ngSwitchCase="7">
-                          <div class="task-header">
-                            <div class="head-bold">Descarga de combustible</div>
-                            <div class="control-data">
-                              <div>Fecha: {{task.original.date[0]}} {{task.original.date[1]}} {{task.original.date[2]}}</div>
-                              <div>Folio:</div>
-                            </div>
-                          </div>
-                          <div class="flex-box">
-                            <div class="columns">
-                              <div class="times">
-                                <div class="clock">
-                                  <!--app-time-picker [placeholder]="'Hora de inicio'" [required]="true"></app-time-picker>
-</div>
-<div class="clock">
-  <!--app-time-picker [placeholder]="'Hora de término'" [required]="true"></app-time-picker>
-</div>
-</div>
-<mat-form-field class="inputs">
-  <input matInput placeholder="No. de remisión" required>
-</mat-form-field>
-<div class="text-divider">Cantidad en:</div>
-<div class="times">
-  <mat-form-field class="clock">
-    <input matInput placeholder="Remisión (lts)" required>
-  </mat-form-field>
-  <mat-form-field class="clock">
-    <input matInput placeholder="Volumétrico (lts)" required>
-  </mat-form-field>
-</div>
-<div class="text-divider">
-  Tipo de combustible
-</div>
-<div class="inputs">
-  <div class="space-box">
-    <div class="checks-row">
-      <mat-checkbox>Magna</mat-checkbox>
-    </div>
-    <div class="checks-row">
-      <mat-checkbox>Premium</mat-checkbox>
-    </div>
-  </div>
-  <div class="space-box">
-    <div class="checks-row">
-      <mat-checkbox>Diesel</mat-checkbox>
-    </div>
-    <div class="checks-row"></div>
-  </div>
-</div>
-<div class="text-divider">
-  Personal involucrado
-</div>
-<mat-form-field class="inputs">
-  <input matInput placeholder="1.- Nombre del que recibe">
-</mat-form-field>
-</div>
-<div class="columns">
-  <div class="image-header">
-    Captura fotográfica de evidencia
-  </div>
-  <div class="image-container">
-    <mat-icon class="default-image">
-      image
-    </mat-icon>
-  </div>
-  <div style="width: 100%; position: absolute; bottom: 0">
-    <div class="text-sign">
-      Nombre y firma del responsable
-    </div>
-    <div class=inputs>
-      <div class="signature-element">
-        <img
-          src="https://lh3.googleusercontent.com/pAVkMKw5PWzy67CaKieL-C6URUgMHsMgY1U9MIMG_vkjUeKbR9WNB7Lx7EAz_nAoQgmK42xy3uoTmM8mng_eKEjuXNLpM-welQ">
-      </div>
-      <div class="divider"></div>
-      <div class="name">Nombre</div>
-    </div>
-    <div class="finish" *ngIf="user.role === 7">
-      <button mat-flat-button [color]="'primary'">FINALZAR</button>
-    </div>
-  </div>
-</div>
-</div>
-</div>
--->
