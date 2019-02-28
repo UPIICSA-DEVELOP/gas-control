@@ -16,22 +16,7 @@ import {ApiService} from 'app/core/services/api/api.service';
 import {UploadFileResponse} from 'app/core/components/upload-file/upload-file.component';
 import {UploadFileService} from 'app/core/components/upload-file/upload-file.service';
 import {ApiLoaderService} from 'app/core/services/api/api-loader.service';
-
-export interface Person {
-  name: string;
-  lastName: string
-  email: string;
-  country: string;
-  countryCode: string;
-  phoneNumber: string;
-  role: number;
-  jobTitle: string;
-  website?: string;
-  refId: string;
-  signature?:any;
-  profileImage?: any;
-  bCard?: any;
-}
+import {Consultancy, Person} from '@app/core/interfaces/interfaces';
 
 @Component({
   selector: 'app-add-consultancy',
@@ -55,7 +40,7 @@ export class AddConsultancyComponent implements OnInit {
   public country: string;
   private _location: any;
   private _ownerInfo: Person;
-  private _consultancyInfo: any;
+  private _consultancyInfo: Consultancy;
   constructor(
     private _dialog: MatDialogRef<AddConsultancyComponent>,
     private _formBuilder: FormBuilder,
@@ -152,7 +137,8 @@ export class AddConsultancyComponent implements OnInit {
       country: this.country,
       role: 1,
       jobTitle: data.jobTitle,
-      website: (data.website?data.protocol+data.website:undefined)
+      website: (data.website?data.protocol+data.website:undefined),
+      signature: null
     };
     this.initFormConsultancy(true);
   }
@@ -166,7 +152,8 @@ export class AddConsultancyComponent implements OnInit {
       rfc: data.rfc,
       address: this._location.address,
       location: this._location.location,
-      officePhone: data.consultancyNumber
+      officePhone: data.consultancyNumber,
+      group: data.group
     };
     this._stepper.next();
   }
@@ -219,7 +206,8 @@ export class AddConsultancyComponent implements OnInit {
         company: ['', [Validators.required]],
         rfc: ['', [Validators.required]],
         address: ['', [Validators.required]],
-        consultancyNumber: ['',[Validators.minLength(8), Validators.maxLength(13)]]
+        consultancyNumber: ['',[Validators.minLength(8), Validators.maxLength(13)]],
+        group: [false, [Validators.required]]
       });
     }else{
       this.consultancyForm.enable();

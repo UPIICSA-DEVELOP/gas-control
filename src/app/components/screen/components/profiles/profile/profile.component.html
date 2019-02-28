@@ -123,7 +123,7 @@
                   </mat-error>
                 </mat-form-field>
                 <mat-form-field class="inputs">
-                  <input [attr.disabled]="disabledInputs?true:null" formControlName="rfc" matInput placeholder="R.F.C" required type="text" aria-label="Consultancy legal identifier">
+                  <input formControlName="rfc" matInput placeholder="R.F.C" required type="text" aria-label="Consultancy legal identifier">
                   <mat-error *ngIf="profileForm.controls['rfc'].hasError('required')">
                     Este campo es obligatorio
                   </mat-error>

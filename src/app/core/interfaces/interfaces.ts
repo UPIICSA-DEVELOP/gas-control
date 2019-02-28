@@ -85,12 +85,13 @@ export interface Dispensers {
  */
 
 export interface Consultancy {
-  id: string;
+  id?: string;
   businessName: string;
   rfc: string;
   address: string;
   location: any;
   officePhone?: string;
+  group: boolean;
 }
 
 export interface Document {

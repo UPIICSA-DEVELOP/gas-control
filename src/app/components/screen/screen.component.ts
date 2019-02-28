@@ -17,6 +17,7 @@ import {environment} from '@env/environment';
 import {filter} from 'rxjs/internal/operators';
 import {Subscription} from 'rxjs';
 import {SharedNotification, SharedService, SharedTypeNotification} from '@app/core/services/shared/shared.service';
+import {SasisopaService} from '@app/components/screen/components/sasisopa/sasisopa.service';
 
 @Component({
   selector: 'app-screen',
@@ -39,13 +40,17 @@ export class ScreenComponent implements OnInit, OnDestroy{
     private _addStationService: AddStationService,
     private _dialogService: DialogService,
     private _auth: AuthService,
-    private _sharedService: SharedService
+    private _sharedService: SharedService,
+    private _sasisopaService: SasisopaService
   ) {
     this.menu = true;
     this.stationList = [];
   }
 
   ngOnInit() {
+    if(this._activateRoute.snapshot.queryParams['station']){
+      this._stationId = this._activateRoute.snapshot.queryParams['station'];
+    }
     this.validateSignatureUser();
     this.initNotifications();
     this.checkChanges();
@@ -59,9 +64,6 @@ export class ScreenComponent implements OnInit, OnDestroy{
           this.getDashboardInformation(this._stationId);
         }
     });
-    if(this._activateRoute.snapshot.queryParams['station']){
-      this._stationId = this._activateRoute.snapshot.queryParams['station'];
-    }
   }
 
   ngOnDestroy():void{
@@ -252,4 +254,9 @@ export class ScreenComponent implements OnInit, OnDestroy{
   public openOtherTasks():void{
     this._sharedService.setNotification({type: SharedTypeNotification.NotCalendarTask, value: true});
   }
+
+  public openSasisopaModal(isSasisopa: boolean):void{
+    this._sasisopaService.open(isSasisopa);
+  }
+
 }

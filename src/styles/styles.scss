@@ -185,6 +185,21 @@ body{
   }
 }
 
+.sgm-and-sasisopa-panel{
+  mat-dialog-container{
+    width: 35vw;
+    padding: 0;
+    overflow: hidden;
+    min-height: 70vh;
+    @media screen and (max-width: 1200px){
+      width: 50vw;
+    }
+    @media screen and (max-width: 800px){
+      width: 80vw;
+    }
+  }
+}
+
 app-collaborators-list{
   position: absolute;
   top: 0;

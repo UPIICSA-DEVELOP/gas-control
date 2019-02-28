@@ -5,9 +5,17 @@
  */
 
 import { Injectable } from '@angular/core';
+import {MatDialog, MatDialogRef} from '@angular/material';
+import {SasisopaComponent} from '@app/components/screen/components/sasisopa/sasisopa.component';
 
 @Injectable()
 export class SasisopaService {
 
-  constructor() { }
+  constructor(
+    private _matDialog: MatDialog
+  ) { }
+
+  public open(isSasisopa: boolean):MatDialogRef<SasisopaComponent>{
+    return this._matDialog.open(SasisopaComponent,{panelClass: 'sgm-and-sasisopa-panel', disableClose: true, data: isSasisopa || null});
+  }
 }
