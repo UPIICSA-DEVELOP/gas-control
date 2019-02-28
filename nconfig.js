@@ -6,11 +6,13 @@ function createConfig() {
   const fs = require('fs');
   const path = require('path');
   let data = {
-    ENV: 'dev'
+    ENV: 'dev',
+    PORT: 8899
   };
 
   if(process.env.NODE_ENV === 'prod'){
-    data.ENV = 'prod'
+    data.ENV = 'prod';
+    data.PORT = 8080;
   }
 
   data = JSON.stringify(data);
