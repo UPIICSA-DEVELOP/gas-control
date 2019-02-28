@@ -51,7 +51,7 @@
             </mat-form-field>
             <mat-form-field class="inputs">
               <textarea formControlName="address" cdkTextareaAutosize matInput placeholder="Dirección" required type="text" aria-label="Station address"></textarea>
-              <button matSuffix matTooltip="Ubicación" type="button" mat-icon-button (click)="openLocation()">
+              <button matSuffix matTooltip="Ubicación" type="button" mat-icon-button (click)="openLocation()" [disabled]="user.role === 6">
                 <mat-icon class="map">map</mat-icon>
               </button>
               <mat-error *ngIf="stationForm.controls['address'].hasError('required')">

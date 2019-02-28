@@ -130,7 +130,7 @@
                 </mat-form-field>
                 <mat-form-field class="inputs">
                   <textarea [attr.disabled]="disabledInputs?true:null" cdkTextareaAutosize formControlName="address" matInput placeholder="Dirección" required type="text" aria-label="Consultancy address"></textarea>
-                  <button matSuffix matTooltip="Ubicación" type="button" mat-icon-button (click)="openSelectAddress()">
+                  <button matSuffix matTooltip="Ubicación" type="button" mat-icon-button (click)="openSelectAddress()" [disabled]="user.role !==1 ">
                     <mat-icon class="map">map</mat-icon>
                   </button>
                   <mat-error *ngIf="profileForm.controls['address'].hasError('required')">
