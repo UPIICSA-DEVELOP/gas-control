@@ -193,15 +193,15 @@
                     Este campo es obligatorio
                   </mat-error>
                 </mat-form-field>
-                <div class="modal-two">
-                  <div (click)="addLocation()" class="mask"></div>
-                  <mat-form-field>
-                    <textarea formControlName="address" cdkTextareaAutosize matInput placeholder="Dirección" type="text" required aria-label="Address"></textarea>
-                    <mat-error *ngIf="consultancyForm.controls['address'].hasError('required')">
-                      Este campo es obligatorio
-                    </mat-error>
-                  </mat-form-field>
-                </div>
+                <mat-form-field>
+                  <textarea formControlName="address" cdkTextareaAutosize matInput placeholder="Dirección" type="text" required aria-label="Address"></textarea>
+                  <button mat-icon-button matSuffix (click)="addLocation()">
+                    <mat-icon>map</mat-icon>
+                  </button>
+                  <mat-error *ngIf="consultancyForm.controls['address'].hasError('required')">
+                    Este campo es obligatorio
+                  </mat-error>
+                </mat-form-field>
                 <mat-form-field>
                   <input formControlName="consultancyNumber" matInput placeholder="Numero de la consultora" type="text" aria-label="Consultancy Number" maxlength="13">
                   <mat-error *ngIf="consultancyForm.controls['consultancyNumber'].hasError('minlength')">
@@ -211,6 +211,10 @@
                     Se requieren de 8 a 13 dígitos
                   </mat-error>
                 </mat-form-field>
+                <mat-radio-group formControlName="group">
+                  <mat-radio-button [value]="false">Consultor indivdual</mat-radio-button>
+                  <mat-radio-button [value]="true">Consultor Grupal</mat-radio-button>
+                </mat-radio-group>
               </mat-card-content>
               <mat-card-actions *ngIf="!doneStep">
                 <button mat-flat-button [disabled]="load" [color]="'primary'">SIGUIENTE</button>

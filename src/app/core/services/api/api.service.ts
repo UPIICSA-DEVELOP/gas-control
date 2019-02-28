@@ -10,6 +10,7 @@ import {forkJoin, Observable} from 'rxjs';
 import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 import {NetworkService} from '@app/core/services/connection/network.service';
 import {SnackBarService} from '@app/core/services/snackbar/snackbar.service';
+import {Consultancy} from '@app/core/interfaces/interfaces';
 
 
 @Injectable()
@@ -223,19 +224,8 @@ export class ApiService {
     return this._http.get(url, {responseType: 'arraybuffer' as 'json', headers: headers});
   }
 
-  public createConsultancy(data: any): Observable<any>{
-    const request = {
-      address: data.address,
-      businessName: data.businessName,
-      location:
-        {
-          latitude: data.location.latitude,
-          longitude: data.location.longitude
-        },
-      officePhone: data.officePhone,
-      rfc: data.rfc
-    };
-    return this._http.post(ApiService.API_URL_COMPLETE + 'createConsultancy', request);
+  public createConsultancy(data: Consultancy): Observable<any>{
+    return this._http.post(ApiService.API_URL_COMPLETE + 'createConsultancy', data);
   }
 
   public createPerson(person: any): Observable<any>{

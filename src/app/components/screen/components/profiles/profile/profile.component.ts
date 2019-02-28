@@ -342,7 +342,8 @@ export class ProfileComponent implements OnInit {
               longitude: (response.item.location?response.item.location.longitude : -99.133461)
             },
             officePhone: response.item.officePhone || '',
-            rfc: response.item.rfc
+            rfc: response.item.rfc,
+            group: response.item.group || false
           };
           if (this.consultancy.location){
             this.latLong = {
