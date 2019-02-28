@@ -32,8 +32,9 @@ export class ListTasksComponent implements OnInit, DoCheck {
   public station: any;
 
   @Input() set stationInfo(stationObj: any) {
-    if (stationObj) {
+    if (stationObj && stationObj.stationTaskId) {
       this.others = false;
+      this.notCalendarTasks = [];
       this._indexOldTaskExpanded = null;
       this.station = stationObj;
       this.getStationTask();
@@ -187,30 +188,26 @@ export class ListTasksComponent implements OnInit, DoCheck {
 
   private tasksCompare(): void {
     this.load = true;
-    if(!this._taskListPaged.lastIndex){
-      this.tasks.forEach((task, index) => {
-        if(index<10){
-          this.taskTemplate.taskTemplates.forEach(template => {
-            if (task.type === Number(template.id)) {
-              this.tasksFilterd.push({
-                id: task.id,
-                type: task.type,
-                date: UtilitiesService.convertDate(task.date),
-                name: template.name,
-                zone: template.zone,
-                level: template.level,
-                hwg: template.hwg,
-                typeReport: template.typeReport,
-                status: task.status,
-                evidence: template.evidence
-              });
-            }
+    this.tasks.forEach(task => {
+      this.taskTemplate.taskTemplates.forEach(template => {
+        if (task.type === Number(template.id)) {
+          this.tasksFilterd.push({
+            id: task.id,
+            type: task.type,
+            date: UtilitiesService.convertDate(task.date),
+            name: template.name,
+            zone: template.zone,
+            level: template.level,
+            hwg: template.hwg,
+            typeReport: template.typeReport,
+            status: task.status,
+            evidence: template.evidence
           });
-        }else{
-          this._taskListPaged.lastIndex = index;
-          this._taskListPaged.list = this.tasks;
         }
       });
+    });
+    /*if(!this._taskListPaged.lastIndex){
+
     }else{
       this.tasks.forEach((task, index) => {
         if(index>this._taskListPaged.lastIndex && index<this._taskListPaged.lastIndex+10){
@@ -235,7 +232,7 @@ export class ListTasksComponent implements OnInit, DoCheck {
           this._taskListPaged.list = this.tasks;
         }
       });
-    }
+    }*/
     this.sortTaskArrayByStatus();
   }
 
@@ -252,7 +249,7 @@ export class ListTasksComponent implements OnInit, DoCheck {
     let headerPrevious = false, headerHistory = false;
     this.tasksFilterd = UtilitiesService.sortJSON(this.tasksFilterd, 'status', 'asc');
     this.taskWithDivider.push({
-      type: 1,
+      type: this.filter!==0 ? 2 : 1,
       title: 'Hoy',
       original: null,
       id: '',
@@ -270,7 +267,7 @@ export class ListTasksComponent implements OnInit, DoCheck {
       } else if (item.status === 2) {
         if (!headerPrevious) {
           this.taskWithDivider.push({
-            type: 1,
+            type: this.filter!==0 ? 2 : 1,
             title: 'Atrasadas',
             original: null,
             id: '',
@@ -289,7 +286,7 @@ export class ListTasksComponent implements OnInit, DoCheck {
       } else if (item.status === 3 || item.status === 4) {
         if (!headerHistory) {
           this.taskWithDivider.push({
-            type: 1,
+            type: this.filter!==0 ? 2 : 1,
             title: 'Historial',
             original: null,
             id: '',
@@ -314,7 +311,7 @@ export class ListTasksComponent implements OnInit, DoCheck {
     this._api.getStationTask(this.station.stationTaskId).subscribe(response => {
       switch (response.code) {
         case 200:
-          this._creationDate = response.item._creationDate;
+          this._creationDate = response.item.creationDate;
           const config: DateRangeOptions = {
             minDate: new Date((this._creationDate).toString().slice(0, 4) + '-' + (this._creationDate).toString().slice(4, 6) + '-' + (this._creationDate).toString().slice(6, 8)),
             maxDate: new Date(((Number((this._creationDate).toString().slice(0, 4))) + 1).toString() + '-' + (this._creationDate).toString().slice(4, 6) + '-' + (this._creationDate).toString().slice(6, 8))
@@ -364,6 +361,7 @@ export class ListTasksComponent implements OnInit, DoCheck {
     this.end = UtilitiesService.createPersonalTimeStamp(this.endDate);
     this._firstOpen = true;
     this.today = true;
+    this._taskType = '0';
     this.getStationTask();
   }
 
@@ -777,7 +775,7 @@ export class ListTasksComponent implements OnInit, DoCheck {
 
   public getNotCalendarTask(ev?: any):void{
     this._indexOldTaskExpanded = null;
-    let type = '3';
+    let type = '1';
     if(ev){
       switch (ev.index){
         case 0:

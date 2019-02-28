@@ -8,7 +8,6 @@
   <mat-card class="container">
     <div class="header">
       <h4 *ngIf="!others">TAREAS</h4>
-      <h4 *ngIf="others">&nbsp;</h4>
       <div class="filters">
         <div class="settings">
           <mat-icon class="filter-icon">filter_list</mat-icon>
@@ -43,11 +42,11 @@
     <mat-card-content>
       <div *ngIf="others; then secondList else firstList"></div>
       <ng-template #firstList>
-        <div class="sub-container" (scroll)="onScroll($event)">
+        <div class="sub-container">
           <div *ngIf="tasks.length === 0; then message else list"></div>
           <ng-template #list>
             <div id="task-{{task.id}}" class="card-list" *ngFor="let task of taskWithDivider; let i = index">
-              <div *ngIf="task.type === 1; then dividerText else taskCard"></div>
+              <div *ngIf="task.type === 1 && !task.original; then dividerText else taskCard"></div>
               <ng-template #dividerText>
                 <div class="head-bold" style="margin: 8px 0">{{task.title}}</div>
               </ng-template>
@@ -95,7 +94,7 @@
                                 <div class="head-bold">Operación de la Estación de Servicio</div>
                                 <div class="control-data">
                                   <div *ngIf="reportOM">Fecha: {{date[0]}} {{date[1]}} {{date[2]}}&nbsp;&nbsp;</div>
-                                  <div *ngIf="reportOM">Folio: {{reportOM.folio}}</div>
+                                  <div *ngIf="reportOM">Folio: {{reportOM.folio | formatFolio}}</div>
                                 </div>
                               </div>
                               <form [formGroup]="taskForm[0]" class="flex-box">
@@ -411,7 +410,7 @@
                                 <div class="head-bold">Compresor de aire</div>
                                 <div class="control-data">
                                   <div *ngIf="reportComp">Fecha: {{date[0]}} {{date[1]}} {{date[2]}}</div>
-                                  <div *ngIf="reportComp">Folio: {{reportComp.folio}}</div>
+                                  <div *ngIf="reportComp">Folio: {{reportComp.folio | formatFolio}}</div>
                                 </div>
                               </div>
                               <form [formGroup]="taskForm[1]" class="flex-box">
@@ -610,7 +609,7 @@
                                 <div class="head-bold">Sistema de Recuperación de Vapores</div>
                                 <div class="control-data">
                                   <div *ngIf="reportVRS">Fecha: {{date[0]}} {{date[1]}} {{date[2]}}&nbsp;&nbsp;</div>
-                                  <div>Folio:</div>
+                                  <div>Foli | formatFolioo:</div>
                                 </div>
                               </div>
                               <form [formGroup]="taskForm[3]" class="flex-box">
@@ -822,7 +821,7 @@
                                 <div class="control-data">
                                   <div *ngIf="reportScanned">Fecha: {{date[0]}} {{date[1]}} {{date[2]}}&nbsp;&nbsp;
                                   </div>
-                                  <div *ngIf="reportScanned">Folio: {{reportScanned.folio}}</div>
+                                  <div *ngIf="reportScanned">Folio: {{reportScanned.folio | formatFolio}}</div>
                                 </div>
                               </div>
                               <div style="display: flex; align-items: center; flex-direction: column">
@@ -963,7 +962,7 @@
                                 <div class="head-bold">Revisión de extintores</div>
                                 <div class="control-data">
                                   <div *ngIf="reportFE">Fecha: {{date[0]}} {{date[1]}} {{date[2]}}&nbsp;&nbsp;</div>
-                                  <div *ngIf="reportFE">Folio: {{reportFE.folio}}</div>
+                                  <div *ngIf="reportFE">Folio: {{reportFE.folio | formatFolio}}</div>
                                 </div>
                               </div>
                               <form [formGroup]="taskForm[4]" class="flex-box">
@@ -1180,7 +1179,7 @@
               <div *ngIf="notCalendarTasks.length !== 0; then listFR else emptyFR"></div>
               <ng-template #listFR>
                 <div id="task-{{task.id}}" class="card-list" *ngFor="let task of notCalendarTasks; let i = index">
-                  <mat-card class="task">
+                  <mat-card class="task" style="margin-top: 8px">
                     <div class="priority" style="background-color:#E00000"></div>
                     <div class="containerTask">
                       <div class="containerTask">
@@ -1209,7 +1208,7 @@
                                   <div *ngIf="reportFR">Fecha: {{date[0]}} {{date[1]}}
                                     {{date[2]}}
                                   </div>
-                                  <div *ngIf="reportFR">Folio:{{reportFR.folio}}</div>
+                                  <div *ngIf="reportFR">Folio: {{reportFR.folio | formatFolio}}</div>
                                 </div>
                               </div>
                               <div class="flex-box">
@@ -1264,7 +1263,7 @@
                                   <mat-form-field class="inputs">
                                     <input formControlName="receiveName" matInput placeholder="Personal que recibe">
                                   </mat-form-field>
-                                  <div style="width: 100%; position: absolute; bottom: 0">
+                                  <div style="width: 90%; display: flex; flex-direction: column; justify-content: center;">
                                     <div class="text-sign">
                                       Nombre y firma del responsable
                                     </div>
@@ -1292,7 +1291,7 @@
               </ng-template>
               <ng-template #emptyFR>
                 <div class="empty-list">
-                  <div class="message">Aún no hay reportes en su lista</div>
+                  <div class="message" style="margin-top: 128px;">Aún no hay reportes en su lista</div>
                 </div>
               </ng-template>
             </mat-tab>
@@ -1300,7 +1299,7 @@
               <div *ngIf="notCalendarTasks.length !== 0; then listIN else emptyIN"></div>
               <ng-template #listIN>
                 <div id="task-{{task.id}}" class="card-list" *ngFor="let task of notCalendarTasks; let i = index">
-                  <mat-card class="task">
+                  <mat-card class="task" style="margin-top: 8px">
                     <div class="priority" style="background-color:#E00000"></div>
                     <div class="containerTask">
                       <div class="containerTask">
@@ -1323,9 +1322,9 @@
                             </mat-expansion-panel-header>
                             <div class="divider"></div>
                             <div class="containerTask">
-                              <div class="control-data">
-                                <div *ngIf="reportIncidence">Fecha: {{date[0]}} {{date[1]}} {{date[2]}}</div>
-                                <div *ngIf="reportIncidence">Folio:{{reportIncidence.folio}}</div>
+                              <div style="width: 100%; display: flex; justify-content: flex-end">
+                                <div style="margin: 0 4px;" *ngIf="reportIncidence">Fecha: {{date[0]}} {{date[1]}} {{date[2]}}</div>
+                                <div style="margin: 0 4px;" *ngIf="reportIncidence">Folio:{{reportIncidence.folio | formatFolio}}</div>
                               </div>
                               <form [formGroup]="secondTaskForm[2]" class="flex-box">
                                 <div class="columns">
@@ -1342,7 +1341,7 @@
                                     </mat-select>
                                   </mat-form-field>
                                   <mat-form-field class="inputs">
-                                    <input formControlName="description" matInput placeholder="Descripción" required>
+                                    <textarea cdkTextareaAutosize formControlName="description" matInput placeholder="Descripción" required></textarea>
                                   </mat-form-field>
                                   <div class="text-divider">
                                     Procedimientos utilizados
@@ -1427,21 +1426,20 @@
               </ng-template>
               <ng-template #emptyIN>
                 <div class="empty-list">
-                  <div class="message">Aún no hay reportes en su lista</div>
+                  <div class="message" style="margin-top: 128px;">Aún no hay reportes en su lista</div>
                 </div>
               </ng-template>
             </mat-tab>
-            <!--
             <mat-tab label="Recolección de residuos peligrosos">
               <div *ngIf="notCalendarTasks.length !== 0; then listHWC else emptyHWC"></div>
               <ng-template #listHWC>
                 <div id="task-{{task.id}}" class="card-list" *ngFor="let task of notCalendarTasks; let i = index">
-                  <mat-card class="task">
+                  <mat-card class="task" style="margin-top: 8px">
                     <div class="priority" style="background-color:#E00000"></div>
                     <div class="containerTask">
                       <div class="containerTask">
                         <mat-accordion class="containerTask">
-                          <mat-expansion-panel [expanded]="task.expanded" (afterExpand)="getTaskInformation(i,task.id, 8)">
+                          <mat-expansion-panel [expanded]="task.expanded" (click)="getTaskInformation(i,task.id, 8)">
                             <mat-expansion-panel-header [collapsedHeight]="'88px'" [expandedHeight]="'88px'">
                               <mat-panel-title style="position: relative">
                                 <div class="date">
@@ -1463,7 +1461,7 @@
                                 <div class="head-bold">Recolección residuos peligrosos</div>
                                 <div class="control-data">
                                   <div *ngIf="reportHWC">Fecha: {{date[0]}} {{date[1]}} {{date[2]}}</div>
-                                  <div *ngIf="reportHWC">Folio: {{reportHWC.folio}}</div>
+                                  <div *ngIf="reportHWC">Folio: {{reportHWC.folio | formatFolio}}</div>
                                 </div>
                               </div>
                               <div class="flex-box">
@@ -1535,11 +1533,10 @@
               </ng-template>
               <ng-template #emptyHWC>
                 <div class="empty-list">
-                  <div class="message">Aún no hay reportes en su lista</div>
+                  <div class="message" style="margin-top: 128px;">Aún no hay reportes en su lista</div>
                 </div>
               </ng-template>
             </mat-tab>
-            -->
           </mat-tab-group>
         </div>
       </ng-template>

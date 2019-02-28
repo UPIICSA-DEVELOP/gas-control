@@ -9,12 +9,14 @@ import { NgModule} from '@angular/core';
 import {ConvertTimeAndCapacityPipe} from '@app/core/pipes/convert-time-and-capacity/convert-time-and-capacity.pipe';
 import {FormatDatePipe} from '@app/core/pipes/format-date/format-date.pipe';
 import {FormatTimePipe} from '@app/core/pipes/format-time/format-time.pipe';
+import {FormatFolioPipe} from '@app/core/pipes/format-folio/format-folio.pipe';
 
 @NgModule({
   declarations: [
     ConvertTimeAndCapacityPipe,
     FormatDatePipe,
-    FormatTimePipe
+    FormatTimePipe,
+    FormatFolioPipe
   ],
   imports: [
 
@@ -22,12 +24,14 @@ import {FormatTimePipe} from '@app/core/pipes/format-time/format-time.pipe';
   exports: [
     ConvertTimeAndCapacityPipe,
     FormatDatePipe,
-    FormatTimePipe
+    FormatTimePipe,
+    FormatFolioPipe
   ],
   providers: [
     ConvertTimeAndCapacityPipe,
     FormatDatePipe,
-    FormatTimePipe
+    FormatTimePipe,
+    FormatFolioPipe
   ]
 })
 export class PipesModule {
