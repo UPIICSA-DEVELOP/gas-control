@@ -89,6 +89,7 @@
         .buttons{
           margin: 24px 0;
           button{
+            padding: 0 4px;
             width: 100%;
             text-align: start;
             font-weight: 500;
@@ -100,6 +101,9 @@
             .sass-icon{
               width: 24px;
               height: 24px;
+              margin-right: 8px;
+            }
+            .sgm{
               margin-right: 8px;
             }
           }
