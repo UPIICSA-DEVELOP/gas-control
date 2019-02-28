@@ -412,7 +412,7 @@ export class ProfileComponent implements OnInit {
       jobTitle: ['', [Validators.required]],
       website: ['', [Validators.pattern('[a-z0-9]+([\\-\\.]{1}[a-z0-9]+)*\\.[a-z]{2,5}(:[0-9]{1,5})?(\\/.*)?$')]],
       businessName: ['', [Validators.required]],
-      rfc: ['', [Validators.required]],
+      rfc: [{value: '', disabled: true}, [Validators.required]],
       address: ['', [Validators.required]],
       officePhone: ['', [Validators.minLength(8), Validators.maxLength(13)]]
     });
@@ -455,7 +455,6 @@ export class ProfileComponent implements OnInit {
     this.user.jobTitle = data.jobTitle;
     this.user.website = (data.website? this.protocol+data.website : '');
     this.consultancy.businessName = data.businessName;
-    this.consultancy.rfc = data.rfc;
     this.consultancy.address = data.address;
     this.consultancy.officePhone = (data.officePhone? data.officePhone: '');
     if (this.latLong) {
