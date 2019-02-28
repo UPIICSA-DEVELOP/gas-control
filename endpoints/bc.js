@@ -46,15 +46,27 @@
       JSDOM.fromFile(path.resolve(__dirname, 'templates', 'bc.html')).then(jsdom => {
         const document = jsdom.window.document;
         document.getElementById('image').src = dataForBC.urlLogoThumbnail;
-        document.getElementById('company').textContent = dataForBC.companyName;
-        document.getElementById('name').textContent = dataForBC.name + ' ' + dataForBC.lastName;
+
+        const company = dataForBC.companyName;
+        document.getElementById('company').textContent = company;
+        if(company.length <= 24){
+          document.getElementById('company').insertAdjacentHTML('afterbegin', '<br>');
+        }
+
+        const name = dataForBC.name + ' ' + dataForBC.lastName;
+        document.getElementById('name').textContent = name;
+        if(name.length <= 30){
+          document.getElementById('name').insertAdjacentHTML('afterbegin', '<br>');
+          document.getElementById('company-parent').style.top  = '20.11%';
+        }
+
         document.getElementById('workPosition').textContent = dataForBC.workPosition;
         document.getElementById('phone').textContent = dataForBC.countryCode + dataForBC.whatsApp;
         document.getElementById('email').textContent = dataForBC.email;
         if(!dataForBC.website){
           document.getElementById('website').innerHTML = '';
         }else{
-          document.getElementById('website').getElementsByClassName('text')[0].textContent = dataForBC.website;
+          document.getElementById('website-text').textContent = dataForBC.website;
         }
         makeScreenShot(jsdom.serialize());
       });
