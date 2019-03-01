@@ -239,6 +239,7 @@ export interface HWCReport {
   carrierCompany: string;
   date: number;
   finalDestination: string;
+  fileCS?: any;
   folio: number;
   id: number;
   manifest?: any;

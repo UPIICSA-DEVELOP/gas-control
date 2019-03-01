@@ -30,7 +30,6 @@ import {SharedNotification, SharedService, SharedTypeNotification} from '@app/co
 })
 export class ListTasksComponent implements OnInit, DoCheck {
   public station: any;
-
   @Input() set stationInfo(stationObj: any) {
     if (stationObj && stationObj.stationTaskId) {
       this.others = false;
@@ -49,6 +48,7 @@ export class ListTasksComponent implements OnInit, DoCheck {
   public end: any;
   public today: boolean;
   public tasks: any[];
+  private _lastTabSelected: number;
   public tasksFilterd: any[];
   public zones: any[];
   public priority: any[];
@@ -122,6 +122,7 @@ export class ListTasksComponent implements OnInit, DoCheck {
       lastIndex: null,
       list: null
     };
+    this._lastTabSelected = 0;
   }
 
   ngOnInit() {
@@ -414,6 +415,7 @@ export class ListTasksComponent implements OnInit, DoCheck {
       }
       this._indexOldTaskExpanded = index;
       this._api.getTaskInformation(id, type).subscribe(response => {
+        console.log(response);
         switch (response.code) {
           case 200:
             if (response.items) {
@@ -795,7 +797,20 @@ export class ListTasksComponent implements OnInit, DoCheck {
     this._indexOldTaskExpanded = null;
     let type = '1';
     if(ev){
+      this._lastTabSelected = ev.index;
       switch (ev.index){
+        case 0:
+          type = '1';
+          break;
+        case 1:
+          type = '3';
+          break;
+        case 2:
+          type = '2';
+          break;
+      }
+    }else{
+      switch (this._lastTabSelected){
         case 0:
           type = '1';
           break;
@@ -834,16 +849,13 @@ export class ListTasksComponent implements OnInit, DoCheck {
   private compareNotCalendarTasks(tasks: any):void{
     this.notCalendarTasks = [];
     tasks.forEach(task => {
-      this.taskTemplate.taskTemplates.forEach(template => {
-        if (task.type === Number(template.id)) {
-          this.notCalendarTasks.push({
-            id: task.id,
-            date: UtilitiesService.convertDate(task.date),
-            expanded: false
-          });
-        }
+      this.notCalendarTasks.push({
+        id: task.id,
+        date: UtilitiesService.convertDate(task.date),
+        expanded: false
       });
     });
+    console.log(this.notCalendarTasks);
   }
 
   private initFRForm():void{
@@ -918,6 +930,7 @@ export class ListTasksComponent implements OnInit, DoCheck {
       carrierCompany: task.carrierCompany || undefined,
       date: task.date || undefined,
       finalDestination: task.finalDestination || undefined,
+      fileCS: task.fileCS || undefined,
       folio: task.folio || undefined,
       id: task.id || undefined,
       manifest: task.manifest || undefined,

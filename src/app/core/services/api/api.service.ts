@@ -346,9 +346,6 @@ export class ApiService {
       case 2:
         response = this.listCompressorReport(params);
         break;
-      case 3:
-        response = this.listHWCReport(params);
-        break;
       case 4:
         response = this.listVRSReport(params);
         break;
@@ -356,6 +353,7 @@ export class ApiService {
         response = this.listScannedReport(params);
         break;
       case 6:
+        response = this.listHWCReport(params);
         break;
       case 7:
         response = this.listFRReport(params);
@@ -389,15 +387,6 @@ export class ApiService {
   }
 
   /**
-   * TypeReport = 3 | Generación de residuos peligrosos
-   * @param {HttpParams} params
-   * @return {Observable<any>}
-   */
-  private listHWCReport(params: HttpParams): Observable<any>{
-    return this._http.get(ApiService.API_URL_COMPLETE + 'listHWCReport', {params: params});
-  }
-
-  /**
    * TypeReport = 4 | Sistema de recuperación de vapores
    * @param {HttpParams} params
    * @return {Observable<any>}
@@ -413,6 +402,15 @@ export class ApiService {
    */
   private listScannedReport(params: HttpParams): Observable<any>{
     return this._http.get(ApiService.API_URL_COMPLETE + 'listScannedReport',{params: params});
+  }
+
+  /**
+   * TypeReport = 6 | Recolección de residuos peligrosos
+   * @param {HttpParams} params
+   * @return {Observable<any>}
+   */
+  private listHWCReport(params: HttpParams): Observable<any>{
+    return this._http.get(ApiService.API_URL_COMPLETE + 'listHWCReport', {params: params});
   }
 
   /**
