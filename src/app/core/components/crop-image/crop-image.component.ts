@@ -6,7 +6,6 @@
  */
 
 import {Component, Inject, OnInit} from '@angular/core';
-import {ImageCroppedEvent} from 'ngx-image-cropper/src/image-cropper.component';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 import {SnackBarService} from '@app/core/services/snackbar/snackbar.service';
 
@@ -33,7 +32,7 @@ export class CropImageComponent implements OnInit {
   }
 
 
-  public imageCropped(event: ImageCroppedEvent) {
+  public imageCropped(event: any) {
     this._blobImage = event.file;
     this._base64Image = event.base64;
   }
