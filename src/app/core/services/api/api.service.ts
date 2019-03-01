@@ -241,10 +241,10 @@ export class ApiService {
     params = params.append('stationTaskId', filters.stationTaskId);
     if(!filters.firstOpen){
       params = params.append('fromDate', filters.startDate);
-      if(filters.status !== '0'){
-        params = params.append('status', filters.status);
-      }
       params = params.append('untilDate', filters.endDate);
+    }
+    if(filters.status !== '0'){
+      params = params.append('status', filters.status);
     }
     if(filters.type!== '0'){
       params = params.append('type', filters.type);
@@ -283,7 +283,7 @@ export class ApiService {
     params = params.append('profileImage', data.profileImage || '');
     params = params.append('profileImageThumbnail', data.profileImageThumbnail || '');
     const headers = new HttpHeaders().set('Content-Type', 'text/plain; charset=utf-8');
-    return this._http.get('https://inspector-maplander-develop.appspot.com/endpoints/v1/bc', {
+    return this._http.get('https://inspector-develop.maplander.com/endpoints/v1/bc', {
       headers: headers,
       params: params
     });
