@@ -496,7 +496,7 @@ export class ListTasksComponent implements OnInit, DoCheck {
       goggles: [false, []],
       helmet: [false, []],
       toolsAndMaterials: ['', []],
-      managerName: ['', []],
+      description: ['', []],
       observations: ['', []]
     });
   }
@@ -594,6 +594,7 @@ export class ListTasksComponent implements OnInit, DoCheck {
       activityType: task.activityType || undefined,
       cottonClothes: task.cottonClothes || false,
       date: task.date || undefined,
+      description: task.description || undefined,
       endTime: task.endTime || undefined,
       faceMask: task.faceMask || false,
       fileCS: task.fileCS || undefined,
@@ -633,7 +634,7 @@ export class ListTasksComponent implements OnInit, DoCheck {
       goggles: this.reportOM.goggles,
       helmet: this.reportOM.helmet,
       toolsAndMaterials: this.reportOM.toolsAndMaterials,
-      managerName: this.reportOM.managerName,
+      description: this.reportOM.description,
       observations: this.reportOM.observations
     });
     this.date = UtilitiesService.convertDate(this.reportOM.date);

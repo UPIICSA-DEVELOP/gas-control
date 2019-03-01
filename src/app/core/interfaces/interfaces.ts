@@ -120,6 +120,7 @@ export interface OMReport {
   activityType: string;
   cottonClothes: boolean;
   date: number;
+  description?: string;
   endTime: number;
   faceMask: boolean;
   fileCS?: any;

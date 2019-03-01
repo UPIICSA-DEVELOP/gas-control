@@ -268,10 +268,10 @@
                                     </div>
                                   </div>
                                   <div class="text" style="font-size: 12px !important; margin-top: 4px;">
-                                    Si la actividad requiere de autorización del gerente, anote el nombre a continuación
+                                    Si la actividad es crítica, requiere autorización del gerente
                                   </div>
                                   <mat-form-field class="inputs">
-                                    <input formControlName="managerName" matInput placeholder="Nombre completo">
+                                    <input formControlName="description" matInput placeholder="Descripción">
                                   </mat-form-field>
                                   <mat-form-field class="inputs">
                                     <input formControlName="observations" matInput placeholder="Observaciones">
@@ -443,19 +443,18 @@
                                   </mat-form-field>
                                   <div style="display: flex; align-items: center; width: 90%;">
                                     <mat-form-field>
-                                      <mat-select formControlName="pressure" placeholder="Presión del manómetro"
-                                                  required>
-                                        <mat-option value="7">7</mat-option>
-                                        <mat-option value="8">8</mat-option>
-                                        <mat-option value="9">9</mat-option>
+                                      <mat-select formControlName="pressure" placeholder="Presión del manómetro" required>
+                                        <mat-option [value]="7">7</mat-option>
+                                        <mat-option [value]="8">8</mat-option>
+                                        <mat-option [value]="9">9</mat-option>
                                       </mat-select>
                                     </mat-form-field>
                                     <div class="color" style="margin-left: 16px">Kg/cm<sup>2</sup></div>
                                   </div>
                                   <mat-form-field class="inputs">
-                                    <mat-select formControlName="purge" placeholder="Purga" required>
-                                      <mat-option value="Satisfactorio">Satisfactorio</mat-option>
-                                      <mat-option value="No satisfactorio">No satisfactorio</mat-option>
+                                    <mat-select formControlName="purge" placeholder="Purga o descarga" required>
+                                      <mat-option value="Función correcta">Función correcta</mat-option>
+                                      <mat-option value="Función incorrecta">Función incorrecta</mat-option>
                                     </mat-select>
                                   </mat-form-field>
                                   <mat-form-field class="inputs">
@@ -608,7 +607,7 @@
                                 <div class="head-bold">Sistema de Recuperación de Vapores</div>
                                 <div class="control-data">
                                   <div *ngIf="reportVRS">Fecha: {{date[0]}} {{date[1]}} {{date[2]}}&nbsp;&nbsp;</div>
-                                  <div>Foli | formatFolioo:</div>
+                                  <div *ngIf="reportVRS">Folio: {{reportVRS.folio | formatFolio}}</div>
                                 </div>
                               </div>
                               <form [formGroup]="taskForm[3]" class="flex-box">
@@ -824,37 +823,16 @@
                                 </div>
                               </div>
                               <div style="display: flex; align-items: center; flex-direction: column">
-                                <mat-card style="width: 95%">
+                                <mat-card style="width: 95%; margin: 12px 0;">
                                   <mat-card-content
                                     style="display: flex; align-items: center; font-weight: 600; color: #707070; padding: 0;">
                                     <mat-icon style="margin: 0 12px">insert_drive_file</mat-icon>
-                                    <div *ngIf="!reportScanned || !reportScanned.fileCS">Documento 1</div>
+                                    <div *ngIf="!reportScanned || !reportScanned.fileCS">Manifiesto</div>
                                     <div *ngIf="reportScanned && reportScanned.fileCS"><a
                                       style="text-decoration: none; color: #707070;"
-                                      [href]="reportScanned.fileCS.thumbnail">Documento 1</a></div>
+                                      [href]="reportScanned.fileCS.thumbnail">Manifiesto</a></div>
                                   </mat-card-content>
                                 </mat-card>
-                                <div style="margin: 60px 32.5% 0 32.5%;">
-                                  <div class="text-sign">
-                                    Nombre y firma del responsable
-                                  </div>
-                                  <div class="inputs">
-                                    <div class="signature-element">
-                                      <img *ngIf="reportScanned && reportScanned.signature"
-                                           [src]="reportScanned.signature.thumbnail">
-                                      <div *ngIf="!reportScanned || !reportScanned.signature"
-                                           style="width: 60%; height: 60px"></div>
-                                    </div>
-                                    <div class="divider"></div>
-                                    <div *ngIf="!reportScanned || !reportScanned.name" class="name">Nombre</div>
-                                    <div *ngIf="reportScanned && reportScanned.name" class="name">
-                                      {{reportScanned.name}}
-                                    </div>
-                                  </div>
-                                  <!--div class="finish" *ngIf="user.role === 7">
-                                    <button mat-flat-button [color]="'primary'">FINALZAR</button>
-                                  </div-->
-                                </div>
                               </div>
                               <div class="divider" *ngIf="task.original.hwg"></div>
                               <form [formGroup]="taskForm[2]" *ngIf="task.original.hwg" class="flex-box">
@@ -872,17 +850,10 @@
                                   </mat-form-field>
                                   <mat-form-field class="inputs">
                                     <mat-select formControlName="waste" placeholder="Residuo generado" required>
-                                      <mat-option value="Envases contaminados con aceites">Envases contaminados con
-                                        aceites
-                                      </mat-option>
-                                      <mat-option value="Natas y grasas de la trampa de combustible">Natas y grasas de
-                                        la trampa
-                                        de combustible
-                                      </mat-option>
-                                      <mat-option value="Filtros de gasolina y diesel">Filtros de gasolina y diesel
-                                      </mat-option>
-                                      <mat-option value="Residuos de aceite y pintura">Residuos de aceite y pintura
-                                      </mat-option>
+                                      <mat-option value="Envases contaminados con aceites">Envases contaminados con aceites</mat-option>
+                                      <mat-option value="Natas y grasas de la trampa de combustible">Natas y grasas de la trampa de combustible</mat-option>
+                                      <mat-option value="Filtros de gasolina y diesel">Filtros de gasolina y diesel</mat-option>
+                                      <mat-option value="Residuos de aceite y pintura">Residuos de aceite y pintura</mat-option>
                                     </mat-select>
                                     <mat-error *ngIf="taskForm[2].controls['area'].hasError('required')"></mat-error>
                                   </mat-form-field>
@@ -915,15 +886,14 @@
                                   </div>
                                   <div style="display: flex; justify-content: space-between; width: 90%">
                                     <mat-form-field style="width: 65%">
-                                      <input formControlName="quantity" matInput placeholder="Cantidad generada"
-                                             required>
+                                      <input formControlName="quantity" matInput placeholder="Cantidad generada" required>
                                       <mat-error
                                         *ngIf="taskForm[2].controls['quantity'].hasError('required')"></mat-error>
                                     </mat-form-field>
                                     <mat-form-field style="width: 30%;">
                                       <mat-select formControlName="unity" placeholder="Unidad" required>
-                                        <mat-option value="Pzas">Pzas.</mat-option>
-                                        <mat-option value="kg">kg</mat-option>
+                                        <mat-option value="Pzas">Pzas</mat-option>
+                                        <mat-option value="Kg">Kg</mat-option>
                                         <mat-option value="gr">gr</mat-option>
                                         <mat-option value="lt">lt</mat-option>
                                       </mat-select>
@@ -953,6 +923,22 @@
                                     <img *ngIf="reportHWG && reportHWG.fileCS" class="evidence"
                                          [src]="reportHWG.fileCS.thumbnail" alt="Evidence capture">
                                   </div>
+                                  <div class="text-sign">
+                                    Nombre y firma del responsable
+                                  </div>
+                                  <div class="inputs">
+                                    <div class="signature-element">
+                                      <img *ngIf="reportScanned && reportScanned.signature"
+                                           [src]="reportScanned.signature.thumbnail">
+                                      <div *ngIf="!reportScanned || !reportScanned.signature"
+                                           style="width: 60%; height: 60px"></div>
+                                    </div>
+                                    <div class="divider"></div>
+                                    <div *ngIf="!reportScanned || !reportScanned.name" class="name">Nombre</div>
+                                    <div *ngIf="reportScanned && reportScanned.name" class="name">
+                                      {{reportScanned.name}}
+                                    </div>
+                                  </div>
                                 </div>
                               </form>
                             </div>
@@ -967,22 +953,17 @@
                               <form [formGroup]="taskForm[4]" class="flex-box">
                                 <div class="columns">
                                   <div class="times">
-                                    <div class="clock">
-                                      <input formControlName="startTime" placeholder="Hora de inicio" matInput required
-                                             appDisableWrite
-                                             value="{{taskForm[4].controls['startTime'].value | formatTime}}">
-                                    </div>
-                                    <div class="clock">
-                                      <input formControlName="endTime" placeholder="Hora de término" matInput required
-                                             appDisableWrite
-                                             value="{{taskForm[4].controls['endTime'].value | formatTime}}">
-                                    </div>
+                                    <mat-form-field class="clock">
+                                      <input formControlName="startTime" placeholder="Hora de inicio" matInput required appDisableWrite value="{{taskForm[4].controls['startTime'].value | formatTime}}">
+                                    </mat-form-field>
+                                    <mat-form-field class="clock">
+                                      <input formControlName="endTime" placeholder="Hora de término" matInput required appDisableWrite value="{{taskForm[4].controls['endTime'].value | formatTime}}">
+                                    </mat-form-field>
                                   </div>
-                                  <div
-                                    *ngIf="reportFE && reportFE.fireExtinguishers && reportFE.fireExtinguishers.length!==0; then listFE else emptyListFE"></div>
+                                  <div *ngIf="reportFE && reportFE.fireExtinguishers && reportFE.fireExtinguishers.length!==0; then listFE else emptyListFE"></div>
                                   <ng-template #listFE>
-                                    <div *ngFor="let extinguisher of reportFE.fireExtinguishers; let  i = index">
-                                      <div class="color">
+                                    <div class="inputs" *ngFor="let extinguisher of reportFE.fireExtinguishers; let  i = index">
+                                      <div class="color" style="text-align: center;">
                                         Extintor {{i+1}}
                                       </div>
                                       <mat-form-field class="inputs">
@@ -1006,18 +987,14 @@
                                                required>
                                       </mat-form-field>
                                       <div class="times">
-                                        <mat-form-field class="clock" [(ngModel)]="extinguisher.expiration"
-                                                        [ngModelOptions]="{standalone: true}"
-                                                        [disabled]="true">
-                                          <mat-select placeholder="Vencimiento" required>
+                                        <mat-form-field class="clock">
+                                          <mat-select placeholder="Vencimiento" required [(ngModel)]="extinguisher.expiration" [ngModelOptions]="{standalone: true}" [disabled]="true">
                                             <mat-option value="Vigente">Vigente</mat-option>
                                             <mat-option value="Caducado">Caducao</mat-option>
                                           </mat-select>
                                         </mat-form-field>
                                         <mat-form-field class="clock">
-                                          <mat-select placeholder="Manómetro" [(ngModel)]="extinguisher.manometer"
-                                                      [ngModelOptions]="{standalone: true}" [disabled]="true"
-                                                      required>
+                                          <mat-select placeholder="Manómetro" [(ngModel)]="extinguisher.manometer" [ngModelOptions]="{standalone: true}" [disabled]="true" required>
                                             <mat-option value="Descargado">Descargado</mat-option>
                                             <mat-option value="Óptimo">Óptimo</mat-option>
                                             <mat-option value="Sobrecargado">Sobrecargado</mat-option>
@@ -1065,7 +1042,7 @@
                                       Extintor 1
                                     </div>
                                     <mat-form-field class="inputs">
-                                      <mat-select placeholder="Área" required>
+                                      <mat-select disabled placeholder="Área" required>
                                         <mat-option value="Zona de despacho">Zona de despacho</mat-option>
                                         <mat-option value="Zona de tanques">Zona de tanques</mat-option>
                                         <mat-option value="Oficina">Oficina</mat-option>
@@ -1077,17 +1054,17 @@
                                       </mat-select>
                                     </mat-form-field>
                                     <mat-form-field class="inputs">
-                                      <input matInput placeholder="Capacidad" required>
+                                      <input disabled matInput placeholder="Capacidad" required>
                                     </mat-form-field>
                                     <div class="times">
                                       <mat-form-field class="clock">
-                                        <mat-select placeholder="Vencimiento" required>
+                                        <mat-select disabled placeholder="Vencimiento" required>
                                           <mat-option value="Vigente">Vigente</mat-option>
                                           <mat-option value="Caducado">Caducao</mat-option>
                                         </mat-select>
                                       </mat-form-field>
                                       <mat-form-field class="clock">
-                                        <mat-select placeholder="Manómetro" required>
+                                        <mat-select disabled placeholder="Manómetro" required>
                                           <mat-option value="Descargado">Descargado</mat-option>
                                           <mat-option value="Óptimo">Óptimo</mat-option>
                                           <mat-option value="Sobrecargado">Sobrecargado</mat-option>
@@ -1096,13 +1073,13 @@
                                     </div>
                                     <div class="times">
                                       <mat-form-field class="clock">
-                                        <mat-select placeholder="Manguera" required>
+                                        <mat-select disabled placeholder="Manguera" required>
                                           <mat-option value="Satisfactorio">Satisfactorio</mat-option>
                                           <mat-option value="No satisfactorio">No satisfactorio</mat-option>
                                         </mat-select>
                                       </mat-form-field>
                                       <mat-form-field class="clock">
-                                        <mat-select placeholder="Cincho" required>
+                                        <mat-select disabled placeholder="Cincho" required>
                                           <mat-option value="Satisfactorio">Satisfactorio</mat-option>
                                           <mat-option value="No satisfactorio">No satisfactorio</mat-option>
                                         </mat-select>
@@ -1110,13 +1087,13 @@
                                     </div>
                                     <div class="times">
                                       <mat-form-field class="clock">
-                                        <mat-select placeholder="Collarín">
+                                        <mat-select disabled placeholder="Collarín">
                                           <mat-option value="Satisfactorio">Satisfactorio</mat-option>
                                           <mat-option value="No satisfactorio">No satisfactorio</mat-option>
                                         </mat-select>
                                       </mat-form-field>
                                       <mat-form-field class="clock">
-                                        <mat-select placeholder="Seguro">
+                                        <mat-select disabled placeholder="Seguro">
                                           <mat-option value="Satisfactorio">Satisfactorio</mat-option>
                                           <mat-option value="No satisfactorio">No satisfactorio</mat-option>
                                         </mat-select>
@@ -1152,13 +1129,13 @@
                 </mat-card>
               </ng-template>
             </div>
+            <div class="notFoundTasks" *ngIf="taskWithDivider.length === 0">No existen resultados para su búsqueda</div>
           </ng-template>
           <ng-template #message>
             <div class="empty-list">
               <div *ngIf="!notCalendar; then taskInCreation else notTask"></div>
               <ng-template #taskInCreation>
-                <div class="message">
-                  La Estación no cuenta por el momento con tareas programadas, por favor consulte mañana
+                <div class="message">La Estación no cuenta por el momento con tareas programadas, por favor consulte mañana
                 </div>
               </ng-template>
               <ng-template #notTask>
@@ -1483,10 +1460,10 @@
                                     </mat-form-field>
                                     <mat-form-field style="width: 30%;">
                                       <mat-select formControlName="unity" placeholder="Unidad" required>
-                                        <mat-option value="1">Pzas.</mat-option>
-                                        <mat-option value="2">kg</mat-option>
-                                        <mat-option value="3">gr</mat-option>
-                                        <mat-option value="3">lt</mat-option>
+                                        <mat-option value="Pzas">Pzas</mat-option>
+                                        <mat-option value="Kg">Kg</mat-option>
+                                        <mat-option value="gr">gr</mat-option>
+                                        <mat-option value="lt">lt</mat-option>
                                       </mat-select>
                                     </mat-form-field>
                                   </div>
