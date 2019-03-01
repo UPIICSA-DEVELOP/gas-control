@@ -33,10 +33,16 @@ export class ListTasksComponent implements OnInit, DoCheck {
   @Input() set stationInfo(stationObj: any) {
     if (stationObj && stationObj.stationTaskId) {
       this.others = false;
+      this.tasks = [];
       this.notCalendarTasks = [];
       this._indexOldTaskExpanded = null;
       this.station = stationObj;
       this.getStationTask();
+    }else{
+      this.others = false;
+      this.tasks = [];
+      this.notCalendarTasks = [];
+      this._indexOldTaskExpanded = null;
     }
   }
 
