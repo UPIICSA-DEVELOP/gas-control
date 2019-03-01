@@ -18,11 +18,10 @@ export class Constants {
 
   public static Filters = [
     'Todas',
-    'Activa',
+    '',
     'Atrasadas',
-    'Terminadas',
     'Vencidas',
-    'Incidencias'
+    'Terminadas'
   ];
 
   public static Priority_Task = {

@@ -46,12 +46,12 @@
           <div *ngIf="tasks.length === 0; then message else list"></div>
           <ng-template #list>
             <div id="task-{{task.id}}" class="card-list" *ngFor="let task of taskWithDivider; let i = index">
-              <div *ngIf="task.type === 1 && !task.original; then dividerText else taskCard"></div>
+              <div *ngIf="task.type === 1; then dividerText else taskCard"></div>
               <ng-template #dividerText>
                 <div class="head-bold" style="margin: 8px 0">{{task.title}}</div>
               </ng-template>
               <ng-template #taskCard>
-                <mat-card class="task">
+                <div class="task">
                   <div class="priority" *ngIf="task.original.level === 3" style="background-color:#E00000"></div>
                   <div class="priority" *ngIf="task.original.level === 1" style="background-color:#257602"></div>
                   <div class="priority" *ngIf="task.original.level === 2" style="background-color:#FFD800"></div>
@@ -60,7 +60,7 @@
                       <mat-accordion class="containerTask">
                         <mat-expansion-panel [expanded]="task.expanded"
                                              (afterExpand)="getTaskInformation(i,task.original.id, task.original.typeReport, task.original.hwg)">
-                          <mat-expansion-panel-header [collapsedHeight]="'88px'" [expandedHeight]="'88px'">
+                          <mat-expansion-panel-header [collapsedHeight]="'88px'" [expandedHeight]="'88px'" style="position: relative;">
                             <mat-panel-title style="position: relative">
                               <div class="date">
                                 <div>
@@ -300,6 +300,14 @@
                                     <div *ngIf="!reportOM || !reportOM.name" class="name">Nombre</div>
                                     <div *ngIf="reportOM && reportOM.name" class="name">{{reportOM.name}}</div>
                                   </div>
+                                  <div *ngIf="itemsTasks && itemsTasks.length !== 0 && !task.original.hwg">
+                                    <mat-paginator
+                                      [hidePageSize]="true"
+                                      [length]="itemsTasks.length"
+                                      [pageSize]="1"
+                                      (page)="changeTask($event, 1)">
+                                    </mat-paginator>
+                                  </div>
                                 </div>
                               </form>
                               <div class="divider" *ngIf="task.original.hwg"></div>
@@ -398,6 +406,14 @@
                                     </mat-icon>
                                     <img *ngIf="reportHWG && reportHWG.fileCS" class="evidence"
                                          [src]="reportHWG.fileCS.thumbnail" alt="Evidence capture">
+                                  </div>
+                                  <div *ngIf="itemsTasks && itemsTasks.length !== 0">
+                                    <mat-paginator
+                                      [hidePageSize]="true"
+                                      [length]="itemsTasks.length"
+                                      [pageSize]="1"
+                                      (page)="changeTask($event, 1)">
+                                    </mat-paginator>
                                   </div>
                                 </div>
                               </form>
@@ -496,6 +512,14 @@
                                     <div *ngIf="!reportComp || !reportComp.name" class="name">Nombre</div>
                                     <div *ngIf="reportComp && reportComp.name" class="name">{{reportComp.name}}</div>
                                   </div>
+                                  <div *ngIf="itemsTasks && itemsTasks.length !== 0 && !task.original.hwg">
+                                    <mat-paginator
+                                      [hidePageSize]="true"
+                                      [length]="itemsTasks.length"
+                                      [pageSize]="1"
+                                      (page)="changeTask($event, 2)">
+                                    </mat-paginator>
+                                  </div>
                                 </div>
                               </form>
                               <div class="divider" *ngIf="task.original.hwg"></div>
@@ -594,6 +618,14 @@
                                     </mat-icon>
                                     <img *ngIf="reportHWG && reportHWG.fileCS" class="evidence"
                                          [src]="reportHWG.fileCS.thumbnail" alt="Evidence capture">
+                                  </div>
+                                  <div *ngIf="itemsTasks && itemsTasks.length !== 0">
+                                    <mat-paginator
+                                      [hidePageSize]="true"
+                                      [length]="itemsTasks.length"
+                                      [pageSize]="1"
+                                      (page)="changeTask($event, 2)">
+                                    </mat-paginator>
                                   </div>
                                 </div>
                               </form>
@@ -803,6 +835,14 @@
                                     <div *ngIf="!reportVRS || !reportVRS.name" class="name">Nombre</div>
                                     <div *ngIf="reportVRS && reportVRS.name" class="name">{{reportVRS.name}}</div>
                                   </div>
+                                  <div *ngIf="itemsTasks && itemsTasks.length !== 0">
+                                    <mat-paginator
+                                      [hidePageSize]="true"
+                                      [length]="itemsTasks.length"
+                                      [pageSize]="1"
+                                      (page)="changeTask($event, 4)">
+                                    </mat-paginator>
+                                  </div>
                                 </div>
                               </form>
                             </div>
@@ -914,16 +954,6 @@
                                     <mat-error
                                       *ngIf="taskForm[2].controls['temporaryStorage'].hasError('required')"></mat-error>
                                   </mat-form-field>
-                                  <div class="image-header">
-                                    Captura fotográfica de evidencia.
-                                  </div>
-                                  <div class="image-container">
-                                    <mat-icon *ngIf="!reportHWG || !reportHWG.fileCS" class="default-image">
-                                      image
-                                    </mat-icon>
-                                    <img *ngIf="reportHWG && reportHWG.fileCS" class="evidence"
-                                         [src]="reportHWG.fileCS.thumbnail" alt="Evidence capture">
-                                  </div>
                                   <div class="text-sign">
                                     Nombre y firma del responsable
                                   </div>
@@ -939,6 +969,14 @@
                                     <div *ngIf="reportScanned && reportScanned.name" class="name">
                                       {{reportScanned.name}}
                                     </div>
+                                  </div>
+                                  <div *ngIf="itemsTasks && itemsTasks.length !== 0">
+                                    <mat-paginator
+                                      [hidePageSize]="true"
+                                      [length]="itemsTasks.length"
+                                      [pageSize]="1"
+                                      (page)="changeTask($event, 5)">
+                                    </mat-paginator>
                                   </div>
                                 </div>
                               </form>
@@ -999,7 +1037,7 @@
                                                       [(ngModel)]="extinguisher.expiration"
                                                       [ngModelOptions]="{standalone: true}" [disabled]="true">
                                             <mat-option value="Vigente">Vigente</mat-option>
-                                            <mat-option value="Caducado">Caducao</mat-option>
+                                            <mat-option value="Caduco">Caduco</mat-option>
                                           </mat-select>
                                         </mat-form-field>
                                         <mat-form-field class="clock">
@@ -1125,6 +1163,14 @@
                                     <div *ngIf="!reportFE || !reportFE.name" class="name">Nombre</div>
                                     <div *ngIf="reportFE && reportFE.name" class="name">{{reportFE.name}}</div>
                                   </div>
+                                  <div *ngIf="itemsTasks && itemsTasks.length !== 0">
+                                    <mat-paginator
+                                      [hidePageSize]="true"
+                                      [length]="itemsTasks.length"
+                                      [pageSize]="1"
+                                      (page)="changeTask($event,8)">
+                                    </mat-paginator>
+                                  </div>
                                 </div>
                               </form>
                             </div>
@@ -1133,10 +1179,11 @@
                       </mat-accordion>
                     </div>
                   </div>
-                </mat-card>
+                </div>
               </ng-template>
             </div>
-            <div class="notFoundTasks" *ngIf="taskWithDivider.length === 0">No existen resultados para su búsqueda</div>
+            <div class="notFoundTasks" *ngIf="taskWithDivider.length === 0 && !load">No existen resultados para su búsqueda</div>
+            <div class="notFoundTasks" *ngIf="taskWithDivider.length === 0 && load">Cargando tareas...</div>
           </ng-template>
           <ng-template #message>
             <div class="empty-list">
@@ -1163,13 +1210,13 @@
               <div *ngIf="notCalendarTasks.length !== 0; then listFR else emptyFR"></div>
               <ng-template #listFR>
                 <div id="task-{{task.id}}" class="card-list" *ngFor="let task of notCalendarTasks; let i = index">
-                  <mat-card class="task" style="margin-top: 8px">
+                  <div class="task" style="margin-top: 8px">
                     <div class="priority" style="background-color:#E00000"></div>
                     <div class="containerTask">
                       <div class="containerTask">
                         <mat-accordion class="containerTask">
                           <mat-expansion-panel [expanded]="task.expanded">
-                            <mat-expansion-panel-header [collapsedHeight]="'88px'" [expandedHeight]="'88px'" (click)="getTaskInformation(i,task.id, 7)">
+                            <mat-expansion-panel-header [collapsedHeight]="'88px'" [expandedHeight]="'88px'" (click)="getTaskInformation(i,task.id, 7)" style="position: relative;">
                               <mat-panel-title style="position: relative">
                                 <div class="date">
                                   <div>
@@ -1263,6 +1310,14 @@
                                       <div *ngIf="!reportFR || !reportFR.name" class="name">Nombre</div>
                                       <div *ngIf="reportFR && reportFR.name" class="name">{{reportFR.name}}</div>
                                     </div>
+                                    <div *ngIf="itemsTasks && itemsTasks.length !== 0">
+                                      <mat-paginator
+                                        [hidePageSize]="true"
+                                        [length]="itemsTasks.length"
+                                        [pageSize]="1"
+                                        (page)="changeTask($event, 7)">
+                                      </mat-paginator>
+                                    </div>
                                   </div>
                                 </div>
                               </div>
@@ -1271,7 +1326,7 @@
                         </mat-accordion>
                       </div>
                     </div>
-                  </mat-card>
+                  </div>
                 </div>
               </ng-template>
               <ng-template #emptyFR>
@@ -1284,13 +1339,13 @@
               <div *ngIf="notCalendarTasks.length !== 0; then listIN else emptyIN"></div>
               <ng-template #listIN>
                 <div id="task-{{task.id}}" class="card-list" *ngFor="let task of notCalendarTasks; let i = index">
-                  <mat-card class="task" style="margin-top: 8px">
+                  <div class="task" style="margin-top: 8px">
                     <div class="priority" style="background-color:#E00000"></div>
                     <div class="containerTask">
                       <div class="containerTask">
                         <mat-accordion class="containerTask">
                           <mat-expansion-panel [expanded]="task.expanded">
-                            <mat-expansion-panel-header [collapsedHeight]="'88px'" [expandedHeight]="'88px'" (click)="getTaskInformation(i,task.id, 9)">
+                            <mat-expansion-panel-header [collapsedHeight]="'88px'" [expandedHeight]="'88px'" (click)="getTaskInformation(i,task.id, 9)" style="position: relative;">
                               <mat-panel-title style="position: relative">
                                 <div class="date">
                                   <div>
@@ -1311,8 +1366,7 @@
                                 <div style="margin: 0 4px;" *ngIf="reportIncidence">Fecha: {{date[0]}} {{date[1]}}
                                   {{date[2]}}
                                 </div>
-                                <div style="margin: 0 4px;" *ngIf="reportIncidence">Folio:{{reportIncidence.folio |
-                                  formatFolio}}
+                                <div style="margin: 0 4px;" *ngIf="reportIncidence">Folio:{{reportIncidence.folio | formatFolio}}
                                 </div>
                               </div>
                               <form [formGroup]="secondTaskForm[2]" class="flex-box">
@@ -1404,6 +1458,14 @@
                                       {{reportIncidence.name}}
                                     </div>
                                   </div>
+                                  <div *ngIf="itemsTasks && itemsTasks.length !== 0">
+                                    <mat-paginator
+                                      [hidePageSize]="true"
+                                      [length]="itemsTasks.length"
+                                      [pageSize]="1"
+                                      (page)="changeTask($event, 9)">
+                                    </mat-paginator>
+                                  </div>
                                 </div>
                               </form>
                             </div>
@@ -1411,7 +1473,7 @@
                         </mat-accordion>
                       </div>
                     </div>
-                  </mat-card>
+                  </div>
                 </div>
               </ng-template>
               <ng-template #emptyIN>
@@ -1424,13 +1486,13 @@
               <div *ngIf="notCalendarTasks.length !== 0; then listHWC else emptyHWC"></div>
               <ng-template #listHWC>
                 <div id="task-{{task.id}}" class="card-list" *ngFor="let task of notCalendarTasks; let i = index">
-                  <mat-card class="task" style="margin-top: 8px">
+                  <div class="task" style="margin-top: 8px">
                     <div class="priority" style="background-color:#E00000"></div>
                     <div class="containerTask">
                       <div class="containerTask">
                         <mat-accordion class="containerTask">
                           <mat-expansion-panel [expanded]="task.expanded">
-                            <mat-expansion-panel-header [collapsedHeight]="'88px'" [expandedHeight]="'88px'" (click)="getTaskInformation(i,task.id, 6)">
+                            <mat-expansion-panel-header [collapsedHeight]="'88px'" [expandedHeight]="'88px'" (click)="getTaskInformation(i,task.id, 6)" style="position: relative;">
                               <mat-panel-title style="position: relative">
                                 <div class="date">
                                   <div>
@@ -1510,6 +1572,14 @@
                                       <div class="name">Nombre</div>
                                       <div *ngIf="reportHWC && reportHWC.name" class="name">{{reportHWC.name}}</div>
                                     </div>
+                                    <div *ngIf="itemsTasks && itemsTasks.length !== 0">
+                                      <mat-paginator
+                                        [hidePageSize]="true"
+                                        [length]="itemsTasks.length"
+                                        [pageSize]="1"
+                                        (page)="changeTask($event, 6)">
+                                      </mat-paginator>
+                                    </div>
                                   </div>
                                 </div>
                               </div>
@@ -1518,7 +1588,7 @@
                         </mat-accordion>
                       </div>
                     </div>
-                  </mat-card>
+                  </div>
                 </div>
               </ng-template>
               <ng-template #emptyHWC>
