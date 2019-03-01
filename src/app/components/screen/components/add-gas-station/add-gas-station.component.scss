@@ -15,21 +15,6 @@
     display: flex;
     justify-content: space-between;
   }
-  .background{
-    display: none;
-    width: 600px;
-    height: 300px;
-    position: absolute;
-    bottom: 0;
-    right: 0;
-    background: url("../../../../../assets/Images/background.png") no-repeat bottom;
-    background-size: cover;
-    z-index: 0;
-    @media screen and (max-width: 768px), screen and (max-height: 600px) {
-      width: 300px;
-      height: 150px;
-    }
-  }
   #forms-and-lists{
     width: 100%;
     height: 100%;

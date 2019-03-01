@@ -891,7 +891,9 @@ export class AddGasStationComponent implements OnInit {
                     default:
                       break;
                   }
-                })
+                });
+              }else{
+                this._dialogRef.close();
               }
               break;
           }
