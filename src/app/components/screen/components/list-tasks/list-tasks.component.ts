@@ -247,17 +247,20 @@ export class ListTasksComponent implements OnInit, DoCheck {
   }
 
   public sortTaskArrayByStatus(): void {
-    let headerPrevious = false, headerHistory = false;
+    let headerPrevious = false, headerHistory = false, headerToday = false;
     this.tasksFilterd = UtilitiesService.sortJSON(this.tasksFilterd, 'status', 'asc');
-    this.taskWithDivider.push({
-      type: this.filter!==0 ? 2 : 1,
-      title: 'Hoy',
-      original: null,
-      id: '',
-      expanded: false,
-    });
     this.tasksFilterd.forEach(item => {
       if (item.status === 1) {
+        if(!headerToday){
+          this.taskWithDivider.push({
+            type: this.filter!==0 ? 2 : 1,
+            title: 'Hoy',
+            original: null,
+            id: '',
+            expanded: false,
+          });
+        }
+        headerToday = true;
         this.taskWithDivider.push({
           type: 2,
           title: '',
