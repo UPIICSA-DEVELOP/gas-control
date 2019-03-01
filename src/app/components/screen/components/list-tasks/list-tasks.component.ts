@@ -363,8 +363,10 @@ export class ListTasksComponent implements OnInit, DoCheck {
     this._filterService.open(this.filter).afterClosed().subscribe(response => {
       switch (response.code) {
         case 1:
-          this._firstOpen = false;
           this.filter = response.filter;
+          if (this.filter !== 0 && ((this.start.timeStamp === this.end.timeStamp) && this._taskType === '0')){
+            this._firstOpen = false;
+          }
           this.getStationTask();
           break;
       }

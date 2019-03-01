@@ -241,7 +241,9 @@ export class ApiService {
     params = params.append('stationTaskId', filters.stationTaskId);
     if(!filters.firstOpen){
       params = params.append('fromDate', filters.startDate);
-      params = params.append('status', filters.status);
+      if(filters.status !== '0'){
+        params = params.append('status', filters.status);
+      }
       params = params.append('untilDate', filters.endDate);
     }
     if(filters.type!== '0'){
