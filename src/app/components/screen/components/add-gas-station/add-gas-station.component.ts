@@ -652,7 +652,7 @@ export class AddGasStationComponent implements OnInit {
       data = {
         name: this.manger.name || '',
         lastName: this.manger.lastName  || '',
-        company: '',
+        company: this.newStation.controls['businessName'].value ? this.newStation.controls['businessName'].value : '',
         phone: this.manger.phoneNumber || '',
         workPosition: this.manger.jobTitle || '',
         email: this.manger.email || '',
@@ -664,17 +664,17 @@ export class AddGasStationComponent implements OnInit {
       }
     }else{
       data = {
-        name: this.manger.name || '',
-        lastName: this.manger.lastName  || '',
-        company: this.station.businessName,
-        phone: this.manger.phoneNumber || '',
-        workPosition: this.manger.jobTitle || '',
-        email: this.manger.email || '',
-        countryCode : this.manger.countryCode || '',
+        name: this.legalRepresentative.name || '',
+        lastName: this.legalRepresentative.lastName  || '',
+        company: '',
+        phone: this.legalRepresentative.phoneNumber || '',
+        workPosition: this.legalRepresentative.jobTitle || '',
+        email: this.legalRepresentative.email || '',
+        countryCode : this.legalRepresentative.countryCode || '',
         industryCode: '1',
-        website: this.manger.website || '',
-        profileImage: this.manger.profileImage ? this.manger.profileImage.blobName : null,
-        profileImageThumbnail: this.manger.profileImage ? this.manger.profileImage.thumbnail + '=s1200': null
+        website: this.legalRepresentative.website || '',
+        profileImage: this.legalRepresentative.profileImage ? this.legalRepresentative.profileImage.blobName : null,
+        profileImageThumbnail: this.legalRepresentative.profileImage ? this.legalRepresentative.profileImage.thumbnail + '=s1200': null
       }
     }
     this._api.businessCardService(data).subscribe(response=>{
@@ -682,7 +682,7 @@ export class AddGasStationComponent implements OnInit {
         case 200:
           this._snackBarService.closeSnackBar();
           if (isManager){
-            this.manger.bCard = response.item;
+            this.legalRepresentative.bCard = response.item;
             this.createManager()
           }else {
             this.legalRepresentative.bCard = response.item;
