@@ -46,20 +46,21 @@
           <div *ngIf="tasks.length === 0; then message else list"></div>
           <ng-template #list>
             <div id="task-{{task.id}}" class="card-list" *ngFor="let task of taskWithDivider; let i = index">
-              <div *ngIf="task.type === 1 && !task.original; then dividerText else taskCard"></div>
+              <div *ngIf="task.type === 1; then dividerText else taskCard"></div>
               <ng-template #dividerText>
                 <div class="head-bold" style="margin: 8px 0">{{task.title}}</div>
               </ng-template>
               <ng-template #taskCard>
-                <mat-card class="task">
+                <div class="task">
                   <div class="priority" *ngIf="task.original.level === 3" style="background-color:#E00000"></div>
                   <div class="priority" *ngIf="task.original.level === 1" style="background-color:#257602"></div>
                   <div class="priority" *ngIf="task.original.level === 2" style="background-color:#FFD800"></div>
                   <div class="containerTask">
                     <div class="containerTask">
                       <mat-accordion class="containerTask">
-                        <mat-expansion-panel [expanded]="task.expanded" (afterExpand)="getTaskInformation(i,task.original.id, task.original.typeReport, task.original.hwg)">
-                          <mat-expansion-panel-header [collapsedHeight]="'88px'" [expandedHeight]="'88px'">
+                        <mat-expansion-panel [expanded]="task.expanded"
+                                             (afterExpand)="getTaskInformation(i,task.original.id, task.original.typeReport, task.original.hwg)">
+                          <mat-expansion-panel-header [collapsedHeight]="'88px'" [expandedHeight]="'88px'" style="position: relative;">
                             <mat-panel-title style="position: relative">
                               <div class="date">
                                 <div>
@@ -229,40 +230,40 @@
                                   </div>
                                   <div class="inputs" *ngIf="reportOM && reportOM.procedures">
                                     <div *ngFor="let procedure of reportOM.procedures; let i = index;">
-                                      <div class="procedure" *ngIf="procedure === 1">1.-
+                                      <div class="procedure" *ngIf="procedure === 1">{{i+1}}.-
                                         {{taskTemplate.procedures[procedure-1].name}}
                                       </div>
-                                      <div class="procedure" *ngIf="procedure === 2">2.-
+                                      <div class="procedure" *ngIf="procedure === 2">{{i+1}}.-
                                         {{taskTemplate.procedures[procedure-1].name}}
                                       </div>
-                                      <div class="procedure" *ngIf="procedure === 3">3.-
+                                      <div class="procedure" *ngIf="procedure === 3">{{i+1}}.-
                                         {{taskTemplate.procedures[procedure-1].name}}
                                       </div>
-                                      <div class="procedure" *ngIf="procedure === 4">4.-
+                                      <div class="procedure" *ngIf="procedure === 4">{{i+1}}.-
                                         {{taskTemplate.procedures[procedure-1].name}}
                                       </div>
-                                      <div class="procedure" *ngIf="procedure === 5">5.-
+                                      <div class="procedure" *ngIf="procedure === 5">{{i+1}}.-
                                         {{taskTemplate.procedures[procedure-1].name}}
                                       </div>
-                                      <div class="procedure" *ngIf="procedure === 6">6.-
+                                      <div class="procedure" *ngIf="procedure === 6">{{i+1}}.-
                                         {{taskTemplate.procedures[procedure-1].name}}
                                       </div>
-                                      <div class="procedure" *ngIf="procedure === 7">7.-
+                                      <div class="procedure" *ngIf="procedure === 7">{{i+1}}.-
                                         {{taskTemplate.procedures[procedure-1].name}}
                                       </div>
-                                      <div class="procedure" *ngIf="procedure === 8">8.-
+                                      <div class="procedure" *ngIf="procedure === 8">{{i+1}}.-
                                         {{taskTemplate.procedures[procedure-1].name}}
                                       </div>
-                                      <div class="procedure" *ngIf="procedure === 9">9.-
+                                      <div class="procedure" *ngIf="procedure === 9">{{i+1}}.-
                                         {{taskTemplate.procedures[procedure-1].name}}
                                       </div>
-                                      <div class="procedure" *ngIf="procedure === 10">10.-
+                                      <div class="procedure" *ngIf="procedure === 10">{{i+1}}.-
                                         {{taskTemplate.procedures[procedure-1].name}}
                                       </div>
-                                      <div class="procedure" *ngIf="procedure === 11">11.-
+                                      <div class="procedure" *ngIf="procedure === 11">{{i+1}}.-
                                         {{taskTemplate.procedures[procedure-1].name}}
                                       </div>
-                                      <div class="procedure" *ngIf="procedure === 12">12.-
+                                      <div class="procedure" *ngIf="procedure === 12">{{i+1}}.-
                                         {{taskTemplate.procedures[procedure-1].name}}
                                       </div>
                                     </div>
@@ -299,9 +300,14 @@
                                     <div *ngIf="!reportOM || !reportOM.name" class="name">Nombre</div>
                                     <div *ngIf="reportOM && reportOM.name" class="name">{{reportOM.name}}</div>
                                   </div>
-                                  <!--div class="finish" *ngIf="user.role === 7">
-                                    <button mat-flat-button [color]="'primary'">FINALZAR</button>
-                                  </div-->
+                                  <div *ngIf="itemsTasks && itemsTasks.length !== 0 && !task.original.hwg">
+                                    <mat-paginator
+                                      [hidePageSize]="true"
+                                      [length]="itemsTasks.length"
+                                      [pageSize]="1"
+                                      (page)="changeTask($event, 1)">
+                                    </mat-paginator>
+                                  </div>
                                 </div>
                               </form>
                               <div class="divider" *ngIf="task.original.hwg"></div>
@@ -401,6 +407,14 @@
                                     <img *ngIf="reportHWG && reportHWG.fileCS" class="evidence"
                                          [src]="reportHWG.fileCS.thumbnail" alt="Evidence capture">
                                   </div>
+                                  <div *ngIf="itemsTasks && itemsTasks.length !== 0">
+                                    <mat-paginator
+                                      [hidePageSize]="true"
+                                      [length]="itemsTasks.length"
+                                      [pageSize]="1"
+                                      (page)="changeTask($event, 1)">
+                                    </mat-paginator>
+                                  </div>
                                 </div>
                               </form>
                             </div>
@@ -443,7 +457,8 @@
                                   </mat-form-field>
                                   <div style="display: flex; align-items: center; width: 90%;">
                                     <mat-form-field>
-                                      <mat-select formControlName="pressure" placeholder="Presión del manómetro" required>
+                                      <mat-select formControlName="pressure" placeholder="Presión del manómetro"
+                                                  required>
                                         <mat-option [value]="7">7</mat-option>
                                         <mat-option [value]="8">8</mat-option>
                                         <mat-option [value]="9">9</mat-option>
@@ -497,9 +512,14 @@
                                     <div *ngIf="!reportComp || !reportComp.name" class="name">Nombre</div>
                                     <div *ngIf="reportComp && reportComp.name" class="name">{{reportComp.name}}</div>
                                   </div>
-                                  <!--div class="finish" *ngIf="user.role === 7">
-                                    <button mat-flat-button [color]="'primary'">FINALZAR</button>
-                                  </div-->
+                                  <div *ngIf="itemsTasks && itemsTasks.length !== 0 && !task.original.hwg">
+                                    <mat-paginator
+                                      [hidePageSize]="true"
+                                      [length]="itemsTasks.length"
+                                      [pageSize]="1"
+                                      (page)="changeTask($event, 2)">
+                                    </mat-paginator>
+                                  </div>
                                 </div>
                               </form>
                               <div class="divider" *ngIf="task.original.hwg"></div>
@@ -598,6 +618,14 @@
                                     </mat-icon>
                                     <img *ngIf="reportHWG && reportHWG.fileCS" class="evidence"
                                          [src]="reportHWG.fileCS.thumbnail" alt="Evidence capture">
+                                  </div>
+                                  <div *ngIf="itemsTasks && itemsTasks.length !== 0">
+                                    <mat-paginator
+                                      [hidePageSize]="true"
+                                      [length]="itemsTasks.length"
+                                      [pageSize]="1"
+                                      (page)="changeTask($event, 2)">
+                                    </mat-paginator>
                                   </div>
                                 </div>
                               </form>
@@ -807,9 +835,14 @@
                                     <div *ngIf="!reportVRS || !reportVRS.name" class="name">Nombre</div>
                                     <div *ngIf="reportVRS && reportVRS.name" class="name">{{reportVRS.name}}</div>
                                   </div>
-                                  <!--div class="finish" *ngIf="user.role === 7">
-                                    <button mat-flat-button [color]="'primary'">FINALZAR</button>
-                                  </div-->
+                                  <div *ngIf="itemsTasks && itemsTasks.length !== 0">
+                                    <mat-paginator
+                                      [hidePageSize]="true"
+                                      [length]="itemsTasks.length"
+                                      [pageSize]="1"
+                                      (page)="changeTask($event, 4)">
+                                    </mat-paginator>
+                                  </div>
                                 </div>
                               </form>
                             </div>
@@ -835,6 +868,7 @@
                                 </mat-card>
                               </div>
                               <div class="divider" *ngIf="task.original.hwg"></div>
+                              <div class="head-bold" *ngIf="task.original.hwg">Generación de residuos peligrosos</div>
                               <form [formGroup]="taskForm[2]" *ngIf="task.original.hwg" class="flex-box">
                                 <div class="columns">
                                   <mat-form-field class="inputs">
@@ -850,10 +884,16 @@
                                   </mat-form-field>
                                   <mat-form-field class="inputs">
                                     <mat-select formControlName="waste" placeholder="Residuo generado" required>
-                                      <mat-option value="Envases contaminados con aceites">Envases contaminados con aceites</mat-option>
-                                      <mat-option value="Natas y grasas de la trampa de combustible">Natas y grasas de la trampa de combustible</mat-option>
-                                      <mat-option value="Filtros de gasolina y diesel">Filtros de gasolina y diesel</mat-option>
-                                      <mat-option value="Residuos de aceite y pintura">Residuos de aceite y pintura</mat-option>
+                                      <mat-option value="Envases contaminados con aceites">Envases contaminados con
+                                        aceites
+                                      </mat-option>
+                                      <mat-option value="Natas y grasas de la trampa de combustible">Natas y grasas de
+                                        la trampa de combustible
+                                      </mat-option>
+                                      <mat-option value="Filtros de gasolina y diesel">Filtros de gasolina y diesel
+                                      </mat-option>
+                                      <mat-option value="Residuos de aceite y pintura">Residuos de aceite y pintura
+                                      </mat-option>
                                     </mat-select>
                                     <mat-error *ngIf="taskForm[2].controls['area'].hasError('required')"></mat-error>
                                   </mat-form-field>
@@ -886,7 +926,8 @@
                                   </div>
                                   <div style="display: flex; justify-content: space-between; width: 90%">
                                     <mat-form-field style="width: 65%">
-                                      <input formControlName="quantity" matInput placeholder="Cantidad generada" required>
+                                      <input formControlName="quantity" matInput placeholder="Cantidad generada"
+                                             required>
                                       <mat-error
                                         *ngIf="taskForm[2].controls['quantity'].hasError('required')"></mat-error>
                                     </mat-form-field>
@@ -913,16 +954,6 @@
                                     <mat-error
                                       *ngIf="taskForm[2].controls['temporaryStorage'].hasError('required')"></mat-error>
                                   </mat-form-field>
-                                  <div class="image-header">
-                                    Captura fotográfica de evidencia.
-                                  </div>
-                                  <div class="image-container">
-                                    <mat-icon *ngIf="!reportHWG || !reportHWG.fileCS" class="default-image">
-                                      image
-                                    </mat-icon>
-                                    <img *ngIf="reportHWG && reportHWG.fileCS" class="evidence"
-                                         [src]="reportHWG.fileCS.thumbnail" alt="Evidence capture">
-                                  </div>
                                   <div class="text-sign">
                                     Nombre y firma del responsable
                                   </div>
@@ -939,6 +970,14 @@
                                       {{reportScanned.name}}
                                     </div>
                                   </div>
+                                  <div *ngIf="itemsTasks && itemsTasks.length !== 0">
+                                    <mat-paginator
+                                      [hidePageSize]="true"
+                                      [length]="itemsTasks.length"
+                                      [pageSize]="1"
+                                      (page)="changeTask($event, 5)">
+                                    </mat-paginator>
+                                  </div>
                                 </div>
                               </form>
                             </div>
@@ -954,15 +993,21 @@
                                 <div class="columns">
                                   <div class="times">
                                     <mat-form-field class="clock">
-                                      <input formControlName="startTime" placeholder="Hora de inicio" matInput required appDisableWrite value="{{taskForm[4].controls['startTime'].value | formatTime}}">
+                                      <input formControlName="startTime" placeholder="Hora de inicio" matInput required
+                                             appDisableWrite
+                                             value="{{taskForm[4].controls['startTime'].value | formatTime}}">
                                     </mat-form-field>
                                     <mat-form-field class="clock">
-                                      <input formControlName="endTime" placeholder="Hora de término" matInput required appDisableWrite value="{{taskForm[4].controls['endTime'].value | formatTime}}">
+                                      <input formControlName="endTime" placeholder="Hora de término" matInput required
+                                             appDisableWrite
+                                             value="{{taskForm[4].controls['endTime'].value | formatTime}}">
                                     </mat-form-field>
                                   </div>
-                                  <div *ngIf="reportFE && reportFE.fireExtinguishers && reportFE.fireExtinguishers.length!==0; then listFE else emptyListFE"></div>
+                                  <div
+                                    *ngIf="reportFE && reportFE.fireExtinguishers && reportFE.fireExtinguishers.length!==0; then listFE else emptyListFE"></div>
                                   <ng-template #listFE>
-                                    <div class="inputs" *ngFor="let extinguisher of reportFE.fireExtinguishers; let  i = index">
+                                    <div class="inputs"
+                                         *ngFor="let extinguisher of reportFE.fireExtinguishers; let  i = index">
                                       <div class="color" style="text-align: center;">
                                         Extintor {{i+1}}
                                       </div>
@@ -988,13 +1033,16 @@
                                       </mat-form-field>
                                       <div class="times">
                                         <mat-form-field class="clock">
-                                          <mat-select placeholder="Vencimiento" required [(ngModel)]="extinguisher.expiration" [ngModelOptions]="{standalone: true}" [disabled]="true">
+                                          <mat-select placeholder="Vencimiento" required
+                                                      [(ngModel)]="extinguisher.expiration"
+                                                      [ngModelOptions]="{standalone: true}" [disabled]="true">
                                             <mat-option value="Vigente">Vigente</mat-option>
-                                            <mat-option value="Caducado">Caducao</mat-option>
+                                            <mat-option value="Caduco">Caduco</mat-option>
                                           </mat-select>
                                         </mat-form-field>
                                         <mat-form-field class="clock">
-                                          <mat-select placeholder="Manómetro" [(ngModel)]="extinguisher.manometer" [ngModelOptions]="{standalone: true}" [disabled]="true" required>
+                                          <mat-select placeholder="Manómetro" [(ngModel)]="extinguisher.manometer"
+                                                      [ngModelOptions]="{standalone: true}" [disabled]="true" required>
                                             <mat-option value="Descargado">Descargado</mat-option>
                                             <mat-option value="Óptimo">Óptimo</mat-option>
                                             <mat-option value="Sobrecargado">Sobrecargado</mat-option>
@@ -1115,9 +1163,14 @@
                                     <div *ngIf="!reportFE || !reportFE.name" class="name">Nombre</div>
                                     <div *ngIf="reportFE && reportFE.name" class="name">{{reportFE.name}}</div>
                                   </div>
-                                  <!--div class="finish" *ngIf="user.role === 7">
-                                    <button mat-flat-button [color]="'primary'">FINALZAR</button>
-                                  </div-->
+                                  <div *ngIf="itemsTasks && itemsTasks.length !== 0">
+                                    <mat-paginator
+                                      [hidePageSize]="true"
+                                      [length]="itemsTasks.length"
+                                      [pageSize]="1"
+                                      (page)="changeTask($event,8)">
+                                    </mat-paginator>
+                                  </div>
                                 </div>
                               </form>
                             </div>
@@ -1126,16 +1179,18 @@
                       </mat-accordion>
                     </div>
                   </div>
-                </mat-card>
+                </div>
               </ng-template>
             </div>
-            <div class="notFoundTasks" *ngIf="taskWithDivider.length === 0">No existen resultados para su búsqueda</div>
+            <div class="notFoundTasks" *ngIf="taskWithDivider.length === 0 && !load">No existen resultados para su búsqueda</div>
+            <div class="notFoundTasks" *ngIf="taskWithDivider.length === 0 && load">Cargando tareas...</div>
           </ng-template>
           <ng-template #message>
             <div class="empty-list">
               <div *ngIf="!notCalendar; then taskInCreation else notTask"></div>
               <ng-template #taskInCreation>
-                <div class="message">La Estación no cuenta por el momento con tareas programadas, por favor consulte mañana
+                <div class="message">La Estación no cuenta por el momento con tareas programadas, por favor consulte
+                  mañana
                 </div>
               </ng-template>
               <ng-template #notTask>
@@ -1155,13 +1210,13 @@
               <div *ngIf="notCalendarTasks.length !== 0; then listFR else emptyFR"></div>
               <ng-template #listFR>
                 <div id="task-{{task.id}}" class="card-list" *ngFor="let task of notCalendarTasks; let i = index">
-                  <mat-card class="task" style="margin-top: 8px">
+                  <div class="task" style="margin-top: 8px">
                     <div class="priority" style="background-color:#E00000"></div>
                     <div class="containerTask">
                       <div class="containerTask">
                         <mat-accordion class="containerTask">
-                          <mat-expansion-panel [expanded]="task.expanded" (click)="getTaskInformation(i,task.id, 6)">
-                            <mat-expansion-panel-header [collapsedHeight]="'88px'" [expandedHeight]="'88px'">
+                          <mat-expansion-panel [expanded]="task.expanded">
+                            <mat-expansion-panel-header [collapsedHeight]="'88px'" [expandedHeight]="'88px'" (click)="getTaskInformation(i,task.id, 7)" style="position: relative;">
                               <mat-panel-title style="position: relative">
                                 <div class="date">
                                   <div>
@@ -1190,16 +1245,16 @@
                               <div class="flex-box">
                                 <div class="columns">
                                   <div class="times">
-                                    <div class="clock">
+                                    <mat-form-field class="clock">
                                       <input formControlName="startTime" matInput placeholder="Hora de inicio" required
                                              appDisableWrite
                                              value="{{secondTaskForm[0].controls['startTime'].value | formatTime}}">
-                                    </div>
-                                    <div class="clock">
+                                    </mat-form-field>
+                                    <mat-form-field class="clock">
                                       <input formControlName="endTime" matInput placeholder="Hora de término" required
                                              appDisableWrite
                                              value="{{secondTaskForm[0].controls['endTime'].value | formatTime}}">
-                                    </div>
+                                    </mat-form-field>
                                   </div>
                                   <mat-form-field class="inputs">
                                     <input formControlName="remissionNumber" matInput placeholder="No. de remisión"
@@ -1239,7 +1294,8 @@
                                   <mat-form-field class="inputs">
                                     <input formControlName="receiveName" matInput placeholder="Personal que recibe">
                                   </mat-form-field>
-                                  <div style="width: 90%; display: flex; flex-direction: column; justify-content: center;">
+                                  <div
+                                    style="width: 90%; display: flex; flex-direction: column; justify-content: center;">
                                     <div class="text-sign">
                                       Nombre y firma del responsable
                                     </div>
@@ -1254,6 +1310,14 @@
                                       <div *ngIf="!reportFR || !reportFR.name" class="name">Nombre</div>
                                       <div *ngIf="reportFR && reportFR.name" class="name">{{reportFR.name}}</div>
                                     </div>
+                                    <div *ngIf="itemsTasks && itemsTasks.length !== 0">
+                                      <mat-paginator
+                                        [hidePageSize]="true"
+                                        [length]="itemsTasks.length"
+                                        [pageSize]="1"
+                                        (page)="changeTask($event, 7)">
+                                      </mat-paginator>
+                                    </div>
                                   </div>
                                 </div>
                               </div>
@@ -1262,7 +1326,7 @@
                         </mat-accordion>
                       </div>
                     </div>
-                  </mat-card>
+                  </div>
                 </div>
               </ng-template>
               <ng-template #emptyFR>
@@ -1275,13 +1339,13 @@
               <div *ngIf="notCalendarTasks.length !== 0; then listIN else emptyIN"></div>
               <ng-template #listIN>
                 <div id="task-{{task.id}}" class="card-list" *ngFor="let task of notCalendarTasks; let i = index">
-                  <mat-card class="task" style="margin-top: 8px">
+                  <div class="task" style="margin-top: 8px">
                     <div class="priority" style="background-color:#E00000"></div>
                     <div class="containerTask">
                       <div class="containerTask">
                         <mat-accordion class="containerTask">
-                          <mat-expansion-panel [expanded]="task.expanded" (click)="getTaskInformation(i,task.id, 9)">
-                            <mat-expansion-panel-header [collapsedHeight]="'88px'" [expandedHeight]="'88px'">
+                          <mat-expansion-panel [expanded]="task.expanded">
+                            <mat-expansion-panel-header [collapsedHeight]="'88px'" [expandedHeight]="'88px'" (click)="getTaskInformation(i,task.id, 9)" style="position: relative;">
                               <mat-panel-title style="position: relative">
                                 <div class="date">
                                   <div>
@@ -1299,8 +1363,11 @@
                             <div class="divider"></div>
                             <div class="containerTask">
                               <div style="width: 100%; display: flex; justify-content: flex-end">
-                                <div style="margin: 0 4px;" *ngIf="reportIncidence">Fecha: {{date[0]}} {{date[1]}} {{date[2]}}</div>
-                                <div style="margin: 0 4px;" *ngIf="reportIncidence">Folio:{{reportIncidence.folio | formatFolio}}</div>
+                                <div style="margin: 0 4px;" *ngIf="reportIncidence">Fecha: {{date[0]}} {{date[1]}}
+                                  {{date[2]}}
+                                </div>
+                                <div style="margin: 0 4px;" *ngIf="reportIncidence">Folio:{{reportIncidence.folio | formatFolio}}
+                                </div>
                               </div>
                               <form [formGroup]="secondTaskForm[2]" class="flex-box">
                                 <div class="columns">
@@ -1317,47 +1384,48 @@
                                     </mat-select>
                                   </mat-form-field>
                                   <mat-form-field class="inputs">
-                                    <textarea cdkTextareaAutosize formControlName="description" matInput placeholder="Descripción" required></textarea>
+                                    <textarea cdkTextareaAutosize formControlName="description" matInput
+                                              placeholder="Descripción" required></textarea>
                                   </mat-form-field>
                                   <div class="text-divider">
                                     Procedimientos utilizados
                                   </div>
                                   <div class="inputs" *ngIf="reportIncidence && reportIncidence.procedures">
                                     <div *ngFor="let procedure of reportIncidence.procedures; let i = index;">
-                                      <div class="procedure" *ngIf="procedure === 1">1.-
+                                      <div class="procedure" *ngIf="procedure === 1">{{i+1}}.-
                                         {{taskTemplate.procedures[procedure-1].name}}
                                       </div>
-                                      <div class="procedure" *ngIf="procedure === 2">2.-
+                                      <div class="procedure" *ngIf="procedure === 2">{{i+1}}.-
                                         {{taskTemplate.procedures[procedure-1].name}}
                                       </div>
-                                      <div class="procedure" *ngIf="procedure === 3">3.-
+                                      <div class="procedure" *ngIf="procedure === 3">{{i+1}}.-
                                         {{taskTemplate.procedures[procedure-1].name}}
                                       </div>
-                                      <div class="procedure" *ngIf="procedure === 4">4.-
+                                      <div class="procedure" *ngIf="procedure === 4">{{i+1}}.-
                                         {{taskTemplate.procedures[procedure-1].name}}
                                       </div>
-                                      <div class="procedure" *ngIf="procedure === 5">5.-
+                                      <div class="procedure" *ngIf="procedure === 5">{{i+1}}.-
                                         {{taskTemplate.procedures[procedure-1].name}}
                                       </div>
-                                      <div class="procedure" *ngIf="procedure === 6">6.-
+                                      <div class="procedure" *ngIf="procedure === 6">{{i+1}}.-
                                         {{taskTemplate.procedures[procedure-1].name}}
                                       </div>
-                                      <div class="procedure" *ngIf="procedure === 7">7.-
+                                      <div class="procedure" *ngIf="procedure === 7">{{i+1}}.-
                                         {{taskTemplate.procedures[procedure-1].name}}
                                       </div>
-                                      <div class="procedure" *ngIf="procedure === 8">8.-
+                                      <div class="procedure" *ngIf="procedure === 8">{{i+1}}.-
                                         {{taskTemplate.procedures[procedure-1].name}}
                                       </div>
-                                      <div class="procedure" *ngIf="procedure === 9">9.-
+                                      <div class="procedure" *ngIf="procedure === 9">{{i+1}}.-
                                         {{taskTemplate.procedures[procedure-1].name}}
                                       </div>
-                                      <div class="procedure" *ngIf="procedure === 10">10.-
+                                      <div class="procedure" *ngIf="procedure === 10">{{i+1}}.-
                                         {{taskTemplate.procedures[procedure-1].name}}
                                       </div>
-                                      <div class="procedure" *ngIf="procedure === 11">11.-
+                                      <div class="procedure" *ngIf="procedure === 11">{{i+1}}.-
                                         {{taskTemplate.procedures[procedure-1].name}}
                                       </div>
-                                      <div class="procedure" *ngIf="procedure === 12">12.-
+                                      <div class="procedure" *ngIf="procedure === 12">{{i+1}}.-
                                         {{taskTemplate.procedures[procedure-1].name}}
                                       </div>
                                     </div>
@@ -1390,6 +1458,14 @@
                                       {{reportIncidence.name}}
                                     </div>
                                   </div>
+                                  <div *ngIf="itemsTasks && itemsTasks.length !== 0">
+                                    <mat-paginator
+                                      [hidePageSize]="true"
+                                      [length]="itemsTasks.length"
+                                      [pageSize]="1"
+                                      (page)="changeTask($event, 9)">
+                                    </mat-paginator>
+                                  </div>
                                 </div>
                               </form>
                             </div>
@@ -1397,7 +1473,7 @@
                         </mat-accordion>
                       </div>
                     </div>
-                  </mat-card>
+                  </div>
                 </div>
               </ng-template>
               <ng-template #emptyIN>
@@ -1410,13 +1486,13 @@
               <div *ngIf="notCalendarTasks.length !== 0; then listHWC else emptyHWC"></div>
               <ng-template #listHWC>
                 <div id="task-{{task.id}}" class="card-list" *ngFor="let task of notCalendarTasks; let i = index">
-                  <mat-card class="task" style="margin-top: 8px">
+                  <div class="task" style="margin-top: 8px">
                     <div class="priority" style="background-color:#E00000"></div>
                     <div class="containerTask">
                       <div class="containerTask">
                         <mat-accordion class="containerTask">
-                          <mat-expansion-panel [expanded]="task.expanded" (click)="getTaskInformation(i,task.id, 8)">
-                            <mat-expansion-panel-header [collapsedHeight]="'88px'" [expandedHeight]="'88px'">
+                          <mat-expansion-panel [expanded]="task.expanded">
+                            <mat-expansion-panel-header [collapsedHeight]="'88px'" [expandedHeight]="'88px'" (click)="getTaskInformation(i,task.id, 6)" style="position: relative;">
                               <mat-panel-title style="position: relative">
                                 <div class="date">
                                   <div>
@@ -1444,13 +1520,10 @@
                                 <div class="columns">
                                   <mat-form-field class="inputs">
                                     <mat-select formControlName="waste" placeholder="Residuo recolectado" required>
-                                      <mat-option value="Natas y grasas de la tampa de combustibles">Natas y grasas de
-                                        la tampa de combustibles
-                                      </mat-option>
-                                      <mat-option value="Filtros de gasolina y diesel">Filtros de gasolina y diesel
-                                      </mat-option>
-                                      <mat-option value="Residuos de aceite y pintura">Residuos de aceite y pintura
-                                      </mat-option>
+                                      <mat-option value="Natas y grasas de la tampa de combustibles">Natas y grasas de la tampa de combustibles</mat-option>
+                                      <mat-option value="Envases contaminados con aceites">Envases contaminados con aceites</mat-option>
+                                      <mat-option value="Filtros de gasolina y diesel">Filtros de gasolina y diesel</mat-option>
+                                      <mat-option value="Residuos de aceite y pintura">Residuos de aceite y pintura</mat-option>
                                     </mat-select>
                                   </mat-form-field>
                                   <div style="display: flex; justify-content: space-between; width: 90%">
@@ -1479,9 +1552,10 @@
                                 <div class="columns"
                                      style="display: flex; flex-direction: column; justify-content: center">
                                   <div style="display: flex; width: 90%; justify-content: center">
-                                    <button mat-flat-button style="background-color: #707070; color: #FFFFFF">
-                                      VER MANIFIESTO
-                                    </button>
+                                    <div style="background-color: #707070; color: #FFFFFF; border-radius: 4px; cursor: pointer; padding: 2px 4px;">
+                                      <a *ngIf="reportHWC && reportHWC.fileCS" style="text-decoration: none; color: #FFFFFF;" [href]="reportHWC.fileCS.thumbnail">VER MANIFIESTO</a>
+                                      <span *ngIf="!reportHWC || !reportHWC.fileCS">VER MANIFIESTO</span>
+                                    </div>
                                   </div>
                                   <div style="width: 100%;">
                                     <div class="text-sign">
@@ -1491,10 +1565,20 @@
                                       <div class="signature-element">
                                         <img *ngIf="reportHWC && reportHWC.signature"
                                              [src]="reportHWC.signature.thumbnail">
+                                        <div *ngIf="!reportHWC || !reportHWC.signature"
+                                             style="width: 60%; height: 60px"></div>
                                       </div>
                                       <div class="divider"></div>
                                       <div class="name">Nombre</div>
                                       <div *ngIf="reportHWC && reportHWC.name" class="name">{{reportHWC.name}}</div>
+                                    </div>
+                                    <div *ngIf="itemsTasks && itemsTasks.length !== 0">
+                                      <mat-paginator
+                                        [hidePageSize]="true"
+                                        [length]="itemsTasks.length"
+                                        [pageSize]="1"
+                                        (page)="changeTask($event, 6)">
+                                      </mat-paginator>
                                     </div>
                                   </div>
                                 </div>
@@ -1504,7 +1588,7 @@
                         </mat-accordion>
                       </div>
                     </div>
-                  </mat-card>
+                  </div>
                 </div>
               </ng-template>
               <ng-template #emptyHWC>

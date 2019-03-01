@@ -30,7 +30,6 @@ import {SharedNotification, SharedService, SharedTypeNotification} from '@app/co
 })
 export class ListTasksComponent implements OnInit, DoCheck {
   public station: any;
-
   @Input() set stationInfo(stationObj: any) {
     if (stationObj && stationObj.stationTaskId) {
       this.others = false;
@@ -49,12 +48,15 @@ export class ListTasksComponent implements OnInit, DoCheck {
   public end: any;
   public today: boolean;
   public tasks: any[];
+  private _lastTabSelected: number;
   public tasksFilterd: any[];
   public zones: any[];
   public priority: any[];
   public typeFilter: string[];
   public filter: number;
   private _creationDate: number;
+  public itemsTasks: any[];
+  private _indexTask: number;
   public load: boolean;
   public user: any;
   public notCalendar: boolean;
@@ -98,6 +100,8 @@ export class ListTasksComponent implements OnInit, DoCheck {
     private _taskFilterNameService: TaskFilterNameService,
     private _sharedService: SharedService
   ) {
+    this.itemsTasks = [];
+    this._indexTask = 0;
     this.others = false;
     this.date = [];
     this.personnelNames = [''];
@@ -122,6 +126,7 @@ export class ListTasksComponent implements OnInit, DoCheck {
       lastIndex: null,
       list: null
     };
+    this._lastTabSelected = 0;
   }
 
   ngOnInit() {
@@ -160,6 +165,7 @@ export class ListTasksComponent implements OnInit, DoCheck {
   }
 
   private getStationTask(): void {
+    this._indexOldTaskExpanded = null;
     this.filters = {
       stationTaskId: this.station.stationTaskId,
       startDate: (this.start.timeStamp).toString(),
@@ -247,17 +253,20 @@ export class ListTasksComponent implements OnInit, DoCheck {
   }
 
   public sortTaskArrayByStatus(): void {
-    let headerPrevious = false, headerHistory = false;
+    let headerPrevious = false, headerHistory = false, headerToday = false;
     this.tasksFilterd = UtilitiesService.sortJSON(this.tasksFilterd, 'status', 'asc');
-    this.taskWithDivider.push({
-      type: this.filter!==0 ? 2 : 1,
-      title: 'Hoy',
-      original: null,
-      id: '',
-      expanded: false,
-    });
     this.tasksFilterd.forEach(item => {
       if (item.status === 1) {
+        if(!headerToday && this.filter === 0){
+          this.taskWithDivider.push({
+            type: 1,
+            title: 'Hoy',
+            original: null,
+            id: '',
+            expanded: false,
+          });
+        }
+        headerToday = true;
         this.taskWithDivider.push({
           type: 2,
           title: '',
@@ -266,9 +275,9 @@ export class ListTasksComponent implements OnInit, DoCheck {
           expanded: false,
         });
       } else if (item.status === 2) {
-        if (!headerPrevious) {
+        if (!headerPrevious && this.filter === 0){
           this.taskWithDivider.push({
-            type: this.filter!==0 ? 2 : 1,
+            type: 1,
             title: 'Atrasadas',
             original: null,
             id: '',
@@ -292,9 +301,9 @@ export class ListTasksComponent implements OnInit, DoCheck {
           });
         }
       } else if (item.status === 3 || item.status === 4) {
-        if (!headerHistory) {
+        if (!headerHistory && this.filter === 0){
           this.taskWithDivider.push({
-            type: this.filter!==0 ? 2 : 1,
+            type: 1,
             title: 'Historial',
             original: null,
             id: '',
@@ -360,9 +369,12 @@ export class ListTasksComponent implements OnInit, DoCheck {
     this._filterService.open(this.filter).afterClosed().subscribe(response => {
       switch (response.code) {
         case 1:
-          this._firstOpen = false;
           this.filter = response.filter;
-          this.getStationTask();
+          if(this.filter === 0){
+            this.resetFilters();
+          }else{
+            this.getStationTask();
+          }
           break;
       }
     });
@@ -404,7 +416,7 @@ export class ListTasksComponent implements OnInit, DoCheck {
   public getTaskInformation(index: number, id: string, type: number, hwg?: boolean): void {
     if(this.others){
       this.notCalendarTasks[index].expanded = true;
-      if (this._indexOldTaskExpanded !== null) {
+      if (this._indexOldTaskExpanded !== null && this._indexOldTaskExpanded !== index) {
         this.notCalendarTasks[this._indexOldTaskExpanded].expanded = false;
       }
       this._indexOldTaskExpanded = index;
@@ -412,8 +424,9 @@ export class ListTasksComponent implements OnInit, DoCheck {
         switch (response.code) {
           case 200:
             if (response.items) {
-              const items = UtilitiesService.sortJSON(response.items, 'folio', 'desc');
-              this.patchForms(type, items[0], hwg);
+              this.itemsTasks = UtilitiesService.sortJSON(response.items, 'folio', 'desc');
+              this._indexTask = 0;
+              this.patchForms(type, this.itemsTasks[0], hwg);
             } else {
               this.resetElements();
             }
@@ -422,7 +435,7 @@ export class ListTasksComponent implements OnInit, DoCheck {
       });
     }else{
       this.taskWithDivider[index].expanded = true;
-      if (this._indexOldTaskExpanded !== null) {
+      if (this._indexOldTaskExpanded !== null && this._indexOldTaskExpanded !== index) {
         this.taskWithDivider[this._indexOldTaskExpanded].expanded = false;
       }
       this._indexOldTaskExpanded = index;
@@ -430,8 +443,9 @@ export class ListTasksComponent implements OnInit, DoCheck {
         switch (response.code) {
           case 200:
             if (response.items) {
-              const items = UtilitiesService.sortJSON(response.items, 'folio', 'desc');
-              this.patchForms(type, items[0], hwg);
+              this.itemsTasks = UtilitiesService.sortJSON(response.items, 'folio', 'desc');
+              this._indexTask = 0;
+              this.patchForms(type, this.itemsTasks[0], hwg);
             } else {
               this.resetElements();
             }
@@ -790,7 +804,20 @@ export class ListTasksComponent implements OnInit, DoCheck {
     this._indexOldTaskExpanded = null;
     let type = '1';
     if(ev){
+      this._lastTabSelected = ev.index;
       switch (ev.index){
+        case 0:
+          type = '1';
+          break;
+        case 1:
+          type = '3';
+          break;
+        case 2:
+          type = '2';
+          break;
+      }
+    }else{
+      switch (this._lastTabSelected){
         case 0:
           type = '1';
           break;
@@ -829,14 +856,10 @@ export class ListTasksComponent implements OnInit, DoCheck {
   private compareNotCalendarTasks(tasks: any):void{
     this.notCalendarTasks = [];
     tasks.forEach(task => {
-      this.taskTemplate.taskTemplates.forEach(template => {
-        if (task.type === Number(template.id)) {
-          this.notCalendarTasks.push({
-            id: task.id,
-            date: UtilitiesService.convertDate(task.date),
-            expanded: false
-          });
-        }
+      this.notCalendarTasks.push({
+        id: task.id,
+        date: UtilitiesService.convertDate(task.date),
+        expanded: false
       });
     });
   }
@@ -913,6 +936,7 @@ export class ListTasksComponent implements OnInit, DoCheck {
       carrierCompany: task.carrierCompany || undefined,
       date: task.date || undefined,
       finalDestination: task.finalDestination || undefined,
+      fileCS: task.fileCS || undefined,
       folio: task.folio || undefined,
       id: task.id || undefined,
       manifest: task.manifest || undefined,
@@ -957,5 +981,18 @@ export class ListTasksComponent implements OnInit, DoCheck {
       description: this.reportIncidence.description
     });
     this.secondTaskForm[2].disable();
+  }
+
+  public changeTask(ev: any, type: number,): void{
+    console.log(ev);
+    this.load = true;
+    let isHWG: boolean = false;
+    if( type === 6 || type === 7 || type === 9 ){
+      isHWG = false
+    }else if(this.itemsTasks[ev.pageIndex].hwgReport){
+      isHWG = true
+    }
+    this.patchForms(type,this.itemsTasks[ev.pageIndex], isHWG);
+    this.load = false;
   }
 }
