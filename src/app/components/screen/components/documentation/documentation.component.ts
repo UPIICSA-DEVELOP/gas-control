@@ -82,6 +82,7 @@ export class DocumentationComponent implements OnInit {
           } else {
             this.docsCre = [];
           }
+          console.log(this.docsCre);
           break;
         default:
           break;
@@ -97,6 +98,7 @@ export class DocumentationComponent implements OnInit {
           } else {
             this.docsAsea = [];
           }
+          console.log(this.docsAsea);
           break;
         default:
           break;
@@ -107,9 +109,16 @@ export class DocumentationComponent implements OnInit {
   public uploadFile(event: UploadFileResponse, index: number, regulationType: number, type: number){
     this._documentData = new FormData();
     this._documentData.append('path',this.stationId);
-    this._documentData.append('fileName',regulationType===1?'ASEA-':'CRE-'+new Date().getTime()+'.pdf');
+    this._documentData.append('fileName',(regulationType===1?'ASEA-':'CRE-')+ new Date().getTime()+'.pdf');
     this._documentData.append('file', event.file);
+    let id = undefined;
+    if(regulationType === 1 && this.docsAsea[index]){
+      id = this.docsAsea[index].id;
+    }else if(regulationType === 2 && this.docsCre[index]){
+      id = this.docsCre[index].id;
+    }
     this.chargeFile({
+      id: id,
       regulationType: regulationType,
       formData: this._documentData,
       type: type,

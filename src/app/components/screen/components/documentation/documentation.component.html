@@ -48,7 +48,8 @@
           <mat-card-content>
             <mat-card class="file">
               <div class="text">
-                <span> A. Dictamen de instalaciones eléctricas</span>
+                <a *ngIf="docsAsea[0]" [href]="docsAsea[0].file.thumbnail"> A. Dictamen de instalaciones eléctricas</a>
+                <span *ngIf="!docsAsea[0]"> A. Dictamen de instalaciones eléctricas</span>
               </div>
               <div class="button-icon">
                 <app-upload-file (onLoad)="uploadFile($event, 0, 1, 1)" [layoutTemplate]="button" [type]="'file'">
@@ -61,7 +62,8 @@
             </mat-card>
             <mat-card class="file">
               <div class="text">
-                <span> 1. Plano de instalaciones eléctricas</span>
+                <a *ngIf="docsAsea[1]" [href]="docsAsea[1].file.thumbnail"> 1. Plano de instalaciones eléctricas</a>
+                <span *ngIf="!docsAsea[1]"> 1. Plano de instalaciones eléctricas</span>
               </div>
               <div class="button-icon">
                 <app-upload-file (onLoad)="uploadFile($event, 1, 1, 2)" [layoutTemplate]="button" [type]="'file'">
@@ -74,7 +76,8 @@
             </mat-card>
             <mat-card class="file">
               <div class="text">
-                <span> 2. Diagrama unifilar</span>
+                <a *ngIf="docsAsea[2]" [href]="docsAsea[2].file.thumbnail"> 2. Diagrama unifilar</a>
+                <span *ngIf="!docsAsea[2]"> 2. Diagrama unifilar</span>
               </div>
               <div class="button-icon">
                 <app-upload-file (onLoad)="uploadFile($event, 2, 1, 3)" [layoutTemplate]="button" [type]="'file'">
@@ -87,7 +90,8 @@
             </mat-card>
             <mat-card class="file">
               <div class="text">
-                <span> 3. Recibo de consumo eléctrico</span>
+                <a *ngIf="docsAsea[3]" [href]="docsAsea[3].file.thumbnail"> 3. Recibo de consumo eléctrico</a>
+                <span *ngIf="!docsAsea[3]"> 3. Recibo de consumo eléctrico</span>
               </div>
               <div class="button-icon">
                 <app-upload-file (onLoad)="uploadFile($event, 3, 1, 4)" [layoutTemplate]="button" [type]="'file'">
@@ -101,7 +105,8 @@
             <div class="divider"></div>
             <mat-card class="file">
               <div class="text">
-                <span> B. Estudio de tierras físicas y pararrayos</span>
+                <a *ngIf="docsAsea[4]" [href]="docsAsea[4].file.thumbnail"> B. Estudio de tierras físicas y pararrayos</a>
+                <span *ngIf="!docsAsea[4]"> B. Estudio de tierras físicas y pararrayos</span>
               </div>
               <div class="button-icon">
                 <app-upload-file (onLoad)="uploadFile($event, 4, 1, 5)" [layoutTemplate]="button" [type]="'file'">
@@ -114,7 +119,8 @@
             </mat-card>
             <mat-card class="file">
               <div class="text">
-                <span> 1. Razón social</span>
+                <a *ngIf="docsAsea[5]" [href]="docsAsea[5].file.thumbnail"> 1. Razón social</a>
+                <span *ngIf="!docsAsea[5]"> 1. Razón social</span>
               </div>
               <div class="button-icon">
                 <app-upload-file (onLoad)="uploadFile($event, 5, 1, 6)" [layoutTemplate]="button" [type]="'file'">
@@ -127,7 +133,8 @@
             </mat-card>
             <mat-card class="file">
               <div class="text">
-                <span> 2. R.F.C</span>
+                <a *ngIf="docsAsea[6]" [href]="docsAsea[6].file.thumbnail"> 2. R.F.C</a>
+                <span *ngIf="!docsAsea[6]"> 2. R.F.C</span>
               </div>
               <div class="button-icon">
                 <app-upload-file (onLoad)="uploadFile($event, 6, 1, 7)" [layoutTemplate]="button" [type]="'file'">
@@ -140,7 +147,8 @@
             </mat-card>
             <mat-card class="file">
               <div class="text">
-                <span> 3. Dirección</span>
+                <a *ngIf="docsAsea[7]" [href]="docsAsea[7].file.thumbnail"> 3. Dirección</a>
+                <span *ngIf="!docsAsea[7]"> 3. Dirección</span>
               </div>
               <div class="button-icon">
                 <app-upload-file (onLoad)="uploadFile($event, 7, 1, 8)" [layoutTemplate]="button" [type]="'file'">
@@ -154,7 +162,8 @@
             <div class="divider"></div>
             <mat-card class="file">
               <div class="text">
-                <span> C. Prueba de hermeticidad</span>
+                <a *ngIf="docsAsea[8]" [href]="docsAsea[8].file.thumbnail"> C. Prueba de hermeticidad</a>
+                <span *ngIf="!docsAsea[8]"> C. Prueba de hermeticidad</span>
               </div>
               <div class="button-icon">
                 <app-upload-file (onLoad)="uploadFile($event, 8, 1, 9)" [layoutTemplate]="button" [type]="'file'">
@@ -167,7 +176,8 @@
             </mat-card>
             <mat-card class="file">
               <div class="text">
-                <span> 1. Número de permiso de la CRE</span>
+                <a *ngIf="docsAsea[9]" [href]="docsAsea[9].file.thumbnail"> 1. Número de permiso de la CRE</a>
+                <span *ngIf="!docsAsea[9]"> 1. Número de permiso de la CRE</span>
               </div>
               <div class="button-icon">
                 <app-upload-file (onLoad)="uploadFile($event, 9, 1, 10)" [layoutTemplate]="button" [type]="'file'">
@@ -180,7 +190,8 @@
             </mat-card>
             <mat-card class="file">
               <div class="text">
-                <span> 2. R.F.C</span>
+                <a *ngIf="docsAsea[6]" [href]="docsAsea[6].file.thumbnail"> 2. R.F.C</a>
+                <span *ngIf="!docsAsea[6]"> 2. R.F.C</span>
               </div>
               <div class="button-icon">
                 <app-upload-file (onLoad)="uploadFile($event, 6, 1, 7)" [layoutTemplate]="button" [type]="'file'">
@@ -193,7 +204,8 @@
             </mat-card>
             <mat-card class="file">
               <div class="text">
-                <span> 3. Dirección</span>
+                <a *ngIf="docsAsea[7]" [href]="docsAsea[7].file.thumbnail"> 3. Dirección</a>
+                <span *ngIf="!docsAsea[7]"> 3. Dirección</span>
               </div>
               <div class="button-icon">
                 <app-upload-file (onLoad)="uploadFile($event, 7, 1, 8)" [layoutTemplate]="button" [type]="'file'">
@@ -206,7 +218,8 @@
             </mat-card>
             <mat-card class="file">
               <div class="text">
-                <span> 4. Número de tanques, producto y capacidad en litros</span>
+                <a *ngIf="docsAsea[10]" [href]="docsAsea[10].file.thumbnail"> 4. Número de tanques, producto y capacidad en litros</a>
+                <span *ngIf="!docsAsea[10]"> 4. Número de tanques, producto y capacidad en litros</span>
               </div>
               <div class="button-icon">
                 <app-upload-file (onLoad)="uploadFile($event, 10, 1, 11)" [layoutTemplate]="button" [type]="'file'">
@@ -220,7 +233,8 @@
             <div class="others">Otros documentos ASEA</div>
             <mat-card class="file">
               <div class="text">
-                <span> Documento que enuncie el material de las fabricación de tanques y tuberías </span>
+                <a *ngIf="docsAsea[13]" [href]="docsAsea[13].file.thumbnail"> Documento que enuncie el material de las fabricación de tanques y tuberías </a>
+                <span *ngIf="!docsAsea[13]"> Documento que enuncie el material de las fabricación de tanques y tuberías </span>
               </div>
               <div class="button-icon">
                 <app-upload-file (onLoad)="uploadFile($event, 13, 1, 14)" [layoutTemplate]="button" [type]="'file'">
@@ -233,7 +247,8 @@
             </mat-card>
             <mat-card class="file">
               <div class="text">
-                <span> Planos de estación (todos)</span>
+                <a *ngIf="docsAsea[14]" [href]="docsAsea[14].file.thumbnail"> Planos de estación (todos)</a>
+                <span *ngIf="!docsAsea[14]"> Planos de estación (todos)</span>
               </div>
               <div class="button-icon">
                 <app-upload-file (onLoad)="uploadFile($event, 14, 1, 15)" [layoutTemplate]="button" [type]="'file'">
@@ -246,7 +261,8 @@
             </mat-card>
             <mat-card class="file">
               <div class="text">
-                <span>Registro como Generador de Residuos Peligrosos</span>
+                <a *ngIf="docsAsea[16]" [href]="docsAsea[16].file.thumbnail">Registro como Generador de Residuos Peligrosos</a>
+                <span *ngIf="!docsAsea[16]">Registro como Generador de Residuos Peligrosos</span>
               </div>
               <div class="button-icon">
                 <app-upload-file (onLoad)="uploadFile($event, 16, 1, 19)" [layoutTemplate]="button" [type]="'file'">
@@ -268,7 +284,8 @@
           <mat-card-content>
             <mat-card class="file">
               <div class="text">
-                <span> Estudio de calidad de productos</span>
+                <a *ngIf="docsCre[0]" [href]="docsCre[0].file.thumbnail"> Estudio de calidad de productos</a>
+                <span *ngIf="!docsCre[0]"> Estudio de calidad de productos</span>
               </div>
               <div class="button-icon">
                 <app-upload-file (onLoad)="uploadFile($event, 0, 2, 17)" [layoutTemplate]="button" [type]="'file'">
@@ -281,7 +298,8 @@
             </mat-card>
             <mat-card class="file">
               <div class="text">
-                <span> Dictamen de los estudios de calidad de los productos</span>
+                <a *ngIf="docsCre[1]" [href]="docsCre[1].file.thumbnail"> Dictamen de los estudios de calidad de los productos</a>
+                <span *ngIf="!docsCre[1]"> Dictamen de los estudios de calidad de los productos</span>
               </div>
               <div class="button-icon">
                 <app-upload-file (onLoad)="uploadFile($event, 1, 2, 18)" [layoutTemplate]="button" [type]="'file'">
