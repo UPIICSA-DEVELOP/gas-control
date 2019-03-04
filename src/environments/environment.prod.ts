@@ -1,6 +1,6 @@
 export const environment = {
   production: true,
-  url: 'https://www.inspectordenormas.com',
+  url: 'https://app.inspectordenormas.com',
   develop: false,
   VERSION: require('../../package.json').version,
   firebase: {

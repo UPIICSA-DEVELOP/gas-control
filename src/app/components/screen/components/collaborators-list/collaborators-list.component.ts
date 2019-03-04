@@ -43,15 +43,15 @@ import {Person} from '@app/core/interfaces/interfaces';
 export class CollaboratorsListComponent implements OnInit {
   @ViewChild('phoneNumber') private _phoneNumberInput: ElementRef;
   public collaborators: any[];
-  public register: boolean = false;
+  public register: boolean;
   public signature: any;
   public blobSignature: string;
-  public protocol: string = 'http://';
+  public protocol: string;
   public newPerson: FormGroup;
   public blobImageProfile: string;
   public profileImage: any;
-  public addImage: boolean=false;
-  public addSign: boolean=false;
+  public addImage: boolean;
+  public addSign: boolean;
   public user: any;
   public id: string;
   public country: string;
@@ -61,6 +61,7 @@ export class CollaboratorsListComponent implements OnInit {
   private _formSignature: FormData;
   public role: string[];
   public changes: boolean;
+  public emptySearch: boolean;
   constructor(
     private _route: Router,
     private _api: ApiService,
@@ -72,7 +73,12 @@ export class CollaboratorsListComponent implements OnInit {
     private _dialogService: DialogService,
     private _uploadFile: UploadFileService
   ) {
+    this.register = false;
+    this.emptySearch = false;
     this.changes=false;
+    this.protocol = 'http://';
+    this.addImage = false;
+    this.addSign = false;
   }
 
   ngOnInit() {
@@ -335,7 +341,8 @@ export class CollaboratorsListComponent implements OnInit {
       if(newArray.length > 0){
         this.collaborators = newArray;
       }else{
-        this.collaborators = this.collaborator;
+        this.collaborators = newArray;
+        this.emptySearch = (newArray.length === 0);
       }
     }
   }
