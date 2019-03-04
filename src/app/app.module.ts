@@ -56,6 +56,15 @@ import { CookiesComponent } from './components/screen/child/cookies/cookies.comp
 import { SasisopaComponent } from './components/screen/components/sasisopa/sasisopa.component';
 import { TaskFilterNameComponent } from './components/screen/components/task-filter-name/task-filter-name.component';
 import {InjectorModule} from '@app/core/injector/injector.module';
+import { OmReportComponent } from './components/screen/components/list-tasks/components/om-report/om-report.component';
+import { VrsReportComponent } from './components/screen/components/list-tasks/components/vrs-report/vrs-report.component';
+import { HwgReportComponent } from './components/screen/components/list-tasks/components/hwg-report/hwg-report.component';
+import { ScannedReportComponent } from './components/screen/components/list-tasks/components/scanned-report/scanned-report.component';
+import { HwcReportComponent } from './components/screen/components/list-tasks/components/hwc-report/hwc-report.component';
+import { FrReportComponent } from './components/screen/components/list-tasks/components/fr-report/fr-report.component';
+import { FeReportComponent } from './components/screen/components/list-tasks/components/fe-report/fe-report.component';
+import { IncidenceReportComponent } from './components/screen/components/list-tasks/components/incidence-report/incidence-report.component';
+import { CompressorReportComponent } from './components/screen/components/list-tasks/components/compressor-report/compressor-report.component';
 
 @NgModule({
   declarations: [
@@ -93,7 +102,16 @@ import {InjectorModule} from '@app/core/injector/injector.module';
     TermsComponent,
     CookiesComponent,
     SasisopaComponent,
-    TaskFilterNameComponent
+    TaskFilterNameComponent,
+    OmReportComponent,
+    VrsReportComponent,
+    HwgReportComponent,
+    ScannedReportComponent,
+    HwcReportComponent,
+    FrReportComponent,
+    FeReportComponent,
+    IncidenceReportComponent,
+    CompressorReportComponent
   ],
   imports: [
     CoreModule,
