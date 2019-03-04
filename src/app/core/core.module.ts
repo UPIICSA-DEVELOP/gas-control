@@ -44,6 +44,8 @@ import {AmazingTimePickerModule} from 'amazing-time-picker';
 import {TimePickerService} from '@app/core/components/time-picker/time-picker.service';
 import {SasisopaService} from '@app/components/screen/components/sasisopa/sasisopa.service';
 import {TaskFilterNameService} from '@app/components/screen/components/task-filter-name/task-filter-name.service';
+import {ImageVisorService} from '@app/core/components/image-visor/image-visor.service';
+import {ImageVisorComponent} from '@app/core/components/image-visor/image-visor.component';
 
 @NgModule({
   imports: [
@@ -87,7 +89,8 @@ import {TaskFilterNameService} from '@app/components/screen/components/task-filt
     LocationComponent,
     SearchBoxCoreComponent,
     SignaturePadComponent,
-    PdfVisorComponent
+    PdfVisorComponent,
+    ImageVisorComponent
   ],
   entryComponents: [
     DialogComponent,
@@ -97,7 +100,8 @@ import {TaskFilterNameService} from '@app/components/screen/components/task-filt
     CountryCodeComponent,
     LocationComponent,
     SignaturePadComponent,
-    PdfVisorComponent
+    PdfVisorComponent,
+    ImageVisorComponent
   ],
   providers: [
     AuthService,
@@ -119,7 +123,8 @@ import {TaskFilterNameService} from '@app/components/screen/components/task-filt
     ModalProceduresService,
     TimePickerService,
     SasisopaService,
-    TaskFilterNameService
+    TaskFilterNameService,
+    ImageVisorService
   ]
 })
 export class CoreModule { }

@@ -1,0 +1,19 @@
+<!--
+  ~ Copyright (C) MapLander S de R.L de C.V - All Rights Reserved
+  ~  Unauthorized copying of this file, via any medium is strictly prohibited
+  ~  Proprietary and confidential
+  -->
+
+<div id="image-visor">
+  <mat-toolbar [color]="'primary'">
+    <div>Evidencia</div>
+    <button mat-icon-button (click)="close()">
+      <mat-icon>
+        close
+      </mat-icon>
+    </button>
+  </mat-toolbar>
+  <div class="content">
+      <img [src]="images.thumbnail">
+  </div>
+</div>
