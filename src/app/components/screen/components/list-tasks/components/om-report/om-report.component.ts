@@ -19,7 +19,7 @@ export class OmReportComponent implements OnInit {
   private _taskId: string;
   @Input() set taskOMInfo(id: any){
     if(id){
-
+      this._taskId = id;
     }
   }
   public load: boolean;
