@@ -4,3 +4,17 @@
  *  Proprietary and confidential
  */
 
+#om-report{
+  width: 100%;
+  height: 100%;
+  .fex-form{
+    display: flex;
+    .columns{
+      width: 50%;
+      padding: 8px;
+    }
+    .inputs{
+      width: 45%;
+    }
+  }
+}

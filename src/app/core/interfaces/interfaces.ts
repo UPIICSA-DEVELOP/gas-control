@@ -135,7 +135,7 @@ export interface OMReport {
   maintenanceType: string;
   managerName?: string;
   name: string;
-  observations?: string
+  observations?: string;
   personnelNames: string[];
   personnelType: string;
   procedures?: number[];
