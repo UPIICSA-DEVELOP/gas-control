@@ -36,7 +36,7 @@ export class App {
 
   private config(): void{
     nconfg.argv().env().file({ file: 'config.json' });
-    this._port = nconfg.get('PORT') || 8889;
+    this._port = process.env.PORT || nconfg.get('PORT') || 8889;
     this.app.use(App.headers);
     this.app.use(App.handlerErrors);
     this.app.use(compression({level: 9}));

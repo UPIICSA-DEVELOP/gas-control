@@ -25,7 +25,7 @@
           <mat-icon>close</mat-icon>
         </button>
       </div>
-      <mat-form-field class="search" *ngIf="stationList && stationList.length!==0">
+      <mat-form-field class="search" *ngIf="stationList">
         <input matInput placeholder="Buscar" aria-label="Search input" (input)="search($event)">
         <mat-icon matPrefix class="icons">search</mat-icon>
       </mat-form-field>
@@ -42,7 +42,7 @@
                     <mat-icon *ngIf="!groupIcon" class="image-station">local_gas_station</mat-icon>
                   </div>
                   <div class="column">
-                    <div class="margin">
+                    <div>
                       <span class="task-head" *ngIf="groupIcon">{{groupIcon.groupIcons[stations.type-1].name}} - {{stations.name}}</span>
                     </div>
                     <div class="margin">
@@ -74,9 +74,17 @@
             </div>
           </ng-template>
           <ng-template #empty>
-            <div class="empty">
-              <span>Todavia no tiene estaciones de servicio asignadas</span>
-            </div>
+            <div *ngIf="emptySearch; then textOne else textTwo"></div>
+            <ng-template #textOne>
+              <div class="empty" style="justify-content: center">
+                <span>No hay coincidencias</span>
+              </div>
+            </ng-template>
+            <ng-template #textTwo>
+              <div class="empty">
+                <span>Todavia no tiene estaciones de servicio asignadas</span>
+              </div>
+            </ng-template>
           </ng-template>
         </ng-template>
         <ng-template #loading>

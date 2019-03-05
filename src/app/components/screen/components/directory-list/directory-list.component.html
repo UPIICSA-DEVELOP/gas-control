@@ -10,7 +10,7 @@
     <div class="head">
       <h3>COLABORADORES DE LA ESTACIÓN</h3>
     </div>
-    <mat-form-field class="search" *ngIf="collaborators && collaborators.length!==0">
+    <mat-form-field class="search" *ngIf="collaborators">
       <input matInput placeholder="Buscar" aria-label="Search input" (input)="search($event)">
       <mat-icon matSuffix class="icons">search</mat-icon>
     </mat-form-field>
@@ -65,9 +65,17 @@
           </mat-card-content>
         </ng-template>
         <ng-template #notList>
-          <mat-card-content style="display: flex; justify-content: center; align-items: center; text-align: center;">
-            <span>Aún no tiene colaboradores asignados a esta Estación de Servicio</span>
-          </mat-card-content>
+          <div *ngIf="emptySearch; then textOne else textTwo"></div>
+          <ng-template #textOne>
+            <mat-card-content style="display: flex; justify-content: center; align-items: center; text-align: center;">
+              <span>No hay coincidencias</span>
+            </mat-card-content>
+          </ng-template>
+          <ng-template #textTwo>
+            <mat-card-content style="display: flex; justify-content: center; align-items: center; text-align: center;">
+              <span>Aún no tiene colaboradores asignados a esta Estación de Servicio</span>
+            </mat-card-content>
+          </ng-template>
         </ng-template>
       </ng-template>
       <ng-template #empty>

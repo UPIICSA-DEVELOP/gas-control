@@ -27,6 +27,7 @@ export class DirectoryListComponent implements OnInit, OnChanges,DoCheck {
   public collaborator: any[];
   public idSession: string;
   public user: any;
+  public emptySearch: boolean;
   constructor(
     private _api:ApiService,
     private _snackBarService: SnackBarService,
@@ -35,6 +36,7 @@ export class DirectoryListComponent implements OnInit, OnChanges,DoCheck {
   ) {
     this.user = LocalStorageService.getItem(Constants.UserInSession);
     this.idSession = CookieService.getCookie(Constants.IdSession);
+    this.emptySearch = false;
   }
 
   ngOnInit() {
@@ -122,7 +124,8 @@ export class DirectoryListComponent implements OnInit, OnChanges,DoCheck {
       if(newArray.length > 0){
         this.collaborators = newArray;
       }else{
-        this.collaborators = this.collaborator;
+        this.collaborators = newArray;
+        this.emptySearch = (newArray.length === 0);
       }
     }
   }

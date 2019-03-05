@@ -16,9 +16,28 @@ gulp.task('copy:endpoints', function() {
 });
 
 gulp.task('zip', () => {
-  return gulp.src('./dist/**')
-    .pipe(zip('./dist.zip'))
-    .pipe(gulp.dest('./dist/'))
+  let file = null;
+  const [,, ...args] = process.argv;
+  if(args.length > 0){
+    try{
+      args.forEach((arg, index) => {
+        if(arg === '--file'){
+          file = args[index + 1];
+        }
+      });
+    }catch (e){
+      throw e;
+    }
+  }else{
+    throw 'Arguments required';
+  }
+
+  if(!file){
+    throw '--file is required';
+  }
+  return gulp.src(file + '/**')
+    .pipe(zip('bundle.zip'))
+    .pipe(gulp.dest(file))
 });
 
 

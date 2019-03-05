@@ -22,6 +22,8 @@ import {
 import {DOCUMENT} from '@angular/common';
 import {TaskFilterNameService} from '@app/components/screen/components/task-filter-name/task-filter-name.service';
 import {SharedNotification, SharedService, SharedTypeNotification} from '@app/core/services/shared/shared.service';
+import {ImageVisorService} from '@app/core/components/image-visor/image-visor.service';
+import {SnackBarService} from '@app/core/services/snackbar/snackbar.service';
 
 @Component({
   selector: 'app-list-tasks',
@@ -104,7 +106,9 @@ export class ListTasksComponent implements OnInit, DoCheck {
     private _formBuilder: FormBuilder,
     private _modalProceduresService: ModalProceduresService,
     private _taskFilterNameService: TaskFilterNameService,
-    private _sharedService: SharedService
+    private _sharedService: SharedService,
+    private _imageVisorService: ImageVisorService,
+    private _snackBarService: SnackBarService
   ) {
     this.itemsTasks = [];
     this._indexTask = 0;
@@ -162,12 +166,6 @@ export class ListTasksComponent implements OnInit, DoCheck {
           break;
       }
     })
-  }
-
-  public test(ev: string, type: string): void {
-    this.taskForm[0].patchValue({
-      [type]: ev
-    });
   }
 
   private getStationTask(): void {
@@ -573,9 +571,11 @@ export class ListTasksComponent implements OnInit, DoCheck {
     });
   }
 
+  /*
   public openProcedures(): void {
     this._modalProceduresService.open(this.taskTemplate.procedures);
   }
+  */
 
   private patchForms(type: number, taskEntity: any, isHWG?: boolean) {
     switch (type) {
@@ -998,7 +998,16 @@ export class ListTasksComponent implements OnInit, DoCheck {
     }else if(this.itemsTasks[ev.pageIndex].hwgReport){
       isHWG = true
     }
+    this._indexTask = ev.pageIndex;
     this.patchForms(type,this.itemsTasks[ev.pageIndex], isHWG);
     this.load = false;
+  }
+
+  public seeEvidence():void{
+    if(this.itemsTasks[this._indexTask].fileCS){
+      this._imageVisorService.open(this.itemsTasks[this._indexTask].fileCS);
+    }else{
+      this._snackBarService.openSnackBar('Esta tarea no cuenta con evidencia', 'OK',3000);
+    }
   }
 }

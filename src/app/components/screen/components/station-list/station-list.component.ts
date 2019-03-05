@@ -47,15 +47,18 @@ export class StationListComponent implements OnInit, DoCheck {
 
   public stationList: any[];
   public stations: any[];
-  public notificationActive: boolean[] = [];
+  public notificationActive: boolean[];
   public groupIcon: any;
   public user: any;
+  public emptySearch: boolean;
   constructor(
     private _api: ApiService,
     private _dialogService: DialogService,
     private _router: Router,
     private _addStation: AddStationService
   ) {
+    this.notificationActive = [];
+    this.emptySearch = false;
   }
 
   ngOnInit() {
@@ -147,6 +150,7 @@ export class StationListComponent implements OnInit, DoCheck {
         break;
     }
   }
+
   public addStation():void{
     this._router.navigate(['/home']).then(() => {
       this._addStation.open();
@@ -178,7 +182,8 @@ export class StationListComponent implements OnInit, DoCheck {
       if(newArray.length > 0){
         this.stationList = newArray;
       }else{
-        this.stationList = this.stations;
+        this.stationList = newArray;
+        this.emptySearch = (newArray.length===0);
       }
     }
   }

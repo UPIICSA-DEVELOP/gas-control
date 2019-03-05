@@ -102,16 +102,14 @@
                                   <div class="times">
                                     <mat-form-field class="clock">
                                       <input formControlName="startTime" placeholder="Hora de inicio" matInput required
-                                             appDisableWrite (time)="test($event, 'startTime')"
-                                             value="{{taskForm[0].controls['startTime'].value | formatTime}}">
+                                             appDisableWrite value="{{taskForm[0].controls['startTime'].value | formatTime}}">
                                       <mat-error *ngIf="taskForm[0].controls['startTime'].hasError('required')">
                                         Este campo es obligatorio
                                       </mat-error>
                                     </mat-form-field>
                                     <mat-form-field class="clock">
                                       <input formControlName="endTime" placeholder="Hora de término" matInput required
-                                             appDisableWrite (time)="test($event, 'endTime')"
-                                             value="{{taskForm[0].controls['endTime'].value | formatTime}}">
+                                             appDisableWrite value="{{taskForm[0].controls['endTime'].value | formatTime}}">
                                       <mat-error *ngIf="taskForm[0].controls['endTime'].hasError('required')">
                                         Este campo es obligatorio
                                       </mat-error>
@@ -280,7 +278,7 @@
                                   <div class="image-header">
                                     Captura fotográfica de evidencia.
                                   </div>
-                                  <div class="image-container">
+                                  <div class="image-container" (click)="seeEvidence()">
                                     <mat-icon *ngIf="!reportOM || !reportOM.fileCS" class="default-image">
                                       image
                                     </mat-icon>
@@ -400,7 +398,7 @@
                                   <div class="image-header">
                                     Captura fotográfica de evidencia.
                                   </div>
-                                  <div class="image-container">
+                                  <div class="image-container" (click)="seeEvidence()">
                                     <mat-icon *ngIf="!reportHWG || !reportHWG.fileCS" class="default-image">
                                       image
                                     </mat-icon>
@@ -431,16 +429,14 @@
                                   <div class="times">
                                     <mat-form-field class="clock">
                                       <input formControlName="startTime" placeholder="Hora de inicio" matInput required
-                                             appDisableWrite (time)="test($event, 'startTime')"
-                                             value="{{taskForm[1].controls['startTime'].value | formatTime}}">
+                                             appDisableWrite value="{{taskForm[1].controls['startTime'].value | formatTime}}">
                                       <mat-error *ngIf="taskForm[1].controls['startTime'].hasError('required')">
                                         Este campo es obligatorio
                                       </mat-error>
                                     </mat-form-field>
                                     <mat-form-field class="clock">
                                       <input formControlName="endTime" placeholder="Hora de término" matInput required
-                                             appDisableWrite (time)="test($event, 'endTime')"
-                                             value="{{taskForm[1].controls['endTime'].value | formatTime}}">
+                                             appDisableWrite value="{{taskForm[1].controls['endTime'].value | formatTime}}">
                                       <mat-error *ngIf="taskForm[1].controls['endTime'].hasError('required')">
                                         Este campo es obligatorio
                                       </mat-error>
@@ -491,7 +487,7 @@
                                   <div class="image-header">
                                     Captura fotográfica de evidencia
                                   </div>
-                                  <div class="image-container">
+                                  <div class="image-container" (click)="seeEvidence()">
                                     <mat-icon *ngIf="!reportComp || !reportComp.fileCS" class="default-image">
                                       image
                                     </mat-icon>
@@ -612,7 +608,7 @@
                                   <div class="image-header">
                                     Captura fotográfica de evidencia.
                                   </div>
-                                  <div class="image-container">
+                                  <div class="image-container" (click)="seeEvidence()">
                                     <mat-icon *ngIf="!reportHWG || !reportHWG.fileCS" class="default-image">
                                       image
                                     </mat-icon>
@@ -814,7 +810,7 @@
                                   <div class="image-header">
                                     Captura fotográfica de evidencia
                                   </div>
-                                  <div class="image-container">
+                                  <div class="image-container" (click)="seeEvidence()">
                                     <mat-icon *ngIf="!reportVRS || !reportVRS.fileCS" class="default-image">
                                       image
                                     </mat-icon>
@@ -866,6 +862,22 @@
                                       [href]="reportScanned.fileCS.thumbnail">Manifiesto</a></div>
                                   </mat-card-content>
                                 </mat-card>
+                                <div class="text-sign" *ngIf="!task.original.hwg">
+                                  Nombre y firma del responsable
+                                </div>
+                                <div style="width: 50%" *ngIf="!task.original.hwg">
+                                  <div class="signature-element">
+                                    <img *ngIf="reportScanned && reportScanned.signature"
+                                         [src]="reportScanned.signature.thumbnail">
+                                    <div *ngIf="!reportScanned || !reportScanned.signature"
+                                         style="width: 60%; height: 60px"></div>
+                                  </div>
+                                  <div class="divider"></div>
+                                  <div *ngIf="!reportScanned || !reportScanned.name" class="name">Nombre</div>
+                                  <div *ngIf="reportScanned && reportScanned.name" class="name">
+                                    {{reportScanned.name}}
+                                  </div>
+                                </div>
                               </div>
                               <div class="divider" *ngIf="task.original.hwg"></div>
                               <div class="head-bold" *ngIf="task.original.hwg">Generación de residuos peligrosos</div>
@@ -1435,7 +1447,7 @@
                                   <div class="image-header">
                                     Captura fotográfica de evidencia
                                   </div>
-                                  <div class="image-container">
+                                  <div class="image-container" (click)="seeEvidence()">
                                     <mat-icon *ngIf="!reportIncidence || !reportIncidence.fileCS" class="default-image">
                                       image
                                     </mat-icon>
@@ -1569,7 +1581,7 @@
                                              style="width: 60%; height: 60px"></div>
                                       </div>
                                       <div class="divider"></div>
-                                      <div class="name">Nombre</div>
+                                      <div *ngIf="!reportHWC || !reportHWC.name" class="name">Nombre</div>
                                       <div *ngIf="reportHWC && reportHWC.name" class="name">{{reportHWC.name}}</div>
                                     </div>
                                     <div *ngIf="itemsTasks && itemsTasks.length !== 0">

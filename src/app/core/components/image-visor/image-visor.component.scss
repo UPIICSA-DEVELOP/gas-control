@@ -1,0 +1,24 @@
+/*!
+ * Copyright (C) MapLander S de R.L de C.V - All Rights Reserved
+ *  Unauthorized copying of this file, via any medium is strictly prohibited
+ *  Proprietary and confidential
+ */
+
+#image-visor{
+  height: 100%;
+  mat-toolbar{
+    display: flex;
+    justify-content: space-between;
+  }
+  .content{
+    max-height: inherit;
+    width: 100%;
+    margin: 0;
+    display: flex;
+    padding: 0;
+  }
+  img{
+    margin: auto;
+    transform: scale(0.85);
+  }
+}
