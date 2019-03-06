@@ -1,6 +1,6 @@
 export const environment = {
   production: true,
-  url: 'https://inspector-develop.maplander.com/',
+  url: 'http://localhost:8889/',
   develop: true,
   VERSION: require('../../package.json').version,
   firebase: {

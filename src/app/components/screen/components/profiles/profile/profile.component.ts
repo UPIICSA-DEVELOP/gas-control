@@ -4,7 +4,7 @@
  * Proprietary and confidential
  */
 
-import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
+import {Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {ApiService} from '@app/core/services/api/api.service';
 import {CookieService} from '@app/core/services/cookie/cookie.service';
 import {Constants} from '@app/core/constants.core';
@@ -22,6 +22,7 @@ import {UploadFileResponse} from '@app/core/components/upload-file/upload-file.c
 import {SignaturePadService} from '@app/core/components/signature-pad/signature-pad.service';
 import {LocalStorageService} from '@app/core/services/local-storage/local-storage.service';
 import {Consultancy, Person} from '@app/core/interfaces/interfaces';
+import {Subscription} from 'rxjs/Rx';
 
 @Component({
   selector: 'app-profile',
@@ -51,7 +52,7 @@ import {Consultancy, Person} from '@app/core/interfaces/interfaces';
   ],
   host: {'[@fadeInAnimation]': ''}
 })
-export class ProfileComponent implements OnInit {
+export class ProfileComponent implements OnInit, OnDestroy {
   @ViewChild('phoneNumber') private _phoneNumberInput: ElementRef;
   private _formData: FormData;
   private _formDeleteData: FormData;
@@ -75,7 +76,7 @@ export class ProfileComponent implements OnInit {
   public signature: any;
   public newSignature: boolean;
   public newSig: any;
-
+  private _subscriptionLoader: Subscription;
   constructor(
     private _api: ApiService,
     private _formBuilder: FormBuilder,
@@ -99,7 +100,11 @@ export class ProfileComponent implements OnInit {
 
   ngOnInit() {
     this.initUserInfo();
-    this._apiLoaderService.getProgress().subscribe(load => { this.load = load;});
+    this._subscriptionLoader = this._apiLoaderService.getProgress().subscribe(load => { this.load = load;});
+  }
+
+  ngOnDestroy(): void{
+    this._subscriptionLoader.unsubscribe();
   }
 
   public closeProfile(){

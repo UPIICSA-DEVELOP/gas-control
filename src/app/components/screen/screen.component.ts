@@ -8,13 +8,12 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {ApiService} from '@app/core/services/api/api.service';
 import {CookieService} from '@app/core/services/cookie/cookie.service';
 import {Constants} from '@app/core/constants.core';
-import {ActivatedRoute, NavigationEnd, Router} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {LocalStorageService} from '@app/core/services/local-storage/local-storage.service';
 import {AddStationService} from '@app/components/screen/components/add-gas-station/add-station.service';
 import {DialogService} from '@app/core/components/dialog/dialog.service';
 import {AuthService} from '@app/core/services/auth/auth.service';
 import {environment} from '@env/environment';
-import {filter} from 'rxjs/internal/operators';
 import {Subscription} from 'rxjs';
 import {SharedNotification, SharedService, SharedTypeNotification} from '@app/core/services/shared/shared.service';
 import {SasisopaService} from '@app/components/screen/components/sasisopa/sasisopa.service';
@@ -32,7 +31,7 @@ export class ScreenComponent implements OnInit, OnDestroy{
   public menu: boolean;
   public utils: any;
   private _stationId: any;
-  private _subscribe: Subscription;
+  private _subscriptionShared: Subscription;
   constructor(
     private _api: ApiService,
     private _router: Router,
@@ -54,29 +53,23 @@ export class ScreenComponent implements OnInit, OnDestroy{
     this.validateSignatureUser();
     this.initNotifications();
     this.checkChanges();
-    this._subscribe = this._router.events
-      .pipe(filter(event => event instanceof NavigationEnd))
-      .subscribe(response => {
-        if(this._router.url === '/home' || this._router.url.includes('/home?station')){
-          if(this._activateRoute.snapshot.queryParams['station']){
-            this._stationId = this._activateRoute.snapshot.queryParams['station'];
-          }
-          this.getDashboardInformation(this._stationId);
-        }
-    });
   }
 
   ngOnDestroy():void{
-    this._subscribe.unsubscribe();
+   this._subscriptionShared.unsubscribe();
   }
 
  private checkChanges():void{
-   this._sharedService.getNotifications().subscribe((response: SharedNotification)=>{
+   this._subscriptionShared = this._sharedService.getNotifications().subscribe((response: SharedNotification)=>{
      switch (response.type){
        case SharedTypeNotification.CreationTask:
          if(response.value){
            this.createTasks(response.value.id);
          }
+         break;
+       case SharedTypeNotification.ChangeStation:
+         this._stationId = response.value;
+         this.getDashboardInformation(this._stationId);
          break;
      }
    });

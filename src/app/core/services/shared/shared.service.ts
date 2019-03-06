@@ -10,11 +10,9 @@ export interface SharedNotification {
 export enum SharedTypeNotification {
   Directory,
   ListTask,
-  Home,
-  Status,
   NotCalendarTask,
   CreationTask,
-  Other
+  ChangeStation
 }
 
 @Injectable()

@@ -4,7 +4,7 @@
  *  Proprietary and confidential
  */
 
-import {Component, DoCheck, Inject, OnInit, PLATFORM_ID} from '@angular/core';
+import {Component, DoCheck, Inject, OnDestroy, OnInit, PLATFORM_ID} from '@angular/core';
 import {AuthService} from '@app/core/services/auth/auth.service';
 import {DialogService} from '@app/core/components/dialog/dialog.service';
 import {MatSidenav} from '@angular/material';
@@ -13,17 +13,19 @@ import {DOCUMENT} from '@angular/common';
 import {Router} from '@angular/router';
 import {LocalStorageService} from '@app/core/services/local-storage/local-storage.service';
 import {ApiLoaderService} from '@app/core/services/api/api-loader.service';
+import {Subscription} from 'rxjs/Rx';
 
 @Component({
   selector: 'app-nav-bar',
   templateUrl: './nav-bar.component.html',
   styleUrls: ['./nav-bar.component.scss']
 })
-export class NavBarComponent implements OnInit, DoCheck  {
+export class NavBarComponent implements OnInit, DoCheck, OnDestroy  {
 
   public user: any = {};
   public load: boolean;
   public imageExist: boolean = false;
+  private _subscriptionLoader: Subscription;
   constructor(
     @Inject(DOCUMENT) private _document: Document,
     @Inject(PLATFORM_ID) private _platformId: string,
@@ -35,11 +37,15 @@ export class NavBarComponent implements OnInit, DoCheck  {
   }
 
   ngOnInit() {
-    this._apiLoader.getProgress().subscribe(load => this.load = load);
+    this._subscriptionLoader = this._apiLoader.getProgress().subscribe(load => this.load = load);
   }
 
   ngDoCheck(): void {
     this.getUser();
+  }
+
+  ngOnDestroy(): void{
+    this._subscriptionLoader.unsubscribe();
   }
 
   public logOut(): void {

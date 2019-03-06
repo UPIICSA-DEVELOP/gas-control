@@ -4,7 +4,7 @@
  *  Proprietary and confidential
  */
 
-import {Component, DoCheck, Inject, Input, OnInit} from '@angular/core';
+import {Component, DoCheck, Inject, Input, OnDestroy, OnInit} from '@angular/core';
 import {DatepickerService, DateRangeOptions} from '@app/components/screen/components/datepicker/datepicker.service';
 import {TaskFilterService} from '@app/components/screen/components/task-filter/task-filter.service';
 import {ApiService} from '@app/core/services/api/api.service';
@@ -24,13 +24,14 @@ import {TaskFilterNameService} from '@app/components/screen/components/task-filt
 import {SharedNotification, SharedService, SharedTypeNotification} from '@app/core/services/shared/shared.service';
 import {ImageVisorService} from '@app/core/components/image-visor/image-visor.service';
 import {SnackBarService} from '@app/core/services/snackbar/snackbar.service';
+import {Subscription} from 'rxjs';
 
 @Component({
   selector: 'app-list-tasks',
   templateUrl: './list-tasks.component.html',
   styleUrls: ['./list-tasks.component.scss']
 })
-export class ListTasksComponent implements OnInit, DoCheck {
+export class ListTasksComponent implements OnInit, DoCheck , OnDestroy{
   public station: any;
   @Input() set stationInfo(stationObj: any) {
     if (stationObj && stationObj.stationTaskId) {
@@ -96,6 +97,9 @@ export class ListTasksComponent implements OnInit, DoCheck {
   private _firstOpen: boolean;
   private _taskType: string;
   private _taskListPaged: any;
+
+  private _subscriptionShared: Subscription;
+  private _subscriptionLoader: Subscription;
   constructor(
     @Inject(DOCUMENT) private _document: Document,
     private _dateService: DatepickerService,
@@ -143,9 +147,7 @@ export class ListTasksComponent implements OnInit, DoCheck {
     this.checkChanges();
     this.initForms();
     this.user = LocalStorageService.getItem(Constants.UserInSession);
-    this._apiLoader.getProgress().subscribe(load => {
-      this.load = load;
-    });
+    this._subscriptionLoader = this._apiLoader.getProgress().subscribe(load => this.load = load);
     if (this.startDate.toLocaleDateString() === this.endDate.toLocaleDateString()) {
       this.today = true;
     }
@@ -157,8 +159,13 @@ export class ListTasksComponent implements OnInit, DoCheck {
     this.notCalendar = LocalStorageService.getItem(Constants.NotCalendarTask);
   }
 
+  ngOnDestroy(): void{
+    this._subscriptionShared.unsubscribe();
+    this._subscriptionLoader.unsubscribe();
+  }
+
   private checkChanges():void{
-    this._sharedService.getNotifications().subscribe((response: SharedNotification)=>{
+    this._subscriptionShared = this._sharedService.getNotifications().subscribe((response: SharedNotification)=>{
       switch (response.type){
         case SharedTypeNotification.NotCalendarTask:
           this.others = true;

@@ -14,6 +14,7 @@ import {animate, state, style, transition, trigger} from '@angular/animations';
 import {LocalStorageService} from '@app/core/services/local-storage/local-storage.service';
 import {UtilitiesService} from '@app/core/utilities/utilities.service';
 import {AddStationService} from '@app/components/screen/components/add-gas-station/add-station.service';
+import {SharedService, SharedTypeNotification} from '@app/core/services/shared/shared.service';
 
 @Component({
   selector: 'app-station-list',
@@ -55,7 +56,8 @@ export class StationListComponent implements OnInit, DoCheck {
     private _api: ApiService,
     private _dialogService: DialogService,
     private _router: Router,
-    private _addStation: AddStationService
+    private _addStation: AddStationService,
+    private _sharedService: SharedService
   ) {
     this.notificationActive = [];
     this.emptySearch = false;
@@ -189,8 +191,10 @@ export class StationListComponent implements OnInit, DoCheck {
   }
 
   public changeStation(id: string):void{
-    this._router.navigate(['/home'], {queryParams:{station: id}}).then(()=>{
+    this._router.navigate(['/home']).then(()=>{
       LocalStorageService.removeItem(Constants.NotCalendarTask);
+      this._sharedService.setNotification({type: SharedTypeNotification.ChangeStation, value: id});
     });
+
   }
 }

@@ -4,7 +4,7 @@
  * Proprietary and confidential
  */
 
-import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
+import {Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {animate, style, transition, trigger} from '@angular/animations';
 import {ApiService} from '@app/core/services/api/api.service';
 import {DialogService} from '@app/core/components/dialog/dialog.service';
@@ -21,6 +21,7 @@ import {LocalStorageService} from '@app/core/services/local-storage/local-storag
 import {PdfVisorService} from '@app/core/components/pdf-visor/pdf-visor.service';
 import {SharedService, SharedTypeNotification} from '@app/core/services/shared/shared.service';
 import {Person, PersonInformation} from '@app/core/interfaces/interfaces';
+import {Subscription} from 'rxjs/Rx';
 
 @Component({
   selector: 'app-add-collaborator',
@@ -40,7 +41,7 @@ import {Person, PersonInformation} from '@app/core/interfaces/interfaces';
   ],
   host: {'[@fadeInAnimation]': ''}
 })
-export class AddCollaboratorComponent implements OnInit {
+export class AddCollaboratorComponent implements OnInit, OnDestroy {
   @ViewChild('phoneNumber') private _phoneNumberInput: ElementRef;
   public signature: any;
   public profileImage: any;
@@ -64,6 +65,7 @@ export class AddCollaboratorComponent implements OnInit {
   private _formFile: FormData;
   private _refId: string;
   public changes: boolean;
+  private _subscriptionLoader: Subscription;
   constructor(
     private _api:ApiService,
     private _apiLoader: ApiLoaderService,
@@ -92,8 +94,12 @@ export class AddCollaboratorComponent implements OnInit {
       this._refId = this._activateRoute.snapshot.queryParams.stationId;
     }
     this.user= LocalStorageService.getItem(Constants.UserInSession);
-    this._apiLoader.getProgress().subscribe(load => {this.load = load; });
+    this._subscriptionLoader = this._apiLoader.getProgress().subscribe(load => {this.load = load; });
     this.initForm();
+  }
+
+  ngOnDestroy(): void{
+    this._subscriptionLoader.unsubscribe();
   }
 
   public close():void{

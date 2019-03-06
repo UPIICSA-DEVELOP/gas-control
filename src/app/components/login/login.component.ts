@@ -4,13 +4,14 @@
  *  Proprietary and confidential
  */
 
-import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
+import {Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {ApiService} from '@app/core/services/api/api.service';
 import {DialogService} from '@app/core/components/dialog/dialog.service';
 import {ApiLoaderService} from '@app/core/services/api/api-loader.service';
 import {SnackBarService} from '@app/core/services/snackbar/snackbar.service';
 import {AuthService} from '@app/core/services/auth/auth.service';
+import {Subscription} from 'rxjs/Rx';
 const md5 = require('md5');
 
 @Component({
@@ -18,13 +19,14 @@ const md5 = require('md5');
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss']
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent implements OnInit, OnDestroy {
 
   @ViewChild('inputPassword') private _inputPassword: ElementRef;
   private _dataUser: any;
   public load: boolean;
   public loginForm: FormGroup;
   public hide: boolean = false;
+  private _subscriptionLoader: Subscription;
   constructor(
     private _formBuilder: FormBuilder,
     private _apiService: ApiService,
@@ -39,8 +41,13 @@ export class LoginComponent implements OnInit {
       password: ['', [Validators.required]],
       rememberPass: [false, []]
     });
-    this._apiLoader.getProgress().subscribe(load => {this.load = load; });
+    this._subscriptionLoader = this._apiLoader.getProgress().subscribe(load => {this.load = load; });
   }
+
+  ngOnDestroy(): void{
+    this._subscriptionLoader.unsubscribe();
+  }
+
   public loginUser(data: any): void {
     if (this.loginForm.invalid) {
       return;
@@ -52,6 +59,7 @@ export class LoginComponent implements OnInit {
     };
     this.signInUser(this._dataUser.email, md5(this._dataUser.password), this._dataUser.remember);
   }
+
   public resetPassword(): void {
     this._dialogService.alertWithInput(
       'Ingrese su Email',

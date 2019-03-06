@@ -29,6 +29,7 @@ export class AuthService implements Resolve<any>{
   ) { }
 
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
+    console.log('resolver');
     if (isPlatformBrowser(this._platformId)) {
       if(state.url !== '/home/updatepassword'){
         if(AuthService.validateUpdatePassword()){

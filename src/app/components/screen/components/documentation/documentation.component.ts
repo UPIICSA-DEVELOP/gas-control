@@ -4,7 +4,7 @@
  * Proprietary and confidential
  */
 
-import { Component, OnInit } from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {UploadFileService} from '@app/core/components/upload-file/upload-file.service';
 import {animate, keyframes, query, stagger, style, transition, trigger} from '@angular/animations';
 import {ActivatedRoute, Router} from '@angular/router';
@@ -13,6 +13,7 @@ import {UploadFileResponse} from '@app/core/components/upload-file/upload-file.c
 import {ApiLoaderService} from '@app/core/services/api/api-loader.service';
 import {SnackBarService} from '@app/core/services/snackbar/snackbar.service';
 import {Document} from  '@app/core/interfaces/interfaces'
+import {Subscription} from 'rxjs/Rx';
 
 @Component({
   selector: 'app-documentation',
@@ -43,13 +44,14 @@ import {Document} from  '@app/core/interfaces/interfaces'
   host: {'[@fadeInAnimation]': ''}
 })
 
-export class DocumentationComponent implements OnInit {
+export class DocumentationComponent implements OnInit, OnDestroy {
   public isASEA: boolean;
   public stationId: string;
   public docsAsea: any[];
   public docsCre: any[];
   public load: boolean;
   private _documentData: FormData;
+  private _subscriptionLoader: Subscription;
   constructor(
     private _uploadFile: UploadFileService,
     private _router: Router,
@@ -68,7 +70,11 @@ export class DocumentationComponent implements OnInit {
       this.stationId = this._activateRoute.snapshot.queryParams.station;
       this.getDocuments();
     }
-    this._apiLoader.getProgress().subscribe(load => {this.load = load; });
+    this._subscriptionLoader = this._apiLoader.getProgress().subscribe(load => {this.load = load; });
+  }
+
+  ngOnDestroy(): void{
+    this._subscriptionLoader.unsubscribe();
   }
 
   private getDocuments():void{

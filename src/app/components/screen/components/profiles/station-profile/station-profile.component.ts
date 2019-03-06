@@ -4,7 +4,7 @@
  * Proprietary and confidential
  */
 
-import { Component, OnInit } from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {animate, keyframes, query, stagger, style, transition, trigger} from '@angular/animations';
 import {ActivatedRoute, Router} from '@angular/router';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
@@ -15,6 +15,7 @@ import {SnackBarService} from '@app/core/services/snackbar/snackbar.service';
 import {DialogService} from '@app/core/components/dialog/dialog.service';
 import {Constants} from '@app/core/constants.core';
 import {LocalStorageService} from '@app/core/services/local-storage/local-storage.service';
+import {Subscription} from 'rxjs/Rx';
 
 @Component({
   selector: 'app-station-profile',
@@ -44,7 +45,7 @@ import {LocalStorageService} from '@app/core/services/local-storage/local-storag
   ],
   host: {'[@fadeInAnimation]': ''}
 })
-export class StationProfileComponent implements OnInit {
+export class StationProfileComponent implements OnInit, OnDestroy {
   public workShifts:any[];
   public tanks:any[];
   public dispensers:any[];
@@ -62,6 +63,7 @@ export class StationProfileComponent implements OnInit {
   private id: string;
   public user: any;
   public yearSelector: number[];
+  private _subscriptionLoader: Subscription;
   constructor(
     private _router: Router,
     private _formBuilder: FormBuilder,
@@ -89,7 +91,11 @@ export class StationProfileComponent implements OnInit {
       this.id = this._activatedRouter.snapshot.queryParams.id;
       this.initForm();
     }
-    this._apiLoader.getProgress().subscribe(load => {this.load = load; });
+    this._subscriptionLoader = this._apiLoader.getProgress().subscribe(load => {this.load = load; });
+  }
+
+  ngOnDestroy(): void{
+    this._subscriptionLoader.unsubscribe();
   }
 
   public detectChanges(): void{

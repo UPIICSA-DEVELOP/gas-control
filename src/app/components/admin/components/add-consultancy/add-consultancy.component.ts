@@ -4,7 +4,7 @@
  * Proprietary and confidential
  */
 
-import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
+import {Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Constants} from 'app/core/constants.core';
 import {SignaturePadService} from 'app/core/components/signature-pad/signature-pad.service';
@@ -17,13 +17,14 @@ import {UploadFileResponse} from 'app/core/components/upload-file/upload-file.co
 import {UploadFileService} from 'app/core/components/upload-file/upload-file.service';
 import {ApiLoaderService} from 'app/core/services/api/api-loader.service';
 import {Consultancy, Person} from '@app/core/interfaces/interfaces';
+import {Subscription} from 'rxjs/Rx';
 
 @Component({
   selector: 'app-add-consultancy',
   templateUrl: './add-consultancy.component.html',
   styleUrls: ['./add-consultancy.component.scss']
 })
-export class AddConsultancyComponent implements OnInit {
+export class AddConsultancyComponent implements OnInit, OnDestroy {
   @ViewChild('stepper') private _stepper: MatStepper;
   @ViewChild('phoneNumber') private _phoneNumberInput: ElementRef;
   public load: boolean;
@@ -41,6 +42,7 @@ export class AddConsultancyComponent implements OnInit {
   private _location: any;
   private _ownerInfo: Person;
   private _consultancyInfo: Consultancy;
+  private _subscriptionLoader: Subscription;
   constructor(
     private _dialog: MatDialogRef<AddConsultancyComponent>,
     private _formBuilder: FormBuilder,
@@ -72,7 +74,7 @@ export class AddConsultancyComponent implements OnInit {
   }
 
   ngOnInit() {
-    this._apiLoader.getProgress().subscribe(load => {this.load = load});
+    this._subscriptionLoader = this._apiLoader.getProgress().subscribe(load => {this.load = load});
     this.showOwnerForm = true;
     this.country = 'MX';
     this.ownerForm = this._formBuilder.group({
@@ -87,6 +89,10 @@ export class AddConsultancyComponent implements OnInit {
       protocol: ['http://',[]],
       website: ['', [Validators.pattern(Constants.REGEX_WEBSITE)]]
     });
+  }
+
+  ngOnDestroy(): void{
+    this._subscriptionLoader.unsubscribe();
   }
 
   public onSelectionChange(ev: any): void{

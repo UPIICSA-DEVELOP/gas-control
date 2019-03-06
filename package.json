@@ -10,8 +10,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve --open",
-    "test:ssr": "gulp clean && ng build -c develop --stats-json && ng run com.maplander.inspector.front:server:develop && npm run postbuild:test:ssr",
-    "postbuild:test:ssr": "npm run server",
+    "test:ssr": "gulp clean && ng build -c develop && ng run com.maplander.inspector.front:server:develop && npm run copy:endpoints && npm run config:dev && npm run server && node dist/server",
     "build:develop": "gulp clean && ng build -c develop && ng run com.maplander.inspector.front:server:develop && npm run copy:endpoints && npm run config:dev && npm run server",
     "build": "gulp clean ng build --prod && ng run com.maplander.inspector.front:server:production && npm run config:prod && npm run copy:endpoints && npm run deep:links && npm run server",
     "server": "webpack --mode production --config server/webpack.config.js --progress --colors",

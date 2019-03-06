@@ -4,7 +4,7 @@
  * Proprietary and confidential
  */
 
-import {Component, DoCheck, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
+import {Component, DoCheck, Input, OnChanges, OnDestroy, OnInit, SimpleChanges} from '@angular/core';
 import {ApiService} from '@app/core/services/api/api.service';
 import {SnackBarService} from '@app/core/services/snackbar/snackbar.service';
 import {DialogService} from '@app/core/components/dialog/dialog.service';
@@ -13,13 +13,14 @@ import {UtilitiesService} from '@app/core/utilities/utilities.service';
 import {CookieService} from '@app/core/services/cookie/cookie.service';
 import {LocalStorageService} from '@app/core/services/local-storage/local-storage.service';
 import {SharedNotification, SharedService, SharedTypeNotification} from '@app/core/services/shared/shared.service';
+import {Subscription} from 'rxjs/index';
 
 @Component({
   selector: 'app-directory-list',
   templateUrl: './directory-list.component.html',
   styleUrls: ['./directory-list.component.scss']
 })
-export class DirectoryListComponent implements OnInit, OnChanges,DoCheck {
+export class DirectoryListComponent implements OnInit, OnChanges, OnDestroy {
   @Input() public gasStation: any;
   @Input() public utils: any;
   public collaborators: any[];
@@ -28,6 +29,7 @@ export class DirectoryListComponent implements OnInit, OnChanges,DoCheck {
   public idSession: string;
   public user: any;
   public emptySearch: boolean;
+  private _subscriptionShared: Subscription;
   constructor(
     private _api:ApiService,
     private _snackBarService: SnackBarService,
@@ -42,6 +44,7 @@ export class DirectoryListComponent implements OnInit, OnChanges,DoCheck {
   ngOnInit() {
     this.roleType = Constants.roles;
     this.collaborators = [];
+    this.onChangesComponents();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -50,14 +53,8 @@ export class DirectoryListComponent implements OnInit, OnChanges,DoCheck {
     }
   }
 
-  ngDoCheck(): void {
-    this._sharedService.getNotifications().subscribe((response: SharedNotification)=>{
-      switch (response.type){
-        case SharedTypeNotification.Directory:
-          this.getCollaborators();
-          break;
-      }
-    })
+  ngOnDestroy(): void{
+    this._subscriptionShared.unsubscribe();
   }
 
   private getCollaborators():void{
@@ -128,6 +125,16 @@ export class DirectoryListComponent implements OnInit, OnChanges,DoCheck {
         this.emptySearch = (newArray.length === 0);
       }
     }
+  }
+
+  private onChangesComponents(): void{
+    this._subscriptionShared = this._sharedService.getNotifications().subscribe((response: SharedNotification)=>{
+      switch (response.type){
+        case SharedTypeNotification.Directory:
+          this.getCollaborators();
+          break;
+      }
+    })
   }
 
 }

@@ -4,7 +4,7 @@
  * Proprietary and confidential
  */
 
-import {Component, ElementRef, Inject, OnInit, ViewChild} from '@angular/core';
+import {Component, ElementRef, Inject, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {ApiService} from '@app/core/services/api/api.service';
 import {ApiLoaderService} from '@app/core/services/api/api-loader.service';
 import {Router} from '@angular/router';
@@ -24,6 +24,7 @@ import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
 import {UtilitiesService} from '@app/core/utilities/utilities.service';
 import {Person, PersonInformation, Task} from '@app/core/interfaces/interfaces';
 import {SharedService, SharedTypeNotification} from '@app/core/services/shared/shared.service';
+import {Subscription} from 'rxjs/Rx';
 
 interface Station {
   id?: string;
@@ -55,7 +56,7 @@ interface Station {
   templateUrl: './add-gas-station.component.html',
   styleUrls: ['./add-gas-station.component.scss']
 })
-export class AddGasStationComponent implements OnInit {
+export class AddGasStationComponent implements OnInit, OnDestroy {
   @ViewChild('phoneNumber') private _phoneNumberInput: ElementRef;
   @ViewChild('modalScroll') private _modalScroll: ElementRef;
   public step: number;
@@ -117,6 +118,7 @@ export class AddGasStationComponent implements OnInit {
   private _formSignatureTwo: FormData;
   private _formFileTwo: FormData;
   private _stationId: string;
+  private _subscriptionLoader: Subscription;
   constructor(
     @Inject(MAT_DIALOG_DATA) private _data: any,
     private _api: ApiService,
@@ -174,7 +176,11 @@ export class AddGasStationComponent implements OnInit {
     this.tanks.push({capacity: undefined, fuelType: undefined, year: undefined});
     this.workShifts.push({start: undefined, end: undefined});
     this.getListRepresentative();
-    this._apiLoaderService.getProgress().subscribe(load=>{this.load = load});
+    this._subscriptionLoader = this._apiLoaderService.getProgress().subscribe(load=>{this.load = load});
+  }
+
+  ngOnDestroy(): void{
+    this._subscriptionLoader.unsubscribe();
   }
 
   private getUtilities(): void {

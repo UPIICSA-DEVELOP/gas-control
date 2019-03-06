@@ -4,7 +4,7 @@
  * Proprietary and confidential
  */
 
-import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
+import {Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {Router} from '@angular/router';
 import {animate, style, transition, trigger} from '@angular/animations';
 import {Constants} from '@app/core/constants.core';
@@ -21,6 +21,7 @@ import {ApiLoaderService} from '@app/core/services/api/api-loader.service';
 import {UtilitiesService} from '@app/core/utilities/utilities.service';
 import {LocalStorageService} from '@app/core/services/local-storage/local-storage.service';
 import {Person} from '@app/core/interfaces/interfaces';
+import {Subscription} from 'rxjs/Rx';
 
 @Component({
   selector: 'app-collaborators-list',
@@ -40,7 +41,7 @@ import {Person} from '@app/core/interfaces/interfaces';
   ],
   host: {'[@fadeInAnimation]': ''}
 })
-export class CollaboratorsListComponent implements OnInit {
+export class CollaboratorsListComponent implements OnInit, OnDestroy {
   @ViewChild('phoneNumber') private _phoneNumberInput: ElementRef;
   public collaborators: any[];
   public register: boolean;
@@ -62,6 +63,7 @@ export class CollaboratorsListComponent implements OnInit {
   public role: string[];
   public changes: boolean;
   public emptySearch: boolean;
+  private _subscriptionLoader: Subscription;
   constructor(
     private _route: Router,
     private _api: ApiService,
@@ -83,8 +85,12 @@ export class CollaboratorsListComponent implements OnInit {
 
   ngOnInit() {
     this.role = Constants.roles;
-    this._apiLoaderService.getProgress().subscribe(load => {this.load = load; });
+    this._subscriptionLoader = this._apiLoaderService.getProgress().subscribe(load => {this.load = load; });
     this.getCollaborators();
+  }
+
+  ngOnDestroy(): void{
+    this._subscriptionLoader.unsubscribe();
   }
 
   public onCloseCollaborators(): void{

@@ -4,7 +4,7 @@
  * Proprietary and confidential
  */
 
-import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
+import {Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {animate, keyframes, query, stagger, style, transition, trigger} from '@angular/animations';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
@@ -21,6 +21,7 @@ import {SignaturePadService} from '@app/core/components/signature-pad/signature-
 import {LocalStorageService} from '@app/core/services/local-storage/local-storage.service';
 import {PdfVisorService} from '@app/core/components/pdf-visor/pdf-visor.service';
 import {Person, PersonInformation} from '@app/core/interfaces/interfaces';
+import {Subscription} from 'rxjs/Rx';
 
 @Component({
   selector: 'app-user-profile',
@@ -50,7 +51,7 @@ import {Person, PersonInformation} from '@app/core/interfaces/interfaces';
   ],
   host: {'[@fadeInAnimation]': ''}
 })
-export class UserProfileComponent implements OnInit {
+export class UserProfileComponent implements OnInit, OnDestroy {
   @ViewChild('phoneNumber') private _phoneNumberInput: ElementRef;
   private _formData: FormData;
   private _formDeleteData: FormData;
@@ -79,6 +80,7 @@ export class UserProfileComponent implements OnInit {
   public signature: any;
   public newSignature: boolean;
   public newSig: any;
+  private _subscriptionLoader: Subscription;
   constructor(
     private _router: Router,
     private _api: ApiService,
@@ -107,7 +109,11 @@ export class UserProfileComponent implements OnInit {
     this.initUserInfo();
     this.getUser(this._params.snapshot.data.data[0]);
     this.getUserInformation(this._params.snapshot.data.data[1]);
-    this._apiLoaderService.getProgress().subscribe(load => {this.load = load; });
+    this._subscriptionLoader = this._apiLoaderService.getProgress().subscribe(load => {this.load = load; });
+  }
+
+  ngOnDestroy(): void{
+    this._subscriptionLoader.unsubscribe();
   }
 
   public closeProfile():void{

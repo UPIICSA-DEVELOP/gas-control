@@ -4,7 +4,7 @@
  * Proprietary and confidential
  */
 
-import {Component, Inject, OnInit} from '@angular/core';
+import {Component, Inject, OnDestroy, OnInit} from '@angular/core';
 import {PdfVisorService} from '@app/core/components/pdf-visor/pdf-visor.service';
 import {ApiLoaderService} from '@app/core/services/api/api-loader.service';
 import {ApiService} from '@app/core/services/api/api.service';
@@ -13,19 +13,20 @@ import {ListCollaboratorsService} from '@app/components/admin/components/list-co
 import {AuthService} from '@app/core/services/auth/auth.service';
 import {DialogService} from '@app/core/components/dialog/dialog.service';
 import {AddConsultancyService} from '@app/components/admin/components/add-consultancy/add-consultancy.service';
+import {Subscription} from 'rxjs/Rx';
 
 @Component({
   selector: 'app-admin',
   templateUrl: './admin.component.html',
   styleUrls: ['./admin.component.scss']
 })
-export class AdminComponent implements OnInit {
+export class AdminComponent implements OnInit, OnDestroy {
 
   public load: boolean;
   public consultancyList: any[];
   public consultancyListCopy: any[];
   public notResults: boolean;
-
+  private _subscriptionLoader: Subscription;
   constructor(
     private _collaborators: ListCollaboratorsService,
     private _addConsultancy: AddConsultancyService,
@@ -39,8 +40,12 @@ export class AdminComponent implements OnInit {
   }
 
   ngOnInit() {
-   this._apiLoader.getProgress().subscribe(load => this.load = load);
+   this._subscriptionLoader = this._apiLoader.getProgress().subscribe(load => this.load = load);
    this.getConsultancyList();
+  }
+
+  ngOnDestroy(): void{
+    this._subscriptionLoader.unsubscribe();
   }
 
   public getConsultancyList(): void{
