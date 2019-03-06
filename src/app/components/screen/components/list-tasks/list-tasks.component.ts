@@ -30,7 +30,7 @@ import {SnackBarService} from '@app/core/services/snackbar/snackbar.service';
 export class ListTasksComponent implements OnInit, DoCheck {
   public station: any;
   @Input() set stationInfo(stationObj: any) {
-    if (stationObj && stationObj.stationTaskId) {
+    if (stationObj) {
       this.others = false;
       this.tasks = [];
       this.notCalendarTasks = [];
@@ -161,7 +161,7 @@ export class ListTasksComponent implements OnInit, DoCheck {
   private getStationTask(): void {
     this._indexOldTaskExpanded = null;
     this.filters = {
-      stationTaskId: this.station.stationTaskId,
+      stationTaskId: this.station.stationTaskId || '0000',
       startDate: (this.start.timeStamp).toString(),
       status: (this.filter).toString(),
       endDate: (this.end.timeStamp).toString(),
@@ -391,6 +391,7 @@ export class ListTasksComponent implements OnInit, DoCheck {
   }
 
   public createStationTasks(): void {
+    console.log(this.station);
     this._addStationService.open({
       stepActive: 3,
       stationId: this.station.id,
