@@ -5,21 +5,23 @@
  *
  */
 
-import { Injectable } from '@angular/core';
+import {Injectable, OnDestroy} from '@angular/core';
 import {forkJoin, Observable} from 'rxjs';
 import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 import {NetworkService} from '@app/core/services/connection/network.service';
 import {SnackBarService} from '@app/core/services/snackbar/snackbar.service';
 import {Consultancy} from '@app/core/interfaces/interfaces';
+import {Subscription} from 'rxjs/Rx';
 
 
 @Injectable()
-export class ApiService {
+export class ApiService implements OnDestroy{
 
   private static API_URL = 'https://schedule-maplander.appspot.com/_ah/api/';
   private static API_CHANNEL = 'communication/';
   private static API_VERSION = 'v1/';
   private static API_URL_COMPLETE = ApiService.API_URL + ApiService.API_CHANNEL + ApiService.API_VERSION;
+  private _subscriptionNetwork: Subscription;
 
   constructor(
     private _http: HttpClient,
@@ -27,6 +29,10 @@ export class ApiService {
     private _snackBarService: SnackBarService
   ) {
     this.initNetwork();
+  }
+
+  ngOnDestroy(): void{
+    this._subscriptionNetwork.unsubscribe();
   }
 
   public signIn(options: any): Observable<any> {
@@ -454,7 +460,7 @@ export class ApiService {
    */
 
   private initNetwork(): void {
-    this._networkService.getChangesNetwork().subscribe(status => {
+    this._subscriptionNetwork = this._networkService.getChangesNetwork().subscribe(status => {
       const text = (!status) ? 'La conexión a internet se ha perdido' : 'De nuevo en linea';
       this._snackBarService.openSnackBar(text, 'OK', (status) ? 2000 : 0);
     });
