@@ -34,6 +34,7 @@ import {UtilitiesService} from '@app/core/utilities/utilities.service';
 export class NotificationsComponent implements OnInit{
   public notifications: any[];
   private _station: string;
+  private _idLegal: string;
   constructor(
     private _route: Router,
     private _activateRouter: ActivatedRoute,
@@ -44,6 +45,9 @@ export class NotificationsComponent implements OnInit{
   }
 
   ngOnInit() {
+    if(this._activateRouter.snapshot.queryParams.admin) {
+      this._idLegal = this._activateRouter.snapshot.queryParams.admin;
+    }
     if (this._activateRouter.snapshot.queryParams.id) {
       this._station = this._activateRouter.snapshot.queryParams.id;
       this.getNotifications();
@@ -51,7 +55,9 @@ export class NotificationsComponent implements OnInit{
   }
 
   private getNotifications():void{
-    this._api.listNotifications(CookieService.getCookie(Constants.IdSession), this._station).subscribe(response=>{
+    let personId;
+    if(!this._idLegal){personId = CookieService.getCookie(Constants.IdSession);}else{personId = this._idLegal;}
+    this._api.listNotifications(personId, this._station).subscribe(response=>{
       switch (response.code){
         case 200:
           if(response.items){
