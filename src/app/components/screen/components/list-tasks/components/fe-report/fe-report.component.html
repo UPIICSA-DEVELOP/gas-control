@@ -5,5 +5,158 @@
   -->
 
 <div id="fe-report">
-  fe-report works!
+  <form [formGroup]="frForm" class="flex-box">
+    <div class="columns">
+      <div class="times">
+        <mat-form-field class="clock">
+          <input formControlName="startTime" placeholder="Hora de inicio" matInput required appDisableWrite value="{{frForm.controls['startTime'].value | formatTime}}">
+        </mat-form-field>
+        <mat-form-field class="clock">
+          <input formControlName="endTime" placeholder="Hora de término" matInput required appDisableWrite value="{{frForm.controls['endTime'].value | formatTime}}">
+        </mat-form-field>
+      </div>
+      <div *ngIf="feReport && feReport.fireExtinguishers && feReport.fireExtinguishers.length!==0; then listFE else emptyListFE"></div>
+      <ng-template #listFE>
+        <div class="inputs" *ngFor="let extinguisher of feReport.fireExtinguishers; let  i = index">
+          <div class="color" style="text-align: center;">
+            Extintor {{i+1}}
+          </div>
+          <mat-form-field class="inputs">
+            <mat-select [(ngModel)]="extinguisher.area" [ngModelOptions]="{standalone: true}" [disabled]="true" placeholder="Área" required>
+              <mat-option [value]="'Zona de despacho'">Zona de despacho</mat-option>
+              <mat-option [value]="'Zona de tanques'">Zona de tanques</mat-option>
+              <mat-option [value]="'Oficina'">Oficina</mat-option>
+              <mat-option [value]="'Patio'">Patio</mat-option>
+              <mat-option [value]="'Cuarto eléctrico'">Cuarto eléctrico</mat-option>
+              <mat-option [value]="'Cuarto de máquinas'">Cuarto de máquinas</mat-option>
+              <mat-option [value]="'Cuarto de residuos peligrosos'">Cuarto de residuos peligrosos</mat-option>
+            </mat-select>
+          </mat-form-field>
+          <mat-form-field class="inputs">
+            <input matInput placeholder="Capacidad" [(ngModel)]="extinguisher.capacity" [ngModelOptions]="{standalone: true}" [disabled]="true" required>
+          </mat-form-field>
+          <div class="times">
+            <mat-form-field class="clock">
+              <mat-select placeholder="Vencimiento" required [(ngModel)]="extinguisher.expiration" [ngModelOptions]="{standalone: true}" [disabled]="true">
+                <mat-option value="Vigente">Vigente</mat-option>
+                <mat-option value="Caduco">Caduco</mat-option>
+              </mat-select>
+            </mat-form-field>
+            <mat-form-field class="clock">
+              <mat-select placeholder="Manómetro" [(ngModel)]="extinguisher.manometer" [ngModelOptions]="{standalone: true}" [disabled]="true" required>
+                <mat-option value="Descargado">Descargado</mat-option>
+                <mat-option value="Óptimo">Óptimo</mat-option>
+                <mat-option value="Sobrecargado">Sobrecargado</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <div class="times">
+            <mat-form-field class="clock">
+              <mat-select placeholder="Manguera" [(ngModel)]="extinguisher.hose" [ngModelOptions]="{standalone: true}" [disabled]="true" required>
+                <mat-option value="Satisfactorio">Satisfactorio</mat-option>
+                <mat-option value="No satisfactorio">No satisfactorio</mat-option>
+              </mat-select>
+            </mat-form-field>
+            <mat-form-field class="clock">
+              <mat-select placeholder="Cincho" [(ngModel)]="extinguisher.belt" [ngModelOptions]="{standalone: true}" [disabled]="true" required>
+                <mat-option value="Satisfactorio">Satisfactorio</mat-option>
+                <mat-option value="No satisfactorio">No satisfactorio</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <div class="times">
+            <mat-form-field class="clock">
+              <mat-select placeholder="Collarín" [(ngModel)]="extinguisher.collar" [ngModelOptions]="{standalone: true}" [disabled]="true">
+                <mat-option value="Satisfactorio">Satisfactorio</mat-option>
+                <mat-option value="No satisfactorio">No satisfactorio</mat-option>
+              </mat-select>
+            </mat-form-field>
+            <mat-form-field class="clock">
+              <mat-select placeholder="Seguro" [(ngModel)]="extinguisher.safe" [ngModelOptions]="{standalone: true}" [disabled]="true">
+                <mat-option value="Satisfactorio">Satisfactorio</mat-option>
+                <mat-option value="No satisfactorio">No satisfactorio</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+        </div>
+      </ng-template>
+      <ng-template #emptyListFE>
+        <div class="color">
+          Extintor 1
+        </div>
+        <mat-form-field class="inputs">
+          <mat-select disabled placeholder="Área" required>
+            <mat-option value="Zona de despacho">Zona de despacho</mat-option>
+            <mat-option value="Zona de tanques">Zona de tanques</mat-option>
+            <mat-option value="Oficina">Oficina</mat-option>
+            <mat-option value="Patio">Patio</mat-option>
+            <mat-option value="Cuarto eléctrico">Cuarto eléctrico</mat-option>
+            <mat-option value="Cuarto de máquinas">Cuarto de máquinas</mat-option>
+            <mat-option value="Cuarto de residuos peligrosos">Cuarto de residuos peligrosos
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field class="inputs">
+          <input disabled matInput placeholder="Capacidad" required>
+        </mat-form-field>
+        <div class="times">
+          <mat-form-field class="clock">
+            <mat-select disabled placeholder="Vencimiento" required>
+              <mat-option value="Vigente">Vigente</mat-option>
+              <mat-option value="Caducado">Caducao</mat-option>
+            </mat-select>
+          </mat-form-field>
+          <mat-form-field class="clock">
+            <mat-select disabled placeholder="Manómetro" required>
+              <mat-option value="Descargado">Descargado</mat-option>
+              <mat-option value="Óptimo">Óptimo</mat-option>
+              <mat-option value="Sobrecargado">Sobrecargado</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div class="times">
+          <mat-form-field class="clock">
+            <mat-select disabled placeholder="Manguera" required>
+              <mat-option value="Satisfactorio">Satisfactorio</mat-option>
+              <mat-option value="No satisfactorio">No satisfactorio</mat-option>
+            </mat-select>
+          </mat-form-field>
+          <mat-form-field class="clock">
+            <mat-select disabled placeholder="Cincho" required>
+              <mat-option value="Satisfactorio">Satisfactorio</mat-option>
+              <mat-option value="No satisfactorio">No satisfactorio</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div class="times">
+          <mat-form-field class="clock">
+            <mat-select disabled placeholder="Collarín">
+              <mat-option value="Satisfactorio">Satisfactorio</mat-option>
+              <mat-option value="No satisfactorio">No satisfactorio</mat-option>
+            </mat-select>
+          </mat-form-field>
+          <mat-form-field class="clock">
+            <mat-select disabled placeholder="Seguro">
+              <mat-option value="Satisfactorio">Satisfactorio</mat-option>
+              <mat-option value="No satisfactorio">No satisfactorio</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </ng-template>
+    </div>
+    <div class="columns">
+      <div class="text-sign">
+        Nombre y firma del responsable
+      </div>
+      <div class="inputs">
+        <div class="signature-element">
+          <img *ngIf="feReport && feReport.signature" [src]="feReport.signature.thumbnail">
+          <div *ngIf="!feReport || !feReport.signature" style="width: 60%; height: 60px"></div>
+        </div>
+        <div class="divider"></div>
+        <div *ngIf="!feReport || !feReport.name" class="name">Nombre</div>
+        <div *ngIf="feReport && feReport.name" class="name">{{feReport.name}}</div>
+      </div>
+    </div>
+  </form>
 </div>

@@ -4,7 +4,7 @@
  *  Proprietary and confidential
  */
 
-import { Component, OnInit } from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {CompressorReport} from '@app/core/interfaces/interfaces';
 import {ApiLoaderService} from '@app/core/services/api/api-loader.service';
@@ -16,6 +16,12 @@ import {ApiService} from '@app/core/services/api/api.service';
   styleUrls: ['./compressor-report.component.scss']
 })
 export class CompressorReportComponent implements OnInit {
+  private _taskId: string;
+  @Input() set taskCompInfo(taskObj: any){
+    if (taskObj){
+      this._taskId = taskObj.id;
+    }
+  }
   public load: boolean;
   public compressorReport: CompressorReport;
   public compForm: FormGroup;
@@ -68,7 +74,19 @@ export class CompressorReportComponent implements OnInit {
       signature: task.signature || undefined,
       startTime: task.startTime || undefined,
       taskId: task.taskId || undefined
-    }
+    };
+    this.compForm.patchValue({
+      startTime: this.compressorReport.startTime,
+      endTime: this.compressorReport.endTime,
+      brand: this.compressorReport.brand,
+      model: this.compressorReport.model,
+      controlNumber: this.compressorReport.controlNumber,
+      pressure: this.compressorReport.pressure,
+      purge: this.compressorReport.purge,
+      securityValve: this.compressorReport.securityValve,
+      modifications: this.compressorReport.modifications,
+      observations: this.compressorReport.observations
+    })
   }
 
 }

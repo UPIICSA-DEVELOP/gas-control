@@ -30,10 +30,10 @@ export class HwgReportComponent implements OnInit {
 
   ngOnInit() {
     this._apiLoader.getProgress().subscribe(load=>{this.load = load});
-    this.initHWGForm();
+    this.initHwgForm();
   }
 
-  private initHWGForm():void{
+  private initHwgForm():void{
     this.hwgForm = this._formBuilder.group({
       area: ['', [Validators.required]],
       waste: ['', [Validators.required]],

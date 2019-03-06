@@ -4,7 +4,10 @@
  *  Proprietary and confidential
  */
 
-import { Component, OnInit } from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
+import {ScannedReport} from '@app/core/interfaces/interfaces';
+import {ApiService} from '@app/core/services/api/api.service';
+import {ApiLoaderService} from '@app/core/services/api/api-loader.service';
 
 @Component({
   selector: 'app-scanned-report',
@@ -12,10 +15,36 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./scanned-report.component.scss']
 })
 export class ScannedReportComponent implements OnInit {
+  private _taskId: string;
+  @Input() set taskScannedInfo(taskObj: any){
+    if (taskObj){
+      this._taskId = taskObj.id;
+    }
+  }
+  public load: boolean;
 
-  constructor() { }
+  public scannedReport: ScannedReport;
+  public date: any[];
+  constructor(
+    private _api: ApiService,
+    private _apiLoader: ApiLoaderService,
+  ) { }
 
   ngOnInit() {
+    this._apiLoader.getProgress().subscribe(load=>{this.load = load});
+  }
+
+  private patchForm(task: any): void {
+    this.scannedReport = {
+      date: task.date || undefined,
+      fileCS: task.fileCS || undefined,
+      folio: task.folio || undefined,
+      hwgReport: task.hwgReport || undefined,
+      id: task.id || undefined,
+      name: task.name || undefined,
+      signature: task.signature || undefined,
+      taskId: task.taskId || undefined
+    };
   }
 
 }

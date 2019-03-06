@@ -17,9 +17,9 @@ import {OMReport} from '@app/core/interfaces/interfaces';
 })
 export class OmReportComponent implements OnInit {
   private _taskId: string;
-  @Input() set taskOMInfo(id: any){
-    if(id){
-      this._taskId = id;
+  @Input() set taskOMInfo(taskObj: any){
+    if(taskObj){
+      this._taskId = taskObj.id;
     }
   }
   public load: boolean;
@@ -91,7 +91,24 @@ export class OmReportComponent implements OnInit {
       taskId: task.taskId || undefined,
       toolsAndMaterials: task.toolsAndMaterials || undefined
     };
-
+    this.omForm.patchValue({
+      startTime: this.omReport.startTime,
+      endTime: this.omReport.endTime,
+      maintenanceType: this.omReport.maintenanceType,
+      activityType: this.omReport.activityType,
+      personnelType: this.omReport.personnelType,
+      cottonClothes: this.omReport.cottonClothes,
+      faceMask: this.omReport.faceMask,
+      gloves: this.omReport.gloves,
+      kneepads: this.omReport.kneepads,
+      protectiveGoggles: this.omReport.protectiveGoggles,
+      industrialShoes: this.omReport.industrialShoes,
+      goggles: this.omReport.goggles,
+      helmet: this.omReport.helmet,
+      toolsAndMaterials: this.omReport.toolsAndMaterials,
+      description: this.omReport.description,
+      observations: this.omReport.observations
+    });
 
   }
 }
