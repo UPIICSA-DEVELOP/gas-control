@@ -121,6 +121,12 @@
 
     .user-form {
       margin: 0 40px;
+      @media screen and(max-width: 900px){
+        margin: 0 20px;
+      }
+      @media screen and(max-width: 600px){
+        margin: 0 5px;
+      }
     }
 
     .inputs {

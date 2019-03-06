@@ -91,14 +91,22 @@
         break;
       case 5: // Attached
         JSDOM.fromFile(path.resolve(__dirname, 'templates', fileName)).then(jsdom => {
-          const document = jsdom.window.document;
-
           makePDF(jsdom.serialize());
         });
         break;
       case 6: // Signatures
         JSDOM.fromFile(path.resolve(__dirname, 'templates', fileName)).then(jsdom => {
           const document = jsdom.window.document;
+
+          document.getElementById('signature-1-img').src = 'https://lh3.googleusercontent.com/IhHSqxjzSXuZpr8DDDJvKDWgl8Ctt48XwEqvX0tEPXiOyYTWlC_QzhcuRcOjS3EXaSiF_yn5MwF2XQ6a74zC-MEcHBAUR1I-';
+          document.getElementById('name-1').textContent = 'Hola';
+
+          document.getElementById('signature-2-img').src = 'https://lh3.googleusercontent.com/IhHSqxjzSXuZpr8DDDJvKDWgl8Ctt48XwEqvX0tEPXiOyYTWlC_QzhcuRcOjS3EXaSiF_yn5MwF2XQ6a74zC-MEcHBAUR1I-';
+          document.getElementById('name-2').textContent = 'Hola 2';
+
+          document.getElementById('signature-3-img').src = 'https://lh3.googleusercontent.com/IhHSqxjzSXuZpr8DDDJvKDWgl8Ctt48XwEqvX0tEPXiOyYTWlC_QzhcuRcOjS3EXaSiF_yn5MwF2XQ6a74zC-MEcHBAUR1I-';
+          document.getElementById('name-3').textContent = 'Hola 3';
+
 
           makePDF(jsdom.serialize());
         });

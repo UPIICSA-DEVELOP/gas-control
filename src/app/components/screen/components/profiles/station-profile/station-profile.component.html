@@ -85,16 +85,20 @@
                 </button>
               </div>
               <div *ngFor="let turn of workShifts; let i = index">
-                <div class="input-content">
-                  <mat-form-field class="input-turns">
-                    <input placeholder="Inicio" matInput [disabled]="user.role===6" (time)="changeDate($event,i,true)" appDisableWrite value="{{turn.start | formatTime}}" >
-                  </mat-form-field>
-                  <mat-form-field class="input-turns">
-                    <input placeholder="Fin" matInput [disabled]="user.role===6" (time)="changeDate($event,i,false)" appDisableWrite value="{{turn.end | formatTime}}">
-                  </mat-form-field>
-                  <button type="button" *ngIf="workShifts.length>1" mat-icon-button (click)="addRemoveTurn(true,1, i)" class="remove" [disabled]=" user.role===6">
-                    <mat-icon>remove</mat-icon>
-                  </button>
+                <div class="flex-box">
+                  <div class="input-content">
+                    <mat-form-field class="input-turns">
+                      <input placeholder="Inicio" matInput [disabled]="user.role===6" (time)="changeDate($event,i,true)" appDisableWrite value="{{turn.start | formatTime}}" >
+                    </mat-form-field>
+                    <mat-form-field class="input-turns">
+                      <input placeholder="Fin" matInput [disabled]="user.role===6" (time)="changeDate($event,i,false)" appDisableWrite value="{{turn.end | formatTime}}">
+                    </mat-form-field>
+                  </div>
+                  <div class="button">
+                    <button type="button" *ngIf="workShifts.length>1" mat-icon-button (click)="addRemoveTurn(true,1, i)" class="remove" [disabled]=" user.role===6">
+                      <mat-icon>remove</mat-icon>
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>
@@ -163,13 +167,13 @@
             </div>
             <div *ngFor="let dispenser of dispensers; let i = index">
               <div class="dispensers">
-                <div style="width: 100%;">
+                <div style="width: 95%;">
                   <div class="head">Dispensario {{i+1}}</div>
                   <div class="hoses">
-                    <mat-form-field>
+                    <mat-form-field class="input-turns">
                       <input matInput placeholder="No. de mangueras" type="number" aria-label="Station hoses number" (change)="onArrayChange($event)" [(ngModel)]="dispenser.hoses" [ngModelOptions]="{standalone: true}" [disabled]=" user.role===6">
                     </mat-form-field>
-                    <mat-form-field>
+                    <mat-form-field class="input-turns">
                       <input matInput placeholder="No. de serie" type="text" aria-label="Station hoses cre id" (change)="onArrayChange($event)" [(ngModel)]="dispenser.identifier" [ngModelOptions]="{standalone: true}" [disabled]=" user.role===6">
                     </mat-form-field>
                   </div>

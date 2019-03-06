@@ -15,7 +15,7 @@
           <mat-spinner [diameter]="25" [mode]="'indeterminate'"></mat-spinner>
         </div>
         <button id="btn-collaborators" *ngIf="user && (user.role<=3 || user.role==7)" mat-button routerLink="/home/collaborators">
-          Colaboradores
+          <div>Colaboradores</div>
           <mat-icon>group</mat-icon>
         </button>
         <button mat-button (click)="logOut()" matTooltip="Cerrar Sesión" class="btn-logout">

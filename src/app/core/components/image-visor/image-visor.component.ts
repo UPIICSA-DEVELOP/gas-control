@@ -15,13 +15,13 @@ import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
 export class ImageVisorComponent implements OnInit {
   private _lastIndex: number;
   public imageOnView: any;
-  public images: any[];
+  public images: any;
   constructor(
-    @Inject(MAT_DIALOG_DATA) private _data: any[],
+    @Inject(MAT_DIALOG_DATA) private _data: any,
     private _dialogRef: MatDialogRef<ImageVisorComponent>
   ) {
     this._lastIndex = 0;
-    this.images = [];
+    this.images = undefined;
   }
 
   ngOnInit() {
