@@ -658,9 +658,7 @@ export class ListTasksComponent implements OnInit, DoCheck {
       observations: this.reportOM.observations
     });
     this.date = UtilitiesService.convertDate(this.reportOM.date);
-    if (this.user.role !== 7) {
-      this.taskForm[0].disable();
-    }
+    this.taskForm[0].disable();
   }
 
   private patchCompressorForm(task: any): void {
@@ -697,9 +695,7 @@ export class ListTasksComponent implements OnInit, DoCheck {
       modifications: this.reportComp.modifications,
       observations: this.reportComp.observations
     });
-    if (this.user.role !== 7) {
-      this.taskForm[1].disable();
-    }
+    this.taskForm[1].disable();
   }
 
   private patchHWGForm(task: any): void {
@@ -728,9 +724,7 @@ export class ListTasksComponent implements OnInit, DoCheck {
       unity: this.reportHWG.unity,
       temporaryStorage: this.reportHWG.temporaryStorage
     });
-    if (this.user.role !== 7) {
-      this.taskForm[2].disable();
-    }
+    this.taskForm[2].disable();
   }
 
   private patchVRSForm(task: any): void {
@@ -767,9 +761,7 @@ export class ListTasksComponent implements OnInit, DoCheck {
       emergencyStop: this.reportVRS.emergencyStop,
       observations: this.reportVRS.observations
     });
-    if (this.user.role !== 7) {
-      this.taskForm[3].disable();
-    }
+    this.taskForm[3].disable();
   }
 
   private patchScannedForm(task: any): void {
