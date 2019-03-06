@@ -48,9 +48,10 @@
         }
       }
       @media screen and (max-width: 800px) {
+        order: 1;
         width: 100%;
         height: auto;
-        margin: 24px 0;
+        margin: 0 0 24px 0;
       }
       .double-inputs{
         color: #707070;
@@ -60,6 +61,7 @@
         margin-bottom: 12px;
       }
       .input-content{
+        width: 95%;
         display: flex;
         justify-content: space-between;
       }
@@ -88,6 +90,12 @@
       }
       .content{
         margin: 0 40px;
+        @media screen and(max-width: 900px){
+          margin: 0 20px;
+        }
+        @media screen and(max-width: 600px){
+          margin: 0 5px;
+        }
         .head{
           color: #707070;
           margin: 0 0 8px 16px;
@@ -118,7 +126,7 @@
       @media screen and (max-width: 800px) {
         width: 100%;
         height: auto;
-        margin: 24px 0;
+        margin: 24px 0 0;
         display: block;
       }
       .header{
@@ -165,6 +173,9 @@
         margin-top: 48px;
         display: flex;
         justify-content: flex-end;
+        @media screen and (max-width: 800px){
+          margin-top: 20px;
+        }
         button{
           font-size: 18px;
           mat-icon{
@@ -231,8 +242,19 @@
   .info-gas-station{
     display: flex;
     margin-top: 50px;
+    width: 100%;
+    padding: 0 30px;
+    @media screen and(max-width: 800px){
+      display: block;
+      margin-top: 20px;
+    }
     .image{
       margin-right: 18px;
+      @media screen and (max-width: 800px){
+        display: flex;
+        justify-content: center;
+        margin: 0;
+      }
       mat-icon{
         width: 100px;
         height: 100px;
@@ -253,6 +275,12 @@
       justify-content: space-around;
       width: calc(100% - 100px);
       padding: 0 8px;
+      @media screen and (max-width: 800px){
+        align-items: center;
+        width: 100%;
+        padding: 16px 0;
+        text-align: center;
+      }
       h2{
         font-size: 32px;
         font-weight: bold;
@@ -260,9 +288,7 @@
         color: mat-color($primary);
       }
       p{
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
+        white-space: normal;
         color: mat-color($primary);
         font-size: 22px;
         margin: 0;
