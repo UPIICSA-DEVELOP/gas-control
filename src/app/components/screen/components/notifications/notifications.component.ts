@@ -35,18 +35,21 @@ export class NotificationsComponent implements OnInit{
   public notifications: any[];
   private _station: string;
   private _idLegal: string;
+  public isAdmin: boolean;
   constructor(
     private _route: Router,
     private _activateRouter: ActivatedRoute,
     private _api: ApiService,
     private _dialogService: DialogService
   ) {
+    this.isAdmin = false;
     this.notifications = [];
   }
 
   ngOnInit() {
     if(this._activateRouter.snapshot.queryParams.admin) {
       this._idLegal = this._activateRouter.snapshot.queryParams.admin;
+      this.isAdmin = true;
     }
     if (this._activateRouter.snapshot.queryParams.id) {
       this._station = this._activateRouter.snapshot.queryParams.id;

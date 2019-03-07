@@ -517,10 +517,16 @@ export class UserProfileComponent implements OnInit {
 
   private updateBusiness(isNewEmail: boolean):void{
     this._snackBarService.openSnackBar('Espere un momento...','',0);
+    let company;
+    if(LocalStorageService.getItem(Constants.StationInDashboard)){
+      company = LocalStorageService.getItem(Constants.StationInDashboard).name
+    }else{
+      company = '';
+    }
     const data = {
       name: this.user.name || '',
       lastName: this.user.lastName  || '',
-      company: (this.user.role===4 ? '':LocalStorageService.getItem(Constants.StationInDashboard).name) || '',
+      company: company || '',
       phone: this.user.phoneNumber || '',
       workPosition: this.user.jobTitle || '',
       email: this.user.email || '',

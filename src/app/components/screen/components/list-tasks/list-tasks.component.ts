@@ -257,7 +257,15 @@ export class ListTasksComponent implements OnInit, DoCheck {
   }
 
   public sortTaskArrayByStatus(): void {
-    let headerPrevious = false, headerHistory = false, headerToday = false;
+    let historyArray = [];
+    for(let i = 0; i<this.tasksFilterd.length; i++){
+      if(this.tasksFilterd[i].status === 3 || this.tasksFilterd[i].status === 4){
+        historyArray.push(this.tasksFilterd[i]);
+        this.tasksFilterd.splice(i, 1);
+      }
+    }
+    historyArray = UtilitiesService.sortJSON(historyArray, 'originalDate', 'desc');
+    let headerPrevious = false, headerToday = false;
     this.tasksFilterd = UtilitiesService.sortJSON(this.tasksFilterd, 'status', 'asc');
     this.tasksFilterd.forEach(item => {
       if (item.status === 1) {
@@ -304,34 +312,28 @@ export class ListTasksComponent implements OnInit, DoCheck {
             expanded: false,
           });
         }
-      } else if (item.status === 3 || item.status === 4) {
-        if (!headerHistory && this.filter === 0){
-          this.taskWithDivider.push({
-            type: 1,
-            title: 'Historial',
-            original: null,
-            id: '',
-            expanded: false,
-          });
-          headerHistory = true;
-          this.taskWithDivider.push({
-            type: 2,
-            title: '',
-            original: item,
-            id: item.id,
-            expanded: false,
-          });
-        } else {
-          this.taskWithDivider.push({
-            type: 2,
-            title: '',
-            original: item,
-            id: item.id,
-            expanded: false,
-          });
-        }
       }
     });
+    if(historyArray.length!==0){
+      if(this.filter === 0){
+        this.taskWithDivider.push({
+          type: 1,
+          title: 'Historial',
+          original: null,
+          id: '',
+          expanded: false,
+        });
+      }
+      for(let i = 0; i< historyArray.length; i++){
+        this.taskWithDivider.push({
+          type: 2,
+          title: '',
+          original: historyArray[i],
+          id: historyArray[i].id,
+          expanded: false,
+        })
+      }
+    }
     this.load = false;
   }
 
