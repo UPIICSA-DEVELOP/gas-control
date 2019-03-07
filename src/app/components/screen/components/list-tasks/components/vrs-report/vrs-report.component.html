@@ -5,7 +5,17 @@
   -->
 
 <div id="vrs-report">
-  <form [formGroup]="vrsAlarm" class="flex-box">
+  <div style="display: flex; justify-content: center; margin: 8px 0; text-align: center;">
+    <div *ngIf="task" style="font-weight: 600; font-size: 18px;">{{task.original.name}}</div>
+  </div>
+  <div class="task-header">
+    <div class="head-bold">Sistema de recuperación de vapores</div>
+    <div class="control-data">
+      <div *ngIf="vrsReport">Fecha: {{date[0]}} {{date[1]}} {{date[2]}}&nbsp;&nbsp;</div>
+      <div *ngIf="vrsReport">Folio: {{vrsReport.folio | formatFolio}}</div>
+    </div>
+  </div>
+  <form [formGroup]="vrsForm" class="flex-box">
     <div class="columns">
       <div class="inputs">
         <h3 style="margin: 4px 0; font-size: 14px">Dispensarios</h3>
@@ -25,14 +35,14 @@
           <mat-select formControlName="fuelNozzle" placeholder="Pistola" required>
             <mat-option value="Satisfactorio">Satisfactorio</mat-option>
             <mat-option value="No satisfactorio">No satisfactorio</mat-option>
-            <mat-option value="No definido">No definido</mat-option>
+            <mat-option value="No determinado">No determinado</mat-option>
           </mat-select>
         </mat-form-field>
         <mat-form-field class="clock">
           <mat-select formControlName="longHose" placeholder="Manguera larga" required>
             <mat-option value="Satisfactorio">Satisfactorio</mat-option>
             <mat-option value="No satisfactorio">No satisfactorio</mat-option>
-            <mat-option value="No definido">No definido</mat-option>
+            <mat-option value="No determinado">No determinado</mat-option>
           </mat-select>
         </mat-form-field>
       </div>
@@ -41,14 +51,14 @@
           <mat-select formControlName="breakAway" placeholder="Break away" required>
             <mat-option value="Satisfactorio">Satisfactorio</mat-option>
             <mat-option value="No satisfactorio">No satisfactorio</mat-option>
-            <mat-option value="No definido">No definido</mat-option>
+            <mat-option value="No determinado">No determinado</mat-option>
           </mat-select>
         </mat-form-field>
         <mat-form-field class="clock">
           <mat-select formControlName="shortHose" placeholder="Manguera corta" required>
             <mat-option value="Satisfactorio">Satisfactorio</mat-option>
             <mat-option value="No satisfactorio">No satisfactorio</mat-option>
-            <mat-option value="No definido">No definido</mat-option>
+            <mat-option value="No determinado">No determinado</mat-option>
           </mat-select>
         </mat-form-field>
       </div>
@@ -63,9 +73,9 @@
         <div class="clock"></div>
       </div>
       <div
-        *ngIf="reportVRS && reportVRS.vrsTanks && reportVRS.vrsTanks.length !== 0; then tanksList else emptyTankList"></div>
+        *ngIf="vrsReport && vrsReport.vrsTanks && vrsReport.vrsTanks.length !== 0; then tanksList else emptyTankList"></div>
       <ng-template #tanksList>
-        <div *ngFor="let tankItem of reportVRS.vrsTanks; let i = index">
+        <div *ngFor="let tankItem of vrsReport.vrsTanks; let i = index">
           <div class="inputs">
             <h3 style="margin: 8px 0; font-size: 14px">Tanque {{i+1}}</h3>
           </div>
@@ -166,22 +176,22 @@
         Captura fotográfica de evidencia
       </div>
       <div class="image-container" (click)="seeEvidence()">
-        <mat-icon *ngIf="!reportVRS || !reportVRS.fileCS" class="default-image">
+        <mat-icon *ngIf="!vrsReport || !vrsReport.fileCS" class="default-image">
           image
         </mat-icon>
-        <img class="evidence" *ngIf="reportVRS && reportVRS.fileCS" [src]="reportVRS.fileCS.thumbnail" alt="Evidence capture">
+        <img class="evidence" *ngIf="vrsReport && vrsReport.fileCS" [src]="vrsReport.fileCS.thumbnail" alt="Evidence capture">
       </div>
       <div class="text-sign">
         Nombre y firma del responsable
       </div>
       <div class="inputs">
         <div class="signature-element">
-          <img *ngIf="reportVRS && reportVRS.signature" [src]="reportVRS.signature.thumbnail">
-          <div *ngIf="!reportVRS || !reportVRS.signature" style="width: 60%; height: 60px"></div>
+          <img *ngIf="vrsReport && vrsReport.signature" [src]="vrsReport.signature.thumbnail">
+          <div *ngIf="!vrsReport || !vrsReport.signature" style="width: 60%; height: 60px"></div>
         </div>
         <div class="divider"></div>
-        <div *ngIf="!reportVRS || !reportVRS.name" class="name">Nombre</div>
-        <div *ngIf="reportVRS && reportVRS.name" class="name">{{reportVRS.name}}</div>
+        <div *ngIf="!vrsReport || !vrsReport.name" class="name">Nombre</div>
+        <div *ngIf="vrsReport && vrsReport.name" class="name">{{vrsReport.name}}</div>
       </div>
     </div>
   </form>
