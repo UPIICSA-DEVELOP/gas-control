@@ -39,6 +39,7 @@ export class OmReportComponent implements OnInit {
   public  omReport: OMReport;
   public date: any[];
   public taskItems: any[];
+  public personnelNames: string[];
   private _indexTask: number;
   constructor(
     private _api: ApiService,
@@ -50,6 +51,7 @@ export class OmReportComponent implements OnInit {
     this.date = [];
     this.taskItems = [];
     this._indexTask = 0;
+    this.personnelNames = [''];
   }
 
   ngOnInit() {
@@ -80,6 +82,7 @@ export class OmReportComponent implements OnInit {
   }
 
   private patchForm(task: any):void{
+    console.log(task);
     this.omReport = {
       activityType: task.activityType || undefined,
       cottonClothes: task.cottonClothes || undefined,
@@ -109,7 +112,6 @@ export class OmReportComponent implements OnInit {
       taskId: task.taskId || undefined,
       toolsAndMaterials: task.toolsAndMaterials || undefined
     };
-    console.log(this.omReport);
     this.omForm.patchValue({
       startTime: this.omReport.startTime,
       endTime: this.omReport.endTime,

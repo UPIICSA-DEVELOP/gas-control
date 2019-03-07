@@ -178,4 +178,11 @@
       </div>
     </div>
   </form>
+  <div class="divider" *ngIf="task.original.hwg"></div>
+  <div *ngIf="task.original.hwg && omReport">
+    <app-hwg-report [taskHwgInfo]="omReport.hwgReport || undefined" [taskProvider]="1" [status]="task.original.status"></app-hwg-report>
+  </div>
+  <div *ngIf="task.original.hwg && !omReport">
+    <app-hwg-report [taskHwgInfo]="undefined" [taskProvider]="1" [status]="task.original.status"></app-hwg-report>
+  </div>
 </div>
