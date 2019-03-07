@@ -43,62 +43,95 @@
       <div *ngIf="others; then secondList else firstList"></div>
       <ng-template #firstList>
         <div class="sub-container">
-          <div *ngIf="tasks.length === 0; then message else list"></div>
-          <ng-template #list>
-            <div id="task-{{task.id}}" class="card-list" *ngFor="let task of taskWithDivider; let i = index">
-              <div *ngIf="task.type === 1; then dividerText else taskCard"></div>
-              <ng-template #dividerText>
-                <div class="head-bold" style="margin: 8px 0">{{task.title}}</div>
-              </ng-template>
-              <ng-template #taskCard>
-                <mat-card class="task">
-                  <div class="priority" *ngIf="task.original.level === 3" style="background-color:#E00000"></div>
-                  <div class="priority" *ngIf="task.original.level === 1" style="background-color:#257602"></div>
-                  <div class="priority" *ngIf="task.original.level === 2" style="background-color:#FFD800"></div>
-                  <mat-card-content>
-                    <div class="date">
-                      <div>
-                        <div class="text-bold">{{task.original.date[0]}}</div>
-                        <div class="text-bold">{{task.original.date[1]}}</div>
-                      </div>
-                    </div>
-                    <div class="content">
-                      <div class="head">{{task.original.name}}</div>
-                      <div class="text">{{zones[task.original.zone-1]}}</div>
-                      <div class="text">{{priority[task.original.level-1]}}</div>
-                    </div>
-                    <div style="position: absolute; top: 0; right: 0; margin: 16px;">
-                      <mat-icon style="color: #257602; font-size: 16px; width: 16px; height: 16px;" *ngIf="task.original.status === 4">check</mat-icon>
-                      <mat-icon style="color: #E00000; font-size: 16px; width: 16px; height: 16px;" *ngIf="task.original.status === 3">close</mat-icon>
-                      <mat-icon style="color: #707070; font-size: 16px; width: 16px; height: 16px;" svgIcon="icons:task_previous" *ngIf=" task.original.status === 2"></mat-icon>
-                    </div>
-                    <div style="position: absolute; bottom: 0; right: 0; margin: 0 4px">
-                      <button mat-icon-button type="button">
-                        <mat-icon>keyboard_arrow_down</mat-icon>
-                      </button>
-                    </div>
-                  </mat-card-content>
-                </mat-card>
-              </ng-template>
+          <div *ngIf="reportView; then reportForm else completeList"></div>
+          <ng-template #reportForm>
+            <div style="width: 95%">
+              <div style="display: flex; justify-content: flex-end">
+                <button mat-icon-button (click)="goBackList()" matTooltip="Cerrar bitacora">
+                  <mat-icon>close</mat-icon>
+                </button>
+              </div>
+              <ng-container [ngSwitch]="typeReportView">
+                <div *ngSwitchCase="1">
+                  <app-om-report [taskOMInfo]="taskElement" [utilities]="taskTemplate"></app-om-report>
+                </div>
+                <div *ngSwitchCase="2">
+                  <app-compressor-report [taskCompInfo]="taskElement"></app-compressor-report>
+                </div>
+                <div *ngSwitchCase="4">
+                  <app-vrs-report [taskVrsInfo]="taskElement"></app-vrs-report>
+                </div>
+                <div *ngSwitchCase="5">
+                  <app-scanned-report [taskScannedInfo]="taskElement"></app-scanned-report>
+                </div>
+                <div *ngSwitchCase="8">
+                  <app-fe-report [taskFeInfo]="taskElement"></app-fe-report>
+                </div>
+              </ng-container>
             </div>
-            <div class="notFoundTasks" *ngIf="taskWithDivider.length === 0 && !load">No existen resultados para su búsqueda</div>
-            <div class="notFoundTasks" *ngIf="taskWithDivider.length === 0 && load">Cargando tareas...</div>
           </ng-template>
-          <ng-template #message>
-            <div class="empty-list">
-              <div *ngIf="!notCalendar; then taskInCreation else notTask"></div>
-              <ng-template #taskInCreation>
-                <div class="message">La Estación no cuenta por el momento con tareas programadas, por favor consulte
-                  mañana
-                </div>
-              </ng-template>
-              <ng-template #notTask>
-                <div class="message">Para continuar, es necesario calendarizar las tareas faltantes de la Estación</div>
-                <div class="action">
-                  <button mat-flat-button type="button" (click)="createStationTasks()">IR A TAREAS</button>
-                </div>
-              </ng-template>
-            </div>
+          <ng-template #completeList>
+            <div *ngIf="tasks.length === 0; then message else list"></div>
+            <ng-template #list>
+              <div class="card-list" *ngFor="let task of taskWithDivider;">
+                <div *ngIf="task.type === 1; then dividerText else taskCard"></div>
+                <ng-template #dividerText>
+                  <div class="head-bold" style="margin: 8px 0">{{task.title}}</div>
+                </ng-template>
+                <ng-template #taskCard>
+                  <mat-card class="task">
+                    <div class="priority" *ngIf="task.original.level === 3" style="background-color:#E00000"></div>
+                    <div class="priority" *ngIf="task.original.level === 1" style="background-color:#257602"></div>
+                    <div class="priority" *ngIf="task.original.level === 2" style="background-color:#FFD800"></div>
+                    <mat-card-content>
+                      <div class="date">
+                        <div>
+                          <div class="text-bold">{{task.original.date[0]}}</div>
+                          <div class="text-bold">{{task.original.date[1]}}</div>
+                        </div>
+                      </div>
+                      <div class="content">
+                        <div class="head">{{task.original.name}}</div>
+                        <div class="text">{{zones[task.original.zone-1]}}</div>
+                        <div class="text">{{priority[task.original.level-1]}}</div>
+                      </div>
+                      <div style="position: absolute; top: 0; right: 0; margin: 16px;">
+                        <mat-icon style="color: #257602; font-size: 16px; width: 16px; height: 16px;" *ngIf="task.original.status === 4">check</mat-icon>
+                        <mat-icon style="color: #E00000; font-size: 16px; width: 16px; height: 16px;" *ngIf="task.original.status === 3">close</mat-icon>
+                        <mat-icon style="color: #707070; font-size: 16px; width: 16px; height: 16px;" svgIcon="icons:task_previous" *ngIf=" task.original.status === 2"></mat-icon>
+                      </div>
+                      <div style="position: absolute; bottom: 0; right: 0; margin: 0 4px">
+                        <button mat-icon-button type="button" (click)="goTaskInfo(task)">
+                          <mat-icon>keyboard_arrow_down</mat-icon>
+                        </button>
+                      </div>
+                    </mat-card-content>
+                  </mat-card>
+                </ng-template>
+              </div>
+              <div class="notFoundTasks" *ngIf="taskWithDivider.length === 0 && !load">No existen resultados para su búsqueda</div>
+              <div class="notFoundTasks" *ngIf="taskWithDivider.length === 0 && load">Cargando tareas...</div>
+            </ng-template>
+            <ng-template #message>
+              <div class="empty-list">
+                <div *ngIf="!notCalendar; then taskInCreation else notTask"></div>
+                <ng-template #taskInCreation>
+                  <div *ngIf="load; then standBy else notExistTasks"></div>
+                  <ng-template #standBy>
+                    <div *ngIf="load" class="message">Espere un momento por favor...</div>
+                  </ng-template>
+                  <ng-template #notExistTasks>
+                    <div *ngIf="!load" class="message">La Estación no cuenta por el momento con tareas programadas, por favor consulte mañana</div>
+                  </ng-template>
+                </ng-template>
+                <ng-template #notTask>
+                  <div class="message">Para continuar, es necesario calendarizar las tareas faltantes de la Estación</div>
+                  <div class="action">
+                    <button mat-flat-button type="button" (click)="createStationTasks()">IR A TAREAS</button>
+                  </div>
+                </ng-template>
+              </div>
+            </ng-template>
           </ng-template>
         </div>
       </ng-template>

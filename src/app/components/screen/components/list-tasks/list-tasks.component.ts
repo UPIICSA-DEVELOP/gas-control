@@ -65,7 +65,6 @@ export class ListTasksComponent implements OnInit, DoCheck {
   public load: boolean;
   public user: any;
   public notCalendar: boolean;
-  public taskForm: FormGroup[];
   public secondTaskForm: FormGroup[];
   public taskWithDivider: any[];
   public date: any[];
@@ -80,12 +79,14 @@ export class ListTasksComponent implements OnInit, DoCheck {
   /**
    *  End: task entity
    */
-  public personnelNames: string[];
   public procedures: number[];
   private _indexOldTaskExpanded: number;
   private _firstOpen: boolean;
   private _taskType: string;
   private _taskListPaged: any;
+  public typeReportView: number;
+  public reportView: boolean;
+  public taskElement: any;
   constructor(
     @Inject(DOCUMENT) private _document: Document,
     private _dateService: DatepickerService,
@@ -100,15 +101,15 @@ export class ListTasksComponent implements OnInit, DoCheck {
     private _imageVisorService: ImageVisorService,
     private _snackBarService: SnackBarService
   ) {
+    this.typeReportView = 0;
+    this.reportView = false;
     this.itemsTasks = [];
     this._indexTask = 0;
     this.others = false;
     this.date = [];
-    this.personnelNames = [''];
     this.taskWithDivider = [];
     this._indexOldTaskExpanded = 0;
     this.secondTaskForm = [undefined,undefined,undefined];
-    this.taskForm = [undefined, undefined, undefined, undefined, undefined];
     this.today = false;
     this.notCalendar = false;
     this.filter = 0;
@@ -391,7 +392,6 @@ export class ListTasksComponent implements OnInit, DoCheck {
   }
 
   public createStationTasks(): void {
-    console.log(this.station);
     this._addStationService.open({
       stepActive: 3,
       stationId: this.station.id,
@@ -662,5 +662,20 @@ export class ListTasksComponent implements OnInit, DoCheck {
     }else{
       this._snackBarService.openSnackBar('Esta tarea no cuenta con evidencia', 'OK',3000);
     }
+  }
+
+  public goTaskInfo(task: any): void{
+    //if(task.original.status === 3 && this.user.role !== 7){
+      //return;
+    //}
+    this.taskElement = task;
+    this.typeReportView = task.original.typeReport;
+    this.reportView = true;
+  }
+
+  public goBackList(): void{
+    this.taskElement = null;
+    this.typeReportView = 0;
+    this.reportView = false;
   }
 }

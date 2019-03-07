@@ -21,11 +21,17 @@ import {SnackBarService} from '@app/core/services/snackbar/snackbar.service';
 export class OmReportComponent implements OnInit {
   private _taskId: string;
   public task: any;
+  public utils: any;
   @Input() set taskOMInfo(taskObj: any){
     if(taskObj){
       this._taskId = taskObj.id;
       this.task = taskObj;
       this.getOMReport();
+    }
+  }
+  @Input() set utilities(utils: any){
+    if (utils){
+      this.utils = utils;
     }
   }
   public load: boolean;
@@ -103,6 +109,7 @@ export class OmReportComponent implements OnInit {
       taskId: task.taskId || undefined,
       toolsAndMaterials: task.toolsAndMaterials || undefined
     };
+    console.log(this.omReport);
     this.omForm.patchValue({
       startTime: this.omReport.startTime,
       endTime: this.omReport.endTime,
