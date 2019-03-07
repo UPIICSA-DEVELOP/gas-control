@@ -556,7 +556,6 @@ export class ProfileComponent implements OnInit {
       profileImage: this.user.profileImage ? this.user.profileImage.blobName : '',
       profileImageThumbnail: this.user.profileImage ? this.user.profileImage.thumbnail + '=s1200': ''
     };
-    console.log(data);
     this._api.businessCardService(data).subscribe(response => {
       switch (response.code){
         case 200:
