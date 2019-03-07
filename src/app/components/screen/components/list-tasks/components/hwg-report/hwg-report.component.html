@@ -5,8 +5,8 @@
   -->
 
 <div id="hwg-report">
-  <!-- OMReport or CompressorReport -->
-  <form [formGroup]="hwgForm" class="flex-box">
+  <div class="head-bold">Generación de residuos peligrosos</div>
+  <form *ngIf="type === 1" [formGroup]="hwgForm" class="flex-box">
     <div class="columns">
       <mat-form-field class="inputs">
         <mat-select formControlName="area" placeholder="Lugar de generación" required>
@@ -26,10 +26,12 @@
           <mat-option value="Filtros de gasolina y diesel">Filtros de gasolina y diesel</mat-option>
           <mat-option value="Residuos de aceite y pintura">Residuos de aceite y pintura</mat-option>
         </mat-select>
-        <mat-error *ngIf="hwgForm.controls['area'].hasError('required')"></mat-error>
+        <mat-error *ngIf="hwgForm.controls['waste'].hasError('required')">
+          Este campo es obligatorio
+        </mat-error>
       </mat-form-field>
       <div class="text-divider">
-        Características<sup>*</sup>
+        Características <sup>*</sup>
       </div>
       <div class="inputs">
         <div class="space-box">
@@ -58,8 +60,9 @@
       <div style="display: flex; justify-content: space-between; width: 90%">
         <mat-form-field style="width: 65%">
           <input formControlName="quantity" matInput placeholder="Cantidad generada" required>
-          <mat-error
-            *ngIf="hwgForm.controls['quantity'].hasError('required')"></mat-error>
+          <mat-error *ngIf="hwgForm.controls['quantity'].hasError('required')">
+            Este campo es obligatorio
+          </mat-error>
         </mat-form-field>
         <mat-form-field style="width: 30%;">
           <mat-select formControlName="unity" placeholder="Unidad" required>
@@ -80,8 +83,9 @@
           <mat-option value="Tambo metálico">Tambo metálico</mat-option>
           <mat-option value="Bolsas plásticas">Bolsas plásticas</mat-option>
         </mat-select>
-        <mat-error
-          *ngIf="hwgForm.controls['temporaryStorage'].hasError('required')"></mat-error>
+        <mat-error *ngIf="hwgForm.controls['temporaryStorage'].hasError('required')">
+          Este campo es obligatorio
+        </mat-error>
       </mat-form-field>
       <div class="image-header">
         Captura fotográfica de evidencia.
@@ -90,12 +94,11 @@
         <mat-icon *ngIf="!hwgReport || !hwgReport.fileCS" class="default-image">
           image
         </mat-icon>
-        <img *ngIf="hwgReport && hwgReport.fileCS" class="evidence"
-             [src]="hwgReport.fileCS.thumbnail" alt="Evidence capture">
+        <img *ngIf="hwgReport && hwgReport.fileCS" class="evidence" [src]="hwgReport.fileCS.thumbnail" alt="Evidence capture">
       </div>
     </div>
   </form>
-  <form [formGroup]="hwgForm" class="flex-box">
+  <form *ngIf="type === 2" [formGroup]="hwgForm" class="flex-box">
     <div class="columns">
       <mat-form-field class="inputs">
         <mat-select formControlName="area" placeholder="Lugar de generación" required>
@@ -115,10 +118,12 @@
           <mat-option value="Filtros de gasolina y diesel">Filtros de gasolina y diesel</mat-option>
           <mat-option value="Residuos de aceite y pintura">Residuos de aceite y pintura</mat-option>
         </mat-select>
-        <mat-error *ngIf="hwgForm.controls['area'].hasError('required')"></mat-error>
+        <mat-error *ngIf="hwgForm.controls['waste'].hasError('required')">
+          Este campo es obligatorio
+        </mat-error>
       </mat-form-field>
       <div class="text-divider">
-        Características<sup>*</sup>
+        Características <sup>*</sup>
       </div>
       <div class="inputs">
         <div class="space-box">
@@ -144,101 +149,14 @@
           <div class="checks-row"></div>
         </div>
       </div>
+    </div>
+    <div class="columns">
       <div style="display: flex; justify-content: space-between; width: 90%">
         <mat-form-field style="width: 65%">
           <input formControlName="quantity" matInput placeholder="Cantidad generada" required>
-          <mat-error
-            *ngIf="hwgForm.controls['quantity'].hasError('required')"></mat-error>
-        </mat-form-field>
-        <mat-form-field style="width: 30%;">
-          <mat-select formControlName="unity" placeholder="Unidad" required>
-            <mat-option value="Pzas">Pzas.</mat-option>
-            <mat-option value="kg">kg</mat-option>
-            <mat-option value="gr">gr</mat-option>
-            <mat-option value="lt">lt</mat-option>
-          </mat-select>
-          <mat-error *ngIf="hwgForm.controls['unity'].hasError('required')">
+          <mat-error *ngIf="hwgForm.controls['quantity'].hasError('required')">
             Este campo es obligatorio
           </mat-error>
-        </mat-form-field>
-      </div>
-    </div>
-    <div class="columns">
-      <mat-form-field class="inputs">
-        <mat-select formControlName="temporaryStorage" placeholder="Almacenamiento temporal" required>
-          <mat-option value="Tambo metálico">Tambo metálico</mat-option>
-          <mat-option value="Bolsas plásticas">Bolsas plásticas</mat-option>
-        </mat-select>
-        <mat-error
-          *ngIf="hwgForm.controls['temporaryStorage'].hasError('required')"></mat-error>
-      </mat-form-field>
-      <div class="image-header">
-        Captura fotográfica de evidencia.
-      </div>
-      <div class="image-container" (click)="seeEvidence()">
-        <mat-icon *ngIf="!hwgReport || !hwgReport.fileCS" class="default-image">
-          image
-        </mat-icon>
-        <img *ngIf="hwgReport && hwgReport.fileCS" class="evidence"
-             [src]="hwgReport.fileCS.thumbnail" alt="Evidence capture">
-      </div>
-    </div>
-  </form>
-  <!-- ScannedReport -->
-  <form [formGroup]="hwgForm" class="flex-box">
-    <div class="columns">
-      <mat-form-field class="inputs">
-        <mat-select formControlName="area" placeholder="Lugar de generación" required>
-          <mat-option value="Zona de despacho">Zona de despacho</mat-option>
-          <mat-option value="Zona de tanques">Zona de tanques</mat-option>
-          <mat-option value="Cuarto de máquinas">Cuarto de máquinas</mat-option>
-          <mat-option value="Trampa de combustible">Trampa de combustible</mat-option>
-        </mat-select>
-        <mat-error *ngIf="hwgForm.controls['area'].hasError('required')">
-          Este campo es obligatorio
-        </mat-error>
-      </mat-form-field>
-      <mat-form-field class="inputs">
-        <mat-select formControlName="waste" placeholder="Residuo generado" required>
-          <mat-option value="Envases contaminados con aceites">Envases contaminados con aceites</mat-option>
-          <mat-option value="Natas y grasas de la trampa de combustible">Natas y grasas de la trampa de combustible</mat-option>
-          <mat-option value="Filtros de gasolina y diesel">Filtros de gasolina y diesel</mat-option>
-          <mat-option value="Residuos de aceite y pintura">Residuos de aceite y pintura</mat-option>
-        </mat-select>
-        <mat-error *ngIf="hwgForm.controls['area'].hasError('required')"></mat-error>
-      </mat-form-field>
-      <div class="text-divider">
-        Características<sup>*</sup>
-      </div>
-      <div class="inputs">
-        <div class="space-box">
-          <div class="checks-row">
-            <mat-checkbox formControlName="corrosive">Corrosivo</mat-checkbox>
-          </div>
-          <div class="checks-row">
-            <mat-checkbox formControlName="reactive">Reactivo</mat-checkbox>
-          </div>
-        </div>
-        <div class="space-box">
-          <div class="checks-row">
-            <mat-checkbox formControlName="explosive">Explosivo</mat-checkbox>
-          </div>
-          <div class="checks-row">
-            <mat-checkbox formControlName="toxic">Tóxico</mat-checkbox>
-          </div>
-        </div>
-        <div class="space-box">
-          <div class="checks-row">
-            <mat-checkbox formControlName="flammable">Inflamable</mat-checkbox>
-          </div>
-          <div class="checks-row"></div>
-        </div>
-      </div>
-      <div style="display: flex; justify-content: space-between; width: 90%">
-        <mat-form-field style="width: 65%">
-          <input formControlName="quantity" matInput placeholder="Cantidad generada" required>
-          <mat-error
-            *ngIf="hwgForm.controls['quantity'].hasError('required')"></mat-error>
         </mat-form-field>
         <mat-form-field style="width: 30%;">
           <mat-select formControlName="unity" placeholder="Unidad" required>
@@ -252,15 +170,14 @@
           </mat-error>
         </mat-form-field>
       </div>
-    </div>
-    <div class="columns">
       <mat-form-field class="inputs">
         <mat-select formControlName="temporaryStorage" placeholder="Almacenamiento temporal" required>
           <mat-option value="Tambo metálico">Tambo metálico</mat-option>
           <mat-option value="Bolsas plásticas">Bolsas plásticas</mat-option>
         </mat-select>
-        <mat-error
-          *ngIf="hwgForm.controls['temporaryStorage'].hasError('required')"></mat-error>
+        <mat-error *ngIf="hwgForm.controls['temporaryStorage'].hasError('required')">
+          Este campo es obligatorio
+        </mat-error>
       </mat-form-field>
     </div>
   </form>
