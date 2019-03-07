@@ -13,12 +13,9 @@ import {Constants} from '@app/core/constants.core';
 import {UtilitiesService} from '@app/core/utilities/utilities.service';
 import {LocalStorageService} from '@app/core/services/local-storage/local-storage.service';
 import {AddStationService} from '@app/components/screen/components/add-gas-station/add-station.service';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {FormBuilder, FormGroup} from '@angular/forms';
 import {ModalProceduresService} from '@app/components/screen/components/modal-procedures/modal-procedures.service';
-import {
-  CompressorReport, FEReport, FRReport, HWCReport, HWGReport, IncidenceReport, OMReport, ScannedReport,
-  VRSReport
-} from '@app/core/interfaces/interfaces';
+import {FRReport, HWCReport, IncidenceReport} from '@app/core/interfaces/interfaces';
 import {DOCUMENT} from '@angular/common';
 import {TaskFilterNameService} from '@app/components/screen/components/task-filter-name/task-filter-name.service';
 import {SharedNotification, SharedService, SharedTypeNotification} from '@app/core/services/shared/shared.service';
@@ -69,7 +66,6 @@ export class ListTasksComponent implements OnInit, DoCheck , OnDestroy{
   public load: boolean;
   public user: any;
   public notCalendar: boolean;
-  public taskForm: FormGroup[];
   public secondTaskForm: FormGroup[];
   public taskWithDivider: any[];
   public date: any[];
@@ -78,25 +74,20 @@ export class ListTasksComponent implements OnInit, DoCheck , OnDestroy{
   /**
    *  Start: task entity
    */
-  public reportOM: OMReport;
-  public reportComp: CompressorReport;
-  public reportHWG: HWGReport;
-  public reportVRS: VRSReport;
-  public reportScanned: ScannedReport;
-  public reportFE: FEReport;
-  //////////////////
   public reportFR: FRReport;
   public reportHWC: HWCReport;
   public reportIncidence: IncidenceReport;
   /**
    *  End: task entity
    */
-  public personnelNames: string[];
   public procedures: number[];
   private _indexOldTaskExpanded: number;
   private _firstOpen: boolean;
   private _taskType: string;
   private _taskListPaged: any;
+  public typeReportView: number;
+  public reportView: boolean;
+  public taskElement: any;
 
   private _subscriptionShared: Subscription;
   private _subscriptionLoader: Subscription;
@@ -114,15 +105,15 @@ export class ListTasksComponent implements OnInit, DoCheck , OnDestroy{
     private _imageVisorService: ImageVisorService,
     private _snackBarService: SnackBarService
   ) {
+    this.typeReportView = 0;
+    this.reportView = false;
     this.itemsTasks = [];
     this._indexTask = 0;
     this.others = false;
     this.date = [];
-    this.personnelNames = [''];
     this.taskWithDivider = [];
     this._indexOldTaskExpanded = 0;
     this.secondTaskForm = [undefined,undefined,undefined];
-    this.taskForm = [undefined, undefined, undefined, undefined, undefined];
     this.today = false;
     this.notCalendar = false;
     this.filter = 0;
@@ -252,15 +243,6 @@ export class ListTasksComponent implements OnInit, DoCheck , OnDestroy{
       });
     }*/
     this.sortTaskArrayByStatus();
-  }
-
-  public onScroll(event: any):void{
-    const element = event.srcElement;
-    if(element.scrollHeight - element.scrollTop === element.clientHeight) {
-      if(!this.load){
-        this.tasksCompare();
-      }
-    }
   }
 
   public sortTaskArrayByStatus(): void {
@@ -419,7 +401,6 @@ export class ListTasksComponent implements OnInit, DoCheck , OnDestroy{
   }
 
   public createStationTasks(): void {
-    console.log(this.station);
     this._addStationService.open({
       stepActive: 3,
       stationId: this.station.id,
@@ -440,7 +421,7 @@ export class ListTasksComponent implements OnInit, DoCheck , OnDestroy{
             if (response.items) {
               this.itemsTasks = UtilitiesService.sortJSON(response.items, 'folio', 'desc');
               this._indexTask = 0;
-              this.patchForms(type, this.itemsTasks[0], hwg);
+              this.patchForms(type, this.itemsTasks[0]);
             } else {
               this.resetElements();
             }
@@ -459,7 +440,7 @@ export class ListTasksComponent implements OnInit, DoCheck , OnDestroy{
             if (response.items) {
               this.itemsTasks = UtilitiesService.sortJSON(response.items, 'folio', 'desc');
               this._indexTask = 0;
-              this.patchForms(type, this.itemsTasks[0], hwg);
+              this.patchForms(type, this.itemsTasks[0]);
             } else {
               this.resetElements();
             }
@@ -470,342 +451,35 @@ export class ListTasksComponent implements OnInit, DoCheck , OnDestroy{
   }
 
   private initForms(): void {
-    this.initOMForm();
-    this.initCompressorForm();
-    this.initHWGForm();
-    this.initVRSForm();
-    this.initFEForm();
     this.initFRForm();
     this.initHWCForm();
     this.initIncidenceForm();
   }
 
   private resetElements(): void {
-    this.reportOM = null;
-    this.reportComp = null;
-    this.reportHWG = null;
-    this.reportVRS = null;
-    this.reportScanned = null;
-    this.reportFE = null;
     this.reportFR = null;
     this.reportHWC = null;
     this.reportIncidence = null;
-    this.taskForm[0].reset();
-    this.taskForm[1].reset();
-    this.taskForm[2].reset();
-    this.taskForm[3].reset();
-    this.taskForm[4].reset();
     this.secondTaskForm[0].reset();
     this.secondTaskForm[1].reset();
     this.secondTaskForm[2].reset();
-    this.taskForm[0].disable();
-    this.taskForm[1].disable();
-    this.taskForm[2].disable();
-    this.taskForm[3].disable();
-    this.taskForm[4].disable();
     this.secondTaskForm[0].disable();
     this.secondTaskForm[1].disable();
     this.secondTaskForm[2].disable();
   }
 
-  private initOMForm(): void {
-    this.taskForm[0] = this._formBuilder.group({
-      startTime: ['', [Validators.required]],
-      endTime: ['', [Validators.required]],
-      maintenanceType: ['', [Validators.required]],
-      activityType: ['', [Validators.required]],
-      personnelType: ['', [Validators.required]],
-      cottonClothes: [false, []],
-      faceMask: [false, []],
-      gloves: [false, []],
-      kneepads: [false, []],
-      protectiveGoggles: [false, []],
-      industrialShoes: [false, []],
-      goggles: [false, []],
-      helmet: [false, []],
-      toolsAndMaterials: ['', []],
-      description: ['', []],
-      observations: ['', []]
-    });
-  }
-
-  private initCompressorForm(): void {
-    this.taskForm[1] = this._formBuilder.group({
-      startTime: ['', [Validators.required]],
-      endTime: ['', [Validators.required]],
-      brand: ['', []],
-      model: ['', []],
-      controlNumber: ['', []],
-      pressure: ['', [Validators.required]],
-      purge: ['', [Validators.required]],
-      securityValve: ['', [Validators.required]],
-      modifications: ['', []],
-      observations: ['', []]
-    });
-  }
-
-  private initHWGForm(): void {
-    this.taskForm[2] = this._formBuilder.group({
-      area: ['', [Validators.required]],
-      waste: ['', [Validators.required]],
-      corrosive: ['', []],
-      reactive: ['', []],
-      explosive: ['', []],
-      toxic: ['', []],
-      flammable: ['', []],
-      quantity: ['', [Validators.required]],
-      unity: ['', [Validators.required]],
-      temporaryStorage: ['', [Validators.required]]
-    });
-  }
-
-  private initVRSForm(): void {
-    this.taskForm[3] = this._formBuilder.group({
-      magna: [false, []],
-      premium: [false, []],
-      fuelNozzle: ['', []],
-      longHose: ['', []],
-      breakAway: ['', []],
-      shortHose: ['', []],
-      equipment: ['', []],
-      vrsAlarm: ['', []],
-      emergencyStop: ['', []],
-      observations: ['', []]
-    });
-  }
-
-  private initFEForm(): void {
-    this.taskForm[4] = this._formBuilder.group({
-      startTime: ['',[]],
-      endTime:['',[]]
-    });
-  }
-
-  /*
-  public openProcedures(): void {
-    this._modalProceduresService.open(this.taskTemplate.procedures);
-  }
-  */
-
-  private patchForms(type: number, taskEntity: any, isHWG?: boolean) {
+  private patchForms(type: number, taskEntity: any) {
     switch (type) {
-      case 1:
-        this.patchOMForm(taskEntity);
-        break;
-      case 2:
-        this.patchCompressorForm(taskEntity);
-        break;
-      case 4:
-        this.patchVRSForm(taskEntity);
-        break;
-      case 5:
-        this.patchScannedForm(taskEntity);
-        break;
       case 6:
         this.patchHWCForm(taskEntity);
         break;
       case 7:
         this.patchFRForm(taskEntity);
         break;
-      case 8:
-        this.patchFEForm(taskEntity);
-        break;
       case 9:
         this.patchIncidenceForm(taskEntity);
         break;
     }
-    if (isHWG) {
-      this.patchHWGForm(taskEntity.hwgReport);
-    }
-  }
-
-  private patchOMForm(task: any): void {
-    this.reportOM = {
-      activityType: task.activityType || undefined,
-      cottonClothes: task.cottonClothes || false,
-      date: task.date || undefined,
-      description: task.description || undefined,
-      endTime: task.endTime || undefined,
-      faceMask: task.faceMask || false,
-      fileCS: task.fileCS || undefined,
-      folio: task.folio || undefined,
-      gloves: task.gloves || false,
-      goggles: task.goggles || false,
-      helmet: task.helmet || false,
-      hwgReport: task.hwgReport || undefined,
-      id: task.id || undefined,
-      industrialShoes: task.industrialShoes || false,
-      kneepads: task.kneepads || false,
-      maintenanceType: task.maintenanceType || undefined,
-      managerName: task.managerName || undefined,
-      name: task.name || undefined,
-      observations: task.observable || undefined,
-      personnelNames: task.personnelNames || [''],
-      personnelType: task.personnelType || undefined,
-      procedures: task.procedures || [],
-      protectiveGoggles: task.protectiveGoggles || false,
-      signature: task.signature || undefined,
-      startTime: task.startTime || undefined,
-      taskId: task.taskId || undefined,
-      toolsAndMaterials: task.toolsAndMaterials || undefined
-    };
-    this.taskForm[0].patchValue({
-      startTime: this.reportOM.startTime,
-      endTime: this.reportOM.endTime,
-      maintenanceType: this.reportOM.maintenanceType,
-      activityType: this.reportOM.activityType,
-      personnelType: this.reportOM.personnelType,
-      cottonClothes: this.reportOM.cottonClothes,
-      faceMask: this.reportOM.faceMask,
-      gloves: this.reportOM.gloves,
-      kneepads: this.reportOM.kneepads,
-      protectiveGoggles: this.reportOM.protectiveGoggles,
-      industrialShoes: this.reportOM.industrialShoes,
-      goggles: this.reportOM.goggles,
-      helmet: this.reportOM.helmet,
-      toolsAndMaterials: this.reportOM.toolsAndMaterials,
-      description: this.reportOM.description,
-      observations: this.reportOM.observations
-    });
-    this.date = UtilitiesService.convertDate(this.reportOM.date);
-    this.taskForm[0].disable();
-  }
-
-  private patchCompressorForm(task: any): void {
-    this.reportComp = {
-      brand: task.brand || undefined,
-      controlNumber: task.controlNumber || undefined,
-      date: task.date || undefined,
-      endTime: task.endTime || undefined,
-      fileCS: task.fileCS || undefined,
-      folio: task.folio || undefined,
-      hwgReport: task.hwgReport || undefined,
-      id: task.id || undefined,
-      model: task.model || undefined,
-      modifications: task.modifications || undefined,
-      name: task.name || undefined,
-      observations: task.observations || undefined,
-      pressure: task.pressure || undefined,
-      purge: task.purge || undefined,
-      securityValve: task.securityValve || undefined,
-      signature: task.signature || undefined,
-      startTime: task.startTime || undefined,
-      taskId: task.taskId || undefined
-    };
-    this.date = UtilitiesService.convertDate(this.reportComp.date);
-    this.taskForm[1].patchValue({
-      startTime: this.reportComp.startTime,
-      endTime: this.reportComp.endTime,
-      brand: this.reportComp.brand,
-      model: this.reportComp.model,
-      controlNumber: this.reportComp.controlNumber,
-      pressure: this.reportComp.pressure,
-      purge: this.reportComp.purge,
-      securityValve: this.reportComp.securityValve,
-      modifications: this.reportComp.modifications,
-      observations: this.reportComp.observations
-    });
-    this.taskForm[1].disable();
-  }
-
-  private patchHWGForm(task: any): void {
-    this.reportHWG = {
-      area: task.area || undefined,
-      corrosive: task.corrosive || false,
-      explosive: task.explosive || false,
-      fileCS: task.fileCS || undefined,
-      flammable: task.flammable || false,
-      quantity: task.quantity || undefined,
-      reactive: task.reactive || false,
-      temporaryStorage: task.temporaryStorage || undefined,
-      toxic: task.toxic || false,
-      unity: task.unity || undefined,
-      waste: task.waste || undefined
-    };
-    this.taskForm[2].patchValue({
-      area: this.reportHWG.area,
-      waste: this.reportHWG.waste,
-      corrosive: this.reportHWG.corrosive,
-      reactive: this.reportHWG.reactive,
-      explosive: this.reportHWG.explosive,
-      toxic: this.reportHWG.toxic,
-      flammable: this.reportHWG.flammable,
-      quantity: this.reportHWG.quantity,
-      unity: this.reportHWG.unity,
-      temporaryStorage: this.reportHWG.temporaryStorage
-    });
-    this.taskForm[2].disable();
-  }
-
-  private patchVRSForm(task: any): void {
-    this.reportVRS = {
-      date: task.date || undefined,
-      emergencyStop: task.emergencyStop || undefined,
-      fileCS: task.fileCS || undefined,
-      folio: task.folio || undefined,
-      id: task.id || undefined,
-      name: task.name || undefined,
-      observations: task.observations || undefined,
-      signature: task.signature || undefined,
-      taskId: task.taskId || undefined,
-      vrsAlarm: task.vrsAlarm || undefined,
-      vrsDispensary: task.vrsDispensary || undefined,
-      vrsTanks: task.vrsTanks || [{
-        capAndFillingAdapter: undefined,
-        capAndSteamAdapter: undefined,
-        fuelType: undefined,
-        overfillValve: undefined,
-        vacuumPressureValve: undefined
-      }]
-    };
-    this.date = UtilitiesService.convertDate(this.reportVRS.date);
-    this.taskForm[3].patchValue({
-      magna: this.reportVRS.vrsDispensary.magna,
-      premium: this.reportVRS.vrsDispensary.premium,
-      fuelNozzle: this.reportVRS.vrsDispensary.fuelNozzle,
-      longHose: this.reportVRS.vrsDispensary.longHose,
-      breakAway: this.reportVRS.vrsDispensary.breakAway,
-      shortHose: this.reportVRS.vrsDispensary.shortHose,
-      equipment: this.reportVRS.vrsDispensary.equipment,
-      vrsAlarm: this.reportVRS.vrsAlarm,
-      emergencyStop: this.reportVRS.emergencyStop,
-      observations: this.reportVRS.observations
-    });
-    this.taskForm[3].disable();
-  }
-
-  private patchScannedForm(task: any): void {
-    this.reportScanned = {
-      date: task.date || undefined,
-      fileCS: task.fileCS || undefined,
-      folio: task.folio || undefined,
-      hwgReport: task.hwgReport || undefined,
-      id: task.id || undefined,
-      name: task.name || undefined,
-      signature: task.signature || undefined,
-      taskId: task.taskId || undefined
-    };
-    this.date = UtilitiesService.convertDate(this.reportScanned.date);
-  }
-
-  private patchFEForm(task: any): void {
-    this.reportFE = {
-      date: task.date || undefined,
-      endTime: task.endTime || undefined,
-      fireExtinguishers: task.fireExtinguishers || undefined,
-      folio: task.folio || undefined,
-      id: task.id || undefined,
-      name: task.name || undefined,
-      signature: task.signature || undefined,
-      startTime: task.startTime || undefined,
-      taskId: task.taskId || undefined
-    };
-    this.date = UtilitiesService.convertDate(this.reportFE.date);
-    this.taskForm[4].patchValue({
-      startTime: this.reportFE.startTime,
-      endTime: this.reportFE.endTime
-    });
-    this.taskForm[4].disable();
   }
 
   public getNotCalendarTask(ev?: any):void{
@@ -991,25 +665,26 @@ export class ListTasksComponent implements OnInit, DoCheck , OnDestroy{
     this.secondTaskForm[2].disable();
   }
 
-  public changeTask(ev: any, type: number,): void{
-    console.log(ev);
-    this.load = true;
-    let isHWG: boolean = false;
-    if( type === 6 || type === 7 || type === 9 ){
-      isHWG = false
-    }else if(this.itemsTasks[ev.pageIndex].hwgReport){
-      isHWG = true
-    }
-    this._indexTask = ev.pageIndex;
-    this.patchForms(type,this.itemsTasks[ev.pageIndex], isHWG);
-    this.load = false;
-  }
-
   public seeEvidence():void{
     if(this.itemsTasks[this._indexTask].fileCS){
       this._imageVisorService.open(this.itemsTasks[this._indexTask].fileCS);
     }else{
       this._snackBarService.openSnackBar('Esta tarea no cuenta con evidencia', 'OK',3000);
     }
+  }
+
+  public goTaskInfo(task: any): void{
+    //if(task.original.status === 3 && this.user.role !== 7){
+      //return;
+    //}
+    this.taskElement = task;
+    this.typeReportView = task.original.typeReport;
+    this.reportView = true;
+  }
+
+  public goBackList(): void{
+    this.taskElement = null;
+    this.typeReportView = 0;
+    this.reportView = false;
   }
 }

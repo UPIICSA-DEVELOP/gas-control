@@ -5,5 +5,46 @@
   -->
 
 <div id="scanned-report">
-  scanned-report works!
+  <div style="display: flex; justify-content: center; margin: 8px 0; text-align: center;">
+    <div *ngIf="task" style="font-weight: 600; font-size: 18px;">{{task.original.name}}</div>
+  </div>
+  <div class="task-header">
+    <div class="head-bold">Operación y mantenimiento</div>
+    <div class="control-data">
+      <div *ngIf="scannedReport">Fecha: {{date[0]}} {{date[1]}} {{date[2]}}&nbsp;&nbsp;</div>
+      <div *ngIf="scannedReport">Folio: {{scannedReport.folio | formatFolio}}</div>
+    </div>
+  </div>
+  <div style="display: flex; align-items: center; flex-direction: column">
+    <mat-card style="width: 95%; margin: 12px 0;">
+      <mat-card-content style="display: flex; align-items: center; font-weight: 600; color: #707070; padding: 0;">
+        <mat-icon style="margin: 0 12px">insert_drive_file</mat-icon>
+        <div *ngIf="!scannedReport || !scannedReport.fileCS">Manifiesto</div>
+        <div *ngIf="scannedReport && scannedReport.fileCS">
+          <a style="text-decoration: none; color: #707070;" [href]="scannedReport.fileCS.thumbnail">Manifiesto</a>
+        </div>
+      </mat-card-content>
+    </mat-card>
+    <div class="divider" *ngIf="task.original.hwg"></div>
+    <div *ngIf="task.original.hwg">
+      <div *ngIf="task.original.hwg && scannedReport">
+        <app-hwg-report [taskHwgInfo]="scannedReport.hwgReport || undefined" [taskProvider]="2" [status]="task.original.status"></app-hwg-report>
+      </div>
+      <div *ngIf="task.original.hwg && !scannedReport">
+        <app-hwg-report [taskHwgInfo]="undefined" [taskProvider]="2" [status]="task.original.status"></app-hwg-report>
+      </div>
+    </div>
+    <div class="text-sign">
+      Nombre y firma del responsable
+    </div>
+    <div style="width: 50%">
+      <div class="signature-element">
+        <img *ngIf="scannedReport && scannedReport.signature" [src]="scannedReport.signature.thumbnail">
+        <div *ngIf="!scannedReport || !scannedReport.signature" style="width: 60%; height: 60px"></div>
+      </div>
+      <div class="divider"></div>
+      <div *ngIf="!scannedReport || !scannedReport.name" class="name">Nombre</div>
+      <div *ngIf="scannedReport && scannedReport.name" class="name">{{scannedReport.name}}</div>
+    </div>
+  </div>
 </div>

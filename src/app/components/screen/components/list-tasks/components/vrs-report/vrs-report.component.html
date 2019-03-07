@@ -5,5 +5,194 @@
   -->
 
 <div id="vrs-report">
-  vrs-report works!
+  <div style="display: flex; justify-content: center; margin: 8px 0; text-align: center;">
+    <div *ngIf="task" style="font-weight: 600; font-size: 18px;">{{task.original.name}}</div>
+  </div>
+  <div class="task-header">
+    <div class="head-bold">Sistema de recuperación de vapores</div>
+    <div class="control-data">
+      <div *ngIf="vrsReport">Fecha: {{date[0]}} {{date[1]}} {{date[2]}}&nbsp;&nbsp;</div>
+      <div *ngIf="vrsReport">Folio: {{vrsReport.folio | formatFolio}}</div>
+    </div>
+  </div>
+  <form [formGroup]="vrsForm" class="flex-box">
+    <div class="columns">
+      <div class="inputs">
+        <h3 style="margin: 4px 0; font-size: 14px">Dispensarios</h3>
+      </div>
+      <div class="inputs">
+        <div class="space-box">
+          <div class="checks-row">
+            <mat-checkbox formControlName="magna">Magna</mat-checkbox>
+          </div>
+          <div class="checks-row">
+            <mat-checkbox formControlName="premium">Premium</mat-checkbox>
+          </div>
+        </div>
+      </div>
+      <div class="times">
+        <mat-form-field class="clock">
+          <mat-select formControlName="fuelNozzle" placeholder="Pistola" required>
+            <mat-option value="Satisfactorio">Satisfactorio</mat-option>
+            <mat-option value="No satisfactorio">No satisfactorio</mat-option>
+            <mat-option value="No determinado">No determinado</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field class="clock">
+          <mat-select formControlName="longHose" placeholder="Manguera larga" required>
+            <mat-option value="Satisfactorio">Satisfactorio</mat-option>
+            <mat-option value="No satisfactorio">No satisfactorio</mat-option>
+            <mat-option value="No determinado">No determinado</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div class="times">
+        <mat-form-field class="clock">
+          <mat-select formControlName="breakAway" placeholder="Break away" required>
+            <mat-option value="Satisfactorio">Satisfactorio</mat-option>
+            <mat-option value="No satisfactorio">No satisfactorio</mat-option>
+            <mat-option value="No determinado">No determinado</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field class="clock">
+          <mat-select formControlName="shortHose" placeholder="Manguera corta" required>
+            <mat-option value="Satisfactorio">Satisfactorio</mat-option>
+            <mat-option value="No satisfactorio">No satisfactorio</mat-option>
+            <mat-option value="No determinado">No determinado</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div class="times">
+        <mat-form-field class="clock">
+          <mat-select formControlName="equipment" placeholder="Equipo" required>
+            <mat-option value="Motor de succión">Motor de succión</mat-option>
+            <mat-option value="Turbina">Turbina</mat-option>
+            <mat-option value="Quemador">Quemador</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <div class="clock"></div>
+      </div>
+      <div
+        *ngIf="vrsReport && vrsReport.vrsTanks && vrsReport.vrsTanks.length !== 0; then tanksList else emptyTankList"></div>
+      <ng-template #tanksList>
+        <div *ngFor="let tankItem of vrsReport.vrsTanks; let i = index">
+          <div class="inputs">
+            <h3 style="margin: 8px 0; font-size: 14px">Tanque {{i+1}}</h3>
+          </div>
+          <mat-radio-group [(ngModel)]="tankItem.fuelType" [ngModelOptions]="{standalone: true}" [disabled]="true" style="display: flex;width: 90%;justify-content: space-between; flex-wrap: wrap">
+            <mat-radio-button [value]="1">Magna</mat-radio-button>
+            <mat-radio-button [value]="2">Premium</mat-radio-button>
+          </mat-radio-group>
+          <mat-form-field class="inputs">
+            <mat-select [(ngModel)]="tankItem.capAndSteamAdapter" [ngModelOptions]="{standalone: true}" [disabled]="true" placeholder="Tapa y adaptador de vapor" required>
+              <mat-option [value]="'Satisfactorio'">Satisfactorio</mat-option>
+              <mat-option [value]="'No satisfactorio'">No satisfactorio</mat-option>
+              <mat-option [value]="'No determinado'">No determinado</mat-option>
+            </mat-select>
+          </mat-form-field>
+          <mat-form-field class="inputs">
+            <mat-select [(ngModel)]="tankItem.capAndFillingAdapter" [ngModelOptions]="{standalone: true}" [disabled]="true" placeholder="Tapa y adaptador de llenado" required>
+              <mat-option [value]="'Satisfactorio'">Satisfactorio</mat-option>
+              <mat-option [value]="'No satisfactorio'">No satisfactorio</mat-option>
+              <mat-option [value]="'No determinado'">No determinado</mat-option>
+            </mat-select>
+          </mat-form-field>
+          <mat-form-field class="inputs">
+            <mat-select [(ngModel)]="tankItem.overfillValve" [ngModelOptions]="{standalone: true}" [disabled]="true" placeholder="Válvula de sobrellenado" required>
+              <mat-option [value]="'Satisfactorio'">Satisfactorio</mat-option>
+              <mat-option [value]="'No satisfactorio'">No satisfactorio</mat-option>
+              <mat-option [value]="'No determinado'">No determinado</mat-option>
+            </mat-select>
+          </mat-form-field>
+          <mat-form-field class="inputs">
+            <mat-select [(ngModel)]="tankItem.vacuumPressureValve" [ngModelOptions]="{standalone: true}" [disabled]="true" placeholder="Válvula de presión-vacío" required>
+              <mat-option [value]="'Satisfactorio'">Satisfactorio</mat-option>
+              <mat-option [value]="'No satisfactorio'">No satisfactorio</mat-option>
+              <mat-option [value]="'No determinado'">No determinado</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </ng-template>
+      <ng-template #emptyTankList>
+        <div class="inputs">
+          <h3 style="margin: 8px 0; font-size: 14px">Tanque 1</h3>
+        </div>
+        <mat-radio-group [disabled]="true" style="display: flex;width: 90%;justify-content: space-between; flex-wrap: wrap">
+          <mat-radio-button value="Magna">Magna</mat-radio-button>
+          <mat-radio-button value="Premium">Premium</mat-radio-button>
+        </mat-radio-group>
+        <mat-form-field class="inputs">
+          <mat-select [disabled]="true" placeholder="Tapa y adaptador de vapor" required>
+            <mat-option value="Satisfactorio">Satisfactorio</mat-option>
+            <mat-option value="No satisfactorio">No satisfactorio</mat-option>
+            <mat-option value="No determinado">No determinado</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field class="inputs">
+          <mat-select [disabled]="true" placeholder="Tapa y adaptador de llenado" required>
+            <mat-option value="Satisfactorio">Satisfactorio</mat-option>
+            <mat-option value="No satisfactorio">No satisfactorio</mat-option>
+            <mat-option value="No determinado">No determinado</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field class="inputs">
+          <mat-select [disabled]="true" placeholder="Válvula de sobrellenado" required>
+            <mat-option value="Satisfactorio">Satisfactorio</mat-option>
+            <mat-option value="No satisfactorio">No satisfactorio</mat-option>
+            <mat-option value="No determinado">No determinado</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field class="inputs">
+          <mat-select [disabled]="true" placeholder="Válvula de presión-vacío" required>
+            <mat-option value="Satisfactorio">Satisfactorio</mat-option>
+            <mat-option value="No satisfactorio">No satisfactorio</mat-option>
+            <mat-option value="No determinado">No determinado</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </ng-template>
+    </div>
+    <div class="columns">
+      <mat-form-field class="inputs">
+        <mat-select formControlName="vrsAlarm" placeholder="Alarma SRV Encendido" required>
+          <mat-option value="Satisfactorio">Satisfactorio</mat-option>
+          <mat-option value="No satisfactorio">No satisfactorio</mat-option>
+          <mat-option value="No determinado">No determinado</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <div class="inputs">
+        <h3 style="margin: 8px 0; font-size: 14px;">Mantenimiento</h3>
+      </div>
+      <mat-form-field class="inputs">
+        <mat-select formControlName="emergencyStop" placeholder="Paro de emergencia" required>
+          <mat-option value="Satisfactorio">Satisfactorio</mat-option>
+          <mat-option value="No satisfactorio">No satisfactorio</mat-option>
+          <mat-option value="No determinado">No determinado</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field class="inputs">
+        <input matInput formControlName="observations" placeholder="Observaciones">
+      </mat-form-field>
+      <div class="image-header">
+        Captura fotográfica de evidencia
+      </div>
+      <div class="image-container" (click)="seeEvidence()">
+        <mat-icon *ngIf="!vrsReport || !vrsReport.fileCS" class="default-image">
+          image
+        </mat-icon>
+        <img class="evidence" *ngIf="vrsReport && vrsReport.fileCS" [src]="vrsReport.fileCS.thumbnail" alt="Evidence capture">
+      </div>
+      <div class="text-sign">
+        Nombre y firma del responsable
+      </div>
+      <div class="inputs">
+        <div class="signature-element">
+          <img *ngIf="vrsReport && vrsReport.signature" [src]="vrsReport.signature.thumbnail">
+          <div *ngIf="!vrsReport || !vrsReport.signature" style="width: 60%; height: 60px"></div>
+        </div>
+        <div class="divider"></div>
+        <div *ngIf="!vrsReport || !vrsReport.name" class="name">Nombre</div>
+        <div *ngIf="vrsReport && vrsReport.name" class="name">{{vrsReport.name}}</div>
+      </div>
+    </div>
+  </form>
 </div>

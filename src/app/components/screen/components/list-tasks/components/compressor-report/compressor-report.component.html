@@ -5,5 +5,100 @@
   -->
 
 <div id="compressor-report">
-  compressor-report works!
+  <div style="display: flex; justify-content: center; margin: 8px 0; text-align: center;">
+    <div *ngIf="task" style="font-weight: 600; font-size: 18px;">{{task.original.name}}</div>
+  </div>
+  <div class="task-header">
+    <div class="head-bold">Compresor de aire</div>
+    <div class="control-data">
+      <div *ngIf="compressorReport">Fecha: {{date[0]}} {{date[1]}} {{date[2]}}&nbsp;&nbsp;</div>
+      <div *ngIf="compressorReport">Folio: {{compressorReport.folio | formatFolio}}</div>
+    </div>
+  </div>
+  <form [formGroup]="compForm" class="flex-box">
+    <div class="columns">
+      <div class="times">
+        <mat-form-field class="clock">
+          <input formControlName="startTime" placeholder="Hora de inicio" matInput required appDisableWrite value="{{compForm.controls['startTime'].value | formatTime}}">
+          <mat-error *ngIf="compForm.controls['startTime'].hasError('required')">
+            Este campo es obligatorio
+          </mat-error>
+        </mat-form-field>
+        <mat-form-field class="clock">
+          <input formControlName="endTime" placeholder="Hora de término" matInput required appDisableWrite value="{{compForm.controls['endTime'].value | formatTime}}">
+          <mat-error *ngIf="compForm.controls['endTime'].hasError('required')">
+            Este campo es obligatorio
+          </mat-error>
+        </mat-form-field>
+      </div>
+      <mat-form-field class="inputs">
+        <input formControlName="brand" matInput placeholder="Marca">
+      </mat-form-field>
+      <mat-form-field class="inputs">
+        <input formControlName="model" matInput placeholder="Modelo">
+      </mat-form-field>
+      <mat-form-field class="inputs">
+        <input formControlName="controlNumber" matInput placeholder="No. de control">
+      </mat-form-field>
+      <div style="display: flex; align-items: center; width: 90%;">
+        <mat-form-field>
+          <mat-select formControlName="pressure" placeholder="Presión del manómetro" required>
+            <mat-option [value]="7">7</mat-option>
+            <mat-option [value]="8">8</mat-option>
+            <mat-option [value]="9">9</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <div class="color" style="margin-left: 16px">Kg/cm<sup>2</sup></div>
+      </div>
+      <mat-form-field class="inputs">
+        <mat-select formControlName="purge" placeholder="Purga o descarga" required>
+          <mat-option value="Función correcta">Función correcta</mat-option>
+          <mat-option value="Función incorrecta">Función incorrecta</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field class="inputs">
+        <mat-select formControlName="securityValve" placeholder="Disparo manual de válvula de seguridad" required>
+          <mat-option value="Función correcta">Función correcta</mat-option>
+          <mat-option value="Función incorrecta">Función incorrecta</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field class="inputs">
+        <input formControlName="modifications" matInput placeholder="Modificaciones y medidas correctivas">
+      </mat-form-field>
+    </div>
+    <div class="columns">
+      <mat-form-field class="inputs">
+        <input formControlName="observations" matInput placeholder="Observaciones">
+      </mat-form-field>
+      <div class="image-header">
+        Captura fotográfica de evidencia
+      </div>
+      <div class="image-container" (click)="seeEvidence()">
+        <mat-icon *ngIf="!compressorReport || !compressorReport.fileCS" class="default-image">
+          image
+        </mat-icon>
+        <img class="evidence" *ngIf="compressorReport && compressorReport.fileCS"
+             [src]="compressorReport.fileCS.thumbnail" alt="Evidence capture">
+      </div>
+      <div class="text-sign">
+        Nombre y firma del responsable
+      </div>
+      <div class="inputs">
+        <div class="signature-element">
+          <img *ngIf="compressorReport && compressorReport.signature" [src]="compressorReport.signature.thumbnail">
+          <div *ngIf="!compressorReport || !compressorReport.signature" style="width: 60%; height: 60px"></div>
+        </div>
+        <div class="divider"></div>
+        <div *ngIf="!compressorReport || !compressorReport.name" class="name">Nombre</div>
+        <div *ngIf="compressorReport && compressorReport.name" class="name">{{compressorReport.name}}</div>
+      </div>
+    </div>
+  </form>
+  <div class="divider" *ngIf="task.original.hwg"></div>
+  <div *ngIf="task.original.hwg && compressorReport">
+    <app-hwg-report [taskHwgInfo]="compressorReport.hwgReport || undefined" [taskProvider]="1" [status]="task.original.status"></app-hwg-report>
+  </div>
+  <div *ngIf="task.original.hwg && !compressorReport">
+    <app-hwg-report [taskHwgInfo]="undefined" [taskProvider]="1" [status]="task.original.status"></app-hwg-report>
+  </div>
 </div>

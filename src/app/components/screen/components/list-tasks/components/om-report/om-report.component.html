@@ -5,178 +5,184 @@
   -->
 
 <div id="om-report">
-  <div class="containerTask">
-    <div class="task-header">
-      <div class="head-bold">Operación de la Estación de Servicio</div>
-      <div class="control-data">
-        <div *ngIf="omReport">Fecha: {{date[0]}} {{date[1]}} {{date[2]}}&nbsp;&nbsp;</div>
-        <div *ngIf="omReport">Folio: {{omReport.folio | formatFolio}}</div>
+  <div style="display: flex; justify-content: center; margin: 8px 0; text-align: center;">
+    <div *ngIf="task" style="font-weight: 600; font-size: 18px;">{{task.original.name}}</div>
+  </div>
+  <div class="task-header">
+    <div class="head-bold">Operación y mantenimiento</div>
+    <div class="control-data">
+      <div *ngIf="omReport">Fecha: {{date[0]}} {{date[1]}} {{date[2]}}&nbsp;&nbsp;</div>
+      <div *ngIf="omReport">Folio: {{omReport.folio | formatFolio}}</div>
+    </div>
+  </div>
+  <form [formGroup]="omForm" class="flex-box">
+    <div class="columns">
+      <div class="times">
+        <mat-form-field class="clock">
+          <input formControlName="startTime" placeholder="Hora de inicio" matInput required appDisableWrite (time)="test($event, 'startTime')" value="{{omForm.controls['startTime'].value | formatTime}}">
+          <mat-error *ngIf="omForm.controls['startTime'].hasError('required')">
+            Este campo es obligatorio
+          </mat-error>
+        </mat-form-field>
+        <mat-form-field class="clock">
+          <input formControlName="endTime" placeholder="Hora de término" matInput required appDisableWrite (time)="test($event, 'endTime')" value="{{omForm.controls['endTime'].value | formatTime}}">
+          <mat-error *ngIf="omForm.controls['endTime'].hasError('required')">
+            Este campo es obligatorio
+          </mat-error>
+        </mat-form-field>
+      </div>
+      <mat-form-field class="inputs">
+        <mat-select formControlName="maintenanceType" placeholder="Tipo de mantenimiento" required>
+          <mat-option value="Preventivo">Mantenimiento preventivo</mat-option>
+          <mat-option value="Correctivo">Mantenimiento correctivo</mat-option>
+        </mat-select>
+        <mat-error *ngIf="omForm.controls['maintenanceType'].hasError('required')">
+          Este campo es obligatorio
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field class="inputs">
+        <mat-select formControlName="activityType" placeholder="Seleccione actividad" required>
+          <mat-option value="Monitoreo de pozos y detección de fugas">Monitoreo de pozos y detección de fugas</mat-option>
+          <mat-option value="Albañilería, herrería, etc">Albañilería, herreria, etc</mat-option>
+          <mat-option value="Pruebas de eficiencia">Pruebas de eficiencia</mat-option>
+          <mat-option value="Auditoria externa e interna">Auditoria externa e interna</mat-option>
+          <mat-option value="Hidrosanitario">Hidrosanitario</mat-option>
+          <mat-option value="Limpieza">Limpieza</mat-option>
+          <mat-option value="Mantenimiento de la Estación">Mantenimiento de la Estación</mat-option>
+          <mat-option value="Mecánico">Mecánico</mat-option>
+          <mat-option value="Visita de autoridad">Visita de autoridad</mat-option>
+          <mat-option value="Eléctrico">Eléctrico</mat-option>
+          <mat-option value="Auditoría externa e interna">Auditoría externa e interna</mat-option>
+          <mat-option value="Otro">Otro</mat-option>
+        </mat-select>
+        <mat-error *ngIf="omForm.controls['activityType'].hasError('required')">
+          Este campo es obligatorio
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field class="inputs">
+        <mat-select formControlName="personnelType" placeholder="Procedencia del personal" required>
+          <mat-option value="Interno">Personal interno</mat-option>
+          <mat-option value="Externo">Personal externo</mat-option>
+        </mat-select>
+        <mat-error *ngIf="omForm.controls['personnelType'].hasError('required')">
+          Este campo es obligatorio
+        </mat-error>
+      </mat-form-field>
+      <div class="text-divider">
+        <span>Personal involucrado <sup>*</sup></span>
+      </div>
+      <ng-container *ngIf="omReport; then listComplete else listEmpty"></ng-container>
+      <ng-template #listComplete>
+        <ng-container *ngFor="let item of omReport.personnelNames; let i = index">
+          <mat-form-field class="inputs">
+            <input matInput placeholder="{{i+1}}.- Nombre" [(ngModel)]="item" [ngModelOptions]="{standalone: true}" [disabled]="true">
+          </mat-form-field>
+        </ng-container>
+      </ng-template>
+      <ng-template #listEmpty>
+        <ng-container *ngFor="let item of personnelNames; let i = index">
+          <mat-form-field class="inputs">
+            <input matInput placeholder="{{i+1}}.- Nombre" [(ngModel)]="item" [ngModelOptions]="{standalone: true}" [disabled]="true">
+          </mat-form-field>
+        </ng-container>
+      </ng-template>
+      <div class="text-divider">
+        Equipo de protección utilizado <sup>*</sup>
+      </div>
+      <div class="inputs">
+        <div class="space-box">
+          <div class="checks-row">
+            <mat-checkbox formControlName="cottonClothes">Ropa de algodón</mat-checkbox>
+          </div>
+          <div class="checks-row">
+            <mat-checkbox formControlName="goggles">Goggles</mat-checkbox>
+          </div>
+        </div>
+        <div class="space-box">
+          <div class="checks-row">
+            <mat-checkbox formControlName="industrialShoes">Zapato industrial</mat-checkbox>
+          </div>
+          <div class="checks-row">
+            <mat-checkbox formControlName="protectiveGoggles">Lentes de protección
+            </mat-checkbox>
+          </div>
+        </div>
+        <div class="space-box">
+          <div class="checks-row">
+            <mat-checkbox formControlName="gloves">Guantes</mat-checkbox>
+          </div>
+          <div class="checks-row">
+            <mat-checkbox formControlName="kneepads">Rodilleras</mat-checkbox>
+          </div>
+        </div>
+        <div class="space-box">
+          <div class="checks-row">
+            <mat-checkbox formControlName="faceMask">Cubrebocas</mat-checkbox>
+          </div>
+          <div class="checks-row">
+            <mat-checkbox formControlName="helmet">Cascos</mat-checkbox>
+          </div>
+        </div>
       </div>
     </div>
-    <form [formGroup]="omForm" class="flex-box">
-      <div class="columns">
-        <div class="times">
-          <mat-form-field class="clock">
-            <input formControlName="startTime" placeholder="Hora de inicio" matInput required appDisableWrite value="{{omForm.controls['startTime'].value | formatTime}}">
-            <mat-error *ngIf="omForm.controls['startTime'].hasError('required')">
-              Este campo es obligatorio
-            </mat-error>
-          </mat-form-field>
-          <mat-form-field class="clock">
-            <input formControlName="endTime" placeholder="Hora de término" matInput required appDisableWrite value="{{omForm.controls['endTime'].value | formatTime}}">
-            <mat-error *ngIf="omForm.controls['endTime'].hasError('required')">
-              Este campo es obligatorio
-            </mat-error>
-          </mat-form-field>
-        </div>
-        <mat-form-field class="inputs">
-          <mat-select formControlName="maintenanceType" placeholder="Tipo de mantenimiento" required>
-            <mat-option value="Preventivo">Mantenimiento preventivo</mat-option>
-            <mat-option value="Correctivo">Mantenimiento correctivo</mat-option>
-          </mat-select>
-          <mat-error *ngIf="omForm.controls['maintenanceType'].hasError('required')">
-            Este campo es obligatorio
-          </mat-error>
-        </mat-form-field>
-        <mat-form-field class="inputs">
-          <mat-select formControlName="activityType" placeholder="Seleccione actividad" required>
-            <mat-option value="Monitoreo de pozos y detección de fugas">Monitoreo de pozos y detección de fugas</mat-option>
-            <mat-option value="Albañilería, herreria, etc">Albañilería, herreria, etc</mat-option>
-            <mat-option value="Pruebas de eficiencia">Pruebas de eficiencia</mat-option>
-            <mat-option value="Auditoria externa e interna">Auditoria externa e interna</mat-option>
-            <mat-option value="Hidrosanitario">Hidrosanitario</mat-option>
-            <mat-option value="Limpieza">Limpieza</mat-option>
-            <mat-option value="Mantenimiento de la Estación">Mantenimiento de la Estación</mat-option>
-            <mat-option value="Mécanico">Mécanico</mat-option>
-            <mat-option value="Visita de autoridad">Visita de autoridad</mat-option>
-            <mat-option value="Eléctrico">Eléctrico</mat-option>
-            <mat-option value="Otro">Otro</mat-option>
-          </mat-select>
-          <mat-error *ngIf="omForm.controls['activityType'].hasError('required')">
-            Este campo es obligatorio
-          </mat-error>
-        </mat-form-field>
-        <mat-form-field class="inputs">
-          <mat-select formControlName="personnelType" placeholder="Procedencia del personal" required>
-            <mat-option value="Interno">Personal interno</mat-option>
-            <mat-option value="Externo">Personal externo</mat-option>
-          </mat-select>
-          <mat-error *ngIf="omForm.controls['personnelType'].hasError('required')">
-            Este campo es obligatorio
-          </mat-error>
-        </mat-form-field>
-        <div class="text-divider">
-          <span>Personal involucrado <sup>*</sup></span>
-        </div>
-        <ng-container *ngIf="omReport; then listComplete else listEmpty"></ng-container>
-        <ng-template #listComplete>
-          <ng-container *ngFor="let item of omReport.personnelNames; let i = index">
-            <mat-form-field class="inputs">
-              <input matInput placeholder="{{i+1}}.- Nombre" [(ngModel)]="item" [ngModelOptions]="{standalone: true}" [disabled]="true">
-            </mat-form-field>
-          </ng-container>
-        </ng-template>
-        <ng-template #listEmpty>
-          <ng-container *ngFor="let item of personnelNames; let i = index">
-            <mat-form-field class="inputs">
-              <input matInput placeholder="{{i+1}}.- Nombre" [(ngModel)]="item" [ngModelOptions]="{standalone: true}" [disabled]="true">
-            </mat-form-field>
-          </ng-container>
-        </ng-template>
-        <div class="text-divider">
-          Equipo de protección utilizado <sup>*</sup>
-        </div>
-        <div class="inputs">
-          <div class="space-box">
-            <div class="checks-row">
-              <mat-checkbox formControlName="cottonClothes">Ropa de algodón</mat-checkbox>
-            </div>
-            <div class="checks-row">
-              <mat-checkbox formControlName="goggles">Goggles</mat-checkbox>
-            </div>
-          </div>
-          <div class="space-box">
-            <div class="checks-row">
-              <mat-checkbox formControlName="industrialShoes">Zapato industrial</mat-checkbox>
-            </div>
-            <div class="checks-row">
-              <mat-checkbox formControlName="protectiveGoggles">Lentes de protección
-              </mat-checkbox>
-            </div>
-          </div>
-          <div class="space-box">
-            <div class="checks-row">
-              <mat-checkbox formControlName="gloves">Guantes</mat-checkbox>
-            </div>
-            <div class="checks-row">
-              <mat-checkbox formControlName="kneepads">Rodilleras</mat-checkbox>
-            </div>
-          </div>
-          <div class="space-box">
-            <div class="checks-row">
-              <mat-checkbox formControlName="faceMask">Cubrebocas</mat-checkbox>
-            </div>
-            <div class="checks-row">
-              <mat-checkbox formControlName="helmet">Cascos</mat-checkbox>
-            </div>
-          </div>
+    <div class="columns">
+      <mat-form-field class="inputs">
+        <input formControlName="toolsAndMaterials" matInput placeholder="Herramientas y materiales utilizados">
+      </mat-form-field>
+      <div class="text-divider">
+        Procedimientos utilizados
+      </div>
+      <div class="inputs" *ngIf="omReport && omReport.procedures">
+        <div *ngFor="let procedure of omReport.procedures; let i = index;">
+          <div class="procedure" *ngIf="procedure === 1">{{i+1}}.- {{utils.procedures[procedure-1].name}}</div>
+          <div class="procedure" *ngIf="procedure === 2">{{i+1}}.-{{utils.procedures[procedure-1].name}}</div>
+          <div class="procedure" *ngIf="procedure === 3">{{i+1}}.-{{utils.procedures[procedure-1].name}}</div>
+          <div class="procedure" *ngIf="procedure === 4">{{i+1}}.-{{utils.procedures[procedure-1].name}}</div>
+          <div class="procedure" *ngIf="procedure === 5">{{i+1}}.-{{utils.procedures[procedure-1].name}}</div>
+          <div class="procedure" *ngIf="procedure === 6">{{i+1}}.-{{utils.procedures[procedure-1].name}}</div>
+          <div class="procedure" *ngIf="procedure === 7">{{i+1}}.-{{utils.procedures[procedure-1].name}}</div>
+          <div class="procedure" *ngIf="procedure === 8">{{i+1}}.-{{utils.procedures[procedure-1].name}}</div>
+          <div class="procedure" *ngIf="procedure === 9">{{i+1}}.-{{utils.procedures[procedure-1].name}}</div>
+          <div class="procedure" *ngIf="procedure === 10">{{i+1}}.-{{utils.procedures[procedure-1].name}}</div>
+          <div class="procedure" *ngIf="procedure === 11">{{i+1}}.-{{utils.procedures[procedure-1].name}}</div>
+          <div class="procedure" *ngIf="procedure === 12">{{i+1}}.-{{utils.procedures[procedure-1].name}}</div>
         </div>
       </div>
-      <div class="columns">
-        <mat-form-field class="inputs">
-          <input formControlName="toolsAndMaterials" matInput placeholder="Herramientas y materiales utilizados">
-        </mat-form-field>
-        <div class="text-divider">
-          Procedimientos utilizados
-        </div>
-        <div class="inputs" *ngIf="omReport && omReport.procedures">
-          <div *ngFor="let procedure of omReport.procedures; let i = index;">
-            <div class="procedure" *ngIf="procedure === 1">{{i+1}}.- {{taskTemplate.procedures[procedure-1].name}}</div>
-            <div class="procedure" *ngIf="procedure === 2">{{i+1}}.-{{taskTemplate.procedures[procedure-1].name}}</div>
-            <div class="procedure" *ngIf="procedure === 3">{{i+1}}.-{{taskTemplate.procedures[procedure-1].name}}</div>
-            <div class="procedure" *ngIf="procedure === 4">{{i+1}}.-{{taskTemplate.procedures[procedure-1].name}}</div>
-            <div class="procedure" *ngIf="procedure === 5">{{i+1}}.-{{taskTemplate.procedures[procedure-1].name}}</div>
-            <div class="procedure" *ngIf="procedure === 6">{{i+1}}.-{{taskTemplate.procedures[procedure-1].name}}</div>
-            <div class="procedure" *ngIf="procedure === 7">{{i+1}}.-{{taskTemplate.procedures[procedure-1].name}}</div>
-            <div class="procedure" *ngIf="procedure === 8">{{i+1}}.-{{taskTemplate.procedures[procedure-1].name}}</div>
-            <div class="procedure" *ngIf="procedure === 9">{{i+1}}.-{{taskTemplate.procedures[procedure-1].name}}</div>
-            <div class="procedure" *ngIf="procedure === 10">{{i+1}}.-{{taskTemplate.procedures[procedure-1].name}}</div>
-            <div class="procedure" *ngIf="procedure === 11">{{i+1}}.-{{taskTemplate.procedures[procedure-1].name}}</div>
-            <div class="procedure" *ngIf="procedure === 12">{{i+1}}.-{{taskTemplate.procedures[procedure-1].name}}</div>
-          </div>
-        </div>
-        <div class="text" style="font-size: 12px !important; margin-top: 4px;">
-          Si la actividad es crítica, requiere autorización del gerente
-        </div>
-        <mat-form-field class="inputs">
-          <input formControlName="description" matInput placeholder="Descripción">
-        </mat-form-field>
-        <mat-form-field class="inputs">
-          <input formControlName="observations" matInput placeholder="Observaciones">
-        </mat-form-field>
-        <div class="image-header">
-          Captura fotográfica de evidencia.
-        </div>
-        <div class="image-container">
-          <mat-icon *ngIf="!omReport || !omReport.fileCS" class="default-image">
-            image
-          </mat-icon>
-          <img class="evidence" *ngIf="omReport && omReport.fileCS"
-               [src]="omReport.fileCS.thumbnail" alt="Evidence capture">
-        </div>
-        <div class="text-sign">
-          Nombre y firma del responsable
-        </div>
-        <div class="inputs">
-          <div class="signature-element">
-            <img *ngIf="omReport && omReport.signature" [src]="omReport.signature.thumbnail">
-            <div *ngIf="!omReport || !omReport.signature" style="width: 60%; height: 60px"></div>
-          </div>
-          <div class="divider"></div>
-          <div *ngIf="!omReport || !omReport.name" class="name">Nombre</div>
-          <div *ngIf="omReport && omReport.name" class="name">{{omReport.name}}</div>
-        </div>
+      <div class="text" style="font-size: 12px !important; margin-top: 4px;">
+        Si la actividad es crítica, requiere autorización del gerente
       </div>
-    </form>
+      <mat-form-field class="inputs">
+        <input formControlName="description" matInput placeholder="Descripción">
+      </mat-form-field>
+      <mat-form-field class="inputs">
+        <input formControlName="observations" matInput placeholder="Observaciones">
+      </mat-form-field>
+      <div class="image-header">
+        Captura fotográfica de evidencia.
+      </div>
+      <div class="image-container" (click)="seeEvidence()">
+        <mat-icon *ngIf="!omReport || !omReport.fileCS" class="default-image">image</mat-icon>
+        <img class="evidence" *ngIf="omReport && omReport.fileCS" [src]="omReport.fileCS.thumbnail" alt="Evidence capture">
+      </div>
+      <div class="text-sign">
+        Nombre y firma del responsable
+      </div>
+      <div class="inputs">
+        <div class="signature-element">
+          <img *ngIf="omReport && omReport.signature" [src]="omReport.signature.thumbnail">
+          <div *ngIf="!omReport || !omReport.signature" style="width: 60%; height: 60px"></div>
+        </div>
+        <div class="divider"></div>
+        <div *ngIf="!omReport || !omReport.name" class="name">Nombre</div>
+        <div *ngIf="omReport && omReport.name" class="name">{{omReport.name}}</div>
+      </div>
+    </div>
+  </form>
+  <div class="divider" *ngIf="task.original.hwg"></div>
+  <div *ngIf="task.original.hwg && omReport">
+    <app-hwg-report [taskHwgInfo]="omReport.hwgReport || undefined" [taskProvider]="1" [status]="task.original.status"></app-hwg-report>
+  </div>
+  <div *ngIf="task.original.hwg && !omReport">
+    <app-hwg-report [taskHwgInfo]="undefined" [taskProvider]="1" [status]="task.original.status"></app-hwg-report>
   </div>
 </div>
