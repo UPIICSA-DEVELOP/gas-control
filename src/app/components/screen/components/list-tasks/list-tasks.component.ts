@@ -315,13 +315,15 @@ export class ListTasksComponent implements OnInit, DoCheck {
       }
     });
     if(historyArray.length!==0){
-      this.taskWithDivider.push({
-        type: 1,
-        title: 'Atrasadas',
-        original: null,
-        id: '',
-        expanded: false,
-      });
+      if(this.filter === 0){
+        this.taskWithDivider.push({
+          type: 1,
+          title: 'Historial',
+          original: null,
+          id: '',
+          expanded: false,
+        });
+      }
       for(let i = 0; i< historyArray.length; i++){
         this.taskWithDivider.push({
           type: 2,
