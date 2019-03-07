@@ -6,22 +6,22 @@
 
 <div id="sasisopa">
  <mat-dialog-content>
-   <div style="position: absolute; top: 0; left: 0; margin: 16px">
+   <div class="close">
      <button mat-icon-button (click)="close()">
        <mat-icon>arrow_back</mat-icon>
      </button>
    </div>
-   <div style="display: flex; flex-direction: column; margin: 24px 0; align-items: center">
-     <img  style="height: 28px" *ngIf="!isSasisopa" src="../../../../assets/Images/sgm_gray.png">
-     <img style="width: 28px; height: 28px" *ngIf="isSasisopa" src="../../../../assets/Images/SASISOPA-gris.png">
-     <div style="margin-top: 20px" *ngIf="!isSasisopa">SGM</div>
-     <div style="margin-top: 20px" *ngIf="isSasisopa">SASISOPA</div>
+   <div class="header">
+     <img  class="sgm-logo" *ngIf="!isSasisopa" src="../../../../assets/Images/sgm_gray.png">
+     <img class="sasisopa-logo" *ngIf="isSasisopa" src="../../../../assets/Images/SASISOPA-gris.png">
+     <div class="text" *ngIf="!isSasisopa">SGM</div>
+     <div class="text" *ngIf="isSasisopa">SASISOPA</div>
    </div>
-   <mat-divider style="width: 85%;margin: auto;"></mat-divider>
-   <div style="flex-direction: column; display: flex; text-align: center; margin-top: 32px;">
-     <div style="font-size: 24px; font-weight: 600; color: #707070">Muy pronto</div>
-     <div style="font-size: 20px; font-weight: 600; color: #707070 ">podrá acceder a nuevas funciones</div>
-    <img style="width: 25%; margin: 36px auto;" src="../../../../assets/Images/timer.png">
+   <mat-divider></mat-divider>
+   <div class="features">
+     <div class="text-one">Muy pronto</div>
+     <div class="text-two">podrá acceder a nuevas funciones</div>
+    <img class="clock" src="../../../../assets/Images/timer.png">
    </div>
  </mat-dialog-content>
 </div>

@@ -57,12 +57,12 @@
                 <mat-divider></mat-divider>
                 <div class="action-buttons" *ngIf="collaborator.id!==id">
                   <div class="button">
-                    <button matTooltip="Eliminar" *ngIf="user.role<3 && collaborator.role!==1" mat-button (click)="deleteCollaborator(collaborator.id,i)">
+                    <button matTooltip="Eliminar" *ngIf="(user.role<3 || user.role===7) && collaborator.role!==1" mat-button (click)="deleteCollaborator(collaborator.id,i)">
                       <mat-icon>delete</mat-icon>
                     </button>
                   </div>
                   <div class="button">
-                    <button *ngIf="user.role<3 && collaborator.role!==1" mat-button [mat-menu-trigger-for]="role">
+                    <button *ngIf="(user.role<3 || user.role===7) && collaborator.role!==1" mat-button [mat-menu-trigger-for]="role">
                       <mat-icon matTooltip="Cambiar rol" svgIcon="icons:change_role"></mat-icon>
                     </button>
                     <mat-menu #role>

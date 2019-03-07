@@ -46,7 +46,7 @@
                 <mat-icon>person_add</mat-icon>
                 <span>Añadir Colaborador de Estación</span>
               </button>
-              <button mat-button [routerLink]="'/home/notifications'" [queryParams]="{id: stationActive.id}">
+              <button mat-button (click)="openNotifications()">
                 <mat-icon>notifications</mat-icon>
                 <span>Notificaciones</span>
               </button>
@@ -68,7 +68,7 @@
               </button>
             </div>
           </div>
-          <div class="change-station" *ngIf="role<=4 || role === 7">
+          <div class="change-station" *ngIf="role<=4">
             <button mat-button routerLink="/home/station-list">
               <mat-icon>compare_arrows</mat-icon>
               <span>Cambiar Estación de Servicio</span>

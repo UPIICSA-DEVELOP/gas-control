@@ -34,7 +34,7 @@ import {Subscription} from 'rxjs';
 export class ListTasksComponent implements OnInit, DoCheck , OnDestroy{
   public station: any;
   @Input() set stationInfo(stationObj: any) {
-    if (stationObj && stationObj.stationTaskId) {
+    if (stationObj) {
       this.others = false;
       this.tasks = [];
       this.notCalendarTasks = [];
@@ -178,7 +178,7 @@ export class ListTasksComponent implements OnInit, DoCheck , OnDestroy{
   private getStationTask(): void {
     this._indexOldTaskExpanded = null;
     this.filters = {
-      stationTaskId: this.station.stationTaskId,
+      stationTaskId: this.station.stationTaskId || '0000',
       startDate: (this.start.timeStamp).toString(),
       status: (this.filter).toString(),
       endDate: (this.end.timeStamp).toString(),
@@ -264,7 +264,15 @@ export class ListTasksComponent implements OnInit, DoCheck , OnDestroy{
   }
 
   public sortTaskArrayByStatus(): void {
-    let headerPrevious = false, headerHistory = false, headerToday = false;
+    let historyArray = [];
+    for(let i = 0; i<this.tasksFilterd.length; i++){
+      if(this.tasksFilterd[i].status === 3 || this.tasksFilterd[i].status === 4){
+        historyArray.push(this.tasksFilterd[i]);
+        this.tasksFilterd.splice(i, 1);
+      }
+    }
+    historyArray = UtilitiesService.sortJSON(historyArray, 'originalDate', 'desc');
+    let headerPrevious = false, headerToday = false;
     this.tasksFilterd = UtilitiesService.sortJSON(this.tasksFilterd, 'status', 'asc');
     this.tasksFilterd.forEach(item => {
       if (item.status === 1) {
@@ -311,34 +319,28 @@ export class ListTasksComponent implements OnInit, DoCheck , OnDestroy{
             expanded: false,
           });
         }
-      } else if (item.status === 3 || item.status === 4) {
-        if (!headerHistory && this.filter === 0){
-          this.taskWithDivider.push({
-            type: 1,
-            title: 'Historial',
-            original: null,
-            id: '',
-            expanded: false,
-          });
-          headerHistory = true;
-          this.taskWithDivider.push({
-            type: 2,
-            title: '',
-            original: item,
-            id: item.id,
-            expanded: false,
-          });
-        } else {
-          this.taskWithDivider.push({
-            type: 2,
-            title: '',
-            original: item,
-            id: item.id,
-            expanded: false,
-          });
-        }
       }
     });
+    if(historyArray.length!==0){
+      if(this.filter === 0){
+        this.taskWithDivider.push({
+          type: 1,
+          title: 'Historial',
+          original: null,
+          id: '',
+          expanded: false,
+        });
+      }
+      for(let i = 0; i< historyArray.length; i++){
+        this.taskWithDivider.push({
+          type: 2,
+          title: '',
+          original: historyArray[i],
+          id: historyArray[i].id,
+          expanded: false,
+        })
+      }
+    }
     this.load = false;
   }
 
@@ -417,6 +419,7 @@ export class ListTasksComponent implements OnInit, DoCheck , OnDestroy{
   }
 
   public createStationTasks(): void {
+    console.log(this.station);
     this._addStationService.open({
       stepActive: 3,
       stationId: this.station.id,
@@ -665,9 +668,7 @@ export class ListTasksComponent implements OnInit, DoCheck , OnDestroy{
       observations: this.reportOM.observations
     });
     this.date = UtilitiesService.convertDate(this.reportOM.date);
-    if (this.user.role !== 7) {
-      this.taskForm[0].disable();
-    }
+    this.taskForm[0].disable();
   }
 
   private patchCompressorForm(task: any): void {
@@ -704,9 +705,7 @@ export class ListTasksComponent implements OnInit, DoCheck , OnDestroy{
       modifications: this.reportComp.modifications,
       observations: this.reportComp.observations
     });
-    if (this.user.role !== 7) {
-      this.taskForm[1].disable();
-    }
+    this.taskForm[1].disable();
   }
 
   private patchHWGForm(task: any): void {
@@ -735,9 +734,7 @@ export class ListTasksComponent implements OnInit, DoCheck , OnDestroy{
       unity: this.reportHWG.unity,
       temporaryStorage: this.reportHWG.temporaryStorage
     });
-    if (this.user.role !== 7) {
-      this.taskForm[2].disable();
-    }
+    this.taskForm[2].disable();
   }
 
   private patchVRSForm(task: any): void {
@@ -774,9 +771,7 @@ export class ListTasksComponent implements OnInit, DoCheck , OnDestroy{
       emergencyStop: this.reportVRS.emergencyStop,
       observations: this.reportVRS.observations
     });
-    if (this.user.role !== 7) {
-      this.taskForm[3].disable();
-    }
+    this.taskForm[3].disable();
   }
 
   private patchScannedForm(task: any): void {

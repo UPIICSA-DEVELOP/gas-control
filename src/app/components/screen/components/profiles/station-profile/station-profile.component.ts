@@ -289,6 +289,7 @@ export class StationProfileComponent implements OnInit, OnDestroy {
   }
 
   public addRemoveTurn(remove: boolean, type: number, index?: number): void{
+    this.change = true;
     if(!remove){
       switch (type) {
         case 1:

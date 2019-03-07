@@ -252,4 +252,12 @@ export class ScreenComponent implements OnInit, OnDestroy{
     this._sasisopaService.open(isSasisopa);
   }
 
+  public openNotifications():void{
+    if(this.role !== 7){
+      this._router.navigate(['/home/notifications'], {queryParams:{id: this.stationActive.id}}).then();
+    }else{
+      this._router.navigate(['/home/notifications'], {queryParams:{id: this.stationActive.id, admin: this.stationActive.idLegalRepresentative}}).then();
+    }
+  }
+
 }

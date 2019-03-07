@@ -20,7 +20,8 @@
 
   let data = {
     ENV: 'dev',
-    PORT: 8090
+    PORT: 8090,
+    SERVER: 2
   };
 
   if(process.env.NODE_ENV === 'prod'){
@@ -45,8 +46,14 @@
       {
         "name": "inspector-"+process.env.NODE_ENV,
         "script": "./server.js",
-        "exec_mode": "fork",
-        "cwd" : dir
+        "instances": 2,
+        "exec_mode": "cluster",
+        "cwd" : dir,
+        "env": {
+          "ENV": process.env.NODE_ENV,
+          "PORT": process.env.NODE_ENV === 'dev' ? 8090 : 9090,
+          "SERVER": "2"
+        }
       }
     ]
   };

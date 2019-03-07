@@ -5,113 +5,74 @@
  */
 
 
-'use-strict';
-
 import 'zone.js/dist/zone-node'
 import {enableProdMode} from '@angular/core';
-import * as path from 'path';
+import {ServerStandard} from './server_standard';
+import {ServerLite} from './server_lite';
 import * as nconfg from 'nconf';
-import * as express from 'express';
-import * as compression from 'compression';
-import * as ngUniversal from '@nguniversal/express-engine';
 
 enableProdMode();
 
 export class App {
 
-  public app: express.Application;
-  private _port: number | string;
-  private static DIR: string = path.resolve(__dirname, 'browser');
-
+  private _type_server: number;
 
   constructor(){
-    this.app = express();
-    this.index();
-    this.config();
+    nconfg.argv().env().file({ file: 'config.json' });
+    this._type_server = 1;
+    this.initOptions();
   }
 
   public static bootstrap(): App {
     return new App();
   }
 
-  private config(): void{
-    nconfg.argv().env().file({ file: 'config.json' });
-    this._port = process.env.PORT || nconfg.get('PORT') || 8889;
-    this.app.use(App.headers);
-    this.app.use(App.handlerErrors);
-    this.app.use(compression({level: 9}));
-    this.app.use('/.well-known', express.static(__dirname + '/.well-known'));
-    this.configEndPoints();
-    this.configRender();
-    this.app.use(express.static(App.DIR));
-    this.views();
+  private initOptions(): void{
+    const [,, ...args] = process.argv;
+    if(args.length > 0){
+      try{
+        args.forEach((arg, index) => {
+          if(arg === '--type'){
+            const type = args[index + 1];
+            if(type === 'lite'){
+              this._type_server = 2;
+            }
+          }
+        });
+      }catch (e){
+        throw e;
+      }
+    }else{
+      console.log('Not args');
+      this._type_server = parseInt(process.env.SERVER || nconfg.get('SERVER') || 1);
+    }
+    this.initServer();
   }
 
-  private configRender(): void{
-    this.app.get('/', App.angularRouter);
+  private initServer(): void{
+    let server;
+    switch (this._type_server){
+      case 1: // With SSR
+        server = new ServerStandard(true);
+        break;
+      case 2: // Without SSR (Use hash)
+        server = new ServerLite(true);
+        break;
+    }
+    App.configEndPoints(server.getAppInstance());
+    server.initRouter();
   }
 
-  private configEndPoints(): void{
+  private static configEndPoints(app: any): void{
     const swaggerUi = require('swagger-ui-express');
     const swaggerDocument = require('../dist/endpoints/swagger.json');
     const options = {
       customCss: '.swagger-ui .topbar { display: none }'
     };
-    this.app.use('/endpoints/v1/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument, options));
-    this.app.use('/endpoints/v1', require('../dist/endpoints/endpoints.js'));
+    app.use('/endpoints/v1/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument, options));
+    app.use('/endpoints/v1', require('../dist/endpoints/endpoints.js'));
   }
 
-  private views(): void{
-    const appServer = require('../dist/server/main');
-    this.app.engine('html', ngUniversal.ngExpressEngine({
-      bootstrap: appServer.AppServerModuleNgFactory
-    }));
-    this.app.set('view engine', 'html');
-    this.app.set('views', App.DIR);
-    this.router();
-  }
-
-  private index(): void{
-    App.readIndex().then(index => {
-      const domino = require('domino');
-      const win = domino.createWindow(index);
-      global['window'] = win;
-      global['document'] = win.document;
-    });
-  }
-
-  private router(): void{
-    /* Direct all routes to index.html, where Angular will take care of routing */
-    this.app.get('*', App.angularRouter);
-    this.start();
-  }
-
-  private start(): void{
-    this.app.listen(this._port, () => {
-      console.log(`Current environment ${nconfg.get('ENV') || 'dev'}`);
-      console.log(`Listening on http://localhost:${this._port}`);
-    });
-  }
-
-  private static angularRouter(req, res): void{
-    /* Server-side rendering */
-    res.status(200).render('index', { req, res });
-  }
-
-  private static headers(req: any, res: any, next: any): void{
-    res.header('X-Powered-By', 'MapLander');
-    next();
-  }
-
-  private static handlerErrors(err: any, req: any, res: any, next: any): void{
-    console.error(err.stack);
-    next(err);
-  }
-
-  private static async readIndex(): Promise<Buffer>{
-    const fs = require('fs');
-    return await fs.readFileSync(path.join(__dirname, 'browser/index.html'), 'utf8');
-  }
 }
 
 App.bootstrap();
