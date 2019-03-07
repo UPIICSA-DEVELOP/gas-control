@@ -5,8 +5,11 @@
   -->
 
 <div id="scanned-report">
+  <div style="display: flex; justify-content: center; margin: 8px 0; text-align: center;">
+    <div *ngIf="task" style="font-weight: 600; font-size: 18px;">{{task.original.name}}</div>
+  </div>
   <div class="task-header">
-    <div class="head-bold">Limpieza ecológica</div>
+    <div class="head-bold">Operación y mantenimiento</div>
     <div class="control-data">
       <div *ngIf="scannedReport">Fecha: {{date[0]}} {{date[1]}} {{date[2]}}&nbsp;&nbsp;</div>
       <div *ngIf="scannedReport">Folio: {{scannedReport.folio | formatFolio}}</div>
@@ -22,6 +25,15 @@
         </div>
       </mat-card-content>
     </mat-card>
+    <div class="divider" *ngIf="task.original.hwg"></div>
+    <div *ngIf="task.original.hwg">
+      <div *ngIf="task.original.hwg && scannedReport">
+        <app-hwg-report [taskHwgInfo]="scannedReport.hwgReport || undefined" [taskProvider]="2" [status]="task.original.status"></app-hwg-report>
+      </div>
+      <div *ngIf="task.original.hwg && !scannedReport">
+        <app-hwg-report [taskHwgInfo]="undefined" [taskProvider]="2" [status]="task.original.status"></app-hwg-report>
+      </div>
+    </div>
     <div class="text-sign">
       Nombre y firma del responsable
     </div>
