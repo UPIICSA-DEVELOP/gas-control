@@ -9,6 +9,9 @@ import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {CompressorReport} from '@app/core/interfaces/interfaces';
 import {ApiLoaderService} from '@app/core/services/api/api-loader.service';
 import {ApiService} from '@app/core/services/api/api.service';
+import {UtilitiesService} from '@app/core/utilities/utilities.service';
+import {ImageVisorService} from '@app/core/components/image-visor/image-visor.service';
+import {SnackBarService} from '@app/core/services/snackbar/snackbar.service';
 
 @Component({
   selector: 'app-compressor-report',
@@ -17,21 +20,30 @@ import {ApiService} from '@app/core/services/api/api.service';
 })
 export class CompressorReportComponent implements OnInit {
   private _taskId: string;
+  public task: any;
   @Input() set taskCompInfo(taskObj: any){
     if (taskObj){
       this._taskId = taskObj.id;
+      this.task = taskObj;
+      this.getCompReport();
     }
   }
   public load: boolean;
   public compressorReport: CompressorReport;
   public compForm: FormGroup;
   public date: any[];
+  public taskItems: any[];
+  private _indexTask: number;
   constructor(
     private _api: ApiService,
     private _apiLoader: ApiLoaderService,
-    private _formBuilder: FormBuilder
+    private _formBuilder: FormBuilder,
+    private _imageVisor: ImageVisorService,
+    private _snackBarService: SnackBarService
   ) {
     this.date = [];
+    this.taskItems = [];
+    this._indexTask = 0;
   }
 
   ngOnInit() {
@@ -52,6 +64,12 @@ export class CompressorReportComponent implements OnInit {
       modifications: ['', []],
       observations: ['', []]
     });
+  }
+
+  private resetElements(): void {
+    this.compressorReport = undefined;
+    this.compForm.reset();
+    this.compForm.disable();
   }
 
   private patchForm(task: any):void{
@@ -86,7 +104,39 @@ export class CompressorReportComponent implements OnInit {
       securityValve: this.compressorReport.securityValve,
       modifications: this.compressorReport.modifications,
       observations: this.compressorReport.observations
-    })
+    });
+    this.date = UtilitiesService.convertDate(this.compressorReport.date);
+    this.compForm.disable();
+  }
+
+  private getCompReport(): void{
+    this._api.getTaskInformation(this._taskId, 2).subscribe(response=>{
+      switch (response.code){
+        case 200:
+          if(response.items){
+            this.taskItems = UtilitiesService.sortJSON(response.items,'folio','desc');
+            this._indexTask = 0;
+            this.patchForm(this.taskItems[0]);
+          }else{
+            this.resetElements();
+          }
+          break;
+        default:
+          this.resetElements();
+          break;
+      }
+    });
+  }
+
+  public seeEvidence():void{
+    if(this.task.original.status !== 4){
+      return;
+    }
+    if(this.taskItems[this._indexTask].fileCS){
+      this._imageVisor.open(this.taskItems[this._indexTask].fileCS);
+    }else{
+      this._snackBarService.openSnackBar('Esta tarea no cuenta con evidencia', 'OK',3000);
+    }
   }
 
 }

@@ -5,6 +5,16 @@
   -->
 
 <div id="compressor-report">
+  <div style="display: flex; justify-content: center; margin: 8px 0; text-align: center;">
+    <div *ngIf="task" style="font-weight: 600; font-size: 18px;">{{task.original.name}}</div>
+  </div>
+  <div class="task-header">
+    <div class="head-bold">Compresor de aire</div>
+    <div class="control-data">
+      <div *ngIf="compressorReport">Fecha: {{date[0]}} {{date[1]}} {{date[2]}}&nbsp;&nbsp;</div>
+      <div *ngIf="compressorReport">Folio: {{compressorReport.folio | formatFolio}}</div>
+    </div>
+  </div>
   <form [formGroup]="compForm" class="flex-box">
     <div class="columns">
       <div class="times">
@@ -84,4 +94,11 @@
       </div>
     </div>
   </form>
+  <div class="divider" *ngIf="task.original.hwg"></div>
+  <div *ngIf="task.original.hwg && compressorReport">
+    <app-hwg-report [taskHwgInfo]="compressorReport.hwgReport || undefined" [taskProvider]="1" [status]="task.original.status"></app-hwg-report>
+  </div>
+  <div *ngIf="task.original.hwg && !compressorReport">
+    <app-hwg-report [taskHwgInfo]="undefined" [taskProvider]="1" [status]="task.original.status"></app-hwg-report>
+  </div>
 </div>
