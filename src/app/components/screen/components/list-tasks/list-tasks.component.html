@@ -126,23 +126,18 @@
                                     </mat-error>
                                   </mat-form-field>
                                   <mat-form-field class="inputs">
-                                    <mat-select formControlName="activityType" placeholder="Seleccione actividad"
-                                                required>
-                                      <mat-option value="Monitoreo de pozos y detección de fugas">Monitoreo de pozos y
-                                        detección de fugas
-                                      </mat-option>
-                                      <mat-option value="Albañilería, herreria, etc">Albañilería, herreria, etc
-                                      </mat-option>
+                                    <mat-select formControlName="activityType" placeholder="Seleccione actividad" required>
+                                      <mat-option value="Monitoreo de pozos y detección de fugas">Monitoreo de pozos y detección de fugas</mat-option>
+                                      <mat-option value="Albañilería, herrería, etc">Albañilería, herreria, etc</mat-option>
                                       <mat-option value="Pruebas de eficiencia">Pruebas de eficiencia</mat-option>
-                                      <mat-option value="Auditoria externa e interna">Auditoria externa e interna
-                                      </mat-option>
+                                      <mat-option value="Auditoria externa e interna">Auditoria externa e interna</mat-option>
                                       <mat-option value="Hidrosanitario">Hidrosanitario</mat-option>
                                       <mat-option value="Limpieza">Limpieza</mat-option>
-                                      <mat-option value="Mantenimiento de la Estación">Mantenimiento de la Estación
-                                      </mat-option>
-                                      <mat-option value="Mécanico">Mécanico</mat-option>
+                                      <mat-option value="Mantenimiento de la Estación">Mantenimiento de la Estación</mat-option>
+                                      <mat-option value="Mecánico">Mecánico</mat-option>
                                       <mat-option value="Visita de autoridad">Visita de autoridad</mat-option>
                                       <mat-option value="Eléctrico">Eléctrico</mat-option>
+                                      <mat-option value="Auditoría externa e interna">Auditoría externa e interna</mat-option>
                                       <mat-option value="Otro">Otro</mat-option>
                                     </mat-select>
                                     <mat-error *ngIf="taskForm[0].controls['activityType'].hasError('required')">
