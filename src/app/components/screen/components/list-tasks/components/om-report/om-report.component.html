@@ -9,8 +9,8 @@
     <div class="task-header">
       <div class="head-bold">Operación de la Estación de Servicio</div>
       <div class="control-data">
-        <div *ngIf="reportOM">Fecha: {{date[0]}} {{date[1]}} {{date[2]}}&nbsp;&nbsp;</div>
-        <div *ngIf="reportOM">Folio: {{reportOM.folio | formatFolio}}</div>
+        <div *ngIf="omReport">Fecha: {{date[0]}} {{date[1]}} {{date[2]}}&nbsp;&nbsp;</div>
+        <div *ngIf="omReport">Folio: {{omReport.folio | formatFolio}}</div>
       </div>
     </div>
     <form [formGroup]="omForm" class="flex-box">
@@ -68,9 +68,9 @@
         <div class="text-divider">
           <span>Personal involucrado <sup>*</sup></span>
         </div>
-        <ng-container *ngIf="reportOM; then listComplete else listEmpty"></ng-container>
+        <ng-container *ngIf="omReport; then listComplete else listEmpty"></ng-container>
         <ng-template #listComplete>
-          <ng-container *ngFor="let item of reportOM.personnelNames; let i = index">
+          <ng-container *ngFor="let item of omReport.personnelNames; let i = index">
             <mat-form-field class="inputs">
               <input matInput placeholder="{{i+1}}.- Nombre" [(ngModel)]="item" [ngModelOptions]="{standalone: true}" [disabled]="true">
             </mat-form-field>
@@ -129,8 +129,8 @@
         <div class="text-divider">
           Procedimientos utilizados
         </div>
-        <div class="inputs" *ngIf="reportOM && reportOM.procedures">
-          <div *ngFor="let procedure of reportOM.procedures; let i = index;">
+        <div class="inputs" *ngIf="omReport && omReport.procedures">
+          <div *ngFor="let procedure of omReport.procedures; let i = index;">
             <div class="procedure" *ngIf="procedure === 1">{{i+1}}.- {{taskTemplate.procedures[procedure-1].name}}</div>
             <div class="procedure" *ngIf="procedure === 2">{{i+1}}.-{{taskTemplate.procedures[procedure-1].name}}</div>
             <div class="procedure" *ngIf="procedure === 3">{{i+1}}.-{{taskTemplate.procedures[procedure-1].name}}</div>
@@ -158,23 +158,23 @@
           Captura fotográfica de evidencia.
         </div>
         <div class="image-container">
-          <mat-icon *ngIf="!reportOM || !reportOM.fileCS" class="default-image">
+          <mat-icon *ngIf="!omReport || !omReport.fileCS" class="default-image">
             image
           </mat-icon>
-          <img class="evidence" *ngIf="reportOM && reportOM.fileCS"
-               [src]="reportOM.fileCS.thumbnail" alt="Evidence capture">
+          <img class="evidence" *ngIf="omReport && omReport.fileCS"
+               [src]="omReport.fileCS.thumbnail" alt="Evidence capture">
         </div>
         <div class="text-sign">
           Nombre y firma del responsable
         </div>
         <div class="inputs">
           <div class="signature-element">
-            <img *ngIf="reportOM && reportOM.signature" [src]="reportOM.signature.thumbnail">
-            <div *ngIf="!reportOM || !reportOM.signature" style="width: 60%; height: 60px"></div>
+            <img *ngIf="omReport && omReport.signature" [src]="omReport.signature.thumbnail">
+            <div *ngIf="!omReport || !omReport.signature" style="width: 60%; height: 60px"></div>
           </div>
           <div class="divider"></div>
-          <div *ngIf="!reportOM || !reportOM.name" class="name">Nombre</div>
-          <div *ngIf="reportOM && reportOM.name" class="name">{{reportOM.name}}</div>
+          <div *ngIf="!omReport || !omReport.name" class="name">Nombre</div>
+          <div *ngIf="omReport && omReport.name" class="name">{{omReport.name}}</div>
         </div>
         <div *ngIf="itemsTasks && itemsTasks.length !== 0 && !task.original.hwg">
           <mat-paginator
