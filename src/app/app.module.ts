@@ -122,7 +122,7 @@ import { CompressorReportComponent } from './components/screen/components/list-t
     BrowserTransferStateModule,
     TransferHttpCacheModule,
     AngularFireModule.initializeApp(environment.firebase),
-    RouterModule.forRoot(appRoutes),
+    RouterModule.forRoot(appRoutes, {useHash: true}),
     AngularFireMessagingModule,
     BrowserModule.withServerTransition({
       appId: 'com.maplander.inspector.front'
