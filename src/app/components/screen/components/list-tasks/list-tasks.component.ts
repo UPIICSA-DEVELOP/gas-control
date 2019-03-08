@@ -4,6 +4,7 @@
  *  Proprietary and confidential
  */
 
+import {Component, DoCheck, Input, OnInit} from '@angular/core';
 import {Component, DoCheck, Inject, Input, OnDestroy, OnInit} from '@angular/core';
 import {DatepickerService, DateRangeOptions} from '@app/components/screen/components/datepicker/datepicker.service';
 import {TaskFilterService} from '@app/components/screen/components/task-filter/task-filter.service';
@@ -13,10 +14,6 @@ import {Constants} from '@app/core/constants.core';
 import {UtilitiesService} from '@app/core/utilities/utilities.service';
 import {LocalStorageService} from '@app/core/services/local-storage/local-storage.service';
 import {AddStationService} from '@app/components/screen/components/add-gas-station/add-station.service';
-import {FormBuilder, FormGroup} from '@angular/forms';
-import {ModalProceduresService} from '@app/components/screen/components/modal-procedures/modal-procedures.service';
-import {HWCReport} from '@app/core/interfaces/interfaces';
-import {DOCUMENT} from '@angular/common';
 import {TaskFilterNameService} from '@app/components/screen/components/task-filter-name/task-filter-name.service';
 import {SharedNotification, SharedService, SharedTypeNotification} from '@app/core/services/shared/shared.service';
 import {ImageVisorService} from '@app/core/components/image-visor/image-visor.service';
@@ -35,14 +32,12 @@ export class ListTasksComponent implements OnInit, DoCheck , OnDestroy{
       this.others = false;
       this.tasks = [];
       this.notCalendarTasks = [];
-      this._indexOldTaskExpanded = null;
       this.station = stationObj;
       this.getStationTask();
     }else{
       this.others = false;
       this.tasks = [];
       this.notCalendarTasks = [];
-      this._indexOldTaskExpanded = null;
     }
   }
 
@@ -62,23 +57,13 @@ export class ListTasksComponent implements OnInit, DoCheck , OnDestroy{
   public filter: number;
   private _creationDate: number;
   public itemsTasks: any[];
-  private _indexTask: number;
   public load: boolean;
   public user: any;
   public notCalendar: boolean;
-  public secondTaskForm: FormGroup[];
   public taskWithDivider: any[];
   public date: any[];
   public others: boolean;
   public notCalendarTasks: any[];
-  /**
-   *  Start: task entity
-   */
-  public reportHWC: HWCReport;
-  /**
-   *  End: task entity
-   */
-  private _indexOldTaskExpanded: number;
   private _firstOpen: boolean;
   private _taskType: string;
   private _taskListPaged: any;
@@ -89,28 +74,20 @@ export class ListTasksComponent implements OnInit, DoCheck , OnDestroy{
   private _subscriptionShared: Subscription;
   private _subscriptionLoader: Subscription;
   constructor(
-    @Inject(DOCUMENT) private _document: Document,
     private _dateService: DatepickerService,
     private _filterService: TaskFilterService,
     private _api: ApiService,
     private _apiLoader: ApiLoaderService,
     private _addStationService: AddStationService,
-    private _formBuilder: FormBuilder,
-    private _modalProceduresService: ModalProceduresService,
     private _taskFilterNameService: TaskFilterNameService,
-    private _sharedService: SharedService,
-    private _imageVisorService: ImageVisorService,
-    private _snackBarService: SnackBarService
+    private _sharedService: SharedService
   ) {
     this.typeReportView = 0;
     this.reportView = false;
     this.itemsTasks = [];
-    this._indexTask = 0;
     this.others = false;
     this.date = [];
     this.taskWithDivider = [];
-    this._indexOldTaskExpanded = 0;
-    this.secondTaskForm = [undefined,undefined,undefined];
     this.today = false;
     this.notCalendar = false;
     this.filter = 0;
@@ -133,7 +110,6 @@ export class ListTasksComponent implements OnInit, DoCheck , OnDestroy{
 
   ngOnInit() {
     this.checkChanges();
-    this.initForms();
     this.user = LocalStorageService.getItem(Constants.UserInSession);
     this._subscriptionLoader = this._apiLoader.getProgress().subscribe(load => this.load = load);
     if (this.startDate.toLocaleDateString() === this.endDate.toLocaleDateString()) {
@@ -156,6 +132,7 @@ export class ListTasksComponent implements OnInit, DoCheck , OnDestroy{
     this._subscriptionShared = this._sharedService.getNotifications().subscribe((response: SharedNotification)=>{
       switch (response.type){
         case SharedTypeNotification.NotCalendarTask:
+          this.resetFilters();
           this.others = true;
           this.getNotCalendarTask();
           break;
@@ -164,7 +141,6 @@ export class ListTasksComponent implements OnInit, DoCheck , OnDestroy{
   }
 
   private getStationTask(): void {
-    this._indexOldTaskExpanded = null;
     this.filters = {
       stationTaskId: this.station.stationTaskId || '0000',
       startDate: (this.start.timeStamp).toString(),
@@ -230,8 +206,7 @@ export class ListTasksComponent implements OnInit, DoCheck , OnDestroy{
             type: 1,
             title: 'Hoy',
             original: null,
-            id: '',
-            expanded: false,
+            id: ''
           });
         }
         headerToday = true;
@@ -239,8 +214,7 @@ export class ListTasksComponent implements OnInit, DoCheck , OnDestroy{
           type: 2,
           title: '',
           original: item,
-          id: item.id,
-          expanded: false,
+          id: item.id
         });
       } else if (item.status === 2) {
         if (!headerPrevious && this.filter === 0){
@@ -248,24 +222,21 @@ export class ListTasksComponent implements OnInit, DoCheck , OnDestroy{
             type: 1,
             title: 'Atrasadas',
             original: null,
-            id: '',
-            expanded: false,
+            id: ''
           });
           headerPrevious = true;
           this.taskWithDivider.push({
             type: 2,
             title: '',
             original: item,
-            id: item.id,
-            expanded: false,
+            id: item.id
           });
         } else {
           this.taskWithDivider.push({
             type: 2,
             title: '',
             original: item,
-            id: item.id,
-            expanded: false,
+            id: item.id
           });
         }
       }
@@ -276,8 +247,7 @@ export class ListTasksComponent implements OnInit, DoCheck , OnDestroy{
           type: 1,
           title: 'Historial',
           original: null,
-          id: '',
-          expanded: false,
+          id: ''
         });
       }
       for(let i = 0; i< historyArray.length; i++){
@@ -285,8 +255,7 @@ export class ListTasksComponent implements OnInit, DoCheck , OnDestroy{
           type: 2,
           title: '',
           original: historyArray[i],
-          id: historyArray[i].id,
-          expanded: false,
+          id: historyArray[i].id
         })
       }
     }
@@ -375,69 +344,8 @@ export class ListTasksComponent implements OnInit, DoCheck , OnDestroy{
     });
   }
 
-  public getTaskInformation(index: number, id: string, type: number, hwg?: boolean): void {
-    if(this.others){
-      this.notCalendarTasks[index].expanded = true;
-      if (this._indexOldTaskExpanded !== null && this._indexOldTaskExpanded !== index) {
-        this.notCalendarTasks[this._indexOldTaskExpanded].expanded = false;
-      }
-      this._indexOldTaskExpanded = index;
-      this._api.getTaskInformation(id, type).subscribe(response => {
-        switch (response.code) {
-          case 200:
-            if (response.items) {
-              this.itemsTasks = UtilitiesService.sortJSON(response.items, 'folio', 'desc');
-              this._indexTask = 0;
-              this.patchForms(type, this.itemsTasks[0]);
-            } else {
-              this.resetElements();
-            }
-            break;
-        }
-      });
-    }else{
-      this.taskWithDivider[index].expanded = true;
-      if (this._indexOldTaskExpanded !== null && this._indexOldTaskExpanded !== index) {
-        this.taskWithDivider[this._indexOldTaskExpanded].expanded = false;
-      }
-      this._indexOldTaskExpanded = index;
-      this._api.getTaskInformation(id, type).subscribe(response => {
-        switch (response.code) {
-          case 200:
-            if (response.items) {
-              this.itemsTasks = UtilitiesService.sortJSON(response.items, 'folio', 'desc');
-              this._indexTask = 0;
-              this.patchForms(type, this.itemsTasks[0]);
-            } else {
-              this.resetElements();
-            }
-            break;
-        }
-      });
-    }
-  }
-
-  private initForms(): void {
-    this.initHWCForm();
-  }
-
-  private resetElements(): void {
-    this.reportHWC = null;
-    this.secondTaskForm[2].reset();
-    this.secondTaskForm[2].disable();
-  }
-
-  private patchForms(type: number, taskEntity: any) {
-    switch (type) {
-      case 6:
-        this.patchHWCForm(taskEntity);
-        break;
-    }
-  }
-
   public getNotCalendarTask(ev?: any):void{
     this.goBackList();
-    this._indexOldTaskExpanded = null;
     let type = '1';
     if(ev){
       this._lastTabSelected = ev.index;
@@ -476,8 +384,7 @@ export class ListTasksComponent implements OnInit, DoCheck , OnDestroy{
       switch (response.code){
         case 200:
           if(response.items){
-            const tasks = response.items;
-            this.compareNotCalendarTasks(tasks)
+            this.compareNotCalendarTasks(response.items);
           }else{
             this.notCalendarTasks = [];
           }
@@ -495,56 +402,8 @@ export class ListTasksComponent implements OnInit, DoCheck , OnDestroy{
       this.notCalendarTasks.push({
         id: task.id,
         date: UtilitiesService.convertDate(task.date),
-        expanded: false
       });
     });
-  }
-
-  private initHWCForm():void{
-    this.secondTaskForm[1] = this._formBuilder.group({
-      waste:['',[]],
-      quantity: ['',[]],
-      unity: ['',[]],
-      carrierCompany: ['',[]],
-      finalDestination: ['',[]]
-    });
-  }
-
-  private patchHWCForm(task: any):void{
-    this.reportHWC = {
-      carrierCompany: task.carrierCompany || undefined,
-      date: task.date || undefined,
-      finalDestination: task.finalDestination || undefined,
-      fileCS: task.fileCS || undefined,
-      folio: task.folio || undefined,
-      id: task.id || undefined,
-      manifest: task.manifest || undefined,
-      manifestNumber: task.manifestNumber || undefined,
-      name: task.name || undefined,
-      nextPhase: task.nextPhase || undefined,
-      quantity: task.quantity || undefined,
-      signature: task.signature || undefined,
-      taskId: task.taskId || undefined,
-      unity: task.unity || undefined,
-      waste: task.waste || undefined
-    };
-    this.date = UtilitiesService.convertDate(this.reportHWC.date);
-    this.secondTaskForm[1].patchValue({
-      waste: this.reportHWC.waste,
-      quantity: this.reportHWC.quantity,
-      unity: this.reportHWC.unity,
-      carrierCompany: this.reportHWC.carrierCompany,
-      finalDestination: this.reportHWC.finalDestination
-    });
-    this.secondTaskForm[1].disable();
-  }
-
-  public seeEvidence():void{
-    if(this.itemsTasks[this._indexTask].fileCS){
-      this._imageVisorService.open(this.itemsTasks[this._indexTask].fileCS);
-    }else{
-      this._snackBarService.openSnackBar('Esta tarea no cuenta con evidencia', 'OK',3000);
-    }
   }
 
   public goTaskInfo(task: any, type?:number): void{
@@ -569,6 +428,8 @@ export class ListTasksComponent implements OnInit, DoCheck , OnDestroy{
   }
 
   public closeOthers(): void{
+    this._lastTabSelected = 0;
+    this.notCalendarTasks = null;
     this.goBackList();
     this.others = false;
   }

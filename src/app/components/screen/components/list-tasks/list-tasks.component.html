@@ -8,8 +8,8 @@
   <mat-card class="container">
     <div class="header">
       <h4 *ngIf="!others">TAREAS</h4>
-      <div *ngIf="reportView" class="filters">
-        <div class="settings">
+      <div class="filters">
+        <div *ngIf="!reportView" class="settings">
           <mat-icon class="filter-icon">filter_list</mat-icon>
           <mat-chip-list>
             <mat-chip *ngIf="!others" [color]="'primary'" selected (click)="taskFilter()">
@@ -33,7 +33,7 @@
           <button *ngIf="others" mat-icon-button (click)="closeOthers()">
             <mat-icon>close</mat-icon>
           </button>
-          <button mat-icon-button *ngIf="!others" (click)="search()">
+          <button mat-icon-button *ngIf="!others && !reportView" (click)="search()">
             <mat-icon>search</mat-icon>
           </button>
         </div>
@@ -187,7 +187,7 @@
             <mat-tab label="Incidencias">
               <div *ngIf="notCalendarTasks.length !== 0; then listIN else emptyIN"></div>
               <ng-template #listIN>
-                <div class="card-list" *ngFor="let task of notCalendarTasks; let i = index">
+                <div class="card-list" *ngFor="let task of notCalendarTasks;">
                   <div *ngIf="reportView; then incidenceReportView else incidenceList"></div>
                   <ng-template #incidenceReportView>
                     <div>
@@ -216,7 +216,7 @@
                             <div class="text">Crítico</div>
                           </div>
                           <div style="position: absolute; bottom: 0; right: 0; margin: 0 4px">
-                            <button mat-icon-button type="button" (click)="goTaskInfo(task, 7)" matTooltip="Abrir tarea">
+                            <button mat-icon-button type="button" (click)="goTaskInfo(task, 9)" matTooltip="Abrir tarea">
                               <mat-icon>keyboard_arrow_down</mat-icon>
                             </button>
                           </div>
@@ -235,97 +235,42 @@
             <mat-tab label="Recolección de residuos peligrosos">
               <div *ngIf="notCalendarTasks.length !== 0; then listHWC else emptyHWC"></div>
               <ng-template #listHWC>
-                <div id="task-{{task.id}}" class="card-list" *ngFor="let task of notCalendarTasks; let i = index">
-                  <div class="task" style="margin-top: 8px">
-                    <div class="priority" style="background-color:#E00000"></div>
-                    <div class="containerTask">
-                      <div class="containerTask">
-                        <mat-accordion class="containerTask">
-                          <mat-expansion-panel [expanded]="task.expanded">
-                            <mat-expansion-panel-header [collapsedHeight]="'88px'" [expandedHeight]="'88px'" (click)="getTaskInformation(i,task.id, 6)" style="position: relative;">
-                              <mat-panel-title style="position: relative">
-                                <div class="date">
-                                  <div>
-                                    <div class="text-bold">{{task.date[0]}}</div>
-                                    <div class="text-bold">{{task.date[1]}}</div>
-                                  </div>
-                                </div>
-                                <div class="content">
-                                  <div class="head">Recolección de residuos peligrosos</div>
-                                  <div class="text"></div>
-                                  <div class="text">Crítico</div>
-                                </div>
-                              </mat-panel-title>
-                            </mat-expansion-panel-header>
-                            <div class="divider"></div>
-                            <form [formGroup]="secondTaskForm[1]" class="containerTask">
-                              <div class="task-header">
-                                <div class="head-bold">Recolección residuos peligrosos</div>
-                                <div class="control-data">
-                                  <div *ngIf="reportHWC">Fecha: {{date[0]}} {{date[1]}} {{date[2]}}</div>
-                                  <div *ngIf="reportHWC">Folio: {{reportHWC.folio | formatFolio}}</div>
-                                </div>
-                              </div>
-                              <div class="flex-box">
-                                <div class="columns">
-                                  <mat-form-field class="inputs">
-                                    <mat-select formControlName="waste" placeholder="Residuo recolectado" required>
-                                      <mat-option value="Natas y grasas">Natas y grasas de la tampa de combustibles</mat-option>
-                                      <mat-option value="Envases contaminados con aceites">Envases contaminados con aceites</mat-option>
-                                      <mat-option value="Filtros de gasolina y diesel">Filtros de gasolina y diesel</mat-option>
-                                      <mat-option value="Residuos de aceite y pintura">Residuos de aceite y pintura</mat-option>
-                                    </mat-select>
-                                  </mat-form-field>
-                                  <div style="display: flex; justify-content: space-between; width: 90%">
-                                    <mat-form-field style="width: 65%">
-                                      <input formControlName="quantity" matInput placeholder="Cantidad recolectada" required>
-                                    </mat-form-field>
-                                    <mat-form-field style="width: 30%;">
-                                      <mat-select formControlName="unity" placeholder="Unidad" required>
-                                        <mat-option value="Pzas">Pzas</mat-option>
-                                        <mat-option value="Kg">Kg</mat-option>
-                                        <mat-option value="gr">gr</mat-option>
-                                        <mat-option value="lt">lt</mat-option>
-                                      </mat-select>
-                                    </mat-form-field>
-                                  </div>
-                                  <mat-form-field class="inputs">
-                                    <input formControlName="carrierCompany" matInput placeholder="Empresa transportista" required>
-                                  </mat-form-field>
-                                  <mat-form-field class="inputs">
-                                    <input formControlName="finalDestination" matInput placeholder="Destino final" required>
-                                  </mat-form-field>
-                                </div>
-                                <div class="columns" style="display: flex; flex-direction: column; justify-content: center">
-                                  <div style="display: flex; width: 90%; justify-content: center">
-                                    <div style="background-color: #707070; color: #FFFFFF; border-radius: 4px; cursor: pointer; padding: 2px 4px;">
-                                      <a *ngIf="reportHWC && reportHWC.fileCS" style="text-decoration: none; color: #FFFFFF;" [href]="reportHWC.fileCS.thumbnail">VER MANIFIESTO</a>
-                                      <span *ngIf="!reportHWC || !reportHWC.fileCS">VER MANIFIESTO</span>
-                                    </div>
-                                  </div>
-                                  <div style="width: 100%;">
-                                    <div class="text-sign">
-                                      Nombre y firma del responsable
-                                    </div>
-                                    <div class=inputs>
-                                      <div class="signature-element">
-                                        <img *ngIf="reportHWC && reportHWC.signature" [src]="reportHWC.signature.thumbnail">
-                                        <div *ngIf="!reportHWC || !reportHWC.signature" style="width: 60%; height: 60px"></div>
-                                      </div>
-                                      <div class="divider"></div>
-                                      <div *ngIf="!reportHWC || !reportHWC.name" class="name">Nombre</div>
-                                      <div *ngIf="reportHWC && reportHWC.name" class="name">{{reportHWC.name}}</div>
-                                    </div>
-                                  </div>
-                                </div>
-                              </div>
-                            </form>
-                          </mat-expansion-panel>
-                        </mat-accordion>
-                      </div>
+                <div *ngIf="reportView; then frReportView else frList"></div>
+                <ng-template #frReportView>
+                  <div style="width: 95%">
+                    <div style="display: flex; justify-content: flex-end">
+                      <button mat-icon-button (click)="goBackList()" matTooltip="Cerrar bitacora">
+                        <mat-icon>close</mat-icon>
+                      </button>
                     </div>
+                    <app-hwc-report [taskHwcInfo]="taskElement"></app-hwc-report>
                   </div>
-                </div>
+                </ng-template>
+                <ng-template #frList>
+                  <div class="card-list" *ngFor="let task of notCalendarTasks;">
+                    <mat-card class="task" style="margin-top: 8px">
+                      <div class="priority" style="background-color:#E00000"></div>
+                      <mat-card-content>
+                        <div class="date">
+                          <div>
+                            <div class="text-bold">{{task.date[0]}}</div>
+                            <div class="text-bold">{{task.date[1]}}</div>
+                          </div>
+                        </div>
+                        <div class="content">
+                          <div class="head">Recolección de residuos peligrosos</div>
+                          <div class="text"></div>
+                          <div class="text">Crítico</div>
+                        </div>
+                        <div style="position: absolute; bottom: 0; right: 0; margin: 0 4px">
+                          <button mat-icon-button type="button" (click)="goTaskInfo(task, 6)" matTooltip="Abrir tarea">
+                            <mat-icon>keyboard_arrow_down</mat-icon>
+                          </button>
+                        </div>
+                      </mat-card-content>
+                    </mat-card>
+                  </div>
+                </ng-template>
               </ng-template>
               <ng-template #emptyHWC>
                 <div class="empty-list">
