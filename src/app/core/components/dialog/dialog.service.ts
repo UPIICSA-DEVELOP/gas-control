@@ -52,7 +52,8 @@ export class DialogService {
             accept: (accept)?accept:'ACEPTAR',
             cancel: (cancel)?cancel:'CANCELAR'
          },
-       disableClose: true
+       disableClose: true,
+       panelClass: 'dialog-panel'
       }
    );
   }
@@ -78,7 +79,8 @@ export class DialogService {
             accept: (accept)?accept:'ACEPTAR',
             cancel: ''
           },
-        disableClose: true
+        disableClose: true,
+        panelClass: 'dialog-panel'
       }
     );
   }
@@ -110,7 +112,8 @@ export class DialogService {
             cancel: (cancel)?cancel:'CANCELAR',
             text: text
           },
-        disableClose: true
+        disableClose: true,
+        panelClass: 'dialog-panel'
       }
     );
   }
@@ -128,7 +131,8 @@ export class DialogService {
             text: text,
             secondText: secondText
           },
-        disableClose: true
+        disableClose: true,
+        panelClass: 'dialog-panel'
       }
     );
   }

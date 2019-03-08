@@ -192,6 +192,15 @@ body{
   }
 }
 
+.dialog-panel{
+  mat-dialog-container{
+    width: 30vw;
+    @media screen and(max-width: 600px){
+      width: 90vw;
+    }
+  }
+}
+
 .sgm-and-sasisopa-panel{
   mat-dialog-container{
     width: 35vw;

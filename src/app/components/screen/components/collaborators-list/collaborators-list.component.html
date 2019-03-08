@@ -62,13 +62,9 @@
                     </button>
                   </div>
                   <div class="button">
-                    <button *ngIf="(user.role<3 || user.role===7) && collaborator.role!==1" mat-button [mat-menu-trigger-for]="role">
+                    <button *ngIf="(user.role<3 || user.role===7) && collaborator.role!==1" mat-button (click)="changeRoleCollaborator(collaborator)">
                       <mat-icon matTooltip="Cambiar rol" svgIcon="icons:change_role"></mat-icon>
                     </button>
-                    <mat-menu #role>
-                      <button mat-menu-item *ngIf="collaborator.role !== 2" (click)="changeRoleCollaborator(collaborator.id, 2)">Gerente</button>
-                      <button mat-menu-item *ngIf="collaborator.role !== 3" (click)="changeRoleCollaborator(collaborator.id, 3)">Asistente</button>
-                    </mat-menu>
                   </div>
                   <div class="button">
                     <a href="mailto:{{collaborator.email}}" class="link">

@@ -22,6 +22,7 @@ import {UtilitiesService} from '@app/core/utilities/utilities.service';
 import {LocalStorageService} from '@app/core/services/local-storage/local-storage.service';
 import {Person} from '@app/core/interfaces/interfaces';
 import {Subscription} from 'rxjs/Rx';
+import {response} from 'express';
 
 @Component({
   selector: 'app-collaborators-list',
@@ -164,16 +165,32 @@ export class CollaboratorsListComponent implements OnInit, OnDestroy {
     });
   }
 
-  public changeRoleCollaborator(id: string, newRole: number):void{
-    this._api.updateRolePerson(id, newRole).subscribe(response=>{
-      switch (response.code) {
-        case 200:
-          this._snackBarService.openSnackBar('Rol actualizado', 'OK', 2000);
-          this.getCollaborators();
-          break;
-        default:
-          this._snackBarService.openSnackBar('No se ha podido actualizar el rol', 'OK', 2000);
-          this.getCollaborators();
+  public changeRoleCollaborator(person: any):void{
+    let newRole = 0;
+    switch (person.role){
+      case 2:
+        newRole = 3;
+        break;
+      case 3:
+        newRole = 2;
+        break;
+    }
+    const message = '¿Desea cambiar el rol de '+person.name+' '+person.lastName+' a '+this.role[newRole-1]+'?';
+    this._dialogService.confirmDialog(message,'','ACEPTAR','CANCELAR').afterClosed().subscribe(response=>{
+      switch (response.code){
+        case 1:
+          this._api.updateRolePerson(person.id, newRole).subscribe(response=>{
+            switch (response.code) {
+              case 200:
+                this._snackBarService.openSnackBar('Rol actualizado', 'OK', 2000);
+                this.getCollaborators();
+                break;
+              default:
+                this._snackBarService.openSnackBar('No se ha podido actualizar el rol', 'OK', 2000);
+                this.getCollaborators();
+                break;
+            }
+          });
           break;
       }
     });
@@ -413,6 +430,7 @@ export class CollaboratorsListComponent implements OnInit, OnDestroy {
             'ACEPTAR');
           this.getCollaborators();
           this.register = false;
+          this.changes = false;
           break;
         default:
           this._dialogService.alertDialog('No se pudo acceder', 'Se produjo un error de comunicación con el servidor', 'ACEPTAR');
