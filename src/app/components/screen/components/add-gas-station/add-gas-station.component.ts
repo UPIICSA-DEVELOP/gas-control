@@ -111,6 +111,7 @@ export class AddGasStationComponent implements OnInit, OnDestroy {
   public legalName: string;
   public managerName: string;
   public yearSelector: number[];
+  public load_two: boolean;
   private _formImage:FormData;
   private _formSignature: FormData;
   private _formFile: FormData;
@@ -136,6 +137,7 @@ export class AddGasStationComponent implements OnInit, OnDestroy {
     private _sharedService: SharedService,
     private _dialogRef: MatDialogRef<AddGasStationComponent>
   ) {
+    this.load_two = false;
     this.yearSelector = [];
     this.listExist = true;
     this.capacities = Constants.Capacities;
@@ -567,7 +569,9 @@ export class AddGasStationComponent implements OnInit, OnDestroy {
   }
 
   public validateLegal(data:any):void{
+    this.load_two = true;
     if(this.newLegalRep.invalid){
+      this.load_two = false;
       return;
     }else if(this.addImage){
       this.uploadGenericFile(1, false);
@@ -610,7 +614,9 @@ export class AddGasStationComponent implements OnInit, OnDestroy {
   }
 
   public validateManager(data:any):void{
+    this.load_two = true;
     if(this.newManager.invalid){
+      this.load_two = false;
       return;
     }else if(this.addImageTwo){
       this.uploadGenericFile(1, true);
@@ -688,14 +694,15 @@ export class AddGasStationComponent implements OnInit, OnDestroy {
         case 200:
           this._snackBarService.closeSnackBar();
           if (isManager){
-            this.legalRepresentative.bCard = response.item;
-            this.createManager()
+            this.manger.bCard = response.item;
+            this.createManager();
           }else {
             this.legalRepresentative.bCard = response.item;
             this.createLegal();
           }
           break;
         default:
+          this.load_two = false;
           this._snackBarService.closeSnackBar();
           this._snackBarService.openSnackBar('Ha ocurrido un error, por favor, intente de nuevo', 'OK', 3000);
           break;
@@ -724,7 +731,12 @@ export class AddGasStationComponent implements OnInit, OnDestroy {
                     'ACEPTAR').afterClosed().subscribe(response=>{
                       this.step = 0; this.listExist = true;
                       this._modalScroll.nativeElement.scroll({top: 0});
+                    this.load_two = false;
                     });
+                  break;
+                default:
+                  this._snackBarService.openSnackBar('Ha ocurrido un error, por favor, intente de nuevo', 'OK', 3000);
+                  this.load_two = false;
                   break;
               }
             });
@@ -748,7 +760,12 @@ export class AddGasStationComponent implements OnInit, OnDestroy {
                     'ACEPTAR').afterClosed().subscribe(response=>{
                       this.step = 0; this.listExist = true;
                       this._modalScroll.nativeElement.scroll({top: 0});
+                      this.load_two = false;
                     });
+                  break;
+                default:
+                  this._snackBarService.openSnackBar('Ha ocurrido un error, por favor, intente de nuevo', 'OK', 3000);
+                  this.load_two = false;
                   break;
               }
             });
@@ -779,7 +796,12 @@ export class AddGasStationComponent implements OnInit, OnDestroy {
                     'ACEPTAR').afterClosed().subscribe(response=>{
                       this.step = 0;
                       this._modalScroll.nativeElement.scroll({top: 0});
+                      this.load_two = false;
                     });
+                  break;
+                default:
+                  this._snackBarService.openSnackBar('Ha ocurrido un error, por favor, intente de nuevo', 'OK', 3000);
+                  this.load_two = false;
                   break;
               }
             });
@@ -803,7 +825,12 @@ export class AddGasStationComponent implements OnInit, OnDestroy {
                     'ACEPTAR').afterClosed().subscribe(response=>{
                       this.step = 0;
                       this._modalScroll.nativeElement.scroll({top: 0});
+                      this.load_two = false;
                     });
+                  break;
+                default:
+                  this._snackBarService.openSnackBar('Ha ocurrido un error, por favor, intente de nuevo', 'OK', 3000);
+                  this.load_two = false;
                   break;
               }
             });
@@ -890,11 +917,13 @@ export class AddGasStationComponent implements OnInit, OnDestroy {
             case 1:
               if(this.manger){
                 this._api.deletePerson(this.manger.id).subscribe(response=>{
+                  console.log(response);
                   switch (response.code){
                     case 200:
                       this._dialogRef.close();
                       break;
                     default:
+                      this._dialogRef.close();
                       break;
                   }
                 });
@@ -915,6 +944,9 @@ export class AddGasStationComponent implements OnInit, OnDestroy {
          break;
       case 3:
         this._router.navigate(['/home']).then(()=>{
+          if (this.station && this.station.id){
+            this._sharedService.setNotification({type: SharedTypeNotification.ChangeStation, value: this.station.id});
+          }
           this._dialogRef.close();
         });
          break;
