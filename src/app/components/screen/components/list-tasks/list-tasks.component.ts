@@ -4,8 +4,7 @@
  *  Proprietary and confidential
  */
 
-import {Component, DoCheck, Input, OnInit} from '@angular/core';
-import {Component, DoCheck, Inject, Input, OnDestroy, OnInit} from '@angular/core';
+import {Component, DoCheck, Input, OnDestroy, OnInit} from '@angular/core';
 import {DatepickerService, DateRangeOptions} from '@app/components/screen/components/datepicker/datepicker.service';
 import {TaskFilterService} from '@app/components/screen/components/task-filter/task-filter.service';
 import {ApiService} from '@app/core/services/api/api.service';
@@ -16,8 +15,6 @@ import {LocalStorageService} from '@app/core/services/local-storage/local-storag
 import {AddStationService} from '@app/components/screen/components/add-gas-station/add-station.service';
 import {TaskFilterNameService} from '@app/components/screen/components/task-filter-name/task-filter-name.service';
 import {SharedNotification, SharedService, SharedTypeNotification} from '@app/core/services/shared/shared.service';
-import {ImageVisorService} from '@app/core/components/image-visor/image-visor.service';
-import {SnackBarService} from '@app/core/services/snackbar/snackbar.service';
 import {Subscription} from 'rxjs';
 
 @Component({
