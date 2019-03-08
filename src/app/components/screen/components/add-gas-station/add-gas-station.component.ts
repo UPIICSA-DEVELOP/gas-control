@@ -908,7 +908,7 @@ export class AddGasStationComponent implements OnInit {
         this.step = 0;
          break;
       case 3:
-        this._router.navigate(['/home'],{queryParams:{station: this._stationId?this._stationId:this.station.id}}).then(()=>{
+        this._router.navigate(['/home']).then(()=>{
           this._dialogRef.close();
         });
          break;
