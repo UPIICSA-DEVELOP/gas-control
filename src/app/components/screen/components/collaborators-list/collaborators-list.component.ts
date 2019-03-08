@@ -407,7 +407,7 @@ export class CollaboratorsListComponent implements OnInit, OnDestroy {
         case 200:
           this.blobImageProfile = undefined;
           this.blobSignature = undefined;
-          this._dialogService.confirmDialog(
+          this._dialogService.alertDialog(
             'Información',
             'Hemos enviado un email de validación de cuenta a: ' + newPerson.email,
             'ACEPTAR');

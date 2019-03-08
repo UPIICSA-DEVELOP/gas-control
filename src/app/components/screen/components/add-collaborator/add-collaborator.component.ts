@@ -313,7 +313,7 @@ export class AddCollaboratorComponent implements OnInit, OnDestroy {
       switch (response.code){
         case 200:
           this._router.navigate(['/home']).then(() => {
-            this._dialogService.confirmDialog(
+            this._dialogService.alertDialog(
               'Información',
               'Hemos enviado un email de validación de cuenta a: ' + email,
               'ACEPTAR');
