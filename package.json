@@ -1,5 +1,5 @@
 {
-  "name": "com.maplander.inspector.front",
+  "name": "com.maplander.app.inspector.front",
   "version": "0.0.0",
   "license": "UNLICENSED",
   "author": "Alejandro Lopez A <program.alopez@gmail.com> (https://alx-developer.herokuapp.com/)",
@@ -10,9 +10,9 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve --open",
-    "test:ssr": "gulp clean && ng build -c develop && ng run com.maplander.inspector.front:server:develop && npm run copy:endpoints && npm run config:dev && npm run server && node dist/server",
-    "build:develop": "gulp clean && ng build -c develop && ng run com.maplander.inspector.front:server:develop && npm run copy:endpoints && npm run config:dev && npm run server",
-    "build": "gulp clean ng build --prod && ng run com.maplander.inspector.front:server:production && npm run config:prod && npm run copy:endpoints && npm run deep:links && npm run server",
+    "test:ssr": "gulp clean && ng build -c develop && ng run com.maplander.app.inspector.front:server:develop && npm run copy:endpoints && npm run config:dev && npm run deep:links && npm run server && node dist/server",
+    "build:develop": "gulp clean && ng build -c develop && ng run com.maplander.app.inspector.front:server:develop && npm run copy:endpoints && npm run config:dev && npm run deep:links && npm run server",
+    "build": "gulp clean ng build --prod && ng run com.maplander.app.inspector.front:server:production && npm run config:prod && npm run copy:endpoints && npm run deep:links && npm run server",
     "server": "webpack --mode production --config server/webpack.config.js --progress --colors",
     "bundle-report": "webpack-bundle-analyzer dist/browser/stats.json",
     "deploy:develop": "gulp zip --file dist && node hooks/scp --filePath dist/bundle.zip --destination /var/www/html/app.inspector.com/deploy && node hooks/remotely --env dev",
