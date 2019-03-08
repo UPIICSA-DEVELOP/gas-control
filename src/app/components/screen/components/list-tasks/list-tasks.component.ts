@@ -567,4 +567,9 @@ export class ListTasksComponent implements OnInit, DoCheck , OnDestroy{
     this.typeReportView = 0;
     this.reportView = false;
   }
+
+  public closeOthers(): void{
+    this.goBackList();
+    this.others = false;
+  }
 }

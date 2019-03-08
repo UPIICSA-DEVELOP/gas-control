@@ -8,7 +8,7 @@
   <mat-card class="container">
     <div class="header">
       <h4 *ngIf="!others">TAREAS</h4>
-      <div class="filters">
+      <div *ngIf="reportView" class="filters">
         <div class="settings">
           <mat-icon class="filter-icon">filter_list</mat-icon>
           <mat-chip-list>
@@ -30,7 +30,7 @@
           <button style="display: none" mat-icon-button (click)="resetFilters()">
             <mat-icon>refresh</mat-icon>
           </button>
-          <button *ngIf="others" mat-icon-button (click)="others = false">
+          <button *ngIf="others" mat-icon-button (click)="closeOthers()">
             <mat-icon>close</mat-icon>
           </button>
           <button mat-icon-button *ngIf="!others" (click)="search()">
@@ -101,7 +101,7 @@
                         <mat-icon style="color: #707070; font-size: 16px; width: 16px; height: 16px;" svgIcon="icons:task_previous" *ngIf=" task.original.status === 2"></mat-icon>
                       </div>
                       <div style="position: absolute; bottom: 0; right: 0; margin: 0 4px">
-                        <button mat-icon-button type="button" (click)="goTaskInfo(task)">
+                        <button mat-icon-button type="button" (click)="goTaskInfo(task)" *ngIf="task.original.status !== 3" matTooltip="Abrir tarea">
                           <mat-icon>keyboard_arrow_down</mat-icon>
                         </button>
                       </div>
@@ -169,7 +169,7 @@
                           <div class="text">Crítico</div>
                         </div>
                         <div style="position: absolute; bottom: 0; right: 0; margin: 0 4px">
-                          <button mat-icon-button type="button" (click)="goTaskInfo(task, 7)">
+                          <button mat-icon-button type="button" (click)="goTaskInfo(task, 7)" matTooltip="Abrir tarea">
                             <mat-icon>keyboard_arrow_down</mat-icon>
                           </button>
                         </div>
@@ -216,7 +216,7 @@
                             <div class="text">Crítico</div>
                           </div>
                           <div style="position: absolute; bottom: 0; right: 0; margin: 0 4px">
-                            <button mat-icon-button type="button" (click)="goTaskInfo(task, 7)">
+                            <button mat-icon-button type="button" (click)="goTaskInfo(task, 7)" matTooltip="Abrir tarea">
                               <mat-icon>keyboard_arrow_down</mat-icon>
                             </button>
                           </div>
