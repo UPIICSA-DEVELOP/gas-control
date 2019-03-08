@@ -21,7 +21,7 @@
               aria-label="Form of login with in inSpector">
           <mat-form-field>
             <input formControlName="email" matInput placeholder="Usuario" type="email" required aria-label="User email">
-            <mat-icon matPrefix class="icons" svgIcon="icons:user"></mat-icon>
+            <mat-icon matPrefix class="icons">person</mat-icon>
             <mat-error *ngIf="loginForm.controls['email'].hasError('required')">
               Este campo es obligatorio
             </mat-error>
@@ -33,9 +33,8 @@
             </mat-error>
           </mat-form-field>
           <mat-form-field>
-            <input formControlName="password" matInput placeholder="Contraseña" #inputPassword type="password" required
-                   aria-label="User password">
-            <mat-icon matPrefix class="icons" svgIcon="icons:password"></mat-icon>
+            <input formControlName="password" matInput placeholder="Contraseña" #inputPassword type="password" required aria-label="User password">
+            <mat-icon matPrefix class="icons"> lock</mat-icon>
             <button matSuffix aria-label="show password" type="button" mat-icon-button (click)="showPassword()">
               <div *ngIf="hide; then passwordVisible else passwordInvisible"></div>
               <ng-template #passwordVisible>
