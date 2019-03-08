@@ -331,10 +331,10 @@ export class StationProfileComponent implements OnInit, OnDestroy {
       }
     }
     for (let k = 0; k<this.dispensers.length; k++){
-      if((this.dispensers[k].hoses || this.dispensers[k].identifier)&&(this.dispensers[k].magna === false && this.dispensers[k].premium === false && this.dispensers[k].diesel === false)){
+      if((this.dispensers[k].hoses)&&(this.dispensers[k].magna === false && this.dispensers[k].premium === false && this.dispensers[k].diesel === false)){
         this._snackBarService.openSnackBar('Complete los campos para el dispensario ' + (k+1),'OK',3000);
         return false;
-      }else if((!this.dispensers[k].hoses || !this.dispensers[k].identifier)&&(this.dispensers[k].magna === true || this.dispensers[k].premium === true || this.dispensers[k].diesel === true)){
+      }else if((!this.dispensers[k].hoses)&&(this.dispensers[k].magna === true || this.dispensers[k].premium === true || this.dispensers[k].diesel === true)){
         this._snackBarService.openSnackBar('Complete los campos para el dispensario ' + (k+1),'OK',3000);
         return false;
       }
