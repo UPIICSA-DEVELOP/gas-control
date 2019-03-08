@@ -141,117 +141,42 @@
             <mat-tab label="Recepción y descarga de combustible">
               <div *ngIf="notCalendarTasks.length !== 0; then listFR else emptyFR"></div>
               <ng-template #listFR>
-                <div id="task-{{task.id}}" class="card-list" *ngFor="let task of notCalendarTasks; let i = index">
-                  <div class="task" style="margin-top: 8px">
-                    <div class="priority" style="background-color:#E00000"></div>
-                    <div class="containerTask">
-                      <div class="containerTask">
-                        <mat-accordion class="containerTask">
-                          <mat-expansion-panel [expanded]="task.expanded">
-                            <mat-expansion-panel-header [collapsedHeight]="'88px'" [expandedHeight]="'88px'" (click)="getTaskInformation(i,task.id, 7)" style="position: relative;">
-                              <mat-panel-title style="position: relative">
-                                <div class="date">
-                                  <div>
-                                    <div class="text-bold">{{task.date[0]}}</div>
-                                    <div class="text-bold">{{task.date[1]}}</div>
-                                  </div>
-                                </div>
-                                <div class="content">
-                                  <div class="head">Descarga de combustible</div>
-                                  <div class="text"></div>
-                                  <div class="text">Crítico</div>
-                                </div>
-                              </mat-panel-title>
-                            </mat-expansion-panel-header>
-                            <div class="divider"></div>
-                            <form [formGroup]="secondTaskForm[0]" class="containerTask">
-                              <div class="task-header">
-                                <div class="head-bold">Descarga de combustible</div>
-                                <div class="control-data">
-                                  <div *ngIf="reportFR">Fecha: {{date[0]}} {{date[1]}}
-                                    {{date[2]}}
-                                  </div>
-                                  <div *ngIf="reportFR">Folio: {{reportFR.folio | formatFolio}}</div>
-                                </div>
-                              </div>
-                              <div class="flex-box">
-                                <div class="columns">
-                                  <div class="times">
-                                    <mat-form-field class="clock">
-                                      <input formControlName="startTime" matInput placeholder="Hora de inicio" required
-                                             appDisableWrite
-                                             value="{{secondTaskForm[0].controls['startTime'].value | formatTime}}">
-                                    </mat-form-field>
-                                    <mat-form-field class="clock">
-                                      <input formControlName="endTime" matInput placeholder="Hora de término" required
-                                             appDisableWrite
-                                             value="{{secondTaskForm[0].controls['endTime'].value | formatTime}}">
-                                    </mat-form-field>
-                                  </div>
-                                  <mat-form-field class="inputs">
-                                    <input formControlName="remissionNumber" matInput placeholder="No. de remisión"
-                                           required>
-                                  </mat-form-field>
-                                  <div class="text-divider">Cantidad en:</div>
-                                  <div class="times">
-                                    <mat-form-field class="clock">
-                                      <input formControlName="remission" matInput placeholder="Remisión (lts)" required>
-                                    </mat-form-field>
-                                    <mat-form-field class="clock">
-                                      <input formControlName="volumetric" matInput placeholder="Volumétrico (lts)"
-                                             required>
-                                    </mat-form-field>
-                                  </div>
-                                </div>
-                                <div class="columns">
-                                  <div class="text-divider">
-                                    Tipo de combustible
-                                  </div>
-                                  <div class="inputs">
-                                    <div class="space-box">
-                                      <div class="checks-row">
-                                        <mat-checkbox formControlName="magna">Magna</mat-checkbox>
-                                      </div>
-                                      <div class="checks-row">
-                                        <mat-checkbox formControlName="premium">Premium</mat-checkbox>
-                                      </div>
-                                    </div>
-                                    <div class="space-box">
-                                      <div class="checks-row">
-                                        <mat-checkbox formControlName="diesel">Diesel</mat-checkbox>
-                                      </div>
-                                      <div class="checks-row"></div>
-                                    </div>
-                                  </div>
-                                  <mat-form-field class="inputs">
-                                    <input formControlName="receiveName" matInput placeholder="Personal que recibe">
-                                  </mat-form-field>
-                                  <div
-                                    style="width: 90%; display: flex; flex-direction: column; justify-content: center;">
-                                    <div class="text-sign">
-                                      Nombre y firma del responsable
-                                    </div>
-                                    <div class=inputs>
-                                      <div class="signature-element">
-                                        <img class="evidence" *ngIf="reportFR && reportFR.signature"
-                                             [src]="reportFR.signature.thumbnail" alt="Evidence capture">
-                                        <div *ngIf="!reportFR || !reportFR.signature"
-                                             style="width: 60%; height: 60px"></div>
-                                      </div>
-                                      <div class="divider"></div>
-                                      <div *ngIf="!reportFR || !reportFR.name" class="name">Nombre</div>
-                                      <div *ngIf="reportFR && reportFR.name" class="name">{{reportFR.name}}</div>
-                                    </div>
-                                  </div>
-                                </div>
-                              </div>
-                            </form>
-                          </mat-expansion-panel>
-                        </mat-accordion>
-                      </div>
+                <div *ngIf="reportView; then frReportView else frList"></div>
+                <ng-template #frReportView>
+                  <div style="width: 95%">
+                    <div style="display: flex; justify-content: flex-end">
+                      <button mat-icon-button (click)="goBackList()" matTooltip="Cerrar bitacora">
+                        <mat-icon>close</mat-icon>
+                      </button>
                     </div>
+                    <app-fr-report [taskFrInfo]="taskElement"></app-fr-report>
                   </div>
-                </div>
+                </ng-template>
+                <ng-template #frList>
+                  <div class="card-list" *ngFor="let task of notCalendarTasks;">
+                    <mat-card class="task" style="margin-top: 8px">
+                      <div class="priority" style="background-color:#E00000"></div>
+                      <mat-card-content>
+                        <div class="date">
+                          <div>
+                            <div class="text-bold">{{task.date[0]}}</div>
+                            <div class="text-bold">{{task.date[1]}}</div>
+                          </div>
+                        </div>
+                        <div class="content">
+                          <div class="head">Descarga de combustible</div>
+                          <div class="text"></div>
+                          <div class="text">Crítico</div>
+                        </div>
+                        <div style="position: absolute; bottom: 0; right: 0; margin: 0 4px">
+                          <button mat-icon-button type="button" (click)="goTaskInfo(task, 7)">
+                            <mat-icon>keyboard_arrow_down</mat-icon>
+                          </button>
+                        </div>
+                      </mat-card-content>
+                    </mat-card>
+                  </div>
+                </ng-template>
               </ng-template>
               <ng-template #emptyFR>
                 <div class="empty-list">
@@ -262,134 +187,43 @@
             <mat-tab label="Incidencias">
               <div *ngIf="notCalendarTasks.length !== 0; then listIN else emptyIN"></div>
               <ng-template #listIN>
-                <div id="task-{{task.id}}" class="card-list" *ngFor="let task of notCalendarTasks; let i = index">
-                  <div class="task" style="margin-top: 8px">
-                    <div class="priority" style="background-color:#E00000"></div>
-                    <div class="containerTask">
-                      <div class="containerTask">
-                        <mat-accordion class="containerTask">
-                          <mat-expansion-panel [expanded]="task.expanded">
-                            <mat-expansion-panel-header [collapsedHeight]="'88px'" [expandedHeight]="'88px'" (click)="getTaskInformation(i,task.id, 9)" style="position: relative;">
-                              <mat-panel-title style="position: relative">
-                                <div class="date">
-                                  <div>
-                                    <div class="text-bold">{{task.date[0]}}</div>
-                                    <div class="text-bold">{{task.date[1]}}</div>
-                                  </div>
-                                </div>
-                                <div class="content">
-                                  <div class="head">Incidencia</div>
-                                  <div class="text"></div>
-                                  <div class="text">Crítico</div>
-                                </div>
-                              </mat-panel-title>
-                            </mat-expansion-panel-header>
-                            <div class="divider"></div>
-                            <div class="containerTask">
-                              <div style="width: 100%; display: flex; justify-content: flex-end">
-                                <div style="margin: 0 4px;" *ngIf="reportIncidence">Fecha: {{date[0]}} {{date[1]}}
-                                  {{date[2]}}
-                                </div>
-                                <div style="margin: 0 4px;" *ngIf="reportIncidence">Folio:{{reportIncidence.folio | formatFolio}}
-                                </div>
-                              </div>
-                              <form [formGroup]="secondTaskForm[2]" class="flex-box">
-                                <div class="columns">
-                                  <mat-form-field class="inputs">
-                                    <input formControlName="time" matInput placeholder="Hora" appDisableWrite
-                                           value="{{secondTaskForm[2].controls['time'].value | formatTime}}">
-                                  </mat-form-field>
-                                  <mat-form-field class="inputs">
-                                    <mat-select formControlName="area" placeholder="Lugar de generación" required>
-                                      <mat-option value="Zona de despacho">Zona de despacho</mat-option>
-                                      <mat-option value="Zona de tanques">Zona de tanques</mat-option>
-                                      <mat-option value="Cuarto eléctrico">Cuarto eléctrico</mat-option>
-                                      <mat-option value="Cuarto de maquinas">Cuarto de maquinas</mat-option>
-                                    </mat-select>
-                                  </mat-form-field>
-                                  <mat-form-field class="inputs">
-                                    <textarea cdkTextareaAutosize formControlName="description" matInput
-                                              placeholder="Descripción" required></textarea>
-                                  </mat-form-field>
-                                  <div class="text-divider">
-                                    Procedimientos utilizados
-                                  </div>
-                                  <div class="inputs" *ngIf="reportIncidence && reportIncidence.procedures">
-                                    <div *ngFor="let procedure of reportIncidence.procedures; let i = index;">
-                                      <div class="procedure" *ngIf="procedure === 1">{{i+1}}.-
-                                        {{taskTemplate.procedures[procedure-1].name}}
-                                      </div>
-                                      <div class="procedure" *ngIf="procedure === 2">{{i+1}}.-
-                                        {{taskTemplate.procedures[procedure-1].name}}
-                                      </div>
-                                      <div class="procedure" *ngIf="procedure === 3">{{i+1}}.-
-                                        {{taskTemplate.procedures[procedure-1].name}}
-                                      </div>
-                                      <div class="procedure" *ngIf="procedure === 4">{{i+1}}.-
-                                        {{taskTemplate.procedures[procedure-1].name}}
-                                      </div>
-                                      <div class="procedure" *ngIf="procedure === 5">{{i+1}}.-
-                                        {{taskTemplate.procedures[procedure-1].name}}
-                                      </div>
-                                      <div class="procedure" *ngIf="procedure === 6">{{i+1}}.-
-                                        {{taskTemplate.procedures[procedure-1].name}}
-                                      </div>
-                                      <div class="procedure" *ngIf="procedure === 7">{{i+1}}.-
-                                        {{taskTemplate.procedures[procedure-1].name}}
-                                      </div>
-                                      <div class="procedure" *ngIf="procedure === 8">{{i+1}}.-
-                                        {{taskTemplate.procedures[procedure-1].name}}
-                                      </div>
-                                      <div class="procedure" *ngIf="procedure === 9">{{i+1}}.-
-                                        {{taskTemplate.procedures[procedure-1].name}}
-                                      </div>
-                                      <div class="procedure" *ngIf="procedure === 10">{{i+1}}.-
-                                        {{taskTemplate.procedures[procedure-1].name}}
-                                      </div>
-                                      <div class="procedure" *ngIf="procedure === 11">{{i+1}}.-
-                                        {{taskTemplate.procedures[procedure-1].name}}
-                                      </div>
-                                      <div class="procedure" *ngIf="procedure === 12">{{i+1}}.-
-                                        {{taskTemplate.procedures[procedure-1].name}}
-                                      </div>
-                                    </div>
-                                  </div>
-                                </div>
-                                <div class="columns">
-                                  <div class="image-header">
-                                    Captura fotográfica de evidencia
-                                  </div>
-                                  <div class="image-container" (click)="seeEvidence()">
-                                    <mat-icon *ngIf="!reportIncidence || !reportIncidence.fileCS" class="default-image">
-                                      image
-                                    </mat-icon>
-                                    <img class="evidence" *ngIf="reportIncidence && reportIncidence.fileCS"
-                                         [src]="reportIncidence.fileCS.thumbnail" alt="Evidence capture">
-                                  </div>
-                                  <div class="text-sign">
-                                    Nombre y firma del responsable
-                                  </div>
-                                  <div class=inputs>
-                                    <div class="signature-element">
-                                      <img class="evidence" *ngIf="reportIncidence && reportIncidence.signature"
-                                           [src]="reportIncidence.signature.thumbnail" alt="Evidence capture">
-                                      <div *ngIf="!reportIncidence || !reportIncidence.signature"
-                                           style="width: 60%; height: 60px"></div>
-                                    </div>
-                                    <div class="divider"></div>
-                                    <div *ngIf="!reportIncidence || !reportIncidence.name" class="name">Nombre</div>
-                                    <div *ngIf="reportIncidence && reportIncidence.name" class="name">
-                                      {{reportIncidence.name}}
-                                    </div>
-                                  </div>
-                                </div>
-                              </form>
-                            </div>
-                          </mat-expansion-panel>
-                        </mat-accordion>
+                <div class="card-list" *ngFor="let task of notCalendarTasks; let i = index">
+                  <div *ngIf="reportView; then incidenceReportView else incidenceList"></div>
+                  <ng-template #incidenceReportView>
+                    <div>
+                      <div style="display: flex; justify-content: flex-end">
+                        <button mat-icon-button (click)="goBackList()" matTooltip="Cerrar bitacora">
+                          <mat-icon>close</mat-icon>
+                        </button>
                       </div>
+                      <app-incidence-report [taskIncidenceInfo]="taskElement" [utilities]="taskTemplate"></app-incidence-report>
                     </div>
-                  </div>
+                  </ng-template>
+                  <ng-template #incidenceList>
+                    <div class="card-list" *ngFor="let task of notCalendarTasks;">
+                      <mat-card class="task" style="margin-top: 8px">
+                        <div class="priority" style="background-color:#E00000"></div>
+                        <mat-card-content>
+                          <div class="date">
+                            <div>
+                              <div class="text-bold">{{task.date[0]}}</div>
+                              <div class="text-bold">{{task.date[1]}}</div>
+                            </div>
+                          </div>
+                          <div class="content">
+                            <div class="head">Incidencia</div>
+                            <div class="text"></div>
+                            <div class="text">Crítico</div>
+                          </div>
+                          <div style="position: absolute; bottom: 0; right: 0; margin: 0 4px">
+                            <button mat-icon-button type="button" (click)="goTaskInfo(task, 7)">
+                              <mat-icon>keyboard_arrow_down</mat-icon>
+                            </button>
+                          </div>
+                        </mat-card-content>
+                      </mat-card>
+                    </div>
+                  </ng-template>
                 </div>
               </ng-template>
               <ng-template #emptyIN>
