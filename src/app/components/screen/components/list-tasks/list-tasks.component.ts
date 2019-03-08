@@ -180,8 +180,6 @@ export class ListTasksComponent implements OnInit, DoCheck {
           }
           break;
         default:
-          //this.notCalendar = true;
-          //this.taskCreated = true;
           break;
       }
     });
@@ -208,33 +206,6 @@ export class ListTasksComponent implements OnInit, DoCheck {
         }
       });
     });
-    /*if(!this._taskListPaged.lastIndex){
-
-    }else{
-      this.tasks.forEach((task, index) => {
-        if(index>this._taskListPaged.lastIndex && index<this._taskListPaged.lastIndex+10){
-          this.taskTemplate.taskTemplates.forEach(template => {
-            if (task.type === Number(template.id)) {
-              this.tasksFilterd.push({
-                id: task.id,
-                type: task.type,
-                date: UtilitiesService.convertDate(task.date),
-                name: template.name,
-                zone: template.zone,
-                level: template.level,
-                hwg: template.hwg,
-                typeReport: template.typeReport,
-                status: task.status,
-                evidence: template.evidence
-              });
-            }
-          });
-        }else{
-          this._taskListPaged.lastIndex = index;
-          this._taskListPaged.list = this.tasks;
-        }
-      });
-    }*/
     this.sortTaskArrayByStatus();
   }
 
@@ -243,7 +214,6 @@ export class ListTasksComponent implements OnInit, DoCheck {
     for(let i = 0; i<this.tasksFilterd.length; i++){
       if(this.tasksFilterd[i].status === 3 || this.tasksFilterd[i].status === 4){
         historyArray.push(this.tasksFilterd[i]);
-        this.tasksFilterd.splice(i, 1);
       }
     }
     historyArray = UtilitiesService.sortJSON(historyArray, 'originalDate', 'desc');
@@ -667,9 +637,9 @@ export class ListTasksComponent implements OnInit, DoCheck {
   }
 
   public goTaskInfo(task: any): void{
-    //if(task.original.status === 3 && this.user.role !== 7){
-      //return;
-    //}
+    if(task.original.status === 3 && this.user.role !== 7){
+      return;
+    }
     this.taskElement = task;
     this.typeReportView = task.original.typeReport;
     this.reportView = true;

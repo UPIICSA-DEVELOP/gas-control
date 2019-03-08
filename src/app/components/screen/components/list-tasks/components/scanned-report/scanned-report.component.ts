@@ -77,4 +77,9 @@ export class ScannedReportComponent implements OnInit {
     this.scannedReport = undefined;
   }
 
+  public changeTask(ev: any){
+    this._indexTask = ev.pageIndex;
+    this.patchForm(this.taskItems[this._indexTask]);
+  }
+
 }

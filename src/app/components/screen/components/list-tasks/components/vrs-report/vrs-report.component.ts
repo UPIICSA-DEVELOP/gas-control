@@ -133,4 +133,9 @@ export class VrsReportComponent implements OnInit {
     }
   }
 
+  public changeTask(ev: any){
+    this._indexTask = ev.pageIndex;
+    this.patchForm(this.taskItems[this._indexTask]);
+  }
+
 }
