@@ -44,7 +44,7 @@
   let apps = {
     "apps": [
       {
-        "name": "inspector-"+process.env.NODE_ENV,
+        "name": "app-inspector-"+process.env.NODE_ENV,
         "script": "./server.js",
         "instances": 2,
         "exec_mode": "cluster",
