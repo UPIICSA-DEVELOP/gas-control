@@ -560,4 +560,9 @@ export class ListTasksComponent implements OnInit, DoCheck {
     this.typeReportView = 0;
     this.reportView = false;
   }
+
+  public closeOthers(): void{
+    this.goBackList();
+    this.others = false;
+  }
 }
