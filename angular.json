@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "com.maplander.inspector.front": {
+    "com.maplander.app.inspector.front": {
       "root": "",
       "sourceRoot": "src",
       "projectType": "application",
@@ -83,18 +83,18 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "com.maplander.inspector.front:build"
+            "browserTarget": "com.maplander.app.inspector.front:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "com.maplander.inspector.front:build:production"
+              "browserTarget": "com.maplander.app.inspector.front:build:production"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "com.maplander.inspector.front:build"
+            "browserTarget": "com.maplander.app.inspector.front:build"
           }
         },
         "test": {
@@ -154,7 +154,7 @@
         }
       }
     },
-    "com.maplander.inspector.front-e2e": {
+    "com.maplander.app.inspector.front-e2e": {
       "root": "",
       "sourceRoot": "",
       "projectType": "application",
@@ -163,7 +163,7 @@
           "builder": "@angular-devkit/build-angular:protractor",
           "options": {
             "protractorConfig": "./protractor.conf.js",
-            "devServerTarget": "com.maplander.inspector.front:serve"
+            "devServerTarget": "com.maplander.app.inspector.front:serve"
           }
         },
         "lint": {
@@ -180,7 +180,7 @@
       }
     }
   },
-  "defaultProject": "com.maplander.inspector.front",
+  "defaultProject": "com.maplander.app.inspector.front",
   "schematics": {
     "@schematics/angular:component": {
       "prefix": "app",

@@ -38,17 +38,15 @@ export class ServerStandard {
   }
 
   private initConfig(): void{
+    this.configIndex();
     this._port = process.env.PORT || nconfg.get('PORT') || 8090;
     this.app.use(ServerStandard.globalHeaders);
     this.app.use(ServerStandard.handlerErrors);
     this.app.use(compression({level: 9}));
     this.app.use('/.well-known', express.static(__dirname + '/.well-known'));
+    this.configRender();
     this.app.use(express.static(ServerStandard.DIR));
     this.configViews();
-    this.configIndex();
-    if(!this._postponeRouter){
-      this.router();
-    }
   }
 
   private configIndex(): void{
@@ -60,6 +58,10 @@ export class ServerStandard {
     });
   }
 
+  private configRender(): void{
+    this.app.get('/', ServerStandard.angularRouter);
+  }
+
   private configViews(): void{
     const appServer = require('../dist/server/main');
     this.app.engine('html', ngUniversal.ngExpressEngine({
@@ -67,6 +69,9 @@ export class ServerStandard {
     }));
     this.app.set('view engine', 'html');
     this.app.set('views', ServerStandard.DIR);
+    if(!this._postponeRouter){
+      this.router();
+    }
   }
 
   private router(): void{
