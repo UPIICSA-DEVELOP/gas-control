@@ -15,7 +15,7 @@ import {LocalStorageService} from '@app/core/services/local-storage/local-storag
 import {AddStationService} from '@app/components/screen/components/add-gas-station/add-station.service';
 import {FormBuilder, FormGroup} from '@angular/forms';
 import {ModalProceduresService} from '@app/components/screen/components/modal-procedures/modal-procedures.service';
-import {FRReport, HWCReport, IncidenceReport} from '@app/core/interfaces/interfaces';
+import {HWCReport} from '@app/core/interfaces/interfaces';
 import {DOCUMENT} from '@angular/common';
 import {TaskFilterNameService} from '@app/components/screen/components/task-filter-name/task-filter-name.service';
 import {SharedNotification, SharedService, SharedTypeNotification} from '@app/core/services/shared/shared.service';
@@ -74,13 +74,10 @@ export class ListTasksComponent implements OnInit, DoCheck , OnDestroy{
   /**
    *  Start: task entity
    */
-  public reportFR: FRReport;
   public reportHWC: HWCReport;
-  public reportIncidence: IncidenceReport;
   /**
    *  End: task entity
    */
-  public procedures: number[];
   private _indexOldTaskExpanded: number;
   private _firstOpen: boolean;
   private _taskType: string;
@@ -187,8 +184,6 @@ export class ListTasksComponent implements OnInit, DoCheck , OnDestroy{
           }
           break;
         default:
-          //this.notCalendar = true;
-          //this.taskCreated = true;
           break;
       }
     });
@@ -215,33 +210,6 @@ export class ListTasksComponent implements OnInit, DoCheck , OnDestroy{
         }
       });
     });
-    /*if(!this._taskListPaged.lastIndex){
-
-    }else{
-      this.tasks.forEach((task, index) => {
-        if(index>this._taskListPaged.lastIndex && index<this._taskListPaged.lastIndex+10){
-          this.taskTemplate.taskTemplates.forEach(template => {
-            if (task.type === Number(template.id)) {
-              this.tasksFilterd.push({
-                id: task.id,
-                type: task.type,
-                date: UtilitiesService.convertDate(task.date),
-                name: template.name,
-                zone: template.zone,
-                level: template.level,
-                hwg: template.hwg,
-                typeReport: template.typeReport,
-                status: task.status,
-                evidence: template.evidence
-              });
-            }
-          });
-        }else{
-          this._taskListPaged.lastIndex = index;
-          this._taskListPaged.list = this.tasks;
-        }
-      });
-    }*/
     this.sortTaskArrayByStatus();
   }
 
@@ -250,7 +218,6 @@ export class ListTasksComponent implements OnInit, DoCheck , OnDestroy{
     for(let i = 0; i<this.tasksFilterd.length; i++){
       if(this.tasksFilterd[i].status === 3 || this.tasksFilterd[i].status === 4){
         historyArray.push(this.tasksFilterd[i]);
-        this.tasksFilterd.splice(i, 1);
       }
     }
     historyArray = UtilitiesService.sortJSON(historyArray, 'originalDate', 'desc');
@@ -451,20 +418,12 @@ export class ListTasksComponent implements OnInit, DoCheck , OnDestroy{
   }
 
   private initForms(): void {
-    this.initFRForm();
     this.initHWCForm();
-    this.initIncidenceForm();
   }
 
   private resetElements(): void {
-    this.reportFR = null;
     this.reportHWC = null;
-    this.reportIncidence = null;
-    this.secondTaskForm[0].reset();
-    this.secondTaskForm[1].reset();
     this.secondTaskForm[2].reset();
-    this.secondTaskForm[0].disable();
-    this.secondTaskForm[1].disable();
     this.secondTaskForm[2].disable();
   }
 
@@ -473,16 +432,11 @@ export class ListTasksComponent implements OnInit, DoCheck , OnDestroy{
       case 6:
         this.patchHWCForm(taskEntity);
         break;
-      case 7:
-        this.patchFRForm(taskEntity);
-        break;
-      case 9:
-        this.patchIncidenceForm(taskEntity);
-        break;
     }
   }
 
   public getNotCalendarTask(ev?: any):void{
+    this.goBackList();
     this._indexOldTaskExpanded = null;
     let type = '1';
     if(ev){
@@ -546,20 +500,6 @@ export class ListTasksComponent implements OnInit, DoCheck , OnDestroy{
     });
   }
 
-  private initFRForm():void{
-    this.secondTaskForm[0] = this._formBuilder.group({
-      startTime: ['',[]],
-      endTime: ['',[]],
-      remissionNumber: ['',[]],
-      remission: ['',[]],
-      volumetric: ['',[]],
-      magna:[false,[]],
-      premium: [false,[]],
-      diesel: [false,[]],
-      receiveName: ['',[]]
-    });
-  }
-
   private initHWCForm():void{
     this.secondTaskForm[1] = this._formBuilder.group({
       waste:['',[]],
@@ -568,49 +508,6 @@ export class ListTasksComponent implements OnInit, DoCheck , OnDestroy{
       carrierCompany: ['',[]],
       finalDestination: ['',[]]
     });
-  }
-
-  private initIncidenceForm():void{
-    this.secondTaskForm[2] = this._formBuilder.group({
-      time: ['',[]],
-      area: ['',[]],
-      description: ['',[]],
-    });
-  }
-
-  private patchFRForm(task: any):void{
-    this.reportFR = {
-      date: task.date || undefined,
-      diesel: task.diesel || false,
-      endTime: task.endTime || undefined,
-      fileCS: task.fileCS || undefined,
-      folio: task.folio || undefined,
-      id: task.id || undefined,
-      magna: task.magna || false,
-      managerName: task.managerName || undefined,
-      name: task.name || undefined,
-      premium: task.premium || false,
-      receiveName: task.receiveName || undefined,
-      remission: task.remission || undefined,
-      remissionNumber: task.remissionNumber || undefined,
-      signature: task.signature || undefined,
-      startTime: task.startTime || undefined,
-      taskId: task.taskId || undefined,
-      volumetric: task.volumetric || undefined
-    };
-    this.date = UtilitiesService.convertDate(this.reportFR.date);
-    this.secondTaskForm[0].patchValue({
-      startTime: this.reportFR.startTime,
-      endTime: this.reportFR.endTime,
-      remissionNumber: this.reportFR.remissionNumber,
-      remission: this.reportFR.remission,
-      volumetric: this.reportFR.volumetric,
-      magna: this.reportFR.magna,
-      premium: this.reportFR.premium,
-      diesel: this.reportFR.diesel,
-      receiveName: this.reportFR.receiveName
-    });
-    this.secondTaskForm[0].disable();
   }
 
   private patchHWCForm(task: any):void{
@@ -642,29 +539,6 @@ export class ListTasksComponent implements OnInit, DoCheck , OnDestroy{
     this.secondTaskForm[1].disable();
   }
 
-  private patchIncidenceForm(task: any):void{
-    this.reportIncidence = {
-      area: task.area || undefined,
-      date: task.date || undefined,
-      description: task.description || undefined,
-      fileCS: task.fileCS || undefined,
-      folio: task.folio || undefined,
-      id: task.id || undefined,
-      name: task.name || undefined,
-      procedures: task.procedures || [''],
-      signature: task.signature || undefined,
-      taskId: task.taskId || undefined,
-      time: task.time || undefined
-    };
-    this.date = UtilitiesService.convertDate(this.reportIncidence.date);
-    this.secondTaskForm[2].patchValue({
-      time: this.reportIncidence.time,
-      area: this.reportIncidence.area,
-      description: this.reportIncidence.description
-    });
-    this.secondTaskForm[2].disable();
-  }
-
   public seeEvidence():void{
     if(this.itemsTasks[this._indexTask].fileCS){
       this._imageVisorService.open(this.itemsTasks[this._indexTask].fileCS);
@@ -673,13 +547,19 @@ export class ListTasksComponent implements OnInit, DoCheck , OnDestroy{
     }
   }
 
-  public goTaskInfo(task: any): void{
-    //if(task.original.status === 3 && this.user.role !== 7){
-      //return;
-    //}
-    this.taskElement = task;
-    this.typeReportView = task.original.typeReport;
-    this.reportView = true;
+  public goTaskInfo(task: any, type?:number): void{
+    if(!this.others){
+      if(task.original.status === 3 && this.user.role !== 7){
+        return;
+      }
+      this.taskElement = task;
+      this.typeReportView = task.original.typeReport;
+      this.reportView = true;
+    }else{
+      this.taskElement = task;
+      this.typeReportView = type;
+      this.reportView = true;
+    }
   }
 
   public goBackList(): void{

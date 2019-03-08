@@ -82,7 +82,6 @@ export class OmReportComponent implements OnInit {
   }
 
   private patchForm(task: any):void{
-    console.log(task);
     this.omReport = {
       activityType: task.activityType || undefined,
       cottonClothes: task.cottonClothes || undefined,
@@ -168,5 +167,10 @@ export class OmReportComponent implements OnInit {
     }else{
       this._snackBarService.openSnackBar('Esta tarea no cuenta con evidencia', 'OK',3000);
     }
+  }
+
+  public changeTask(ev: any){
+    this._indexTask = ev.pageIndex;
+    this.patchForm(this.taskItems[this._indexTask]);
   }
 }

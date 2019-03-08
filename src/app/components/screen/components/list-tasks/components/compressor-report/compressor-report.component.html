@@ -101,4 +101,7 @@
   <div *ngIf="task.original.hwg && !compressorReport">
     <app-hwg-report [taskHwgInfo]="undefined" [taskProvider]="1" [status]="task.original.status"></app-hwg-report>
   </div>
+  <div *ngIf="taskItems && taskItems.length !== 0">
+    <mat-paginator [pageSize]="1" [length]="taskItems.length" [hidePageSize]="true" (page)="changeTask($event)" ></mat-paginator>
+  </div>
 </div>
