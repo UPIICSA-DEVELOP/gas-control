@@ -21,7 +21,7 @@ export class ShareService {
   public open(url: string): void{
     this._bottomSheet.open(ShareComponent, {
       panelClass: 'share-panel',
-      data: this.getProtocol() + this.getHost() + url
+      data: url
     })
   }
 

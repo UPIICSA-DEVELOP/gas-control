@@ -22,6 +22,7 @@ import {LocalStorageService} from '@app/core/services/local-storage/local-storag
 import {PdfVisorService} from '@app/core/components/pdf-visor/pdf-visor.service';
 import {Person, PersonInformation} from '@app/core/interfaces/interfaces';
 import {Subscription} from 'rxjs/Rx';
+import {ShareService} from '@app/core/components/share/share.service';
 
 @Component({
   selector: 'app-user-profile',
@@ -93,7 +94,8 @@ export class UserProfileComponent implements OnInit, OnDestroy {
     private _formBuilder: FormBuilder,
     private _signaturePad: SignaturePadService,
     private _params: ActivatedRoute,
-    private _pdfVisor: PdfVisorService
+    private _pdfVisor: PdfVisorService,
+    private _shareService: ShareService
   ) {
     this.role = Constants.roles;
     this.bloodGroup = Constants.bloodGroup;
@@ -630,4 +632,11 @@ export class UserProfileComponent implements OnInit, OnDestroy {
       }
     });
   }
+
+  public share(): void{
+    if(this.user.bCard && this.user.bCard.dynamicLink){
+      this._shareService.open(this.user.bCard.dynamicLink);
+    }
+  }
+
 }

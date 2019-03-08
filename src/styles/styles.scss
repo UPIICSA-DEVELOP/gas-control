@@ -185,6 +185,13 @@ body{
   }
 }
 
+.share-panel{
+  background-color: mat-color($primary) !important;
+  @media screen and (max-width: 600px){
+    min-width: 100vw !important;
+  }
+}
+
 .sgm-and-sasisopa-panel{
   mat-dialog-container{
     width: 35vw;

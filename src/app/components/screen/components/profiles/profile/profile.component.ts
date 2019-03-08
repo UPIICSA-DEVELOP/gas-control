@@ -23,6 +23,7 @@ import {SignaturePadService} from '@app/core/components/signature-pad/signature-
 import {LocalStorageService} from '@app/core/services/local-storage/local-storage.service';
 import {Consultancy, Person} from '@app/core/interfaces/interfaces';
 import {Subscription} from 'rxjs/Rx';
+import {ShareService} from '@app/core/components/share/share.service';
 
 @Component({
   selector: 'app-profile',
@@ -88,7 +89,8 @@ export class ProfileComponent implements OnInit, OnDestroy {
     private _uploadImage: UploadFileService,
     private _router:Router,
     private _updatePasswordService: UpdatePasswordService,
-    private _signaturePad: SignaturePadService
+    private _signaturePad: SignaturePadService,
+    private _shareService: ShareService
   ) {
     this.role = Constants.roles;
     this.protocol = 'http://';
@@ -607,4 +609,11 @@ export class ProfileComponent implements OnInit, OnDestroy {
       }
     });
   }
+
+  public share(): void{
+    if(this.user.bCard && this.user.bCard.dynamicLink){
+      this._shareService.open(this.user.bCard.dynamicLink);
+    }
+  }
+
 }
