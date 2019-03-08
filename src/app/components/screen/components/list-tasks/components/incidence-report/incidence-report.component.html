@@ -5,5 +5,80 @@
   -->
 
 <div id="incidence-report">
-  incidence-report works!
+  <form [formGroup]="incidenceForm">
+    <div class="task-header">
+      <div class="head-bold">Incidencia</div>
+      <div class="control-data">
+        <div *ngIf="incidenceReport">Fecha: {{date[0]}} {{date[1]}} {{date[2]}}</div>
+        <div *ngIf="incidenceReport">Folio: {{incidenceReport.folio | formatFolio}}</div>
+      </div>
+    </div>
+    <div class="flex-box">
+      <div class="columns">
+        <mat-form-field class="inputs">
+          <input formControlName="time" matInput placeholder="Hora" appDisableWrite value="{{incidenceForm.controls['time'].value | formatTime}}">
+        </mat-form-field>
+        <mat-form-field class="inputs">
+          <mat-select formControlName="area" placeholder="Lugar de generación" required>
+            <mat-option value="Zona de despacho">Zona de despacho</mat-option>
+            <mat-option value="Zona de tanques">Zona de tanques</mat-option>
+            <mat-option value="Cuarto de maquinas">Cuarto de maquinas</mat-option>
+            <mat-option value="Trampa de combustibles">Trampa de combustibles</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field class="inputs">
+          <textarea cdkTextareaAutosize formControlName="description" matInput placeholder="Descripción" required></textarea>
+        </mat-form-field>
+        <div class="text-divider">
+          Procedimientos utilizados
+        </div>
+        <div class="inputs" *ngIf="incidenceReport && incidenceReport.procedures">
+          <div *ngFor="let procedure of incidenceReport.procedures; let i = index;">
+            <div class="procedure" *ngIf="procedure === 1">{{i+1}}.- {{utils.procedures[procedure-1].name}}</div>
+            <div class="procedure" *ngIf="procedure === 2">{{i+1}}.- {{utils.procedures[procedure-1].name}}</div>
+            <div class="procedure" *ngIf="procedure === 3">{{i+1}}.- {{utils.procedures[procedure-1].name}}</div>
+            <div class="procedure" *ngIf="procedure === 4">{{i+1}}.- {{utils.procedures[procedure-1].name}}</div>
+            <div class="procedure" *ngIf="procedure === 5">{{i+1}}.- {{utils.procedures[procedure-1].name}}</div>
+            <div class="procedure" *ngIf="procedure === 6">{{i+1}}.- {{utils.procedures[procedure-1].name}}</div>
+            <div class="procedure" *ngIf="procedure === 7">{{i+1}}.- {{utils.procedures[procedure-1].name}}</div>
+            <div class="procedure" *ngIf="procedure === 8">{{i+1}}.- {{utils.procedures[procedure-1].name}}</div>
+            <div class="procedure" *ngIf="procedure === 9">{{i+1}}.- {{utils.procedures[procedure-1].name}}</div>
+            <div class="procedure" *ngIf="procedure === 10">{{i+1}}.- {{utils.procedures[procedure-1].name}}</div>
+            <div class="procedure" *ngIf="procedure === 11">{{i+1}}.- {{utils.procedures[procedure-1].name}}</div>
+            <div class="procedure" *ngIf="procedure === 12">{{i+1}}.- {{utils.procedures[procedure-1].name}}</div>
+          </div>
+        </div>
+      </div>
+      <div class="columns">
+        <div class="image-header">
+          Captura fotográfica de evidencia
+        </div>
+        <div class="image-container" (click)="seeEvidence()">
+          <mat-icon *ngIf="!incidenceReport || !incidenceReport.fileCS" class="default-image">
+            image
+          </mat-icon>
+          <img class="evidence" *ngIf="incidenceReport && incidenceReport.fileCS" [src]="incidenceReport.fileCS.thumbnail" alt="Evidence capture">
+        </div>
+        <div class="text-sign">
+          Nombre y firma del responsable
+        </div>
+        <div class=inputs>
+          <div class="signature-element">
+            <img class="evidence" *ngIf="incidenceReport && incidenceReport.signature"
+                 [src]="incidenceReport.signature.thumbnail" alt="Evidence capture">
+            <div *ngIf="!incidenceReport || !incidenceReport.signature"
+                 style="width: 60%; height: 60px"></div>
+          </div>
+          <div class="divider"></div>
+          <div *ngIf="!incidenceReport || !incidenceReport.name" class="name">Nombre</div>
+          <div *ngIf="incidenceReport && incidenceReport.name" class="name">
+            {{incidenceReport.name}}
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+  <div *ngIf="taskItems && taskItems.length !== 0">
+    <mat-paginator [pageSize]="1" [length]="taskItems.length" [hidePageSize]="true" (page)="changeTask($event)" ></mat-paginator>
+  </div>
 </div>
