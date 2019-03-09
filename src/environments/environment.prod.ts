@@ -1,6 +1,7 @@
 export const environment = {
   production: true,
   url: 'https://app.inspectordenormas.com',
+  backendUrl: 'https://inspector-backend.appspot.com',
   develop: false,
   VERSION: require('../../package.json').version,
   firebase: {

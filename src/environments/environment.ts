@@ -1,6 +1,7 @@
 export const environment = {
   production: false,
   url: 'http://localhost:4200/',
+  backendUrl:'https://schedule-maplander.appspot.com',
   develop: true,
   VERSION: require('../../package.json').version,
   firebase: {

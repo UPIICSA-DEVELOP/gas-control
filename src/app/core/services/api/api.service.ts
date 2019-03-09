@@ -12,15 +12,17 @@ import {NetworkService} from '@app/core/services/connection/network.service';
 import {SnackBarService} from '@app/core/services/snackbar/snackbar.service';
 import {Consultancy} from '@app/core/interfaces/interfaces';
 import {Subscription} from 'rxjs/Rx';
+import {environment} from '@env/environment';
 
 
 @Injectable()
 export class ApiService implements OnDestroy{
 
-  private static API_URL = 'https://schedule-maplander.appspot.com/_ah/api/';
+  private static API_URL = environment.backendUrl;
+  private static API_PATH = '/_ah/api/';
   private static API_CHANNEL = 'communication/';
   private static API_VERSION = 'v1/';
-  private static API_URL_COMPLETE = ApiService.API_URL + ApiService.API_CHANNEL + ApiService.API_VERSION;
+  private static API_URL_COMPLETE = ApiService.API_URL + ApiService.API_PATH + ApiService.API_CHANNEL + ApiService.API_VERSION;
   private _subscriptionNetwork: Subscription;
 
   constructor(
