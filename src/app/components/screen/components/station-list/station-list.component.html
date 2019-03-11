@@ -61,7 +61,7 @@
                 </div>
                 <div class="end">
                   <button mat-icon-button (click)="changeNotificationsStatus(stations.id, notificationActive[i], i)">
-                    <mat-icon class="icon" *ngIf="notificationActive[i] && stations.newNotification" matBadge="&#8288;" matBadgeSize="small" matBadgeColor="warn"></mat-icon>
+                    <mat-icon class="icon" *ngIf="notificationActive[i] && stations.newNotification" matBadge="&#8288;" matBadgeSize="small" matBadgeColor="warn">notifications</mat-icon>
                     <mat-icon class="icon" *ngIf="notificationActive[i] && !stations.newNotification">notifications</mat-icon>
                     <mat-icon class="icon" *ngIf="!notificationActive[i] && !stations.newNotification">notifications_off</mat-icon>
                     <mat-icon class="icon" *ngIf="!notificationActive[i] && stations.newNotification" matBadge="&#8288;" matBadgeSize="small" matBadgeColor="warn">notifications_off</mat-icon>
