@@ -37,7 +37,7 @@ export const appRoutes: Routes = [
     resolve: {data: AuthService},
     data: {
       url: URL_BASE + 'home',
-      title:'inSpector'
+      title:'inSpéctor'
     },
     children: [
       {
