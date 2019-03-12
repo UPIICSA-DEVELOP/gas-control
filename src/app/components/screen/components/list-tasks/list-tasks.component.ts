@@ -172,6 +172,8 @@ export class ListTasksComponent implements OnInit, DoCheck , OnDestroy{
             this.emptyLisTasks = false;
             this.tasks = response.items;
             this.tasksCompare(response.items);
+          }else if(this.tasks.length!==0){
+            this.emptyLisTasks = false;
           }
           break;
         default:
