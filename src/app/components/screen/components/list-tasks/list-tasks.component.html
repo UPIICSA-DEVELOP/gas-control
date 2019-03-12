@@ -43,7 +43,7 @@
     <mat-card-content>
       <div *ngIf="others; then secondList else firstList"></div>
       <ng-template #firstList>
-        <div class="sub-container" (scroll)="onScroll($event)">
+        <div class="sub-container" (scroll)="onScroll($event)" #modalScroll>
           <div *ngIf="reportConfig.reportView; then reportForm else completeList"></div>
           <ng-template #reportForm>
             <div style="width: 95%">
@@ -209,7 +209,7 @@
         </div>
       </ng-template>
       <ng-template #secondList>
-        <div class="sub-container" (scroll)="onScroll($event)">
+        <div class="sub-container" (scroll)="onScroll($event)" #modalScroll>
           <mat-tab-group (selectedTabChange)="getNotCalendarTask($event)" style="width: 100%">
             <mat-tab label="Recepción y descarga de combustible">
               <div *ngIf="notCalendarTasks.length !== 0; then listFR else emptyFR"></div>

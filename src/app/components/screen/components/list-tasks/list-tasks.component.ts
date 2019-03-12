@@ -4,7 +4,7 @@
  *  Proprietary and confidential
  */
 
-import {Component, DoCheck, Input, OnDestroy, OnInit} from '@angular/core';
+import {Component, DoCheck, ElementRef, Input, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {DatepickerService, DateRangeOptions} from '@app/components/screen/components/datepicker/datepicker.service';
 import {TaskFilterService} from '@app/components/screen/components/task-filter/task-filter.service';
 import {ApiService} from '@app/core/services/api/api.service';
@@ -35,6 +35,7 @@ export interface Report {
   styleUrls: ['./list-tasks.component.scss']
 })
 export class ListTasksComponent implements OnInit, DoCheck , OnDestroy{
+  @ViewChild('modalScroll') private _modalScroll: ElementRef;
   public station: any;
   @Input() set stationInfo(stationObj: any) {
     if (stationObj) {
@@ -141,9 +142,12 @@ export class ListTasksComponent implements OnInit, DoCheck , OnDestroy{
     this._subscriptionShared = this._sharedService.getNotifications().subscribe((response: SharedNotification)=>{
       switch (response.type){
         case SharedTypeNotification.NotCalendarTask:
-          this.resetFilters();
-          this.others = true;
-          this.getNotCalendarTask();
+          if(!this.others){
+            this.resetFilters();
+            this.others = true;
+            this._modalScroll.nativeElement.scroll({top: 0});
+            this.getNotCalendarTask();
+          }
           break;
       }
     })
@@ -159,6 +163,7 @@ export class ListTasksComponent implements OnInit, DoCheck , OnDestroy{
       type: this._taskType || '',
       cursor: this._token
     };
+    this.emptyLisTasks = true;
     this._api.listTask(this.filters).subscribe(response => {
       switch (response.code) {
         case 200:
@@ -296,7 +301,6 @@ export class ListTasksComponent implements OnInit, DoCheck , OnDestroy{
       switch (response.code) {
         case 1:
           this._taskType = response.data.toString();
-          this.filter = response.filter;
           this.listTask.todayTasks = [];
           this.listTask.previousTasks = [];
           this.listTask.historyTasks = [];
@@ -322,6 +326,7 @@ export class ListTasksComponent implements OnInit, DoCheck , OnDestroy{
     this.goBackList();
     let type = '1';
     if(ev){
+      this.notCalendarTasks = [];
       this._lastTabSelected = ev.index;
       switch (ev.index){
         case 0: type = '1';
@@ -380,12 +385,14 @@ export class ListTasksComponent implements OnInit, DoCheck , OnDestroy{
       if(task.original.status === 3 && this.user.role !== 7){
         return;
       }
+      this._modalScroll.nativeElement.scroll({top: 0});
       this.reportConfig = {
         reportView: true,
         taskElement: task,
         typeReportView: task.original.typeReport
       };
     }else{
+      this._modalScroll.nativeElement.scroll({top: 0});
       this.reportConfig = {
         reportView: true,
         taskElement: task,
@@ -395,6 +402,7 @@ export class ListTasksComponent implements OnInit, DoCheck , OnDestroy{
   }
 
   public goBackList(): void{
+    this._modalScroll.nativeElement.scroll({top: 0});
     this.reportConfig = {
       reportView: false,
       taskElement: null,
@@ -404,6 +412,7 @@ export class ListTasksComponent implements OnInit, DoCheck , OnDestroy{
 
   public closeOthers(): void{
     this.goBackList();
+    this._modalScroll.nativeElement.scroll({top: 0});
     this._lastTabSelected = 0;
     this.notCalendarTasks = null;
     this.others = false;
