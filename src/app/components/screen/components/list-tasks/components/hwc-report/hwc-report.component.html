@@ -17,8 +17,8 @@
       <div class="columns">
         <mat-form-field class="inputs">
           <mat-select formControlName="waste" placeholder="Residuo recolectado" required>
-            <mat-option value="Natas y grasas">Natas y grasas de la tampa de combustibles</mat-option>
             <mat-option value="Envases contaminados con aceites">Envases contaminados con aceites</mat-option>
+            <mat-option value="Natas y grasas">Natas y grasas</mat-option>
             <mat-option value="Filtros de gasolinas y Diesel">Filtros de gasolinas y Diesel</mat-option>
             <mat-option value="Residuos de aceites y pinturas">Residuos de aceites y pinturas</mat-option>
           </mat-select>
@@ -46,8 +46,8 @@
       <div class="columns" style="display: flex; flex-direction: column; justify-content: center">
         <div style="display: flex; width: 90%; justify-content: center">
           <div style="background-color: #707070; color: #FFFFFF; border-radius: 4px; cursor: pointer; padding: 2px 4px;">
-            <a *ngIf="hwcReport && hwcReport.fileCS" style="text-decoration: none; color: #FFFFFF;" [href]="hwcReport.fileCS.thumbnail">VER MANIFIESTO</a>
-            <span *ngIf="!hwcReport || !hwcReport.fileCS">VER MANIFIESTO</span>
+            <a *ngIf="hwcReport && hwcReport.fileCS" style="text-decoration: none; color: #FFFFFF;" [href]="hwcReport.fileCS.thumbnail">MANIFIESTO</a>
+            <span *ngIf="!hwcReport || !hwcReport.fileCS">MANIFIESTO</span>
           </div>
         </div>
         <div style="width: 100%;">

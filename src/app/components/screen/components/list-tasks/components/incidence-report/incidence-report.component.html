@@ -51,7 +51,7 @@
       </div>
       <div class="columns">
         <div class="image-header">
-          Captura fotográfica de evidencia
+          Captura fotográfica de la evidencia
         </div>
         <div *ngIf="!incidenceReport || !incidenceReport.fileCS" class="image-container">
           <mat-icon class="default-image">
@@ -66,16 +66,12 @@
         </div>
         <div class=inputs>
           <div class="signature-element">
-            <img class="evidence" *ngIf="incidenceReport && incidenceReport.signature"
-                 [src]="incidenceReport.signature.thumbnail" alt="Evidence capture">
-            <div *ngIf="!incidenceReport || !incidenceReport.signature"
-                 style="width: 60%; height: 60px"></div>
+            <img class="evidence" *ngIf="incidenceReport && incidenceReport.signature" [src]="incidenceReport.signature.thumbnail" alt="Evidence capture">
+            <div *ngIf="!incidenceReport || !incidenceReport.signature" style="width: 60%; height: 60px"></div>
           </div>
           <div class="divider"></div>
           <div *ngIf="!incidenceReport || !incidenceReport.name" class="name">Nombre</div>
-          <div *ngIf="incidenceReport && incidenceReport.name" class="name">
-            {{incidenceReport.name}}
-          </div>
+          <div *ngIf="incidenceReport && incidenceReport.name" class="name">{{incidenceReport.name}}</div>
         </div>
       </div>
     </div>
