@@ -129,7 +129,7 @@ export interface OMReport {
   goggles: boolean;
   helmet: boolean
   hwgReport?: HWGReport;
-  id: number;
+  id?: number;
   industrialShoes: boolean;
   kneepads: boolean;
   maintenanceType: string;
@@ -154,7 +154,7 @@ export interface CompressorReport {
   fileCS: any;
   folio: number;
   hwgReport?: HWGReport;
-  id: number;
+  id?: number;
   model?: string;
   modifications?: string;
   name: string;
@@ -186,7 +186,7 @@ export interface VRSReport {
   emergencyStop: string;
   fileCS?: any;
   folio: number;
-  id: number;
+  id?: number;
   name : string;
   observations?: string;
   signature: any;
@@ -229,7 +229,7 @@ export interface ScannedReport {
   fileCS: any;
   folio: number;
   hwgReport?: HWGReport;
-  id: number;
+  id?: number;
   name: string;
   signature: any;
   taskId: number;
@@ -241,7 +241,7 @@ export interface HWCReport {
   finalDestination: string;
   fileCS?: any;
   folio: number;
-  id: number;
+  id?: number;
   manifest?: any;
   manifestNumber?: string;
   name: string;
@@ -259,7 +259,7 @@ export interface FRReport {
   endTime: number;
   fileCS?: any;
   folio: number;
-  id: number;
+  id?: number;
   magna: boolean;
   managerName: string;
   name: string;
@@ -278,7 +278,7 @@ export interface FEReport {
   endTime: number;
   fireExtinguishers: FireExtinguisher[];
   folio: number;
-  id: number;
+  id?: number;
   name: string;
   signature: any;
   startTime: number;
