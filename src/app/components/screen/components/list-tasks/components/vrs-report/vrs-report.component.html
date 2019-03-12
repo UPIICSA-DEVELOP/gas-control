@@ -77,9 +77,9 @@
       <ng-template #tanksList>
         <div *ngFor="let tankItem of vrsReport.vrsTanks; let i = index">
           <div class="inputs">
-            <h3 style="margin: 8px 0; font-size: 14px">Tanque {{i+1}}</h3>
+            <h3 style="margin: 12px 0; font-size: 14px">Tanque {{i+1}}</h3>
           </div>
-          <mat-radio-group [(ngModel)]="tankItem.fuelType" [ngModelOptions]="{standalone: true}" [disabled]="true" style="display: flex;width: 90%;justify-content: space-between; flex-wrap: wrap">
+          <mat-radio-group [(ngModel)]="tankItem.fuelType" [ngModelOptions]="{standalone: true}" [disabled]="true" style="display: flex;width: 90%;justify-content: space-between; flex-wrap: wrap; margin-bottom: 16px">
             <mat-radio-button [value]="1">Magna</mat-radio-button>
             <mat-radio-button [value]="2">Premium</mat-radio-button>
           </mat-radio-group>
@@ -170,7 +170,7 @@
         </mat-select>
       </mat-form-field>
       <mat-form-field class="inputs">
-        <input matInput formControlName="observations" placeholder="Observaciones">
+        <textarea matInput formControlName="observations" placeholder="Observaciones" cdkTextareaAutosize></textarea>
       </mat-form-field>
       <div class="image-header">
         Captura fotográfica de evidencia

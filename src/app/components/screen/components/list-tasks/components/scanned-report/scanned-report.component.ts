@@ -51,6 +51,7 @@ export class ScannedReportComponent implements OnInit {
       signature: task.signature || undefined,
       taskId: task.taskId || undefined
     };
+    console.log(this.scannedReport);
     this.date = UtilitiesService.convertDate(this.scannedReport.date);
   }
 

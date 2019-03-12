@@ -9,8 +9,6 @@ import {ApiService} from '@app/core/services/api/api.service';
 import {ApiLoaderService} from '@app/core/services/api/api-loader.service';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {HWGReport} from '@app/core/interfaces/interfaces';
-import {ImageVisorService} from '@app/core/components/image-visor/image-visor.service';
-import {SnackBarService} from '@app/core/services/snackbar/snackbar.service';
 
 @Component({
   selector: 'app-hwg-report',
@@ -18,19 +16,7 @@ import {SnackBarService} from '@app/core/services/snackbar/snackbar.service';
   styleUrls: ['./hwg-report.component.scss']
 })
 export class HwgReportComponent implements OnInit {
-  public type: number;
-  private _status: number;
   public task: any;
-  @Input() set taskProvider(type: number){
-    if (type){
-      this.type = type;
-    }
-  }
-  @Input() set status(status: number){
-    if (status){
-      this._status = status;
-    }
-  }
   @Input() set taskHwgInfo(taskObj: any){
     if(taskObj){
       this.initHwgForm();
@@ -47,13 +33,8 @@ export class HwgReportComponent implements OnInit {
   constructor(
     private _api: ApiService,
     private _apiLoader: ApiLoaderService,
-    private _formBuilder: FormBuilder,
-    private _imageVisor: ImageVisorService,
-    private _snackBarService: SnackBarService
-  ) {
-    this.type = 1;
-    this._status = 1;
-  }
+    private _formBuilder: FormBuilder
+  ) { }
 
   ngOnInit() {
     this._apiLoader.getProgress().subscribe(load=>{this.load = load});
@@ -107,17 +88,6 @@ export class HwgReportComponent implements OnInit {
       unity: this.hwgReport.unity
     });
     this.hwgForm.disable();
-  }
-
-  public seeEvidence():void{
-    if(this._status !== 4){
-      return;
-    }
-    if(this.hwgReport.fileCS){
-      this._imageVisor.open(this.hwgReport.fileCS);
-    }else{
-      this._snackBarService.openSnackBar('Esta tarea no cuenta con evidencia', 'OK',3000);
-    }
   }
 
   private getHWGReport():void{

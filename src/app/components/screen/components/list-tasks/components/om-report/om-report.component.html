@@ -33,26 +33,25 @@
       </div>
       <mat-form-field class="inputs">
         <mat-select formControlName="maintenanceType" placeholder="Tipo de mantenimiento" required>
-          <mat-option value="Preventivo">Mantenimiento preventivo</mat-option>
-          <mat-option value="Correctivo">Mantenimiento correctivo</mat-option>
+          <mat-option value="Preventivo">Preventivo</mat-option>
+          <mat-option value="Correctivo">Correctivo</mat-option>
         </mat-select>
         <mat-error *ngIf="omForm.controls['maintenanceType'].hasError('required')">
           Este campo es obligatorio
         </mat-error>
       </mat-form-field>
       <mat-form-field class="inputs">
-        <mat-select formControlName="activityType" placeholder="Seleccione actividad" required>
+        <mat-select formControlName="activityType" placeholder="Actividad a realizar" required>
           <mat-option value="Monitoreo de pozos y detección de fugas">Monitoreo de pozos y detección de fugas</mat-option>
+          <mat-option value="Mantenimiento de la Estación">Mantenimiento de la Estación</mat-option>
           <mat-option value="Albañilería, herrería, etc">Albañilería, herreria, etc</mat-option>
           <mat-option value="Pruebas de eficiencia">Pruebas de eficiencia</mat-option>
-          <mat-option value="Auditoria externa e interna">Auditoria externa e interna</mat-option>
-          <mat-option value="Hidrosanitario">Hidrosanitario</mat-option>
           <mat-option value="Limpieza">Limpieza</mat-option>
-          <mat-option value="Mantenimiento de la Estación">Mantenimiento de la Estación</mat-option>
+          <mat-option value="Auditoria externa e interna">Auditoria externa e interna</mat-option>
+          <mat-option value="Eléctrico">Eléctrico</mat-option>
+          <mat-option value="Hidrosanitario">Hidrosanitario</mat-option>
           <mat-option value="Mecánico">Mecánico</mat-option>
           <mat-option value="Visita de autoridad">Visita de autoridad</mat-option>
-          <mat-option value="Eléctrico">Eléctrico</mat-option>
-          <mat-option value="Auditoría externa e interna">Auditoría externa e interna</mat-option>
           <mat-option value="Otro">Otro</mat-option>
         </mat-select>
         <mat-error *ngIf="omForm.controls['activityType'].hasError('required')">
@@ -60,24 +59,25 @@
         </mat-error>
       </mat-form-field>
       <mat-form-field class="inputs">
-        <mat-select formControlName="personnelType" placeholder="Procedencia del personal" required>
-          <mat-option value="Interno">Personal interno</mat-option>
-          <mat-option value="Externo">Personal externo</mat-option>
+        <mat-select formControlName="personnelType" placeholder="Tipo de personal" required>
+          <mat-option value="Interno">Interno</mat-option>
+          <mat-option value="Externo">Externo</mat-option>
         </mat-select>
         <mat-error *ngIf="omForm.controls['personnelType'].hasError('required')">
           Este campo es obligatorio
         </mat-error>
       </mat-form-field>
       <div class="text-divider">
-        <span>Personal involucrado <sup>*</sup></span>
+        <span>Personal involucrado</span>
       </div>
       <ng-container *ngIf="omReport; then listComplete else listEmpty"></ng-container>
       <ng-template #listComplete>
-        <ng-container *ngFor="let item of omReport.personnelNames; let i = index">
-          <mat-form-field class="inputs">
+        <div class="inputs" *ngFor="let item of omReport.personnelNames; let i = index">
+          <mat-form-field class="inputs" *ngIf="2<1">
             <input matInput placeholder="{{i+1}}.- Nombre" [(ngModel)]="item" [ngModelOptions]="{standalone: true}" [disabled]="true">
           </mat-form-field>
-        </ng-container>
+          <div class="procedure">{{i+1}} {{item}}</div>
+        </div>
       </ng-template>
       <ng-template #listEmpty>
         <ng-container *ngFor="let item of personnelNames; let i = index">
@@ -151,11 +151,11 @@
       <div class="text" style="font-size: 12px !important; margin-top: 4px;">
         Si la actividad es crítica, requiere autorización del gerente
       </div>
-      <mat-form-field class="inputs">
-        <input formControlName="description" matInput placeholder="Descripción">
+      <mat-form-field class="inputs" style="margin-top: 12px">
+        <textarea formControlName="description" matInput placeholder="Descripción" cdkTextareaAutosize></textarea>
       </mat-form-field>
       <mat-form-field class="inputs">
-        <input formControlName="observations" matInput placeholder="Observaciones">
+        <textarea formControlName="observations" matInput placeholder="Observaciones" cdkTextareaAutosize></textarea>
       </mat-form-field>
       <div class="image-header">
         Captura fotográfica de evidencia.
@@ -180,10 +180,10 @@
   </form>
   <div class="divider" *ngIf="task.original.hwg"></div>
   <div *ngIf="task.original.hwg && omReport">
-    <app-hwg-report [taskHwgInfo]="omReport.hwgReport || undefined" [taskProvider]="1" [status]="task.original.status"></app-hwg-report>
+    <app-hwg-report [taskHwgInfo]="omReport.hwgReport || undefined"></app-hwg-report>
   </div>
   <div *ngIf="task.original.hwg && !omReport">
-    <app-hwg-report [taskHwgInfo]="undefined" [taskProvider]="1" [status]="task.original.status"></app-hwg-report>
+    <app-hwg-report [taskHwgInfo]="undefined"></app-hwg-report>
   </div>
   <div *ngIf="taskItems && taskItems.length !== 0">
     <mat-paginator [pageSize]="1" [length]="taskItems.length" [hidePageSize]="true" (page)="changeTask($event)" ></mat-paginator>
