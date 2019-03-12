@@ -17,6 +17,18 @@ import {TaskFilterNameService} from '@app/components/screen/components/task-filt
 import {SharedNotification, SharedService, SharedTypeNotification} from '@app/core/services/shared/shared.service';
 import {Subscription} from 'rxjs';
 
+export interface TaskLists {
+  todayTasks?: any[];
+  previousTasks?: any[];
+  historyTasks?: any[];
+}
+
+export interface Report {
+  taskElement: any;
+  typeReportView: number;
+  reportView: boolean;
+
+}
 @Component({
   selector: 'app-list-tasks',
   templateUrl: './list-tasks.component.html',
@@ -28,17 +40,15 @@ export class ListTasksComponent implements OnInit, DoCheck , OnDestroy{
     if (stationObj) {
       this.others = false;
       this.tasks = [];
+      this.tasksList = [];
       this.notCalendarTasks = [];
+      this._token = undefined;
       this.station = stationObj;
       this.getStationTask();
-    }else{
-      this.others = false;
-      this.tasks = [];
-      this.notCalendarTasks = [];
     }
   }
 
-  @Input() public taskTemplate: any;
+  @Input() public utils: any;
   public startDate: Date;
   public endDate: Date;
   public filters: any;
@@ -46,28 +56,27 @@ export class ListTasksComponent implements OnInit, DoCheck , OnDestroy{
   public end: any;
   public today: boolean;
   public tasks: any[];
-  private _lastTabSelected: number;
-  public tasksFilterd: any[];
   public zones: any[];
   public priority: any[];
   public typeFilter: string[];
   public filter: number;
-  private _creationDate: number;
   public itemsTasks: any[];
   public load: boolean;
   public user: any;
   public notCalendar: boolean;
-  public taskWithDivider: any[];
+  public tasksList: any[];
   public date: any[];
   public others: boolean;
   public notCalendarTasks: any[];
+  public listTask: TaskLists;
+  public emptyLisTasks: boolean;
+  public reportConfig: Report;
   private _firstOpen: boolean;
   private _taskType: string;
-  private _taskListPaged: any;
-  public typeReportView: number;
-  public reportView: boolean;
-  public taskElement: any;
-
+  private _token: string;
+  private _tokenTwo: string;
+  private _lastTabSelected: number;
+  private _creationDate: number;
   private _subscriptionShared: Subscription;
   private _subscriptionLoader: Subscription;
   constructor(
@@ -79,18 +88,28 @@ export class ListTasksComponent implements OnInit, DoCheck , OnDestroy{
     private _taskFilterNameService: TaskFilterNameService,
     private _sharedService: SharedService
   ) {
-    this.typeReportView = 0;
-    this.reportView = false;
+    this.listTask = {
+      historyTasks: [],
+      previousTasks: [],
+      todayTasks: []
+    };
+    this.reportConfig = {
+      reportView: false,
+      taskElement: null,
+      typeReportView: 0
+    };
+    this.emptyLisTasks = true;
+    this._token = undefined;
+    this._tokenTwo = undefined;
     this.itemsTasks = [];
     this.others = false;
     this.date = [];
-    this.taskWithDivider = [];
+    this.tasksList = [];
     this.today = false;
     this.notCalendar = false;
     this.filter = 0;
     this.startDate = new Date();
     this.endDate = new Date();
-    this.tasksFilterd = [];
     this.priority = Constants.Level;
     this.zones = Constants.Zones;
     this.typeFilter = Constants.Filters;
@@ -98,10 +117,6 @@ export class ListTasksComponent implements OnInit, DoCheck , OnDestroy{
     this._taskType = '0';
     this.tasks = [];
     this.notCalendarTasks = [];
-    this._taskListPaged = {
-      lastIndex: null,
-      list: null
-    };
     this._lastTabSelected = 0;
   }
 
@@ -144,16 +159,17 @@ export class ListTasksComponent implements OnInit, DoCheck , OnDestroy{
       status: (this.filter).toString(),
       endDate: (this.end.timeStamp).toString(),
       firstOpen: this._firstOpen,
-      type: this._taskType || ''
+      type: this._taskType || '',
+      cursor: this._token
     };
-    this.taskWithDivider = [];
-    this.tasksFilterd = [];
     this._api.listTask(this.filters).subscribe(response => {
       switch (response.code) {
         case 200:
+          this._token = response.nextPageToken;
           if (response.items) {
+            this.emptyLisTasks = false;
             this.tasks = response.items;
-            this.tasksCompare();
+            this.tasksCompare(response.items);
           }
           break;
         default:
@@ -162,12 +178,13 @@ export class ListTasksComponent implements OnInit, DoCheck , OnDestroy{
     });
   }
 
-  private tasksCompare(): void {
+  private tasksCompare(tasksList: any): void {
     this.load = true;
-    this.tasks.forEach(task => {
-      this.taskTemplate.taskTemplates.forEach(template => {
+    let mergeTasks: any[] = [];
+    tasksList.forEach(task => {
+      this.utils.taskTemplates.forEach(template => {
         if (task.type === Number(template.id)) {
-          this.tasksFilterd.push({
+          mergeTasks.push({
             id: task.id,
             type: task.type,
             date: UtilitiesService.convertDate(task.date),
@@ -183,79 +200,29 @@ export class ListTasksComponent implements OnInit, DoCheck , OnDestroy{
         }
       });
     });
-    this.sortTaskArrayByStatus();
+    mergeTasks = UtilitiesService.sortJSON(mergeTasks, 'originalDate','desc');
+    this.sortTaskArrayByStatus(mergeTasks);
   }
 
-  public sortTaskArrayByStatus(): void {
-    let historyArray = [];
-    for(let i = 0; i<this.tasksFilterd.length; i++){
-      if(this.tasksFilterd[i].status === 3 || this.tasksFilterd[i].status === 4){
-        historyArray.push(this.tasksFilterd[i]);
-      }
-    }
-    historyArray = UtilitiesService.sortJSON(historyArray, 'originalDate', 'desc');
-    let headerPrevious = false, headerToday = false;
-    this.tasksFilterd = UtilitiesService.sortJSON(this.tasksFilterd, 'status', 'asc');
-    this.tasksFilterd.forEach(item => {
-      if (item.status === 1) {
-        if(!headerToday && this.filter === 0){
-          this.taskWithDivider.push({
-            type: 1,
-            title: 'Hoy',
-            original: null,
-            id: ''
-          });
+  public sortTaskArrayByStatus(tasksList: any): void {
+    tasksList.forEach( task => {
+      if(task.status === 1){
+        if(this.listTask.todayTasks.length === 0 && this.filter === 0){
+          this.listTask.todayTasks.push({type: 1, title: 'Hoy', original: null, id: ''});
         }
-        headerToday = true;
-        this.taskWithDivider.push({
-          type: 2,
-          title: '',
-          original: item,
-          id: item.id
-        });
-      } else if (item.status === 2) {
-        if (!headerPrevious && this.filter === 0){
-          this.taskWithDivider.push({
-            type: 1,
-            title: 'Atrasadas',
-            original: null,
-            id: ''
-          });
-          headerPrevious = true;
-          this.taskWithDivider.push({
-            type: 2,
-            title: '',
-            original: item,
-            id: item.id
-          });
-        } else {
-          this.taskWithDivider.push({
-            type: 2,
-            title: '',
-            original: item,
-            id: item.id
-          });
+        this.listTask.todayTasks.push({type: 2, title: '', original: task, id: task.id});
+      }else if(task.status === 2){
+        if(this.listTask.previousTasks.length === 0 && this.filter === 0){
+          this.listTask.previousTasks.push({type: 1, title: 'Atrasadas', original: null, id: ''});
         }
+        this.listTask.previousTasks.push({type: 2, title: '', original: task, id: task.id});
+      }else if(task.status === 3 || task.status === 4){
+        if(this.listTask.historyTasks.length === 0  && this.filter === 0){
+          this.listTask.historyTasks.push({type: 1, title: 'Historial', original: null, id: ''});
+        }
+        this.listTask.historyTasks.push({type: 2, title: '', original: task, id: task.id});
       }
     });
-    if(historyArray.length!==0){
-      if(this.filter === 0){
-        this.taskWithDivider.push({
-          type: 1,
-          title: 'Historial',
-          original: null,
-          id: ''
-        });
-      }
-      for(let i = 0; i< historyArray.length; i++){
-        this.taskWithDivider.push({
-          type: 2,
-          title: '',
-          original: historyArray[i],
-          id: historyArray[i].id
-        })
-      }
-    }
     this.load = false;
   }
 
@@ -271,12 +238,14 @@ export class ListTasksComponent implements OnInit, DoCheck , OnDestroy{
           this._dateService.open(config).afterClosed().subscribe(response => {
             switch (response.code) {
               case 1:
-                this.today = response.startDate == response.endDate;
+                this.listTask.todayTasks = [];
+                this.listTask.previousTasks = [];
+                this.listTask.historyTasks = [];
+                this._token = undefined;
+                this.today = (response.startDate === response.endDate);
                 this.startDate = response.startDate;
                 this.endDate = response.endDate;
-                if (this.startDate.toLocaleDateString() === this.endDate.toLocaleDateString()) {
-                  this.today = true;
-                }
+                if (this.startDate.toLocaleDateString() === this.endDate.toLocaleDateString()) {this.today = true;}
                 this._firstOpen = false;
                 this.start = UtilitiesService.createPersonalTimeStamp(this.startDate);
                 this.end = UtilitiesService.createPersonalTimeStamp(this.endDate);
@@ -298,6 +267,10 @@ export class ListTasksComponent implements OnInit, DoCheck , OnDestroy{
       switch (response.code) {
         case 1:
           this.filter = response.filter;
+          this.listTask.todayTasks = [];
+          this.listTask.previousTasks = [];
+          this.listTask.historyTasks = [];
+          this._token = undefined;
           if(this.filter === 0){
             this.resetFilters();
           }else{
@@ -321,7 +294,7 @@ export class ListTasksComponent implements OnInit, DoCheck , OnDestroy{
   }
 
   public search(): void {
-    this._taskFilterNameService.open(this.taskTemplate.taskTemplates).afterClosed().subscribe(response => {
+    this._taskFilterNameService.open(this.utils.taskTemplates).afterClosed().subscribe(response => {
       switch (response.code) {
         case 1:
           this._taskType = response.data.toString();
@@ -375,11 +348,13 @@ export class ListTasksComponent implements OnInit, DoCheck , OnDestroy{
       startDate: (this.start.timeStamp).toString(),
       endDate: (this.end.timeStamp).toString(),
       firstOpen: this._firstOpen,
-      type: type || '1'
+      type: type || '1',
+      cursor: this._tokenTwo
     };
     this._api.listUTask(this.filters).subscribe(response=>{
       switch (response.code){
         case 200:
+          this._tokenTwo = response.nextPageToken;
           if(response.items){
             this.compareNotCalendarTasks(response.items);
           }else{
@@ -394,7 +369,6 @@ export class ListTasksComponent implements OnInit, DoCheck , OnDestroy{
   }
 
   private compareNotCalendarTasks(tasks: any):void{
-    this.notCalendarTasks = [];
     tasks.forEach(task => {
       this.notCalendarTasks.push({
         id: task.id,
@@ -408,20 +382,26 @@ export class ListTasksComponent implements OnInit, DoCheck , OnDestroy{
       if(task.original.status === 3 && this.user.role !== 7){
         return;
       }
-      this.taskElement = task;
-      this.typeReportView = task.original.typeReport;
-      this.reportView = true;
+      this.reportConfig = {
+        reportView: true,
+        taskElement: task.original.typeReport,
+        typeReportView: type
+      };
     }else{
-      this.taskElement = task;
-      this.typeReportView = type;
-      this.reportView = true;
+      this.reportConfig = {
+        reportView: true,
+        taskElement: task,
+        typeReportView: type
+      };
     }
   }
 
   public goBackList(): void{
-    this.taskElement = null;
-    this.typeReportView = 0;
-    this.reportView = false;
+    this.reportConfig = {
+      reportView: false,
+      taskElement: null,
+      typeReportView: 0
+    };
   }
 
   public closeOthers(): void{
@@ -429,5 +409,18 @@ export class ListTasksComponent implements OnInit, DoCheck , OnDestroy{
     this.notCalendarTasks = null;
     this.goBackList();
     this.others = false;
+  }
+
+  public onScroll(event: any):void{
+    const element = event.srcElement;
+    if(element.scrollHeight - element.scrollTop === element.clientHeight) {
+      if(!this.load && !this.reportConfig.reportView){
+        if(this.others){
+          this.getNotCalendarTask();
+        }else{
+          this.getStationTask();
+        }
+      }
+    }
   }
 }

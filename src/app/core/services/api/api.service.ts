@@ -257,6 +257,9 @@ export class ApiService implements OnDestroy{
     if(filters.type!== '0'){
       params = params.append('type', filters.type);
     }
+    if(filters.cursor){
+      params = params.append('cursor', filters.cursor);
+    }
     return this._http.get(ApiService.API_URL_COMPLETE + 'listTask', {params: params});
   }
 
