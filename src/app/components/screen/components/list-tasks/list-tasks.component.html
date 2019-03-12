@@ -8,8 +8,9 @@
   <mat-card class="container">
     <div class="header">
       <h4 *ngIf="!others">TAREAS</h4>
+      <h4 *ngIf="others">OTROS</h4>
       <div class="filters">
-        <div *ngIf="!reportView" class="settings">
+        <div *ngIf="!reportConfig.reportView" class="settings">
           <mat-icon class="filter-icon">filter_list</mat-icon>
           <mat-chip-list>
             <mat-chip *ngIf="!others" [color]="'primary'" selected (click)="taskFilter()">
@@ -33,7 +34,7 @@
           <button *ngIf="others" mat-icon-button (click)="closeOthers()">
             <mat-icon>close</mat-icon>
           </button>
-          <button mat-icon-button *ngIf="!others && !reportView" (click)="search()">
+          <button mat-icon-button *ngIf="!others && !reportConfig.reportView" (click)="search()">
             <mat-icon>search</mat-icon>
           </button>
         </div>
@@ -42,8 +43,8 @@
     <mat-card-content>
       <div *ngIf="others; then secondList else firstList"></div>
       <ng-template #firstList>
-        <div class="sub-container">
-          <div *ngIf="reportView; then reportForm else completeList"></div>
+        <div class="sub-container" (scroll)="onScroll($event)">
+          <div *ngIf="reportConfig.reportView; then reportForm else completeList"></div>
           <ng-template #reportForm>
             <div style="width: 95%">
               <div style="display: flex; justify-content: flex-end">
@@ -51,21 +52,21 @@
                   <mat-icon>close</mat-icon>
                 </button>
               </div>
-              <ng-container [ngSwitch]="typeReportView">
+              <ng-container [ngSwitch]="reportConfig.typeReportView">
                 <div *ngSwitchCase="1">
-                  <app-om-report [taskOMInfo]="taskElement" [utilities]="taskTemplate"></app-om-report>
+                  <app-om-report [taskOMInfo]="reportConfig.taskElement" [utilities]="utils"></app-om-report>
                 </div>
                 <div *ngSwitchCase="2">
-                  <app-compressor-report [taskCompInfo]="taskElement"></app-compressor-report>
+                  <app-compressor-report [taskCompInfo]="reportConfig.taskElement"></app-compressor-report>
                 </div>
                 <div *ngSwitchCase="4">
-                  <app-vrs-report [taskVrsInfo]="taskElement"></app-vrs-report>
+                  <app-vrs-report [taskVrsInfo]="reportConfig.taskElement"></app-vrs-report>
                 </div>
                 <div *ngSwitchCase="5">
-                  <app-scanned-report [taskScannedInfo]="taskElement"></app-scanned-report>
+                  <app-scanned-report [taskScannedInfo]="reportConfig.taskElement"></app-scanned-report>
                 </div>
                 <div *ngSwitchCase="8">
-                  <app-fe-report [taskFeInfo]="taskElement"></app-fe-report>
+                  <app-fe-report [taskFeInfo]="reportConfig.taskElement"></app-fe-report>
                 </div>
               </ng-container>
             </div>
@@ -73,7 +74,7 @@
           <ng-template #completeList>
             <div *ngIf="tasks.length === 0; then message else list"></div>
             <ng-template #list>
-              <div class="card-list" *ngFor="let task of taskWithDivider;">
+              <div class="card-list" *ngFor="let task of listTask.todayTasks;">
                 <div *ngIf="task.type === 1; then dividerText else taskCard"></div>
                 <ng-template #dividerText>
                   <div class="head-bold" style="margin: 8px 0">{{task.title}}</div>
@@ -109,8 +110,80 @@
                   </mat-card>
                 </ng-template>
               </div>
-              <div class="notFoundTasks" *ngIf="taskWithDivider.length === 0 && !load">No existen resultados para su búsqueda</div>
-              <div class="notFoundTasks" *ngIf="taskWithDivider.length === 0 && load">Cargando tareas...</div>
+              <div class="card-list" *ngFor="let task of listTask.previousTasks;">
+                <div *ngIf="task.type === 1; then dividerText else taskCard"></div>
+                <ng-template #dividerText>
+                  <div class="head-bold" style="margin: 8px 0">{{task.title}}</div>
+                </ng-template>
+                <ng-template #taskCard>
+                  <mat-card class="task">
+                    <div class="priority" *ngIf="task.original.level === 3" style="background-color:#E00000"></div>
+                    <div class="priority" *ngIf="task.original.level === 1" style="background-color:#257602"></div>
+                    <div class="priority" *ngIf="task.original.level === 2" style="background-color:#FFD800"></div>
+                    <mat-card-content>
+                      <div class="date">
+                        <div>
+                          <div class="text-bold">{{task.original.date[0]}}</div>
+                          <div class="text-bold">{{task.original.date[1]}}</div>
+                        </div>
+                      </div>
+                      <div class="content">
+                        <div class="head">{{task.original.name}}</div>
+                        <div class="text">{{zones[task.original.zone-1]}}</div>
+                        <div class="text">{{priority[task.original.level-1]}}</div>
+                      </div>
+                      <div style="position: absolute; top: 0; right: 0; margin: 16px;">
+                        <mat-icon style="color: #257602; font-size: 16px; width: 16px; height: 16px;" *ngIf="task.original.status === 4">check</mat-icon>
+                        <mat-icon style="color: #E00000; font-size: 16px; width: 16px; height: 16px;" *ngIf="task.original.status === 3">close</mat-icon>
+                        <mat-icon style="color: #707070; font-size: 16px; width: 16px; height: 16px;" svgIcon="icons:task_previous" *ngIf=" task.original.status === 2"></mat-icon>
+                      </div>
+                      <div style="position: absolute; bottom: 0; right: 0; margin: 0 4px">
+                        <button mat-icon-button type="button" (click)="goTaskInfo(task)" *ngIf="task.original.status !== 3" matTooltip="Abrir tarea">
+                          <mat-icon>keyboard_arrow_down</mat-icon>
+                        </button>
+                      </div>
+                    </mat-card-content>
+                  </mat-card>
+                </ng-template>
+              </div>
+              <div class="card-list" *ngFor="let task of listTask.historyTasks;">
+                <div *ngIf="task.type === 1; then dividerText else taskCard"></div>
+                <ng-template #dividerText>
+                  <div class="head-bold" style="margin: 8px 0">{{task.title}}</div>
+                </ng-template>
+                <ng-template #taskCard>
+                  <mat-card class="task">
+                    <div class="priority" *ngIf="task.original.level === 3" style="background-color:#E00000"></div>
+                    <div class="priority" *ngIf="task.original.level === 1" style="background-color:#257602"></div>
+                    <div class="priority" *ngIf="task.original.level === 2" style="background-color:#FFD800"></div>
+                    <mat-card-content>
+                      <div class="date">
+                        <div>
+                          <div class="text-bold">{{task.original.date[0]}}</div>
+                          <div class="text-bold">{{task.original.date[1]}}</div>
+                        </div>
+                      </div>
+                      <div class="content">
+                        <div class="head">{{task.original.name}}</div>
+                        <div class="text">{{zones[task.original.zone-1]}}</div>
+                        <div class="text">{{priority[task.original.level-1]}}</div>
+                      </div>
+                      <div style="position: absolute; top: 0; right: 0; margin: 16px;">
+                        <mat-icon style="color: #257602; font-size: 16px; width: 16px; height: 16px;" *ngIf="task.original.status === 4">check</mat-icon>
+                        <mat-icon style="color: #E00000; font-size: 16px; width: 16px; height: 16px;" *ngIf="task.original.status === 3">close</mat-icon>
+                        <mat-icon style="color: #707070; font-size: 16px; width: 16px; height: 16px;" svgIcon="icons:task_previous" *ngIf=" task.original.status === 2"></mat-icon>
+                      </div>
+                      <div style="position: absolute; bottom: 0; right: 0; margin: 0 4px">
+                        <button mat-icon-button type="button" (click)="goTaskInfo(task)" *ngIf="task.original.status !== 3" matTooltip="Abrir tarea">
+                          <mat-icon>keyboard_arrow_down</mat-icon>
+                        </button>
+                      </div>
+                    </mat-card-content>
+                  </mat-card>
+                </ng-template>
+              </div>
+              <div class="notFoundTasks" *ngIf=" emptyLisTasks && !load">No existen resultados para su búsqueda</div>
+              <div class="notFoundTasks" *ngIf=" emptyLisTasks && load">Cargando tareas...</div>
             </ng-template>
             <ng-template #message>
               <div class="empty-list">
@@ -136,12 +209,12 @@
         </div>
       </ng-template>
       <ng-template #secondList>
-        <div class="sub-container">
+        <div class="sub-container" (scroll)="onScroll($event)">
           <mat-tab-group (selectedTabChange)="getNotCalendarTask($event)" style="width: 100%">
             <mat-tab label="Recepción y descarga de combustible">
               <div *ngIf="notCalendarTasks.length !== 0; then listFR else emptyFR"></div>
               <ng-template #listFR>
-                <div *ngIf="reportView; then frReportView else frList"></div>
+                <div *ngIf="reportConfig.reportView; then frReportView else frList"></div>
                 <ng-template #frReportView>
                   <div style="width: 95%">
                     <div style="display: flex; justify-content: flex-end">
@@ -149,7 +222,7 @@
                         <mat-icon>close</mat-icon>
                       </button>
                     </div>
-                    <app-fr-report [taskFrInfo]="taskElement"></app-fr-report>
+                    <app-fr-report [taskFrInfo]="reportConfig.taskElement"></app-fr-report>
                   </div>
                 </ng-template>
                 <ng-template #frList>
@@ -188,7 +261,7 @@
               <div *ngIf="notCalendarTasks.length !== 0; then listIN else emptyIN"></div>
               <ng-template #listIN>
                 <div class="card-list" *ngFor="let task of notCalendarTasks;">
-                  <div *ngIf="reportView; then incidenceReportView else incidenceList"></div>
+                  <div *ngIf="reportConfig.reportView; then incidenceReportView else incidenceList"></div>
                   <ng-template #incidenceReportView>
                     <div>
                       <div style="display: flex; justify-content: flex-end">
@@ -196,7 +269,7 @@
                           <mat-icon>close</mat-icon>
                         </button>
                       </div>
-                      <app-incidence-report [taskIncidenceInfo]="taskElement" [utilities]="taskTemplate"></app-incidence-report>
+                      <app-incidence-report [taskIncidenceInfo]="reportConfig.taskElement" [utilities]="utils"></app-incidence-report>
                     </div>
                   </ng-template>
                   <ng-template #incidenceList>
@@ -235,7 +308,7 @@
             <mat-tab label="Recolección de residuos peligrosos">
               <div *ngIf="notCalendarTasks.length !== 0; then listHWC else emptyHWC"></div>
               <ng-template #listHWC>
-                <div *ngIf="reportView; then frReportView else frList"></div>
+                <div *ngIf="reportConfig.reportView; then frReportView else frList"></div>
                 <ng-template #frReportView>
                   <div style="width: 95%">
                     <div style="display: flex; justify-content: flex-end">
@@ -243,7 +316,7 @@
                         <mat-icon>close</mat-icon>
                       </button>
                     </div>
-                    <app-hwc-report [taskHwcInfo]="taskElement"></app-hwc-report>
+                    <app-hwc-report [taskHwcInfo]="reportConfig.taskElement"></app-hwc-report>
                   </div>
                 </ng-template>
                 <ng-template #frList>

@@ -19,13 +19,13 @@
     <div class="columns">
       <div class="times">
         <mat-form-field class="clock">
-          <input formControlName="startTime" placeholder="Hora de inicio" matInput required appDisableWrite>
+          <input formControlName="startTime" placeholder="Hora de inicio" matInput required appDisableWrite value="{{omForm.controls['startTime'].value | formatTime}}">
           <mat-error *ngIf="omForm.controls['startTime'].hasError('required')">
             Este campo es obligatorio
           </mat-error>
         </mat-form-field>
         <mat-form-field class="clock">
-          <input formControlName="endTime" placeholder="Hora de término" matInput required appDisableWrite>
+          <input formControlName="endTime" placeholder="Hora de término" matInput required appDisableWrite value="{{omForm.controls['endTime'].value | formatTime}}">
           <mat-error *ngIf="omForm.controls['endTime'].hasError('required')">
             Este campo es obligatorio
           </mat-error>
