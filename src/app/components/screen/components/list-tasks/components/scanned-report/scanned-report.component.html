@@ -16,13 +16,18 @@
     </div>
   </div>
   <div style="display: flex; align-items: center; flex-direction: column">
-    <mat-card style="width: 95%; margin: 12px 0;">
-      <mat-card-content style="display: flex; align-items: center; font-weight: 600; color: #707070; padding: 0;">
+    <mat-card *ngIf="scannedReport && scannedReport.fileCS" style="width: 95%; margin: 12px 0;">
+      <a style="text-decoration: none; color: #707070;" [href]="scannedReport.fileCS.thumbnail">
+        <mat-card-content style="display: flex; align-items: center; font-weight: 600; color: #707070; padding: 0; margin: 0;">
+          <mat-icon style="margin: 0 12px">insert_drive_file</mat-icon>
+          <div>Manifiesto</div>
+        </mat-card-content>
+      </a>
+    </mat-card>
+    <mat-card *ngIf="!scannedReport || !scannedReport.fileCS;" style="width: 95%; margin: 12px 0;">
+      <mat-card-content style="display: flex; align-items: center; font-weight: 600; color: #707070; padding: 0; margin: 0;">
         <mat-icon style="margin: 0 12px">insert_drive_file</mat-icon>
-        <div *ngIf="!scannedReport || !scannedReport.fileCS">Manifiesto</div>
-        <div *ngIf="scannedReport && scannedReport.fileCS">
-          <a style="text-decoration: none; color: #707070;" [href]="scannedReport.fileCS.thumbnail">Manifiesto</a>
-        </div>
+        <div>Manifiesto</div>
       </mat-card-content>
     </mat-card>
     <div class="divider" *ngIf="task.original.hwg"></div>
