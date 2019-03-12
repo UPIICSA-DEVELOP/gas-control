@@ -10,7 +10,6 @@ import {environment} from '@env/environment';
 import {ScreenComponent} from '@app/components/screen/screen.component';
 import {LoginComponent} from '@app/components/login/login.component';
 import {AuthService} from '@app/core/services/auth/auth.service';
-import {ResetPassService} from '@app/core/services/reset-pass/reset-pass.service';
 import {ResetPassComponent} from '@app/components/screen/child/reset-pass/reset-pass.component';
 import {ProfileComponent} from '@app/components/screen/components/profiles/profile/profile.component';
 import {NotificationsComponent} from '@app/components/screen/components/notifications/notifications.component';
@@ -20,30 +19,29 @@ import {StationProfileComponent} from '@app/components/screen/components/profile
 import {StationListComponent} from '@app/components/screen/components/station-list/station-list.component';
 import {AddCollaboratorComponent} from '@app/components/screen/components/add-collaborator/add-collaborator.component';
 import {DocumentationComponent} from '@app/components/screen/components/documentation/documentation.component';
-import {AddGasStationComponent} from '@app/components/screen/components/add-gas-station/add-gas-station.component';
 import {ProceduresComponent} from '@app/components/screen/components/procedures/procedures.component';
 import {UserProfileService} from '@app/core/services/profiles/user-profile.service';
 import {PrivacyComponent} from '@app/components/screen/child/privacy/privacy.component';
 import {AdminComponent} from '@app/components/admin/admin.component';
-import {AddConsultancyComponent} from '@app/components/admin/components/add-consultancy/add-consultancy.component';
 import {TermsComponent} from '@app/components/screen/child/terms/terms.component';
 import {CookiesComponent} from '@app/components/screen/child/cookies/cookies.component';
+import {AuthRouterService} from '@app/core/services/auth/auth-router.service';
 const URL_BASE = environment.url;
 
 export const appRoutes: Routes = [
   {
     path: 'home',
     component: ScreenComponent,
+    canActivate: [AuthRouterService],
     resolve: {data: AuthService},
     data: {
       url: URL_BASE + 'home',
-      title:'inSpéctor'
+      title:'Dashboard'
     },
     children: [
       {
         path:'documents',
         component: DocumentationComponent,
-        resolve: {data: AuthService},
         data:{
           title: 'Documentación',
           url: URL_BASE + 'home/documents'
@@ -52,7 +50,6 @@ export const appRoutes: Routes = [
       {
         path: 'notifications',
         component: NotificationsComponent,
-        resolve: {data: AuthService},
         data:{
           title: 'Notificaciones',
           url: URL_BASE + 'home/notifications'
@@ -60,7 +57,6 @@ export const appRoutes: Routes = [
       },
       {
         path:'collaborators',
-        resolve: {data: AuthService},
         component: CollaboratorsListComponent,
         data:{
           title: 'Colaboradores',
@@ -90,7 +86,6 @@ export const appRoutes: Routes = [
       {
         path: 'procedures',
         component: ProceduresComponent,
-        resolve: {data: AuthService},
         data:{
           title: 'Procedimientos',
           url: URL_BASE + 'home/procedures'
@@ -98,7 +93,6 @@ export const appRoutes: Routes = [
       },
       {
         path: 'profile',
-        resolve: {data: AuthService},
         data:{
           url: URL_BASE + 'home/profile',
           title: 'Perfil'
@@ -134,20 +128,18 @@ export const appRoutes: Routes = [
     ]
   },
   {
-    path: '',
+    path: 'login',
     component: LoginComponent,
-    resolve: {data: AuthService},
+    canActivate: [AuthRouterService],
     data: {
-      title:'inSpector',
+      title:'inSpéctor - Iniciar sesión',
       url: URL_BASE,
-      robots: 'true',
-      schema: 'true',
-      canonical: 'true'
     }
   },
   {
     path: 'admin',
     component: AdminComponent,
+    canActivate: [AuthRouterService],
     resolve: {data: AuthService},
     data: {
       title:'Administrador',
@@ -156,16 +148,11 @@ export const appRoutes: Routes = [
   },
   {
     path: 'signin',
-    component: ResetPassComponent,
-    resolve: {data: ResetPassService},
-    data:{
-      title:'inSpector'
-    }
+    component: ResetPassComponent
   },
   {
     path: 'privacidad',
     component: PrivacyComponent,
-    resolve:{data: AuthService},
     data:{
       title:'Privacidad',
       url: URL_BASE + 'privacidad',
@@ -176,7 +163,7 @@ export const appRoutes: Routes = [
   {
     path: 'terminos',
     component: TermsComponent,
-    resolve:{data: AuthService},
+    canActivate: [AuthRouterService],
     data:{
       title:'Términos y Condiciones',
       url: URL_BASE + 'terminos',
@@ -187,7 +174,6 @@ export const appRoutes: Routes = [
   {
     path: 'cookies',
     component: CookiesComponent,
-    resolve:{data: AuthService},
     data:{
       title:'Política de Cookies',
       url: URL_BASE + 'cookies',
@@ -196,8 +182,13 @@ export const appRoutes: Routes = [
     }
   },
   {
+    path: '',
+    pathMatch: 'full',
+    redirectTo:'/login'
+  },
+  {
     path: '**',
-    redirectTo:'/home'
+    redirectTo:'/login'
   }
 ];
 

@@ -8,13 +8,10 @@ import {Inject, Injectable, PLATFORM_ID} from '@angular/core';
 import {ActivatedRouteSnapshot, Resolve, Router, RouterStateSnapshot} from '@angular/router';
 import {CookieService, MaxAge} from '@app/core/services/cookie/cookie.service';
 import {Constants} from '@app/core/constants.core';
-import {SessionStorageService} from '@app/core/services/session-storage/session-storage.service';
-import {isPlatformBrowser} from '@angular/common';
 import {MessagingService} from '@app/core/services/messaging/messaging.service';
 import {Observable} from 'rxjs';
 import {LocalStorageService} from '@app/core/services/local-storage/local-storage.service';
 import {ApiService} from '@app/core/services/api/api.service';
-import {DialogService} from '@app/core/components/dialog/dialog.service';
 
 @Injectable()
 export class AuthService implements Resolve<any>{
@@ -23,23 +20,16 @@ export class AuthService implements Resolve<any>{
     @Inject(PLATFORM_ID) private _platformId,
     private _router: Router,
     private _messaging: MessagingService,
-    private _sessionStorage: SessionStorageService,
-    private _api: ApiService,
-    private _dialog: DialogService
-  ) { }
+    private _api: ApiService
+  ) {
 
-  resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-    console.log('resolver');
-    if (isPlatformBrowser(this._platformId)) {
-      if(state.url !== '/home/updatepassword'){
-        if(AuthService.validateUpdatePassword()){
-          this._router.navigate(['/home/updatepassword']).then();
-        }else{
-          this.goToHome(state.url);
-        }
-      }else if(!AuthService.validateUpdatePassword()){
-        this._router.navigate(['/home']).then();
-      }
+  }
+
+  resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): any {
+    if(AuthService.validateUserInSession()){
+      return this.loginAgain();
+    }else{
+      return null;
     }
   }
 
@@ -55,7 +45,7 @@ export class AuthService implements Resolve<any>{
     });
   }
 
-  public onNotificationsRecived(): Observable<any>{
+  public onNotificationsReceived(): Observable<any>{
     return this._messaging.receiveMessage();
   }
 
@@ -73,107 +63,82 @@ export class AuthService implements Resolve<any>{
       completeName: user.name+' '+user.lastName,
       profileImage: (user.profileImage)?user.profileImage.thumbnail:null,
       role: user.role,
-      refId: user.refId
+      refId: user.refId,
+      email: user.email,
+      password: user.password
     });
     CookieService.setCookie({
       value: user.id,
       name: Constants.IdSession,
       maxAge: time
     });
-
+    if(!user.signature){
+      LocalStorageService.setItem(Constants.NotSignature, true);
+    }
     if(user.role === 7){
       this._router.navigate(['/admin']).then(() => {});
     }else{
-      if(!user.signature){
-        LocalStorageService.setItem(Constants.NotSignature, true);
-      }
       this._router.navigate(['/home']).then(() => {});
     }
   }
 
-  public logOut(): void{
+  public logOut(notNavigate?: boolean): void{
     LocalStorageService.removeItem(Constants.SessionToken);
     LocalStorageService.removeItem(Constants.NotSignature);
     CookieService.deleteCookie(Constants.IdSession);
     LocalStorageService.removeItem(Constants.UserInSession);
     LocalStorageService.removeItem(Constants.NotCalendarTask);
     LocalStorageService.removeItem(Constants.StationInDashboard);
-    this._router.navigate(['/']).then(() => {});
-  }
-
-  private static validateUser(): boolean {
-    return CookieService.getCookie(Constants.IdSession) !== null;
-  }
-
-  private static validateUpdatePassword(): boolean{
-    return LocalStorageService.getItem(Constants.UpdatePassword);
-  }
-
-  private goToHome(url: string): void{
-    const user = LocalStorageService.getItem(Constants.UserInSession);
-    switch (url){
-      case '/':
-        if(AuthService.validateUser()){
-          this.saveUserInfo(true);
-        }
-        break;
-      default:
-        switch (true){
-          case /home/.test(url):
-            if(!AuthService.validateUser()){
-              this._router.navigate(['/']).then();
-            }
-            break;
-          case /admin/.test(url):
-            if(!AuthService.validateUser()){
-              this._router.navigate(['/']).then();
-            }else{
-              if(user.role!==7){
-                this._router.navigate(['/']).then();
-              }
-            }
-            break;
-          case /terminos/.test(url):
-            if(!AuthService.validateUser()){
-              this._router.navigate(['/']).then();
-            }
-            break;
-        }
-        break;
+    if(!notNavigate){
+      this._router.navigate(['/']).then(() => {});
     }
   }
 
-
-  private saveUserInfo(navigateHome?:boolean): void{
-    this._api.getPerson(CookieService.getCookie(Constants.IdSession)).subscribe(response =>{
-      switch (response.code) {
-        case 200:
-          if (navigateHome) {
+  private loginAgain(): Observable<boolean>{
+    return new Observable<any>(observer => {
+      AuthService.resetFlags();
+      const user =  LocalStorageService.getItem(Constants.UserInSession);
+      const data = {
+        email: user.email,
+        password: user.password,
+        token: LocalStorageService.getItem(Constants.SessionToken) || '123',
+        type: 3
+      };
+      this._api.signIn(data).subscribe(response =>{
+        switch (response.code) {
+          case 200:
+            const user = response.item;
             LocalStorageService.setItem(Constants.UserInSession, {
-              completeName: response.item.name+' '+response.item.lastName,
-              profileImage: (response.item.profileImage)?response.item.profileImage.thumbnail:null,
-              role: response.item.role,
-              refId: (response.item.refId?response.item.refId:null)
+              completeName: user.name+' '+user.lastName,
+              profileImage: (user.profileImage)?user.profileImage.thumbnail:null,
+              role: user.role,
+              refId: user.refId,
+              email: user.email,
+              password: user.password
             });
-            if(response.item.role===7){
-              this._router.navigate(['/admin']).then();
-            }else{
-              this._router.navigate(['/home']).then();
+            if(!user.signature){
+              LocalStorageService.setItem(Constants.NotSignature, true);
             }
-          }else{
-            SessionStorageService.setItem(Constants.IdSession, response.item);
-            this._router.navigate(['/home/updatepassword']).then();
-          }
-          break;
-        default:
-          LocalStorageService.setItem(Constants.UserInSession, {
-            completeName: null,
-            profileImage: null,
-            role: null,
-            refId: null
-          });
-          break;
-      }
+            observer.next(true);
+            observer.complete();
+            break;
+          default:
+            console.error(response);
+            observer.next(false);
+            observer.complete();
+            break;
+        }
+      });
     });
+  }
+
+  private static validateUserInSession(): boolean {
+    return CookieService.getCookie(Constants.IdSession) !== null;
+  }
+
+  private static resetFlags(): void{
+    LocalStorageService.removeItem(Constants.NotSignature);
+    LocalStorageService.removeItem(Constants.NotCalendarTask);
+    LocalStorageService.removeItem(Constants.StationInDashboard);
   }
 }

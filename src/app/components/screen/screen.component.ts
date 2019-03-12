@@ -4,7 +4,7 @@
  *  Proprietary and confidential
  */
 
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {AfterViewInit, Component, OnDestroy, OnInit} from '@angular/core';
 import {ApiService} from '@app/core/services/api/api.service';
 import {CookieService} from '@app/core/services/cookie/cookie.service';
 import {Constants} from '@app/core/constants.core';
@@ -17,13 +17,14 @@ import {environment} from '@env/environment';
 import {Subscription} from 'rxjs';
 import {SharedNotification, SharedService, SharedTypeNotification} from '@app/core/services/shared/shared.service';
 import {SasisopaService} from '@app/components/screen/components/sasisopa/sasisopa.service';
+import {MetaService} from '@app/core/services/meta/meta.service';
 
 @Component({
   selector: 'app-screen',
   templateUrl: './screen.component.html',
   styleUrls: ['./screen.component.scss']
 })
-export class ScreenComponent implements OnInit, OnDestroy{
+export class ScreenComponent implements OnInit, AfterViewInit, OnDestroy{
 
   public stationList: any[];
   public stationActive: any;
@@ -40,7 +41,8 @@ export class ScreenComponent implements OnInit, OnDestroy{
     private _dialogService: DialogService,
     private _auth: AuthService,
     private _sharedService: SharedService,
-    private _sasisopaService: SasisopaService
+    private _sasisopaService: SasisopaService,
+    private _metaService: MetaService
   ) {
     this.menu = true;
     this.stationList = [];
@@ -50,13 +52,16 @@ export class ScreenComponent implements OnInit, OnDestroy{
     if(this._activateRoute.snapshot.queryParams['station']){
       this._stationId = this._activateRoute.snapshot.queryParams['station'];
     }
+  }
+
+  ngAfterViewInit(): void{
     this.validateSignatureUser();
     this.initNotifications();
     this.checkChanges();
   }
 
   ngOnDestroy():void{
-   this._subscriptionShared.unsubscribe();
+   //this._subscriptionShared.unsubscribe();
   }
 
  private checkChanges():void{
@@ -80,7 +85,7 @@ export class ScreenComponent implements OnInit, OnDestroy{
   }
 
   private initNotifications(): void{
-    this._auth.onNotificationsRecived().subscribe(response=>{
+    this._auth.onNotificationsReceived().subscribe(response=>{
       const notification = new Notification(response.notification.title, {
         icon: environment.url+'favicon.png',
         body: response.notification.body,
@@ -194,6 +199,7 @@ export class ScreenComponent implements OnInit, OnDestroy{
               break;
           }
         }
+        this.setStationMetas(this.stationActive);
       });
     }
   }
@@ -219,6 +225,14 @@ export class ScreenComponent implements OnInit, OnDestroy{
     }else{
       LocalStorageService.setItem(Constants.NotCalendarTask,true);
     }
+  }
+
+  private setStationMetas(station: any){
+    this._metaService.setAllMetas({
+      title: 'Dashboard | ' + this.utils.groupIcons[station.type-1].name + ' - ' + station.name,
+      description: null,
+      url: this._router.url
+    })
   }
 
   private createTasks(id?: string):void{

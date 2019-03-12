@@ -25,6 +25,7 @@ import {AuthService} from '@app/core/services/auth/auth.service';
 import {ResetPassService} from '@app/core/services/reset-pass/reset-pass.service';
 import {UserProfileService} from '@app/core/services/profiles/user-profile.service';
 import {SharedService} from '@app/core/services/shared/shared.service';
+import {AuthRouterService} from '@app/core/services/auth/auth-router.service';
 
 
 
@@ -49,6 +50,7 @@ import {SharedService} from '@app/core/services/shared/shared.service';
     NetworkService,
     PriorityService,
     AuthService,
+    AuthRouterService,
     ResetPassService,
     UserProfileService,
     SharedService
