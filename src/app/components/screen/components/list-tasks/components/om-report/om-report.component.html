@@ -159,9 +159,11 @@
       <div class="image-header">
         Captura fotográfica de evidencia.
       </div>
-      <div class="image-container" (click)="seeEvidence()">
-        <mat-icon *ngIf="!omReport || !omReport.fileCS" class="default-image">image</mat-icon>
-        <img class="evidence" *ngIf="omReport && omReport.fileCS" [src]="omReport.fileCS.thumbnail" alt="Evidence capture">
+      <div *ngIf="!omReport || !omReport.fileCS" class="image-container" >
+        <mat-icon class="default-image">image</mat-icon>
+      </div>
+      <div *ngIf="omReport && omReport.fileCS" class="image-container-real" (click)="seeEvidence()">
+        <img class="evidence" [src]="omReport.fileCS.thumbnail" alt="Evidence capture">
       </div>
       <div class="text-sign">
         Nombre y firma del responsable

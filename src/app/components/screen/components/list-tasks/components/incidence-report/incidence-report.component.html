@@ -53,11 +53,13 @@
         <div class="image-header">
           Captura fotográfica de evidencia
         </div>
-        <div class="image-container" (click)="seeEvidence()">
-          <mat-icon *ngIf="!incidenceReport || !incidenceReport.fileCS" class="default-image">
+        <div *ngIf="!incidenceReport || !incidenceReport.fileCS" class="image-container">
+          <mat-icon class="default-image">
             image
           </mat-icon>
-          <img class="evidence" *ngIf="incidenceReport && incidenceReport.fileCS" [src]="incidenceReport.fileCS.thumbnail" alt="Evidence capture">
+        </div>
+        <div *ngIf="incidenceReport && incidenceReport.fileCS" class="image-container-real">
+          <img class="evidence" [src]="incidenceReport.fileCS.thumbnail" alt="Evidence capture" (click)="seeEvidence()">
         </div>
         <div class="text-sign">
           Nombre y firma del responsable

@@ -73,12 +73,11 @@
       <div class="image-header">
         Captura fotográfica de evidencia
       </div>
-      <div class="image-container" (click)="seeEvidence()">
-        <mat-icon *ngIf="!compressorReport || !compressorReport.fileCS" class="default-image">
-          image
-        </mat-icon>
-        <img class="evidence" *ngIf="compressorReport && compressorReport.fileCS"
-             [src]="compressorReport.fileCS.thumbnail" alt="Evidence capture">
+      <div class="image-container" *ngIf="!compressorReport || !compressorReport.fileCS">
+        <mat-icon class="default-image">image</mat-icon>
+      </div>
+      <div class="image-container-real" *ngIf="compressorReport && compressorReport.fileCS" (click)="seeEvidence()">
+        <img class="evidence" [src]="compressorReport.fileCS.thumbnail" alt="Evidence capture">
       </div>
       <div class="text-sign">
         Nombre y firma del responsable

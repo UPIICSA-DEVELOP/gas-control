@@ -175,11 +175,11 @@
       <div class="image-header">
         Captura fotográfica de evidencia
       </div>
-      <div class="image-container" (click)="seeEvidence()">
-        <mat-icon *ngIf="!vrsReport || !vrsReport.fileCS" class="default-image">
-          image
-        </mat-icon>
-        <img class="evidence" *ngIf="vrsReport && vrsReport.fileCS" [src]="vrsReport.fileCS.thumbnail" alt="Evidence capture">
+      <div *ngIf="!vrsReport || !vrsReport.fileCS" class="image-container">
+        <mat-icon class="default-image">image</mat-icon>
+      </div>
+      <div class="image-container-real" *ngIf="vrsReport && vrsReport.fileCS" (click)="seeEvidence()">
+        <img class="evidence" [src]="vrsReport.fileCS.thumbnail" alt="Evidence capture">
       </div>
       <div class="text-sign">
         Nombre y firma del responsable
