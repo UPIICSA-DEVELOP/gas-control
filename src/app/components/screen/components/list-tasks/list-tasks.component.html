@@ -52,7 +52,7 @@
                   <mat-icon>close</mat-icon>
                 </button>
               </div>
-              <ng-container [ngSwitch]="typeReportView">
+              <ng-container [ngSwitch]="reportConfig.typeReportView">
                 <div *ngSwitchCase="1">
                   <app-om-report [taskOMInfo]="reportConfig.taskElement" [utilities]="utils"></app-om-report>
                 </div>

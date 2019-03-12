@@ -40,7 +40,6 @@ export class ListTasksComponent implements OnInit, DoCheck , OnDestroy{
     if (stationObj) {
       this.others = false;
       this.tasks = [];
-      this.tasksList = [];
       this.notCalendarTasks = [];
       this._token = undefined;
       this.station = stationObj;
@@ -64,7 +63,6 @@ export class ListTasksComponent implements OnInit, DoCheck , OnDestroy{
   public load: boolean;
   public user: any;
   public notCalendar: boolean;
-  public tasksList: any[];
   public date: any[];
   public others: boolean;
   public notCalendarTasks: any[];
@@ -104,7 +102,6 @@ export class ListTasksComponent implements OnInit, DoCheck , OnDestroy{
     this.itemsTasks = [];
     this.others = false;
     this.date = [];
-    this.tasksList = [];
     this.today = false;
     this.notCalendar = false;
     this.filter = 0;
@@ -271,6 +268,7 @@ export class ListTasksComponent implements OnInit, DoCheck , OnDestroy{
           this.listTask.previousTasks = [];
           this.listTask.historyTasks = [];
           this._token = undefined;
+          this._tokenTwo = undefined;
           if(this.filter === 0){
             this.resetFilters();
           }else{
@@ -298,6 +296,12 @@ export class ListTasksComponent implements OnInit, DoCheck , OnDestroy{
       switch (response.code) {
         case 1:
           this._taskType = response.data.toString();
+          this.filter = response.filter;
+          this.listTask.todayTasks = [];
+          this.listTask.previousTasks = [];
+          this.listTask.historyTasks = [];
+          this._token = undefined;
+          this._tokenTwo = undefined;
           this.getStationTask();
           break;
         default:
@@ -320,26 +324,20 @@ export class ListTasksComponent implements OnInit, DoCheck , OnDestroy{
     if(ev){
       this._lastTabSelected = ev.index;
       switch (ev.index){
-        case 0:
-          type = '1';
+        case 0: type = '1';
           break;
-        case 1:
-          type = '3';
+        case 1: type = '3';
           break;
-        case 2:
-          type = '2';
+        case 2: type = '2';
           break;
       }
     }else{
       switch (this._lastTabSelected){
-        case 0:
-          type = '1';
+        case 0: type = '1';
           break;
-        case 1:
-          type = '3';
+        case 1: type = '3';
           break;
-        case 2:
-          type = '2';
+        case 2: type = '2';
           break;
       }
     }
@@ -384,8 +382,8 @@ export class ListTasksComponent implements OnInit, DoCheck , OnDestroy{
       }
       this.reportConfig = {
         reportView: true,
-        taskElement: task.original.typeReport,
-        typeReportView: type
+        taskElement: task,
+        typeReportView: task.original.typeReport
       };
     }else{
       this.reportConfig = {
@@ -405,9 +403,9 @@ export class ListTasksComponent implements OnInit, DoCheck , OnDestroy{
   }
 
   public closeOthers(): void{
+    this.goBackList();
     this._lastTabSelected = 0;
     this.notCalendarTasks = null;
-    this.goBackList();
     this.others = false;
   }
 
