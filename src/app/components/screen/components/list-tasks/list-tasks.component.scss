@@ -72,6 +72,7 @@
           font-size: 18px;
         }
         .task{
+          cursor: pointer;
           padding: 0;
           display: flex;
           margin-bottom: 12px;
@@ -169,6 +170,24 @@
 
   .containerTask{
     width: 100%;
+  }
+  .done{
+    color: #257602;
+    font-size: 16px;
+    width: 16px;
+    height: 16px;
+  }
+  .pending{
+    color: #707070;
+    font-size: 16px;
+    width: 16px;
+    height: 16px;
+  }
+  .latest{
+    color: #E00000;
+    font-size: 16px;
+    width: 16px;
+    height: 16px;
   }
 }
 

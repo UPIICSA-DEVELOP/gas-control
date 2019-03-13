@@ -40,9 +40,14 @@ export class ListTasksComponent implements OnInit, DoCheck , OnDestroy{
   @Input() set stationInfo(stationObj: any) {
     if (stationObj) {
       this.others = false;
-      this.tasks = [];
       this.notCalendarTasks = [];
       this._token = undefined;
+      this.listTask = {
+        todayTasks: [],
+        previousTasks: [],
+        historyTasks: []
+      };
+      this.resetFilters(true);
       this.station = stationObj;
       this.getStationTask();
     }
@@ -55,7 +60,6 @@ export class ListTasksComponent implements OnInit, DoCheck , OnDestroy{
   public start: any;
   public end: any;
   public today: boolean;
-  public tasks: any[];
   public zones: any[];
   public priority: any[];
   public typeFilter: string[];
@@ -113,7 +117,6 @@ export class ListTasksComponent implements OnInit, DoCheck , OnDestroy{
     this.typeFilter = Constants.Filters;
     this._firstOpen = true;
     this._taskType = '0';
-    this.tasks = [];
     this.notCalendarTasks = [];
     this._lastTabSelected = 0;
   }
@@ -170,10 +173,9 @@ export class ListTasksComponent implements OnInit, DoCheck , OnDestroy{
           this._token = response.nextPageToken;
           if (response.items) {
             this.emptyLisTasks = false;
-            this.tasks = response.items;
             this.tasksCompare(response.items);
-          }else if(this.tasks.length!==0){
-            this.emptyLisTasks = false;
+          }else{
+            this.emptyLisTasks = (this.listTask.historyTasks.length ===0 && this.listTask.previousTasks.length ===0 && this.listTask.todayTasks.length ===0);
           }
           break;
         default:
@@ -242,10 +244,13 @@ export class ListTasksComponent implements OnInit, DoCheck , OnDestroy{
           this._dateService.open(config).afterClosed().subscribe(response => {
             switch (response.code) {
               case 1:
-                this.listTask.todayTasks = [];
-                this.listTask.previousTasks = [];
-                this.listTask.historyTasks = [];
+                this.listTask = {
+                  historyTasks: [],
+                  previousTasks: [],
+                  todayTasks: []
+                };
                 this._token = undefined;
+                this._tokenTwo = undefined;
                 this.today = (response.startDate === response.endDate);
                 this.startDate = response.startDate;
                 this.endDate = response.endDate;
@@ -271,11 +276,12 @@ export class ListTasksComponent implements OnInit, DoCheck , OnDestroy{
       switch (response.code) {
         case 1:
           this.filter = response.filter;
-          this.listTask.todayTasks = [];
-          this.listTask.previousTasks = [];
-          this.listTask.historyTasks = [];
+          this.listTask = {
+           historyTasks: [],
+           previousTasks: [],
+           todayTasks: []
+          };
           this._token = undefined;
-          this._tokenTwo = undefined;
           if(this.filter === 0){
             this.resetFilters();
           }else{
@@ -286,7 +292,7 @@ export class ListTasksComponent implements OnInit, DoCheck , OnDestroy{
     });
   }
 
-  public resetFilters(): void {
+  public resetFilters(getTasks?: boolean): void {
     this.filter = 0;
     this.startDate = new Date();
     this.endDate = new Date();
@@ -295,7 +301,11 @@ export class ListTasksComponent implements OnInit, DoCheck , OnDestroy{
     this._firstOpen = true;
     this.today = true;
     this._taskType = '0';
-    this.getStationTask();
+    this._token = undefined;
+    this._tokenTwo = undefined;
+    if(!getTasks){
+      this.getStationTask();
+    }
   }
 
   public search(): void {

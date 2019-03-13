@@ -72,7 +72,7 @@
             </div>
           </ng-template>
           <ng-template #completeList>
-            <div *ngIf="tasks.length === 0; then message else list"></div>
+            <div *ngIf="listTask.todayTasks.length === 0 && listTask.previousTasks.length === 0 && listTask.historyTasks.length === 0; then message else list"></div>
             <ng-template #list>
               <div class="card-list" *ngFor="let task of listTask.todayTasks;">
                 <div *ngIf="task.type === 1; then dividerText else taskCard"></div>
@@ -97,9 +97,9 @@
                         <div class="text">{{priority[task.original.level-1]}}</div>
                       </div>
                       <div style="position: absolute; top: 0; right: 0; margin: 16px;">
-                        <mat-icon style="color: #257602; font-size: 16px; width: 16px; height: 16px;" *ngIf="task.original.status === 4">check</mat-icon>
-                        <mat-icon style="color: #E00000; font-size: 16px; width: 16px; height: 16px;" *ngIf="task.original.status === 3">close</mat-icon>
-                        <mat-icon style="color: #707070; font-size: 16px; width: 16px; height: 16px;" svgIcon="icons:task_previous" *ngIf=" task.original.status === 2"></mat-icon>
+                        <mat-icon class="done" *ngIf="task.original.status === 4">check</mat-icon>
+                        <mat-icon class="latest" *ngIf="task.original.status === 3">close</mat-icon>
+                        <mat-icon class="pending" svgIcon="icons:task_previous" *ngIf=" task.original.status === 2"></mat-icon>
                       </div>
                       <div style="position: absolute; bottom: 0; right: 0; margin: 0 4px">
                         <button mat-icon-button type="button" (click)="goTaskInfo(task)" *ngIf="task.original.status !== 3" matTooltip="Abrir tarea">
@@ -182,8 +182,6 @@
                   </mat-card>
                 </ng-template>
               </div>
-              <div class="notFoundTasks" *ngIf=" emptyLisTasks && !load">No existen resultados para su búsqueda</div>
-              <div class="notFoundTasks" *ngIf=" emptyLisTasks && load">Cargando tareas...</div>
             </ng-template>
             <ng-template #message>
               <div class="empty-list">
@@ -194,7 +192,9 @@
                     <div *ngIf="load" class="message">Espere un momento por favor...</div>
                   </ng-template>
                   <ng-template #notExistTasks>
-                    <div *ngIf="!load" class="message">La Estación no cuenta por el momento con tareas programadas, por favor consulte mañana</div>
+                    <div class="notFoundTasks" *ngIf=" emptyLisTasks && !load">No existen resultados para su búsqueda</div>
+                    <div class="notFoundTasks" *ngIf=" emptyLisTasks && load">Cargando tareas...</div>
+                    <div *ngIf="!emptyLisTasks &&!load" class="message">La Estación no cuenta por el momento con tareas programadas, por favor consulte mañana</div>
                   </ng-template>
                 </ng-template>
                 <ng-template #notTask>
