@@ -44,7 +44,7 @@ import { ProceduresComponent } from './components/screen/components/procedures/p
 import { PrivacyComponent } from './components/screen/child/privacy/privacy.component';
 import { AdminComponent } from './components/admin/admin.component';
 import { AddConsultancyComponent } from './components/admin/components/add-consultancy/add-consultancy.component';
-import { ListStationsComponent } from './components/admin/components/list-stations/list-collaborators.component';
+import { ListStationsComponent } from './components/admin/components/list-stations/list-stations.component';
 import {ListStationsService} from '@app/components/admin/components/list-stations/list-stations.service';
 import {DatepickerComponent} from './components/screen/components/datepicker/datepicker.component';
 import {TaskFilterComponent} from './components/screen/components/task-filter/task-filter.component';

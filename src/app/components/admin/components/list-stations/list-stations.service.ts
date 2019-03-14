@@ -6,7 +6,7 @@
 
 import { Injectable } from '@angular/core';
 import {MatDialog} from '@angular/material';
-import {ListStationsComponent} from '@app/components/admin/components/list-stations/list-collaborators.component';
+import {ListStationsComponent} from '@app/components/admin/components/list-stations/list-stations.component';
 
 @Injectable()
 export class ListStationsService {
