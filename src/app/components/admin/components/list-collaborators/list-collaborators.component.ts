@@ -34,7 +34,7 @@ export class ListCollaboratorsComponent implements OnInit {
     private _snackBar: SnackBarService,
     private _dialogService: DialogService,
     private _api: ApiService,
-    private _addStation: AddStationService,
+    private _addStation: AddStationService
   ) {
     this._completeName = '';
     this.title = this._data.name;
@@ -80,15 +80,11 @@ export class ListCollaboratorsComponent implements OnInit {
   }
 
   public addStation():void{
-    LocalStorageService.setItem(Constants.UserInSession,{profileImage: null, role: 7, refId: this._data.id, completeName: this._completeName});
     this.close();
-    this._addStation.open().afterClosed().subscribe( res=>{
-      LocalStorageService.setItem(Constants.UserInSession,{profileImage: null, role: 7, completeName: this._completeName});
-    });
+    this._addStation.open();
   }
 
   public goToDashboard(): void{
-    LocalStorageService.setItem(Constants.UserInSession,{profileImage: null, role: 7, refId: this._data.id, completeName: this._completeName});
     LocalStorageService.setItem(Constants.ConsultancyInSession, this._data);
   }
 

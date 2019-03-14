@@ -32,12 +32,7 @@ export class ResetPassService implements Resolve<any>{
             value: response.item.id,
             maxAge: MaxAge.DAY
           });
-          LocalStorageService.setItem(Constants.UserInSession, {
-            completeName: response.item.name+' '+response.item.lastName,
-            profileImage: (response.item.profileImage)?response.item.profileImage.thumbnail:null,
-            role: response.item.role,
-            refId: (response.item.refId?response.item.refId:null)
-          });
+          this._auth.updateUserInSession(response.item);
           SessionStorageService.setItem(Constants.UserUpdatePassword, response.item);
           LocalStorageService.setItem(Constants.UpdatePassword, true);
           this._route.navigate(['/home/updatepassword']).then();

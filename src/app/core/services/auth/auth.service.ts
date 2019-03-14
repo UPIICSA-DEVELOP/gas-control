@@ -33,6 +33,10 @@ export class AuthService implements Resolve<any>{
     }
   }
 
+  public updateUserInSession(user: any): void{
+   AuthService.saveInfoUser(user);
+  }
+
   public requestPermissionNotifications(): Observable<string>{
     return new Observable<string>((observer) => {
       this._messaging.requestPermission().subscribe((token: string | null) => {
@@ -59,20 +63,13 @@ export class AuthService implements Resolve<any>{
     if(token){
       LocalStorageService.setItem(Constants.SessionToken, token);
     }
-    LocalStorageService.setItem(Constants.UserInSession, {
-      completeName: user.name+' '+user.lastName,
-      profileImage: (user.profileImage)?user.profileImage.thumbnail:null,
-      role: user.role,
-      refId: user.refId,
-      email: user.email,
-      password: user.password
-    });
+    AuthService.saveInfoUser(user);
     CookieService.setCookie({
       value: user.id,
       name: Constants.IdSession,
       maxAge: time
     });
-    if(!user.signature){
+    if(!user.signature && user.role !== 7){
       LocalStorageService.setItem(Constants.NotSignature, true);
     }
     if(user.role === 7){
@@ -108,15 +105,8 @@ export class AuthService implements Resolve<any>{
         switch (response.code) {
           case 200:
             const user = response.item;
-            LocalStorageService.setItem(Constants.UserInSession, {
-              completeName: user.name+' '+user.lastName,
-              profileImage: (user.profileImage)?user.profileImage.thumbnail:null,
-              role: user.role,
-              refId: user.refId,
-              email: user.email,
-              password: user.password
-            });
-            if(!user.signature){
+            AuthService.saveInfoUser(user);
+            if(!user.signature && user.role !== 7){
               LocalStorageService.setItem(Constants.NotSignature, true);
             }
             observer.next(true);
@@ -129,6 +119,17 @@ export class AuthService implements Resolve<any>{
             break;
         }
       });
+    });
+  }
+
+  private static saveInfoUser(user: any){
+    LocalStorageService.setItem(Constants.UserInSession, {
+      completeName: user.name+' '+user.lastName,
+      profileImage: (user.profileImage)?user.profileImage.thumbnail:null,
+      role: user.role,
+      refId: user.refId,
+      email: user.email,
+      password: user.password
     });
   }
 

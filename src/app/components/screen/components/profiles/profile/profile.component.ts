@@ -24,6 +24,7 @@ import {LocalStorageService} from '@app/core/services/local-storage/local-storag
 import {Consultancy, Person} from '@app/core/interfaces/interfaces';
 import {Subscription} from 'rxjs/Rx';
 import {ShareService} from '@app/core/components/share/share.service';
+import {AuthService} from '@app/core/services/auth/auth.service';
 
 @Component({
   selector: 'app-profile',
@@ -90,7 +91,8 @@ export class ProfileComponent implements OnInit, OnDestroy {
     private _router:Router,
     private _updatePasswordService: UpdatePasswordService,
     private _signaturePad: SignaturePadService,
-    private _shareService: ShareService
+    private _shareService: ShareService,
+    private _auth: AuthService
   ) {
     this.role = Constants.roles;
     this.protocol = 'http://';
@@ -473,20 +475,10 @@ export class ProfileComponent implements OnInit, OnDestroy {
         blobName: this.newImageProfile.blob,
         thumbnail: this.newImageProfile.thumbnail
       };
-      LocalStorageService.setItem(Constants.UserInSession, {
-        completeName: this.user.name+' '+this.user.lastName,
-        profileImage: this.user.profileImage.thumbnail,
-        role: this.user.role,
-        refId: (this.user.refId? this.user.refId:null)
-      });
+      this._auth.updateUserInSession(this.user);
     }else if(!this.profileImage){
       this.user.profileImage = null;
-      LocalStorageService.setItem(Constants.UserInSession, {
-        completeName: this.user.name+' '+this.user.lastName,
-        profileImage: null,
-        role: this.user.role,
-        refId: (this.user.refId? this.user.refId:null)
-      });
+      this._auth.updateUserInSession(this.user);
     }
     if (this.newSig) {
       this.user.signature = {

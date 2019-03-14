@@ -24,10 +24,10 @@ export class AuthRouterService implements CanActivate {
         return true;
       }
     }else if (
-      state.url.includes('/home') &&
+      state.url.includes('/admin') &&
       AuthRouterService.validateUserInSession() &&
-      LocalStorageService.getItem(Constants.UserInSession).role ===7 ){
-     return this._router.createUrlTree(['/admin']);
+      LocalStorageService.getItem(Constants.UserInSession).role !==7 ){
+     return this._router.createUrlTree(['/home']);
     }else{
       if(AuthRouterService.validateUserInSession()){
         return true;

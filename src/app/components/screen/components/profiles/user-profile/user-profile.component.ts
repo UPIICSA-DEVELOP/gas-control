@@ -23,6 +23,7 @@ import {PdfVisorService} from '@app/core/components/pdf-visor/pdf-visor.service'
 import {Person, PersonInformation} from '@app/core/interfaces/interfaces';
 import {Subscription} from 'rxjs/Rx';
 import {ShareService} from '@app/core/components/share/share.service';
+import {AuthService} from '@app/core/services/auth/auth.service';
 
 @Component({
   selector: 'app-user-profile',
@@ -95,7 +96,8 @@ export class UserProfileComponent implements OnInit, OnDestroy {
     private _signaturePad: SignaturePadService,
     private _params: ActivatedRoute,
     private _pdfVisor: PdfVisorService,
-    private _shareService: ShareService
+    private _shareService: ShareService,
+    private _auth: AuthService
   ) {
     this.role = Constants.roles;
     this.bloodGroup = Constants.bloodGroup;
@@ -492,20 +494,10 @@ export class UserProfileComponent implements OnInit, OnDestroy {
         blobName: this.newImageProfile.blob,
         thumbnail: this.newImageProfile.thumbnail
       };
-      LocalStorageService.setItem(Constants.UserInSession, {
-        completeName: this.user.name+' '+this.user.lastName,
-        profileImage: this.user.profileImage.thumbnail,
-        role: this.user.role,
-        refId: (this.user.refId? this.user.refId:null)
-      });
+      this._auth.updateUserInSession(this.user);
     }else if(!this.profileImage){
       this.user.profileImage = null;
-      LocalStorageService.setItem(Constants.UserInSession, {
-        completeName: this.user.name+' '+this.user.lastName,
-        profileImage: null,
-        role: this.user.role,
-        refId: (this.user.refId? this.user.refId:null)
-      });
+      this._auth.updateUserInSession(this.user);
     }
     if (this.newFileSub) {
       this.userInformation.benzene = {
