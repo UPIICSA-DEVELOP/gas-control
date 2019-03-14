@@ -47,6 +47,7 @@ export class ListTasksComponent implements OnInit, DoCheck , OnDestroy{
         previousTasks: [],
         historyTasks: []
       };
+      this.goBackList();
       this.resetFilters(true);
       this.station = stationObj;
       this.getStationTask();
