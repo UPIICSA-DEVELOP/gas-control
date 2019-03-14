@@ -54,11 +54,11 @@
                 <mat-icon>library_books</mat-icon>
                 <span>Procedimientos</span>
               </button>
-              <button mat-button (click)="openSasisopaModal(true)">
+              <button mat-button (click)="openSasisopaModal(true)" *ngIf="role!==6">
                 <img class="sass-icon" src="../../../assets/image/ssp_blue.png">
                 <span>SASISOPA</span>
               </button>
-              <button mat-button (click)="openSasisopaModal(false)">
+              <button mat-button (click)="openSasisopaModal(false)" *ngIf="role!==6">
                 <img class="sgm" src="../../../assets/image/sgm.png">
                 <span>Sistema de Gestión de Mediciones</span>
               </button>
