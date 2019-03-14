@@ -44,8 +44,8 @@ import { ProceduresComponent } from './components/screen/components/procedures/p
 import { PrivacyComponent } from './components/screen/child/privacy/privacy.component';
 import { AdminComponent } from './components/admin/admin.component';
 import { AddConsultancyComponent } from './components/admin/components/add-consultancy/add-consultancy.component';
-import { ListCollaboratorsComponent } from './components/admin/components/list-collaborators/list-collaborators.component';
-import {ListCollaboratorsService} from '@app/components/admin/components/list-collaborators/list-collaborators.service';
+import { ListStationsComponent } from './components/admin/components/list-stations/list-collaborators.component';
+import {ListStationsService} from '@app/components/admin/components/list-stations/list-stations.service';
 import {DatepickerComponent} from './components/screen/components/datepicker/datepicker.component';
 import {TaskFilterComponent} from './components/screen/components/task-filter/task-filter.component';
 import {ModalStationComponent} from '@app/components/screen/components/modal-station/modal-station.component';
@@ -96,7 +96,7 @@ import { CompressorReportComponent } from './components/screen/components/list-t
     ProceduresComponent,
     AdminComponent,
     AddConsultancyComponent,
-    ListCollaboratorsComponent,
+    ListStationsComponent,
     ModalStationComponent,
     ModalProceduresComponent,
     TermsComponent,
@@ -140,9 +140,9 @@ import { CompressorReportComponent } from './components/screen/components/list-t
     AddGasStationComponent,
     DatepickerComponent,
     TaskFilterComponent,
-    ListCollaboratorsComponent,
+    ListStationsComponent,
     ModalStationComponent,
-    ListCollaboratorsComponent,
+    ListStationsComponent,
     AddConsultancyComponent,
     ModalProceduresComponent,
     SasisopaComponent,
@@ -158,7 +158,7 @@ import { CompressorReportComponent } from './components/screen/components/list-t
       provide: HAMMER_GESTURE_CONFIG,
       useClass: GestureConfig
     },
-    ListCollaboratorsService,
+    ListStationsService,
     AddConsultancyService
   ],
   bootstrap: [AppComponent]

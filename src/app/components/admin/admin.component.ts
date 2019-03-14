@@ -9,7 +9,7 @@ import {PdfVisorService} from '@app/core/components/pdf-visor/pdf-visor.service'
 import {ApiLoaderService} from '@app/core/services/api/api-loader.service';
 import {ApiService} from '@app/core/services/api/api.service';
 import {DOCUMENT} from '@angular/common';
-import {ListCollaboratorsService} from '@app/components/admin/components/list-collaborators/list-collaborators.service';
+import {ListStationsService} from '@app/components/admin/components/list-stations/list-stations.service';
 import {AuthService} from '@app/core/services/auth/auth.service';
 import {DialogService} from '@app/core/components/dialog/dialog.service';
 import {AddConsultancyService} from '@app/components/admin/components/add-consultancy/add-consultancy.service';
@@ -28,7 +28,7 @@ export class AdminComponent implements OnInit, OnDestroy {
   public notResults: boolean;
   private _subscriptionLoader: Subscription;
   constructor(
-    private _collaborators: ListCollaboratorsService,
+    private _collaborators: ListStationsService,
     private _addConsultancy: AddConsultancyService,
     private _apiLoader: ApiLoaderService,
     private _auth: AuthService,

@@ -17,10 +17,10 @@ import {LocalStorageService} from '@app/core/services/local-storage/local-storag
 
 @Component({
   selector: 'app-list-collaborators',
-  templateUrl: './list-collaborators.component.html',
-  styleUrls: ['./list-collaborators.component.scss']
+  templateUrl: './list-stations.component.html',
+  styleUrls: ['./list-stations.component.scss']
 })
-export class ListCollaboratorsComponent implements OnInit {
+export class ListStationsComponent implements OnInit {
 
   public stationList: any[];
   public stationListCopy: any[];
@@ -30,7 +30,7 @@ export class ListCollaboratorsComponent implements OnInit {
   private _completeName: string;
   constructor(
     @Inject(MAT_DIALOG_DATA) private _data: any,
-    private _dialog: MatDialogRef<ListCollaboratorsComponent>,
+    private _dialog: MatDialogRef<ListStationsComponent>,
     private _snackBar: SnackBarService,
     private _dialogService: DialogService,
     private _api: ApiService,
@@ -85,6 +85,7 @@ export class ListCollaboratorsComponent implements OnInit {
   }
 
   public goToDashboard(): void{
+    debugger;
     LocalStorageService.setItem(Constants.ConsultancyInSession, this._data);
   }
 
