@@ -28,7 +28,7 @@
           <div class="station">
             <div class="station-content">
               <form [formGroup]="newStation" (ngSubmit)="validateStation(newStation.value)" aria-label="new station form">
-                <img src="../../../assets/Images/background.png" class="head-image" alt="background gas station">
+                <img src="../../../assets/images/background.png" class="head-image" alt="background gas station">
                 <div class="station-image" (click)="openModal()" matTooltip="Seleccione grupo gasolinero">
                   <mat-icon *ngIf="!stationType" class="defaultProfileImage">add_photo_alternate</mat-icon>
                   <img *ngIf="stationType" [src]="stationType.fileCS.thumbnail" class="profileImage">
@@ -283,7 +283,7 @@
             <div class="new-person">
               <div class="new-person-content">
                 <form [formGroup]="newLegalRep" (ngSubmit)="validateLegal(newLegalRep.value)">
-                  <img src="../../../assets/Images/background.png" class="head-image" alt="background gas station">
+                  <img src="../../../assets/images/background.png" class="head-image" alt="background gas station">
                   <div class="image">
                     <app-upload-file [layoutTemplate]="icon" (onLoad)="onLoadImage($event, false)" (onRemove)="onRemoveImage(false)"
                                      [type]="'image'">
@@ -453,7 +453,7 @@
           <div class="new-person">
             <div class="new-person-content">
               <form [formGroup]="newManager" (ngSubmit)="validateManager(newManager.value)">
-                <img src="../../../assets/Images/background.png" class="head-image" alt="background gas station">
+                <img src="../../../assets/images/background.png" class="head-image" alt="background gas station">
                 <div class="image">
                   <app-upload-file [layoutTemplate]="icon" (onLoad)="onLoadImage($event, true)" (onRemove)="onRemoveImage(true)"
                                    [type]="'image'">

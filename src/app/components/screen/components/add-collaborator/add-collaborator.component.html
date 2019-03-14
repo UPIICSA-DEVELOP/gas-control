@@ -20,7 +20,7 @@
     </div>
     <div class="form">
       <form [formGroup]="newPerson" (ngSubmit)="validateForm(newPerson.value)" class="add">
-        <img src="../../../assets/Images/background.png" class="head-image" alt="background gas station">
+        <img src="../../../assets/images/background.png" class="head-image" alt="background gas station">
         <div class="profileImage">
           <app-upload-file [layoutTemplate]="icon" (onLoad)="onLoadImage($event)" (onRemove)="onRemoveImage()" [type]="'image'">
             <ng-template #icon>
