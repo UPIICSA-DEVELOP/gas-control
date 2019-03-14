@@ -16,61 +16,29 @@
     .sheet{
       min-height: 279mm !important;
     }
-    .title{
-      font-weight: normal;
-      margin: 0;
-      color: #8A2744;
-      font-size: 28pt;
-    }
-    .sub-title{
-      color: #2F5496;
-      font-size: 13pt;
-    }
     .description{
       margin-top: 32px;
-      color: #1F3763;
       font-size: 12pt;
-    }
-    .info{
-      margin: 8px auto;
-      text-align: center;
-      color:#2F5496;
-      font-size: 12pt;
-      width: 50%;
     }
     .header{
       font-size: 14pt;
-      color: #002364;
-    }
-    .center{
-      margin: 0;
-      text-align: center;
-    }
-    .table{
-      margin: 16px 0;
     }
     #list{
       width: 100%;
+      margin-top: 36px;
     }
-    #item{
-      margin: 8px 0;
-    }
-    .item-title{
+    td, th {
+      border: 1px solid #dddddd;
       text-align: center;
-      font-size: 14pt;
-      color: #194592;
+      padding: 8px;
     }
-    .item-sub-title{
-      width: 49%;
-      margin: 0;
-      display: inline-block;
-      color: #194592;
+    tr:nth-child(even) {
+      background-color: #dddddd;
     }
-    .item-content, .table-title{
-      width: 49%;
-      margin: 0;
-      display: inline-block;
-      color: #194592;
+    .item{
+      border: 1px solid #dddddd;
+      padding: 8px;
+      margin: 1px;
     }
   </style>
 </head>
@@ -80,12 +48,6 @@
 
   <!-- Write HTML just like a web page -->
   <article>
-
-
-    <img style="display: none;" src="https://lh3.googleusercontent.com/oFh60mqDiisIc6tzMZ-Q5KJ-QvKugmUhh0yg6N5gdKuiEgTc96yfXIdksqWD8ODG0LOi2aAP9pz0Zzqm9rsXertP9pnNqo1mzQ">
-
-    <h1 class="title">SASISOPA</h1>
-    <p class="sub-title">Anexo 2</p>
     <p class="description">
       SASISOPA Punto 3. La identificación de riesgos, análisis, evaluación, medidas deprevención, monitoreo,
       mitigación y valuación de incidentes, accidentes, pérdidas esperadas en los distintos escenarios de riesgos,
@@ -93,34 +55,35 @@
       edificaciones comprendidas dentro del perímetro de las instalaciones industriales y en las inmediaciones.
     </p>
     <h2 class="header">Tabla 1. Sustancias químicas</h2>
-    <div class="table">
-      <div class="center">
-        <p class="table-title">Forma de almacenamiento</p>
-        <p class="table-title">Área de uso</p>
+    <div>
+      <div style="display: flex;">
+        <p class="item" style="width: 50%; font-weight: bold;">Forma de almacenamiento:</p>
+        <p class="item" style="width: 50%;">Tanque</p>
       </div>
-      <div class="center">
-        <p class="table-title">Tanque</p>
-        <p class="table-title">Almacenamiento y venta de combustible</p>
+      <div style="display: flex;">
+        <p class="item" style="width: 50%; font-weight: bold;  background-color: #dddddd;">Área de uso: </p>
+        <p class="item" style="width: 50%;  background-color: #dddddd;">Almacenamiento y venta de combustible</p>
+      </div>
+      <div style="display: flex;">
+        <p class="item" style="width: 50%; font-weight: bold;">Características de almacenamiento <br> o distribución:</p>
+        <p class="item" style="width: 50%;">La sustancia química se encuentra almacenada en un tanque enterrado, posteriormente es transferido al despachador para su venta</p>
       </div>
     </div>
-    <h2 class="header center">Características de almacenamiento o distribución</h2>
-    <p class="info">La sustancia química se encuentra almacenada en un tanque enterrado, posteriormente es transferido al despachador para su venta.</p>
-    <div id="list">
+    <div>
       <h2 class="header">Tanques de combustible:</h2>
 
-      <div id="item-to-select">
-        <div id="item">
-          <p class="item-title" id="title">Tanque 1</p>
-          <div class="center">
-            <p class="item-sub-title">Capacidad</p>
-            <p class="item-content" id="capacity">Fortis clemens eleates est.</p>
-          </div>
-          <div class="center">
-            <p class="item-sub-title">Combustible</p>
-            <p class="item-content" id="typeFuel">Altus indexs ducunt ad torquis.</p>
-          </div>
-        </div>
-      </div>
+      <table style="width:100%" id="table">
+        <tr style="text-align: center">
+          <th>N° Tanque</th>
+          <th>Capacidad</th>
+          <th>Combustible</th>
+        </tr>
+        <!--<tr id="item">
+          <td>1</td>
+          <td>Smith</td>
+          <td>50</td>
+        </tr>-->
+      </table>
 
     </div>
 

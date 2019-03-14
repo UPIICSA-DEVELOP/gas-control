@@ -7,34 +7,21 @@
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Document</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/paper-css/0.3.0/paper.css">
-  <style>@page { size: letter }</style>
   <style>
+    html {
+      -webkit-print-color-adjust: exact;
+    }
+    @page { size: letter }
     body{
       font-family: 'Helvetice New', 'Arial', sans-serif;
-      min-height: 279mm !important;
-    }
-    .sheet{
-      min-height: 279mm !important;
-    }
-    .title{
-      font-weight: normal;
-      margin: 0;
-      color: #8A2744;
-      font-size: 28pt;
-    }
-    .sub-title{
-      color: #2F5496;
-      font-size: 13pt;
     }
     .description{
       margin-top: 32px;
-      color: #1F3763;
       font-size: 12pt;
     }
     .info{
       margin-top: 16px;
       font-style: italic;
-      color:#2F5496;
       font-size: 12pt;
     }
     #list{
@@ -48,6 +35,7 @@
       text-align: center;
       padding: 24px;
       vertical-align: middle;
+      width: 49%;
     }
     .item-img{
       display: inline-block;
@@ -56,12 +44,10 @@
     }
     #name{
       font-size: 14pt;
-      color: #002364;
       margin: 0;
     }
     #workPosition{
       font-size: 12pt;
-      color: #1C4389;
       margin: 0;
     }
     #signature{
@@ -75,11 +61,6 @@
 
     <!-- Write HTML just like a web page -->
     <article>
-
-      <img style="display: none;" src="https://lh3.googleusercontent.com/oFh60mqDiisIc6tzMZ-Q5KJ-QvKugmUhh0yg6N5gdKuiEgTc96yfXIdksqWD8ODG0LOi2aAP9pz0Zzqm9rsXertP9pnNqo1mzQ">
-
-      <h1 class="title">SASISOPA</h1>
-      <p class="sub-title">Anexo 1</p>
       <p class="description">
         SASISOPA Punto 2. La evaluación de la integridad física y operativa de las instalaciones mediante procedimientos, instrumentos y metodologías reconocidos en el sector hidrocarburo.
       </p>
@@ -90,7 +71,7 @@
         <div id="item-to-select">
           <div id="item">
             <div class="item-info">
-              <h2 id="name">Alejandro Lopez Arreola</h2>
+              <h2 id="name">APedro Alejandro Lopez Arreola Hernandez Caballero del Monte (jajaja)</h2>
               <p  id="workPosition">Sunt vortexes desiderium</p>
             </div>
             <div class="item-img">
@@ -103,5 +84,6 @@
     </article>
 
   </section>
+
 </body>
 </html>

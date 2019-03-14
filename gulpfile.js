@@ -10,9 +10,17 @@ gulp.task('clean:zip', function () {
   return del(['./dist/dist.zip']);
 });
 
-gulp.task('copy:endpoints', function() {
-  return gulp.src(['./endpoints/**/*'])
-    .pipe(gulp.dest('./dist/endpoints'));
+gulp.task('templates', function() {
+  return gulp.src([
+    './endpoints/templates/*',
+  ]).pipe(gulp.dest('./dist/endpoints/templates'));
+});
+
+gulp.task('endpoints', ['templates'], function() {
+  return gulp.src([
+    './endpoints/*.js',
+    './endpoints/*.json'
+  ]).pipe(gulp.dest('./dist/endpoints'));
 });
 
 gulp.task('zip', () => {
