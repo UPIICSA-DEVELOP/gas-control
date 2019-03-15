@@ -189,7 +189,7 @@
           "type": "string",
           "description": "Information on response"
         },
-        "ubcLite": {
+        "item": {
           "$ref": "#/definitions/UBCLite"
         }
       }
