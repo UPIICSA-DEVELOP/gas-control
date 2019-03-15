@@ -45,7 +45,7 @@ gulp.task('zip', () => {
   }
   return gulp.src([
     file + '/**',
-    file + '/.*'
+    file + '/.*/**'
   ])
     .pipe(zip('bundle.zip'))
     .pipe(gulp.dest(file))
