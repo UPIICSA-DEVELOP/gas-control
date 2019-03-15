@@ -1,9 +1,0 @@
-[{
-  "relation": ["delegate_permission/common.handle_all_urls"],
-  "target": {
-    "namespace": "android_app",
-    "package_name": "com.maplander.inspector",
-    "sha256_cert_fingerprints":
-    ["13:18:8B:A9:B0:9B:6F:E8:98:D6:D2:CB:B3:0E:5F:27:22:8F:68:71:51:0A:3A:1D:78:54:B6:53:EC:17:D4:63"]
-  }
-}]
