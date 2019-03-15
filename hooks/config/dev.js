@@ -5,6 +5,7 @@
 
   try {
     shell.exec('sudo rm -rf /var/www/html/app.inspector.com/develop/*');
+    shell.exec('sudo rm -rf /var/www/html/app.inspector.com/develop/.well-known/*');
     shell.exec('sudo unzip /var/www/html/app.inspector.com/deploy/bundle.zip -d /var/www/html/app.inspector.com/develop');
     shell.exec('sudo npm i --unsafe-perm --prefix /var/www/html/app.inspector.com/develop');
     shell.exec('sudo rm -rf /var/www/html/app.inspector.com/deploy/bundle.zip');
