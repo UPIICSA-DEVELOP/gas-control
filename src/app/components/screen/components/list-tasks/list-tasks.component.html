@@ -260,9 +260,8 @@
             <mat-tab label="Incidencias">
               <div *ngIf="notCalendarTasks.length !== 0; then listIN else emptyIN"></div>
               <ng-template #listIN>
-                <div class="card-list" *ngFor="let task of notCalendarTasks;">
-                  <div *ngIf="reportConfig.reportView; then incidenceReportView else incidenceList"></div>
-                  <ng-template #incidenceReportView>
+                <div *ngIf="reportConfig.reportView; then incidenceReportView else incidenceList"></div>
+                <ng-template #incidenceReportView>
                     <div>
                       <div style="display: flex; justify-content: flex-end">
                         <button mat-icon-button (click)="goBackList()" matTooltip="Cerrar bitacora">
@@ -272,7 +271,8 @@
                       <app-incidence-report [taskIncidenceInfo]="reportConfig.taskElement" [utilities]="utils"></app-incidence-report>
                     </div>
                   </ng-template>
-                  <ng-template #incidenceList>
+                <ng-template #incidenceList>
+                  <div class="card-list" *ngFor="let task of notCalendarTasks;">
                     <div class="card-list" *ngFor="let task of notCalendarTasks;">
                       <mat-card class="task" style="margin-top: 8px">
                         <div class="priority" style="background-color:#E00000"></div>
@@ -296,8 +296,8 @@
                         </mat-card-content>
                       </mat-card>
                     </div>
-                  </ng-template>
-                </div>
+                  </div>
+                </ng-template>
               </ng-template>
               <ng-template #emptyIN>
                 <div class="empty-list">
