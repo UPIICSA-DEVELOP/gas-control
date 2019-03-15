@@ -43,7 +43,10 @@ gulp.task('zip', () => {
   if(!file){
     throw '--file is required';
   }
-  return gulp.src(file + '/**')
+  return gulp.src([
+    file + '/**',
+    file + '/.*'
+  ])
     .pipe(zip('bundle.zip'))
     .pipe(gulp.dest(file))
 });
