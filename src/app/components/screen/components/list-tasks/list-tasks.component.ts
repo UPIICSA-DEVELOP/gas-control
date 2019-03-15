@@ -40,7 +40,6 @@ export class ListTasksComponent implements OnInit, DoCheck , OnDestroy{
   @Input() set stationInfo(stationObj: any) {
     if (stationObj) {
       this.others = false;
-      this.notCalendarTasks = [];
       this._token = undefined;
       this.listTask = {
         todayTasks: [],
@@ -149,6 +148,7 @@ export class ListTasksComponent implements OnInit, DoCheck , OnDestroy{
           if(!this.others){
             this.resetFilters();
             this.others = true;
+            this.notCalendarTasks = [];
             this._modalScroll.nativeElement.scroll({top: 0});
             this.getNotCalendarTask();
           }
@@ -245,13 +245,6 @@ export class ListTasksComponent implements OnInit, DoCheck , OnDestroy{
           this._dateService.open(config).afterClosed().subscribe(response => {
             switch (response.code) {
               case 1:
-                this.listTask = {
-                  historyTasks: [],
-                  previousTasks: [],
-                  todayTasks: []
-                };
-                this._token = undefined;
-                this._tokenTwo = undefined;
                 this.today = (response.startDate === response.endDate);
                 this.startDate = response.startDate;
                 this.endDate = response.endDate;
@@ -260,8 +253,16 @@ export class ListTasksComponent implements OnInit, DoCheck , OnDestroy{
                 this.start = UtilitiesService.createPersonalTimeStamp(this.startDate);
                 this.end = UtilitiesService.createPersonalTimeStamp(this.endDate);
                 if(this.others){
+                  this._tokenTwo = undefined;
+                  this.notCalendarTasks = [];
                   this.getNotCalendarTask()
                 }else{
+                  this._token = undefined;
+                  this.listTask = {
+                    historyTasks: [],
+                    previousTasks: [],
+                    todayTasks: []
+                  };
                   this.getStationTask();
                 }
                 break;
@@ -305,7 +306,12 @@ export class ListTasksComponent implements OnInit, DoCheck , OnDestroy{
     this._token = undefined;
     this._tokenTwo = undefined;
     if(!getTasks){
-      this.getStationTask();
+      if(this.others){
+        this.notCalendarTasks = [];
+        this.getNotCalendarTask();
+      }else{
+        this.getStationTask();
+      }
     }
   }
 
@@ -427,8 +433,9 @@ export class ListTasksComponent implements OnInit, DoCheck , OnDestroy{
     this.goBackList();
     this._modalScroll.nativeElement.scroll({top: 0});
     this._lastTabSelected = 0;
-    this.notCalendarTasks = null;
+    this.notCalendarTasks = [];
     this.others = false;
+    this.resetFilters();
   }
 
   public onScroll(event: any):void{
