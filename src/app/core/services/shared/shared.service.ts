@@ -12,7 +12,10 @@ export enum SharedTypeNotification {
   ListTask,
   NotCalendarTask,
   CreationTask,
-  ChangeStation
+  ChangeStation,
+  EditTask,
+  HwgActive,
+  FinishEditTask
 }
 
 @Injectable()

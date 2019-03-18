@@ -8,6 +8,11 @@ import { Injectable } from '@angular/core';
 import {MatDialog, MatDialogRef} from '@angular/material';
 import {ModalProceduresComponent} from '@app/components/screen/components/modal-procedures/modal-procedures.component';
 
+export interface ProceduresConfig {
+  utils: any;
+  proceduresSelected: number[];
+}
+
 @Injectable()
 export class ModalProceduresService {
 
@@ -15,7 +20,7 @@ export class ModalProceduresService {
     private _dialog: MatDialog
   ) { }
 
-  public open(utils: any):MatDialogRef<ModalProceduresComponent>{
-    return this._dialog.open(ModalProceduresComponent,{panelClass:'modal-panel', disableClose: true, data:utils || null});
+  public open(config: ProceduresConfig):MatDialogRef<ModalProceduresComponent>{
+    return this._dialog.open(ModalProceduresComponent,{panelClass:'modal-panel', disableClose: true, data: config || null});
   }
 }

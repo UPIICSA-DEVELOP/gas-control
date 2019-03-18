@@ -12,6 +12,13 @@ import {ApiService} from '@app/core/services/api/api.service';
 import {UtilitiesService} from '@app/core/utilities/utilities.service';
 import {ImageVisorService} from '@app/core/components/image-visor/image-visor.service';
 import {SnackBarService} from '@app/core/services/snackbar/snackbar.service';
+import {SharedService, SharedTypeNotification} from '@app/core/services/shared/shared.service';
+import {UploadFileService} from '@app/core/components/upload-file/upload-file.service';
+import {SignaturePadService} from '@app/core/components/signature-pad/signature-pad.service';
+import {Subscription} from 'rxjs/Rx';
+import {Constants} from '@app/core/constants.core';
+import {LocalStorageService} from '@app/core/services/local-storage/local-storage.service';
+import {UploadFileResponse} from '@app/core/components/upload-file/upload-file.component';
 
 @Component({
   selector: 'app-compressor-report',
@@ -33,22 +40,55 @@ export class CompressorReportComponent implements OnInit {
   public compForm: FormGroup;
   public date: any[];
   public taskItems: any[];
+  public editable: boolean;
+  public name: string;
+  public signatureThumbnail: string;
+  public evidenceThumbnail: string;
+  public error: boolean;
   private _indexTask: number;
+  private _signature: FormData;
+  private _evidence: FormData;
+  private _loads: boolean[];
+  private _subscriptionShared: Subscription;
   constructor(
     private _api: ApiService,
     private _apiLoader: ApiLoaderService,
     private _formBuilder: FormBuilder,
     private _imageVisor: ImageVisorService,
-    private _snackBarService: SnackBarService
+    private _snackBarService: SnackBarService,
+    private _sharedService: SharedService,
+    private _uploadFile: UploadFileService,
+    private _signatureService: SignaturePadService,
   ) {
+    this.error = false;
+    this._loads = [false, false];
     this.date = [];
     this.taskItems = [];
     this._indexTask = 0;
+    this.editable = false;
+    this.name = '';
+    this.signatureThumbnail = '';
+    this.evidenceThumbnail = '';
   }
 
   ngOnInit() {
     this._apiLoader.getProgress().subscribe(load=>{this.load = load});
     this.initCompForm();
+    this.getNotifications();
+  }
+
+  private getNotifications(): void{
+    this._subscriptionShared = this._sharedService.getNotifications().subscribe(response=>{
+      switch (response.type){
+        case SharedTypeNotification.EditTask:
+          if(response.value = 2){
+            this.startEditFormat();
+          }
+          break;
+        default:
+          break;
+      }
+    })
   }
 
   private initCompForm():void{
@@ -143,4 +183,115 @@ export class CompressorReportComponent implements OnInit {
     this._indexTask = ev.pageIndex;
     this.patchForm(this.taskItems[this._indexTask]);
   }
+
+
+  private startEditFormat(prepare?: boolean): void{
+    let today: any = new Date();
+    const user = LocalStorageService.getItem(Constants.UserInSession);
+    today = UtilitiesService.createPersonalTimeStamp(today);
+    this.date = UtilitiesService.convertDate(today.timeStamp);
+    this.editable = true;
+    this.name = user.completeName;
+    if(!prepare){
+      this.compressorReport.signature = undefined;
+      if(this.compressorReport.fileCS){
+        this.evidenceThumbnail = this.compressorReport.fileCS.thumbnail;
+      }
+      this.compressorReport.folio = undefined;
+      this.compressorReport.name = user.completeName;
+    }
+    this.compForm.enable();
+  }
+  public changeTime(ev: any, type: string): void {
+    this.compForm.patchValue({
+      [type]: ev
+    });
+  }
+
+  public loadSignature(): void {
+    this._signatureService.open().afterClosed().subscribe(response => {
+      switch (response.code) {
+        case 1:
+          this.signatureThumbnail = response.base64;
+          this._loads[1] = true;
+          this._signature = new FormData();
+          this._signature.append('fileName', 'signature-' + new Date().getTime() + '.png');
+          this._signature.append('isImage', 'true');
+          this._signature.append('file', response.blob);
+          break;
+      }
+    });
+  }
+
+  public loadEvidence(ev: UploadFileResponse): void {
+    this.error = false;
+    this.evidenceThumbnail = ev.url;
+    this._loads[0] = true;
+    this._evidence = new FormData();
+    this._evidence.append('path', '');
+    this._evidence.append('fileName', 'evidence-' + new Date().getTime() + '.png');
+    this._evidence.append('isImage', 'true');
+    this._evidence.append('file', ev.blob);
+  }
+
+  public deleteEvidence(): void {
+    this.evidenceThumbnail = undefined;
+    this._loads[0] = false;
+    this._evidence = undefined;
+  }
+
+
+  public validateForm(value: any): void {
+    if (this.task.original.evidence && (!this._evidence && !this.compressorReport.fileCS)) {
+      this.error = true;
+    }
+    if (this.compForm.invalid || this.error) {
+      this._snackBarService.openSnackBar('Por favor, complete los campos','OK',3000);
+      return;
+    }
+    if(!this._signature){
+      this._snackBarService.openSnackBar('Por favor, registre su firma','OK',3000);
+      return;
+    }
+    if(this._loads[0]) {
+      this.uploadFile(1);
+      return;
+    }
+    if(this._loads[1]){
+      this.uploadFile(2);
+      return;
+    }
+  }
+
+  private uploadFile(type: number):void{
+    switch (type){
+      case 1:
+        this._uploadFile.upload(this._evidence).subscribe(response=>{
+          if (response){
+            this.compressorReport.fileCS = {
+              blobName: response.item.blobName,
+              thumbnail: response.item.thumbnail
+            };
+            this._loads[0] = false;
+            this.validateForm(this.compForm.value);
+          }
+        });
+        break;
+      case 2:
+        this._uploadFile.upload(this._signature).subscribe(response=>{
+          if (response){
+            this.compressorReport.signature = {
+              blobName: response.item.blobName,
+              thumbnail: response.item.thumbnail
+            };
+            this._loads[1] = false;
+            this.validateForm(this.compForm.value);
+          }
+        });
+        break;
+      default:
+        break;
+    }
+  }
+
 }

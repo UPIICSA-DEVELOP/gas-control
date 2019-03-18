@@ -124,7 +124,7 @@ export interface OMReport {
   endTime: number;
   faceMask: boolean;
   fileCS?: any;
-  folio: number;
+  folio?: number;
   gloves: boolean;
   goggles: boolean;
   helmet: boolean
@@ -142,7 +142,7 @@ export interface OMReport {
   protectiveGoggles: boolean;
   signature: any;
   startTime: number;
-  taskId: number;
+  taskId: number | string;
   toolsAndMaterials?: string;
 }
 
@@ -152,7 +152,7 @@ export interface CompressorReport {
   date: number;
   endTime: number;
   fileCS: any;
-  folio: number;
+  folio?: number;
   hwgReport?: HWGReport;
   id?: number;
   model?: string;
@@ -164,7 +164,7 @@ export interface CompressorReport {
   securityValve: string;
   signature: any;
   startTime: number;
-  taskId: number;
+  taskId: number | string;
 }
 
 export interface HWGReport {
@@ -185,12 +185,12 @@ export interface VRSReport {
   date: number;
   emergencyStop: string;
   fileCS?: any;
-  folio: number;
+  folio?: number;
   id?: number;
   name : string;
   observations?: string;
   signature: any;
-  taskId: number
+  taskId: number | string;
   vrsAlarm: string;
   vrsDispensary: VRSDispensary;
   vrsTanks: VRSTank[];
@@ -227,7 +227,7 @@ export interface VRSTank {
 export interface ScannedReport {
   date: number;
   fileCS: any;
-  folio: number;
+  folio?: number;
   hwgReport?: HWGReport;
   id?: number;
   name: string;
@@ -240,7 +240,7 @@ export interface HWCReport {
   date: number;
   finalDestination: string;
   fileCS?: any;
-  folio: number;
+  folio?: number;
   id?: number;
   manifest?: any;
   manifestNumber?: string;
@@ -248,7 +248,7 @@ export interface HWCReport {
   nextPhase?: string;
   quantity: number;
   signature: any;
-  taskId: number;
+  taskId: number | string;
   unity: string;
   waste: string;
 }
@@ -258,10 +258,10 @@ export interface FRReport {
   diesel: boolean;
   endTime: number;
   fileCS?: any;
-  folio: number;
+  folio?: number;
   id?: number;
   magna: boolean;
-  managerName: string;
+  managerName?: string;
   name: string;
   premium: boolean;
   receiveName: string;
@@ -269,7 +269,7 @@ export interface FRReport {
   remissionNumber: string;
   signature: any;
   startTime: number;
-  taskId: number;
+  taskId: number | string;
   volumetric: number;
 }
 
@@ -277,12 +277,12 @@ export interface FEReport {
   date: number;
   endTime: number;
   fireExtinguishers: FireExtinguisher[];
-  folio: number;
+  folio?: number;
   id?: number;
   name: string;
   signature: any;
   startTime: number;
-  taskId: number;
+  taskId: number | string;
 }
 
 /**
@@ -310,13 +310,13 @@ export interface IncidenceReport {
   date: number;
   description: string;
   fileCS: any;
-  folio: number;
-  id: number
+  folio?: number;
+  id?: number
   name: string;
-  procedures: number[];
+  procedures?: number[];
   signature: any;
   taskId: number;
-  time: number;
+  time: number | string;
 }
 
 /**

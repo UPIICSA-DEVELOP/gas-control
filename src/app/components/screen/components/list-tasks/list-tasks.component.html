@@ -48,6 +48,9 @@
           <ng-template #reportForm>
             <div style="width: 95%">
               <div style="display: flex; justify-content: flex-end">
+                <button *ngIf="reportConfig.status === 4" mat-icon-button (click)="editFormat()" matTooltip="Editar">
+                  <mat-icon>edit</mat-icon>
+                </button>
                 <button mat-icon-button (click)="goBackList()" matTooltip="Cerrar bitacora">
                   <mat-icon>close</mat-icon>
                 </button>
@@ -174,7 +177,7 @@
                         <mat-icon style="color: #707070; font-size: 16px; width: 16px; height: 16px;" svgIcon="icons:task_previous" *ngIf=" task.original.status === 2"></mat-icon>
                       </div>
                       <div style="position: absolute; bottom: 0; right: 0; margin: 0 4px">
-                        <button mat-icon-button type="button" (click)="goTaskInfo(task)" *ngIf="task.original.status !== 3" matTooltip="Abrir tarea">
+                        <button mat-icon-button type="button" (click)="goTaskInfo(task)" *ngIf="task.original.status !== 3 || user.role === 7" matTooltip="Abrir tarea">
                           <mat-icon>keyboard_arrow_down</mat-icon>
                         </button>
                       </div>
@@ -218,6 +221,9 @@
                 <ng-template #frReportView>
                   <div style="width: 95%">
                     <div style="display: flex; justify-content: flex-end">
+                      <button mat-icon-button (click)="editFormat()" matTooltip="Editar">
+                        <mat-icon>edit</mat-icon>
+                      </button>
                       <button mat-icon-button (click)="goBackList()" matTooltip="Cerrar bitacora">
                         <mat-icon>close</mat-icon>
                       </button>
@@ -264,6 +270,9 @@
                 <ng-template #incidenceReportView>
                     <div>
                       <div style="display: flex; justify-content: flex-end">
+                        <button mat-icon-button (click)="editFormat()" matTooltip="Editar">
+                          <mat-icon>edit</mat-icon>
+                        </button>
                         <button mat-icon-button (click)="goBackList()" matTooltip="Cerrar bitacora">
                           <mat-icon>close</mat-icon>
                         </button>
@@ -310,6 +319,9 @@
                 <ng-template #frReportView>
                   <div style="width: 95%">
                     <div style="display: flex; justify-content: flex-end">
+                      <button mat-icon-button (click)="editFormat()" matTooltip="Editar">
+                        <mat-icon>edit</mat-icon>
+                      </button>
                       <button mat-icon-button (click)="goBackList()" matTooltip="Cerrar bitacora">
                         <mat-icon>close</mat-icon>
                       </button>

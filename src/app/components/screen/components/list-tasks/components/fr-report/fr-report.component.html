@@ -5,34 +5,49 @@
   -->
 
 <div id="fr-report">
-  <form [formGroup]="frForm">
+  <form [formGroup]="frForm" (ngSubmit)="validateForm(frForm.value)">
     <div class="task-header">
       <div class="head-bold">Descarga de combustible</div>
       <div class="control-data">
-        <div *ngIf="frReport">Fecha: {{date[0]}} {{date[1]}} {{date[2]}}</div>
-        <div *ngIf="frReport">Folio: {{frReport.folio | formatFolio}}</div>
+        <div *ngIf="date.length !== 0">Fecha: {{date[0]}} {{date[1]}} {{date[2]}}</div>
+        <div *ngIf="frReport && frReport.folio">Folio: {{frReport.folio | formatFolio}}</div>
       </div>
     </div>
     <div class="flex-box">
       <div class="columns">
         <div class="times">
           <mat-form-field class="clock">
-            <input formControlName="startTime" matInput placeholder="Hora de inicio" required appDisableWrite value="{{frForm.controls['startTime'].value | formatTime}}">
+            <input formControlName="startTime" matInput placeholder="Hora de inicio" required type="text" appDisableWrite (time)="changeTime($event, 'startTime')" [value]="frForm.controls['startTime'].value | formatTime">
+            <mat-error *ngIf="frForm.controls['startTime'].hasError('required')">
+              Este campo es obligatorio
+            </mat-error>
           </mat-form-field>
           <mat-form-field class="clock">
-            <input formControlName="endTime" matInput placeholder="Hora de término" required appDisableWrite value="{{frForm.controls['endTime'].value | formatTime}}">
+            <input formControlName="endTime" matInput placeholder="Hora de término" required type="text" appDisableWrite (time)="changeTime($event, 'endTime')" [value]="frForm.controls['endTime'].value | formatTime">
+            <mat-error *ngIf="frForm.controls['endTime'].hasError('required')">
+              Este campo es obligatorio
+            </mat-error>
           </mat-form-field>
         </div>
         <mat-form-field class="inputs">
-          <input formControlName="remissionNumber" matInput placeholder="Número de remisión" required>
+          <input formControlName="remissionNumber" matInput placeholder="Número de remisión" required type="text">
+          <mat-error *ngIf="frForm.controls['remissionNumber'].hasError('required')">
+            Este campo es obligatorio
+          </mat-error>
         </mat-form-field>
         <div class="text-divider">Cantidad en:</div>
         <div class="times">
           <mat-form-field class="clock">
-            <input formControlName="remission" matInput placeholder="Remisión (lts)" required>
+            <input formControlName="remission" matInput placeholder="Remisión (lts)" required type="number">
+            <mat-error *ngIf="frForm.controls['remission'].hasError('required')">
+              Este campo es obligatorio
+            </mat-error>
           </mat-form-field>
           <mat-form-field class="clock">
-            <input formControlName="volumetric" matInput placeholder="Volumétrico (lts)" required>
+            <input formControlName="volumetric" matInput placeholder="Volumétrico (lts)" required type="number">
+            <mat-error *ngIf="frForm.controls['volumetric'].hasError('required')">
+              Este campo es obligatorio
+            </mat-error>
           </mat-form-field>
         </div>
       </div>
@@ -40,44 +55,69 @@
         <div class="text-divider">
           Tipo de combustible
         </div>
+        <mat-error *ngIf="error && editable" class="error-text">
+          Debe seleccionar al menos una opción
+        </mat-error>
         <div class="inputs">
           <div class="space-box">
             <div class="checks-row">
-              <mat-checkbox formControlName="magna">Magna</mat-checkbox>
+              <mat-checkbox formControlName="magna" (change)="changeFuelType($event)">Magna</mat-checkbox>
             </div>
             <div class="checks-row">
-              <mat-checkbox formControlName="premium">Premium</mat-checkbox>
+              <mat-checkbox formControlName="premium" (change)="changeFuelType($event)">Premium</mat-checkbox>
             </div>
           </div>
           <div class="space-box">
             <div class="checks-row">
-              <mat-checkbox formControlName="diesel">Diesel</mat-checkbox>
+              <mat-checkbox formControlName="diesel" (change)="changeFuelType($event)">Diesel</mat-checkbox>
             </div>
             <div class="checks-row"></div>
           </div>
         </div>
         <mat-form-field class="inputs">
-          <input formControlName="receiveName" matInput placeholder="Personal que recibe">
+          <input formControlName="receiveName" matInput placeholder="Personal que recibe" required>
+          <mat-error *ngIf="frForm.controls['receiveName'].hasError('required')">
+            Este campo es obligatorio
+          </mat-error>
         </mat-form-field>
-        <div
-          style="width: 90%; display: flex; flex-direction: column; justify-content: center;">
+        <div class="end-report">
           <div class="text-sign">
             Nombre y firma del responsable
           </div>
           <div class=inputs>
-            <div class="signature-element">
-              <img class="evidence" *ngIf="frReport && frReport.signature" [src]="frReport.signature.thumbnail" alt="Evidence capture">
-              <div *ngIf="!frReport || !frReport.signature" style="width: 60%; height: 60px"></div>
-            </div>
+            <div *ngIf="!editable; then showSign else loadSign"></div>
+            <ng-template #showSign>
+              <div class="signature-element">
+                <img *ngIf="frReport && frReport.signature" [src]="frReport.signature.thumbnail">
+                <div class="empty-signature" *ngIf="!frReport || !frReport.signature"></div>
+              </div>
+            </ng-template>
+            <ng-template #loadSign>
+              <div class="signature-element" (click)="loadSignature()" style="cursor: pointer" matTooltip="Cargar Firma">
+                <img *ngIf="signatureThumbnail" [src]="signatureThumbnail">
+                <div class="empty-signature" *ngIf="!signatureThumbnail" ></div>
+              </div>
+            </ng-template>
             <div class="divider"></div>
-            <div *ngIf="!frReport || !frReport.name" class="name">Nombre</div>
-            <div *ngIf="frReport && frReport.name" class="name">{{frReport.name}}</div>
+            <div *ngIf="editable; then admonName else originalName"></div>
+            <ng-template #admonName>
+              <div class="name">{{name}}</div>
+            </ng-template>
+            <ng-template #originalName>
+              <div *ngIf="!frReport || !frReport.name" class="name">Nombre</div>
+              <div *ngIf="frReport && frReport.name" class="name">{{frReport.name}}</div>
+            </ng-template>
           </div>
         </div>
       </div>
     </div>
+    <div *ngIf="editable" class="finish-button">
+      <button mat-flat-button type="submit" [color]="'primary'" [disabled]="load">
+        FINALIZAR
+      </button>
+    </div>
   </form>
-  <div *ngIf="taskItems && taskItems.length !== 0">
+  <div *ngIf="taskItems && taskItems.length !== 0 && !editable">
     <mat-paginator [pageSize]="1" [length]="taskItems.length" [hidePageSize]="true" (page)="changeTask($event)" ></mat-paginator>
   </div>
 </div>

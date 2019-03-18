@@ -10,7 +10,10 @@ import {forkJoin, Observable} from 'rxjs';
 import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 import {NetworkService} from '@app/core/services/connection/network.service';
 import {SnackBarService} from '@app/core/services/snackbar/snackbar.service';
-import {Consultancy} from '@app/core/interfaces/interfaces';
+import {
+  CompressorReport, Consultancy, FEReport, FRReport, HWCReport, IncidenceReport, OMReport, ScannedReport,
+  VRSReport
+} from '@app/core/interfaces/interfaces';
 import {Subscription} from 'rxjs/Rx';
 import {environment} from '@env/environment';
 
@@ -455,13 +458,74 @@ export class ApiService implements OnDestroy{
    * End: list reports by reportType
    */
 
+  public createTask(taskEntity: any, type: number): Observable<any>{
+    let response = null;
+    switch (type){
+      case 1:
+        response = this.createOMReport(taskEntity);
+        break;
+      case 2:
+        response = this.createCompressorReport(taskEntity);
+        break;
+      case 4:
+        response = this.createVRSReport(taskEntity);
+        break;
+      case 5:
+        response = this.createScannedReport(taskEntity);
+        break;
+      case 6:
+        response = this.createHWCReport(taskEntity);
+        break;
+      case 7:
+        response = this.createFRReport(taskEntity);
+        break;
+      case 8:
+        response = this.createFEReport(taskEntity);
+        break;
+      case 9:
+        response = this.createIncidenceReport(taskEntity);
+        break;
+    }
+    return response;
+  }
 
   /**
-   * Start: create reports by reportTyé
+   * Start: create reports by reportType
    */
 
+  private createOMReport(task: any): Observable<any>{
+    return this._http.post(ApiService.API_URL_COMPLETE + 'createOMReport', task);
+  }
+
+  private createCompressorReport(task: any): Observable<any>{
+    return this._http.post(ApiService.API_URL_COMPLETE + ' createCompressorReport', task);
+  }
+
+  private createVRSReport(task: any): Observable<any>{
+    return this._http.post(ApiService.API_URL_COMPLETE + 'createVRSReport', task);
+  }
+
+  private createScannedReport(task: any): Observable<any>{
+    return this._http.post(ApiService.API_URL_COMPLETE + 'createScannedReport', task);
+  }
+
+  private createFEReport(task: any): Observable<any>{
+    return this._http.post(ApiService.API_URL_COMPLETE + 'createFEReport', task);
+  }
+
+  private createHWCReport(task: any): Observable<any>{
+    return this._http.post(ApiService.API_URL_COMPLETE + 'createHWCReport', task);
+  }
+
+  private createFRReport(task: any): Observable<any>{
+    return this._http.post(ApiService.API_URL_COMPLETE + 'createFRReport', task);
+  }
+
+  private createIncidenceReport(task: any): Observable<any>{
+    return this._http.post(ApiService.API_URL_COMPLETE + 'createIncidenceReport', task);
+  }
   /**
-   * End: create reports by reportTyé
+   * End: create reports by reportType
    */
 
   private initNetwork(): void {

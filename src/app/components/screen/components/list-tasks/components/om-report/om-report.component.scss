@@ -172,6 +172,10 @@
       width: 60%;
       height: 60px;
     }
+    .empty-signature{
+      width: 60%;
+      height: 60px;
+    }
   }
   .name{
     display: flex;
@@ -196,11 +200,80 @@
   }
 
   .procedure{
-    font-size: 12px; color: #707070;
+    font-size: 12px;
+    color: #707070;
   }
 
   .evidence{
     height: inherit;
     padding: 8px;
+  }
+  .task-name-container{
+    display: flex;
+    justify-content: center;
+    margin: 8px 0;
+    text-align: center;
+    .task-name{
+      font-weight: 600;
+      font-size: 18px;
+    }
+  }
+  .error-text{
+    width: 90%;
+    font-size: 11px;
+  }
+  .personnel-input{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 90%;
+  }
+
+  .add{
+    color: #257602;
+  }
+  .delete{
+    color: #E00000;
+  }
+  .list-element{
+    font-size: 12px;
+    color: #707070;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .importance{
+    font-size: 12px;
+    margin-top: 8px;
+    width: 90%;
+    color: #707070;
+    text-align: justify;
+  }
+  .description{
+    width: 90%;
+    margin-top: 12px;
+  }
+  .finish-button{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+  }
+
+  .input-two{
+    width: 80%;
+  }
+
+  .name-list{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .procedures-head{
+    margin: 8px 0;
+    color: #707070;
+    width: 90%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
   }
 }

@@ -12,20 +12,20 @@
     <div class="head-bold">Compresor de aire</div>
     <div class="control-data">
       <div *ngIf="compressorReport">Fecha: {{date[0]}} {{date[1]}} {{date[2]}}&nbsp;&nbsp;</div>
-      <div *ngIf="compressorReport">Folio: {{compressorReport.folio | formatFolio}}</div>
+      <div *ngIf="compressorReport && compressorReport.folio">Folio: {{compressorReport.folio | formatFolio}}</div>
     </div>
   </div>
   <form [formGroup]="compForm" class="flex-box">
     <div class="columns">
       <div class="times">
         <mat-form-field class="clock">
-          <input formControlName="startTime" placeholder="Hora de inicio" matInput required appDisableWrite value="{{compForm.controls['startTime'].value | formatTime}}">
+          <input formControlName="startTime" placeholder="Hora de inicio" matInput required appDisableWrite (time)="changeTime($event, 'startTime')" value="{{compForm.controls['startTime'].value | formatTime}}">
           <mat-error *ngIf="compForm.controls['startTime'].hasError('required')">
             Este campo es obligatorio
           </mat-error>
         </mat-form-field>
         <mat-form-field class="clock">
-          <input formControlName="endTime" placeholder="Hora de término" matInput required appDisableWrite value="{{compForm.controls['endTime'].value | formatTime}}">
+          <input formControlName="endTime" placeholder="Hora de término" matInput required appDisableWrite (time)="changeTime($event, 'endTime')" value="{{compForm.controls['endTime'].value | formatTime}}">
           <mat-error *ngIf="compForm.controls['endTime'].hasError('required')">
             Este campo es obligatorio
           </mat-error>
@@ -41,7 +41,7 @@
         <input formControlName="controlNumber" matInput placeholder="No. de control">
       </mat-form-field>
       <div style="display: flex; align-items: center; width: 90%;">
-        <mat-form-field>
+        <mat-form-field style="width: 75%">
           <mat-select formControlName="pressure" placeholder="Presión del manómetro" required>
             <mat-option [value]="7">7</mat-option>
             <mat-option [value]="8">8</mat-option>
@@ -73,23 +73,53 @@
       <div class="image-header">
         Captura fotográfica de la evidencia
       </div>
-      <div class="image-container" *ngIf="!compressorReport || !compressorReport.fileCS">
-        <mat-icon class="default-image">image</mat-icon>
-      </div>
-      <div class="image-container-real" *ngIf="compressorReport && compressorReport.fileCS" (click)="seeEvidence()">
-        <img class="evidence" [src]="compressorReport.fileCS.thumbnail" alt="Evidence capture">
-      </div>
+      <div *ngIf="!editable; then showEv else modify"></div>
+      <ng-template #showEv>
+        <div *ngIf="!compressorReport || !compressorReport.fileCS" class="image-container" >
+          <mat-icon class="default-image">image</mat-icon>
+        </div>
+        <div *ngIf="compressorReport && compressorReport.fileCS " class="image-container-real" (click)="seeEvidence()">
+          <img class="evidence" [src]="compressorReport.fileCS.thumbnail" alt="Evidence capture">
+        </div>
+      </ng-template>
+      <ng-template #modify>
+        <app-upload-file class="inputs" (onLoad)="loadEvidence($event)" (onRemove)="deleteEvidence()" [layoutTemplate]="imageEvidence" [type]="'image'">
+          <ng-template #imageEvidence>
+            <div *ngIf="!evidenceThumbnail" class="image-container" >
+              <mat-icon class="default-image">image</mat-icon>
+            </div>
+            <div *ngIf="evidenceThumbnail" class="image-container-real">
+              <img class="evidence" [src]="evidenceThumbnail" alt="Evidence capture">
+            </div>
+          </ng-template>
+        </app-upload-file>
+      </ng-template>
       <div class="text-sign">
         Nombre y firma del responsable
       </div>
       <div class="inputs">
-        <div class="signature-element">
-          <img *ngIf="compressorReport && compressorReport.signature" [src]="compressorReport.signature.thumbnail">
-          <div *ngIf="!compressorReport || !compressorReport.signature" style="width: 60%; height: 60px"></div>
-        </div>
+        <div *ngIf="!editable; then showSign else loadSign"></div>
+        <ng-template #showSign>
+          <div class="signature-element">
+            <img *ngIf="compressorReport && compressorReport.signature" [src]="compressorReport.signature.thumbnail">
+            <div *ngIf="!compressorReport || !compressorReport.signature" style="width: 60%; height: 60px"></div>
+          </div>
+        </ng-template>
+        <ng-template #loadSign>
+          <div class="signature-element" (click)="loadSignature()" style="cursor: pointer" matTooltip="Cargar Firma">
+            <img *ngIf="signatureThumbnail" [src]="signatureThumbnail">
+            <div *ngIf="!signatureThumbnail" style="width: 60%; height: 60px"></div>
+          </div>
+        </ng-template>
         <div class="divider"></div>
-        <div *ngIf="!compressorReport || !compressorReport.name" class="name">Nombre</div>
-        <div *ngIf="compressorReport && compressorReport.name" class="name">{{compressorReport.name}}</div>
+        <div *ngIf="editable; then admonName else originalName"></div>
+        <ng-template #admonName>
+          <div class="name">{{name}}</div>
+        </ng-template>
+        <ng-template #originalName>
+          <div *ngIf="!compressorReport || !compressorReport.name" class="name">Nombre</div>
+          <div *ngIf="compressorReport && compressorReport.name" class="name">{{compressorReport.name}}</div>
+        </ng-template>
       </div>
     </div>
   </form>
@@ -100,7 +130,12 @@
   <div *ngIf="task.original.hwg && !compressorReport">
     <app-hwg-report [taskHwgInfo]="undefined"></app-hwg-report>
   </div>
-  <div *ngIf="taskItems && taskItems.length !== 0">
+  <div *ngIf="taskItems && taskItems.length !== 0 && !editable">
     <mat-paginator [pageSize]="1" [length]="taskItems.length" [hidePageSize]="true" (page)="changeTask($event)" ></mat-paginator>
+  </div>
+  <div *ngIf="editable" style="width: 100%; display: flex; justify-content: center">
+    <button mat-flat-button (click)="validateForm(compForm.value)" [color]="'primary'">
+      FINALIZAR
+    </button>
   </div>
 </div>

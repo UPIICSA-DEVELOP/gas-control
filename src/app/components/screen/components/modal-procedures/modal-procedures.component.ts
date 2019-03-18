@@ -21,7 +21,7 @@ export class ModalProceduresComponent implements OnInit {
     private _dialogRef: MatDialogRef<ModalProceduresComponent>
   ) {
     this.selected = [];
-    this.procedures = this._data;
+    this.procedures = this._data.utils;
   }
 
   ngOnInit() {
@@ -33,12 +33,25 @@ export class ModalProceduresComponent implements OnInit {
   }
 
   public finishSelectProcedures():void{
-    this._dialogRef.close({code: 1, data: this.selected});
+    let procedure = [];
+    this.selected.forEach((item, index)=>{
+      if(item === true){
+        procedure.push(index+1);
+      }
+    });
+    this._dialogRef.close({code: 1, data: procedure});
   }
 
   private initArray():void{
     for (let i = 0; i<this.procedures.length; i++){
       this.selected.push(false);
+    }
+    for (let i = 0; i<this.procedures.length; i++){
+      for(let j = 0; j <this._data.proceduresSelected.length; j++){
+        if(this._data.proceduresSelected[j] === (i+1)){
+          this.selected[i] = true;
+        }
+      }
     }
   }
 }

@@ -9,14 +9,14 @@
     <div class="task-header">
       <div class="head-bold">Incidencia</div>
       <div class="control-data">
-        <div *ngIf="incidenceReport">Fecha: {{date[0]}} {{date[1]}} {{date[2]}}</div>
-        <div *ngIf="incidenceReport">Folio: {{incidenceReport.folio | formatFolio}}</div>
+        <div *ngIf="date.length !== 0">Fecha: {{date[0]}} {{date[1]}} {{date[2]}}</div>
+        <div *ngIf="incidenceReport && incidenceReport.folio">Folio: {{incidenceReport.folio | formatFolio}}</div>
       </div>
     </div>
     <div class="flex-box">
       <div class="columns">
         <mat-form-field class="inputs">
-          <input formControlName="time" matInput placeholder="Hora" appDisableWrite value="{{incidenceForm.controls['time'].value | formatTime}}">
+          <input formControlName="time" matInput placeholder="Hora" appDisableWrite [value]="incidenceForm.controls['time'].value | formatTime">
         </mat-form-field>
         <mat-form-field class="inputs">
           <mat-select formControlName="area" placeholder="Lugar de generación" required>

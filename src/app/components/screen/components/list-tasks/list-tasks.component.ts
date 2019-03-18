@@ -27,7 +27,7 @@ export interface Report {
   taskElement: any;
   typeReportView: number;
   reportView: boolean;
-
+  status: number;
 }
 @Component({
   selector: 'app-list-tasks',
@@ -64,7 +64,6 @@ export class ListTasksComponent implements OnInit, DoCheck , OnDestroy{
   public priority: any[];
   public typeFilter: string[];
   public filter: number;
-  public itemsTasks: any[];
   public load: boolean;
   public user: any;
   public notCalendar: boolean;
@@ -99,12 +98,12 @@ export class ListTasksComponent implements OnInit, DoCheck , OnDestroy{
     this.reportConfig = {
       reportView: false,
       taskElement: null,
-      typeReportView: 0
+      typeReportView: 0,
+      status: 0
     };
     this.emptyLisTasks = true;
     this._token = undefined;
     this._tokenTwo = undefined;
-    this.itemsTasks = [];
     this.others = false;
     this.date = [];
     this.today = false;
@@ -151,6 +150,20 @@ export class ListTasksComponent implements OnInit, DoCheck , OnDestroy{
             this.notCalendarTasks = [];
             this._modalScroll.nativeElement.scroll({top: 0});
             this.getNotCalendarTask();
+          }
+          break;
+        case SharedTypeNotification.FinishEditTask:
+          this.goBackList();
+          if(this.others){
+            this.notCalendarTasks = [];
+            this.getNotCalendarTask();
+          }else{
+            this.listTask = {
+              todayTasks: [],
+              previousTasks: [],
+              historyTasks: []
+            };
+            this.getStationTask();
           }
           break;
       }
@@ -408,14 +421,16 @@ export class ListTasksComponent implements OnInit, DoCheck , OnDestroy{
       this.reportConfig = {
         reportView: true,
         taskElement: task,
-        typeReportView: task.original.typeReport
+        typeReportView: task.original.typeReport,
+        status: task.original.status
       };
     }else{
       this._modalScroll.nativeElement.scroll({top: 0});
       this.reportConfig = {
         reportView: true,
         taskElement: task,
-        typeReportView: type
+        typeReportView: type,
+        status: 4
       };
     }
   }
@@ -425,7 +440,8 @@ export class ListTasksComponent implements OnInit, DoCheck , OnDestroy{
     this.reportConfig = {
       reportView: false,
       taskElement: null,
-      typeReportView: 0
+      typeReportView: 0,
+      status: 0
     };
   }
 
@@ -449,5 +465,9 @@ export class ListTasksComponent implements OnInit, DoCheck , OnDestroy{
         }
       }
     }
+  }
+
+  public editFormat(): void{
+    this._sharedService.setNotification({type: SharedTypeNotification.EditTask, value: this.reportConfig.typeReportView});
   }
 }
