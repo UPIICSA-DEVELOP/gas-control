@@ -42,6 +42,9 @@ export class FormatTimePipe implements PipeTransform {
         hr = hr-12
       }
       hr = hr.toString();
+      if(hr === '00'){
+        hr='12';
+      }
       hr = hr.length===2?hr:'0'+hr;
       value = hr + ':' + min;
       value += (time >= 0 && time < 1200)? ' a.m.':' p.m.';

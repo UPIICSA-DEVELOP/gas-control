@@ -315,8 +315,8 @@ export interface IncidenceReport {
   name: string;
   procedures?: number[];
   signature: any;
-  taskId: number;
-  time: number | string;
+  taskId: number | string;
+  time: number;
 }
 
 /**

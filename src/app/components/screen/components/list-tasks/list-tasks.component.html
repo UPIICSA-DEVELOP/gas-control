@@ -268,18 +268,18 @@
               <ng-template #listIN>
                 <div *ngIf="reportConfig.reportView; then incidenceReportView else incidenceList"></div>
                 <ng-template #incidenceReportView>
-                    <div>
-                      <div style="display: flex; justify-content: flex-end">
-                        <button mat-icon-button (click)="editFormat()" matTooltip="Editar">
-                          <mat-icon>edit</mat-icon>
-                        </button>
-                        <button mat-icon-button (click)="goBackList()" matTooltip="Cerrar bitacora">
-                          <mat-icon>close</mat-icon>
-                        </button>
-                      </div>
-                      <app-incidence-report [taskIncidenceInfo]="reportConfig.taskElement" [utilities]="utils"></app-incidence-report>
+                  <div style="width: 95%">
+                    <div style="display: flex; justify-content: flex-end">
+                      <button mat-icon-button (click)="editFormat()" matTooltip="Editar">
+                        <mat-icon>edit</mat-icon>
+                      </button>
+                      <button mat-icon-button (click)="goBackList()" matTooltip="Cerrar bitacora">
+                        <mat-icon>close</mat-icon>
+                      </button>
                     </div>
-                  </ng-template>
+                    <app-incidence-report [taskIncidenceInfo]="reportConfig.taskElement" [utilities]="utils"></app-incidence-report>
+                  </div>
+                </ng-template>
                 <ng-template #incidenceList>
                   <div class="card-list" *ngFor="let task of notCalendarTasks;">
                     <mat-card class="task" style="margin-top: 8px">

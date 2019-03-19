@@ -4,21 +4,29 @@
  *  Proprietary and confidential
  */
 
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {IncidenceReport} from '@app/core/interfaces/interfaces';
 import {UtilitiesService} from '@app/core/utilities/utilities.service';
-import {FormBuilder, FormGroup} from '@angular/forms';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {ApiLoaderService} from '@app/core/services/api/api-loader.service';
 import {ApiService} from '@app/core/services/api/api.service';
 import {ImageVisorService} from '@app/core/components/image-visor/image-visor.service';
 import {SnackBarService} from '@app/core/services/snackbar/snackbar.service';
+import {Subscription} from 'rxjs/Rx';
+import {UploadFileService} from '@app/core/components/upload-file/upload-file.service';
+import {ModalProceduresService} from '@app/components/screen/components/modal-procedures/modal-procedures.service';
+import {SignaturePadService} from '@app/core/components/signature-pad/signature-pad.service';
+import {SharedService, SharedTypeNotification} from '@app/core/services/shared/shared.service';
+import {Constants} from '@app/core/constants.core';
+import {LocalStorageService} from '@app/core/services/local-storage/local-storage.service';
+import {UploadFileResponse} from '@app/core/components/upload-file/upload-file.component';
 
 @Component({
   selector: 'app-incidence-report',
   templateUrl: './incidence-report.component.html',
   styleUrls: ['./incidence-report.component.scss']
 })
-export class IncidenceReportComponent implements OnInit {
+export class IncidenceReportComponent implements OnInit, OnDestroy {
   private _taskId: string;
   public task: any;
   public utils: any;
@@ -39,33 +47,73 @@ export class IncidenceReportComponent implements OnInit {
   public incidenceReport: IncidenceReport;
   public date: any[];
   public taskItems: any[];
+  public name: string;
+  private _load: boolean[];
+  public editable: boolean;
+  public error: boolean;
+  private _copyTask: IncidenceReport;
+  public procedures: number[];
   private _indexTask: number;
-
+  private _subscriptionLoader: Subscription;
+  private _subscriptionShared: Subscription;
+  public evidenceThumbnail: string;
+  private _evidenceElement: any;
+  private _evidence: FormData;
+  public signatureThumbnail: string;
+  private _signatureElement: any;
+  private _signature: FormData;
   constructor(
     private _api:ApiService,
     private _apiLoader: ApiLoaderService,
     private _formBuilder: FormBuilder,
     private _imageVisor: ImageVisorService,
-    private _snackBarService: SnackBarService
+    private _snackBarService: SnackBarService,
+    private _uploadFile: UploadFileService,
+    private _proceduresService: ModalProceduresService,
+    private _signatureService: SignaturePadService,
+    private _sharedService: SharedService
   ) {
     this.date = [];
     this.taskItems = [];
     this._indexTask = 0;
+    this.procedures = [];
+    this.editable = false;
+    this.error = false;
+    this._load = [false, false];
   }
 
   ngOnInit() {
-    this._apiLoader.getProgress().subscribe(load=>{this.load = load});
+    this._subscriptionLoader = this._apiLoader.getProgress().subscribe(load=>{this.load = load});
     this.initIncidenceForm();
+    this.getNotifications();
+  }
+
+  ngOnDestroy(): void {
+    this._subscriptionLoader.unsubscribe();
+    this._subscriptionShared.unsubscribe();
   }
 
   private initIncidenceForm(): void {
     this.incidenceForm = this._formBuilder.group({
-      time: ['',[]],
-      area: ['',[]],
-      description: ['',[]]
+      time: ['',[Validators.required]],
+      area: ['',[Validators.required]],
+      description: ['',[Validators.required]]
     });
   }
 
+  private getNotifications(): void{
+    this._subscriptionShared = this._sharedService.getNotifications().subscribe(response=>{
+      switch (response.type){
+        case SharedTypeNotification.EditTask:
+          if(response.value === 9){
+            this.startEditFormat();
+          }
+          break;
+        default:
+          break;
+      }
+    });
+  }
 
   private patchForm(task: any):void {
     this.incidenceReport = {
@@ -86,7 +134,6 @@ export class IncidenceReportComponent implements OnInit {
       area: this.incidenceReport.area,
       description: this.incidenceReport.description
     });
-    console.log()
     this.date = UtilitiesService.convertDate(this.incidenceReport.date);
     this.incidenceForm.disable();
   }
@@ -107,7 +154,28 @@ export class IncidenceReportComponent implements OnInit {
           this.resetElements();
           break;
       }
-    })
+    });
+  }
+
+  private startEditFormat(isNewLoad?: boolean): void{
+    let today: any = new Date();
+    const user = LocalStorageService.getItem(Constants.UserInSession);
+    today = UtilitiesService.createPersonalTimeStamp(today);
+    this.date = UtilitiesService.convertDate(today.timeStamp);
+    this.editable = true;
+    this.name = user.completeName;
+    if(!isNewLoad){
+      this._copyTask = this.incidenceReport;
+      this.procedures = this.incidenceReport.procedures || [];
+      if (this.incidenceReport.fileCS){
+        this._evidenceElement = this.incidenceReport.fileCS;
+        this.evidenceThumbnail = this.incidenceReport.fileCS.thumbnail;
+      }
+      this.incidenceReport.date = undefined;
+      this.incidenceReport.signature = undefined;
+      this.incidenceReport.folio = undefined;
+    }
+    this.incidenceForm.enable();
   }
 
   private resetElements(): void {
@@ -128,4 +196,142 @@ export class IncidenceReportComponent implements OnInit {
       this._snackBarService.openSnackBar('Esta tarea no cuenta con evidencia', 'OK',3000);
     }
   }
+
+  public changeTime(ev: any): void{
+    this.incidenceForm.patchValue({
+      time: ev
+    });
+  }
+
+  public loadEvidence(ev: UploadFileResponse): void {
+    this.evidenceThumbnail = ev.url;
+    this._load[0] = true;
+    this._evidence = new FormData();
+    this._evidence.append('path', 'Task'+this._taskId);
+    this._evidence.append('fileName', 'evidence-'+this._taskId + new Date().getTime() + '.png');
+    this._evidence.append('isImage', 'true');
+    this._evidence.append('file', ev.blob);
+    this.error = false;
+  }
+
+  public deleteEvidence(): void {
+    this.evidenceThumbnail = undefined;
+    this._load[0] = false;
+    this._evidence = undefined;
+  }
+
+  public addRemoveArrayItem(isAdd: boolean, index?: number): void{
+    if(isAdd){
+      this._proceduresService.open(
+        {utils: this.utils.procedures, proceduresSelected: this.procedures}
+      ).afterClosed().subscribe(response=>{
+        switch (response.code){
+          case 1:
+            this.procedures = response.data;
+            break;
+        }
+      })
+    }else{
+      this.procedures.splice(index, 1);
+    }
+  }
+
+  public loadSignature(): void {
+    this._signatureService.open().afterClosed().subscribe(response => {
+      switch (response.code) {
+        case 1:
+          this.signatureThumbnail = response.base64;
+          this._load[1] = true;
+          this._signature = new FormData();
+          this._signature.append('fileName', 'signature-' + new Date().getTime() + '.png');
+          this._signature.append('isImage', 'true');
+          this._signature.append('file', response.blob);
+          break;
+      }
+    });
+  }
+
+  public validateForm(value: any): void{
+    if(!this.evidenceThumbnail){
+      this.error = true;
+    }
+    if(this.error || this.incidenceForm.invalid){
+      this._snackBarService.openSnackBar('Por favor, complete los campos','OK',3000);
+      return;
+    }
+    if(!this._signature){
+      this._snackBarService.openSnackBar('Por favor, registre su firma','OK',3000);
+      return;
+    }
+    if(this._load[0]) {
+      this.uploadFile(1);
+      return;
+    }
+    if(this._load[1]){
+      this.uploadFile(2);
+      return;
+    }
+    this.saveReport(value);
+  }
+
+  private uploadFile(type: number):void{
+    switch (type){
+      case 1:
+        this._uploadFile.upload(this._evidence).subscribe(response=>{
+          if (response){
+            this._evidenceElement = {
+              blobName: response.item.blobName,
+              thumbnail: response.item.thumbnail
+            };
+            this._load[0] = false;
+            this.validateForm(this.incidenceForm.value);
+          }
+        });
+        break;
+      case 2:
+        this._uploadFile.upload(this._signature).subscribe(response=>{
+          if (response){
+            this._signatureElement = {
+              blobName: response.item.blobName,
+              thumbnail: response.item.thumbnail
+            };
+            this._load[1] = false;
+            this.validateForm(this.incidenceForm.value);
+          }
+        });
+        break;
+      default:
+        break;
+    }
+  }
+
+  private saveReport(value: any): void{
+    let date: any = new Date();
+    date = UtilitiesService.createPersonalTimeStamp(date);
+    this.incidenceReport = {
+      area: value.area,
+      date: date.timeStamp,
+      description: value.description,
+      fileCS: this._evidenceElement,
+      name: this.name,
+      procedures: this.procedures,
+      signature: this._signatureElement,
+      taskId: this._taskId,
+      time: value.time
+    };
+    if(this._copyTask){
+      this.incidenceReport.id = this._copyTask.id;
+    }
+    this._api.createTask(this.incidenceReport, 9).subscribe(response=>{
+      switch (response.code){
+        case 200:
+          this._sharedService.setNotification({type: SharedTypeNotification.FinishEditTask, value: response.item.station});
+          break;
+        default:
+          console.error(response);
+          break;
+      }
+    })
+  }
+
 }

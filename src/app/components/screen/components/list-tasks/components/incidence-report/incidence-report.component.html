@@ -5,7 +5,7 @@
   -->
 
 <div id="incidence-report">
-  <form [formGroup]="incidenceForm">
+  <form [formGroup]="incidenceForm" (ngSubmit)="validateForm(incidenceForm.value)">
     <div class="task-header">
       <div class="head-bold">Incidencia</div>
       <div class="control-data">
@@ -16,7 +16,10 @@
     <div class="flex-box">
       <div class="columns">
         <mat-form-field class="inputs">
-          <input formControlName="time" matInput placeholder="Hora" appDisableWrite [value]="incidenceForm.controls['time'].value | formatTime">
+          <input formControlName="time" matInput placeholder="Hora" appDisableWrite (time)="changeTime($event)" [value]="incidenceForm.controls['time'].value | formatTime">
+          <mat-error *ngIf="incidenceForm.controls['time'].hasError('required')">
+            Este campo es obligatorio
+          </mat-error>
         </mat-form-field>
         <mat-form-field class="inputs">
           <mat-select formControlName="area" placeholder="Lugar de generación" required>
@@ -25,14 +28,23 @@
             <mat-option value="Cuarto de maquinas">Cuarto de maquinas</mat-option>
             <mat-option value="Trampa de combustibles">Trampa de combustibles</mat-option>
           </mat-select>
+          <mat-error *ngIf="incidenceForm.controls['area'].hasError('required')">
+            Este campo es obligatorio
+          </mat-error>
         </mat-form-field>
         <mat-form-field class="inputs">
           <textarea cdkTextareaAutosize formControlName="description" matInput placeholder="Descripción" required></textarea>
+          <mat-error *ngIf="incidenceForm.controls['description'].hasError('required')">
+            Este campo es obligatorio
+          </mat-error>
         </mat-form-field>
-        <div class="text-divider">
-          Procedimientos utilizados
+        <div class="procedures-head">
+          <div>Procedimientos utilizados</div>
+          <button mat-icon-button *ngIf="editable" type="button" (click)="addRemoveArrayItem(true)">
+            <mat-icon class="add">add</mat-icon>
+          </button>
         </div>
-        <div class="inputs" *ngIf="incidenceReport && incidenceReport.procedures">
+        <div class="inputs" *ngIf="incidenceReport && incidenceReport.procedures && !editable">
           <div *ngFor="let procedure of incidenceReport.procedures; let i = index;">
             <div class="procedure" *ngIf="procedure === 1">{{i+1}}.- {{utils.procedures[procedure-1].name}}</div>
             <div class="procedure" *ngIf="procedure === 2">{{i+1}}.- {{utils.procedures[procedure-1].name}}</div>
@@ -48,35 +60,123 @@
             <div class="procedure" *ngIf="procedure === 12">{{i+1}}.- {{utils.procedures[procedure-1].name}}</div>
           </div>
         </div>
+        <div class="inputs" *ngIf="editable">
+          <div *ngFor="let procedure of procedures; let i = index;">
+            <div class="list-element" *ngIf="procedure === 1">
+              <div>{{i+1}}.-{{utils.procedures[procedure-1].name}}</div>
+              <button mat-icon-button type="button" (click)="addRemoveArrayItem(false, i)"><mat-icon class="delete">remove</mat-icon></button>
+            </div>
+            <div class="list-element" *ngIf="procedure === 2">
+              <div>{{i+1}}.-{{utils.procedures[procedure-1].name}}</div>
+              <button mat-icon-button type="button" (click)="addRemoveArrayItem(false, i)"><mat-icon class="delete">remove</mat-icon></button>
+            </div>
+            <div class="list-element" *ngIf="procedure === 3">
+              <div>{{i+1}}.-{{utils.procedures[procedure-1].name}}</div>
+              <button mat-icon-button type="button" (click)="addRemoveArrayItem(false, i)"><mat-icon class="delete">remove</mat-icon></button>
+            </div>
+            <div class="list-element" *ngIf="procedure === 4">
+              <div>{{i+1}}.-{{utils.procedures[procedure-1].name}}</div>
+              <button mat-icon-button type="button" (click)="addRemoveArrayItem(false, i)"><mat-icon class="delete">remove</mat-icon></button>
+            </div>
+            <div class="list-element" *ngIf="procedure === 5">
+              <div>{{i+1}}.-{{utils.procedures[procedure-1].name}}</div>
+              <button mat-icon-button type="button" (click)="addRemoveArrayItem(false, i)"><mat-icon class="delete">remove</mat-icon></button>
+            </div>
+            <div class="list-element" *ngIf="procedure === 6">
+              <div>{{i+1}}.-{{utils.procedures[procedure-1].name}}</div>
+              <button mat-icon-button type="button" (click)="addRemoveArrayItem(false, i)"><mat-icon class="delete">remove</mat-icon></button>
+            </div>
+            <div class="list-element" *ngIf="procedure === 7">
+              <div>{{i+1}}.-{{utils.procedures[procedure-1].name}}</div>
+              <button mat-icon-button type="button" (click)="addRemoveArrayItem(false, i)"><mat-icon class="delete">remove</mat-icon></button>
+            </div>
+            <div class="list-element" *ngIf="procedure === 8">
+              <div>{{i+1}}.-{{utils.procedures[procedure-1].name}}</div>
+              <button mat-icon-button type="button" (click)="addRemoveArrayItem(false, i)"><mat-icon class="delete">remove</mat-icon></button>
+            </div>
+            <div class="list-element" *ngIf="procedure === 9">
+              <div>{{i+1}}.-{{utils.procedures[procedure-1].name}}</div>
+              <button mat-icon-button type="button" (click)="addRemoveArrayItem(false, i)"><mat-icon class="delete">remove</mat-icon></button>
+            </div>
+            <div class="list-element" *ngIf="procedure === 10">
+              <div>{{i+1}}.-{{utils.procedures[procedure-1].name}}</div>
+              <button mat-icon-button type="button" (click)="addRemoveArrayItem(false, i)"><mat-icon class="delete">remove</mat-icon></button>
+            </div>
+            <div class="list-element" *ngIf="procedure === 11">
+              <div>{{i+1}}.-{{utils.procedures[procedure-1].name}}</div>
+              <button mat-icon-button type="button" (click)="addRemoveArrayItem(false, i)"><mat-icon class="delete">remove</mat-icon></button>
+            </div>
+            <div class="list-element" *ngIf="procedure === 12">
+              <div>{{i+1}}.-{{utils.procedures[procedure-1].name}}</div>
+              <button mat-icon-button type="button" (click)="addRemoveArrayItem(false, i)"><mat-icon class="delete">remove</mat-icon></button>
+            </div>
+          </div>
+        </div>
       </div>
       <div class="columns">
         <div class="image-header">
           Captura fotográfica de la evidencia
         </div>
-        <div *ngIf="!incidenceReport || !incidenceReport.fileCS" class="image-container">
-          <mat-icon class="default-image">
-            image
-          </mat-icon>
-        </div>
-        <div *ngIf="incidenceReport && incidenceReport.fileCS" class="image-container-real">
-          <img class="evidence" [src]="incidenceReport.fileCS.thumbnail" alt="Evidence capture" (click)="seeEvidence()">
-        </div>
+        <mat-error *ngIf="error && editable" class="error-text">
+          Es necesario tomar la evidencia
+        </mat-error>
+        <div *ngIf="!editable; then showEv else modify"></div>
+        <ng-template #showEv>
+          <div *ngIf="!incidenceReport || !incidenceReport.fileCS" class="image-container" >
+            <mat-icon class="default-image">image</mat-icon>
+          </div>
+          <div *ngIf="incidenceReport && incidenceReport.fileCS " class="image-container-real" (click)="seeEvidence()">
+            <img class="evidence" [src]="incidenceReport.fileCS.thumbnail" alt="Evidence capture">
+          </div>
+        </ng-template>
+        <ng-template #modify>
+          <app-upload-file class="inputs" (onLoad)="loadEvidence($event)" (onRemove)="deleteEvidence()" [layoutTemplate]="imageEvidence" [type]="'image'">
+            <ng-template #imageEvidence>
+              <div *ngIf="!evidenceThumbnail" class="image-container" >
+                <mat-icon class="default-image">image</mat-icon>
+              </div>
+              <div *ngIf="evidenceThumbnail" class="image-container-real">
+                <img class="evidence" [src]="evidenceThumbnail" alt="Evidence capture">
+              </div>
+            </ng-template>
+          </app-upload-file>
+        </ng-template>
         <div class="text-sign">
           Nombre y firma del responsable
         </div>
         <div class=inputs>
-          <div class="signature-element">
-            <img class="evidence" *ngIf="incidenceReport && incidenceReport.signature" [src]="incidenceReport.signature.thumbnail" alt="Evidence capture">
-            <div *ngIf="!incidenceReport || !incidenceReport.signature" style="width: 60%; height: 60px"></div>
-          </div>
+          <div *ngIf="!editable; then showSign else loadSign"></div>
+          <ng-template #showSign>
+            <div class="signature-element">
+              <img *ngIf="incidenceReport && incidenceReport.signature" [src]="incidenceReport.signature.thumbnail">
+              <div class="empty-signature" *ngIf="!incidenceReport || !incidenceReport.signature"></div>
+            </div>
+          </ng-template>
+          <ng-template #loadSign>
+            <div class="signature-element" (click)="loadSignature()" style="cursor: pointer" matTooltip="Cargar Firma">
+              <img *ngIf="signatureThumbnail" [src]="signatureThumbnail">
+              <div class="empty-signature" *ngIf="!signatureThumbnail" ></div>
+            </div>
+          </ng-template>
           <div class="divider"></div>
-          <div *ngIf="!incidenceReport || !incidenceReport.name" class="name">Nombre</div>
-          <div *ngIf="incidenceReport && incidenceReport.name" class="name">{{incidenceReport.name}}</div>
+          <div *ngIf="editable; then admonName else originalName"></div>
+          <ng-template #admonName>
+            <div class="name">{{name}}</div>
+          </ng-template>
+          <ng-template #originalName>
+            <div *ngIf="!incidenceReport || !incidenceReport.name" class="name">Nombre</div>
+            <div *ngIf="incidenceReport && incidenceReport.name" class="name">{{incidenceReport.name}}</div>
+          </ng-template>
         </div>
       </div>
     </div>
+    <div *ngIf="editable" class="finish-button">
+      <button mat-flat-button type="submit" [color]="'primary'" [disabled]="load">
+        FINALIZAR
+      </button>
+    </div>
   </form>
-  <div *ngIf="taskItems && taskItems.length !== 0">
+  <div *ngIf="taskItems && taskItems.length !== 0 && !editable">
     <mat-paginator [pageSize]="1" [length]="taskItems.length" [hidePageSize]="true" (page)="changeTask($event)" ></mat-paginator>
   </div>
 </div>
