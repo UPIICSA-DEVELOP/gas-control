@@ -256,7 +256,7 @@ export class VrsReportComponent implements OnInit, OnDestroy {
   public validateForm(value: any):void{
     let error = false;
     for(let i = 0; i<this.tanks.length; i++){
-      if(!this.tanks[i].vacuumPressureValve && !this.tanks[i].overfillValve && this.tanks[i].fuelType === 0 && !this.tanks[i].capAndSteamAdapter && !this.tanks[i].capAndFillingAdapter){
+      if(!this.tanks[i].vacuumPressureValve || !this.tanks[i].overfillValve || this.tanks[i].fuelType === 0 || !this.tanks[i].capAndSteamAdapter || !this.tanks[i].capAndFillingAdapter){
         this.errorTank[i] = true;
         error = true;
       }
@@ -286,7 +286,7 @@ export class VrsReportComponent implements OnInit, OnDestroy {
   private saveReport(value: any):void{
     let date: any = new Date();
     date = UtilitiesService.createPersonalTimeStamp(date);
-        this.vrsReport = {
+    this.vrsReport = {
       date: date.timeStamp,
       emergencyStop: value.emergencyStop,
       fileCS: this._evidenceElement,
