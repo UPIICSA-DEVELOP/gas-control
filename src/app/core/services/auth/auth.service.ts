@@ -80,6 +80,16 @@ export class AuthService implements Resolve<any>{
   }
 
   public logOut(notNavigate?: boolean): void{
+    this._api.signOut(LocalStorageService.getItem(Constants.SessionToken)).subscribe(response=>{
+      switch (response.code){
+        case 200:
+          console.log(response);
+          break;
+        default:
+          console.error(response);
+          break;
+      }
+    });
     LocalStorageService.removeItem(Constants.SessionToken);
     LocalStorageService.removeItem(Constants.NotSignature);
     CookieService.deleteCookie(Constants.IdSession);

@@ -10,10 +10,7 @@ import {forkJoin, Observable} from 'rxjs';
 import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 import {NetworkService} from '@app/core/services/connection/network.service';
 import {SnackBarService} from '@app/core/services/snackbar/snackbar.service';
-import {
-  CompressorReport, Consultancy, FEReport, FRReport, HWCReport, IncidenceReport, OMReport, ScannedReport,
-  VRSReport
-} from '@app/core/interfaces/interfaces';
+import {Consultancy} from '@app/core/interfaces/interfaces';
 import {Subscription} from 'rxjs/Rx';
 import {environment} from '@env/environment';
 
@@ -48,6 +45,13 @@ export class ApiService implements OnDestroy{
       type: 3
     };
     return this._http.post(ApiService.API_URL_COMPLETE + 'signIn', user);
+  }
+
+  public signOut(token: string): Observable<any>{
+    const options = {
+      token: token
+    };
+    return this._http.post(ApiService.API_URL_COMPLETE + 'signOut', options);
   }
 
    public  resetPassword(email: string): Observable<any> {
@@ -204,7 +208,7 @@ export class ApiService implements OnDestroy{
     return this._http.post(ApiService.API_URL_COMPLETE + 'createDocument', document);
   }
 
-  public updateDocumet(document: any):Observable<any>{
+  public updateDocument(document: any):Observable<any>{
     return this._http.put(ApiService.API_URL_COMPLETE + 'updateDocument', document);
   }
 
@@ -498,7 +502,7 @@ export class ApiService implements OnDestroy{
   }
 
   private createCompressorReport(task: any): Observable<any>{
-    return this._http.post(ApiService.API_URL_COMPLETE + ' createCompressorReport', task);
+    return this._http.post(ApiService.API_URL_COMPLETE + 'createCompressorReport', task);
   }
 
   private createVRSReport(task: any): Observable<any>{
