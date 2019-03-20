@@ -118,7 +118,8 @@ export class VrsReportComponent implements OnInit, OnDestroy {
     this.vrsReport = undefined;
     this.vrsForm.reset();
     this.vrsForm.disable();
-    if(this.task.original.status !== 4){
+    const user = LocalStorageService.getItem(Constants.UserInSession);
+    if(this.task.original.status !== 4 && user.role ===7){
       this.startEditReport(true);
     }
   }

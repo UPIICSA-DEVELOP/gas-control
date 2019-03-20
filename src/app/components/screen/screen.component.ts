@@ -117,7 +117,6 @@ export class ScreenComponent implements OnInit, AfterViewInit, OnDestroy{
           case 4:
           case 5:
           case 6:
-          case 7:
             this._router.navigate(['/home/profile/user']).then();
             break;
         }

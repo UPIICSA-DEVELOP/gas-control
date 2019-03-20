@@ -115,7 +115,8 @@ export class FeReportComponent implements OnInit, OnDestroy {
     this.feReport = undefined;
     this.feForm.reset();
     this.feForm.disable();
-    if (this.task.original.status !== 4){
+    const user = LocalStorageService.getItem(Constants.UserInSession);
+    if(this.task.original.status !== 4 && user.role ===7){
       this.startEditReport(true);
     }
   }

@@ -48,7 +48,7 @@
           <ng-template #reportForm>
             <div style="width: 95%">
               <div style="display: flex; justify-content: flex-end">
-                <button *ngIf="reportConfig.status === 4" mat-icon-button (click)="editFormat()" matTooltip="Editar">
+                <button *ngIf="reportConfig.status === 4 && user.role === 7" mat-icon-button (click)="editFormat()" matTooltip="Editar">
                   <mat-icon>edit</mat-icon>
                 </button>
                 <button mat-icon-button (click)="goBackList()" matTooltip="Cerrar bitacora">
@@ -221,7 +221,7 @@
                 <ng-template #frReportView>
                   <div style="width: 95%">
                     <div style="display: flex; justify-content: flex-end">
-                      <button mat-icon-button (click)="editFormat()" matTooltip="Editar">
+                      <button mat-icon-button *ngIf="user.role === 7" (click)="editFormat()" matTooltip="Editar">
                         <mat-icon>edit</mat-icon>
                       </button>
                       <button mat-icon-button (click)="goBackList()" matTooltip="Cerrar bitacora">
@@ -270,7 +270,7 @@
                 <ng-template #incidenceReportView>
                   <div style="width: 95%">
                     <div style="display: flex; justify-content: flex-end">
-                      <button mat-icon-button (click)="editFormat()" matTooltip="Editar">
+                      <button mat-icon-button *ngIf="user.role === 7" (click)="editFormat()" matTooltip="Editar">
                         <mat-icon>edit</mat-icon>
                       </button>
                       <button mat-icon-button (click)="goBackList()" matTooltip="Cerrar bitacora">
@@ -319,7 +319,7 @@
                 <ng-template #frReportView>
                   <div style="width: 95%">
                     <div style="display: flex; justify-content: flex-end">
-                      <button mat-icon-button (click)="editFormat()" matTooltip="Editar">
+                      <button mat-icon-button *ngIf="user.role === 7" (click)="editFormat()" matTooltip="Editar">
                         <mat-icon>edit</mat-icon>
                       </button>
                       <button mat-icon-button (click)="goBackList()" matTooltip="Cerrar bitacora">

@@ -145,7 +145,8 @@ export class ScannedReportComponent implements OnInit, OnDestroy {
 
   private resetElements(): void{
     this.scannedReport = undefined;
-    if(this.task.original.status !== 4){
+    const user = LocalStorageService.getItem(Constants.UserInSession);
+    if(this.task.original.status !== 4 && user.role ===7){
       this.startEditFormat(true);
     }
   }

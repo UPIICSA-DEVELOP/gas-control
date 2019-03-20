@@ -116,7 +116,8 @@ export class CompressorReportComponent implements OnInit, OnDestroy {
     this.compressorReport = undefined;
     this.compForm.reset();
     this.compForm.disable();
-    if(this.task.original.status !== 4){
+    const user = LocalStorageService.getItem(Constants.UserInSession);
+    if(this.task.original.status !== 4 && user.role ===7){
       this.startEditFormat(true);
     }
   }

@@ -190,7 +190,8 @@ export class OmReportComponent implements OnInit, OnDestroy {
     this.omReport = undefined;
     this.omForm.reset();
     this.omForm.disable();
-    if(this.task.original.status !== 4){
+    const user = LocalStorageService.getItem(Constants.UserInSession);
+    if(this.task.original.status !== 4 && user.role ===7){
       this.startEditFormat(true);
     }
   }
@@ -237,6 +238,7 @@ export class OmReportComponent implements OnInit, OnDestroy {
     this.date = UtilitiesService.convertDate(today.timeStamp);
     this.editable = true;
     this.name = user.completeName;
+    //this._sharedService.setNotification({type: SharedTypeNotification.HwgActive, value: isNewLoad ? isNewLoad : false});
     if(!isNewLoad){
       this._copyLastTask = this.omReport;
       this.procedures = this.omReport.procedures || [];
@@ -256,7 +258,7 @@ export class OmReportComponent implements OnInit, OnDestroy {
     switch (type) {
       case 1:
         if (isAdd) {
-          if (UtilitiesService.removeDiacritics(this.newPersonnel).length === 0) {
+          if (!this.newPersonnel || UtilitiesService.removeDiacritics(this.newPersonnel).length === 0) {
             return;
           }
           this.personnelNames.push(this.newPersonnel);
