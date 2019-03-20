@@ -85,7 +85,6 @@ export class ListStationsComponent implements OnInit {
   }
 
   public goToDashboard(): void{
-    debugger;
     LocalStorageService.setItem(Constants.ConsultancyInSession, this._data);
   }
 
