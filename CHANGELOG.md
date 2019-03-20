@@ -2,6 +2,24 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="1.0.0-beta.3"></a>
+# [1.0.0-beta.3](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/compare/v1.0.0-beta.2...v1.0.0-beta.3) (2019-03-20)
+
+
+### Bug Fixes
+
+* solve error in vrs report ([878b8fe](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/878b8fe))
+* solve error to load task ([57c243b](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/57c243b))
+* solve error to task edition ([4a7c46b](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/4a7c46b))
+
+
+### Features
+
+* add edition to FE Report ([e41442b](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/e41442b))
+* add error handler to http requests ([cf612a4](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/cf612a4))
+
+
+
 <a name="1.0.0-beta.2"></a>
 # [1.0.0-beta.2](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/compare/v1.0.0-beta.1...v1.0.0-beta.2) (2019-03-20)
 
