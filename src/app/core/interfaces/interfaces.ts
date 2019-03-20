@@ -232,7 +232,7 @@ export interface ScannedReport {
   id?: number;
   name: string;
   signature: any;
-  taskId: number;
+  taskId: number | string;
 }
 
 export interface HWCReport {
