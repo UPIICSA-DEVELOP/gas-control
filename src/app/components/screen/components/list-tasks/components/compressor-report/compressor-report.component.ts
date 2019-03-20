@@ -4,7 +4,7 @@
  *  Proprietary and confidential
  */
 
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {CompressorReport} from '@app/core/interfaces/interfaces';
 import {ApiLoaderService} from '@app/core/services/api/api-loader.service';
@@ -25,7 +25,7 @@ import {UploadFileResponse} from '@app/core/components/upload-file/upload-file.c
   templateUrl: './compressor-report.component.html',
   styleUrls: ['./compressor-report.component.scss']
 })
-export class CompressorReportComponent implements OnInit {
+export class CompressorReportComponent implements OnInit, OnDestroy {
   private _taskId: string;
   public task: any;
   @Input() set taskCompInfo(taskObj: any){
@@ -50,6 +50,10 @@ export class CompressorReportComponent implements OnInit {
   private _evidence: FormData;
   private _loads: boolean[];
   private _subscriptionShared: Subscription;
+  private _subscriptionLoader: Subscription;
+  private _evidenceElement: any;
+  private _signatureElement: any;
+  private _copyTask: CompressorReport;
   constructor(
     private _api: ApiService,
     private _apiLoader: ApiLoaderService,
@@ -66,19 +70,21 @@ export class CompressorReportComponent implements OnInit {
     this.taskItems = [];
     this._indexTask = 0;
     this.editable = false;
-    this.name = '';
-    this.signatureThumbnail = '';
-    this.evidenceThumbnail = '';
   }
 
   ngOnInit() {
-    this._apiLoader.getProgress().subscribe(load=>{this.load = load});
+    this._subscriptionLoader = this._apiLoader.getProgress().subscribe(load=>{this.load = load});
     this.initCompForm();
     this.getNotifications();
   }
 
+  ngOnDestroy():void{
+    this._subscriptionLoader.unsubscribe();
+    this._subscriptionShared.unsubscribe();
+  }
+
   private getNotifications(): void{
-    this._subscriptionShared = this._sharedService.getNotifications().subscribe(response=>{
+    this._subscriptionShared = this._subscriptionShared = this._sharedService.getNotifications().subscribe(response=>{
       switch (response.type){
         case SharedTypeNotification.EditTask:
           if(response.value = 2){
@@ -110,6 +116,9 @@ export class CompressorReportComponent implements OnInit {
     this.compressorReport = undefined;
     this.compForm.reset();
     this.compForm.disable();
+    if(this.task.original.status === 3){
+      this.startEditFormat(true);
+    }
   }
 
   private patchForm(task: any):void{
@@ -193,15 +202,19 @@ export class CompressorReportComponent implements OnInit {
     this.editable = true;
     this.name = user.completeName;
     if(!prepare){
+      this._copyTask = this.compressorReport;
       this.compressorReport.signature = undefined;
       if(this.compressorReport.fileCS){
         this.evidenceThumbnail = this.compressorReport.fileCS.thumbnail;
+        this._evidenceElement = this.compressorReport.fileCS;
       }
+      this.compressorReport.signature = undefined;
       this.compressorReport.folio = undefined;
       this.compressorReport.name = user.completeName;
     }
     this.compForm.enable();
   }
+
   public changeTime(ev: any, type: string): void {
     this.compForm.patchValue({
       [type]: ev
@@ -261,6 +274,7 @@ export class CompressorReportComponent implements OnInit {
       this.uploadFile(2);
       return;
     }
+    this.saveReport(value);
   }
 
   private uploadFile(type: number):void{
@@ -268,7 +282,7 @@ export class CompressorReportComponent implements OnInit {
       case 1:
         this._uploadFile.upload(this._evidence).subscribe(response=>{
           if (response){
-            this.compressorReport.fileCS = {
+            this._evidenceElement = {
               blobName: response.item.blobName,
               thumbnail: response.item.thumbnail
             };
@@ -280,7 +294,7 @@ export class CompressorReportComponent implements OnInit {
       case 2:
         this._uploadFile.upload(this._signature).subscribe(response=>{
           if (response){
-            this.compressorReport.signature = {
+            this._signatureElement = {
               blobName: response.item.blobName,
               thumbnail: response.item.thumbnail
             };
@@ -292,6 +306,44 @@ export class CompressorReportComponent implements OnInit {
       default:
         break;
     }
+  }
+
+  private saveReport(value):any{
+    let date: any = new Date();
+    date = UtilitiesService.createPersonalTimeStamp(date);
+    this.compressorReport = {
+      brand: value.brand,
+      controlNumber: value.controlNumber,
+      date: date.timeStamp,
+      endTime: value.endTime,
+      fileCS: this._evidenceElement,
+      modifications: value.modifications,
+      model: value.model,
+      name: this.name,
+      observations: value.observations,
+      purge: value.purge,
+      pressure: value.pressure,
+      signature: this._signatureElement,
+      securityValve: value.securityValve,
+      startTime: value.startTime,
+      taskId: this._taskId,
+    };
+    if (this._copyTask){
+      this.compressorReport.id = this._copyTask.id
+    }
+    if(this.task.original.hwg){
+      this.compressorReport.hwgReport = this._copyTask ? this._copyTask.hwgReport : undefined;
+    }
+    this._api.createTask(this.compressorReport, 2).subscribe(response=>{
+      switch (response.code){
+        case 200:
+          this._sharedService.setNotification({type: SharedTypeNotification.FinishEditTask, value: response.item.station});
+          break;
+        default:
+          console.error(response);
+          break;
+      }
+    });
   }
 
 }
