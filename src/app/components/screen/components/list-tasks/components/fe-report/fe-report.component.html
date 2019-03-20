@@ -11,28 +11,38 @@
   <div class="task-header">
     <div class="head-bold">Revisión de extintores</div>
     <div class="control-data">
-      <div *ngIf="feReport">Fecha: {{date[0]}} {{date[1]}} {{date[2]}}&nbsp;&nbsp;</div>
-      <div *ngIf="feReport">Folio: {{feReport.folio | formatFolio}}</div>
+      <div *ngIf="date.length !== 0">Fecha: {{date[0]}} {{date[1]}} {{date[2]}}&nbsp;&nbsp;</div>
+      <div *ngIf="feReport && feReport.folio">Folio: {{feReport.folio | formatFolio}}</div>
     </div>
   </div>
-  <form [formGroup]="feForm" class="flex-box">
-    <div class="columns">
-      <div class="times">
-        <mat-form-field class="clock">
-          <input formControlName="startTime" placeholder="Hora de inicio" matInput required appDisableWrite value="{{feForm.controls['startTime'].value | formatTime}}">
-        </mat-form-field>
-        <mat-form-field class="clock">
-          <input formControlName="endTime" placeholder="Hora de término" matInput required appDisableWrite value="{{feForm.controls['endTime'].value | formatTime}}">
-        </mat-form-field>
-      </div>
-      <div *ngIf="feReport && feReport.fireExtinguishers && feReport.fireExtinguishers.length!==0; then listFE else emptyListFE"></div>
-      <ng-template #listFE>
-        <div class="inputs" *ngFor="let extinguisher of feReport.fireExtinguishers; let  i = index">
-          <div class="color" style="text-align: center;">
-            Extintor {{i+1}}
+  <form [formGroup]="feForm" (ngSubmit)="validateForm(feForm.value)">
+    <div class="flex-box">
+      <div class="columns">
+        <div class="times">
+          <mat-form-field class="clock">
+            <input formControlName="startTime" placeholder="Hora de inicio" matInput required (time)="changeTime($event, 'startTime')" appDisableWrite [value]="feForm.controls['startTime'].value | formatTime">
+            <mat-error *ngIf="feForm.controls['startTime'].hasError('required')">
+              Este campo es obligatorio
+            </mat-error>
+          </mat-form-field>
+          <mat-form-field class="clock">
+            <input formControlName="endTime" placeholder="Hora de término" matInput required (time)="changeTime($event, 'endTime')" appDisableWrite [value]="feForm.controls['endTime'].value | formatTime">
+            <mat-error *ngIf="feForm.controls['endTime'].hasError('required')">
+              Este campo es obligatorio
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div class="inputs" *ngFor="let item of extinguisher; let  i = index">
+          <div class="color" style="display: flex; justify-content: space-between; align-items: center; margin: 4px 0;">
+            <div>Extintor {{i+1}}</div>
+            <button type="button" mat-icon-button (click)="addRemoveExtinguisher(true)" *ngIf="editable && i === 0 "><mat-icon style="color: #257602">add</mat-icon></button>
+            <button type="button" mat-icon-button (click)="addRemoveExtinguisher(false, i)" *ngIf="editable && i !== 0"><mat-icon style="color: #E00000">remove</mat-icon></button>
           </div>
+          <mat-error *ngIf="extinguisherErrors[i] && editable" class="error-text">
+            Complete los campos del extintor
+          </mat-error>
           <mat-form-field class="inputs">
-            <mat-select [(ngModel)]="extinguisher.area" [ngModelOptions]="{standalone: true}" [disabled]="true" placeholder="Área" required>
+            <mat-select [(ngModel)]="item.area" [ngModelOptions]="{standalone: true}" [disabled]="!editable" placeholder="Área" (selectionChange)="changeExInfo($event, i)">
               <mat-option value="Zona de despacho">Zona de despacho</mat-option>
               <mat-option value="Zona de tanques">Zona de tanques</mat-option>
               <mat-option value="Oficina">Oficina</mat-option>
@@ -43,17 +53,17 @@
             </mat-select>
           </mat-form-field>
           <mat-form-field class="inputs">
-            <input matInput placeholder="Capacidad" [(ngModel)]="extinguisher.capacity" [ngModelOptions]="{standalone: true}" [disabled]="true" required>
+            <input matInput placeholder="Capacidad" type="number" [(ngModel)]="item.capacity" [ngModelOptions]="{standalone: true}" [disabled]="!editable" (change)="changeExInfo($event, i)">
           </mat-form-field>
           <div class="times">
             <mat-form-field class="clock">
-              <mat-select placeholder="Vencimiento" required [(ngModel)]="extinguisher.expiration" [ngModelOptions]="{standalone: true}" [disabled]="true">
+              <mat-select placeholder="Vencimiento" [(ngModel)]="item.expiration" [ngModelOptions]="{standalone: true}" [disabled]="!editable" (selectionChange)="changeExInfo($event, i)">
                 <mat-option value="Vigente">Vigente</mat-option>
                 <mat-option value="Caduco">Caduco</mat-option>
               </mat-select>
             </mat-form-field>
             <mat-form-field class="clock">
-              <mat-select placeholder="Manómetro" [(ngModel)]="extinguisher.manometer" [ngModelOptions]="{standalone: true}" [disabled]="true" required>
+              <mat-select placeholder="Manómetro" [(ngModel)]="item.manometer" [ngModelOptions]="{standalone: true}" [disabled]="!editable" (selectionChange)="changeExInfo($event, i)">
                 <mat-option value="Descargado">Descargado</mat-option>
                 <mat-option value="Óptimo">Óptimo</mat-option>
                 <mat-option value="Sobrecargado">Sobrecargado</mat-option>
@@ -62,13 +72,13 @@
           </div>
           <div class="times">
             <mat-form-field class="clock">
-              <mat-select placeholder="Manguera" [(ngModel)]="extinguisher.hose" [ngModelOptions]="{standalone: true}" [disabled]="true" required>
+              <mat-select placeholder="Manguera" [(ngModel)]="item.hose" [ngModelOptions]="{standalone: true}" [disabled]="!editable" (selectionChange)="changeExInfo($event, i)">
                 <mat-option value="Satisfactorio">Satisfactorio</mat-option>
                 <mat-option value="No satisfactorio">No satisfactorio</mat-option>
               </mat-select>
             </mat-form-field>
             <mat-form-field class="clock">
-              <mat-select placeholder="Cincho" [(ngModel)]="extinguisher.belt" [ngModelOptions]="{standalone: true}" [disabled]="true" required>
+              <mat-select placeholder="Cincho" [(ngModel)]="item.belt" [ngModelOptions]="{standalone: true}" [disabled]="!editable" (selectionChange)="changeExInfo($event, i)">
                 <mat-option value="Satisfactorio">Satisfactorio</mat-option>
                 <mat-option value="No satisfactorio">No satisfactorio</mat-option>
               </mat-select>
@@ -76,100 +86,57 @@
           </div>
           <div class="times">
             <mat-form-field class="clock">
-              <mat-select placeholder="Collarín" [(ngModel)]="extinguisher.collar" [ngModelOptions]="{standalone: true}" [disabled]="true">
+              <mat-select placeholder="Collarín" [(ngModel)]="item.collar" [ngModelOptions]="{standalone: true}" [disabled]="!editable" (selectionChange)="changeExInfo($event, i)">
                 <mat-option value="Satisfactorio">Satisfactorio</mat-option>
                 <mat-option value="No satisfactorio">No satisfactorio</mat-option>
               </mat-select>
             </mat-form-field>
             <mat-form-field class="clock">
-              <mat-select placeholder="Seguro" [(ngModel)]="extinguisher.safe" [ngModelOptions]="{standalone: true}" [disabled]="true">
+              <mat-select placeholder="Seguro" [(ngModel)]="item.safe" [ngModelOptions]="{standalone: true}" [disabled]="!editable" (selectionChange)="changeExInfo($event, i)">
                 <mat-option value="Satisfactorio">Satisfactorio</mat-option>
                 <mat-option value="No satisfactorio">No satisfactorio</mat-option>
               </mat-select>
             </mat-form-field>
           </div>
         </div>
-      </ng-template>
-      <ng-template #emptyListFE>
-        <div class="color">
-          Extintor 1
+      </div>
+      <div class="columns">
+        <div class="text-sign">
+          Nombre y firma del responsable
         </div>
-        <mat-form-field class="inputs">
-          <mat-select disabled placeholder="Área" required>
-            <mat-option value="Zona de despacho">Zona de despacho</mat-option>
-            <mat-option value="Zona de tanques">Zona de tanques</mat-option>
-            <mat-option value="Oficina">Oficina</mat-option>
-            <mat-option value="Patio">Patio</mat-option>
-            <mat-option value="Cuarto eléctrico">Cuarto eléctrico</mat-option>
-            <mat-option value="Cuarto de máquinas">Cuarto de máquinas</mat-option>
-            <mat-option value="Cuarto de residuos peligrosos">Cuarto de residuos peligrosos
-            </mat-option>
-          </mat-select>
-        </mat-form-field>
-        <mat-form-field class="inputs">
-          <input disabled matInput placeholder="Capacidad" required>
-        </mat-form-field>
-        <div class="times">
-          <mat-form-field class="clock">
-            <mat-select disabled placeholder="Vencimiento" required>
-              <mat-option value="Vigente">Vigente</mat-option>
-              <mat-option value="Caducado">Caducao</mat-option>
-            </mat-select>
-          </mat-form-field>
-          <mat-form-field class="clock">
-            <mat-select disabled placeholder="Manómetro" required>
-              <mat-option value="Descargado">Descargado</mat-option>
-              <mat-option value="Óptimo">Óptimo</mat-option>
-              <mat-option value="Sobrecargado">Sobrecargado</mat-option>
-            </mat-select>
-          </mat-form-field>
+        <div class="inputs">
+          <div *ngIf="!editable; then showSign else loadSign"></div>
+          <ng-template #showSign>
+            <div class="signature-element">
+              <img *ngIf="feReport && feReport.signature" [src]="feReport.signature.thumbnail">
+              <div class="empty-signature" *ngIf="!feReport || !feReport.signature"></div>
+            </div>
+          </ng-template>
+          <ng-template #loadSign>
+            <div class="signature-element" (click)="loadSignature()" style="cursor: pointer" matTooltip="Cargar Firma">
+              <img *ngIf="signatureThumbnail" [src]="signatureThumbnail">
+              <div class="empty-signature" *ngIf="!signatureThumbnail" ></div>
+            </div>
+          </ng-template>
+          <div class="divider"></div>
+          <div *ngIf="editable; then admonName else originalName"></div>
+          <ng-template #admonName>
+            <div class="name">{{name}}</div>
+          </ng-template>
+          <ng-template #originalName>
+            <div *ngIf="!feReport || !feReport.name" class="name">Nombre</div>
+            <div *ngIf="feReport && feReport.name" class="name">{{feReport.name}}</div>
+          </ng-template>
         </div>
-        <div class="times">
-          <mat-form-field class="clock">
-            <mat-select disabled placeholder="Manguera" required>
-              <mat-option value="Satisfactorio">Satisfactorio</mat-option>
-              <mat-option value="No satisfactorio">No satisfactorio</mat-option>
-            </mat-select>
-          </mat-form-field>
-          <mat-form-field class="clock">
-            <mat-select disabled placeholder="Cincho" required>
-              <mat-option value="Satisfactorio">Satisfactorio</mat-option>
-              <mat-option value="No satisfactorio">No satisfactorio</mat-option>
-            </mat-select>
-          </mat-form-field>
-        </div>
-        <div class="times">
-          <mat-form-field class="clock">
-            <mat-select disabled placeholder="Collarín">
-              <mat-option value="Satisfactorio">Satisfactorio</mat-option>
-              <mat-option value="No satisfactorio">No satisfactorio</mat-option>
-            </mat-select>
-          </mat-form-field>
-          <mat-form-field class="clock">
-            <mat-select disabled placeholder="Seguro">
-              <mat-option value="Satisfactorio">Satisfactorio</mat-option>
-              <mat-option value="No satisfactorio">No satisfactorio</mat-option>
-            </mat-select>
-          </mat-form-field>
-        </div>
-      </ng-template>
+      </div>
     </div>
-    <div class="columns">
-      <div class="text-sign">
-        Nombre y firma del responsable
-      </div>
-      <div class="inputs">
-        <div class="signature-element">
-          <img *ngIf="feReport && feReport.signature" [src]="feReport.signature.thumbnail">
-          <div *ngIf="!feReport || !feReport.signature" style="width: 60%; height: 60px"></div>
-        </div>
-        <div class="divider"></div>
-        <div *ngIf="!feReport || !feReport.name" class="name">Nombre</div>
-        <div *ngIf="feReport && feReport.name" class="name">{{feReport.name}}</div>
-      </div>
+    <div *ngIf="taskItems && taskItems.length !== 0 && !editable">
+      <mat-paginator [pageSize]="1" [length]="taskItems.length" [hidePageSize]="true" (page)="changeTask($event)" ></mat-paginator>
+    </div>
+    <div *ngIf="editable" class="finish-button">
+      <button mat-flat-button type="submit" [color]="'primary'" [disabled]="load">
+        FINALIZAR
+      </button>
     </div>
   </form>
-  <div *ngIf="taskItems && taskItems.length !== 0">
-    <mat-paginator [pageSize]="1" [length]="taskItems.length" [hidePageSize]="true" (page)="changeTask($event)" ></mat-paginator>
-  </div>
 </div>
