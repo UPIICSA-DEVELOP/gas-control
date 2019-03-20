@@ -2,6 +2,26 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="1.0.0-beta.2"></a>
+# [1.0.0-beta.2](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/compare/v1.0.0-beta.1...v1.0.0-beta.2) (2019-03-20)
+
+
+### Bug Fixes
+
+* solve errors in om-report ([177b600](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/177b600))
+
+
+### Features
+
+* add edition to Compressor Report ([c73a13d](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/c73a13d))
+* add edition to Scanned Report ([0cfb556](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/0cfb556))
+* add edition to VRS Report ([83a5ff2](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/83a5ff2))
+* add elements to update home after task finished ([d799d91](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/d799d91))
+* remove debugger ([b967dcc](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/b967dcc))
+* solve errors in core ([53ee3da](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/53ee3da))
+
+
+
 <a name="1.0.0-beta.1"></a>
 # 1.0.0-beta.1 (2019-03-19)
 
