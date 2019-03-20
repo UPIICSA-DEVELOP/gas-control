@@ -145,7 +145,7 @@ export class ScannedReportComponent implements OnInit, OnDestroy {
 
   private resetElements(): void{
     this.scannedReport = undefined;
-    if(this.task.original.status === 3){
+    if(this.task.original.status !== 4){
       this.startEditFormat(true);
     }
   }

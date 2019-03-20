@@ -116,7 +116,7 @@ export class CompressorReportComponent implements OnInit, OnDestroy {
     this.compressorReport = undefined;
     this.compForm.reset();
     this.compForm.disable();
-    if(this.task.original.status === 3){
+    if(this.task.original.status !== 4){
       this.startEditFormat(true);
     }
   }

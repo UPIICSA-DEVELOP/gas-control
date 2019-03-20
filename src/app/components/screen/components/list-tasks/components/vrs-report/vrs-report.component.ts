@@ -118,7 +118,7 @@ export class VrsReportComponent implements OnInit, OnDestroy {
     this.vrsReport = undefined;
     this.vrsForm.reset();
     this.vrsForm.disable();
-    if(this.task.original.status === 3){
+    if(this.task.original.status !== 4){
       this.startEditReport(true);
     }
   }

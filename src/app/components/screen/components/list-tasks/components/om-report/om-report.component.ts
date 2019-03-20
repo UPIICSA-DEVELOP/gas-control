@@ -190,7 +190,7 @@ export class OmReportComponent implements OnInit, OnDestroy {
     this.omReport = undefined;
     this.omForm.reset();
     this.omForm.disable();
-    if(this.task.original.status === 3){
+    if(this.task.original.status !== 4){
       this.startEditFormat(true);
     }
   }

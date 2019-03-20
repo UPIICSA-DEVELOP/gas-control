@@ -115,7 +115,7 @@ export class FeReportComponent implements OnInit, OnDestroy {
     this.feReport = undefined;
     this.feForm.reset();
     this.feForm.disable();
-    if (this.task.original.status === 3){
+    if (this.task.original.status !== 4){
       this.startEditReport(true);
     }
   }
