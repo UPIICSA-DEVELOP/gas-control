@@ -85,8 +85,6 @@ export class OmReportComponent implements OnInit, OnDestroy {
     this.personnelNames = [];
     this.procedures = [];
     this.editable = false;
-    this.newPersonnel = '';
-    this.name = '';
   }
 
   ngOnInit() {
