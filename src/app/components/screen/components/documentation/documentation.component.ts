@@ -202,7 +202,7 @@ export class DocumentationComponent implements OnInit, OnDestroy {
       idStation: document.idStation,
       file: document.file
     };
-    this._api.updateDocumet(doc).subscribe(response=>{
+    this._api.updateDocument(doc).subscribe(response=>{
       switch (response.code){
         case 200:
           this._snackBarService.openSnackBar('Documento cargado', 'OK', 3000);

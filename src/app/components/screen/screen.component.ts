@@ -78,6 +78,7 @@ export class ScreenComponent implements OnInit, AfterViewInit, OnDestroy{
          break;
        case SharedTypeNotification.FinishEditTask:
          this.stationActive.doneTasks = response.value.doneTasks;
+         this.stationActive.progress = response.value.progress;
          break;
      }
    });

@@ -164,6 +164,10 @@
       width: 60%;
       height: 60px;
     }
+    .empty-signature{
+      width: 60%;
+      height: 60px
+    }
   }
   .name{
     display: flex;
@@ -194,5 +198,18 @@
   .evidence{
     height: inherit;
     padding: 8px;
+  }
+
+  .finish-button{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin-top: 16px;
+  }
+
+  .error-text{
+    width: 90%;
+    font-size: 11px;
+    margin-bottom: 12px;
   }
 }
