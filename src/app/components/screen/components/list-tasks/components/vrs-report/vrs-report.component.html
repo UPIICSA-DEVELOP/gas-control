@@ -11,191 +11,216 @@
   <div class="task-header">
     <div class="head-bold">Sistema de recuperación de vapores</div>
     <div class="control-data">
-      <div *ngIf="vrsReport">Fecha: {{date[0]}} {{date[1]}} {{date[2]}}&nbsp;&nbsp;</div>
-      <div *ngIf="vrsReport">Folio: {{vrsReport.folio | formatFolio}}</div>
+      <div *ngIf="date.length !== 0">Fecha: {{date[0]}} {{date[1]}} {{date[2]}}&nbsp;&nbsp;</div>
+      <div *ngIf="vrsReport && vrsReport.folio">Folio: {{vrsReport.folio | formatFolio}}</div>
     </div>
   </div>
-  <form [formGroup]="vrsForm" class="flex-box">
-    <div class="columns">
-      <div class="inputs">
-        <h3 style="margin: 4px 0; font-size: 14px">Dispensarios</h3>
-      </div>
-      <div class="inputs">
-        <div class="space-box">
-          <div class="checks-row">
-            <mat-checkbox formControlName="magna">Magna</mat-checkbox>
-          </div>
-          <div class="checks-row">
-            <mat-checkbox formControlName="premium">Premium</mat-checkbox>
+  <form [formGroup]="vrsForm" (ngSubmit)="validateForm(vrsForm.value)">
+    <div class="flex-box">
+      <div class="columns">
+        <div class="inputs">
+          <h3 style="margin: 4px 0; font-size: 14px">Dispensarios</h3>
+        </div>
+        <div class="inputs">
+          <div class="space-box">
+            <div class="checks-row">
+              <mat-checkbox formControlName="magna" (change)="changeFuelType($event)">Magna</mat-checkbox>
+            </div>
+            <div class="checks-row">
+              <mat-checkbox formControlName="premium" (change)="changeFuelType($event)">Premium</mat-checkbox>
+            </div>
           </div>
         </div>
-      </div>
-      <div class="times">
-        <mat-form-field class="clock">
-          <mat-select formControlName="fuelNozzle" placeholder="Pistola" required>
-            <mat-option value="Satisfactorio">Satisfactorio</mat-option>
-            <mat-option value="No satisfactorio">No satisfactorio</mat-option>
-            <mat-option value="No determinado">No determinado</mat-option>
-          </mat-select>
-        </mat-form-field>
-        <mat-form-field class="clock">
-          <mat-select formControlName="longHose" placeholder="Manguera larga" required>
-            <mat-option value="Satisfactorio">Satisfactorio</mat-option>
-            <mat-option value="No satisfactorio">No satisfactorio</mat-option>
-            <mat-option value="No determinado">No determinado</mat-option>
-          </mat-select>
-        </mat-form-field>
-      </div>
-      <div class="times">
-        <mat-form-field class="clock">
-          <mat-select formControlName="breakAway" placeholder="Break away" required>
-            <mat-option value="Satisfactorio">Satisfactorio</mat-option>
-            <mat-option value="No satisfactorio">No satisfactorio</mat-option>
-            <mat-option value="No determinado">No determinado</mat-option>
-          </mat-select>
-        </mat-form-field>
-        <mat-form-field class="clock">
-          <mat-select formControlName="shortHose" placeholder="Manguera corta" required>
-            <mat-option value="Satisfactorio">Satisfactorio</mat-option>
-            <mat-option value="No satisfactorio">No satisfactorio</mat-option>
-            <mat-option value="No determinado">No determinado</mat-option>
-          </mat-select>
-        </mat-form-field>
-      </div>
-      <div class="times">
-        <mat-form-field class="clock">
-          <mat-select formControlName="equipment" placeholder="Equipo" required>
-            <mat-option value="Motor de succión">Motor de succión</mat-option>
-            <mat-option value="Turbina">Turbina</mat-option>
-            <mat-option value="Quemador">Quemador</mat-option>
-          </mat-select>
-        </mat-form-field>
-        <div class="clock"></div>
-      </div>
-      <div
-        *ngIf="vrsReport && vrsReport.vrsTanks && vrsReport.vrsTanks.length !== 0; then tanksList else emptyTankList"></div>
-      <ng-template #tanksList>
-        <div *ngFor="let tankItem of vrsReport.vrsTanks; let i = index">
-          <div class="inputs">
+        <mat-error *ngIf="error && editable" class="error-text">
+          Debe seleccionar al menos una opción
+        </mat-error>
+        <div class="times">
+          <mat-form-field class="clock">
+            <mat-select formControlName="fuelNozzle" placeholder="Pistola" required>
+              <mat-option value="Satisfactorio">Satisfactorio</mat-option>
+              <mat-option value="No satisfactorio">No satisfactorio</mat-option>
+              <mat-option value="No determinado">No determinado</mat-option>
+            </mat-select>
+            <mat-error *ngIf="vrsForm.controls['fuelNozzle'].hasError('required')">
+              Este campo es obligatorio
+            </mat-error>
+          </mat-form-field>
+          <mat-form-field class="clock">
+            <mat-select formControlName="longHose" placeholder="Manguera larga" required>
+              <mat-option value="Satisfactorio">Satisfactorio</mat-option>
+              <mat-option value="No satisfactorio">No satisfactorio</mat-option>
+              <mat-option value="No determinado">No determinado</mat-option>
+            </mat-select>
+            <mat-error *ngIf="vrsForm.controls['longHose'].hasError('required')">
+              Este campo es obligatorio
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div class="times">
+          <mat-form-field class="clock">
+            <mat-select formControlName="breakAway" placeholder="Break away" required>
+              <mat-option value="Satisfactorio">Satisfactorio</mat-option>
+              <mat-option value="No satisfactorio">No satisfactorio</mat-option>
+              <mat-option value="No determinado">No determinado</mat-option>
+            </mat-select>
+            <mat-error *ngIf="vrsForm.controls['breakAway'].hasError('required')">
+              Este campo es obligatorio
+            </mat-error>
+          </mat-form-field>
+          <mat-form-field class="clock">
+            <mat-select formControlName="shortHose" placeholder="Manguera corta" required>
+              <mat-option value="Satisfactorio">Satisfactorio</mat-option>
+              <mat-option value="No satisfactorio">No satisfactorio</mat-option>
+              <mat-option value="No determinado">No determinado</mat-option>
+            </mat-select>
+            <mat-error *ngIf="vrsForm.controls['shortHose'].hasError('required')">
+              Este campo es obligatorio
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div class="times">
+          <mat-form-field class="clock">
+            <mat-select formControlName="equipment" placeholder="Equipo" required>
+              <mat-option value="Motor de succión">Motor de succión</mat-option>
+              <mat-option value="Turbina">Turbina</mat-option>
+              <mat-option value="Quemador">Quemador</mat-option>
+            </mat-select>
+            <mat-error *ngIf="vrsForm.controls['equipment'].hasError('required')">
+              Este campo es obligatorio
+            </mat-error>
+          </mat-form-field>
+          <div class="clock"></div>
+        </div>
+        <div class="inputs" *ngFor="let tankItem of tanks; let i = index">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px; width: 100%">
             <h3 style="margin: 12px 0; font-size: 14px">Tanque {{i+1}}</h3>
+            <button mat-icon-button type="button" *ngIf="i === 0 && editable" (click)="addRemoveTank(true)"><mat-icon style="color: #257602">add</mat-icon></button>
+            <button mat-icon-button type="button" *ngIf="i !== 0 && editable" (click)="addRemoveTank(false, i)"><mat-icon style="color: #E00000">remove</mat-icon></button>
           </div>
-          <mat-radio-group [(ngModel)]="tankItem.fuelType" [ngModelOptions]="{standalone: true}" [disabled]="true" style="display: flex;width: 90%;justify-content: space-between; flex-wrap: wrap; margin-bottom: 16px">
+          <mat-error *ngIf="errorTank[i] && editable" class="error-text">
+            Complete los campos del tanque
+          </mat-error>
+          <mat-radio-group [(ngModel)]="tankItem.fuelType" [ngModelOptions]="{standalone: true}" [disabled]="!editable" (change)="changeTankInfo($event, i)" style="display: flex;width: 90%;justify-content: space-between; flex-wrap: wrap; margin-bottom: 16px">
             <mat-radio-button [value]="1">Magna</mat-radio-button>
             <mat-radio-button [value]="2">Premium</mat-radio-button>
           </mat-radio-group>
-          <mat-form-field class="inputs">
-            <mat-select [(ngModel)]="tankItem.capAndSteamAdapter" [ngModelOptions]="{standalone: true}" [disabled]="true" placeholder="Tapa y adaptador de vapor" required>
+          <mat-form-field style="width: 100%">
+            <mat-select [(ngModel)]="tankItem.capAndSteamAdapter" [ngModelOptions]="{standalone: true}" (selectionChange)="changeTankInfo($event, i)" [disabled]="!editable" placeholder="Tapa y adaptador de vapor">
               <mat-option [value]="'Satisfactorio'">Satisfactorio</mat-option>
               <mat-option [value]="'No satisfactorio'">No satisfactorio</mat-option>
               <mat-option [value]="'No determinado'">No determinado</mat-option>
             </mat-select>
           </mat-form-field>
-          <mat-form-field class="inputs">
-            <mat-select [(ngModel)]="tankItem.capAndFillingAdapter" [ngModelOptions]="{standalone: true}" [disabled]="true" placeholder="Tapa y adaptador de llenado" required>
+          <mat-form-field style="width: 100%">
+            <mat-select [(ngModel)]="tankItem.capAndFillingAdapter" [ngModelOptions]="{standalone: true}" (selectionChange)="changeTankInfo($event, i)" [disabled]="!editable" placeholder="Tapa y adaptador de llenado">
               <mat-option [value]="'Satisfactorio'">Satisfactorio</mat-option>
               <mat-option [value]="'No satisfactorio'">No satisfactorio</mat-option>
               <mat-option [value]="'No determinado'">No determinado</mat-option>
             </mat-select>
           </mat-form-field>
-          <mat-form-field class="inputs">
-            <mat-select [(ngModel)]="tankItem.overfillValve" [ngModelOptions]="{standalone: true}" [disabled]="true" placeholder="Válvula de sobrellenado" required>
+          <mat-form-field style="width: 100%">
+            <mat-select [(ngModel)]="tankItem.overfillValve" [ngModelOptions]="{standalone: true}" (selectionChange)="changeTankInfo($event, i)" [disabled]="!editable" placeholder="Válvula de sobrellenado">
               <mat-option [value]="'Satisfactorio'">Satisfactorio</mat-option>
               <mat-option [value]="'No satisfactorio'">No satisfactorio</mat-option>
               <mat-option [value]="'No determinado'">No determinado</mat-option>
             </mat-select>
           </mat-form-field>
-          <mat-form-field class="inputs">
-            <mat-select [(ngModel)]="tankItem.vacuumPressureValve" [ngModelOptions]="{standalone: true}" [disabled]="true" placeholder="Válvula de presión-vacío" required>
+          <mat-form-field style="width: 100%">
+            <mat-select [(ngModel)]="tankItem.vacuumPressureValve" [ngModelOptions]="{standalone: true}" (selectionChange)="changeTankInfo($event, i)" [disabled]="!editable" placeholder="Válvula de presión-vacío">
               <mat-option [value]="'Satisfactorio'">Satisfactorio</mat-option>
               <mat-option [value]="'No satisfactorio'">No satisfactorio</mat-option>
               <mat-option [value]="'No determinado'">No determinado</mat-option>
             </mat-select>
           </mat-form-field>
         </div>
-      </ng-template>
-      <ng-template #emptyTankList>
+      </div>
+      <div class="columns">
+        <mat-form-field class="inputs">
+          <mat-select formControlName="vrsAlarm" placeholder="Alarma SRV encendido" required>
+            <mat-option value="Satisfactorio">Satisfactorio</mat-option>
+            <mat-option value="No satisfactorio">No satisfactorio</mat-option>
+            <mat-option value="No determinado">No determinado</mat-option>
+          </mat-select>
+          <mat-error *ngIf="vrsForm.controls['vrsAlarm'].hasError('required')">
+            Este campo es obligatorio
+          </mat-error>
+        </mat-form-field>
         <div class="inputs">
-          <h3 style="margin: 8px 0; font-size: 14px">Tanque 1</h3>
+          <h3 style="margin: 8px 0; font-size: 14px;">Mantenimiento</h3>
         </div>
-        <mat-radio-group [disabled]="true" style="display: flex;width: 90%;justify-content: space-between; flex-wrap: wrap">
-          <mat-radio-button value="Magna">Magna</mat-radio-button>
-          <mat-radio-button value="Premium">Premium</mat-radio-button>
-        </mat-radio-group>
         <mat-form-field class="inputs">
-          <mat-select [disabled]="true" placeholder="Tapa y adaptador de vapor" required>
+          <mat-select formControlName="emergencyStop" placeholder="Alarma paro de emergencia" required>
             <mat-option value="Satisfactorio">Satisfactorio</mat-option>
             <mat-option value="No satisfactorio">No satisfactorio</mat-option>
             <mat-option value="No determinado">No determinado</mat-option>
           </mat-select>
+          <mat-error *ngIf="vrsForm.controls['emergencyStop'].hasError('required')">
+            Este campo es obligatorio
+          </mat-error>
         </mat-form-field>
         <mat-form-field class="inputs">
-          <mat-select [disabled]="true" placeholder="Tapa y adaptador de llenado" required>
-            <mat-option value="Satisfactorio">Satisfactorio</mat-option>
-            <mat-option value="No satisfactorio">No satisfactorio</mat-option>
-            <mat-option value="No determinado">No determinado</mat-option>
-          </mat-select>
+          <textarea matInput formControlName="observations" placeholder="Observaciones" cdkTextareaAutosize></textarea>
         </mat-form-field>
-        <mat-form-field class="inputs">
-          <mat-select [disabled]="true" placeholder="Válvula de sobrellenado" required>
-            <mat-option value="Satisfactorio">Satisfactorio</mat-option>
-            <mat-option value="No satisfactorio">No satisfactorio</mat-option>
-            <mat-option value="No determinado">No determinado</mat-option>
-          </mat-select>
-        </mat-form-field>
-        <mat-form-field class="inputs">
-          <mat-select [disabled]="true" placeholder="Válvula de presión-vacío" required>
-            <mat-option value="Satisfactorio">Satisfactorio</mat-option>
-            <mat-option value="No satisfactorio">No satisfactorio</mat-option>
-            <mat-option value="No determinado">No determinado</mat-option>
-          </mat-select>
-        </mat-form-field>
-      </ng-template>
+        <div class="image-header">
+          Captura fotográfica de evidencia
+        </div>
+        <div *ngIf="!editable; then showEv else modify"></div>
+        <ng-template #showEv>
+          <div *ngIf="!vrsReport || !vrsReport.fileCS" class="image-container" >
+            <mat-icon class="default-image">image</mat-icon>
+          </div>
+          <div *ngIf="vrsReport && vrsReport.fileCS " class="image-container-real" (click)="seeEvidence()">
+            <img class="evidence" [src]="vrsReport.fileCS.thumbnail" alt="Evidence capture">
+          </div>
+        </ng-template>
+        <ng-template #modify>
+          <app-upload-file class="inputs" (onLoad)="loadEvidence($event)" (onRemove)="deleteEvidence()" [layoutTemplate]="imageEvidence" [type]="'image'">
+            <ng-template #imageEvidence>
+              <div *ngIf="!evidenceThumbnail" class="image-container" >
+                <mat-icon class="default-image">image</mat-icon>
+              </div>
+              <div *ngIf="evidenceThumbnail" class="image-container-real">
+                <img class="evidence" [src]="evidenceThumbnail" alt="Evidence capture">
+              </div>
+            </ng-template>
+          </app-upload-file>
+        </ng-template>
+        <div class="text-sign">
+          Nombre y firma del responsable
+        </div>
+        <div class="inputs">
+          <div *ngIf="!editable; then showSign else loadSign"></div>
+          <ng-template #showSign>
+            <div class="signature-element">
+              <img *ngIf="vrsReport && vrsReport.signature" [src]="vrsReport.signature.thumbnail">
+              <div class="empty-signature" *ngIf="!vrsReport || !vrsReport.signature"></div>
+            </div>
+          </ng-template>
+          <ng-template #loadSign>
+            <div class="signature-element" (click)="loadSignature()" style="cursor: pointer" matTooltip="Cargar Firma">
+              <img *ngIf="signatureThumbnail" [src]="signatureThumbnail">
+              <div class="empty-signature" *ngIf="!signatureThumbnail" ></div>
+            </div>
+          </ng-template>
+          <div class="divider"></div>
+          <div *ngIf="editable; then admonName else originalName"></div>
+          <ng-template #admonName>
+            <div class="name">{{name}}</div>
+          </ng-template>
+          <ng-template #originalName>
+            <div *ngIf="!vrsReport || !vrsReport.name" class="name">Nombre</div>
+            <div *ngIf="vrsReport && vrsReport.name" class="name">{{vrsReport.name}}</div>
+          </ng-template>
+        </div>
+      </div>
     </div>
-    <div class="columns">
-      <mat-form-field class="inputs">
-        <mat-select formControlName="vrsAlarm" placeholder="Alarma SRV encendido" required>
-          <mat-option value="Satisfactorio">Satisfactorio</mat-option>
-          <mat-option value="No satisfactorio">No satisfactorio</mat-option>
-          <mat-option value="No determinado">No determinado</mat-option>
-        </mat-select>
-      </mat-form-field>
-      <div class="inputs">
-        <h3 style="margin: 8px 0; font-size: 14px;">Mantenimiento</h3>
-      </div>
-      <mat-form-field class="inputs">
-        <mat-select formControlName="emergencyStop" placeholder="Alarma paro de emergencia" required>
-          <mat-option value="Satisfactorio">Satisfactorio</mat-option>
-          <mat-option value="No satisfactorio">No satisfactorio</mat-option>
-          <mat-option value="No determinado">No determinado</mat-option>
-        </mat-select>
-      </mat-form-field>
-      <mat-form-field class="inputs">
-        <textarea matInput formControlName="observations" placeholder="Observaciones" cdkTextareaAutosize></textarea>
-      </mat-form-field>
-      <div class="image-header">
-        Captura fotográfica de evidencia
-      </div>
-      <div *ngIf="!vrsReport || !vrsReport.fileCS" class="image-container">
-        <mat-icon class="default-image">image</mat-icon>
-      </div>
-      <div class="image-container-real" *ngIf="vrsReport && vrsReport.fileCS" (click)="seeEvidence()">
-        <img class="evidence" [src]="vrsReport.fileCS.thumbnail" alt="Evidence capture">
-      </div>
-      <div class="text-sign">
-        Nombre y firma del responsable
-      </div>
-      <div class="inputs">
-        <div class="signature-element">
-          <img *ngIf="vrsReport && vrsReport.signature" [src]="vrsReport.signature.thumbnail">
-          <div *ngIf="!vrsReport || !vrsReport.signature" style="width: 60%; height: 60px"></div>
-        </div>
-        <div class="divider"></div>
-        <div *ngIf="!vrsReport || !vrsReport.name" class="name">Nombre</div>
-        <div *ngIf="vrsReport && vrsReport.name" class="name">{{vrsReport.name}}</div>
-      </div>
+    <div *ngIf="editable" class="finish-button">
+      <button mat-flat-button type="submit" [color]="'primary'" [disabled]="load">
+        FINALIZAR
+      </button>
     </div>
   </form>
-  <div *ngIf="taskItems && taskItems.length !== 0">
+  <div *ngIf="taskItems && taskItems.length !== 0 && !editable">
     <mat-paginator [pageSize]="1" [length]="taskItems.length" [hidePageSize]="true" (page)="changeTask($event)" ></mat-paginator>
   </div>
 </div>
