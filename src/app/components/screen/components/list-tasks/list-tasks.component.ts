@@ -156,6 +156,7 @@ export class ListTasksComponent implements OnInit, DoCheck , OnDestroy{
           this.goBackList();
           if(this.others){
             this.notCalendarTasks = [];
+            this._tokenTwo = undefined;
             this.getNotCalendarTask();
           }else{
             this.listTask = {
@@ -163,6 +164,7 @@ export class ListTasksComponent implements OnInit, DoCheck , OnDestroy{
               previousTasks: [],
               historyTasks: []
             };
+            this._token = undefined;
             this.getStationTask();
           }
           break;
