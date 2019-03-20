@@ -65,6 +65,7 @@ import { FrReportComponent } from './components/screen/components/list-tasks/com
 import { FeReportComponent } from './components/screen/components/list-tasks/components/fe-report/fe-report.component';
 import { IncidenceReportComponent } from './components/screen/components/list-tasks/components/incidence-report/incidence-report.component';
 import { CompressorReportComponent } from './components/screen/components/list-tasks/components/compressor-report/compressor-report.component';
+import {HandlerErrorInterceptor} from '@app/app.handler-error.interceptor';
 
 @NgModule({
   declarations: [
@@ -152,6 +153,11 @@ import { CompressorReportComponent } from './components/screen/components/list-t
     {
       provide: HTTP_INTERCEPTORS,
       useClass: BrowserStateInterceptor,
+      multi: true
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: HandlerErrorInterceptor,
       multi: true
     },
     {

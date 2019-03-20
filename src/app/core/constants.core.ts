@@ -14,6 +14,7 @@ export class Constants {
   public static NotSignature = 'notSign';
   public static StationInDashboard = 'station';
   public static ConsultancyInSession = 'consultancy';
+  public static ErrorMessageHandler = 'Ha ocurrido un error, intente más tarde';
   public static REGEX_WEBSITE = '[a-z0-9]+([\\-\\.]{1}[a-z0-9]+)*\\.[a-z]{2,5}(:[0-9]{1,5})?(\\/.*)?$';
 
   public static Filters = [
