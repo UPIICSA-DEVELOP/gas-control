@@ -2,6 +2,23 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="1.0.0-beta.5"></a>
+# [1.0.0-beta.5](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/compare/v1.0.0-beta.4...v1.0.0-beta.5) (2019-03-21)
+
+
+### Bug Fixes
+
+* modify view to modal procedures ([fdb994d](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/fdb994d))
+* solve error in break away field ([88ecc57](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/88ecc57))
+* solve error to delete evidence ([64abbea](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/64abbea))
+* solve error to load scanned report ([af0bc8b](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/af0bc8b))
+* solve errors in list task ([2855e75](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/2855e75))
+* solve errors refId to role 7 ([deb37be](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/deb37be))
+* spell correction in area selector ([99a45fe](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/99a45fe))
+* validate images ([6202eab](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/6202eab))
+
+
+
 <a name="1.0.0-beta.4"></a>
 # [1.0.0-beta.4](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/compare/v1.0.0-beta.3...v1.0.0-beta.4) (2019-03-21)
 
