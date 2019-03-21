@@ -299,7 +299,7 @@ export class VrsReportComponent implements OnInit, OnDestroy {
       vrsTanks: this.tanks,
       vrsAlarm: value.vrsAlarm,
       vrsDispensary: {
-        breakAway: value.breakAfter,
+        breakAway: value.breakAway,
         diesel: false,
         equipment: value.equipment,
         fuelNozzle: value.fuelNozzle,
