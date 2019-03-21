@@ -83,7 +83,7 @@
                   <div class="head-bold" style="margin: 8px 0">{{task.title}}</div>
                 </ng-template>
                 <ng-template #taskCard>
-                  <mat-card class="task">
+                  <mat-card (click)="goTaskInfo(task)" class="task">
                     <div class="priority" *ngIf="task.original.level === 3" style="background-color:#E00000"></div>
                     <div class="priority" *ngIf="task.original.level === 1" style="background-color:#257602"></div>
                     <div class="priority" *ngIf="task.original.level === 2" style="background-color:#FFD800"></div>
@@ -119,7 +119,7 @@
                   <div class="head-bold" style="margin: 8px 0">{{task.title}}</div>
                 </ng-template>
                 <ng-template #taskCard>
-                  <mat-card class="task">
+                  <mat-card (click)="goTaskInfo(task)" class="task">
                     <div class="priority" *ngIf="task.original.level === 3" style="background-color:#E00000"></div>
                     <div class="priority" *ngIf="task.original.level === 1" style="background-color:#257602"></div>
                     <div class="priority" *ngIf="task.original.level === 2" style="background-color:#FFD800"></div>
@@ -155,7 +155,7 @@
                   <div class="head-bold" style="margin: 8px 0">{{task.title}}</div>
                 </ng-template>
                 <ng-template #taskCard>
-                  <mat-card class="task">
+                  <mat-card class="task" (click)="goTaskInfo(task)">
                     <div class="priority" *ngIf="task.original.level === 3" style="background-color:#E00000"></div>
                     <div class="priority" *ngIf="task.original.level === 1" style="background-color:#257602"></div>
                     <div class="priority" *ngIf="task.original.level === 2" style="background-color:#FFD800"></div>
@@ -233,7 +233,7 @@
                 </ng-template>
                 <ng-template #frList>
                   <div class="card-list" *ngFor="let task of notCalendarTasks;">
-                    <mat-card class="task" style="margin-top: 8px">
+                    <mat-card class="task" (click)="goTaskInfo(task, 7)" style="margin-top: 8px">
                       <div class="priority" style="background-color:#E00000"></div>
                       <mat-card-content>
                         <div class="date">
@@ -282,7 +282,7 @@
                 </ng-template>
                 <ng-template #incidenceList>
                   <div class="card-list" *ngFor="let task of notCalendarTasks;">
-                    <mat-card class="task" style="margin-top: 8px">
+                    <mat-card (click)="goTaskInfo(task, 9)" class="task" style="margin-top: 8px">
                         <div class="priority" style="background-color:#E00000"></div>
                         <mat-card-content>
                           <div class="date">
@@ -331,7 +331,7 @@
                 </ng-template>
                 <ng-template #frList>
                   <div class="card-list" *ngFor="let task of notCalendarTasks;">
-                    <mat-card class="task" style="margin-top: 8px">
+                    <mat-card (click)="goTaskInfo(task, 6)" class="task" style="margin-top: 8px">
                       <div class="priority" style="background-color:#E00000"></div>
                       <mat-card-content>
                         <div class="date">
