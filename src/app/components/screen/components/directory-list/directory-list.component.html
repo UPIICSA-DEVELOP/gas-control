@@ -25,9 +25,9 @@
               <mat-card class="collaborator" *ngIf="collaborator.id !== idSession">
                 <mat-card-content>
                   <div class="image">
-                    <img class="image-collaborator" *ngIf="collaborator.profileImage" [src]="collaborator.profileImage.thumbnail" alt="profile image">
-                    <img class="image-collaborator" *ngIf="!collaborator.profileImage && utils" [src]="utils.groupIcons[gasStation.type-1].fileCS.thumbnail" alt="profile image">
-                    <mat-icon class="image-collaborator" *ngIf="!collaborator.profileImage && !utils">add_photo_alternate</mat-icon>
+                    <img class="image-collaborator" *ngIf="collaborator.profileImage && collaborator.profileImage.thumbnail" [src]="collaborator.profileImage.thumbnail" alt="profile image">
+                    <img class="image-collaborator" *ngIf="(!collaborator.profileImage || !collaborator.profileImage.thumbnail) && utils" [src]="utils.groupIcons[gasStation.type-1].fileCS.thumbnail" alt="profile image">
+                    <mat-icon class="image-collaborator" *ngIf="(!collaborator.profileImage || !collaborator.profileImage.thumbnail) && !utils">add_photo_alternate</mat-icon>
                   </div>
                   <div class="information">
                     <div class="info"> {{collaborator.name}} {{collaborator.lastName}}</div>

@@ -227,6 +227,7 @@ export class VrsReportComponent implements OnInit, OnDestroy {
     this.evidenceThumbnail = undefined;
     this._loads[0] = false;
     this._evidence = undefined;
+    this._evidenceElement = undefined
   }
 
   public loadSignature(): void {
@@ -298,7 +299,7 @@ export class VrsReportComponent implements OnInit, OnDestroy {
       vrsTanks: this.tanks,
       vrsAlarm: value.vrsAlarm,
       vrsDispensary: {
-        breakAway: value.breakAfter,
+        breakAway: value.breakAway,
         diesel: false,
         equipment: value.equipment,
         fuelNozzle: value.fuelNozzle,

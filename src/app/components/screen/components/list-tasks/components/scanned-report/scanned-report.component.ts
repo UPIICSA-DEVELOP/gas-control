@@ -220,17 +220,17 @@ export class ScannedReportComponent implements OnInit, OnDestroy {
     }
     if(this.task.original.hwg){
       this.scannedReport.hwgReport = this._copyTasks ? this._copyTasks.hwgReport : undefined;
-      this._api.createTask(this.scannedReport, 5).subscribe(response=>{
-        switch (response.code){
-          case 200:
-            this._sharedService.setNotification({type: SharedTypeNotification.FinishEditTask, value: response.item.station});
-            break;
-          default:
-            console.error(response);
-            break;
-        }
-      })
     }
+    this._api.createTask(this.scannedReport, 5).subscribe(response=>{
+      switch (response.code){
+        case 200:
+          this._sharedService.setNotification({type: SharedTypeNotification.FinishEditTask, value: response.item.station});
+          break;
+        default:
+          console.error(response);
+          break;
+      }
+    });
   }
 
   private uploadFile(type: number):void{

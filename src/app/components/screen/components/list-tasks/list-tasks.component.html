@@ -31,7 +31,7 @@
           <button *ngIf="others && !reportConfig.reportView" mat-icon-button (click)="resetFilters()">
             <mat-icon>refresh</mat-icon>
           </button>
-          <button *ngIf="others" mat-icon-button (click)="closeOthers()">
+          <button *ngIf="others && !reportConfig.reportView" mat-icon-button (click)="closeOthers()">
             <mat-icon>close</mat-icon>
           </button>
           <button mat-icon-button *ngIf="!others && !reportConfig.reportView" (click)="search()">
@@ -214,7 +214,7 @@
       <ng-template #secondList>
         <div class="sub-container" (scroll)="onScroll($event)" #modalScroll>
           <mat-tab-group (selectedTabChange)="getNotCalendarTask($event)" style="width: 100%">
-            <mat-tab label="Recepción y descarga de combustible">
+            <mat-tab [disabled]="reportConfig.reportView" label="Recepción y descarga de combustible">
               <div *ngIf="notCalendarTasks.length !== 0; then listFR else emptyFR"></div>
               <ng-template #listFR>
                 <div *ngIf="reportConfig.reportView; then frReportView else frList"></div>
@@ -263,7 +263,7 @@
                 </div>
               </ng-template>
             </mat-tab>
-            <mat-tab label="Incidencias">
+            <mat-tab [disabled]="reportConfig.reportView" label="Incidencias">
               <div *ngIf="notCalendarTasks.length !== 0; then listIN else emptyIN"></div>
               <ng-template #listIN>
                 <div *ngIf="reportConfig.reportView; then incidenceReportView else incidenceList"></div>
@@ -312,7 +312,7 @@
                 </div>
               </ng-template>
             </mat-tab>
-            <mat-tab label="Recolección de residuos peligrosos">
+            <mat-tab [disabled]="reportConfig.reportView" label="Recolección de residuos peligrosos">
               <div *ngIf="notCalendarTasks.length !== 0; then listHWC else emptyHWC"></div>
               <ng-template #listHWC>
                 <div *ngIf="reportConfig.reportView; then frReportView else frList"></div>
