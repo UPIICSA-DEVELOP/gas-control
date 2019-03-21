@@ -7,8 +7,8 @@
 <div id="modal-procedures">
   <mat-toolbar [color]="'primary'" style="justify-content: space-between;">
     Procedimientos
-    <button mat-icon-button (click)="closeModal()">
-      <mat-icon>close</mat-icon>
+    <button mat-icon-button (click)="finishSelectProcedures()">
+      <mat-icon>check</mat-icon>
     </button>
   </mat-toolbar>
   <mat-dialog-content>
@@ -26,11 +26,6 @@
         </mat-card>
         <mat-checkbox [(ngModel)]="selected[i]"></mat-checkbox>
       </div>
-    </div>
-    <div style="display: flex; justify-content: center; margin: 8px 0">
-      <button mat-flat-button [color]="'primary'" (click)="finishSelectProcedures()">
-        ACEPTAR
-      </button>
     </div>
   </mat-dialog-content>
 </div>

@@ -203,10 +203,10 @@ body{
 
 .sgm-and-sasisopa-panel{
   mat-dialog-container{
-    width: 35vw;
+    width: 45vw;
     padding: 0;
     overflow: hidden;
-    min-height: 70vh;
+    min-height: 90vh;
     @media screen and (max-width: 1200px){
       width: 50vw;
     }

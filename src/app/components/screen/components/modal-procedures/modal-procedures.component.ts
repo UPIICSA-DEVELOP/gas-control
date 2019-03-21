@@ -28,10 +28,6 @@ export class ModalProceduresComponent implements OnInit {
     this.initArray();
   }
 
-  public closeModal():void{
-    this._dialogRef.close({code:-1});
-  }
-
   public finishSelectProcedures():void{
     let procedure = [];
     this.selected.forEach((item, index)=>{
