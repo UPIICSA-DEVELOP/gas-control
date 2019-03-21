@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="1.0.0-beta.4"></a>
+# [1.0.0-beta.4](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/compare/v1.0.0-beta.3...v1.0.0-beta.4) (2019-03-21)
+
+
+### Bug Fixes
+
+* add click event to card ([d7d01e9](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/d7d01e9))
+* solve error to validate check-box ([99b7ac9](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/99b7ac9))
+
+
+
 <a name="1.0.0-beta.3"></a>
 # [1.0.0-beta.3](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/compare/v1.0.0-beta.2...v1.0.0-beta.3) (2019-03-20)
 
