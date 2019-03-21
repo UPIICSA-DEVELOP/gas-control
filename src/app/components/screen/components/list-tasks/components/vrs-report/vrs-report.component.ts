@@ -227,6 +227,7 @@ export class VrsReportComponent implements OnInit, OnDestroy {
     this.evidenceThumbnail = undefined;
     this._loads[0] = false;
     this._evidence = undefined;
+    this._evidenceElement = undefined
   }
 
   public loadSignature(): void {
