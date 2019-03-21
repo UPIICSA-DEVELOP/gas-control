@@ -229,10 +229,15 @@ export class FeReportComponent implements OnInit, OnDestroy {
   public validateForm(value: any):void{
     let error = false;
     for(let i = 0; i < this.extinguisher.length; i++){
-      if(
-        !this.extinguisher[i].area && !this.extinguisher[i].belt && this.extinguisher[i].capacity === 0 && !this.extinguisher[i].collar
-        && !this.extinguisher[i].expiration && !this.extinguisher[i].hose && !this.extinguisher[i].manometer && !this.extinguisher[i].safe
-        && !this.extinguisher[i].unity
+      if(!this.extinguisher[i].area ||
+        !this.extinguisher[i].belt ||
+        !this.extinguisher[i].capacity ||
+        !this.extinguisher[i].collar ||
+        !this.extinguisher[i].expiration ||
+        !this.extinguisher[i].hose ||
+        !this.extinguisher[i].manometer ||
+        !this.extinguisher[i].safe ||
+        !this.extinguisher[i].unity
       ){
         this.extinguisherErrors[i] = true;
         error = true;
