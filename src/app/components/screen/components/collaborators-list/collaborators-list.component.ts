@@ -117,8 +117,15 @@ export class CollaboratorsListComponent implements OnInit, OnDestroy {
   public getCollaborators(): void {
     this.id = CookieService.getCookie(Constants.IdSession);
     let user = LocalStorageService.getItem(Constants.UserInSession);
+    let refId: undefined;
     this.user=user;
-    this._api.listCollaborators(user.refId, 'true').subscribe(response=>{
+    if(user.role !== 7){
+      refId = user.refId;
+    }else{
+      const consultancy = LocalStorageService.getItem(Constants.ConsultancyInSession);
+      refId = consultancy.id;
+    }
+    this._api.listCollaborators(refId, 'true').subscribe(response=>{
       switch (response.code) {
         case 200:
           let user = null;
