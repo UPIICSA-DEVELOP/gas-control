@@ -18,6 +18,7 @@ import {Subscription} from 'rxjs';
 import {SharedNotification, SharedService, SharedTypeNotification} from '@app/core/services/shared/shared.service';
 import {SasisopaService} from '@app/components/screen/components/sasisopa/sasisopa.service';
 import {MetaService} from '@app/core/services/meta/meta.service';
+import {SgmService} from '@app/components/screen/components/sgm/sgm.service';
 
 @Component({
   selector: 'app-screen',
@@ -42,6 +43,7 @@ export class ScreenComponent implements OnInit, AfterViewInit, OnDestroy{
     private _auth: AuthService,
     private _sharedService: SharedService,
     private _sasisopaService: SasisopaService,
+    private _sgmService: SgmService,
     private _metaService: MetaService
   ) {
     this.menu = true;
@@ -272,8 +274,12 @@ export class ScreenComponent implements OnInit, AfterViewInit, OnDestroy{
     this._sharedService.setNotification({type: SharedTypeNotification.NotCalendarTask, value: true});
   }
 
-  public openSasisopaModal(isSasisopa: boolean):void{
-    this._sasisopaService.open(isSasisopa);
+  public openSasisopaModal():void{
+    this._sasisopaService.open();
+  }
+
+  public openSGMModal():void{
+    this._sgmService.open();
   }
 
   public openNotifications():void{
