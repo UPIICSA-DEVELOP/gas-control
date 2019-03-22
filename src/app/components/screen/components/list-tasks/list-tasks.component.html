@@ -83,7 +83,7 @@
                   <div class="head-bold" style="margin: 8px 0">{{task.title}}</div>
                 </ng-template>
                 <ng-template #taskCard>
-                  <mat-card (click)="goTaskInfo(task)" class="task">
+                  <mat-card (click)="goTaskInfo(task)" matRipple class="task">
                     <div class="priority" *ngIf="task.original.level === 3" style="background-color:#E00000"></div>
                     <div class="priority" *ngIf="task.original.level === 1" style="background-color:#257602"></div>
                     <div class="priority" *ngIf="task.original.level === 2" style="background-color:#FFD800"></div>
@@ -104,11 +104,6 @@
                         <mat-icon class="latest" *ngIf="task.original.status === 3">close</mat-icon>
                         <mat-icon class="pending" svgIcon="icons:task_previous" *ngIf=" task.original.status === 2"></mat-icon>
                       </div>
-                      <div style="position: absolute; bottom: 0; right: 0; margin: 0 4px">
-                        <button mat-icon-button type="button" (click)="goTaskInfo(task)" *ngIf="task.original.status !== 3" matTooltip="Abrir tarea">
-                          <mat-icon>keyboard_arrow_down</mat-icon>
-                        </button>
-                      </div>
                     </mat-card-content>
                   </mat-card>
                 </ng-template>
@@ -119,7 +114,7 @@
                   <div class="head-bold" style="margin: 8px 0">{{task.title}}</div>
                 </ng-template>
                 <ng-template #taskCard>
-                  <mat-card (click)="goTaskInfo(task)" class="task">
+                  <mat-card matRipple (click)="goTaskInfo(task)" class="task">
                     <div class="priority" *ngIf="task.original.level === 3" style="background-color:#E00000"></div>
                     <div class="priority" *ngIf="task.original.level === 1" style="background-color:#257602"></div>
                     <div class="priority" *ngIf="task.original.level === 2" style="background-color:#FFD800"></div>
@@ -139,11 +134,6 @@
                         <mat-icon style="color: #257602; font-size: 16px; width: 16px; height: 16px;" *ngIf="task.original.status === 4">check</mat-icon>
                         <mat-icon style="color: #E00000; font-size: 16px; width: 16px; height: 16px;" *ngIf="task.original.status === 3">close</mat-icon>
                         <mat-icon style="color: #707070; font-size: 16px; width: 16px; height: 16px;" svgIcon="icons:task_previous" *ngIf=" task.original.status === 2"></mat-icon>
-                      </div>
-                      <div style="position: absolute; bottom: 0; right: 0; margin: 0 4px">
-                        <button mat-icon-button type="button" (click)="goTaskInfo(task)" *ngIf="task.original.status !== 3" matTooltip="Abrir tarea">
-                          <mat-icon>keyboard_arrow_down</mat-icon>
-                        </button>
                       </div>
                     </mat-card-content>
                   </mat-card>
@@ -155,7 +145,7 @@
                   <div class="head-bold" style="margin: 8px 0">{{task.title}}</div>
                 </ng-template>
                 <ng-template #taskCard>
-                  <mat-card class="task" (click)="goTaskInfo(task)">
+                  <mat-card matRipple class="task" (click)="goTaskInfo(task)">
                     <div class="priority" *ngIf="task.original.level === 3" style="background-color:#E00000"></div>
                     <div class="priority" *ngIf="task.original.level === 1" style="background-color:#257602"></div>
                     <div class="priority" *ngIf="task.original.level === 2" style="background-color:#FFD800"></div>
@@ -175,11 +165,6 @@
                         <mat-icon style="color: #257602; font-size: 16px; width: 16px; height: 16px;" *ngIf="task.original.status === 4">check</mat-icon>
                         <mat-icon style="color: #E00000; font-size: 16px; width: 16px; height: 16px;" *ngIf="task.original.status === 3">close</mat-icon>
                         <mat-icon style="color: #707070; font-size: 16px; width: 16px; height: 16px;" svgIcon="icons:task_previous" *ngIf=" task.original.status === 2"></mat-icon>
-                      </div>
-                      <div style="position: absolute; bottom: 0; right: 0; margin: 0 4px">
-                        <button mat-icon-button type="button" (click)="goTaskInfo(task)" *ngIf="task.original.status !== 3 || user.role === 7" matTooltip="Abrir tarea">
-                          <mat-icon>keyboard_arrow_down</mat-icon>
-                        </button>
                       </div>
                     </mat-card-content>
                   </mat-card>
@@ -221,7 +206,7 @@
                 <ng-template #frReportView>
                   <div style="width: 95%">
                     <div style="display: flex; justify-content: flex-end">
-                      <button mat-icon-button *ngIf="user.role === 7" (click)="editFormat()" matTooltip="Editar">
+                      <button mat-icon-button *ngIf="user.role === 7 && reportConfig.status === 4" (click)="editFormat()" matTooltip="Editar">
                         <mat-icon>edit</mat-icon>
                       </button>
                       <button mat-icon-button (click)="goBackList()" matTooltip="Cerrar bitacora">
@@ -233,7 +218,7 @@
                 </ng-template>
                 <ng-template #frList>
                   <div class="card-list" *ngFor="let task of notCalendarTasks;">
-                    <mat-card class="task" (click)="goTaskInfo(task, 7)" style="margin-top: 8px">
+                    <mat-card class="task" matRipple (click)="goTaskInfo(task, 7)" style="margin-top: 8px">
                       <div class="priority" style="background-color:#E00000"></div>
                       <mat-card-content>
                         <div class="date">
@@ -246,11 +231,6 @@
                           <div class="head">Descarga de combustible</div>
                           <div class="text"></div>
                           <div class="text">Crítico</div>
-                        </div>
-                        <div style="position: absolute; bottom: 0; right: 0; margin: 0 4px">
-                          <button mat-icon-button type="button" (click)="goTaskInfo(task, 7)" matTooltip="Abrir tarea">
-                            <mat-icon>keyboard_arrow_down</mat-icon>
-                          </button>
                         </div>
                       </mat-card-content>
                     </mat-card>
@@ -270,7 +250,7 @@
                 <ng-template #incidenceReportView>
                   <div style="width: 95%">
                     <div style="display: flex; justify-content: flex-end">
-                      <button mat-icon-button *ngIf="user.role === 7" (click)="editFormat()" matTooltip="Editar">
+                      <button mat-icon-button *ngIf="user.role === 7 && reportConfig.status === 4" (click)="editFormat()" matTooltip="Editar">
                         <mat-icon>edit</mat-icon>
                       </button>
                       <button mat-icon-button (click)="goBackList()" matTooltip="Cerrar bitacora">
@@ -282,7 +262,7 @@
                 </ng-template>
                 <ng-template #incidenceList>
                   <div class="card-list" *ngFor="let task of notCalendarTasks;">
-                    <mat-card (click)="goTaskInfo(task, 9)" class="task" style="margin-top: 8px">
+                    <mat-card matRipple (click)="goTaskInfo(task, 9)" class="task" style="margin-top: 8px">
                         <div class="priority" style="background-color:#E00000"></div>
                         <mat-card-content>
                           <div class="date">
@@ -295,11 +275,6 @@
                             <div class="head">Incidencia</div>
                             <div class="text"></div>
                             <div class="text">Crítico</div>
-                          </div>
-                          <div style="position: absolute; bottom: 0; right: 0; margin: 0 4px">
-                            <button mat-icon-button type="button" (click)="goTaskInfo(task, 9)" matTooltip="Abrir tarea">
-                              <mat-icon>keyboard_arrow_down</mat-icon>
-                            </button>
                           </div>
                         </mat-card-content>
                       </mat-card>
@@ -319,7 +294,7 @@
                 <ng-template #frReportView>
                   <div style="width: 95%">
                     <div style="display: flex; justify-content: flex-end">
-                      <button mat-icon-button *ngIf="user.role === 7" (click)="editFormat()" matTooltip="Editar">
+                      <button mat-icon-button *ngIf="user.role === 7 && reportConfig.status === 4" (click)="editFormat()" matTooltip="Editar">
                         <mat-icon>edit</mat-icon>
                       </button>
                       <button mat-icon-button (click)="goBackList()" matTooltip="Cerrar bitacora">
@@ -331,7 +306,7 @@
                 </ng-template>
                 <ng-template #frList>
                   <div class="card-list" *ngFor="let task of notCalendarTasks;">
-                    <mat-card (click)="goTaskInfo(task, 6)" class="task" style="margin-top: 8px">
+                    <mat-card matRipple (click)="goTaskInfo(task, 6)" class="task" style="margin-top: 8px">
                       <div class="priority" style="background-color:#E00000"></div>
                       <mat-card-content>
                         <div class="date">
@@ -344,11 +319,6 @@
                           <div class="head">Recolección de residuos peligrosos</div>
                           <div class="text"></div>
                           <div class="text">Crítico</div>
-                        </div>
-                        <div style="position: absolute; bottom: 0; right: 0; margin: 0 4px">
-                          <button mat-icon-button type="button" (click)="goTaskInfo(task, 6)" matTooltip="Abrir tarea">
-                            <mat-icon>keyboard_arrow_down</mat-icon>
-                          </button>
                         </div>
                       </mat-card-content>
                     </mat-card>
@@ -363,6 +333,9 @@
             </mat-tab>
           </mat-tab-group>
         </div>
+        <button matTooltip="Nueva bitacora" *ngIf="others && !reportConfig.reportView" type="button" (click)="addNotCalendarTask()" mat-icon-button style="background-color: #FFAA00; color: #FFFFFF; position: absolute; bottom: 24px; right: 24px; z-index: 4; margin: 16px">
+          <mat-icon>add</mat-icon>
+        </button>
       </ng-template>
     </mat-card-content>
   </mat-card>

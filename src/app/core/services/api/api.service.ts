@@ -538,4 +538,16 @@ export class ApiService implements OnDestroy{
       this._snackBarService.openSnackBar(text, 'OK', (status) ? 2000 : 0);
     });
   }
+
+  public createFRReportAndTask(task: any, stationId: string): Observable<any>{
+    return this._http.post(ApiService.API_URL_COMPLETE + 'createFRReportAndTask?stationId='+stationId+'&type=1', task);
+  }
+
+  public createHWCReportAndTask(task: any, stationId: string): Observable<any>{
+    return this._http.post(ApiService.API_URL_COMPLETE + 'createHWCReportAndTask?stationId='+stationId+'&type=2', task);
+  }
+
+  public createIncidenceReportAndTask(task: any, stationId: string): Observable<any>{
+    return this._http.post(ApiService.API_URL_COMPLETE + 'createIncidenceReportAndTask?stationId='+stationId+'&type=3', task);
+  }
 }

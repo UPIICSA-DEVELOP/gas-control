@@ -91,7 +91,7 @@
                       <input placeholder="Inicio" matInput [disabled]="user.role===6" (time)="changeDate($event,i,true)" appDisableWrite value="{{turn.start | formatTime}}" >
                     </mat-form-field>
                     <mat-form-field class="input-turns">
-                      <input placeholder="Fin" matInput [disabled]="user.role===6" (time)="changeDate($event,i,false)" appDisableWrite value="{{turn.end | formatTime}}">
+                      <input placeholder="Término" matInput [disabled]="user.role===6" (time)="changeDate($event,i,false)" appDisableWrite value="{{turn.end | formatTime}}">
                     </mat-form-field>
                   </div>
                   <div class="button">

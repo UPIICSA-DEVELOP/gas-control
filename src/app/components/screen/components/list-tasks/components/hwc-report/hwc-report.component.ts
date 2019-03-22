@@ -62,6 +62,7 @@ export class HwcReportComponent implements OnInit, OnDestroy {
     private _snackBarService: SnackBarService,
     private _sharedService: SharedService
   ) {
+    this.editable = false;
     this._loads = [false, false];
     this.date = [];
     this.taskItems = [];
@@ -139,6 +140,8 @@ export class HwcReportComponent implements OnInit, OnDestroy {
             this.taskItems = UtilitiesService.sortJSON(response.items, 'folio', 'desc');
             this._indexTask = 0;
             this.patchForm(this.taskItems[0])
+          }else{
+            this.resetElements();
           }
           break;
         default:
@@ -152,6 +155,10 @@ export class HwcReportComponent implements OnInit, OnDestroy {
     this.hwcReport = undefined;
     this.hwcForm.reset();
     this.hwcForm.disable();
+    const user = LocalStorageService.getItem(Constants.UserInSession);
+    if(this.task.status !== 4 && user.role ===7){
+      this.startEditFormat(true);
+    }
   }
 
   public changeTask(ev: any){
@@ -273,18 +280,31 @@ export class HwcReportComponent implements OnInit, OnDestroy {
       unity: value.unity,
       waste: value.waste
     };
+    const station = LocalStorageService.getItem(Constants.StationInDashboard);
     if(this._copyTask){
       this.hwcReport.id = this._copyTask.id;
+      this._api.createTask(this.hwcReport, 6).subscribe(response=>{
+        switch (response.code){
+          case 200:
+            this._sharedService.setNotification({type: SharedTypeNotification.FinishEditTask, value: response.item.station});
+            break;
+          default:
+            console.error(response);
+            break;
+        }
+      });
+    }else{
+      this._api.createHWCReportAndTask(this.hwcReport,station.id).subscribe(response=>{
+        switch (response.code){
+          case 200:
+            this._sharedService.setNotification({type: SharedTypeNotification.FinishEditTask, value: response.item.station});
+            break;
+          default:
+            console.error(response);
+            break;
+        }
+      })
     }
-    this._api.createTask(this.hwcReport, 6).subscribe(response=>{
-      switch (response.code){
-        case 200:
-          this._sharedService.setNotification({type: SharedTypeNotification.FinishEditTask, value: response.item.station});
-          break;
-        default:
-          console.error(response);
-          break;
-      }
-    })
+
   }
 }

@@ -6,7 +6,7 @@
 
 <div id="hwg-report">
   <div class="head-bold">Generación de residuos peligrosos</div>
-  <form [formGroup]="hwgForm" class="flex-box">
+  <form [formGroup]="hwgForm" (ngSubmit)="validateForm(hwgForm.value)" class="flex-box">
     <div class="columns">
       <mat-form-field class="inputs">
         <mat-select formControlName="area" placeholder="Lugar de generación" required>
@@ -33,26 +33,29 @@
       <div class="text-divider">
         Características
       </div>
+      <mat-error *ngIf="error">
+        Debe seleccionar al menos una opción
+      </mat-error>
       <div class="inputs">
         <div class="space-box">
           <div class="checks-row">
-            <mat-checkbox formControlName="corrosive">Corrosivo</mat-checkbox>
+            <mat-checkbox formControlName="corrosive" (change)="changeFeatures($event)">Corrosivo</mat-checkbox>
           </div>
           <div class="checks-row">
-            <mat-checkbox formControlName="reactive">Reactivo</mat-checkbox>
-          </div>
-        </div>
-        <div class="space-box">
-          <div class="checks-row">
-            <mat-checkbox formControlName="explosive">Explosivo</mat-checkbox>
-          </div>
-          <div class="checks-row">
-            <mat-checkbox formControlName="toxic">Tóxico</mat-checkbox>
+            <mat-checkbox formControlName="reactive" (change)="changeFeatures($event)">Reactivo</mat-checkbox>
           </div>
         </div>
         <div class="space-box">
           <div class="checks-row">
-            <mat-checkbox formControlName="flammable">Inflamable</mat-checkbox>
+            <mat-checkbox formControlName="explosive" (change)="changeFeatures($event)">Explosivo</mat-checkbox>
+          </div>
+          <div class="checks-row">
+            <mat-checkbox formControlName="toxic" (change)="changeFeatures($event)">Tóxico</mat-checkbox>
+          </div>
+        </div>
+        <div class="space-box">
+          <div class="checks-row">
+            <mat-checkbox formControlName="flammable" (change)="changeFeatures($event)">Inflamable</mat-checkbox>
           </div>
           <div class="checks-row"></div>
         </div>
@@ -88,5 +91,6 @@
         </mat-error>
       </mat-form-field>
     </div>
+    <button id="hidden-button" type="submit" mat-flat-button [color]="'primary'" style="display: none">FINALIZAR</button>
   </form>
 </div>

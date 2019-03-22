@@ -164,6 +164,10 @@ export class FrReportComponent implements OnInit, OnDestroy {
     this.frReport = undefined;
     this.frForm.reset();
     this.frForm.disable();
+    const user = LocalStorageService.getItem(Constants.UserInSession);
+    if(this.task.status !== 4 && user.role ===7){
+      this.startEditTask(true);
+    }
   }
 
   public changeTask(ev: any){
@@ -249,19 +253,31 @@ export class FrReportComponent implements OnInit, OnDestroy {
       taskId: this._taskId,
       volumetric: value.volumetric
     };
+    const station = LocalStorageService.getItem(Constants.StationInDashboard);
     if (this._copyLastTask){
       this.frReport.id = this._copyLastTask.id;
+      this._api.createTask(this.frReport, 7).subscribe(response=>{
+        switch (response.code){
+          case 200:
+            this._sharedService.setNotification({type: SharedTypeNotification.FinishEditTask, value: response.item.station});
+            break;
+          default:
+            console.error(response);
+            break;
+        }
+      })
+    }else{
+      this._api.createFRReportAndTask(this.frReport,station.id).subscribe(response=>{
+        switch (response.code){
+          case 200:
+            this._sharedService.setNotification({type: SharedTypeNotification.FinishEditTask, value: response.item.station});
+            break;
+          default:
+            console.error(response);
+            break;
+        }
+      })
     }
-    this._api.createTask(this.frReport, 7).subscribe(response=>{
-      switch (response.code){
-        case 200:
-          this._sharedService.setNotification({type: SharedTypeNotification.FinishEditTask, value: response.item.station});
-          break;
-        default:
-          console.error(response);
-          break;
-      }
-    })
   }
 
   private uploadSignature():void{

@@ -53,10 +53,10 @@
     <div class="divider" *ngIf="task.original.hwg"></div>
     <div *ngIf="task.original.hwg" style="width: 100%">
       <div *ngIf="task.original.hwg && scannedReport">
-        <app-hwg-report [taskHwgInfo]="scannedReport.hwgReport || undefined"></app-hwg-report>
+        <app-hwg-report [taskHwgInfo]="hwgData || undefined" (formInformation)="getHWGReportInformation($event)" [validate]="startValidate"></app-hwg-report>
       </div>
       <div *ngIf="task.original.hwg && !scannedReport">
-        <app-hwg-report [taskHwgInfo]="undefined"></app-hwg-report>
+        <app-hwg-report [taskHwgInfo]="undefined" (formInformation)="getHWGReportInformation($event)" [validate]="startValidate"></app-hwg-report>
       </div>
     </div>
     <div class="text-sign">
@@ -91,7 +91,7 @@
     <mat-paginator [pageSize]="1" [length]="taskItems.length" [hidePageSize]="true" (page)="changeTask($event)" ></mat-paginator>
   </div>
   <div *ngIf="editable" class="finish-button">
-    <button mat-flat-button type="submit" (click)="validateElements()" [color]="'primary'" [disabled]="load">
+    <button mat-flat-button type="submit" (click)="task.original.hwg? startValidateForm() : validateElements()" [color]="'primary'" [disabled]="load">
       FINALIZAR
     </button>
   </div>

@@ -6,7 +6,7 @@
 
 import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {CompressorReport} from '@app/core/interfaces/interfaces';
+import {CompressorReport, HWGReport} from '@app/core/interfaces/interfaces';
 import {ApiLoaderService} from '@app/core/services/api/api-loader.service';
 import {ApiService} from '@app/core/services/api/api.service';
 import {UtilitiesService} from '@app/core/utilities/utilities.service';
@@ -45,6 +45,8 @@ export class CompressorReportComponent implements OnInit, OnDestroy {
   public signatureThumbnail: string;
   public evidenceThumbnail: string;
   public error: boolean;
+  public startValidate: boolean;
+  public hwgData: HWGReport;
   private _indexTask: number;
   private _signature: FormData;
   private _evidence: FormData;
@@ -54,6 +56,7 @@ export class CompressorReportComponent implements OnInit, OnDestroy {
   private _evidenceElement: any;
   private _signatureElement: any;
   private _copyTask: CompressorReport;
+  private _hwgElement: HWGReport;
   constructor(
     private _api: ApiService,
     private _apiLoader: ApiLoaderService,
@@ -64,6 +67,7 @@ export class CompressorReportComponent implements OnInit, OnDestroy {
     private _uploadFile: UploadFileService,
     private _signatureService: SignaturePadService,
   ) {
+    this.startValidate = false;
     this.error = false;
     this._loads = [false, false];
     this.date = [];
@@ -155,6 +159,11 @@ export class CompressorReportComponent implements OnInit, OnDestroy {
       modifications: this.compressorReport.modifications,
       observations: this.compressorReport.observations
     });
+    if(this.compressorReport.hwgReport){
+     this.hwgData = this.compressorReport.hwgReport;
+    }else{
+      this.hwgData = undefined
+    }
     this.date = UtilitiesService.convertDate(this.compressorReport.date);
     this.compForm.disable();
   }
@@ -209,6 +218,9 @@ export class CompressorReportComponent implements OnInit, OnDestroy {
         this.evidenceThumbnail = this.compressorReport.fileCS.thumbnail;
         this._evidenceElement = this.compressorReport.fileCS;
       }
+      if(this.compressorReport.hwgReport){
+        this.hwgData = this.compressorReport.hwgReport;
+      }
       this.compressorReport.signature = undefined;
       this.compressorReport.folio = undefined;
       this.compressorReport.name = user.completeName;
@@ -257,10 +269,20 @@ export class CompressorReportComponent implements OnInit, OnDestroy {
 
 
   public validateForm(value: any): void {
+    let error = false;
     if (this.task.original.evidence && (!this._evidence && !this.compressorReport.fileCS)) {
       this.error = true;
     }
-    if (this.compForm.invalid || this.error) {
+    if(this.task.original.hwg){
+      if(!this._hwgElement.area ||
+        !this._hwgElement.waste ||
+        !this._hwgElement.quantity ||
+        !this._hwgElement.unity ||
+        !this._hwgElement.temporaryStorage){
+        error = true;
+      }
+    }
+    if (this.compForm.invalid || this.error || error) {
       this._snackBarService.openSnackBar('Por favor, complete los campos','OK',3000);
       return;
     }
@@ -319,6 +341,7 @@ export class CompressorReportComponent implements OnInit, OnDestroy {
       date: date.timeStamp,
       endTime: value.endTime,
       fileCS: this._evidenceElement,
+      hwgReport : undefined,
       modifications: value.modifications,
       model: value.model,
       name: this.name,
@@ -334,7 +357,7 @@ export class CompressorReportComponent implements OnInit, OnDestroy {
       this.compressorReport.id = this._copyTask.id
     }
     if(this.task.original.hwg){
-      this.compressorReport.hwgReport = this._copyTask ? this._copyTask.hwgReport : undefined;
+      this.compressorReport.hwgReport = this._hwgElement
     }
     this._api.createTask(this.compressorReport, 2).subscribe(response=>{
       switch (response.code){
@@ -346,6 +369,42 @@ export class CompressorReportComponent implements OnInit, OnDestroy {
           break;
       }
     });
+  }
+
+  public getHWGReportInformation(ev: any): void {
+    if(ev.valid){
+      this._hwgElement = {
+        area: ev.value.area,
+        corrosive: ev.value.corrosive,
+        explosive: ev.value.explosive,
+        flammable: ev.value.flammable,
+        reactive: ev.value.reactive,
+        quantity: ev.value.quantity,
+        temporaryStorage: ev.value.temporaryStorage,
+        toxic: ev.value.toxic,
+        unity: ev.value.unity,
+        waste: ev.value.waste
+      };
+    }else{
+      this._hwgElement = {
+        area: undefined,
+        corrosive: false,
+        explosive: false,
+        flammable: false,
+        reactive: false,
+        quantity: undefined,
+        temporaryStorage: undefined,
+        toxic: false,
+        unity: undefined,
+        waste: undefined
+      };
+    }
+    this.startValidate = false;
+    this.validateForm(this.compForm.value);
+  }
+
+  public startValidateForm():void{
+    this.startValidate = true;
   }
 
 }

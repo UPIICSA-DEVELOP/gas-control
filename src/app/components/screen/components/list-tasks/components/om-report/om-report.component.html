@@ -15,7 +15,7 @@
       <div *ngIf="omReport && omReport.folio">Folio: {{omReport.folio | formatFolio}}</div>
     </div>
   </div>
-  <form [formGroup]="omForm" (ngSubmit)="validateForm(omForm.value)">
+  <form [formGroup]="omForm" (ngSubmit)="task.original.hwg ? startValidateForm() : validateForm(omForm.value)">
     <div class="flex-box">
       <div class="columns">
         <div class="times">
@@ -286,10 +286,10 @@
     </div>
     <div class="divider" *ngIf="task.original.hwg"></div>
     <div *ngIf="task.original.hwg && omReport">
-      <app-hwg-report [taskHwgInfo]="omReport.hwgReport || undefined"></app-hwg-report>
+      <app-hwg-report [taskHwgInfo]="hwgData || undefined" [validate]="startValidate" (formInformation)="getHWGReportInformation($event)"></app-hwg-report>
     </div>
     <div *ngIf="task.original.hwg && !omReport">
-      <app-hwg-report [taskHwgInfo]="undefined"></app-hwg-report>
+      <app-hwg-report [taskHwgInfo]="undefined" [validate]="startValidate" (formInformation)="getHWGReportInformation($event)"></app-hwg-report>
     </div>
     <div *ngIf="taskItems && taskItems.length !== 0 && !editable">
       <mat-paginator [pageSize]="1" [length]="taskItems.length" [hidePageSize]="true" (page)="changeTask($event)" ></mat-paginator>
