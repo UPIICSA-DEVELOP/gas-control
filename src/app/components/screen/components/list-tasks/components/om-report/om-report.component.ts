@@ -7,7 +7,7 @@
 import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {ApiService} from '@app/core/services/api/api.service';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {OMReport} from '@app/core/interfaces/interfaces';
+import {HWGReport, OMReport} from '@app/core/interfaces/interfaces';
 import {UtilitiesService} from '@app/core/utilities/utilities.service';
 import {ImageVisorService} from '@app/core/components/image-visor/image-visor.service';
 import {SnackBarService} from '@app/core/services/snackbar/snackbar.service';
@@ -58,6 +58,8 @@ export class OmReportComponent implements OnInit, OnDestroy {
   public evidenceThumbnail: string;
   public name: string;
   public load: boolean;
+  public startValidate: boolean;
+  public hwgData: HWGReport;
   private _signatureElement: any;
   private _signature: FormData;
   private _evidenceElement: any;
@@ -66,6 +68,7 @@ export class OmReportComponent implements OnInit, OnDestroy {
   private _copyLastTask: OMReport;
   private _subscriptionShared: Subscription;
   private _subscriptionLoader: Subscription;
+  private _hwgElement: HWGReport;
   constructor(
     private _api: ApiService,
     private _apiLoader: ApiLoaderService,
@@ -77,6 +80,7 @@ export class OmReportComponent implements OnInit, OnDestroy {
     private _proceduresService: ModalProceduresService,
     private _uploadFile: UploadFileService
   ) {
+    this.startValidate = false;
     this._loads = [false,false];
     this.errors = [false, false, false];
     this.date = [];
@@ -182,6 +186,11 @@ export class OmReportComponent implements OnInit, OnDestroy {
       description: this.omReport.description,
       observations: this.omReport.observations
     });
+    if(this.omReport.hwgReport){
+      this.hwgData = this.omReport.hwgReport;
+    }else{
+      this.hwgData = undefined
+    }
     this.date = UtilitiesService.convertDate(this.omReport.date);
     this.omForm.disable();
   }
@@ -238,7 +247,7 @@ export class OmReportComponent implements OnInit, OnDestroy {
     this.date = UtilitiesService.convertDate(today.timeStamp);
     this.editable = true;
     this.name = user.completeName;
-    //this._sharedService.setNotification({type: SharedTypeNotification.HwgActive, value: isNewLoad ? isNewLoad : false});
+    this._sharedService.setNotification({type: SharedTypeNotification.HwgActive, value: isNewLoad ? isNewLoad : false});
     if(!isNewLoad){
       this._copyLastTask = this.omReport;
       this.procedures = this.omReport.procedures || [];
@@ -246,6 +255,9 @@ export class OmReportComponent implements OnInit, OnDestroy {
       if (this.omReport.fileCS){
         this._evidenceElement = this.omReport.fileCS;
         this.evidenceThumbnail = this.omReport.fileCS.thumbnail;
+      }
+      if(this.omReport.hwgReport){
+        this.hwgData = this.omReport.hwgReport;
       }
       this.omReport.date = undefined;
       this.omReport.signature = undefined;
@@ -327,6 +339,7 @@ export class OmReportComponent implements OnInit, OnDestroy {
 
 
   public validateForm(value: any): void {
+    let error = false;
     if (this.personnelNames.length === 0) {
       this.errors[0] = true;
     }
@@ -343,7 +356,16 @@ export class OmReportComponent implements OnInit, OnDestroy {
     if (this.task.original.evidence && !this.evidenceThumbnail) {
       this.errors[2] = true;
     }
-    if(this.errors[0] || this.errors[1] || this.errors[2] || this.omForm.invalid){
+    if(this.task.original.hwg){
+      if(!this._hwgElement.area ||
+        !this._hwgElement.waste ||
+        !this._hwgElement.quantity ||
+        !this._hwgElement.unity ||
+        !this._hwgElement.temporaryStorage){
+        error = true;
+      }
+    }
+    if(this.errors[0] || this.errors[1] || this.errors[2] || this.omForm.invalid || error){
       this._snackBarService.openSnackBar('Por favor, complete los campos','OK',3000);
       return;
     }
@@ -376,6 +398,7 @@ export class OmReportComponent implements OnInit, OnDestroy {
       gloves: value.gloves,
       goggles: value.goggles,
       helmet: value.helmet,
+      hwgReport: undefined,
       industrialShoes: value.industrialShoes,
       kneepads: value.kneepads,
       maintenanceType: value.maintenanceType,
@@ -394,7 +417,7 @@ export class OmReportComponent implements OnInit, OnDestroy {
       this.omReport.id = this._copyLastTask.id;
     }
     if (this.task.original.hwg){
-      this.omReport.hwgReport = this._copyLastTask?this._copyLastTask.hwgReport : undefined;
+      this.omReport.hwgReport = this._hwgElement;
     }
     this._api.createTask(this.omReport, 1).subscribe(response=>{
       switch (response.code){
@@ -441,6 +464,42 @@ export class OmReportComponent implements OnInit, OnDestroy {
 
   public changeEquipment(ev: any){
     this.errors[1] = false;
+  }
+
+  public getHWGReportInformation(ev: any): void {
+    if(ev.valid){
+      this._hwgElement = {
+        area: ev.value.area,
+        corrosive: ev.value.corrosive,
+        explosive: ev.value.explosive,
+        flammable: ev.value.flammable,
+        reactive: ev.value.reactive,
+        quantity: ev.value.quantity,
+        temporaryStorage: ev.value.temporaryStorage,
+        toxic: ev.value.toxic,
+        unity: ev.value.unity,
+        waste: ev.value.waste
+      };
+    }else{
+      this._hwgElement = {
+        area: undefined,
+        corrosive: false,
+        explosive: false,
+        flammable: false,
+        reactive: false,
+        quantity: undefined,
+        temporaryStorage: undefined,
+        toxic: false,
+        unity: undefined,
+        waste: undefined
+      };
+    }
+    this.startValidate = false;
+    this.validateForm(this.omForm.value);
+  }
+
+  public startValidateForm():void{
+    this.startValidate = true;
   }
 
 }

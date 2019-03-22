@@ -5,7 +5,7 @@
  */
 
 import {Component, Input, OnDestroy, OnInit} from '@angular/core';
-import {ScannedReport} from '@app/core/interfaces/interfaces';
+import {HWGReport, ScannedReport} from '@app/core/interfaces/interfaces';
 import {ApiService} from '@app/core/services/api/api.service';
 import {ApiLoaderService} from '@app/core/services/api/api-loader.service';
 import {UtilitiesService} from '@app/core/utilities/utilities.service';
@@ -45,12 +45,15 @@ export class ScannedReportComponent implements OnInit, OnDestroy {
   private _signature: FormData;
   private _evidenceElement: any;
   public file: boolean;
+  public startValidate: boolean;
+  public hwgData: HWGReport;
   private _evidence: FormData;
   private _loads: boolean[];
   private _indexTask: number;
   private _subscriptionLoader: Subscription;
   private _subscriptionShared: Subscription;
   private _copyTasks: ScannedReport;
+  private _hwgElement: HWGReport;
   constructor(
     private _api: ApiService,
     private _apiLoader: ApiLoaderService,
@@ -59,6 +62,7 @@ export class ScannedReportComponent implements OnInit, OnDestroy {
     private _sharedService: SharedService,
     private _snackBarService: SnackBarService
   ) {
+    this.startValidate = false;
     this.date = [];
     this._indexTask = 0;
     this.taskItems = [];
@@ -98,11 +102,15 @@ export class ScannedReportComponent implements OnInit, OnDestroy {
     this.date = UtilitiesService.convertDate(today.timeStamp);
     this.editable = true;
     this.name = user.completeName;
+    this._sharedService.setNotification({type: SharedTypeNotification.HwgActive, value: isNewLoad ? isNewLoad : false});
     if(!isNewLoad){
       this._copyTasks = this.scannedReport;
       if(this.scannedReport.fileCS){
         this.file = true;
         this._evidenceElement = this.scannedReport.fileCS;
+      }
+      if(this.scannedReport.hwgReport){
+        this.hwgData = this.scannedReport.hwgReport;
       }
       this.scannedReport.date = undefined;
       this.scannedReport.signature = undefined;
@@ -121,6 +129,11 @@ export class ScannedReportComponent implements OnInit, OnDestroy {
       signature: task.signature || undefined,
       taskId: task.taskId || undefined
     };
+    if(this.scannedReport.hwgReport){
+      this.hwgData = this.scannedReport.hwgReport;
+    }else{
+      this.hwgData = undefined
+    }
     this.date = UtilitiesService.convertDate(this.scannedReport.date);
   }
 
@@ -183,10 +196,20 @@ export class ScannedReportComponent implements OnInit, OnDestroy {
   }
 
   public validateElements():void{
+    let error = false;
+    if(this.task.original.hwg){
+      if(!this._hwgElement.area ||
+        !this._hwgElement.waste ||
+        !this._hwgElement.quantity ||
+        !this._hwgElement.unity ||
+        !this._hwgElement.temporaryStorage){
+        error = true;
+      }
+    }
     if(!this.file){
       this.error = true;
     }
-    if(this.error){
+    if(this.error || error){
       this._snackBarService.openSnackBar('Por favor, complete los campos','OK',3000);
       return;
     }
@@ -211,6 +234,7 @@ export class ScannedReportComponent implements OnInit, OnDestroy {
     this.scannedReport = {
       date: date.timeStamp,
       fileCS: this._evidenceElement,
+      hwgReport: undefined,
       name: this.name,
       signature: this._signatureElement,
       taskId: this._taskId,
@@ -219,7 +243,7 @@ export class ScannedReportComponent implements OnInit, OnDestroy {
       this.scannedReport.id = this._copyTasks.id;
     }
     if(this.task.original.hwg){
-      this.scannedReport.hwgReport = this._copyTasks ? this._copyTasks.hwgReport : undefined;
+      this.scannedReport.hwgReport = this._hwgElement;
     }
     this._api.createTask(this.scannedReport, 5).subscribe(response=>{
       switch (response.code){
@@ -262,5 +286,41 @@ export class ScannedReportComponent implements OnInit, OnDestroy {
       default:
         break;
     }
+  }
+
+  public getHWGReportInformation(ev: any): void {
+    if(ev.valid){
+      this._hwgElement = {
+        area: ev.value.area,
+        corrosive: ev.value.corrosive,
+        explosive: ev.value.explosive,
+        flammable: ev.value.flammable,
+        reactive: ev.value.reactive,
+        quantity: ev.value.quantity,
+        temporaryStorage: ev.value.temporaryStorage,
+        toxic: ev.value.toxic,
+        unity: ev.value.unity,
+        waste: ev.value.waste
+      };
+    }else{
+      this._hwgElement = {
+        area: undefined,
+        corrosive: false,
+        explosive: false,
+        flammable: false,
+        reactive: false,
+        quantity: undefined,
+        temporaryStorage: undefined,
+        toxic: false,
+        unity: undefined,
+        waste: undefined
+      };
+    }
+    this.startValidate = false;
+    this.validateElements();
+  }
+
+  public startValidateForm():void{
+    this.startValidate = true;
   }
 }

@@ -4,18 +4,19 @@
  *  Proprietary and confidential
  */
 
-import {Component, Input, OnInit} from '@angular/core';
-import {ApiService} from '@app/core/services/api/api.service';
-import {ApiLoaderService} from '@app/core/services/api/api-loader.service';
+import {Component, EventEmitter, Inject, Input, OnDestroy, OnInit, Output} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {HWGReport} from '@app/core/interfaces/interfaces';
+import {Subscription} from 'rxjs/Rx';
+import {SharedService, SharedTypeNotification} from '@app/core/services/shared/shared.service';
+import {DOCUMENT} from '@angular/common';
 
 @Component({
   selector: 'app-hwg-report',
   templateUrl: './hwg-report.component.html',
   styleUrls: ['./hwg-report.component.scss']
 })
-export class HwgReportComponent implements OnInit {
+export class HwgReportComponent implements OnInit, OnDestroy {
   public task: any;
   @Input() set taskHwgInfo(taskObj: any){
     if(taskObj){
@@ -27,28 +28,56 @@ export class HwgReportComponent implements OnInit {
       this.resetElements();
     }
   }
+  @Input() set validate(ban: boolean){
+    if(ban){
+      this._document.getElementById('hidden-button').click();
+    }
+  }
+  @Output() formInformation: EventEmitter<any>;
   public load: boolean;
   public hwgReport: HWGReport;
   public hwgForm: FormGroup;
+  public error: boolean;
+  public editable: boolean;
+  private _subscriptionShared: Subscription;
+  private _copyTask: HWGReport;
   constructor(
-    private _api: ApiService,
-    private _apiLoader: ApiLoaderService,
-    private _formBuilder: FormBuilder
-  ) { }
+    @Inject(DOCUMENT) private _document: Document,
+    private _formBuilder: FormBuilder,
+    private _sharedService: SharedService
+  ) {
+    this.formInformation = new EventEmitter<any>();
+    this.editable = false;
+    this.error = false;
+  }
 
   ngOnInit() {
-    this._apiLoader.getProgress().subscribe(load=>{this.load = load});
+    this.getNotifications();
+  }
+
+  ngOnDestroy():void{
+    this._subscriptionShared.unsubscribe();
+  }
+
+  private getNotifications():void{
+    this._subscriptionShared = this._sharedService.getNotifications().subscribe(response=>{
+      switch (response.type){
+        case SharedTypeNotification.HwgActive:
+          this.startEditComplementReport(response.value);
+          break;
+      }
+    })
   }
 
   private initHwgForm():void{
     this.hwgForm = this._formBuilder.group({
       area: ['', [Validators.required]],
       waste: ['', [Validators.required]],
-      corrosive: ['', []],
-      reactive: ['', []],
-      explosive: ['', []],
-      toxic: ['', []],
-      flammable: ['', []],
+      corrosive: [false, []],
+      reactive: [false, []],
+      explosive: [false, []],
+      toxic: [false, []],
+      flammable: [false, []],
       quantity: ['', [Validators.required]],
       unity: ['', [Validators.required]],
       temporaryStorage: ['', [Validators.required]]
@@ -96,6 +125,29 @@ export class HwgReportComponent implements OnInit {
     }else{
       this.resetElements();
     }
+  }
+
+  private startEditComplementReport(isNewLoad: boolean):void{
+    this.editable = true;
+    if(!isNewLoad){
+      this._copyTask = this.hwgReport
+    }
+    this.hwgForm.enable();
+  }
+
+  public validateForm(value: any): void{
+    if(!value.corrosive && !value.reactive && !value.explosive && !value.toxic && !value.flammable){
+      this.error = true;
+    }
+    if(this.error || this.hwgForm.invalid){
+      this.formInformation.emit({valid: false, value: undefined});
+    }else{
+      this.formInformation.emit({valid: true, value: value});
+    }
+  }
+
+  public changeFeatures(ev: any):void{
+    this.error = false;
   }
 
 }
