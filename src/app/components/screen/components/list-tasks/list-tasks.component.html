@@ -200,7 +200,7 @@
         <div class="sub-container" (scroll)="onScroll($event)" #modalScroll>
           <mat-tab-group (selectedTabChange)="getNotCalendarTask($event)" style="width: 100%">
             <mat-tab [disabled]="reportConfig.reportView" label="Recepción y descarga de combustible">
-              <div *ngIf="notCalendarTasks.length !== 0; then listFR else emptyFR"></div>
+              <div *ngIf="notCalendarTasks.length !== 0 || reportConfig.reportView; then listFR else emptyFR"></div>
               <ng-template #listFR>
                 <div *ngIf="reportConfig.reportView; then frReportView else frList"></div>
                 <ng-template #frReportView>
@@ -244,7 +244,7 @@
               </ng-template>
             </mat-tab>
             <mat-tab [disabled]="reportConfig.reportView" label="Incidencias">
-              <div *ngIf="notCalendarTasks.length !== 0; then listIN else emptyIN"></div>
+              <div *ngIf="notCalendarTasks.length !== 0 || reportConfig.reportView; then listIN else emptyIN"></div>
               <ng-template #listIN>
                 <div *ngIf="reportConfig.reportView; then incidenceReportView else incidenceList"></div>
                 <ng-template #incidenceReportView>
@@ -288,7 +288,7 @@
               </ng-template>
             </mat-tab>
             <mat-tab [disabled]="reportConfig.reportView" label="Recolección de residuos peligrosos">
-              <div *ngIf="notCalendarTasks.length !== 0; then listHWC else emptyHWC"></div>
+              <div *ngIf="notCalendarTasks.length !== 0 || reportConfig.reportView; then listHWC else emptyHWC"></div>
               <ng-template #listHWC>
                 <div *ngIf="reportConfig.reportView; then frReportView else frList"></div>
                 <ng-template #frReportView>
