@@ -412,7 +412,7 @@ export class ListTasksComponent implements OnInit, DoCheck , OnDestroy{
   public onScroll(event: any):void{
     const element = event.srcElement;
     if(element.scrollHeight - element.scrollTop === element.clientHeight) {
-      if(!this.load && !this.reportConfig.reportView){
+      if(!this.reportConfig.reportView){
         if(this.others){
           this.getNotCalendarTask();
         }else{
@@ -420,6 +420,26 @@ export class ListTasksComponent implements OnInit, DoCheck , OnDestroy{
         }
       }
     }
+  }
+
+  public addNotCalendarTask():void{
+    let type: number;
+    let type_two: number;
+    switch (this._lastTabSelected){
+      case 0: type = 1; type_two = 7;
+        break;
+      case 1: type = 3; type_two = 9;
+        break;
+      case 2: type = 2; type_two = 6;
+        break;
+    }
+    this.reportConfig = {
+      reportView: true,
+      status: 1,
+      taskElement: {id: 0, status: 1, item: this.utils.uTaskTemplates[type-1], hwg: false},
+      typeReportView: type_two
+    };
+    this._modalScroll.nativeElement.scroll({top: 0});
   }
 
   public editFormat(): void{
