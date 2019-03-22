@@ -208,6 +208,7 @@ export class HwcReportComponent implements OnInit, OnDestroy {
     this._file.append('path','Taks-'+this._taskId);
     this._file.append('fileName', 'manifest-'+this._taskId+new Date().getTime()+'.pdf');
     this._file.append('file', ev.file);
+    this.error = false;
   }
 
 
