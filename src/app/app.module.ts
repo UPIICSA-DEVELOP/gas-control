@@ -66,6 +66,7 @@ import { FeReportComponent } from './components/screen/components/list-tasks/com
 import { IncidenceReportComponent } from './components/screen/components/list-tasks/components/incidence-report/incidence-report.component';
 import { CompressorReportComponent } from './components/screen/components/list-tasks/components/compressor-report/compressor-report.component';
 import {HandlerErrorInterceptor} from '@app/app.handler-error.interceptor';
+import { SgmComponent } from './components/screen/components/sgm/sgm.component';
 
 @NgModule({
   declarations: [
@@ -112,7 +113,8 @@ import {HandlerErrorInterceptor} from '@app/app.handler-error.interceptor';
     FrReportComponent,
     FeReportComponent,
     IncidenceReportComponent,
-    CompressorReportComponent
+    CompressorReportComponent,
+    SgmComponent
   ],
   imports: [
     CoreModule,
@@ -147,6 +149,7 @@ import {HandlerErrorInterceptor} from '@app/app.handler-error.interceptor';
     AddConsultancyComponent,
     ModalProceduresComponent,
     SasisopaComponent,
+    SgmComponent,
     TaskFilterNameComponent
   ],
   providers: [

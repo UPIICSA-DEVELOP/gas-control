@@ -1,0 +1,68 @@
+/*!
+ *  Copyright (C) MapLander S de R.L de C.V - All Rights Reserved
+ *  Unauthorized copying of this file, via any medium is strictly prohibited
+ *  Proprietary and confidential
+ */
+
+#sgm{
+  height: 100%;
+  mat-dialog-content{
+    height: 100%;
+    margin: 0;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+    padding: 8px 0;
+    position: relative;
+    .close{
+      position: absolute;
+      top: 0;
+      left: 0;
+      margin: 16px;
+    }
+    .header{
+      display: flex;
+      flex-direction: column;
+      margin: 24px 0;
+      align-items: center;
+    }
+    .sasisopa-logo{
+      width: 28px;
+      height: 28px;
+    }
+    .sgm-logo{
+      height: 28px;
+    }
+    .text{
+      margin-top: 20px;
+    }
+    mat-divider{
+      width: 85%;
+      margin: auto;
+    }
+    .features{
+      flex-direction: column;
+      display: flex;
+      text-align: center;
+      margin-top: 32px;
+      @media screen and (max-width: 600px){
+        margin-top: 16px;
+      }
+      .text-one{
+        font-size: 24px;
+        font-weight: 600;
+        color: #707070
+      }
+      .text-two{
+        font-size: 20px;
+        font-weight: 600;
+        color: #707070
+      }
+      .clock{
+        width: 25%;
+        margin: 36px auto;
+      }
+    }
+  }
+}
