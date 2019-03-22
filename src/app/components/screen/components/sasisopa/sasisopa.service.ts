@@ -15,7 +15,7 @@ export class SasisopaService {
     private _matDialog: MatDialog
   ) { }
 
-  public open(isSasisopa: boolean):MatDialogRef<SasisopaComponent>{
-    return this._matDialog.open(SasisopaComponent,{panelClass: 'sgm-and-sasisopa-panel', disableClose: true, data: isSasisopa || null});
+  public open():MatDialogRef<SasisopaComponent>{
+    return this._matDialog.open(SasisopaComponent,{panelClass: 'sgm-and-sasisopa-panel', disableClose: true});
   }
 }

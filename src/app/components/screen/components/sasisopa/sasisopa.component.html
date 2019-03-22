@@ -5,23 +5,21 @@
   -->
 
 <div id="sasisopa">
- <mat-dialog-content>
-   <div class="close">
-     <button mat-icon-button (click)="close()">
-       <mat-icon>arrow_back</mat-icon>
-     </button>
-   </div>
-   <div class="header">
-     <img class="sasisopa-logo" *ngIf="isSasisopa" src="../../../../assets/image/ssp_2.png">
-     <img class="sgm-logo" *ngIf="!isSasisopa" src="../../../../assets/image/sgm_gray.png">
-     <div class="text" *ngIf="!isSasisopa">Sistema de Gestión de Mediciones</div>
-     <div class="text" *ngIf="isSasisopa">SASISOPA</div>
-   </div>
-   <mat-divider></mat-divider>
-   <div class="features">
-     <div class="text-one">Muy pronto</div>
-     <div class="text-two">podrá acceder a nuevas funciones</div>
-    <img class="clock" src="../../../../assets/image/timer.png">
-   </div>
- </mat-dialog-content>
+  <mat-dialog-content>
+    <div class="close">
+      <button mat-icon-button (click)="close()">
+        <mat-icon>arrow_back</mat-icon>
+      </button>
+    </div>
+    <div class="header">
+      <img class="sasisopa-logo" src="../../../../assets/image/ssp_2.png">
+      <div class="text">SASISOPA</div>
+    </div>
+    <mat-divider></mat-divider>
+    <div class="features">
+      <div class="text-one">Muy pronto</div>
+      <div class="text-two">podrá acceder a nuevas funciones</div>
+      <img class="clock" src="../../../../assets/image/timer.png">
+    </div>
+  </mat-dialog-content>
 </div>
