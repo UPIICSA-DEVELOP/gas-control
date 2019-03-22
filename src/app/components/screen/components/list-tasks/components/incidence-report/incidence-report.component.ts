@@ -182,6 +182,10 @@ export class IncidenceReportComponent implements OnInit, OnDestroy {
     this.incidenceReport = undefined;
     this.incidenceForm.reset();
     this.incidenceForm.disable();
+    const user = LocalStorageService.getItem(Constants.UserInSession);
+    if(this.task.status !== 4 && user.role ===7){
+      this.startEditFormat(true);
+    }
   }
 
   public changeTask(ev: any){
@@ -319,19 +323,32 @@ export class IncidenceReportComponent implements OnInit, OnDestroy {
       taskId: this._taskId,
       time: value.time
     };
+    const station = LocalStorageService.getItem(Constants.StationInDashboard);
     if(this._copyTask){
       this.incidenceReport.id = this._copyTask.id;
+      this._api.createTask(this.incidenceReport, 9).subscribe(response=>{
+        switch (response.code){
+          case 200:
+            this._sharedService.setNotification({type: SharedTypeNotification.FinishEditTask, value: response.item.station});
+            break;
+          default:
+            console.error(response);
+            break;
+        }
+      })
+    }else{
+      this._api.createIncidenceReportAndTask(this.incidenceReport, station.id).subscribe(response=>{
+        switch (response.code){
+          case 200:
+            this._sharedService.setNotification({type: SharedTypeNotification.FinishEditTask, value: response.item.station});
+            break;
+          default:
+            console.error(response);
+            break;
+        }
+      })
     }
-    this._api.createTask(this.incidenceReport, 9).subscribe(response=>{
-      switch (response.code){
-        case 200:
-          this._sharedService.setNotification({type: SharedTypeNotification.FinishEditTask, value: response.item.station});
-          break;
-        default:
-          console.error(response);
-          break;
-      }
-    })
+
   }
 
 }
