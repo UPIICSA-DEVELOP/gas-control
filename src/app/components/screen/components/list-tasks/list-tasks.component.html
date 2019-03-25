@@ -187,7 +187,7 @@
                 </ng-template>
                 <ng-template #notTask>
                   <div class="message">Para continuar, es necesario calendarizar las tareas faltantes de la Estación</div>
-                  <div class="action">
+                  <div class="action" *ngIf="user.role !== 7">
                     <button mat-flat-button type="button" (click)="createStationTasks()">IR A TAREAS</button>
                   </div>
                 </ng-template>
