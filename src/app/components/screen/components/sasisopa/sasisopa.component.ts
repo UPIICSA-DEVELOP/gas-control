@@ -14,16 +14,12 @@ import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
 })
 export class SasisopaComponent implements OnInit {
 
-  public isSasisopa: boolean;
   constructor(
-    @Inject(MAT_DIALOG_DATA) private _data: boolean,
     private _matDialogRef: MatDialogRef<SasisopaComponent>
   ) { }
 
   ngOnInit() {
-    if(this._data){
-      this.isSasisopa = this._data;
-    }
+
   }
 
   public close():void{

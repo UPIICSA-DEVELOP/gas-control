@@ -46,6 +46,7 @@ import {SasisopaService} from '@app/components/screen/components/sasisopa/sasiso
 import {TaskFilterNameService} from '@app/components/screen/components/task-filter-name/task-filter-name.service';
 import {ImageVisorService} from '@app/core/components/image-visor/image-visor.service';
 import {ImageVisorComponent} from '@app/core/components/image-visor/image-visor.component';
+import {SgmService} from '@app/components/screen/components/sgm/sgm.service';
 
 @NgModule({
   imports: [
@@ -123,6 +124,7 @@ import {ImageVisorComponent} from '@app/core/components/image-visor/image-visor.
     ModalProceduresService,
     TimePickerService,
     SasisopaService,
+    SgmService,
     TaskFilterNameService,
     ImageVisorService
   ]
