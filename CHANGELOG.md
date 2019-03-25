@@ -2,6 +2,26 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="1.0.0-beta.7"></a>
+# [1.0.0-beta.7](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/compare/v1.0.0-beta.6...v1.0.0-beta.7) (2019-03-25)
+
+
+### Bug Fixes
+
+* **HWC-Report:** solve error in file load ([47b20b8](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/47b20b8))
+* **list-tasks components:** change validation to see report ([57458b6](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/57458b6))
+* **Not Calendar Reports:** modify get station ID ([49df73a](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/49df73a))
+* **SASISOPA modal:** change design to modal ([7eeb2b3](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/7eeb2b3))
+* **Screen component:** modify methods to open modals ([a46945f](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/a46945f))
+* Set whatsapp attribute ([4e73bcc](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/4e73bcc))
+
+
+### Features
+
+* **SGM modal:** add sgm component ([a30fe00](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/a30fe00))
+
+
+
 <a name="1.0.0-beta.6"></a>
 # [1.0.0-beta.6](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/compare/v1.0.0-beta.5...v1.0.0-beta.6) (2019-03-22)
 
