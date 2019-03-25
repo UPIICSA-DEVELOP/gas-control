@@ -187,7 +187,7 @@
                 </ng-template>
                 <ng-template #notTask>
                   <div class="message">Para continuar, es necesario calendarizar las tareas faltantes de la Estación</div>
-                  <div class="action" *ngIf="user.role !== 7">
+                  <div class="action">
                     <button mat-flat-button type="button" (click)="createStationTasks()">IR A TAREAS</button>
                   </div>
                 </ng-template>
@@ -333,7 +333,7 @@
             </mat-tab>
           </mat-tab-group>
         </div>
-        <button matTooltip="Nueva bitacora" *ngIf="others && !reportConfig.reportView" type="button" (click)="addNotCalendarTask()" mat-icon-button style="background-color: #FFAA00; color: #FFFFFF; position: absolute; bottom: 24px; right: 24px; z-index: 4; margin: 16px">
+        <button matTooltip="Nueva bitacora" *ngIf="others && !reportConfig.reportView && user.role === 7" type="button" (click)="addNotCalendarTask()" mat-icon-button style="background-color: #FFAA00; color: #FFFFFF; position: absolute; bottom: 24px; right: 24px; z-index: 4; margin: 16px">
           <mat-icon>add</mat-icon>
         </button>
       </ng-template>
