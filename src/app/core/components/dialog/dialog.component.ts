@@ -10,7 +10,6 @@ import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 import {TypeDialog} from '../../enums/type-dialog';
 import {AbstractControl, FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {ConfigDialog} from '@app/core/components/dialog/dialog.service';
-import {Constants} from '@app/core/constants.core';
 
 export function ValidatePasswords(ac: AbstractControl) {
   let password = ac.get('password').value;

@@ -5,39 +5,22 @@
  */
 
 import {Injectable} from '@angular/core';
-import {ActivatedRouteSnapshot, Resolve, Router, RouterStateSnapshot} from '@angular/router';
+import {ActivatedRouteSnapshot, Resolve, RouterStateSnapshot} from '@angular/router';
 import {ApiService} from '@app/core/services/api/api.service';
-import {SessionStorageService} from '@app/core/services/session-storage/session-storage.service';
-import {Constants} from '@app/core/constants.core';
-import {LocalStorageService} from '@app/core/services/local-storage/local-storage.service';
-import {CookieService, MaxAge} from '@app/core/services/cookie/cookie.service';
-import {AuthService} from '@app/core/services/auth/auth.service';
-
 @Injectable()
 export class ResetPassService implements Resolve<any>{
 
   constructor(
-    private _api: ApiService,
-    private _route:Router,
-    private _auth: AuthService
+    private _api: ApiService
   ) { }
 
-  resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): void {
+  resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): any {
     const id = route.queryParams['link'];
-    this._api.signInWithLink(id).subscribe(response =>{
-      switch (response.code) {
-        case 200:
-          CookieService.setCookie({
-            name: Constants.IdSession,
-            value: response.item.id,
-            maxAge: MaxAge.DAY
-          });
-          this._auth.updateUserInSession(response.item);
-          SessionStorageService.setItem(Constants.UserUpdatePassword, response.item);
-          LocalStorageService.setItem(Constants.UpdatePassword, true);
-          this._route.navigate(['/home/updatepassword']).then();
-      }
-    });
+    if(id){
+      return this._api.signInWithLink(id);
+    }else {
+      return null;
+    }
   }
 
 }
