@@ -28,6 +28,7 @@ import {UploadFileResponse} from '@app/core/components/upload-file/upload-file.c
 })
 export class IncidenceReportComponent implements OnInit, OnDestroy {
   private _taskId: string;
+  private _stationId: string;
   public task: any;
   public utils: any;
   @Input() set taskIncidenceInfo(taskObj: any){
@@ -40,6 +41,11 @@ export class IncidenceReportComponent implements OnInit, OnDestroy {
   @Input() set utilities(utils: any){
     if (utils){
       this.utils = utils;
+    }
+  }
+  @Input() set station(station: any){
+    if(station){
+      this._stationId = station.id;
     }
   }
   public load: boolean;
@@ -323,7 +329,6 @@ export class IncidenceReportComponent implements OnInit, OnDestroy {
       taskId: this._taskId,
       time: value.time
     };
-    const station = LocalStorageService.getItem(Constants.StationInDashboard);
     if(this._copyTask){
       this.incidenceReport.id = this._copyTask.id;
       this._api.createTask(this.incidenceReport, 9).subscribe(response=>{
@@ -337,7 +342,7 @@ export class IncidenceReportComponent implements OnInit, OnDestroy {
         }
       })
     }else{
-      this._api.createIncidenceReportAndTask(this.incidenceReport, station.id).subscribe(response=>{
+      this._api.createIncidenceReportAndTask(this.incidenceReport, this._stationId).subscribe(response=>{
         switch (response.code){
           case 200:
             this._sharedService.setNotification({type: SharedTypeNotification.FinishEditTask, value: response.item.station});

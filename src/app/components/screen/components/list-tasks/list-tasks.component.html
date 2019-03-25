@@ -213,7 +213,7 @@
                         <mat-icon>close</mat-icon>
                       </button>
                     </div>
-                    <app-fr-report [taskFrInfo]="reportConfig.taskElement"></app-fr-report>
+                    <app-fr-report [taskFrInfo]="reportConfig.taskElement" [station]="station"></app-fr-report>
                   </div>
                 </ng-template>
                 <ng-template #frList>
@@ -257,7 +257,7 @@
                         <mat-icon>close</mat-icon>
                       </button>
                     </div>
-                    <app-incidence-report [taskIncidenceInfo]="reportConfig.taskElement" [utilities]="utils"></app-incidence-report>
+                    <app-incidence-report [taskIncidenceInfo]="reportConfig.taskElement" [utilities]="utils" [station]="station"></app-incidence-report>
                   </div>
                 </ng-template>
                 <ng-template #incidenceList>
@@ -301,7 +301,7 @@
                         <mat-icon>close</mat-icon>
                       </button>
                     </div>
-                    <app-hwc-report [taskHwcInfo]="reportConfig.taskElement"></app-hwc-report>
+                    <app-hwc-report [taskHwcInfo]="reportConfig.taskElement" [station]="station"></app-hwc-report>
                   </div>
                 </ng-template>
                 <ng-template #frList>

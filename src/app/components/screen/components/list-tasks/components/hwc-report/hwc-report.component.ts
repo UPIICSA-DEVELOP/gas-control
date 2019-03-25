@@ -27,11 +27,17 @@ import {UploadFileResponse} from '@app/core/components/upload-file/upload-file.c
 export class HwcReportComponent implements OnInit, OnDestroy {
   private _taskId: string;
   public task: any;
+  private _stationId: string;
   @Input() set taskHwcInfo(taskObj: any){
     if (taskObj){
       this._taskId = taskObj.id;
       this.task = taskObj;
       this.getHWCReport();
+    }
+  }
+  @Input() set station(station: any){
+    if(station){
+      this._stationId = station.id;
     }
   }
   public load: boolean;
@@ -281,7 +287,6 @@ export class HwcReportComponent implements OnInit, OnDestroy {
       unity: value.unity,
       waste: value.waste
     };
-    const station = LocalStorageService.getItem(Constants.StationInDashboard);
     if(this._copyTask){
       this.hwcReport.id = this._copyTask.id;
       this._api.createTask(this.hwcReport, 6).subscribe(response=>{
@@ -295,7 +300,7 @@ export class HwcReportComponent implements OnInit, OnDestroy {
         }
       });
     }else{
-      this._api.createHWCReportAndTask(this.hwcReport,station.id).subscribe(response=>{
+      this._api.createHWCReportAndTask(this.hwcReport,this._stationId).subscribe(response=>{
         switch (response.code){
           case 200:
             this._sharedService.setNotification({type: SharedTypeNotification.FinishEditTask, value: response.item.station});

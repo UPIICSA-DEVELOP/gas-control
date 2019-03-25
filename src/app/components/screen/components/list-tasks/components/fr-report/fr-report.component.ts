@@ -25,12 +25,18 @@ import {Subscription} from 'rxjs/Rx';
 })
 export class FrReportComponent implements OnInit, OnDestroy {
   private _taskId: string;
+  private _stationId: string;
   public task: any;
   @Input() set taskFrInfo(taskObj: any){
     if(taskObj){
       this._taskId = taskObj.id;
       this.task = taskObj;
       this.getFRReport();
+    }
+  }
+  @Input() set station(station: any){
+    if(station){
+      this._stationId = station.id;
     }
   }
   public load: boolean;
@@ -253,7 +259,6 @@ export class FrReportComponent implements OnInit, OnDestroy {
       taskId: this._taskId,
       volumetric: value.volumetric
     };
-    const station = LocalStorageService.getItem(Constants.StationInDashboard);
     if (this._copyLastTask){
       this.frReport.id = this._copyLastTask.id;
       this._api.createTask(this.frReport, 7).subscribe(response=>{
@@ -267,7 +272,7 @@ export class FrReportComponent implements OnInit, OnDestroy {
         }
       })
     }else{
-      this._api.createFRReportAndTask(this.frReport,station.id).subscribe(response=>{
+      this._api.createFRReportAndTask(this.frReport,this._stationId).subscribe(response=>{
         switch (response.code){
           case 200:
             this._sharedService.setNotification({type: SharedTypeNotification.FinishEditTask, value: response.item.station});
