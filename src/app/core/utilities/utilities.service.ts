@@ -309,6 +309,28 @@ export class UtilitiesService {
     }
   }
 
+  static removeFormatTime(value: any): number{
+    if(value === '' || value === undefined || value === null){
+      return 0;
+    }
+    let time: boolean;
+    try {
+      time = value.includes(' a.m.');
+      value = value.replace(':','');
+      value = value.replace(time ? ' a.m.':' p.m.','');
+      value = Number(value);
+      if(time && (value >= 1200 && value <= 1259)){
+        value = value - 1200;
+      }else if (!time && value<=1159) {
+        value = value + 1200
+      }
+    }catch (e){
+      console.error(e);
+      return null;
+    }
+    return value;
+  }
+
   static removeDiacritics (str): string {
     const diacriticsMap = {
       A: /[\u0041\u24B6\uFF21\u00C0\u00C1\u00C2\u1EA6\u1EA4\u1EAA\u1EA8\u00C3\u0100\u0102\u1EB0\u1EAE\u1EB4\u1EB2\u0226\u01E0\u00C4\u01DE\u1EA2\u00C5\u01FA\u01CD\u0200\u0202\u1EA0\u1EAC\u1EB6\u1E00\u0104\u023A\u2C6F]/g,

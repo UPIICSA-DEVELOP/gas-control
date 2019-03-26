@@ -20,6 +20,7 @@ import {SharedService, SharedTypeNotification} from '@app/core/services/shared/s
 import {Constants} from '@app/core/constants.core';
 import {LocalStorageService} from '@app/core/services/local-storage/local-storage.service';
 import {UploadFileResponse} from '@app/core/components/upload-file/upload-file.component';
+import {FormatTimePipe} from '@app/core/pipes/format-time/format-time.pipe';
 
 @Component({
   selector: 'app-incidence-report',
@@ -77,7 +78,8 @@ export class IncidenceReportComponent implements OnInit, OnDestroy {
     private _uploadFile: UploadFileService,
     private _proceduresService: ModalProceduresService,
     private _signatureService: SignaturePadService,
-    private _sharedService: SharedService
+    private _sharedService: SharedService,
+    private _formatTimePipe: FormatTimePipe
   ) {
     this.date = [];
     this.taskItems = [];
@@ -136,7 +138,7 @@ export class IncidenceReportComponent implements OnInit, OnDestroy {
       time: task.time || undefined
     };
     this.incidenceForm.patchValue({
-      time: this.incidenceReport.time,
+      time: this._formatTimePipe.transform(this.incidenceReport.time),
       area: this.incidenceReport.area,
       description: this.incidenceReport.description
     });
@@ -209,7 +211,7 @@ export class IncidenceReportComponent implements OnInit, OnDestroy {
 
   public changeTime(ev: any): void{
     this.incidenceForm.patchValue({
-      time: ev
+      time: this._formatTimePipe.transform(ev)
     });
   }
 
@@ -327,7 +329,7 @@ export class IncidenceReportComponent implements OnInit, OnDestroy {
       procedures: this.procedures,
       signature: this._signatureElement,
       taskId: this._taskId,
-      time: value.time
+      time: UtilitiesService.removeFormatTime(value.time)
     };
     if(this._copyTask){
       this.incidenceReport.id = this._copyTask.id;

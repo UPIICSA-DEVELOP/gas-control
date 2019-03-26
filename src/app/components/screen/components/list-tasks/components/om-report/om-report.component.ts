@@ -20,6 +20,7 @@ import {ModalProceduresService} from '@app/components/screen/components/modal-pr
 import {UploadFileResponse} from '@app/core/components/upload-file/upload-file.component';
 import {Subscription} from 'rxjs/Rx';
 import {ApiLoaderService} from '@app/core/services/api/api-loader.service';
+import {FormatTimePipe} from '@app/core/pipes/format-time/format-time.pipe';
 
 @Component({
   selector: 'app-om-report',
@@ -78,7 +79,8 @@ export class OmReportComponent implements OnInit, OnDestroy {
     private _sharedService: SharedService,
     private _signatureService: SignaturePadService,
     private _proceduresService: ModalProceduresService,
-    private _uploadFile: UploadFileService
+    private _uploadFile: UploadFileService,
+    private _formatTimePipe: FormatTimePipe
   ) {
     this.startValidate = false;
     this._loads = [false,false];
@@ -169,8 +171,8 @@ export class OmReportComponent implements OnInit, OnDestroy {
       toolsAndMaterials: task.toolsAndMaterials || undefined
     };
     this.omForm.patchValue({
-      startTime: this.omReport.startTime,
-      endTime: this.omReport.endTime,
+      startTime: this._formatTimePipe.transform(this.omReport.startTime),
+      endTime: this._formatTimePipe.transform(this.omReport.endTime),
       maintenanceType: this.omReport.maintenanceType,
       activityType: this.omReport.activityType,
       personnelType: this.omReport.personnelType,
@@ -300,7 +302,7 @@ export class OmReportComponent implements OnInit, OnDestroy {
 
   public changeTime(ev: any, type: string): void {
     this.omForm.patchValue({
-      [type]: ev
+      [type]: this._formatTimePipe.transform(ev)
     });
   }
 
@@ -392,7 +394,7 @@ export class OmReportComponent implements OnInit, OnDestroy {
       cottonClothes: value.cottonClothes,
       date: date.timeStamp,
       description: value.description || undefined,
-      endTime: value.endTime,
+      endTime: UtilitiesService.removeFormatTime(value.endTime),
       fileCS: this._evidenceElement || undefined,
       faceMask: value.faceMask,
       gloves: value.gloves,
@@ -409,7 +411,7 @@ export class OmReportComponent implements OnInit, OnDestroy {
       procedures: this.procedures || undefined,
       protectiveGoggles: value.protectiveGoggles,
       signature: this._signatureElement,
-      startTime: value.startTime,
+      startTime: UtilitiesService.removeFormatTime(value.startTime),
       taskId: this._taskId,
       toolsAndMaterials: value.toolsAndMaterials || undefined
     };

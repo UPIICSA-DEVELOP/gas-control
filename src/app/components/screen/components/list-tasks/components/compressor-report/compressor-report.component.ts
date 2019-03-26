@@ -19,6 +19,7 @@ import {Subscription} from 'rxjs/Rx';
 import {Constants} from '@app/core/constants.core';
 import {LocalStorageService} from '@app/core/services/local-storage/local-storage.service';
 import {UploadFileResponse} from '@app/core/components/upload-file/upload-file.component';
+import {FormatTimePipe} from '@app/core/pipes/format-time/format-time.pipe';
 
 @Component({
   selector: 'app-compressor-report',
@@ -66,6 +67,7 @@ export class CompressorReportComponent implements OnInit, OnDestroy {
     private _sharedService: SharedService,
     private _uploadFile: UploadFileService,
     private _signatureService: SignaturePadService,
+    private _formatTimePipe: FormatTimePipe
   ) {
     this.startValidate = false;
     this.error = false;
@@ -148,8 +150,8 @@ export class CompressorReportComponent implements OnInit, OnDestroy {
       taskId: task.taskId || undefined
     };
     this.compForm.patchValue({
-      startTime: this.compressorReport.startTime,
-      endTime: this.compressorReport.endTime,
+      startTime: this._formatTimePipe.transform(this.compressorReport.startTime),
+      endTime: this._formatTimePipe.transform(this.compressorReport.endTime),
       brand: this.compressorReport.brand,
       model: this.compressorReport.model,
       controlNumber: this.compressorReport.controlNumber,
@@ -230,7 +232,7 @@ export class CompressorReportComponent implements OnInit, OnDestroy {
 
   public changeTime(ev: any, type: string): void {
     this.compForm.patchValue({
-      [type]: ev
+      [type]: this._formatTimePipe.transform(ev)
     });
   }
 
@@ -339,7 +341,7 @@ export class CompressorReportComponent implements OnInit, OnDestroy {
       brand: value.brand,
       controlNumber: value.controlNumber,
       date: date.timeStamp,
-      endTime: value.endTime,
+      endTime: UtilitiesService.removeFormatTime(value.endTime),
       fileCS: this._evidenceElement,
       hwgReport : undefined,
       modifications: value.modifications,
@@ -350,7 +352,7 @@ export class CompressorReportComponent implements OnInit, OnDestroy {
       pressure: value.pressure,
       signature: this._signatureElement,
       securityValve: value.securityValve,
-      startTime: value.startTime,
+      startTime: UtilitiesService.removeFormatTime(value.startTime),
       taskId: this._taskId,
     };
     if (this._copyTask){

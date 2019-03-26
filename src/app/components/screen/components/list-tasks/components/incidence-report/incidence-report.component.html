@@ -16,7 +16,7 @@
     <div class="flex-box">
       <div class="columns">
         <mat-form-field class="inputs">
-          <input formControlName="time" matInput placeholder="Hora" appDisableWrite (time)="changeTime($event)" [value]="incidenceForm.controls['time'].value | formatTime">
+          <input formControlName="time" matInput placeholder="Hora" appDisableWrite (time)="changeTime($event)">
           <mat-error *ngIf="incidenceForm.controls['time'].hasError('required')">
             Este campo es obligatorio
           </mat-error>

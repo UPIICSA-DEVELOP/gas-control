@@ -17,6 +17,7 @@ import {SharedService, SharedTypeNotification} from '@app/core/services/shared/s
 import {Constants} from '@app/core/constants.core';
 import {LocalStorageService} from '@app/core/services/local-storage/local-storage.service';
 import {Subscription} from 'rxjs/Rx';
+import {FormatTimePipe} from '@app/core/pipes/format-time/format-time.pipe';
 
 @Component({
   selector: 'app-fr-report',
@@ -62,7 +63,8 @@ export class FrReportComponent implements OnInit, OnDestroy {
     private _signatureService: SignaturePadService,
     private _uploadFileService: UploadFileService,
     private _snackBarService: SnackBarService,
-    private _sharedService: SharedService
+    private _sharedService: SharedService,
+    private _formatTimePipe: FormatTimePipe
   ) {
     this.date = [];
     this.taskItems = [];
@@ -133,8 +135,8 @@ export class FrReportComponent implements OnInit, OnDestroy {
       volumetric: task.volumetric || undefined
     };
     this.frForm.patchValue({
-      startTime: this.frReport.startTime,
-      endTime: this.frReport.endTime,
+      startTime: this._formatTimePipe.transform(this.frReport.startTime),
+      endTime: this._formatTimePipe.transform(this.frReport.endTime),
       remissionNumber: this.frReport.remissionNumber,
       remission: this.frReport.remission,
       volumetric: this.frReport.volumetric,
@@ -199,7 +201,7 @@ export class FrReportComponent implements OnInit, OnDestroy {
 
   public changeTime(ev: any, type: string): void{
     this.frForm.patchValue({
-      [type]: ev
+      [type]: this._formatTimePipe.transform(ev)
     });
   }
 
@@ -247,7 +249,7 @@ export class FrReportComponent implements OnInit, OnDestroy {
     this.frReport = {
       date: date.timeStamp,
       diesel: value.diesel,
-      endTime: value.endTime,
+      endTime: UtilitiesService.removeFormatTime(value.endTime),
       magna: value.magna,
       name: this.name,
       premium: value.premium,
@@ -255,7 +257,7 @@ export class FrReportComponent implements OnInit, OnDestroy {
       remission: value.remission,
       remissionNumber: value.remissionNumber,
       signature: this._signatureElement,
-      startTime: value.startTime,
+      startTime: UtilitiesService.removeFormatTime(value.startTime),
       taskId: this._taskId,
       volumetric: value.volumetric
     };

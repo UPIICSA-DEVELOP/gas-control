@@ -17,6 +17,7 @@ import {UploadFileService} from '@app/core/components/upload-file/upload-file.se
 import {Subscription} from 'rxjs/Rx';
 import {Constants} from '@app/core/constants.core';
 import {LocalStorageService} from '@app/core/services/local-storage/local-storage.service';
+import {FormatTimePipe} from '@app/core/pipes/format-time/format-time.pipe';
 
 @Component({
   selector: 'app-fe-report',
@@ -57,7 +58,8 @@ export class FeReportComponent implements OnInit, OnDestroy {
     private _snackBarService: SnackBarService,
     private _sharedService: SharedService,
     private _signatureService: SignaturePadService,
-    private _uploadFileService: UploadFileService
+    private _uploadFileService: UploadFileService,
+    private _formatTimePipe: FormatTimePipe
   ) {
     this.date = [];
     this._indexTask = 0;
@@ -134,8 +136,8 @@ export class FeReportComponent implements OnInit, OnDestroy {
       taskId: task.taskId || undefined
     };
     this.feForm.patchValue({
-      startTime: this.feReport.startTime,
-      endTime: this.feReport.endTime
+      startTime: this._formatTimePipe.transform(this.feReport.startTime),
+      endTime: this._formatTimePipe.transform(this.feReport.endTime)
     });
     this.extinguisher = this.feReport.fireExtinguishers;
     this.date = UtilitiesService.convertDate(this.feReport.date);
@@ -222,7 +224,7 @@ export class FeReportComponent implements OnInit, OnDestroy {
 
   public changeTime(ev: any, type: string): void {
     this.feForm.patchValue({
-      [type]: ev
+      [type]: this._formatTimePipe.transform(ev)
     });
   }
 
@@ -276,11 +278,11 @@ export class FeReportComponent implements OnInit, OnDestroy {
     date = UtilitiesService.createPersonalTimeStamp(date);
     this.feReport = {
       date: date.timeStamp,
-      endTime: value.endTime,
+      endTime: UtilitiesService.removeFormatTime(value.endTime),
       fireExtinguishers: this.extinguisher,
       name: this.name,
       signature: this._signatureElement,
-      startTime: value.startTime,
+      startTime: UtilitiesService.removeFormatTime(value.startTime),
       taskId: this._taskId
     };
     if(this._copyTask){
