@@ -77,6 +77,7 @@ export class ListTasksComponent implements OnInit, DoCheck , OnDestroy{
   private _creationDate: number;
   private _subscriptionShared: Subscription;
   private _subscriptionLoader: Subscription;
+  private _firstGet: boolean;
   constructor(
     private _dateService: DatepickerService,
     private _filterService: TaskFilterService,
@@ -86,6 +87,7 @@ export class ListTasksComponent implements OnInit, DoCheck , OnDestroy{
     private _taskFilterNameService: TaskFilterNameService,
     private _sharedService: SharedService
   ) {
+    this._firstGet = false;
     this.listTask = {historyTasks: [], previousTasks: [], todayTasks: []};
     this.reportConfig = {reportView: false, taskElement: null, typeReportView: 0, status: 0};
     this.emptyLisTasks = true;
@@ -141,6 +143,7 @@ export class ListTasksComponent implements OnInit, DoCheck , OnDestroy{
           break;
         case SharedTypeNotification.FinishEditTask:
           this.goBackList();
+          this._firstGet = true;
           if(this.others){
             this.notCalendarTasks = [];
             this._tokenTwo = undefined;
@@ -228,7 +231,7 @@ export class ListTasksComponent implements OnInit, DoCheck , OnDestroy{
         this.listTask.historyTasks.push({type: 2, title: '', original: task, id: task.id});
       }
     });
-    this.load = false;
+    this._firstGet = false;
   }
 
   public dateFilter(): void {
@@ -412,7 +415,7 @@ export class ListTasksComponent implements OnInit, DoCheck , OnDestroy{
   public onScroll(event: any):void{
     const element = event.srcElement;
     if(element.scrollHeight - element.scrollTop === element.clientHeight) {
-      if(!this.reportConfig.reportView){
+      if(!this.reportConfig.reportView && !this._firstGet){
         if(this.others){
           this.getNotCalendarTask();
         }else{
@@ -433,12 +436,7 @@ export class ListTasksComponent implements OnInit, DoCheck , OnDestroy{
       case 2: type = 2; type_two = 6;
         break;
     }
-    this.reportConfig = {
-      reportView: true,
-      status: 1,
-      taskElement: {id: 0, status: 1, item: this.utils.uTaskTemplates[type-1], hwg: false},
-      typeReportView: type_two
-    };
+    this.reportConfig = {reportView: true, status: 1, taskElement: {id: 0, status: 1, item: this.utils.uTaskTemplates[type-1], hwg: false}, typeReportView: type_two};
     this._modalScroll.nativeElement.scroll({top: 0});
   }
 

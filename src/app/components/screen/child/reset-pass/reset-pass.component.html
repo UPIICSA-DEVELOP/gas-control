@@ -4,3 +4,57 @@
   ~ Proprietary and confidential
   -->
 
+<div id="reset-password">
+  <mat-toolbar>
+    <div class="image-logo">
+      <img alt="app-logo" src="../../../assets/image/logo.png">
+    </div>
+  </mat-toolbar>
+  <div class="body">
+    <mat-card>
+      <mat-card-header>
+        <h2 class="color">Olvido su contraseña</h2>
+      </mat-card-header>
+      <div class="color">Proporcione esta información para ayudarle a recuperar su cuenta</div>
+      <form [formGroup]="newPassForm" (ngSubmit)="updatePassword(newPassForm.value)" class="form">
+        <mat-form-field>
+          <input matInput formControlName="newPassword" [disabled]="load" required placeholder="Nueva contraseña" type="password" #inputPasswordOne>
+          <button matSuffix type="button" mat-icon-button (click)="seeHidePassword(true)">
+            <div *ngIf="hideOne; then passwordVisible else notVisible"></div>
+            <ng-template #notVisible>
+              <mat-icon class="color">visibility_off</mat-icon>
+            </ng-template>
+            <ng-template #passwordVisible>
+              <mat-icon class="color">visibility</mat-icon>
+            </ng-template>
+          </button>
+          <mat-error *ngIf="newPassForm.controls['newPassword'].hasError('required')">
+            Este campo es obligatorio
+          </mat-error>
+        </mat-form-field>
+        <mat-form-field>
+          <input matInput formControlName="confirmNewPassword" [disabled]="load" required placeholder="Confirmar nueva contraseña" type="password" #inputPasswordTwo>
+          <button matSuffix type="button" mat-icon-button (click)="seeHidePassword(false)">
+            <div *ngIf="hideTwo; then passwordVisible else notVisible"></div>
+            <ng-template #notVisible>
+              <mat-icon class="color">visibility_off</mat-icon>
+            </ng-template>
+            <ng-template #passwordVisible>
+              <mat-icon class="color">visibility</mat-icon>
+            </ng-template>
+          </button>
+          <mat-error *ngIf="newPassForm.controls['confirmNewPassword'].hasError('required')">
+            Este campo es obligatorio
+          </mat-error>
+          <mat-error *ngIf="newPassForm.controls['confirmNewPassword'].hasError('differentPasswords')">
+            Las contraseñas no coinciden
+          </mat-error>
+        </mat-form-field>
+        <div class="action">
+          <button mat-flat-button type="submit" [color]="'primary'" [disabled]="load">RECUPERAR CUENTA</button>
+        </div>
+      </form>
+      <mat-progress-bar [mode]="'indeterminate'" *ngIf="load" class="progress"></mat-progress-bar>
+    </mat-card>
+  </div>
+</div>

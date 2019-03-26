@@ -27,6 +27,7 @@ import {TermsComponent} from '@app/components/screen/child/terms/terms.component
 import {CookiesComponent} from '@app/components/screen/child/cookies/cookies.component';
 import {AuthRouterService} from '@app/core/services/auth/auth-router.service';
 import {ResetPassService} from '@app/core/services/reset-pass/reset-pass.service';
+import {ResetPassRouterService} from '@app/core/services/reset-pass/reset-pass-router.service';
 const URL_BASE = environment.url;
 
 export const appRoutes: Routes = [
@@ -71,10 +72,6 @@ export const appRoutes: Routes = [
           title: 'Lista de estaciones',
           url: URL_BASE + 'home/station-list'
         }
-      },
-      {
-        path: 'updatepassword',
-        component: ResetPassComponent
       },
       {
         path: 'add-collaborator',
@@ -149,8 +146,13 @@ export const appRoutes: Routes = [
   },
   {
     path: 'signin',
+    canActivate: [ResetPassRouterService],
     resolve: {data: ResetPassService},
-    component: ResetPassComponent
+    component: ResetPassComponent,
+    data:{
+      title: 'Recuperar Contraseña',
+      url: URL_BASE + 'signin'
+    }
   },
   {
     path: 'privacidad',

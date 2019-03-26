@@ -23,7 +23,7 @@
           <div>Colaboradores</div>
           <mat-icon>group</mat-icon>
         </button>
-        <button mat-button (click)="logOut()" matTooltip="Cerrar Sesión" class="btn-logout">
+        <button mat-button (click)="logOut()" matTooltip="Cerrar Sesión" class="btn-logout" *ngIf="user && user.role!==7">
           <mat-icon>exit_to_app</mat-icon>
         </button>
         <div class="user">
