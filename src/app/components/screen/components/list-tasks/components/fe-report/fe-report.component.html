@@ -42,7 +42,7 @@
             Complete los campos del extintor
           </mat-error>
           <mat-form-field class="inputs">
-            <mat-select [(ngModel)]="item.area" [ngModelOptions]="{standalone: true}" [disabled]="!editable" placeholder="Área" (selectionChange)="changeExInfo($event, i)">
+            <mat-select [(ngModel)]="item.area" [ngModelOptions]="{standalone: true}" required [disabled]="!editable" placeholder="Área" (selectionChange)="changeExInfo($event, i)">
               <mat-option value="Zona de despacho">Zona de despacho</mat-option>
               <mat-option value="Zona de tanques">Zona de tanques</mat-option>
               <mat-option value="Oficina">Oficina</mat-option>
@@ -51,51 +51,75 @@
               <mat-option value="Cuarto de máquinas">Cuarto de máquinas</mat-option>
               <mat-option value="Cuarto de residuos peligrosos">Cuarto de residuos peligrosos</mat-option>
             </mat-select>
+            <mat-error *ngIf="!extinguisher[i].area && editable">
+              Este campo es obligatorio
+            </mat-error>
           </mat-form-field>
           <mat-form-field class="inputs">
-            <input matInput placeholder="Capacidad" type="number" [(ngModel)]="item.capacity" [ngModelOptions]="{standalone: true}" [disabled]="!editable" (change)="changeExInfo($event, i)">
+            <input matInput placeholder="Capacidad" type="number" [(ngModel)]="item.capacity" [ngModelOptions]="{standalone: true}" required [disabled]="!editable" (change)="changeExInfo($event, i)">
+            <mat-error *ngIf="!extinguisher[i].capacity && editable">
+              Este campo es obligatorio
+            </mat-error>
           </mat-form-field>
           <div class="times">
             <mat-form-field class="clock">
-              <mat-select placeholder="Vencimiento" [(ngModel)]="item.expiration" [ngModelOptions]="{standalone: true}" [disabled]="!editable" (selectionChange)="changeExInfo($event, i)">
+              <mat-select placeholder="Vencimiento" [(ngModel)]="item.expiration" [ngModelOptions]="{standalone: true}" required [disabled]="!editable" (selectionChange)="changeExInfo($event, i)">
                 <mat-option value="Vigente">Vigente</mat-option>
                 <mat-option value="Caduco">Caduco</mat-option>
               </mat-select>
+              <mat-error *ngIf="!extinguisher[i].expiration && editable">
+                Este campo es obligatorio
+              </mat-error>
             </mat-form-field>
             <mat-form-field class="clock">
-              <mat-select placeholder="Manómetro" [(ngModel)]="item.manometer" [ngModelOptions]="{standalone: true}" [disabled]="!editable" (selectionChange)="changeExInfo($event, i)">
+              <mat-select placeholder="Manómetro" [(ngModel)]="item.manometer" [ngModelOptions]="{standalone: true}" required [disabled]="!editable" (selectionChange)="changeExInfo($event, i)">
                 <mat-option value="Descargado">Descargado</mat-option>
                 <mat-option value="Óptimo">Óptimo</mat-option>
                 <mat-option value="Sobrecargado">Sobrecargado</mat-option>
               </mat-select>
+              <mat-error *ngIf="!extinguisher[i].manometer && editable">
+                Este campo es obligatorio
+              </mat-error>
             </mat-form-field>
           </div>
           <div class="times">
             <mat-form-field class="clock">
-              <mat-select placeholder="Manguera" [(ngModel)]="item.hose" [ngModelOptions]="{standalone: true}" [disabled]="!editable" (selectionChange)="changeExInfo($event, i)">
+              <mat-select placeholder="Manguera" [(ngModel)]="item.hose" [ngModelOptions]="{standalone: true}" required [disabled]="!editable" (selectionChange)="changeExInfo($event, i)">
                 <mat-option value="Satisfactorio">Satisfactorio</mat-option>
                 <mat-option value="No satisfactorio">No satisfactorio</mat-option>
               </mat-select>
+              <mat-error *ngIf="!extinguisher[i].hose && editable">
+                Este campo es obligatorio
+              </mat-error>
             </mat-form-field>
             <mat-form-field class="clock">
-              <mat-select placeholder="Cincho" [(ngModel)]="item.belt" [ngModelOptions]="{standalone: true}" [disabled]="!editable" (selectionChange)="changeExInfo($event, i)">
+              <mat-select placeholder="Cincho" [(ngModel)]="item.belt" [ngModelOptions]="{standalone: true}" required [disabled]="!editable" (selectionChange)="changeExInfo($event, i)">
                 <mat-option value="Satisfactorio">Satisfactorio</mat-option>
                 <mat-option value="No satisfactorio">No satisfactorio</mat-option>
               </mat-select>
+              <mat-error *ngIf="!extinguisher[i].belt && editable">
+                Este campo es obligatorio
+              </mat-error>
             </mat-form-field>
           </div>
           <div class="times">
             <mat-form-field class="clock">
-              <mat-select placeholder="Collarín" [(ngModel)]="item.collar" [ngModelOptions]="{standalone: true}" [disabled]="!editable" (selectionChange)="changeExInfo($event, i)">
+              <mat-select placeholder="Collarín" [(ngModel)]="item.collar" [ngModelOptions]="{standalone: true}" required [disabled]="!editable" (selectionChange)="changeExInfo($event, i)">
                 <mat-option value="Satisfactorio">Satisfactorio</mat-option>
                 <mat-option value="No satisfactorio">No satisfactorio</mat-option>
               </mat-select>
+              <mat-error *ngIf="!extinguisher[i].collar && editable">
+                Este campo es obligatorio
+              </mat-error>
             </mat-form-field>
             <mat-form-field class="clock">
-              <mat-select placeholder="Seguro" [(ngModel)]="item.safe" [ngModelOptions]="{standalone: true}" [disabled]="!editable" (selectionChange)="changeExInfo($event, i)">
+              <mat-select placeholder="Seguro" [(ngModel)]="item.safe" [ngModelOptions]="{standalone: true}" required [disabled]="!editable" (selectionChange)="changeExInfo($event, i)">
                 <mat-option value="Satisfactorio">Satisfactorio</mat-option>
                 <mat-option value="No satisfactorio">No satisfactorio</mat-option>
               </mat-select>
+              <mat-error *ngIf="!extinguisher[i].safe && editable">
+                Este campo es obligatorio
+              </mat-error>
             </mat-form-field>
           </div>
         </div>
