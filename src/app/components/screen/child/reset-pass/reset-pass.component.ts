@@ -11,7 +11,7 @@ import {Constants} from '@app/core/constants.core';
 import {ApiService} from '@app/core/services/api/api.service';
 import {AuthService} from '@app/core/services/auth/auth.service';
 import {LocalStorageService} from '@app/core/services/local-storage/local-storage.service';
-import {ActivatedRoute, Router} from '@angular/router';
+import {Router} from '@angular/router';
 import {AbstractControl, FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Subscription} from 'rxjs/Rx';
 import {ApiLoaderService} from '@app/core/services/api/api-loader.service';
@@ -36,8 +36,8 @@ const md5 = require('md5');
   animations: [
     trigger('fadeInAnimation', [
       transition(':enter', [
-        query('#profile', style({ opacity: 0, background: 'transparent' }), {optional: true}),
-        query('#profile', stagger('10ms', [
+        query('#reset-password', style({ opacity: 0, background: 'transparent' }), {optional: true}),
+        query('#reset-password', stagger('10ms', [
           animate('.2s ease-out', keyframes([
             style({opacity: 0, background: 'transparent', offset: 0}),
             style({opacity: .5, background: 'rgba(255, 255, 255, .5)', offset: 0.5}),
@@ -45,8 +45,8 @@ const md5 = require('md5');
           ]))]), {optional: true})
       ]),
       transition(':leave', [
-        query('#profile', style({ opacity: 1, background: 'rgba(255, 255, 255, 1)' }), {optional: true}),
-        query('#profile', stagger('10ms', [
+        query('#reset-password', style({ opacity: 1, background: 'rgba(255, 255, 255, 1)' }), {optional: true}),
+        query('#reset-password', stagger('10ms', [
           animate('.2s ease-in', keyframes([
             style({opacity: 1, background: 'rgba(255, 255, 255, 1)', offset: 0}),
             style({opacity: .5, background: 'rgba(255, 255, 255, .5)',  offset: 0.5}),
@@ -74,21 +74,12 @@ export class ResetPassComponent implements OnInit, OnDestroy {
     private _snackBarService: SnackBarService,
     private _auth: AuthService,
     private _router: Router,
-    private _formBuilder: FormBuilder,
-    private _activateRouter: ActivatedRoute
+    private _formBuilder: FormBuilder
   ) { }
 
   ngOnInit() {
     this._subscriptionLoader = this._apiLoader.getProgress().subscribe(load=>{this.load = load});
     this.initForm();
-    const response = this._activateRouter.snapshot.data['data'];
-    if(response){
-      if(response.code === 200){
-        this._user = response.item;
-      }else{
-        this.getUserByLink();
-      }
-    }
   }
 
   ngOnDestroy(): void{
@@ -113,36 +104,40 @@ export class ResetPassComponent implements OnInit, OnDestroy {
     }
   }
 
-  public updatePassword(value: any){
+  public updatePassword(value: any): void{
    if(this.newPassForm.invalid){
       return;
-    }
+   }
+   this.signInWidthIdLink(value);
+  }
+
+  private signInWidthIdLink(value: any): void {
+    this._auth.requestPermissionNotifications().subscribe((token: string | null)=>{
+      this._api.signInWithLink(LocalStorageService.getItem(Constants.UpdatePassword), token).subscribe(response=>{
+        switch (response.code){
+          case 200:
+            this._user = response.item;
+            this.updatePersonPassword(value,token);
+            break;
+          default:
+            break;
+        }
+      });
+    });
+  }
+
+  private updatePersonPassword(value: any, token: string): void{
     this._user.password = md5(value.newPassword);
-    this._api.updatePerson(this._user).subscribe(response => {
-      switch (response.code) {
+    this._api.updatePerson(this._user).subscribe(response=>{
+      switch (response.code){
         case 200:
-          this._auth.logIn(response.item, false, LocalStorageService.getItem(Constants.SessionToken));
+          this._auth.logIn(response.item,true, token);
           LocalStorageService.removeItem(Constants.UpdatePassword);
           this._snackBarService.openSnackBar('Contraseña actualizada', 'OK', 3000);
-          if(this._user.role === 7){
-            this._router.navigate(['/admin']).then();
-          }else{
-            this._router.navigate(['/home']).then();
-          }
           break;
         default:
           this._snackBarService.openSnackBar('No se a podido actualizar la contraseña', 'OK', 3000);
           this._router.navigate(['/login']).then();
-          break;
-      }
-    });
-  }
-
-  private getUserByLink(): void{
-    this._api.signInWithLink(LocalStorageService.getItem(Constants.UpdatePassword)).subscribe(response=>{
-      switch (response.code){
-        case 200:
-          this._user = response.item;
           break;
       }
     })

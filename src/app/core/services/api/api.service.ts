@@ -41,7 +41,7 @@ export class ApiService implements OnDestroy{
     const user = {
       email: options.email,
       password: options.password,
-      token: (options.token)?options.token:'123',
+      token: (options.token)?options.token:null,
       type: 3
     };
     return this._http.post(ApiService.API_URL_COMPLETE + 'signIn', user);
@@ -61,10 +61,10 @@ export class ApiService implements OnDestroy{
     return this._http.post(ApiService.API_URL_COMPLETE + 'sendSignInLink', options);
    }
 
-   public signInWithLink(id: string): Observable<any> {
+   public signInWithLink(id: string, token?: string): Observable<any> {
     const options = {
       id: id,
-      token: '123',
+      token: token?token: null,
       type: 3
     };
     return this._http.post(ApiService.API_URL_COMPLETE + 'signInWithLink', options);

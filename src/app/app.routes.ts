@@ -26,7 +26,6 @@ import {AdminComponent} from '@app/components/admin/admin.component';
 import {TermsComponent} from '@app/components/screen/child/terms/terms.component';
 import {CookiesComponent} from '@app/components/screen/child/cookies/cookies.component';
 import {AuthRouterService} from '@app/core/services/auth/auth-router.service';
-import {ResetPassService} from '@app/core/services/reset-pass/reset-pass.service';
 import {ResetPassRouterService} from '@app/core/services/reset-pass/reset-pass-router.service';
 const URL_BASE = environment.url;
 
@@ -147,7 +146,6 @@ export const appRoutes: Routes = [
   {
     path: 'signin',
     canActivate: [ResetPassRouterService],
-    resolve: {data: ResetPassService},
     component: ResetPassComponent,
     data:{
       title: 'Recuperar Contraseña',
