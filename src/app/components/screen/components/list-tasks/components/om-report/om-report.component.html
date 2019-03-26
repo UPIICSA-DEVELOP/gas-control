@@ -88,7 +88,7 @@
           Debe agregar al menos un nombre
         </mat-error>
         <div class="inputs" *ngIf="omReport && omReport.personnelNames && !editable">
-          <div *ngFor="let item of omReport.personnelNames; let i = index">
+          <div style="padding: 3px 0" *ngFor="let item of omReport.personnelNames; let i = index">
             <div class="procedure">{{i+1}}.- {{item}}</div>
           </div>
         </div>
@@ -152,7 +152,7 @@
           </button>
         </div>
         <div class="inputs" *ngIf="omReport && omReport.procedures && !editable">
-          <div *ngFor="let procedure of omReport.procedures; let i = index;">
+          <div style="padding: 3px 0" *ngFor="let procedure of omReport.procedures; let i = index;">
             <div class="procedure" *ngIf="procedure === 1">{{i+1}}.-{{utils.procedures[procedure-1].name}}</div>
             <div class="procedure" *ngIf="procedure === 2">{{i+1}}.-{{utils.procedures[procedure-1].name}}</div>
             <div class="procedure" *ngIf="procedure === 3">{{i+1}}.-{{utils.procedures[procedure-1].name}}</div>
@@ -232,7 +232,7 @@
           Captura fotográfica de la evidencia.
         </div>
         <mat-error *ngIf="errors[2] && editable" class="error-text">
-          Es necesario tomar la evidencia
+          Es necesario tomar< la evidencia
         </mat-error>
         <div *ngIf="!editable; then showEv else modify"></div>
         <ng-template #showEv>
