@@ -143,7 +143,7 @@
       urlLogo: dataForBC.urlLogo,
       urlLogoThumbnail: dataForBC.urlLogoThumbnail,
       website: dataForBC.website,
-      whatsApp: dataForBC.phone,
+      whatsApp: dataForBC.whatsApp,
       workPosition: dataForBC.workPosition
     };
 
