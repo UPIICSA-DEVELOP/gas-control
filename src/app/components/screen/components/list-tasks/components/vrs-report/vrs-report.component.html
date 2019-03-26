@@ -105,32 +105,44 @@
             <mat-radio-button [value]="2">Premium</mat-radio-button>
           </mat-radio-group>
           <mat-form-field style="width: 100%">
-            <mat-select [(ngModel)]="tankItem.capAndSteamAdapter" [ngModelOptions]="{standalone: true}" (selectionChange)="changeTankInfo($event, i)" [disabled]="!editable" placeholder="Tapa y adaptador de vapor">
+            <mat-select [(ngModel)]="tankItem.capAndSteamAdapter" [ngModelOptions]="{standalone: true}" required (selectionChange)="changeTankInfo($event, i)" [disabled]="!editable" placeholder="Tapa y adaptador de vapor">
               <mat-option [value]="'Satisfactorio'">Satisfactorio</mat-option>
               <mat-option [value]="'No satisfactorio'">No satisfactorio</mat-option>
               <mat-option [value]="'No determinado'">No determinado</mat-option>
             </mat-select>
+            <mat-error *ngIf="!tanks[i].capAndSteamAdapter && editable">
+              Este campo es obligatorio
+            </mat-error>
           </mat-form-field>
           <mat-form-field style="width: 100%">
-            <mat-select [(ngModel)]="tankItem.capAndFillingAdapter" [ngModelOptions]="{standalone: true}" (selectionChange)="changeTankInfo($event, i)" [disabled]="!editable" placeholder="Tapa y adaptador de llenado">
+            <mat-select [(ngModel)]="tankItem.capAndFillingAdapter" [ngModelOptions]="{standalone: true}" required (selectionChange)="changeTankInfo($event, i)" [disabled]="!editable" placeholder="Tapa y adaptador de llenado">
               <mat-option [value]="'Satisfactorio'">Satisfactorio</mat-option>
               <mat-option [value]="'No satisfactorio'">No satisfactorio</mat-option>
               <mat-option [value]="'No determinado'">No determinado</mat-option>
             </mat-select>
+            <mat-error *ngIf="!tanks[i].capAndFillingAdapter && editable">
+              Este campo es obligatorio
+            </mat-error>
           </mat-form-field>
           <mat-form-field style="width: 100%">
-            <mat-select [(ngModel)]="tankItem.overfillValve" [ngModelOptions]="{standalone: true}" (selectionChange)="changeTankInfo($event, i)" [disabled]="!editable" placeholder="Válvula de sobrellenado">
+            <mat-select [(ngModel)]="tankItem.overfillValve" [ngModelOptions]="{standalone: true}" required (selectionChange)="changeTankInfo($event, i)" [disabled]="!editable" placeholder="Válvula de sobrellenado">
               <mat-option [value]="'Satisfactorio'">Satisfactorio</mat-option>
               <mat-option [value]="'No satisfactorio'">No satisfactorio</mat-option>
               <mat-option [value]="'No determinado'">No determinado</mat-option>
             </mat-select>
+            <mat-error *ngIf="!tanks[i].overfillValve && editable">
+              Este campo es obligatorio
+            </mat-error>
           </mat-form-field>
           <mat-form-field style="width: 100%">
-            <mat-select [(ngModel)]="tankItem.vacuumPressureValve" [ngModelOptions]="{standalone: true}" (selectionChange)="changeTankInfo($event, i)" [disabled]="!editable" placeholder="Válvula de presión-vacío">
+            <mat-select [(ngModel)]="tankItem.vacuumPressureValve" [ngModelOptions]="{standalone: true}" required (selectionChange)="changeTankInfo($event, i)" [disabled]="!editable" placeholder="Válvula de presión-vacío">
               <mat-option [value]="'Satisfactorio'">Satisfactorio</mat-option>
               <mat-option [value]="'No satisfactorio'">No satisfactorio</mat-option>
               <mat-option [value]="'No determinado'">No determinado</mat-option>
             </mat-select>
+            <mat-error *ngIf="!tanks[i].vacuumPressureValve && editable">
+              Este campo es obligatorio
+            </mat-error>
           </mat-form-field>
         </div>
       </div>

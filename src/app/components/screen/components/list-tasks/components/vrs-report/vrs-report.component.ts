@@ -210,6 +210,7 @@ export class VrsReportComponent implements OnInit, OnDestroy {
       this.vrsReport.date = undefined;
       this.vrsReport.signature = undefined;
     }
+    this.tanks[0].fuelType = 1;
     this.vrsForm.enable();
   }
 
@@ -247,7 +248,7 @@ export class VrsReportComponent implements OnInit, OnDestroy {
 
   public addRemoveTank(isAdd: boolean, index?: number): void{
     if(isAdd){
-      this.tanks.push({capAndFillingAdapter: undefined,capAndSteamAdapter: undefined,fuelType: 0, overfillValve: undefined, vacuumPressureValve:undefined});
+      this.tanks.push({capAndFillingAdapter: undefined,capAndSteamAdapter: undefined,fuelType: 1, overfillValve: undefined, vacuumPressureValve:undefined});
       this.errorTank.push(false);
     }else{
       this.tanks.splice(index, 1);
