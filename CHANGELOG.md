@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="1.0.0-beta.9"></a>
+# [1.0.0-beta.9](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/compare/v1.0.0-beta.8...v1.0.0-beta.9) (2019-03-27)
+
+
+### Bug Fixes
+
+* **FE-Report:** add required fields in array ([763f985](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/763f985))
+* **Procedures List:** add space between behind items ([9e388ca](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/9e388ca))
+* **Profile Consultancy:** disabled email field for role 1 ([3a2a920](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/3a2a920))
+* **Reports:** solve error in time format ([e9e9087](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/e9e9087))
+* **Reset Password:** change validation for token ([bb4e76b](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/bb4e76b))
+* **VRS-Report:** add required fields in array ([3b96993](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/3b96993))
+
+
+
 <a name="1.0.0-beta.8"></a>
 # [1.0.0-beta.8](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/compare/v1.0.0-beta.7...v1.0.0-beta.8) (2019-03-26)
 
