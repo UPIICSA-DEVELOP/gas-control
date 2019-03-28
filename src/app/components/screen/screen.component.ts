@@ -129,18 +129,11 @@ export class ScreenComponent implements OnInit, AfterViewInit, OnDestroy{
   }
 
   private getDashboardInformation(onlyOneStationId?: any): void{
-    let refId = undefined;
     const userId = CookieService.getCookie(Constants.IdSession);
     const user = LocalStorageService.getItem(Constants.UserInSession);
     if(user && userId){
-      if(user.role !== 7){
-        refId = user.refId
-      } else {
-        const consultancy = LocalStorageService.getItem(Constants.ConsultancyInSession);
-        refId = consultancy.id
-      }
       this.role = user.role;
-      this._api.getCompleteInfoDashboard(userId,refId,this.role,onlyOneStationId).subscribe(response=>{
+      this._api.getCompleteInfoDashboard(userId,user.refId,this.role,onlyOneStationId).subscribe(response=>{
         if (response){
           this.utils = response[1].item;
           switch (this.role){
@@ -148,7 +141,6 @@ export class ScreenComponent implements OnInit, AfterViewInit, OnDestroy{
             case 2:
             case 3:
             case 4:
-            case 7:
               if(onlyOneStationId){
                 switch(response[0].code){
                   case 200:
@@ -208,6 +200,10 @@ export class ScreenComponent implements OnInit, AfterViewInit, OnDestroy{
                   this.createTasks();
                 }
               }
+              break;
+            case 7:
+              this.stationActive = response[0].item;
+              LocalStorageService.setItem(Constants.StationInDashboard, {id: this.stationActive.id, name: this.stationActive.businessName});
               break;
           }
         }

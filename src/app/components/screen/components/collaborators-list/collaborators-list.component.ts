@@ -5,7 +5,7 @@
  */
 
 import {Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
-import {Router} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {animate, style, transition, trigger} from '@angular/animations';
 import {Constants} from '@app/core/constants.core';
 import {ApiService} from '@app/core/services/api/api.service';
@@ -22,7 +22,6 @@ import {UtilitiesService} from '@app/core/utilities/utilities.service';
 import {LocalStorageService} from '@app/core/services/local-storage/local-storage.service';
 import {Person} from '@app/core/interfaces/interfaces';
 import {Subscription} from 'rxjs/Rx';
-import {response} from 'express';
 
 @Component({
   selector: 'app-collaborators-list',
@@ -65,6 +64,7 @@ export class CollaboratorsListComponent implements OnInit, OnDestroy {
   public changes: boolean;
   public emptySearch: boolean;
   private _subscriptionLoader: Subscription;
+  private _refId: string;
   constructor(
     private _route: Router,
     private _api: ApiService,
@@ -74,7 +74,8 @@ export class CollaboratorsListComponent implements OnInit, OnDestroy {
     private _countryCodeService: CountryCodeService,
     private _formBuilder: FormBuilder,
     private _dialogService: DialogService,
-    private _uploadFile: UploadFileService
+    private _uploadFile: UploadFileService,
+    private _activateRouter: ActivatedRoute
   ) {
     this.register = false;
     this.emptySearch = false;
@@ -87,7 +88,10 @@ export class CollaboratorsListComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.role = Constants.roles;
     this._subscriptionLoader = this._apiLoaderService.getProgress().subscribe(load => {this.load = load; });
-    this.getCollaborators();
+    if (this._activateRouter.snapshot.queryParams['consultancy']){
+      this._refId = this._activateRouter.snapshot.queryParams['consultancy'];
+      this.getCollaborators();
+    }
   }
 
   ngOnDestroy(): void{
@@ -116,16 +120,8 @@ export class CollaboratorsListComponent implements OnInit, OnDestroy {
 
   public getCollaborators(): void {
     this.id = CookieService.getCookie(Constants.IdSession);
-    let user = LocalStorageService.getItem(Constants.UserInSession);
-    let refId: undefined;
-    this.user=user;
-    if(user.role !== 7){
-      refId = user.refId;
-    }else{
-      const consultancy = LocalStorageService.getItem(Constants.ConsultancyInSession);
-      refId = consultancy.id;
-    }
-    this._api.listCollaborators(refId, 'true').subscribe(response=>{
+    this.user = LocalStorageService.getItem(Constants.UserInSession);
+    this._api.listCollaborators(this._refId, 'true').subscribe(response=>{
       switch (response.code) {
         case 200:
           let user = null;
@@ -235,7 +231,7 @@ export class CollaboratorsListComponent implements OnInit, OnDestroy {
           this.addSign = true;
           this._formSignature = new FormData();
           this._formSignature.append('path', '');
-          this._formSignature.append('fileName', 'signature-'+this.user.refId+'-'+new Date().getTime()+'.png');
+          this._formSignature.append('fileName', 'signature-'+this._refId+'-'+new Date().getTime()+'.png');
           this._formSignature.append('isImage', 'true');
           this._formSignature.append('file', response.blob);
           break;
@@ -249,7 +245,7 @@ export class CollaboratorsListComponent implements OnInit, OnDestroy {
     this.addImage = true;
     this._formImage = new FormData();
     this._formImage.append('path','');
-    this._formImage.append('filename','profileImage-'+this.user.refId+'-'+new Date().getTime()+'.png');
+    this._formImage.append('filename','profileImage-'+this._refId+'-'+new Date().getTime()+'.png');
     this._formImage.append('isImage', 'true');
     this._formImage.append('file', event.blob);
   }
@@ -322,7 +318,7 @@ export class CollaboratorsListComponent implements OnInit, OnDestroy {
       lastName: data.lastName,
       email: data.email,
       countryCode: data.code,
-      refId: this.user.refId,
+      refId: this._refId,
       country: this.country,
       jobTitle: data.jobTitle,
       phoneNumber: data.phoneNumber,
