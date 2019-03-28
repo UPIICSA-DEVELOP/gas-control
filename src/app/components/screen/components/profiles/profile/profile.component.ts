@@ -79,6 +79,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
   public newSignature: boolean;
   public newSig: any;
   private _subscriptionLoader: Subscription;
+  public isDirector: boolean;
   constructor(
     private _api: ApiService,
     private _formBuilder: FormBuilder,
@@ -94,6 +95,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
     private _shareService: ShareService,
     private _auth: AuthService
   ) {
+    this.isDirector = false;
     this.role = Constants.roles;
     this.protocol = 'http://';
     this.change = false;
@@ -408,6 +410,9 @@ export class ProfileComponent implements OnInit, OnDestroy {
         }
       });
     }
+    if(this.user.role === 1){
+      this.isDirector = true;
+    }
   }
 
   private initUserInfo(): void {
@@ -457,7 +462,9 @@ export class ProfileComponent implements OnInit, OnDestroy {
     data.code = data.code.replace('+','');
     this.user.name = data.name;
     this.user.lastName = data.lastName;
-    this.user.email = data.email;
+    if(this.user.role !== 1){
+      this.user.email = data.email;
+    }
     this.user.countryCode = data.code;
     this.user.country = this.country;
     this.user.phoneNumber = data.phoneNumber;
@@ -517,6 +524,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
             this.saveConsultancyData();
           break;
         default:
+          this.validateDisabledInputs(false);
           this._dialogService.alertDialog('No se pudo acceder', 'Se produjo un error de comunicación con el servidor', 'ACEPTAR');
           break;
       }
@@ -524,16 +532,17 @@ export class ProfileComponent implements OnInit, OnDestroy {
   }
 
   private saveConsultancyData():void{
-    this.validateDisabledInputs(true);
     this._api.updateConsultancy(this.consultancy).subscribe(response=>{
       switch (response.code){
         case 200:
           LocalStorageService.removeItem(Constants.NotSignature);
           this.change = false;
           this._snackBarService.openSnackBar('Información actualizada','OK',3000);
+          this.validateDisabledInputs(false);
           this._router.navigate(['/home']).then();
           break;
         default:
+          this.validateDisabledInputs(false);
           this._dialogService.alertDialog('No se pudo acceder', 'Se produjo un error de comunicación con el servidor', 'ACEPTAR');
           break;
       }
@@ -576,7 +585,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
 
   private validateDisabledInputs(disable?: boolean): void{
     if(this.user.role !== 1){
-      this.disabledInputs =true;
+      this.disabledInputs = true;
     }else{
       this.disabledInputs = disable;
     }

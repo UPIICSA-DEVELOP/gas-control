@@ -35,7 +35,7 @@
                 </mat-error>
               </mat-form-field>
               <mat-form-field class="inputs">
-                <input [disabled]="user.role === 1" formControlName="email" (blur)="validateEmailExist()" matInput placeholder="Email comercial" required type="email" aria-label="User email">
+                <input [attr.disabled]="isDirector?true:null" formControlName="email" (blur)="validateEmailExist()" matInput placeholder="Email comercial" required type="email" aria-label="User email">
                 <mat-error *ngIf="profileForm.controls['email'].hasError('required')">
                   Este campo es obligatorio
                 </mat-error>
