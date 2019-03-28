@@ -27,6 +27,7 @@ import {TermsComponent} from '@app/components/screen/child/terms/terms.component
 import {CookiesComponent} from '@app/components/screen/child/cookies/cookies.component';
 import {AuthRouterService} from '@app/core/services/auth/auth-router.service';
 import {ResetPassRouterService} from '@app/core/services/reset-pass/reset-pass-router.service';
+import {AdminNotificationsComponent} from '@app/components/admin/components/admin-notifications/admin-notifications.component';
 const URL_BASE = environment.url;
 
 export const appRoutes: Routes = [
@@ -141,7 +142,17 @@ export const appRoutes: Routes = [
     data: {
       title:'Administrador',
       url: URL_BASE
-    }
+    },
+    children: [
+      {
+        path: 'notifications',
+        component: AdminNotificationsComponent,
+        data: {
+          title: 'Notificaciones',
+          url: URL_BASE + 'admin/notifications'
+        }
+      }
+    ]
   },
   {
     path: 'signin',

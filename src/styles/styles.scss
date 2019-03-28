@@ -250,6 +250,23 @@ app-notifications{
   }
 }
 
+app-admin-notifications{
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  width: 30vw;
+  @media screen and (max-width: 1024px){
+    width: 35vw;
+  }
+  @media screen and (max-width: 900px){
+    width: 50vw;
+  }
+  @media screen and (max-width: 600px){
+    width: 100vw;
+  }
+}
+
 app-procedures{
   position: absolute;
   top: 0;
