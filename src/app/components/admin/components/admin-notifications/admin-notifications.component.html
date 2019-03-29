@@ -1,0 +1,53 @@
+<!--
+  ~  Copyright (C) MapLander S de R.L de C.V - All Rights Reserved
+  ~  Unauthorized copying of this file, via any medium is strictly prohibited
+  ~  Proprietary and confidential
+  -->
+
+<div id="admin-notifications">
+  <div class="tap">
+    <button mat-icon-button (click)="onCloseNotifications()">
+      <mat-icon>keyboard_arrow_right</mat-icon>
+    </button>
+  </div>
+  <div class="content">
+    <div class="head">
+      <span>NOTIFICACIONES</span>
+      <button mat-icon-button (click)="onCloseNotifications()">
+        <mat-icon>close</mat-icon>
+      </button>
+    </div>
+    <div class="container">
+      <div *ngIf="notifications; then notificationsList else loading"></div>
+      <ng-template #notificationsList>
+        <div *ngIf="notifications.length > 0; then cards else emptyList"></div>
+        <ng-template #cards>
+          <mat-card *ngFor="let item of notifications; let i = index">
+            <mat-card-content>
+              <div class="message-notify" (click)="navigateToDashboard(item.stationId, item.consultancyId)">
+                <div class="title">{{item.title}}</div>
+                <div class="body">{{item.body}}</div>
+              </div>
+              <div class="priority">
+                <button mat-icon-button matTooltip="Eliminar" (click)="deleteNotification(item.id, i)" [disabled]="isAdmin">
+                  <mat-icon>delete</mat-icon>
+                </button>
+                <div class="date">{{item.date[0]}} {{item.date[1]}} {{item.date[2]}}</div>
+              </div>
+            </mat-card-content>
+          </mat-card>
+        </ng-template>
+        <ng-template #emptyList>
+          <div class="empty">
+            <div>No tiene notificaciones en su lista</div>
+          </div>
+        </ng-template>
+      </ng-template>
+      <ng-template #loading>
+        <div class="load">
+          <mat-spinner></mat-spinner>
+        </div>
+      </ng-template>
+    </div>
+  </div>
+</div>

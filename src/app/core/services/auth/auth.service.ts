@@ -134,7 +134,7 @@ export class AuthService implements Resolve<any>{
 
   private static saveInfoUser(user: any){
     LocalStorageService.setItem(Constants.UserInSession, {
-      completeName: user.name+' '+user.lastName,
+      completeName: (user.role===7 && user.completeName)? user.completeName : user.name+' '+user.lastName,
       profileImage: (user.profileImage)?user.profileImage.thumbnail:null,
       role: user.role,
       refId: user.refId,

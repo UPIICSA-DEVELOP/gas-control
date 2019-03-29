@@ -14,6 +14,8 @@ import {CookieService} from '@app/core/services/cookie/cookie.service';
 import {UtilitiesService} from '@app/core/utilities/utilities.service';
 import {AddStationService} from '@app/components/screen/components/add-gas-station/add-station.service';
 import {LocalStorageService} from '@app/core/services/local-storage/local-storage.service';
+import {AuthService} from '@app/core/services/auth/auth.service';
+import {SessionStorageService} from '@app/core/services/session-storage/session-storage.service';
 
 @Component({
   selector: 'app-list-collaborators',
@@ -34,7 +36,8 @@ export class ListStationsComponent implements OnInit {
     private _snackBar: SnackBarService,
     private _dialogService: DialogService,
     private _api: ApiService,
-    private _addStation: AddStationService
+    private _addStation: AddStationService,
+    private _auth: AuthService
   ) {
     this._completeName = '';
     this.title = this._data.name;
@@ -81,11 +84,26 @@ export class ListStationsComponent implements OnInit {
 
   public addStation():void{
     this.close();
-    this._addStation.open();
+    const user = LocalStorageService.getItem(Constants.UserInSession);
+    user.refId =  user.refId? user.refId : this._data.id;
+    this._auth.updateUserInSession(user);
+    this._addStation.open().afterClosed().subscribe(()=>{
+      user.refId = null;
+      this._auth.updateUserInSession(user);
+    });
   }
 
-  public goToDashboard(): void{
+  public goToDashboard(station: any): void{
+    let stationsView = SessionStorageService.getItem(Constants.StationAdmin) || [];
+    if(stationsView){
+      stationsView.forEach(item => {
+        item.lastView = false;
+      });
+    }
+    stationsView.push({stationId: station.id, consultancyId: this._data.id, lastView: true});
+    SessionStorageService.setItem(Constants.StationAdmin, stationsView);
     LocalStorageService.setItem(Constants.ConsultancyInSession, this._data);
+    window.open('/#/home?station='+station.id,'_blank');
   }
 
   private getUtilities():void{

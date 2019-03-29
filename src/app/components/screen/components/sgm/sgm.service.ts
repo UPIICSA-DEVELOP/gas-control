@@ -16,6 +16,6 @@ export class SgmService {
   ) { }
 
   public open():MatDialogRef<SgmComponent>{
-    return this._matDialog.open(SgmComponent,{panelClass: 'sgm-and-sasisopa-panel', disableClose: true});
+    return this._matDialog.open(SgmComponent,{panelClass: 'sgm-panel', disableClose: true});
   }
 }

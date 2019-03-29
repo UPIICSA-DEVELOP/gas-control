@@ -13,6 +13,8 @@ import {SnackBarService} from '@app/core/services/snackbar/snackbar.service';
 import {Consultancy} from '@app/core/interfaces/interfaces';
 import {Subscription} from 'rxjs/Rx';
 import {environment} from '@env/environment';
+import {SessionStorageService} from '@app/core/services/session-storage/session-storage.service';
+import {Constants} from '@app/core/constants.core';
 
 
 @Injectable()
@@ -313,20 +315,32 @@ export class ApiService implements OnDestroy{
     if(onlyOneStationId){
       response1 = this.getStation(onlyOneStationId);
     }else{
-      switch (role) {
-        case 1:
-        case 2:
-        case 3:
-        case 7:
-          response1 = this.getConsultancyBasicData(userId, refId);
-          break;
-        case 4:
-          response1 = this.getLegalRepresentativeBasicData(refId, userId);
-          break;
-        case 5:
-        case 6:
-          response1 = this.getStationBasicData(userId);
-          break;
+      if(role === 7){
+        let stationId = undefined;
+        const stationsView = SessionStorageService.getItem(Constants.StationAdmin) || [];
+        if(stationsView){
+          stationsView.forEach(item=>{
+            if(item.lastView){
+              stationId = item.stationId
+            }
+          });
+          response1 = this.getStation(stationId);
+        }
+      }else{
+        switch (role) {
+          case 1:
+          case 2:
+          case 3:
+            response1 = this.getConsultancyBasicData(userId, refId);
+            break;
+          case 4:
+            response1 = this.getLegalRepresentativeBasicData(refId, userId);
+            break;
+          case 5:
+          case 6:
+            response1 = this.getStationBasicData(userId);
+            break;
+        }
       }
     }
     return forkJoin(response1, response2);
@@ -549,5 +563,11 @@ export class ApiService implements OnDestroy{
 
   public createIncidenceReportAndTask(task: any, stationId: string): Observable<any>{
     return this._http.post(ApiService.API_URL_COMPLETE + 'createIncidenceReportAndTask?stationId='+stationId+'&type=3', task);
+  }
+
+  public listNotificationsAdmin(id: string): Observable<any>{
+    let params = new HttpParams();
+    params = params.append('personId',id);
+    return this._http.get(ApiService.API_URL_COMPLETE + 'listNotificationsAdmin',{params: params});
   }
 }

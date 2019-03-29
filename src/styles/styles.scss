@@ -201,7 +201,21 @@ body{
   }
 }
 
-.sgm-and-sasisopa-panel{
+.sasisopa-panel{
+  mat-dialog-container{
+    min-width: 45vw;
+    max-height: 75vh;
+    padding: 0;
+    @media screen and (max-width: 1200px){
+      width: 50vw;
+    }
+    @media screen and (max-width: 800px){
+      width: 80vw;
+    }
+  }
+}
+
+.sgm-panel{
   mat-dialog-container{
     width: 35vw;
     padding: 0;
@@ -234,6 +248,23 @@ app-collaborators-list{
 }
 
 app-notifications{
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  width: 30vw;
+  @media screen and (max-width: 1024px){
+    width: 35vw;
+  }
+  @media screen and (max-width: 900px){
+    width: 50vw;
+  }
+  @media screen and (max-width: 600px){
+    width: 100vw;
+  }
+}
+
+app-admin-notifications{
   position: absolute;
   top: 0;
   bottom: 0;

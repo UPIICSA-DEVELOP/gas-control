@@ -104,10 +104,10 @@
             </ng-template>
           </app-upload-file>
         </ng-template>
-        <div class="text-sign">
+        <div *ngIf="!task.original.hwg" class="text-sign">
           Nombre y firma del responsable
         </div>
-        <div class="inputs">
+        <div *ngIf="!task.original.hwg" class="inputs">
           <div *ngIf="!editable; then showSign else loadSign"></div>
           <ng-template #showSign>
             <div class="signature-element">
@@ -142,6 +142,33 @@
     </div>
     <div *ngIf="taskItems && taskItems.length !== 0 && !editable">
       <mat-paginator [pageSize]="1" [length]="taskItems.length" [hidePageSize]="true" (page)="changeTask($event)" ></mat-paginator>
+    </div>
+    <div *ngIf="task.original.hwg" class="text-sign">
+      Nombre y firma del responsable
+    </div>
+    <div *ngIf="task.original.hwg" style="width: 50%; margin: 24px auto">
+      <div *ngIf="!editable; then showSign else loadSign"></div>
+      <ng-template #showSign>
+        <div class="signature-element">
+          <img *ngIf="compressorReport && compressorReport.signature" [src]="compressorReport.signature.thumbnail">
+          <div *ngIf="!compressorReport || !compressorReport.signature" style="width: 60%; height: 60px"></div>
+        </div>
+      </ng-template>
+      <ng-template #loadSign>
+        <div class="signature-element" (click)="loadSignature()" style="cursor: pointer" matTooltip="Cargar Firma">
+          <img *ngIf="signatureThumbnail" [src]="signatureThumbnail">
+          <div *ngIf="!signatureThumbnail" style="width: 60%; height: 60px"></div>
+        </div>
+      </ng-template>
+      <div class="divider"></div>
+      <div *ngIf="editable; then admonName else originalName"></div>
+      <ng-template #admonName>
+        <div class="name">{{name}}</div>
+      </ng-template>
+      <ng-template #originalName>
+        <div *ngIf="!compressorReport || !compressorReport.name" class="name">Nombre</div>
+        <div *ngIf="compressorReport && compressorReport.name" class="name">{{compressorReport.name}}</div>
+      </ng-template>
     </div>
     <div *ngIf="editable" class="finish-button">
       <button mat-flat-button type="submit" [color]="'primary'" [disabled]="load">

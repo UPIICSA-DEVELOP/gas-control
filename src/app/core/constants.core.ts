@@ -10,12 +10,13 @@ export class Constants {
   public static UserInSession = 'UserInSession';
   public static SessionToken = 'SessionToken';
   public static UpdatePassword = 'UpdatePassword';
-  public static NotCalendarTask = 'notCalendar';
-  public static NotSignature = 'notSign';
-  public static StationInDashboard = 'station';
-  public static ConsultancyInSession = 'consultancy';
+  public static NotCalendarTask = 'NotCalendar';
+  public static NotSignature = 'NotSign';
+  public static StationInDashboard = 'Station';
+  public static ConsultancyInSession = 'Consultancy';
   public static ErrorMessageHandler = 'Ha ocurrido un error, intente más tarde';
   public static REGEX_WEBSITE = '[a-z0-9]+([\\-\\.]{1}[a-z0-9]+)*\\.[a-z]{2,5}(:[0-9]{1,5})?(\\/.*)?$';
+  public static StationAdmin = 'Station-Admin';
 
   public static Filters = [
     'Todas',

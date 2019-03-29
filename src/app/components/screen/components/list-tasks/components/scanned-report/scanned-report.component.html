@@ -62,7 +62,7 @@
     <div class="text-sign">
       Nombre y firma del responsable
     </div>
-    <div style="width: 50%">
+    <div style="width: 50%; margin: 24px auto">
       <div *ngIf="!editable; then showSign else loadSign"></div>
       <ng-template #showSign>
         <div class="signature-element">
@@ -88,7 +88,7 @@
     </div>
   </div>
   <div *ngIf="taskItems && taskItems.length !== 0 && !editable">
-    <mat-paginator [pageSize]="1" [length]="taskItems.length" [hidePageSize]="true" (page)="changeTask($event)" ></mat-paginator>
+    <mat-paginator [pageSize]="1" [length]="taskItems.length" [hidePageSize]="true" (page)="changeTask($event)"></mat-paginator>
   </div>
   <div *ngIf="editable" class="finish-button">
     <button mat-flat-button type="submit" (click)="task.original.hwg? startValidateForm() : validateElements()" [color]="'primary'" [disabled]="load">

@@ -415,7 +415,7 @@ export class ListTasksComponent implements OnInit, DoCheck , OnDestroy{
   public onScroll(event: any):void{
     const element = event.srcElement;
     if(element.scrollHeight - element.scrollTop === element.clientHeight) {
-      if(!this.reportConfig.reportView && !this._firstGet){
+      if(!this.reportConfig.reportView && !this._firstGet && !this.load){
         if(this.others){
           this.getNotCalendarTask();
         }else{
