@@ -213,6 +213,7 @@ export class CompressorReportComponent implements OnInit, OnDestroy {
     this.date = UtilitiesService.convertDate(today.timeStamp);
     this.editable = true;
     this.name = user.completeName;
+    this._sharedService.setNotification({type: SharedTypeNotification.HwgActive, value: prepare ? prepare : false});
     if(!prepare){
       this._copyTask = this.compressorReport;
       this.compressorReport.signature = undefined;
