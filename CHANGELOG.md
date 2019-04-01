@@ -2,6 +2,26 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="1.0.0-beta.12"></a>
+# [1.0.0-beta.12](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/compare/v1.0.0-beta.11...v1.0.0-beta.12) (2019-04-01)
+
+
+### Bug Fixes
+
+* **Add Station:** remove duplicate button ([63eabeb](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/63eabeb))
+* **Administrator:** change implementation to navigate in dashboard with role 7 ([0ed2ca8](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/0ed2ca8))
+* **Authentic User:** solve error with token ([f262834](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/f262834))
+* **List Tasks:** Add validations to others module ([510b20e](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/510b20e))
+* **Others Modal:** modify class to open modals ([26187a2](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/26187a2))
+* **Signature-Modal:** solve error in block cancel button ([e981470](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/e981470))
+
+
+### Features
+
+* **Admin Notifications:** add notifications to role 7 ([0c1cfac](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/0c1cfac))
+
+
+
 <a name="1.0.0-beta.11"></a>
 # [1.0.0-beta.11](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/compare/v1.0.0-beta.10...v1.0.0-beta.11) (2019-03-29)
 
