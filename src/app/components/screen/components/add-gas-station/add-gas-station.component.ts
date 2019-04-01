@@ -728,7 +728,7 @@ export class AddGasStationComponent implements OnInit, OnDestroy {
                   this._dialogService.alertDialog(
                     'Información',
                     'Hemos enviado un email de validación de cuenta a: ' + this.legalRepresentative.email,
-                    'ACEPTAR').afterClosed().subscribe(response=>{
+                    'ACEPTAR').afterClosed().subscribe(() => {
                       this.step = 0; this.listExist = true;
                       this._modalScroll.nativeElement.scroll({top: 0});
                     this.load_two = false;
@@ -757,7 +757,7 @@ export class AddGasStationComponent implements OnInit, OnDestroy {
                   this._dialogService.alertDialog(
                     'Información',
                     'Hemos enviado un email de validación de cuenta a: ' + this.legalRepresentative.email,
-                    'ACEPTAR').afterClosed().subscribe(response=>{
+                    'ACEPTAR').afterClosed().subscribe(() => {
                       this.step = 0; this.listExist = true;
                       this._modalScroll.nativeElement.scroll({top: 0});
                       this.load_two = false;
@@ -793,7 +793,7 @@ export class AddGasStationComponent implements OnInit, OnDestroy {
                   this._dialogService.alertDialog(
                     'Información',
                     'Hemos enviado un email de validación de cuenta a: ' + this.manger.email,
-                    'ACEPTAR').afterClosed().subscribe(response=>{
+                    'ACEPTAR').afterClosed().subscribe(() => {
                       this.step = 0;
                       this._modalScroll.nativeElement.scroll({top: 0});
                       this.load_two = false;
@@ -822,7 +822,7 @@ export class AddGasStationComponent implements OnInit, OnDestroy {
                   this._dialogService.alertDialog(
                     'Información',
                     'Hemos enviado un email de validación de cuenta a: ' + this.manger.email,
-                    'ACEPTAR').afterClosed().subscribe(response=>{
+                    'ACEPTAR').afterClosed().subscribe(() => {
                       this.step = 0;
                       this._modalScroll.nativeElement.scroll({top: 0});
                       this.load_two = false;
@@ -844,6 +844,7 @@ export class AddGasStationComponent implements OnInit, OnDestroy {
     this._api.createStation(this.station).subscribe(response=>{
       switch (response.code){
         case 200:
+          this._snackBarService.openSnackBar('Estación creada con exito', 'OK', 3000);
           this.station.id = response.item.id;
           this.step = 3;
           break;
