@@ -126,13 +126,13 @@ export class FeReportComponent implements OnInit, OnDestroy {
   private patchForm(task: any): void {
     this.feReport = {
       date: task.date || undefined,
-      endTime: task.endTime || undefined,
+      endTime: task.endTime,
       fireExtinguishers: task.fireExtinguishers || undefined,
       folio: task.folio || undefined,
       id: task.id || undefined,
       name: task.name || undefined,
       signature: task.signature || undefined,
-      startTime: task.startTime || undefined,
+      startTime: task.startTime,
       taskId: task.taskId || undefined
     };
     this.feForm.patchValue({

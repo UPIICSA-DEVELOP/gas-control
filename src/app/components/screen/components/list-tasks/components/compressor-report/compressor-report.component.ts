@@ -133,7 +133,7 @@ export class CompressorReportComponent implements OnInit, OnDestroy {
       brand: task.brand || undefined,
       controlNumber: task.controlNumber || undefined,
       date: task.date || undefined,
-      endTime: task.endTime || undefined,
+      endTime: task.endTime,
       fileCS: task.fileCS || undefined,
       folio: task.folio || undefined,
       hwgReport: task.hwgReport || undefined,
@@ -146,7 +146,7 @@ export class CompressorReportComponent implements OnInit, OnDestroy {
       purge: task.purge || undefined,
       securityValve: task.securityValve || undefined,
       signature: task.signature || undefined,
-      startTime: task.startTime || undefined,
+      startTime: task.startTime,
       taskId: task.taskId || undefined
     };
     this.compForm.patchValue({

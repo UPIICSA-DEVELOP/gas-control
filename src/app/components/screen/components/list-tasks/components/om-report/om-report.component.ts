@@ -146,7 +146,7 @@ export class OmReportComponent implements OnInit, OnDestroy {
       cottonClothes: task.cottonClothes || undefined,
       date: task.date || undefined,
       description: task.description || undefined,
-      endTime: task.endTime || undefined,
+      endTime: task.endTime,
       faceMask: task.faceMask || undefined,
       fileCS: task.fileCS || undefined,
       folio: task.folio || undefined,
@@ -166,7 +166,7 @@ export class OmReportComponent implements OnInit, OnDestroy {
       procedures: task.procedures || undefined,
       protectiveGoggles: task.protectiveGoggles || undefined,
       signature: task.signature || undefined,
-      startTime: task.startTime || undefined,
+      startTime: task.startTime,
       taskId: task.taskId || undefined,
       toolsAndMaterials: task.toolsAndMaterials || undefined
     };

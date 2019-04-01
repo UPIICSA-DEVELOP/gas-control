@@ -135,7 +135,7 @@ export class IncidenceReportComponent implements OnInit, OnDestroy {
       procedures: task.procedures || [''],
       signature: task.signature || undefined,
       taskId: task.taskId || undefined,
-      time: task.time || undefined
+      time: task.time
     };
     this.incidenceForm.patchValue({
       time: this._formatTimePipe.transform(this.incidenceReport.time),

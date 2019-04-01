@@ -118,7 +118,7 @@ export class FrReportComponent implements OnInit, OnDestroy {
     this.frReport = {
       date: task.date || undefined,
       diesel: task.diesel || undefined,
-      endTime: task.endTime || undefined,
+      endTime: task.endTime,
       fileCS: task.fileCS || undefined,
       folio: task.folio || undefined,
       id: task.id || undefined,
@@ -130,7 +130,7 @@ export class FrReportComponent implements OnInit, OnDestroy {
       remission: task.remission || undefined,
       remissionNumber: task.remissionNumber,
       signature: task.signature || undefined,
-      startTime: task.startTime || undefined,
+      startTime: task.startTime,
       taskId: task.taskId || undefined,
       volumetric: task.volumetric || undefined
     };
