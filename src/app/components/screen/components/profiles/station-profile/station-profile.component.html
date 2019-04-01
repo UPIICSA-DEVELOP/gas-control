@@ -130,9 +130,7 @@
                   <div class="fuel">
                     <div class="fuel-selector">
                       <mat-form-field class="width-form">
-                        <mat-select placeholder="Capacidad (lts)" type="number" aria-label="Station tank fuel capacity" (selectionChange)="onArrayChange($event)" [(ngModel)]="tank.capacity" [ngModelOptions]="{standalone: true}" [disabled]=" user.role===6">
-                          <mat-option *ngFor="let item of capacities" [value]="item.value">{{item.text}}</mat-option>
-                        </mat-select>
+                        <input matInput placeholder="Capacidad (lts)" type="number" aria-label="Station tank fuel capacity" (change)="onArrayChange($event)" [(ngModel)]="tank.capacity" [ngModelOptions]="{standalone: true}">
                       </mat-form-field>
                       <mat-form-field class="width-form">
                         <mat-select placeholder="Año de instalación" (selectionChange)="onArrayChange($event)" [(ngModel)]="tank.year" [ngModelOptions]="{standalone: true}" [disabled]="user.role===6">
