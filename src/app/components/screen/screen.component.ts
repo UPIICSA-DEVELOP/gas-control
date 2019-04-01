@@ -27,7 +27,6 @@ import {SgmService} from '@app/components/screen/components/sgm/sgm.service';
 })
 export class ScreenComponent implements OnInit, AfterViewInit, OnDestroy{
 
-  public stationList: any[];
   public stationActive: any;
   public role: number;
   public menu: boolean;
@@ -47,7 +46,6 @@ export class ScreenComponent implements OnInit, AfterViewInit, OnDestroy{
     private _metaService: MetaService
   ) {
     this.menu = true;
-    this.stationList = [];
   }
 
   ngOnInit() {
@@ -105,10 +103,11 @@ export class ScreenComponent implements OnInit, AfterViewInit, OnDestroy{
   private validateSignatureUser(): void{
     if(LocalStorageService.getItem(Constants.NotSignature)){
       const user = LocalStorageService.getItem(Constants.UserInSession);
+      this.role = user.role;
       this._dialogService.alertDialog(
         'Información',
         'Para continuar es necesario registrar su firma digital',
-        'REGISTRAR').afterClosed().subscribe(response =>{
+        'REGISTRAR').afterClosed().subscribe(() =>{
         LocalStorageService.setItem(Constants.NotSignature, true);
         switch (user.role) {
           case 1:
@@ -122,7 +121,8 @@ export class ScreenComponent implements OnInit, AfterViewInit, OnDestroy{
             this._router.navigate(['/home/profile/user']).then();
             break;
         }
-      })
+        this.getDashboardInformation(this._stationId);
+      });
     }else{
       this.getDashboardInformation(this._stationId);
     }
@@ -141,65 +141,11 @@ export class ScreenComponent implements OnInit, AfterViewInit, OnDestroy{
             case 2:
             case 3:
             case 4:
-              if(onlyOneStationId){
-                switch(response[0].code){
-                  case 200:
-                    this.stationList = response[0].item;
-                    this.stationActive = this.stationList;
-                    LocalStorageService.setItem(Constants.StationInDashboard, {id: this.stationActive.id, name: this.stationActive.businessName});
-                    if (this.stationActive){
-                      if(!this.validateTaskCreated()){
-                        this.openTaskCalendar();
-                      }else{
-                        this.createTasks();
-                      }
-                    }
-                    break;
-                  default:
-                    this._router.navigate(['/home']).then();
-                    this.getDashboardInformation(null);
-                    break;
-                }
-              }else{
-                if(response[0].item.stationLites){
-                  this.stationList = response[0].item.stationLites;
-                  this.stationActive = (Array.isArray(this.stationList)?this.stationList[0]:this.stationList);
-                  LocalStorageService.setItem(Constants.StationInDashboard, {id: this.stationActive.id, name: this.stationActive.businessName});
-                }else{
-                  this.stationList = undefined;
-                  this.stationActive = undefined;
-                }
-                LocalStorageService.setItem(Constants.ConsultancyInSession, {id:response[0].item.consultancy.id, name: response[0].item.consultancy.businessName});
-                if (this.stationActive){
-                  if(!this.validateTaskCreated()){
-                    this.openTaskCalendar();
-                  }else{
-                    this.createTasks();
-                  }
-                }
-              }
+              this.prepareDashboardToConsultancy(response[0], onlyOneStationId);
               break;
             case 5:
             case 6:
-              if(onlyOneStationId){
-                this.stationList = response[0].item;
-                this.stationActive = this.stationList;
-                LocalStorageService.setItem(Constants.StationInDashboard, {id: this.stationActive.id, name: this.stationActive.businessName});
-                if(!this.validateTaskCreated()){
-                  this.openTaskCalendar();
-                }else{
-                  this.createTasks();
-                }
-              }else{
-                this.stationList = response[0].item.station;
-                this.stationActive = this.stationList;
-                LocalStorageService.setItem(Constants.StationInDashboard, {id: this.stationActive.id, name: this.stationActive.businessName});
-                if(!this.validateTaskCreated()){
-                  this.openTaskCalendar();
-                }else{
-                  this.createTasks();
-                }
-              }
+              this.prepareDashboardToStationWorkers(response[0], onlyOneStationId);
               break;
             case 7:
               this.stationActive = response[0].item;
@@ -207,7 +153,9 @@ export class ScreenComponent implements OnInit, AfterViewInit, OnDestroy{
               break;
           }
         }
-        this.setStationMetas(this.stationActive);
+        if(this.stationActive){
+          this.setStationMetas(this.stationActive);
+        }
       });
     }
   }
@@ -283,6 +231,77 @@ export class ScreenComponent implements OnInit, AfterViewInit, OnDestroy{
       this._router.navigate(['/home/notifications'], {queryParams:{id: this.stationActive.id}}).then();
     }else{
       this._router.navigate(['/home/notifications'], {queryParams:{id: this.stationActive.id, admin: this.stationActive.idLegalRepresentative}}).then();
+    }
+  }
+
+  private prepareDashboardToConsultancy(response: any, onlyOneStation?: any):void{
+    if(onlyOneStation){
+      switch (response.code){
+        case 200:
+          this.stationActive = response.item;
+          LocalStorageService.setItem(Constants.StationInDashboard, {id: this.stationActive.id, name: this.stationActive.businessName});
+          break;
+        default:
+          this.getDashboardInformation(null);
+          break;
+      }
+    }else{
+      switch (response.code){
+        case 200:
+          LocalStorageService.setItem(Constants.ConsultancyInSession, {id:response.item.consultancy.id, name: response.item.consultancy.businessName});
+          if(response.item.stationLites){
+            this.stationActive = response.item.stationLites[0];
+            LocalStorageService.setItem(Constants.StationInDashboard, {id: this.stationActive.id, name: this.stationActive.businessName});
+          }else{
+            this.stationActive = undefined
+          }
+          break;
+        default:
+          this.stationActive = undefined;
+          break;
+      }
+    }
+    if(this.stationActive){
+      this.validateTaskInStation();
+    }
+  }
+
+  private prepareDashboardToStationWorkers(response: any, onlyOneStation?: any): void{
+    if(onlyOneStation){
+      switch (response.code){
+        case 200:
+          this.stationActive = response.item;
+          LocalStorageService.setItem(Constants.StationInDashboard, {id: this.stationActive.id, name: this.stationActive.businessName});
+          break;
+        default:
+          this.getDashboardInformation(null);
+          break;
+      }
+    }else{
+      switch (response.code){
+        case 200:
+          if(response.item.station){
+            this.stationActive = response.item.station;
+            LocalStorageService.setItem(Constants.StationInDashboard, {id: this.stationActive.id, name: this.stationActive.businessName});
+          }else{
+            this.stationActive = undefined;
+          }
+          break;
+        default:
+          break;
+      }
+    }
+    if(this.stationActive){
+      this.validateTaskInStation();
+    }
+  }
+
+
+  private validateTaskInStation():void{
+    if(!this.validateTaskCreated()){
+      this.openTaskCalendar();
+    }else{
+      this.createTasks();
     }
   }
 
