@@ -12,15 +12,15 @@
 <div id="home">
   <div class="background" *ngIf="!stationActive"></div>
   <div *ngIf="!stationActive; then emptyDash else dashboard"></div>
-    <ng-template #emptyDash>
-      <div class="empty" *ngIf="role && (role <= 3 || role === 7)">
-        <div class="text">Aún no existen Estaciones de Servicio a cargo de la Consultora</div>
-        <button mat-button class="button" (click)="addStation()">
-          <mat-icon>add</mat-icon>
-          <span>AGREGAR ESTACIÓN</span>
-        </button>
-      </div>
-    </ng-template>
+  <ng-template #emptyDash>
+    <div class="empty" *ngIf="!load">
+      <div class="text" *ngIf="role && (role <= 3 || role === 7)">Aún no existen Estaciones de Servicio a cargo de la Consultora</div>
+      <button mat-button class="button" (click)="addStation()" *ngIf="role && (role <= 3 || role === 7)">
+        <mat-icon>add</mat-icon>
+        <span>AGREGAR ESTACIÓN</span>
+      </button>
+    </div>
+  </ng-template>
   <ng-template #dashboard>
     <mat-drawer-container>
       <mat-drawer class="menu" mode="side" [opened]="true" [disableClose]="true">

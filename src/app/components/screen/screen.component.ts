@@ -19,6 +19,7 @@ import {SharedNotification, SharedService, SharedTypeNotification} from '@app/co
 import {SasisopaService} from '@app/components/screen/components/sasisopa/sasisopa.service';
 import {MetaService} from '@app/core/services/meta/meta.service';
 import {SgmService} from '@app/components/screen/components/sgm/sgm.service';
+import {ApiLoaderService} from '@app/core/services/api/api-loader.service';
 
 @Component({
   selector: 'app-screen',
@@ -31,10 +32,13 @@ export class ScreenComponent implements OnInit, AfterViewInit, OnDestroy{
   public role: number;
   public menu: boolean;
   public utils: any;
+  public load: boolean;
   private _stationId: any;
   private _subscriptionShared: Subscription;
+  private _subscriptionLoader: Subscription;
   constructor(
     private _api: ApiService,
+    private _apiLoader: ApiLoaderService,
     private _router: Router,
     private _activateRoute: ActivatedRoute,
     private _addStationService: AddStationService,
@@ -45,6 +49,7 @@ export class ScreenComponent implements OnInit, AfterViewInit, OnDestroy{
     private _sgmService: SgmService,
     private _metaService: MetaService
   ) {
+    this._subscriptionLoader = this._apiLoader.getProgress().subscribe(load=>{this.load = load});
     this.menu = true;
   }
 
@@ -150,6 +155,7 @@ export class ScreenComponent implements OnInit, AfterViewInit, OnDestroy{
             case 7:
               this.stationActive = response[0].item;
               LocalStorageService.setItem(Constants.StationInDashboard, {id: this.stationActive.id, name: this.stationActive.businessName});
+              this.validateTaskInStation();
               break;
           }
         }
