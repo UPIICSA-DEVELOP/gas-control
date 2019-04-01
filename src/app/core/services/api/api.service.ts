@@ -43,7 +43,7 @@ export class ApiService implements OnDestroy{
     const user = {
       email: options.email,
       password: options.password,
-      token: (options.token)?options.token:null,
+      token: (options.token)?options.token:undefined,
       type: 3
     };
     return this._http.post(ApiService.API_URL_COMPLETE + 'signIn', user);
@@ -66,7 +66,7 @@ export class ApiService implements OnDestroy{
    public signInWithLink(id: string, token?: string): Observable<any> {
     const options = {
       id: id,
-      token: token?token: null,
+      token: token?token: undefined,
       type: 3
     };
     return this._http.post(ApiService.API_URL_COMPLETE + 'signInWithLink', options);
@@ -569,5 +569,19 @@ export class ApiService implements OnDestroy{
     let params = new HttpParams();
     params = params.append('personId',id);
     return this._http.get(ApiService.API_URL_COMPLETE + 'listNotificationsAdmin',{params: params});
+  }
+
+  public getSasisopa(stationId: string): Observable<any>{
+    let params = new HttpParams();
+    params = params.append('stationId', stationId);
+    return this._http.get(ApiService.API_URL_COMPLETE + 'getSasisopa', {params: params});
+  }
+
+  public saveSasisopaDocument(item: any): Observable<any>{
+    return this._http.post(ApiService.API_URL_COMPLETE + 'saveSasisopaDocument', item);
+  }
+
+  public saveBrigade(brigadeElems: any): Observable<any>{
+    return this._http.post(ApiService.API_URL_COMPLETE + 'saveBrigade', brigadeElems);
   }
 }

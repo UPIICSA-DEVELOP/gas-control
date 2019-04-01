@@ -90,6 +90,7 @@ export class AuthService implements Resolve<any>{
           break;
       }
     });
+    LocalStorageService.removeItem(Constants.ConsultancyInSession);
     LocalStorageService.removeItem(Constants.SessionToken);
     LocalStorageService.removeItem(Constants.NotSignature);
     CookieService.deleteCookie(Constants.IdSession);
@@ -108,7 +109,7 @@ export class AuthService implements Resolve<any>{
       const data = {
         email: user.email,
         password: user.password,
-        token: LocalStorageService.getItem(Constants.SessionToken) || '123',
+        token: LocalStorageService.getItem(Constants.SessionToken) || undefined,
         type: 3
       };
       this._api.signIn(data).subscribe(response =>{
@@ -151,5 +152,6 @@ export class AuthService implements Resolve<any>{
     LocalStorageService.removeItem(Constants.NotSignature);
     LocalStorageService.removeItem(Constants.NotCalendarTask);
     LocalStorageService.removeItem(Constants.StationInDashboard);
+    LocalStorageService.removeItem(Constants.ConsultancyInSession);
   }
 }
