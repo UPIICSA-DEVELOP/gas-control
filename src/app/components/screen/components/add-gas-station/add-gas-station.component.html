@@ -156,9 +156,7 @@
                       <div class="fuel">
                         <div class="fuel-selector">
                           <mat-form-field class="width-form">
-                            <mat-select placeholder="Capacidad (lts)" type="number" aria-label="Station tank fuel capacity" [(ngModel)]="tank.capacity" [ngModelOptions]="{standalone: true}">
-                              <mat-option *ngFor="let item of capacities" [value]="item.value">{{item.text}}</mat-option>
-                            </mat-select>
+                            <input matInput placeholder="Capacidad (lts)" type="number" aria-label="Station tank fuel capacity" [(ngModel)]="tank.capacity" [ngModelOptions]="{standalone: true}">
                           </mat-form-field>
                           <mat-form-field class="width-form">
                             <mat-select placeholder="Año de instalación" [(ngModel)]="tank.year" [ngModelOptions]="{standalone: true}">
@@ -589,12 +587,10 @@
                     <div class="formHead">Contacto de emergencia</div>
                     <div class="extra-data">
                       <mat-form-field class="inputs">
-                        <input formControlName="contactName" matInput
-                               placeholder="Nombre" type="text" aria-label="User emergency contact name">
+                        <input formControlName="contactName" matInput placeholder="Nombre" type="text" aria-label="User emergency contact name">
                       </mat-form-field>
                       <mat-form-field class="inputs">
-                        <input formControlName="contactPhoneNumber" matInput
-                               placeholder="Número celular" type="tel" aria-label="User emergency contact phone number">
+                        <input formControlName="contactPhoneNumber" matInput placeholder="Número celular" type="tel" aria-label="User emergency contact phone number">
                         <mat-error *ngIf="newManager.controls['contactPhoneNumber'].hasError('minlength')">
                           Se requieren de 8 a 13 dígitos
                         </mat-error>
@@ -626,7 +622,7 @@
               <div class="priority" *ngIf="task.level===1" style="background-color:#257602"></div>
               <mat-card-content style="display: flex; align-items: center;">
                 <div class="calendar-task">
-                  <input [min]="tomorrow" [matDatepicker]="picker" style="width: 0;border: 0;" [(ngModel)]="calendar[i]">
+                  <input [min]="tomorrow" [matDatepicker]="picker" style="width: 0;border: 0;" [(ngModel)]="calendar[i]" (ngModelChange)="blockEnd($event)">
                   <button mat-icon-button *ngIf="!calendar[i]" (click)="picker.open()">
                     <mat-icon>update</mat-icon>
                   </button>
@@ -649,7 +645,7 @@
             </mat-card>
           </div>
           <div class="form-button">
-            <button mat-flat-button aria-label="LogIn" [color]="'primary'" [disabled]="blockEnd()" (click)="validateCompleteCalendar()" mat-button>FINALIZAR</button>
+            <button mat-flat-button aria-label="LogIn" [color]="'primary'" [disabled]="taskNotCalendar" (click)="validateCompleteCalendar()" mat-button>FINALIZAR</button>
           </div>
         </div>
       </div>

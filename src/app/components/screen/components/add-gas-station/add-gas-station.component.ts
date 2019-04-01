@@ -105,13 +105,13 @@ export class AddGasStationComponent implements OnInit, OnDestroy {
   public zone: string[];
   public frequency: string[];
   public priority: string[];
-  public capacities: any[];
   public legalId: string;
   public managerId: string;
   public legalName: string;
   public managerName: string;
   public yearSelector: number[];
   public load_two: boolean;
+  public taskNotCalendar: boolean;
   private _formImage:FormData;
   private _formSignature: FormData;
   private _formFile: FormData;
@@ -137,10 +137,10 @@ export class AddGasStationComponent implements OnInit, OnDestroy {
     private _sharedService: SharedService,
     private _dialogRef: MatDialogRef<AddGasStationComponent>
   ) {
+    this.taskNotCalendar = true;
     this.load_two = false;
     this.yearSelector = [];
     this.listExist = true;
-    this.capacities = Constants.Capacities;
     this.bloodGroup = Constants.bloodGroup;
     this.frequency = Constants.Frecuency;
     this.priority = Constants.Level;
@@ -177,7 +177,6 @@ export class AddGasStationComponent implements OnInit, OnDestroy {
     this.dispensers.push({hoses: undefined, identifier: undefined, magna: false, premium: false, diesel: false});
     this.tanks.push({capacity: undefined, fuelType: undefined, year: undefined});
     this.workShifts.push({start: undefined, end: undefined});
-    this.getListRepresentative();
     this._subscriptionLoader = this._apiLoaderService.getProgress().subscribe(load=>{this.load = load});
   }
 
@@ -980,11 +979,16 @@ export class AddGasStationComponent implements OnInit, OnDestroy {
             this._sharedService.setNotification({type: SharedTypeNotification.CreationTask,value:response.item});
           });
           break;
+        default:
+          this._snackBarService.openSnackBar('Ha ocurrido un error, por favor, intente de nuevo', 'OK', 3000);
+          this.taskNotCalendar = false;
+          break;
       }
     });
   }
 
   public validateCompleteCalendar():void{
+    this.taskNotCalendar = true;
     for(let i = 0; i<this.calendar.length; i++){
       if(!this.calendar[i]){
         this._snackBarService.openSnackBar('Para continuar es necesario programar todas las tareas','OK', 3000);
@@ -1071,13 +1075,13 @@ export class AddGasStationComponent implements OnInit, OnDestroy {
     }
   }
 
-  public blockEnd():boolean{
+  public blockEnd(ev: any):void{
+    this.taskNotCalendar = false;
     for(let i = 0; i<this.calendar.length; i++){
       if(!this.calendar[i]){
-        return true;
+        this.taskNotCalendar = true;
       }
     }
-    return false;
   }
 
   public changeDate(ev: any, index: number, isStart: boolean):void{
