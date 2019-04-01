@@ -235,43 +235,45 @@ export class ListTasksComponent implements OnInit, DoCheck , OnDestroy{
   }
 
   public dateFilter(): void {
-    this._api.getStationTask(this.station.stationTaskId).subscribe(response => {
-      switch (response.code) {
-        case 200:
-          this._creationDate = response.item.creationDate;
-          const config: DateRangeOptions = {
-            minDate: new Date((this._creationDate).toString().slice(0, 4) + '-' + (this._creationDate).toString().slice(4, 6) + '-' + (this._creationDate).toString().slice(6, 8)),
-            maxDate: new Date(((Number((this._creationDate).toString().slice(0, 4))) + 1).toString() + '-' + (this._creationDate).toString().slice(4, 6) + '-' + (this._creationDate).toString().slice(6, 8))
-          };
-          this._dateService.open(config).afterClosed().subscribe(response => {
-            switch (response.code) {
-              case 1:
-                this.today = (response.startDate === response.endDate);
-                this.startDate = response.startDate;
-                this.endDate = response.endDate;
-                if (this.startDate.toLocaleDateString() === this.endDate.toLocaleDateString()) {this.today = true;}
-                this._firstOpen = false;
-                this.start = UtilitiesService.createPersonalTimeStamp(this.startDate);
-                this.end = UtilitiesService.createPersonalTimeStamp(this.endDate);
-                if(this.others){
-                  this._tokenTwo = undefined;
-                  this.notCalendarTasks = [];
-                  this.getNotCalendarTask()
-                }else{
-                  this._token = undefined;
-                  this.listTask = {
-                    historyTasks: [],
-                    previousTasks: [],
-                    todayTasks: []
-                  };
-                  this.getStationTask();
-                }
-                break;
-            }
-          });
-          break;
-      }
-    });
+    if(this.station.stationTaskId){
+      this._api.getStationTask(this.station.stationTaskId).subscribe(response => {
+        switch (response.code) {
+          case 200:
+            this._creationDate = response.item.creationDate;
+            const config: DateRangeOptions = {
+              minDate: new Date((this._creationDate).toString().slice(0, 4) + '-' + (this._creationDate).toString().slice(4, 6) + '-' + (this._creationDate).toString().slice(6, 8)),
+              maxDate: new Date(((Number((this._creationDate).toString().slice(0, 4))) + 1).toString() + '-' + (this._creationDate).toString().slice(4, 6) + '-' + (this._creationDate).toString().slice(6, 8))
+            };
+            this._dateService.open(config).afterClosed().subscribe(response => {
+              switch (response.code) {
+                case 1:
+                  this.today = (response.startDate === response.endDate);
+                  this.startDate = response.startDate;
+                  this.endDate = response.endDate;
+                  if (this.startDate.toLocaleDateString() === this.endDate.toLocaleDateString()) {this.today = true;}
+                  this._firstOpen = false;
+                  this.start = UtilitiesService.createPersonalTimeStamp(this.startDate);
+                  this.end = UtilitiesService.createPersonalTimeStamp(this.endDate);
+                  if(this.others){
+                    this._tokenTwo = undefined;
+                    this.notCalendarTasks = [];
+                    this.getNotCalendarTask()
+                  }else{
+                    this._token = undefined;
+                    this.listTask = {
+                      historyTasks: [],
+                      previousTasks: [],
+                      todayTasks: []
+                    };
+                    this.getStationTask();
+                  }
+                  break;
+              }
+            });
+            break;
+        }
+      });
+    }
   }
 
   public taskFilter(): void {
@@ -365,21 +367,23 @@ export class ListTasksComponent implements OnInit, DoCheck , OnDestroy{
       type: type || '1',
       cursor: this._tokenTwo
     };
-    this._api.listUTask(this.filters).subscribe(response=>{
-      switch (response.code){
-        case 200:
-          this._tokenTwo = response.nextPageToken;
-          if(response.items){
-            this.compareNotCalendarTasks(response.items);
-          }else{
+    if(this.station.stationTaskId){
+      this._api.listUTask(this.filters).subscribe(response=>{
+        switch (response.code){
+          case 200:
+            this._tokenTwo = response.nextPageToken;
+            if(response.items){
+              this.compareNotCalendarTasks(response.items);
+            }else{
+              this.notCalendarTasks = [];
+            }
+            break;
+          default:
             this.notCalendarTasks = [];
-          }
-          break;
-        default:
-          this.notCalendarTasks = [];
-          break;
-      }
-    });
+            break;
+        }
+      });
+    }
   }
 
   private compareNotCalendarTasks(tasks: any):void{
@@ -400,7 +404,6 @@ export class ListTasksComponent implements OnInit, DoCheck , OnDestroy{
   }
 
   public goBackList(): void{
-    this._modalScroll.nativeElement.scroll({top: 0});
     this.reportConfig = {reportView: false, taskElement: null, typeReportView: 0, status: 0};
   }
 
