@@ -12,6 +12,7 @@ import {UtilitiesService} from '@app/core/utilities/utilities.service';
 import {SnackBarService} from '@app/core/services/snackbar/snackbar.service';
 import {DeviceDetectorService} from '@app/core/services/device-detector/device-detector.service';
 import {LocalStorageService} from '@app/core/services/local-storage/local-storage.service';
+import {Constants} from '@app/core/constants.core';
 
 @Component({
   selector: 'app-signature-pad',
@@ -31,7 +32,7 @@ export class SignaturePadComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.disable = LocalStorageService.getItem('notSign');
+    this.disable = LocalStorageService.getItem(Constants.NotSignature);
     if (isPlatformBrowser(this._platformId)) {
       const container = this._document.getElementById('pad');
       this.canvas = container.querySelector('canvas');
