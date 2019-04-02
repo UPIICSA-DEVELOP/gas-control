@@ -9,6 +9,8 @@ import * as path from "path";
 import * as compression from 'compression';
 import * as nconfg from 'nconf';
 import * as express from 'express';
+import {ServerLite} from './server_lite';
+import {Logger} from '../logger';
 
 export class ServerStandard {
 
@@ -42,6 +44,7 @@ export class ServerStandard {
     this._port = process.env.PORT || nconfg.get('PORT') || 8090;
     this.app.use(ServerStandard.globalHeaders);
     this.app.use(ServerStandard.handlerErrors);
+    this.createLogger();
     this.app.use(compression({level: 9}));
     this.app.use('/.well-known', express.static(__dirname + '/.well-known'));
     this.configRender();
@@ -63,7 +66,7 @@ export class ServerStandard {
   }
 
   private configViews(): void{
-    const appServer = require('../dist/server/main');
+    const appServer = require('../../dist/server/main');
     this.app.engine('html', ngUniversal.ngExpressEngine({
       bootstrap: appServer.AppServerModuleNgFactory
     }));
@@ -84,6 +87,19 @@ export class ServerStandard {
       console.log(`Current environment ${nconfg.get('ENV') || 'dev'}`);
       console.log(`Listening server standard on http://localhost:${this._port}`);
     });
+  }
+
+  private createLogger(): void{
+    const morgan = require('morgan');
+    const logger = new Logger();
+    this.app.use(morgan('combined', { stream: logger.init().stream, skip: ServerStandard.skipLog }));
+  }
+
+  private static skipLog(req, res): boolean{
+    let url = req.url;
+    if(url.indexOf('?')>0)
+      url = url.substr(0,url.indexOf('?'));
+    return url.match(/(js|jpg|png|ico|css|woff|woff2|eot)$/ig);
   }
 
   private static globalHeaders(req: any, res: any, next: any): void{

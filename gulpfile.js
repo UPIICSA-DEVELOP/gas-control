@@ -12,7 +12,7 @@ gulp.task('clean:zip', function () {
 
 gulp.task('templates', function() {
   return gulp.src([
-    './endpoints/templates/*',
+    './endpoints/templates/**/**',
   ]).pipe(gulp.dest('./dist/endpoints/templates'));
 });
 

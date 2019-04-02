@@ -8,6 +8,8 @@ import * as path from "path";
 import * as compression from 'compression';
 import * as nconfg from 'nconf';
 import * as express from 'express';
+import {App} from '../server';
+import {Logger} from '../logger';
 
 export class ServerLite{
 
@@ -40,12 +42,26 @@ export class ServerLite{
     this._port = process.env.PORT || nconfg.get('PORT') || 8090;
     this.app.use(ServerLite.globalHeaders);
     this.app.use(ServerLite.handlerErrors);
+    this.createLogger();
     this.app.use(compression({level: 9}));
     this.app.use('/.well-known', express.static(__dirname + '/.well-known'));
     this.app.use(express.static(ServerLite.DIR));
     if(!this._postponeRouter){
       this.router();
     }
+  }
+
+  private createLogger(): void{
+    const morgan = require('morgan');
+    const logger = new Logger();
+    this.app.use(morgan('combined', { stream: logger.init().stream, skip: ServerLite.skipLog }));
+  }
+
+  private static skipLog(req, res): boolean{
+    let url = req.url;
+    if(url.indexOf('?')>0)
+      url = url.substr(0,url.indexOf('?'));
+    return url.match(/(js|jpg|png|ico|css|woff|woff2|eot)$/ig);
   }
 
   private static globalHeaders(req: any, res: any, next: any): void{

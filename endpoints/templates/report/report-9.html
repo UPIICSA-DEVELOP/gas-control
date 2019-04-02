@@ -1,0 +1,175 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/paper-css/0.3.0/paper.css">
+  <style>
+    html {
+      -webkit-print-color-adjust: exact;
+    }
+    @page { size: letter }
+    body{
+      font-family: 'Helvetice New', 'Arial', sans-serif;
+    }
+    td, th {
+      border: 1px solid #dddddd;
+      padding: 8px;
+    }
+    tr:nth-child(even) {
+      background-color: #dddddd;
+    }
+    td{
+      width: 50%;
+    }
+    ol{
+      margin: 0;
+    }
+    .sheet{
+      padding: 0 25mm 25mm 25mm !important;
+    }
+    .item{
+      border: 1px solid #dddddd;
+      padding: 8px;
+      margin: 1px;
+    }
+    table{
+      width: 100%;
+    }
+    #title{
+      font-size: 18pt;
+      margin: 3px;
+    }
+    .sub-title{
+      font-weight: bold;
+      font-size: 12pt;
+      margin: 3px;
+    }
+    .center{
+      text-align: center;
+    }
+    .text{
+      font-weight: normal;
+    }
+    #binnacle{
+      font-weight: bold;
+      font-size: 12pt;
+      text-decoration: underline;
+      margin: 0;
+    }
+    #list-header{
+      width: 95%;
+      margin: 0 2.5%;
+      -webkit-columns: 2;
+    }
+    .li-value{
+      font-weight: bold;
+    }
+    .list-item{
+      margin: 3px;
+    }
+    .container{
+      width: 95%;
+      margin: 0 2.5%;
+    }
+    .paragraph{
+      margin: 0;
+      padding-left: 20px;
+    }
+  </style>
+</head>
+<body class="letter">
+
+<section class="sheet">
+
+
+  <article id="global-container">
+    <h1 id="title" class="center">Reporte inSpéctor</h1>
+    <p id="binnacle" class="center">
+      Incidencia
+    </p>
+    <br>
+    <br>
+    <ul id="list-header">
+      <li class="list-item">
+        Fecha: <span class="li-value" id="li-date">01 Ene 19</span>
+      </li>
+      <li class="list-item">
+        Folio: <span class="li-value" id="li-folio">0092-A678-C32</span>
+      </li>
+      <li class="list-item">
+        Hora: <span class="li-value" id="li-time-1">08:00 a.m.</span>
+      </li>
+    </ul>
+    <br>
+    <br>
+    <div class="container">
+
+
+      <p class="sub-title">
+        Lugar de generación: <span class="text" id="place">N/A</span>
+      </p>
+
+      <br>
+      <br>
+
+      <p class="sub-title">
+        Descripción <span class="text" id="description">N/A</span>
+      </p>
+
+      <br>
+      <br>
+
+      <div id="list-procedures">
+        <p class="sub-title">Procedimientos utilizados: </p>
+       <!-- <ol type="1">
+          <li>Candadeo y bloqueo de líneas eléctricas y de producto</li>
+          <li>Trabajos con fuentes que generan ignición</li>
+          <li>Trabajos en alturas</li>
+        </ol>-->
+      </div>
+
+
+      <br>
+
+      <p class="sub-title center">Evidencia fotográfica</p>
+
+      <br>
+
+      <div style="width: 50%; margin: 0 auto; background-color: #dddddd; padding-bottom: calc(50% / 4 * 3); position: relative; display: flex; justify-content: center;">
+        <img style="position: absolute; height: 100%;" id="evidence" src="https://fscomps.fotosearch.com/compc/UNS/UNS082/compresor-de-aire-gasolinera-un-fotos__u12133678.jpg">
+      </div>
+
+
+      <br>
+      <br>
+
+
+      <p class="sub-title center">
+        Nombre y firma de responsable
+      </p>
+
+      <div class="signature" style="width: 50%; padding-bottom: calc(10% + 24px); margin: 0 auto; position: relative; display: flex; justify-content: center; align-items: center; box-sizing: border-box; border-bottom: 2px solid;">
+        <img style="position: absolute; top: 0; height: calc(100% - 24px);" id="signature" src="https://lh3.googleusercontent.com/ogtqnZryFydVklUh33XdHL2SonAXrgIqjCx_-GxN4XppeT2JDdsFKJSed8wHqG15I_BoMQpEPASwR-6Kc8kbouJXZVQDYbJt">
+      </div>
+
+      <p class="sub-title center" id="signature-name">
+        José Manuel Román Ríos
+      </p>
+
+
+
+
+
+    </div>
+
+
+  </article>
+
+</section>
+
+</body>
+</html>

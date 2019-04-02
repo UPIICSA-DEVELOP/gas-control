@@ -1,6 +1,6 @@
 {
   "name": "com.maplander.app.inspector.front",
-  "version": "1.0.0-beta.13",
+  "version": "1.1.0-beta.0",
   "license": "UNLICENSED",
   "author": "Alejandro Lopez A <program.alopez@gmail.com> (https://alx-developer.herokuapp.com/)",
   "contributors": [
@@ -69,6 +69,7 @@
     "morgan": "^1.9.1",
     "ng-connection-service": "^1.0.4",
     "ngx-image-cropper": "^1.2.2",
+    "pdfjs-dist": "^2.0.943",
     "puppeteer": "^1.13.0",
     "remote-exec": "0.0.3",
     "request": "^2.88.0",
