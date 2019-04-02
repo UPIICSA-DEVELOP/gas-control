@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="1.1.0-beta.0"></a>
+# [1.1.0-beta.0](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/compare/v1.0.0...v1.1.0-beta.0) (2019-04-02)
+
+
+### Bug Fixes
+
+* **Environment PROD:** change url to production ([b3c7470](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/b3c7470))
+
+
+### Features
+
+* Adding new log for server ([fadebcd](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/fadebcd))
+* New endpoint for create SASISOPA document ([1ad031a](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/1ad031a))
+
+
+
 <a name="1.0.0"></a>
 # [1.0.0](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/compare/v1.0.0-beta.14...v1.0.0) (2019-04-02)
 
