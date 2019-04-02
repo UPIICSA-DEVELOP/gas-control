@@ -7,8 +7,8 @@
 
 import 'zone.js/dist/zone-node'
 import {enableProdMode} from '@angular/core';
-import {ServerStandard} from './server_standard';
-import {ServerLite} from './server_lite';
+import {ServerStandard} from './types/server_standard';
+import {ServerLite} from './types/server_lite';
 import * as nconfg from 'nconf';
 
 enableProdMode();

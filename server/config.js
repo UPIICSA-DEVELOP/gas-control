@@ -21,12 +21,14 @@
   let data = {
     ENV: 'dev',
     PORT: 8090,
-    SERVER: 2
+    SERVER: 2,
+    BACKEND_URL: 'https://schedule-maplander.appspot.com/_ah/api/communication/v1/'
   };
 
   if(process.env.NODE_ENV === 'prod'){
     data.ENV = 'prod';
     data.PORT = 9090;
+    data.BACKEND_URL = 'https://inspector-backend.appspot.com/_ah/api/communication/v1/';
   }
 
   data = JSON.stringify(data);
