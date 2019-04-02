@@ -43,8 +43,8 @@
               <mat-card class="collaborator">
                 <mat-card-content>
                   <div class="image">
-                    <img class="image-collaborator" *ngIf="collaborator.profileImage && collaborator.profileImage.thumbLabel" [src]="collaborator.profileImage.thumbnail" alt="profile image">
-                    <mat-icon class="image-collaborator" *ngIf="!collaborator.profileImage || !collaborator.profileImage.thumbLabel">add_photo_alternate</mat-icon>
+                    <img class="image-collaborator" *ngIf="collaborator.profileImage && collaborator.profileImage.thumbnail" [src]="collaborator.profileImage.thumbnail" alt="profile image">
+                    <mat-icon class="image-collaborator" *ngIf="!collaborator.profileImage || !collaborator.profileImage.thumbnail">add_photo_alternate</mat-icon>
                   </div>
                   <div class="information">
                     <div class="info">{{collaborator.name}} {{collaborator.lastName}} </div>
