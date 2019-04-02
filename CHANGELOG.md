@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="1.0.0-beta.13"></a>
+# [1.0.0-beta.13](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/compare/v1.0.0-beta.12...v1.0.0-beta.13) (2019-04-02)
+
+
+### Bug Fixes
+
+* **Add Gas Station:** change validations to calendar tasks ([eb93968](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/eb93968))
+* **Reports:** solve error in time fiel ([8c5e70f](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/8c5e70f))
+* **Screen Component:** solve error in dummy ([cd0b910](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/cd0b910))
+* **Station Profile:** change capacity tank input ([4bac624](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/4bac624))
+
+
+
 <a name="1.0.0-beta.12"></a>
 # [1.0.0-beta.12](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/compare/v1.0.0-beta.11...v1.0.0-beta.12) (2019-04-01)
 
