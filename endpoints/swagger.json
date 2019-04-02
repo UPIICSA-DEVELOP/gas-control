@@ -5,7 +5,7 @@
     "version": "1.0.0",
     "title": "inSpector FrontEnd API Rest"
   },
-  "host": "inspector-maplander-develop.appspot.com",
+  "host": "inspector-develop.maplander.com",
   "basePath": "/endpoints/v1",
   "tags": [
     {
@@ -18,8 +18,7 @@
     }
   ],
   "schemes": [
-    "https",
-    "http"
+    "https"
   ],
   "paths": {
     "/bc": {
@@ -154,10 +153,17 @@
         "parameters": [
           {
             "in": "query",
-            "name": "attachedType",
+            "name": "stationId",
             "type": "string",
             "required": true,
-            "description": "Type attached file [1-5]"
+            "description": "Station ID"
+          },
+          {
+            "in": "query",
+            "name": "isSGM",
+            "type": "boolean",
+            "default": false,
+            "description": "Is SGM document)"
           }
         ],
         "responses": {

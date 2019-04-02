@@ -1,32 +1,40 @@
+import {Commons} from './commons'
+import {PdfData, PdfGeneratorData} from './utils';
+import * as nconfg from 'nconf';
 
-export interface ParseHTMLOptions{
-  option: AttachedType,
-  fileName: string,
-  titleCoverAttached?: any
-}
 
-export interface CreatePDFOptions{
-  option: AttachedType,
-  titleCoverAttached?: any
-}
 
-export enum AttachedType{
-  Cover = 0,
-  Attached_1 = 1,
-  Attached_2 = 2,
-  Attached_3 = 3,
-  Attached_5 = 5,
-  Signatures = 6,
-  Cover_Attached = 7
-}
+export class Pdf{
 
-class PdfGenerator{
-
+  private static BACKEND_URL = 'https://schedule-maplander.appspot.com/_ah/api/communication/v1/';
+  private _commons: Commons;
   private _response: any;
-  private _countNumPages: number;
+  private _taskTemplate: any[];
+  private _uTaskTemplate: any[];
+  private _uTasks: any;
+  private _tasks: any[];
+  private _stationId: string;
 
-  constructor(){
-    this._countNumPages = 59;
+  constructor(data: PdfData){
+    if(!data){
+      this._response.code = 422;
+      this._response.description = 'Incomplete Params';
+      Pdf.finish(this._response);
+    }
+    require('nconf').argv().env().file({ file: 'config.json' });
+    if(require('nconf').get('BACKEND_URL')){
+      Pdf.BACKEND_URL = require('nconf').get('BACKEND_URL');
+    }
+    this._stationId = data.stationId;
+    this._commons = new Commons();
+    this._tasks = [];
+    this._uTasks = {
+      incidences: [],
+      hwc: [],
+      fr: []
+    };
+    this._taskTemplate = [];
+    this._uTaskTemplate = [];
     this._response = {
       code: 200,
       description: 'OK'
@@ -34,266 +42,211 @@ class PdfGenerator{
     this.init();
   }
 
-  private init(): void{
+  private init(): void {
 
+    let stationTaskId, date;
 
-    const buffers = [];
+    const infoPdfGenerator: PdfGeneratorData = {
+      stationRFC: '',
+      stationId: this._stationId,
+      sasisopaOriginalFile: '',
+      businessName: '',
+      listProcedures: [],
+      listTasks: [],
+      listCollaborators: [],
+      listBrigade: [],
+      listTanks: [],
+      sasisopaDocuments: []
+    };
 
-    this.createPDF({option: 0, titleCoverAttached: ''}).then(buffer => {
-      buffers.push(buffer);
-      return this.downloadFile('https://storage.googleapis.com/schedule-maplander.appspot.com/cdn/SASISOPA%20INSPECTOR%20(contenido).pdf'); // Download big attached
+    const finalTaskList: any[] = [];
+
+    const body = {id: this._stationId};
+
+    this._commons.request(Pdf.BACKEND_URL + 'saveFullSasisopa', 'POST', body).then(response => {
+      switch (response.code) {
+        case 200:
+          this._response.item = {
+            date: response.item.date
+          };
+          return this._commons.request(Pdf.BACKEND_URL + 'getUtils');
+        default:
+          this._response.code = 400;
+          this._response.description = 'Bad Request |' + response.description;
+          Pdf.finish(this._response);
+          break;
+      }
     }).then(response => {
-      buffers.push(response);
-      return this.createPDF({option: AttachedType.Cover_Attached, titleCoverAttached: 1}); // Cover attached 1
-    }).then((res) => {
-      buffers.push(res);
-      return this.createPDF({option: AttachedType.Attached_1});  // Attached 1
-    }).then(buffer => {
-      buffers.push(buffer);
-      return this.createPDF({option: AttachedType.Cover_Attached, titleCoverAttached: 2}); // Cover attached 2
-    }).then(buffer => {
-      buffers.push(buffer);
-      return this.createPDF({option: AttachedType.Attached_2}) // Attached 2
-    }).then(buffer => {
-      buffers.push(buffer);
-      return this.createPDF({option: AttachedType.Cover_Attached, titleCoverAttached: 3}); // Cover attached 3
-    }).then(buffer => {
-      buffers.push(buffer);
-      return this.createPDF({option: AttachedType.Attached_3}); // Attached 3
-    }).then(buffer => {
-      buffers.push(buffer);
-      return this.createPDF({option: AttachedType.Cover_Attached, titleCoverAttached: 4}); // Cover attached 4
-    }).then(buffer => {
-      buffers.push(buffer);
-      return this.createPDF({option: AttachedType.Cover_Attached, titleCoverAttached: 5});// Cover attached 5
-    }).then(buffer => {
-      buffers.push(buffer);
-      return this.createPDF({option: AttachedType.Attached_5}); // Attached 5
-    }).then(buffer => {
-      buffers.push(buffer);
-      return this.createPDF({option: AttachedType.Cover_Attached, titleCoverAttached: 6});// Cover attached 6
-    }).then(buffer => {
-      buffers.push(buffer);
-      return this.createPDF({option: AttachedType.Cover_Attached, titleCoverAttached: 7});// Cover attached 7
-    }).then(buffer => {
-      buffers.push(buffer);
-      return this.createPDF({option: AttachedType.Cover_Attached, titleCoverAttached: 8}); // Cover attached 8
-    }).then(buffer => {
-      buffers.push(buffer);
-      return this.createPDF({option: AttachedType.Cover_Attached, titleCoverAttached: 9}); // Cover attached 9
-    }).then(buffer => {
-      buffers.push(buffer);
-      return this.createPDF({option: AttachedType.Cover_Attached, titleCoverAttached: 10}); // Cover attached 10
-    }).then(buffer => {
-      buffers.push(buffer);
-      return this.createPDF({option: AttachedType.Cover_Attached, titleCoverAttached: 11}); // Cover attached 11
-    }).then(buffer => {
-      buffers.push(buffer);
-      return this.createPDF({option: AttachedType.Signatures})  // Signatures
-    }).then(buffer => {
-      buffers.push(buffer);
-      return this.joinPDF(buffers);
-    }).then(finalBuffer => {
-      this._response.file = finalBuffer.toString('binary');
-      PdfGenerator.finish(this._response);
-    });
-  }
-
-
-  private createPDF(options: CreatePDFOptions): Promise<any>{
-    return new Promise((resolve) => {
-      let fileName;
-      switch (options.option){
-        case AttachedType.Cover:
-          fileName = 'cover.html';
+      switch (response.code) {
+        case 200:
+          this._taskTemplate = response.item.taskTemplates;
+          this._uTaskTemplate = response.item.uTaskTemplates;
+          infoPdfGenerator.sasisopaOriginalFile = response.item.sasisopaTemplates[2].fileCS;
+          infoPdfGenerator.listProcedures = response.item.procedures;
+          return this._commons.request(Pdf.BACKEND_URL + 'getStation?id=' + this._stationId);
+        default:
+          this._response.item = null;
+          this._response.code = 400;
+          this._response.description = 'Bad Request |' + response.description;
+          Pdf.finish(this._response);
           break;
-        case AttachedType.Signatures:
-          fileName = 'signatures.html';
-          break;
-        case AttachedType.Cover_Attached:
-          fileName = 'cover-attached.html';
+      }
+    }).then(response => {
+      switch (response.code) {
+        case 200:
+          infoPdfGenerator.businessName = response.item.businessName || '';
+          infoPdfGenerator.stationRFC = response.item.rfc || '';
+          infoPdfGenerator.listTanks = response.item.fuelTanks || [];
+          stationTaskId = response.item.stationTaskId;
+          if(!stationTaskId){
+            this._response.item = null;
+            this._response.code = 400;
+            this._response.description = 'Bad Request | stationTaskId does not exist';
+            Pdf.finish(this._response);
+          }else{
+            return this._commons.request(Pdf.BACKEND_URL + 'listCollaborators?isConsultancy=false&refId=' + this._stationId);
+          }
           break;
         default:
-          fileName = 'attached-' + options.option + '.html';
+          this._response.item = null;
+          this._response.code = 400;
+          this._response.description = 'Bad Request ' + response.description;
+          Pdf.finish(this._response);
           break;
       }
-      this.parseHTML({option: options.option, fileName: fileName, titleCoverAttached: options.titleCoverAttached}).then((result) => {
-        return this.buildPDF(result);
-      }).then((buffer) => {
-        resolve(buffer);
-      });
-    });
-  }
-
-  private parseHTML(options: ParseHTMLOptions): Promise<any>{
-    return new Promise((resolve) => {
-      const path = require('path');
-      const jsdom = require("jsdom");
-      const { JSDOM } = jsdom;
-      let items = '';
-      switch (options.option){
-        case AttachedType.Cover:
-          JSDOM.fromFile(path.resolve(__dirname, 'templates', options.fileName)).then(jsdom => {
-            const document = jsdom.window.document;
-            document.getElementById('businessName').textContent = 'ALX Developer S de R.L de C.V';
-            resolve(jsdom.serialize());
-          });
-          break;
-        case AttachedType.Attached_1: // Attached 1
-          JSDOM.fromFile(path.resolve(__dirname, 'templates', options.fileName)).then(jsdom => {
-            const document = jsdom.window.document;
-            // List
-            for(let x = 0; x < 20; x++){
-              const name = document.getElementById('name');
-              const workPosition = document.getElementById('workPosition');
-              const signature = document.getElementById('signature');
-              name.textContent = 'Pedro Alejandro Lopez Arreola Hernandez Caballero del Monte (jajaja)';
-              workPosition.textContent = 'CEO';
-              signature.src = 'https://lh3.googleusercontent.com/IhHSqxjzSXuZpr8DDDJvKDWgl8Ctt48XwEqvX0tEPXiOyYTWlC_QzhcuRcOjS3EXaSiF_yn5MwF2XQ6a74zC-MEcHBAUR1I-';
-              const item = document.getElementById('item-to-select');
-              items += item.innerHTML;
-            }
-            const list = document.getElementById('list');
-            list.innerHTML = items;
-            resolve(jsdom.serialize());
-          });
-          break;
-        case AttachedType.Attached_2: // Attached 2
-          JSDOM.fromFile(path.resolve(__dirname, 'templates', options.fileName)).then(jsdom => {
-            const document = jsdom.window.document;
-            // List
-            for(let x = 1; x < 21; x++){
-              const tr = document.createElement('tr');
-              const number = document.createElement('td');
-              const capacity = document.createElement('td');
-              const typeFuel = document.createElement('td');
-              number.textContent = x;
-              capacity.textContent = '30 000 lt';
-              typeFuel.textContent = 'Diésel';
-              tr.appendChild(number);
-              tr.appendChild(capacity);
-              tr.appendChild(typeFuel);
-              document.getElementById('table').appendChild(tr);
-            }
-            resolve(jsdom.serialize());
-          });
-          break;
-        case AttachedType.Attached_3: // Attached 3
-          JSDOM.fromFile(path.resolve(__dirname, 'templates', options.fileName)).then(jsdom => {
-            const document = jsdom.window.document;
-            // List
-            for(let x = 1; x < 21; x++){
-              const name = document.getElementById('name');
-              const workPosition = document.getElementById('workPosition');
-              name.textContent = x + '. ' + 'Alejandro Lopez Arreola';
-              workPosition.textContent = 'Cargo en la brigada: '+'CEO';
-              const item = document.getElementById('item-to-select');
-              items += item.innerHTML;
-            }
-            const list = document.getElementById('list');
-            list.innerHTML = items;
-            resolve(jsdom.serialize());
-          });
-          break;
-        case AttachedType.Attached_5: // Attached
-          JSDOM.fromFile(path.resolve(__dirname, 'templates', options.fileName)).then(jsdom => {
-            resolve(jsdom.serialize());
-          });
-          break;
-        case AttachedType.Signatures: // Signatures
-          JSDOM.fromFile(path.resolve(__dirname, 'templates', options.fileName)).then(jsdom => {
-            const document = jsdom.window.document;
-
-            document.getElementById('signature-1-img').src = 'https://lh3.googleusercontent.com/IhHSqxjzSXuZpr8DDDJvKDWgl8Ctt48XwEqvX0tEPXiOyYTWlC_QzhcuRcOjS3EXaSiF_yn5MwF2XQ6a74zC-MEcHBAUR1I-';
-            document.getElementById('name-1').textContent = 'Hola';
-
-            document.getElementById('signature-2-img').src = 'https://lh3.googleusercontent.com/IhHSqxjzSXuZpr8DDDJvKDWgl8Ctt48XwEqvX0tEPXiOyYTWlC_QzhcuRcOjS3EXaSiF_yn5MwF2XQ6a74zC-MEcHBAUR1I-';
-            document.getElementById('name-2').textContent = 'Hola 2';
-
-            document.getElementById('signature-3-img').src = 'https://lh3.googleusercontent.com/IhHSqxjzSXuZpr8DDDJvKDWgl8Ctt48XwEqvX0tEPXiOyYTWlC_QzhcuRcOjS3EXaSiF_yn5MwF2XQ6a74zC-MEcHBAUR1I-';
-            document.getElementById('name-3').textContent = 'Hola 3';
-
-
-            resolve(jsdom.serialize());
-          });
-          break;
-        case AttachedType.Cover_Attached: // Cover attached
-          JSDOM.fromFile(path.resolve(__dirname, 'templates', options.fileName)).then(jsdom => {
-            const document = jsdom.window.document;
-            const title = document.getElementById('title');
-            title.textContent = '“ANEXOS ' + options.titleCoverAttached + '“';
-            resolve(jsdom.serialize());
-          });
+    }).then(response => {
+      switch (response.code) {
+        case 200:
+          infoPdfGenerator.listCollaborators = response.items || [];
+          return this._commons.request(Pdf.BACKEND_URL + 'getSasisopa?stationId=' + this._stationId);
+        default:
+          this._response.item = null;
+          this._response.code = 400;
+          this._response.description = 'Bad Request |' + response.description;
+          Pdf.finish(this._response);
           break;
       }
-    });
-  }
+    }).then(response => {
 
-  private buildPDF(html: any): Promise<any>{
-    return new Promise((resolve, reject) => {
-      try {
-        const puppeteer = require('puppeteer');
-        (async () => {
-          const browser = await puppeteer.launch({headless: true,args: ['--no-sandbox', '--disable-setuid-sandbox']});
-          const page = await browser.newPage();
-          await page.setContent(html);
-          const pdf = await page.pdf({
-            format: 'A4',
-            displayHeaderFooter: true,
-            headerTemplate: '<p></p>',
-            footerTemplate: '<p></p>'
-          });
-          await browser.close();
-          resolve(pdf);
-        })();
-      }catch (e){
-        reject(e);
-      }
-    });
-  }
-
-  private joinPDF(arrayBuffers: any[]): Promise<any>{
-    const hummus = require('hummus');
-    const memoryStreams = require('memory-streams');
-    return new Promise(resolve => {
-      const outStream = new memoryStreams.WritableStream();
-      try {
-        const hummusOutStream = new hummus.PDFStreamForResponse(outStream);
-
-        const firstPDF = new hummus.PDFRStreamForBuffer(arrayBuffers.shift());
-        // This throws with "Unable to modify PDF file, make sure that output file target..."
-        const pdfWriter = hummus.createWriterToModify(firstPDF, hummusOutStream);
-
-        for (const pdf of arrayBuffers) {
-          try {
-            const stream = new hummus.PDFRStreamForBuffer(pdf);
-            pdfWriter.appendPDFPagesFromPDF(stream)
-          } catch (e) {
-            outStream.end();
+      switch (response.code) {
+        case 200:
+          if(response.item.sasisopaDocuments.length === 0 || response.item.brigade.brigadeElems.length === 0){
+            this._response.item = null;
+            this._response.code = 400;
+            this._response.description = 'Bad Request | sasisopaDocuments or brigadeElems is empty';
+            Pdf.finish(this._response);
+          }else{
+            infoPdfGenerator.sasisopaDocuments = response.item.sasisopaDocuments || [];
+            infoPdfGenerator.listBrigade = response.item.brigade.brigadeElems || [];
+            date = response.item.evidencesDate.date;
+            const params = '?stationTaskId=' + stationTaskId + '&fromDate=' + date + '&status=4&untilDate=' + date;
+            return this._commons.request(Pdf.BACKEND_URL + 'listTask' + params);
           }
-        }
-        pdfWriter.end();
-        outStream.end();
-        resolve(outStream.toBuffer());
+          break;
+        default:
+          this._response.item = null;
+          this._response.code = 400;
+          this._response.description = 'Bad Request |' + response.description;
+          Pdf.finish(this._response);
+          break;
       }
-      catch(e){
-        outStream.end();
-        throw new Error('Error during PDF combination: ' + e.message);
-      }
+    }).then(response => {
+      this._tasks = response.items || [];
+      const params = '?stationTaskId='+ stationTaskId +'&type=1&fromDate='+ date + '&untilDate=' + date;
+      return this._commons.request(Pdf.BACKEND_URL + 'listUTask' + params);
+    }).then(response => {
+      this._uTasks.fr = response.items || [];
+      const params = '?stationTaskId='+ stationTaskId +'&type=2&fromDate='+ date + '&untilDate=' + date;
+      return this._commons.request(Pdf.BACKEND_URL + 'listUTask' + params);
+    }).then(response => {
+      this._uTasks.hwc = response.items || [];
+      const params = '?stationTaskId='+ stationTaskId +'&type=3&fromDate='+ date + '&untilDate=' + date;
+      return this._commons.request(Pdf.BACKEND_URL + 'listUTask' + params);
+    }).then(reponse => {
+      this._uTasks.incidences = reponse.items || [];
+      return this.getTasksByTemplateId(this._tasks, this._taskTemplate);
+    }).then(items => {
+      items.forEach(i => {
+        finalTaskList.push(Pdf.clearTaskByFolio(i));
+      });
+      return this.getTasksByTemplateId(this._uTasks.fr, this._uTaskTemplate);
+    }).then(items => {
+      items.forEach(i => {
+        finalTaskList.push(Pdf.clearTaskByFolio(i));
+      });
+      return this.getTasksByTemplateId(this._uTasks.hwc, this._uTaskTemplate);
+    }).then(items => {
+      items.forEach(i => {
+        finalTaskList.push(Pdf.clearTaskByFolio(i));
+      });
+      return this.getTasksByTemplateId(this._uTasks.incidences, this._uTaskTemplate);
+    }).then(items => {
+      items.forEach(i => {
+        finalTaskList.push(Pdf.clearTaskByFolio(i));
+      });
+      infoPdfGenerator.listTasks = finalTaskList;
+      this.initPdfGenerator(infoPdfGenerator);
+      Pdf.finish(this._response);
     });
+
   }
 
-  private downloadFile(url: string): Promise<any>{
-    return new Promise((resolve, reject) => {
-      const request = require('request');
-      request({url: url, encoding:null}, (err, res, body) => {
-        if(err){
-          reject(err);
+  private static clearTaskByFolio(task: any[]): any{
+    Commons.bubbleSort(task, 'folio');
+    return task[task.length - 1];
+  }
+
+  private async getTasksByTemplateId(tasks: any[], templates: any[]): Promise<any[]>{
+    const finalTasks: any[] = [];
+    await Commons.asyncForEach(tasks, async (task) => Commons.asyncForEach(templates, async (template) => {
+      if(task.type === Number(template.id)){
+        const response = await this.getTask(template.typeReport, task.id);
+        switch (response.code){
+          case 200:
+            if(Array.isArray(response.items)){
+              response.items.forEach((item) => {
+                item.typeReport = template.typeReport;
+                item.evidence = template.evidence;
+              });
+              finalTasks.push(response.items);
+            }
+            break;
         }
-        console.log('Status download', res.statusCode);
-        resolve(body);
-      });
+      }
+    }));
+    return finalTasks;
+  }
+
+  private initPdfGenerator(data: any): void{
+    const { fork } = require('child_process');
+    const path = require('path');
+    const process = fork(path.resolve(__dirname, 'pdf-generator.js'));
+    process.on('message', (data) => {
+      console.log(data);
     });
+    process.send(data);
+  }
+
+
+  private getTask(type: number, id: string): Promise<any>{
+    switch (type){
+      case 1:
+        return this._commons.request(Pdf.BACKEND_URL + 'listOMReport?taskId=' + id);
+      case 2:
+        return this._commons.request(Pdf.BACKEND_URL + 'listCompressorReport?taskId=' + id);
+      case 4:
+        return this._commons.request(Pdf.BACKEND_URL + 'listVRSReport?taskId=' + id);
+      case 5:
+        return this._commons.request(Pdf.BACKEND_URL + 'listScannedReport?taskId=' + id);
+      case 6:
+        return this._commons.request(Pdf.BACKEND_URL + 'listHWCReport?taskId=' + id);
+      case 7:
+        return this._commons.request(Pdf.BACKEND_URL + 'listFRReport?taskId=' + id);
+      case 8:
+        return this._commons.request(Pdf.BACKEND_URL + 'listFEReport?taskId=' + id);
+      case 9:
+        return this._commons.request(Pdf.BACKEND_URL + 'listIncidenceReport?taskId=' + id);
+    }
   }
 
   private static finish(response: any): void{
@@ -302,7 +255,6 @@ class PdfGenerator{
 
 }
 
-
-process.on('message', () => {
-  new PdfGenerator();
+process.on('message', (data: PdfData) => {
+  new Pdf(data);
 });

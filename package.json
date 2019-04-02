@@ -69,6 +69,7 @@
     "morgan": "^1.9.1",
     "ng-connection-service": "^1.0.4",
     "ngx-image-cropper": "^1.2.2",
+    "pdfjs-dist": "^2.0.943",
     "puppeteer": "^1.13.0",
     "remote-exec": "0.0.3",
     "request": "^2.88.0",

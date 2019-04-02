@@ -3,7 +3,10 @@ const webpack = require('webpack');
 const nodeExternals = require('webpack-node-externals');
 module.exports = {
   entry: {
-    pdf: path.join(__dirname, 'pdf.ts')
+    ['pdf-generator']: path.join(__dirname, 'pdf-generator.ts'),
+    ['pdf']: path.join(__dirname, 'pdf.ts'),
+    ['commons']: path.join(__dirname, 'commons.ts'),
+    ['utils']: path.join(__dirname, 'utils.ts')
   },
   resolve: {
     extensions: ['.ts', '.js']
