@@ -3,10 +3,10 @@ import {UtilitiesService} from '@app/core/utilities/utilities.service';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 import {SearchBoxResult} from '@app/core/components/search-box/search-box.component';
 import {MouseEvent} from '@agm/core/map-types';
-import GeocoderRequest = google.maps.GeocoderRequest;
-import GeocoderStatus = google.maps.GeocoderStatus;
-import GeocoderResult = google.maps.GeocoderResult;
 import {SnackBarService} from '@app/core/services/snackbar/snackbar.service';
+import {MapsAPILoader} from '@agm/core';
+declare var google: any;
+
 
 @Component({
   selector: 'app-location',
@@ -23,7 +23,8 @@ export class LocationComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) private _data: any,
     public dialogRef: MatDialogRef<LocationComponent>,
     private _snackBarService: SnackBarService,
-    private _ngZone: NgZone
+    private _ngZone: NgZone,
+    private _agm: MapsAPILoader
   ) {
     this.mapOptions = UtilitiesService.getDefaultParamsMap();
     this.mapOptions.styles = [];
@@ -89,17 +90,19 @@ export class LocationComponent implements OnInit {
   }
 
   private reverseGeoCode(latitude: number, longitude: number): void{
-    const geoCoder = new google.maps.Geocoder();
-    let latLng = new google.maps.LatLng(latitude, longitude);
-    let request: GeocoderRequest = {location: latLng};
-    geoCoder.geocode(request, (results: GeocoderResult[], status: GeocoderStatus) => {
-      if (status === google.maps.GeocoderStatus.OK) {
-        if (results[0] !== null) {
-          this._location.address = results[0].formatted_address;
-          this._inputSearchBox.nativeElement.value = this._location.address;
-        }
-      }
-    });
+   this._agm.load().then(() => {
+     const geoCoder = new google.maps.Geocoder();
+     let latLng = new google.maps.LatLng(latitude, longitude);
+     let request  = {location: latLng};
+     geoCoder.geocode(request, (results: any[], status: any) => {
+       if (status === google.maps.GeocoderStatus.OK) {
+         if (results[0] !== null) {
+           this._location.address = results[0].formatted_address;
+           this._inputSearchBox.nativeElement.value = this._location.address;
+         }
+       }
+     });
+   });
   }
 
 }

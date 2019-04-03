@@ -34,7 +34,7 @@
     "e2e": "ng e2e"
   },
   "dependencies": {
-    "@agm/core": "^1.0.0-beta.3",
+    "@agm/core": "^1.0.0-beta.5",
     "@angular/animations": "7.1.1",
     "@angular/cdk": "^7.1.1",
     "@angular/common": "7.1.1",
@@ -44,6 +44,7 @@
     "@angular/forms": "7.1.1",
     "@angular/http": "7.1.1",
     "@angular/material": "^7.1.1",
+    "@angular/material-moment-adapter": "^7.3.6",
     "@angular/platform-browser": "7.1.1",
     "@angular/platform-browser-dynamic": "7.1.1",
     "@angular/platform-server": "7.1.1",
@@ -75,6 +76,7 @@
     "request": "^2.88.0",
     "rxjs": "6.3.3",
     "rxjs-compat": "6.3.3",
+    "saturn-datepicker": "^7.2.0",
     "shelljs": "^0.8.3",
     "signature_pad": "^3.0.0-beta.3",
     "swagger-ui-express": "^4.0.2",
@@ -102,6 +104,7 @@
     "commander": "^2.18.0",
     "compression": "^1.7.3",
     "gulp": "^3.9.1",
+    "gulp-gzip": "^1.4.2",
     "gulp-rename": "^1.4.0",
     "inquirer": "^6.2.0",
     "jasmine-core": "~2.6.2",
@@ -125,7 +128,6 @@
     "uglify-js": "^3.4.9",
     "webpack-bundle-analyzer": "^2.13.1",
     "webpack-cli": "^3.1.0",
-    "webpack-node-externals": "^1.7.2",
-    "gulp-gzip": "^1.4.2"
+    "webpack-node-externals": "^1.7.2"
   }
 }
