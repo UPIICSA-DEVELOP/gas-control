@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="1.1.0-beta.1"></a>
+# [1.1.0-beta.1](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/compare/v1.1.0-beta.0...v1.1.0-beta.1) (2019-04-03)
+
+
+### Bug Fixes
+
+* **Add Gas Station:** solve error in add legal representative button ([435ed37](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/435ed37))
+* **Consultancy Collaborators:** solve error to see image collaborator ([0be1a65](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/0be1a65))
+* **Home:** change style in button to align left ([77e81ce](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/77e81ce))
+
+
+
 <a name="1.1.0-beta.0"></a>
 # [1.1.0-beta.0](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/compare/v1.0.0...v1.1.0-beta.0) (2019-04-02)
 
