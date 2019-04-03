@@ -2,7 +2,7 @@ export interface PdfGeneratorData {
   stationId: string,
   stationRFC: string,
   businessName: string
-  sasisopaOriginalFile: any,
+  sasisopaTemplates: any[],
   listTanks: any[],
   listCollaborators: any[],
   listBrigade: any[],
@@ -36,7 +36,6 @@ export enum AttachedType{
   Attached_1 = 1,
   Attached_2 = 2,
   Attached_3 = 3,
-  Attached_5 = 5,
   Signatures = 6,
   Cover_Attached = 7
 }

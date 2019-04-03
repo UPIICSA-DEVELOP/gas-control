@@ -119,11 +119,12 @@ export class Commons{
     });
   }
 
-  public downloadFile(url: string): Promise<any>{
+  public downloadFile(url: string): Promise<Buffer>{
     return new Promise((resolve, reject) => {
       const request = require('request');
       request({url: url, encoding:null, headers: {'User-Agent': Commons.PROXY_NAME}}, (err, res, body) => {
         if(err){
+          console.error(err);
           reject(err);
         }
         resolve(body);

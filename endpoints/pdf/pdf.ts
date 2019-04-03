@@ -49,7 +49,7 @@ export class Pdf{
     const infoPdfGenerator: PdfGeneratorData = {
       stationRFC: '',
       stationId: this._stationId,
-      sasisopaOriginalFile: '',
+      sasisopaTemplates: [],
       businessName: '',
       listProcedures: [],
       listTasks: [],
@@ -81,7 +81,7 @@ export class Pdf{
         case 200:
           this._taskTemplate = response.item.taskTemplates;
           this._uTaskTemplate = response.item.uTaskTemplates;
-          infoPdfGenerator.sasisopaOriginalFile = response.item.sasisopaTemplates[2].fileCS;
+          infoPdfGenerator.sasisopaTemplates = response.item.sasisopaTemplates;
           infoPdfGenerator.listProcedures = response.item.procedures;
           return this._commons.request(Pdf.BACKEND_URL + 'getStation?id=' + this._stationId);
         default:

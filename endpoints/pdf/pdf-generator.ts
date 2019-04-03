@@ -12,7 +12,7 @@ class PdfGenerator{
   private _stationId: string;
   private _stationRFC: string;
   private _businessName: string;
-  private _sasisopaOriginal: any;
+  private _sasisopaTemplates: any[];
   private _tanksList: any[];
   private _brigadeList: any[];
   private _collaboratorsList: any[];
@@ -37,7 +37,7 @@ class PdfGenerator{
     this._tasksList = data.listTasks;
     this._proceduresList = data.listProcedures;
     this._sasisopaDocuments = data.sasisopaDocuments;
-    this._sasisopaOriginal = data.sasisopaOriginalFile;
+    this._sasisopaTemplates = data.sasisopaTemplates;
     this._response = {
       code: 200,
       description: 'OK'
@@ -114,11 +114,12 @@ class PdfGenerator{
     }).then(buffer => {
       tmp_buffer_file = [];
       tmp_buffer_file.push(buffer);
-      return this.createPDF({option: AttachedType.Attached_5}); // Attached 5
+      return this._commons.downloadFile(this._sasisopaTemplates[1].fileCS.thumbnail);
     }).then(buffer => {
       tmp_buffer_file.push(buffer);
       return this.createEvidenceByTasks();
     }).then(buffersEvidences => {
+      console.log('Evidences ready');
       buffersEvidences.forEach(bufferEvidence => {
         tmp_buffer_file.push(bufferEvidence);
       });
@@ -320,9 +321,6 @@ class PdfGenerator{
               list.innerHTML = items;
               resolve(jsdom.serialize());
               break;
-            case AttachedType.Attached_5: // Attached
-              resolve(jsdom.serialize());
-              break;
             case AttachedType.Signatures: // Signatures
 
               for(let i = 0; i < this._collaboratorsList.length; i ++){
@@ -471,6 +469,7 @@ class PdfGenerator{
               if(item.evidence){
                 document.getElementById('evidence').src = item.fileCS.thumbnail;
               }else{
+                document.getElementById('title-evidence').style.display = 'none';
                 document.getElementById('parent-evidence').style.display = 'none';
               }
 
@@ -512,6 +511,7 @@ class PdfGenerator{
               if(item.evidence){
                 document.getElementById('evidence').src = item.fileCS.thumbnail;
               }else{
+                document.getElementById('title-evidence').style.display = 'none';
                 document.getElementById('parent-evidence').style.display = 'none';
               }
 
@@ -639,6 +639,7 @@ class PdfGenerator{
               if(item.evidence){
                 document.getElementById('evidence').src = item.fileCS.thumbnail;
               }else{
+                document.getElementById('title-evidence').style.display = 'none';
                 document.getElementById('parent-evidence').style.display = 'none';
               }
 
@@ -649,6 +650,8 @@ class PdfGenerator{
               resolve(jsdom.serialize());
               break;
             case ReportType.Report_5: // Scanned Report
+
+              console.log('Scanned', item);
 
               document.getElementById('li-date').textContent = newDate[0] + ' ' + newDate[1] + ' ' + newDate[2];
               document.getElementById('li-folio').textContent = Commons.formatFolio(item.folio.toString());
@@ -775,6 +778,7 @@ class PdfGenerator{
                   if(item === Number(procedure.id)){
                     const li = document.createElement('li');
                     li.innerHTML = procedure.name;
+                    ol.appendChild(li);
                   }
                 }));
                 document.getElementById('list-procedures').appendChild(ol);
@@ -833,6 +837,15 @@ class PdfGenerator{
     await Commons.asyncForEach(this._tasksList, async (item) => {
       const buffer = await this.createPDF({option: (item.typeReport + 10), task: item});
       buffers.push(buffer);
+      switch (item.typeReport){
+        case 5:
+        case 6:
+          if(item.fileCS && item.fileCS.thumbnail && item.fileCS.thumbnail.endsWith('.pdf')){
+            const pdf = await this._commons.downloadFile(item.fileCS.thumbnail);
+            buffers.push(pdf);
+          }
+          break;
+      }
     });
     return buffers;
   }
@@ -864,7 +877,7 @@ class PdfGenerator{
          return null;
      }
    });
-   uploaded.splice(1, 0, this._sasisopaOriginal);
+   uploaded.splice(1, 0, this._sasisopaTemplates[2].fileCS);
    const body = {id: this._stationId, files: uploaded};
    return await this._commons.request(PdfGenerator.BACKEND_URL + 'saveFullSasisopa', 'POST', body);
  }
