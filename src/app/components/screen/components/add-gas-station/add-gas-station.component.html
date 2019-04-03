@@ -238,7 +238,7 @@
         <div *ngIf="listExist; then repLegalList else legalRepForm" class="content-modal"></div>
         <ng-template #repLegalList>
           <div class="list-person">
-            <div *ngIf="listRepresentative.length>0; then list else empty"></div>
+            <div *ngIf="listRepresentative && listRepresentative.length > 0; then list else empty"></div>
             <ng-template #list>
               <div class="list">
                 <div *ngFor="let representative of listRepresentative;">
@@ -650,5 +650,10 @@
         </div>
       </div>
     </div>
+  </div>
+  <div class="add-legal" *ngIf="step===1 && listRepresentative && listRepresentative.length > 0 && listExist">
+    <button mat-icon-button matTooltip="Añadir representante legal" (click)="listExist = false;">
+      <mat-icon>person_add</mat-icon>
+    </button>
   </div>
 </div>
