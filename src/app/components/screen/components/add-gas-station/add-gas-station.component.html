@@ -249,9 +249,8 @@
                       </div>
                       <mat-card-content>
                         <div class="image-list">
-                          <img class="image-collaborator" *ngIf="representative.profileImage"
-                               [src]="representative.profileImage.thumbnail" alt="profile image">
-                          <mat-icon class="image-collaborator" *ngIf="!representative.profileImage">add_photo_alternate</mat-icon>
+                          <img class="image-collaborator" *ngIf="representative.profileImage && representative.profileImage.thumbnail" [src]="representative.profileImage.thumbnail" alt="profile image">
+                          <mat-icon class="image-collaborator" *ngIf="!representative.profileImage || !representative.profileImage.thumbnail">add_photo_alternate</mat-icon>
                         </div>
                         <div class="information">
                           <div class="info-head"> {{representative.name}} {{representative.lastName}}</div>
