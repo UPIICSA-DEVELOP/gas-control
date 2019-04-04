@@ -152,7 +152,7 @@ export class UtilitiesService {
     }
   }
 
-  static generateArrayDate(date: number, nextYear: boolean): Date | null{
+  static generateArrayDate(date: number, nextYear: boolean, addDay: boolean): Date | null{
     const originalDate = date.toString();
     let value: Date;
     let day: any = undefined;
@@ -170,7 +170,7 @@ export class UtilitiesService {
         year = (year + 1).toString();
       }
       value = new Date(Number(year), Number(month-1), Number(day));
-      value = new Date(value.getTime() + (24 * 60 * 60 * 1000));
+      value = new Date(value.getTime() + (addDay?(24 * 60 * 60 * 1000): 0));
       return value
     }catch (e){
       console.error(e.message);
