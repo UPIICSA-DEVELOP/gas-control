@@ -90,5 +90,47 @@ router.get('/pdf',[ check(['stationId']).exists() ], function(req, res) {
   }
 });
 
+router.get('/download',[ check(['url']).exists() ], function(req, res) {
+  try {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      res.status(422).end(JSON.stringify(
+        {
+          code: 422,
+          description: 'Incomplete params, consult https://inspector-maplander-develop.appspot.com/endpoints/v1/api-docs'
+        }
+      ))
+    }else {
+      const { url } = req.query;
+      const request = require('request');
+      request({url: encodeURI(url), encoding:null, headers: {'User-Agent': 'inSpector Proxy/1.0.0'}}, (err, response, body) => {
+        const headers = response.headers;
+        if(err){
+          res.status(400).end(JSON.stringify(
+            {
+              code: 400,
+              description: 'Bad request ' + err
+            }
+          ));
+        }else{
+          res.set({
+            'Content-Type': headers['content-type'],
+            'Content-Length': headers['content-length']
+          });
+          res.status(200).end(body, 'binary');
+        }
+      });
+    }
+  }catch (e){
+    console.error(e);
+    res.status(500).end(JSON.stringify(
+      {
+        code: 500,
+        description: 'Internal server error'
+      }
+    ))
+  }
+});
+
 module.exports = router;
 

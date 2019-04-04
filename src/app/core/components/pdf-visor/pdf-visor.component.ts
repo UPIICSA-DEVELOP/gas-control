@@ -17,7 +17,11 @@ export class PdfVisorComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.url = this._dom.bypassSecurityTrustResourceUrl(this._data);
+    if(this._data.hideOptions){
+      this.url = this._dom.bypassSecurityTrustResourceUrl(this._data.url + '#toolbar=0');
+    }else{
+      this.url = this._dom.bypassSecurityTrustResourceUrl(this._data.url);
+    }
   }
 
 }

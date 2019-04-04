@@ -237,8 +237,9 @@ export class ApiService implements OnDestroy{
   }
 
   public getFile(url: string): Observable<any>{
-    const headers = new HttpHeaders().set('Content-Type', 'text/plain; charset=utf-8');
-    return this._http.get(url, {responseType: 'arraybuffer' as 'json', headers: headers});
+    let params = new HttpParams();
+    params = params.append('url', url);
+    return this._http.get(environment.url + 'endpoints/v1/download', { responseType: 'blob' as 'json', params: params});
   }
 
   public createConsultancy(data: Consultancy): Observable<any>{

@@ -19,18 +19,16 @@
     </div>
     <div class="container" *ngIf="procedures">
       <div *ngFor="let procedure of procedures; let i = index">
-        <a [href]="procedure.fileCS.thumbnail" class="file">
-          <mat-card>
-            <mat-card-content>
-              <div class="icon">
-                <mat-icon>insert_drive_file</mat-icon>
-              </div>
-              <div class="divider">
-                {{procedure.name}}
-              </div>
-            </mat-card-content>
-          </mat-card>
-        </a>
+        <mat-card (click)="openFile(procedure.fileCS.thumbnail)">
+          <mat-card-content>
+            <div class="icon">
+              <mat-icon>insert_drive_file</mat-icon>
+            </div>
+            <div class="divider">
+              {{procedure.name}}
+            </div>
+          </mat-card-content>
+        </mat-card>
       </div>
     </div>
   </div>

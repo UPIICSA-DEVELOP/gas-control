@@ -10,6 +10,7 @@ import {Router} from '@angular/router';
 import {animate, style, transition, trigger} from '@angular/animations';
 import {PdfVisorService} from '@app/core/components/pdf-visor/pdf-visor.service';
 import {Constants} from '@app/core/constants.core';
+import {LocalStorageService} from '@app/core/services/local-storage/local-storage.service';
 
 @Component({
   selector: 'app-procedures',
@@ -47,11 +48,21 @@ export class ProceduresComponent implements OnInit {
     this._route.navigate(['/home']);
   }
 
-  /*
-  * TODO: Implements pdf visor after first launch
-  * */
   public openFile(file:any):void{
-    this._pdf.open({file: file, url: file, notIsUrl: false});
+    const user = LocalStorageService.getItem(Constants.UserInSession);
+    switch (user.role){
+      case 1:
+      case 2:
+      case 3:
+      case 7:
+        this._pdf.open({file: file, url: file, notIsUrl: false});
+        break;
+      case 5:
+      case 4:
+      case 6:
+        this._pdf.open({file: file, url: file, notIsUrl: false, hideOptions: true});
+        break;
+    }
   }
 
   private getProcedures():void{

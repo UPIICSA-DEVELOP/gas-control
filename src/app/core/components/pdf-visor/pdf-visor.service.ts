@@ -14,6 +14,7 @@ export interface PdfVisorOptions {
   url: string,
   file?: File,
   notIsUrl?: boolean
+  hideOptions?: boolean
 }
 
 @Injectable()
@@ -38,7 +39,7 @@ export class PdfVisorService {
     }else{
       this._api.getFile(options.url).subscribe(response => {
         const url = window.URL.createObjectURL(new Blob([response], {type: 'application/pdf'}));
-        this._dialog.open(PdfVisorComponent,{panelClass:'pdf-visor-panel', data:url});
+        this._dialog.open(PdfVisorComponent,{panelClass:'pdf-visor-panel', data:{url: url, hideOptions: options.hideOptions}});
       });
     }
   }
