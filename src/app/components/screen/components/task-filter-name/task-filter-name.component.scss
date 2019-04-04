@@ -7,15 +7,28 @@
 #task-filter-name {
   //height: 100%;
   mat-dialog-content {
-    height: 100%;
+    max-height: none;
+    height: 75vh;
     margin: 0;
     display: flex;
     flex-direction: column;
     padding: 8px 0;
+    position: relative;
     .listTask{
+      position: relative;
       overflow-y: auto;
       overflow-x: hidden;
-      height: 100%;
+      height: calc(100% - 128px);
+      .empty{
+        display: flex;
+        position: absolute;
+        justify-content: center;
+        align-items: center;
+        top: 0;
+        bottom: 0;
+        right: 0;
+        left: 0;
+      }
     }
     mat-radio-group {
       display: flex;
@@ -30,11 +43,10 @@
   }
   .buttons {
     display: flex;
-    justify-content: flex-end;
     padding: 16px;
     position: absolute;
-    bottom: 60px;
-    right: 35%;
+    bottom: 0;
+    right: 0;
   }
   .search{
     width: 100%;

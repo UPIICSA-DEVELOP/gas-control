@@ -8,6 +8,10 @@ import { Injectable } from '@angular/core';
 import {MatDialog, MatDialogRef} from '@angular/material';
 import {TaskFilterNameComponent} from '@app/components/screen/components/task-filter-name/task-filter-name.component';
 
+export interface FilterConfig {
+  utils: any;
+  lastTypeSelected: number;
+}
 
 @Injectable()
 export class TaskFilterNameService {
@@ -16,7 +20,7 @@ export class TaskFilterNameService {
     private _dialog: MatDialog
   ) { }
 
-  public open(utils: any):MatDialogRef<TaskFilterNameComponent>{
-    return this._dialog.open(TaskFilterNameComponent,{disableClose: true, panelClass: 'modal-panel', data: utils || null});
+  public open(config: FilterConfig):MatDialogRef<TaskFilterNameComponent>{
+    return this._dialog.open(TaskFilterNameComponent,{disableClose: true, panelClass: 'modal-panel', data: config || null});
   }
 }

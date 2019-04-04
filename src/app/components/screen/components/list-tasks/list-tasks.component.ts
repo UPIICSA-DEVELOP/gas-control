@@ -342,7 +342,7 @@ export class ListTasksComponent implements OnInit, OnDestroy{
 
   public search(): void {
     if(!this.finishCreateTasks){
-      this._taskFilterNameService.open(this.utils.taskTemplates).afterClosed().subscribe(response => {
+      this._taskFilterNameService.open({utils: this.utils.taskTemplates, lastTypeSelected: Number(this._taskType)}).afterClosed().subscribe(response => {
         switch (response.code) {
           case 1:
             this._taskType = response.data.toString();

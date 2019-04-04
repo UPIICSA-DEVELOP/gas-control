@@ -16,15 +16,17 @@ import {UtilitiesService} from '@app/core/utilities/utilities.service';
 export class TaskFilterNameComponent implements OnInit {
   public taskName: any[];
   public taskSelected: number;
+  public emptyList: boolean;
   private _taskTemplate: any[];
   private _taskCopy: any[];
   constructor(
     @Inject(MAT_DIALOG_DATA) private _data: any,
     private _dialogRef: MatDialogRef<TaskFilterNameComponent>
   ) {
+    this.emptyList = false;
     this._taskCopy = [];
-    this._taskTemplate = this._data;
-    this.taskSelected = 0;
+    this._taskTemplate = this._data.utils;
+    this.taskSelected = this._data.lastTypeSelected || 0;
     this.taskName = [];
   }
 
@@ -33,9 +35,10 @@ export class TaskFilterNameComponent implements OnInit {
   }
 
   private getTasks():void{
+    this.taskName.push({id: 0, name: 'Todas'});
     for (let i = 0; i < this._taskTemplate.length; i++){
       if(this._taskTemplate[i].typeReport !== 6 && this._taskTemplate[i].typeReport !== 7 && this._taskTemplate[i].typeReport !== 9)
-      this.taskName.push({id: this._data[i].id, name: this._data[i].name});
+      this.taskName.push({id: Number(this._data.utils[i].id), name: this._data.utils[i].name});
     }
     this._taskCopy = this.taskName;
   }
@@ -61,8 +64,10 @@ export class TaskFilterNameComponent implements OnInit {
       }
       if(newArray.length > 0){
         this.taskName = newArray;
+        this.emptyList = false;
       }else{
-        this.taskName = this._taskCopy;
+        this.taskName = newArray;
+        this.emptyList = (newArray.length === 0);
       }
     }
   }
