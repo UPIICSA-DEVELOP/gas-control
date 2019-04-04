@@ -26,7 +26,10 @@ class PdfGenerator{
     if(!data){
       return;
     }
-
+    require('nconf').argv().env().file({ file: 'config.json' });
+    if(require('nconf').get('BACKEND_URL')){
+      PdfGenerator.BACKEND_URL = require('nconf').get('BACKEND_URL');
+    }
     this._commons = new Commons();
     this._stationId = data.stationId;
     this._stationRFC = data.stationRFC;
@@ -115,8 +118,8 @@ class PdfGenerator{
       tmp_buffer_file = [];
       tmp_buffer_file.push(buffer);
       return this._commons.downloadFile(this._sasisopaTemplates[1].fileCS.thumbnail);
-    }).then(buffer => {
-      tmp_buffer_file.push(buffer);
+    }).then((response: any) => {
+      tmp_buffer_file.push(response.body);
       return this.createEvidenceByTasks();
     }).then(buffersEvidences => {
       console.log('Evidences ready');
@@ -812,8 +815,8 @@ class PdfGenerator{
   private async downloadFilesByAttached(urls: string[]): Promise<Buffer[]>{
     const buffers: Buffer[] = [];
     await Commons.asyncForEach(urls, async (url) => {
-      const response = await this._commons.downloadFile(url);
-      buffers.push(response);
+      const response: any = await this._commons.downloadFile(url);
+      buffers.push(response.body);
     });
     return buffers;
   }
@@ -841,8 +844,8 @@ class PdfGenerator{
         case 5:
         case 6:
           if(item.fileCS && item.fileCS.thumbnail && item.fileCS.thumbnail.endsWith('.pdf')){
-            const pdf = await this._commons.downloadFile(item.fileCS.thumbnail);
-            buffers.push(pdf);
+            const response: any = await this._commons.downloadFile(item.fileCS.thumbnail);
+            buffers.push(response.body);
           }
           break;
       }

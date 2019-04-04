@@ -56,3 +56,23 @@ export interface PdfData{
   stationId: string,
   isSGM?: boolean
 }
+
+export interface BCData{
+  name: string,
+  lastName: string,
+  workPosition: string,
+  countryCode: string,
+  whatsApp: string,
+  email: string,
+  companyName: string,
+  industryCode: number | string,
+  website: string,
+  urlLogo: string | 'https://www.googleapis.com/download/storage/v1/b/businesscardgcs/o/alex4%2F2019-02-25-193347461favicon.png?generation=1551123227641233&alt=media',
+  urlLogoThumbnail: string | 'https://lh3.googleusercontent.com/-3ntbjcrEgMf8ekZz7lLWXZFQKTte5FeDr9xBzhAh5S5IhdVSjM4scB-Dz5U8-lhR-4hxYdDfgb0grvajnJo-LG78ZMFjDm4Qw',
+  cardUrl: string,
+  cardUrlThumbnail: string
+}
+
+export interface JoinPdfData{
+  stationId: string
+}

@@ -15,6 +15,10 @@
     {
       "name": "SASISOPA",
       "description": "SASISOPA Service generate attached files"
+    },
+    {
+      "name": "Utils",
+      "description": "Global services"
     }
   ],
   "schemes": [
@@ -114,25 +118,25 @@
           "200": {
             "description": "OK",
             "schema": {
-              "$ref": "#/definitions/DefaultResponse"
+              "$ref": "#/definitions/BCResponse"
             }
           },
           "400": {
             "description": "Bad Request",
             "schema": {
-              "$ref": "#/definitions/DefaultResponse"
+              "$ref": "#/definitions/BCResponse"
             }
           },
           "422": {
             "description": "Incomplete params",
             "schema": {
-              "$ref": "#/definitions/DefaultResponse"
+              "$ref": "#/definitions/BCResponse"
             }
           },
           "500": {
             "description": "Internal Server Error",
             "schema": {
-              "$ref": "#/definitions/DefaultResponse"
+              "$ref": "#/definitions/BCResponse"
             }
           }
         }
@@ -168,16 +172,122 @@
         ],
         "responses": {
           "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/SasisopaResponse"
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/SasisopaResponse"
+            }
+          },
+          "422": {
+            "description": "Incomplete params",
+            "schema": {
+              "$ref": "#/definitions/SasisopaResponse"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/SasisopaResponse"
+            }
+          }
+        }
+      }
+    },
+    "/joinPDF": {
+      "get": {
+        "tags": [
+          "SASISOPA"
+        ],
+        "summary": "Create a PDF file joining multiples files",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/octet-stream",
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "stationId",
+            "type": "string",
+            "required": true,
+            "description": "Station ID"
+          }
+        ],
+        "responses": {
+          "200": {
             "description": "OK"
           },
           "400": {
-            "description": "Bad Request"
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/DefaultResponse"
+            }
           },
           "422": {
-            "description": "Incomplete params"
+            "description": "Incomplete params",
+            "schema": {
+              "$ref": "#/definitions/DefaultResponse"
+            }
           },
           "500": {
-            "description": "Internal Server Error"
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/DefaultResponse"
+            }
+          }
+        }
+      }
+    },
+    "/download": {
+      "get": {
+        "tags": [
+          "Utils"
+        ],
+        "summary": "Download file as Buffer",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/octet-stream",
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "url",
+            "type": "string",
+            "required": true,
+            "description": "Url File or Image"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/DefaultResponse"
+            }
+          },
+          "422": {
+            "description": "Incomplete params",
+            "schema": {
+              "$ref": "#/definitions/DefaultResponse"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/DefaultResponse"
+            }
           }
         }
       }
@@ -194,9 +304,38 @@
         "description": {
           "type": "string",
           "description": "Information on response"
+        }
+      }
+    },
+    "BCResponse": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "description": "Status code in the response"
+        },
+        "description": {
+          "type": "string",
+          "description": "Information on response"
         },
         "item": {
           "$ref": "#/definitions/UBCLite"
+        }
+      }
+    },
+    "SasisopaResponse": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "description": "Status code in the response"
+        },
+        "description": {
+          "type": "string",
+          "description": "Information on response"
+        },
+        "item": {
+          "$ref": "#/definitions/FullSasisopa"
         }
       }
     },
@@ -222,6 +361,15 @@
         "dynamicSignIn": {
           "type": "string",
           "description": "Dynamic link for sign in Business Card"
+        }
+      }
+    },
+    "FullSasisopa": {
+      "type": "object",
+      "properties": {
+        "date": {
+          "type": "number",
+          "description": "Date for file availability"
         }
       }
     }
