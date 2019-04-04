@@ -11,7 +11,21 @@ export class BC{
       description: 'OK',
       item: null
     };
-    this._data = data;
+    this._data = {
+      name: data.name || '',
+      lastName: data.lastName || '',
+      workPosition: data.workPosition || '',
+      countryCode: data.countryCode || '',
+      whatsApp: data.whatsApp || '',
+      email: data.email || '',
+      companyName: data.companyName || '',
+      industryCode: data.industryCode || '',
+      website: data.website || '',
+      urlLogo: data.urlLogo || '',
+      urlLogoThumbnail: data.urlLogoThumbnail || '',
+      cardUrl: data.cardUrl || '',
+      cardUrlThumbnail: data.cardUrlThumbnail || ''
+    };
     this.parseInfo();
   }
 
@@ -63,10 +77,10 @@ export class BC{
     const webShot = require('webshot');
     const renderStream = webShot(html, {siteType:'html', shotSize: { width: 900, height: 500 }});
     let chunks = [];
-    renderStream.on('data', function(chunk) {
+    renderStream.on('data', (chunk) => {
       chunks.push(chunk);
     });
-    renderStream.on('end', function() {
+    renderStream.on('end', () => {
       const result = Buffer.concat(chunks);
       this.uploadImage(result);
     });
