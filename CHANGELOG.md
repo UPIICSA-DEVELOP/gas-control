@@ -2,6 +2,28 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="1.2.0-beta.3"></a>
+# [1.2.0-beta.3](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/compare/v1.2.0-beta.2...v1.2.0-beta.3) (2019-04-04)
+
+
+### Bug Fixes
+
+* **AddGasStation:** disable buttons after click ([3b21d73](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/3b21d73))
+* **AddGasStation:** limit calendar in tasks schedule ([4ca270a](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/4ca270a))
+* **Create Station Tasks:** notify tasks building ([b3c3d8f](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/b3c3d8f))
+* **DateFilter:** solve error in calendar date ([aafcc97](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/aafcc97))
+* **DateGenerator:** add parameter to modify returned value ([c8b5250](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/c8b5250))
+* **DatePicker:** solve error in date ([c7880e7](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/c7880e7))
+* **Screen:** Change validation to build tasks ([2b869ce](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/2b869ce))
+* **Screen:** remove config to modal ([e13f22f](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/e13f22f))
+
+
+### Features
+
+* **TaskFilterName:** add persistence in filter and message to not result in search ([c0eedcc](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/c0eedcc))
+
+
+
 <a name="1.2.0-beta.2"></a>
 # [1.2.0-beta.2](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/compare/v1.2.0-beta.1...v1.2.0-beta.2) (2019-04-04)
 
