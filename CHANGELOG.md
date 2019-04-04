@@ -2,6 +2,35 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="1.2.0-beta.0"></a>
+# [1.2.0-beta.0](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/compare/v1.1.0...v1.2.0-beta.0) (2019-04-04)
+
+
+### Bug Fixes
+
+* **Add Gas Station:** solve error to see image collaborator ([fcc933c](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/fcc933c))
+* **AddGasStation:** solve some errors ([bce322f](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/bce322f))
+* **DocumentationComponent:** change text to ASEA and CRE section ([d73cbcb](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/d73cbcb))
+* **Lists Collaborators:** remove + from code ([6aab11f](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/6aab11f))
+* **ListTasks:** solve some error ([5d6164b](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/5d6164b))
+* **LocationComponent:** Solve error when location started ([8bd8c4e](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/8bd8c4e))
+* **PdfEndPoint:** Solving procedures on report 9, menifest and remove ([081a337](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/081a337))
+* **Profiles:** remove update signature ([0e6f6de](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/0e6f6de))
+* **ScheduleTasks:** modify elements to schedule tasks ([6c8244f](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/6c8244f))
+* **StationList:** remove update ban from LocalStorage ([ed4cf3c](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/ed4cf3c))
+* **StationProfile:** disable tank inputs to role 6 ([233c48e](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/233c48e))
+* **StationProfile:** remove validation in installation year ([3ff5b64](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/3ff5b64))
+
+
+### Features
+
+* New PDF visor ([a62c319](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/a62c319))
+* **Datepicker:** add persistence to filter ([c7826fe](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/c7826fe))
+* **Screen:** update signature ([ccc704e](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/ccc704e))
+* New service for join pdf ([bbb2e3e](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/bbb2e3e))
+
+
+
 <a name="1.1.0"></a>
 # [1.1.0](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/compare/v1.1.0-beta.1...v1.1.0) (2019-04-03)
 
