@@ -192,7 +192,6 @@ export class StationListComponent implements OnInit, DoCheck {
 
   public changeStation(id: string):void{
     this._router.navigate(['/home']).then(()=>{
-      LocalStorageService.removeItem(Constants.NotCalendarTask);
       this._sharedService.setNotification({type: SharedTypeNotification.ChangeStation, value: id});
     });
 
