@@ -95,7 +95,6 @@ export class AuthService implements Resolve<any>{
     LocalStorageService.removeItem(Constants.NotSignature);
     CookieService.deleteCookie(Constants.IdSession);
     LocalStorageService.removeItem(Constants.UserInSession);
-    LocalStorageService.removeItem(Constants.NotCalendarTask);
     LocalStorageService.removeItem(Constants.StationInDashboard);
     if(!notNavigate){
       this._router.navigate(['/']).then(() => {});
@@ -150,7 +149,6 @@ export class AuthService implements Resolve<any>{
 
   private static resetFlags(): void{
     LocalStorageService.removeItem(Constants.NotSignature);
-    LocalStorageService.removeItem(Constants.NotCalendarTask);
     LocalStorageService.removeItem(Constants.StationInDashboard);
     LocalStorageService.removeItem(Constants.ConsultancyInSession);
   }

@@ -152,6 +152,31 @@ export class UtilitiesService {
     }
   }
 
+  static generateArrayDate(date: number, nextYear: boolean): Date | null{
+    const originalDate = date.toString();
+    let value: Date;
+    let day: any = undefined;
+    let month: any = undefined;
+    let year: any = undefined;
+    try{
+      if(!originalDate){
+        return null;
+      }
+      year = originalDate.slice(0,4);
+      month = originalDate.slice(4,6);
+      day = originalDate.slice(6,8);
+      if(nextYear){
+        year = Number(year);
+        year = (year + 1).toString();
+      }
+      value = new Date(Number(year), Number(month-1), Number(day));
+      return value
+    }catch (e){
+      console.error(e.message);
+      return null;
+    }
+  }
+
   static getDefaultParamsMap(): any {
     return {
       center: {lat: 19.4326018, lng: -99.1353936},
