@@ -112,6 +112,7 @@ export class AddGasStationComponent implements OnInit, OnDestroy {
   public yearSelector: number[];
   public load_two: boolean;
   public taskNotCalendar: boolean;
+  public disableButton: boolean[];
   private _formImage:FormData;
   private _formSignature: FormData;
   private _formFile: FormData;
@@ -137,6 +138,7 @@ export class AddGasStationComponent implements OnInit, OnDestroy {
     private _sharedService: SharedService,
     private _dialogRef: MatDialogRef<AddGasStationComponent>
   ) {
+    this.disableButton = [false, false];
     this.taskNotCalendar = true;
     this.load_two = false;
     this.yearSelector = [];
@@ -568,8 +570,10 @@ export class AddGasStationComponent implements OnInit, OnDestroy {
   }
 
   public validateLegal(data:any):void{
+    this.disableButton[0] = true;
     this.load_two = true;
     if(this.newLegalRep.invalid){
+      this.disableButton[0] = false;
       this.load_two = false;
       return;
     }else if(this.addImage){
@@ -614,8 +618,10 @@ export class AddGasStationComponent implements OnInit, OnDestroy {
 
   public validateManager(data:any):void{
     this.load_two = true;
+    this.disableButton[1] = true;
     if(this.newManager.invalid){
       this.load_two = false;
+      this.disableButton[1] = false;
       return;
     }else if(this.addImageTwo){
       this.uploadGenericFile(1, true);
@@ -701,6 +707,11 @@ export class AddGasStationComponent implements OnInit, OnDestroy {
           }
           break;
         default:
+          if(isManager){
+            this.disableButton[1] = false;
+          }else{
+            this.disableButton[0] = false;
+          }
           this.load_two = false;
           this._snackBarService.closeSnackBar();
           this._snackBarService.openSnackBar('Ha ocurrido un error, por favor, intente de nuevo', 'OK', 3000);
@@ -728,14 +739,17 @@ export class AddGasStationComponent implements OnInit, OnDestroy {
                     'Información',
                     'Hemos enviado un email de validación de cuenta a: ' + this.legalRepresentative.email,
                     'ACEPTAR').afterClosed().subscribe(() => {
-                      this.step = 0; this.listExist = true;
+                      this.step = 0;
+                      this.listExist = true;
                       this._modalScroll.nativeElement.scrollTop = '0';
-                    this.load_two = false;
+                      this.disableButton[0] = false;
+                      this.load_two = false;
                     });
                   break;
                 default:
                   this._snackBarService.openSnackBar('Ha ocurrido un error, por favor, intente de nuevo', 'OK', 3000);
                   this.load_two = false;
+                  this.disableButton[0] = false;
                   break;
               }
             });
@@ -757,14 +771,17 @@ export class AddGasStationComponent implements OnInit, OnDestroy {
                     'Información',
                     'Hemos enviado un email de validación de cuenta a: ' + this.legalRepresentative.email,
                     'ACEPTAR').afterClosed().subscribe(() => {
-                      this.step = 0; this.listExist = true;
+                      this.step = 0;
+                      this.listExist = true;
                       this._modalScroll.nativeElement.scrollTop = '0';
+                      this.disableButton[0] = false;
                       this.load_two = false;
                     });
                   break;
                 default:
                   this._snackBarService.openSnackBar('Ha ocurrido un error, por favor, intente de nuevo', 'OK', 3000);
                   this.load_two = false;
+                  this.disableButton[0] = false;
                   break;
               }
             });
@@ -796,11 +813,13 @@ export class AddGasStationComponent implements OnInit, OnDestroy {
                       this.step = 0;
                       this._modalScroll.nativeElement.scrollTop = '0';
                       this.load_two = false;
+                      this.disableButton[1] = false;
                     });
                   break;
                 default:
                   this._snackBarService.openSnackBar('Ha ocurrido un error, por favor, intente de nuevo', 'OK', 3000);
                   this.load_two = false;
+                  this.disableButton[1] = false;
                   break;
               }
             });
@@ -825,11 +844,13 @@ export class AddGasStationComponent implements OnInit, OnDestroy {
                       this.step = 0;
                       this._modalScroll.nativeElement.scrollTop = '0';
                       this.load_two = false;
+                      this.disableButton[1] = false;
                     });
                   break;
                 default:
                   this._snackBarService.openSnackBar('Ha ocurrido un error, por favor, intente de nuevo', 'OK', 3000);
                   this.load_two = false;
+                  this.disableButton[1] = false;
                   break;
               }
             });
@@ -902,7 +923,7 @@ export class AddGasStationComponent implements OnInit, OnDestroy {
         default:
           break;
       }
-    })
+    });
   }
 
   public closeAddStation():void{
