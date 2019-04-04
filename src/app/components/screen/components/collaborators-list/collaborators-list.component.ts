@@ -205,7 +205,7 @@ export class CollaboratorsListComponent implements OnInit, OnDestroy {
       lastName:['',[Validators.required]],
       email:['',[Validators.required, Validators.email]],
       country:['México',[Validators.required]],
-      code:['+52',[]],
+      code:['52',[]],
       phoneNumber:['',[Validators.required, Validators.minLength(8), Validators.maxLength(13)]],
       role:['',[Validators.required]],
       jobTitle:['',[Validators.required]],
