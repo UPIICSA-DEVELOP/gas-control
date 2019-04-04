@@ -195,7 +195,11 @@ export class ListTasksComponent implements OnInit, OnDestroy{
     this._api.listTask(this.filters).subscribe(response => {
       switch (response.code) {
         case 200:
-          this._token = response.nextPageToken;
+          if(this._token === response.nextPageToken){
+            this._token = null;
+          }else{
+            this._token = response.nextPageToken;
+          }
           if (response.items) {
             this.emptyLisTasks = false;
             this.tasksCompare(response.items);
@@ -400,7 +404,11 @@ export class ListTasksComponent implements OnInit, OnDestroy{
       this._api.listUTask(this.filters).subscribe(response=>{
         switch (response.code){
           case 200:
-            this._tokenTwo = response.nextPageToken;
+            if(this._tokenTwo === response.nextPageToken){
+              this._tokenTwo = null;
+            }else{
+              this._tokenTwo = response.nextPageToken;
+            }
             if(response.items){
               this.compareNotCalendarTasks(response.items);
             }else{
@@ -453,9 +461,13 @@ export class ListTasksComponent implements OnInit, OnDestroy{
     if(element.scrollHeight - element.scrollTop === element.clientHeight) {
       if(!this.reportConfig.reportView && !this._firstGet && !this.load){
         if(this.others){
-          this.getNotCalendarTask();
+          if(this._tokenTwo){
+            this.getNotCalendarTask();
+          }
         }else{
-          this.getStationTask();
+          if(this._token){
+            this.getStationTask();
+          }
         }
       }
     }
