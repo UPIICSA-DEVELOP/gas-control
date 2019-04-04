@@ -177,12 +177,11 @@
                 <ng-template #taskInCreation>
                   <div *ngIf="load; then standBy else notExistTasks"></div>
                   <ng-template #standBy>
-                    <div *ngIf="load" class="message">Espere un momento por favor...</div>
+                    <div class="message">Espere un momento por favor...</div>
                   </ng-template>
                   <ng-template #notExistTasks>
-                    <div class="notFoundTasks" *ngIf=" emptyLisTasks && !load">No existen resultados para su búsqueda</div>
-                    <div class="notFoundTasks" *ngIf=" emptyLisTasks && load">Cargando tareas...</div>
-                    <div *ngIf="!emptyLisTasks &&!load" class="message">La Estación no cuenta por el momento con tareas programadas, por favor consulte mañana</div>
+                    <div class="notFoundTasks" *ngIf="emptyLisTasks && !finishCreateTasks">No existen resultados para su búsqueda</div>
+                    <div *ngIf="finishCreateTasks && !emptyLisTasks" class="message">La Estación no cuenta por el momento con tareas programadas, por favor consulte mañana</div>
                   </ng-template>
                 </ng-template>
                 <ng-template #notTask>
