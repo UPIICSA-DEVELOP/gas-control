@@ -195,18 +195,17 @@ export class ScreenComponent implements OnInit, AfterViewInit, OnDestroy{
     this._api.buildTaskByStation(id || this.stationActive.stationTaskId).subscribe(response=>{
       switch (response.code){
         case 200:
+        case 400:
           if(response.item.status!==3){
             this.createTasks(id);
             this._sharedService.setNotification({type: SharedTypeNotification.BuildingTasks, value: response.item});
           }else{
-            this._sharedService.setNotification({type: SharedTypeNotification.FinishCreateTasks, value: response.item});
+            this._sharedService.setNotification({type: SharedTypeNotification.FinishCreateTasks, value: response});
+            this.stationActive.stationTaskId = id ? id : response.item.id;
           }
           break;
-        case 400:
-          this.stationActive.stationTaskId = id ? id : response.item.id;
-          break;
         default:
-          break;
+          return;
       }
     })
   }
