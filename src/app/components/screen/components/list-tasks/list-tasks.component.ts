@@ -161,7 +161,9 @@ export class ListTasksComponent implements OnInit, OnDestroy{
           if(this.station){
             this.station.stationTaskId = response.value.id;
             this.emptyLisTasks = false;
-            this.finishCreateTasks = true;
+            if(response.value.code === 200){
+              this.finishCreateTasks = true;
+            }
           }
           break;
         case SharedTypeNotification.NotCreateTasks:

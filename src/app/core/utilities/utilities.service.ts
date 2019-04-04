@@ -170,6 +170,7 @@ export class UtilitiesService {
         year = (year + 1).toString();
       }
       value = new Date(Number(year), Number(month-1), Number(day));
+      value = new Date(value.getTime() + (24 * 60 * 60 * 1000));
       return value
     }catch (e){
       console.error(e.message);
