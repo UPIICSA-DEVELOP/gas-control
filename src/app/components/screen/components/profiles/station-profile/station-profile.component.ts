@@ -325,7 +325,7 @@ export class StationProfileComponent implements OnInit, OnDestroy {
       }
     }
     for(let j = 0; j<this.tanks.length; j++){
-      if(((!this.tanks[j].capacity || !this.tanks[j].year) && this.tanks[j].fuelType) || ((this.tanks[j].capacity || this.tanks[j].year) && !this.tanks[j].fuelType)){
+      if((!this.tanks[j].capacity && this.tanks[j].fuelType) || (this.tanks[j].capacity && !this.tanks[j].fuelType)){
         this._snackBarService.openSnackBar('Complete los campos para el tanque ' + (j+1),'OK',3000);
         return false;
       }
