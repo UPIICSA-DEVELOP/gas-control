@@ -102,6 +102,7 @@ export class AddGasStationComponent implements OnInit, OnDestroy {
   public load: boolean;
   public startDate: Date;
   public tomorrow: Date;
+  public year: Date;
   public zone: string[];
   public frequency: string[];
   public priority: string[];
@@ -166,6 +167,7 @@ export class AddGasStationComponent implements OnInit, OnDestroy {
     this.step = this._data?this._data.stepActive:0;
     this.disableClose = this._data?this._data.disableClose:false;
     this._stationId = this._data?this._data.stationId:null;
+    this.year = new Date(this.startDate.getTime() + ((this.startDate.getFullYear()/4 && this.startDate.getFullYear()/100 && this.startDate.getFullYear()/400 ? 366: 365) * 24 * 60 * 60 * 1000));
   }
 
   ngOnInit() {

@@ -621,7 +621,7 @@
               <div class="priority" *ngIf="task.level===1" style="background-color:#257602"></div>
               <mat-card-content style="display: flex; align-items: center;">
                 <div class="calendar-task">
-                  <input [min]="tomorrow" [matDatepicker]="picker" style="width: 0;border: 0;" [(ngModel)]="calendar[i]" (ngModelChange)="blockEnd($event)">
+                  <input [min]="tomorrow" [max]="year" [matDatepicker]="picker" style="width: 0;border: 0;" [(ngModel)]="calendar[i]" (ngModelChange)="blockEnd($event)">
                   <button mat-icon-button *ngIf="!calendar[i]" (click)="picker.open()">
                     <mat-icon>update</mat-icon>
                   </button>
