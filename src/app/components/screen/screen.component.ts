@@ -220,7 +220,7 @@ export class ScreenComponent implements OnInit, AfterViewInit, OnDestroy{
   }
 
   public openSasisopaModal():void{
-    this._sasisopaService.open({stationId: this.stationActive.id, utils: this.utils});
+    this._sasisopaService.open();
   }
 
   public openSGMModal():void{
