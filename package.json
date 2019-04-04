@@ -25,7 +25,7 @@
     "release:patch": "standard-version --release-as patch",
     "release:minor": "standard-version --release-as minor",
     "release:major": "standard-version --release-as major",
-    "endpoints": "gulp endpoints && webpack --mode production --config endpoints/pdf/webpack.config.js --progress --colors",
+    "endpoints": "gulp endpoints && webpack --mode production --config endpoints/webpack.config.js --progress --colors",
     "deeplinks:dev": "set NODE_ENV=dev&& node deep-links/deep-links.js",
     "deeplinks:prod": "set NODE_ENV=prod&& node deep-links/deep-links.js",
     "setup-deploy": "gulp zip --file hooks/config && node deploy/scp --filePath hooks/config/bundle.zip --destination /var/www/html/app.inspector.com/deploy/config && node hooks/remotely --setup",

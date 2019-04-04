@@ -9,6 +9,7 @@ import 'zone.js/dist/zone-node'
 import {enableProdMode} from '@angular/core';
 import {ServerStandard} from './types/server_standard';
 import {ServerLite} from './types/server_lite';
+import {EndPoints} from '../endpoints/endpoints';
 import * as nconfg from 'nconf';
 
 enableProdMode();
@@ -70,7 +71,7 @@ export class App {
       customCss: '.swagger-ui .topbar { display: none }'
     };
     app.use('/endpoints/v1/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument, options));
-    app.use('/endpoints/v1', require('../dist/endpoints/endpoints.js'));
+    app.use('/endpoints/v1', new EndPoints().bootstrap());
   }
 
 }

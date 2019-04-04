@@ -18,7 +18,6 @@ gulp.task('templates', function() {
 
 gulp.task('endpoints', ['templates'], function() {
   return gulp.src([
-    './endpoints/*.js',
     './endpoints/*.json'
   ]).pipe(gulp.dest('./dist/endpoints'));
 });
