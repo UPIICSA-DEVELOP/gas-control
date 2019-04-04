@@ -268,8 +268,8 @@ export class ListTasksComponent implements OnInit, OnDestroy{
           case 200:
             this._creationDate = response.item.creationDate;
             const config: DateRangeOptions = {
-              minDate: UtilitiesService.generateArrayDate(this._creationDate,false),
-              maxDate: UtilitiesService.generateArrayDate(this._creationDate, true),
+              minDate: UtilitiesService.generateArrayDate(this._creationDate,false, true),
+              maxDate: UtilitiesService.generateArrayDate(this._creationDate, true, true),
               startDate: this.start.timeStamp,
               endDate: this.end.timeStamp
             };

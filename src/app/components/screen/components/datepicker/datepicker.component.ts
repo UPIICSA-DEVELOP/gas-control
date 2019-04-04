@@ -32,8 +32,8 @@ export class DatepickerComponent implements OnInit {
       endDate:['',[]]
     });
     this.dateForm.patchValue({
-      startDate: UtilitiesService.generateArrayDate(this.data.startDate, false),
-      endDate: UtilitiesService.generateArrayDate(this.data.endDate, false)
+      startDate: UtilitiesService.generateArrayDate(this.data.startDate, false, false),
+      endDate: UtilitiesService.generateArrayDate(this.data.endDate, false, false)
     })
   }
   public close():void{
