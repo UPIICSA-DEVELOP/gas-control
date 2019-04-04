@@ -4,7 +4,7 @@
  *  Proprietary and confidential
  */
 
-import {Component, DoCheck, ElementRef, Input, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {Component, ElementRef, Input, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {DatepickerService, DateRangeOptions} from '@app/components/screen/components/datepicker/datepicker.service';
 import {TaskFilterService} from '@app/components/screen/components/task-filter/task-filter.service';
 import {ApiService} from '@app/core/services/api/api.service';
@@ -34,7 +34,7 @@ export interface Report {
   templateUrl: './list-tasks.component.html',
   styleUrls: ['./list-tasks.component.scss']
 })
-export class ListTasksComponent implements OnInit, DoCheck , OnDestroy{
+export class ListTasksComponent implements OnInit, OnDestroy{
   @ViewChild('modalScroll') private _modalScroll: ElementRef;
   public station: any;
   @Input() set stationInfo(stationObj: any) {
@@ -45,7 +45,11 @@ export class ListTasksComponent implements OnInit, DoCheck , OnDestroy{
       this.goBackList();
       this.resetFilters(true);
       this.station = stationObj;
-      this.getStationTask();
+      if(this.station.stationTaskId){
+        this.getStationTask();
+      }else{
+        this.notCalendar = true;
+      }
     }
   }
 
@@ -68,6 +72,7 @@ export class ListTasksComponent implements OnInit, DoCheck , OnDestroy{
   public notCalendarTasks: any[];
   public listTask: TaskLists;
   public emptyLisTasks: boolean;
+  public finishCreateTasks: boolean;
   public reportConfig: Report;
   private _firstOpen: boolean;
   private _taskType: string;
@@ -107,6 +112,7 @@ export class ListTasksComponent implements OnInit, DoCheck , OnDestroy{
     this._taskType = '0';
     this.notCalendarTasks = [];
     this._lastTabSelected = 0;
+    this.finishCreateTasks = false;
   }
 
   ngOnInit() {
@@ -118,10 +124,6 @@ export class ListTasksComponent implements OnInit, DoCheck , OnDestroy{
     }
     this.start = UtilitiesService.createPersonalTimeStamp(this.startDate);
     this.end = UtilitiesService.createPersonalTimeStamp(this.endDate);
-  }
-
-  ngDoCheck(): void {
-    this.notCalendar = LocalStorageService.getItem(Constants.NotCalendarTask);
   }
 
   ngOnDestroy(): void{
@@ -154,6 +156,20 @@ export class ListTasksComponent implements OnInit, DoCheck , OnDestroy{
             this.getStationTask();
           }
           break;
+        case SharedTypeNotification.FinishCreateTasks:
+          this.load = false;
+          if(this.station){
+            this.station.stationTaskId = response.value.id;
+            this.emptyLisTasks = false;
+            this.finishCreateTasks = true;
+          }
+          break;
+        case SharedTypeNotification.NotCreateTasks:
+          this.notCalendar = true;
+          break;
+        case SharedTypeNotification.CreationTask:
+          this.notCalendar = false;
+          this.load = true;
       }
     })
   }
@@ -169,6 +185,7 @@ export class ListTasksComponent implements OnInit, DoCheck , OnDestroy{
       cursor: this._token
     };
     this.emptyLisTasks = true;
+    this.finishCreateTasks = false;
     this._api.listTask(this.filters).subscribe(response => {
       switch (response.code) {
         case 200:
@@ -177,7 +194,11 @@ export class ListTasksComponent implements OnInit, DoCheck , OnDestroy{
             this.emptyLisTasks = false;
             this.tasksCompare(response.items);
           }else{
-            this.emptyLisTasks = (this.listTask.historyTasks.length ===0 && this.listTask.previousTasks.length ===0 && this.listTask.todayTasks.length ===0);
+            if(this._firstOpen && this._taskType === '0' && this.filter === 0 && (this.listTask.historyTasks.length === 0 && this.listTask.previousTasks.length === 0 && this.listTask.todayTasks.length === 0)){
+              this.finishCreateTasks = true;
+            }else{
+              this.emptyLisTasks = (this.listTask.historyTasks.length === 0 && this.listTask.previousTasks.length === 0 && this.listTask.todayTasks.length === 0);
+            }
           }
           break;
         default:
@@ -235,14 +256,16 @@ export class ListTasksComponent implements OnInit, DoCheck , OnDestroy{
   }
 
   public dateFilter(): void {
-    if(this.station.stationTaskId){
+    if(this.station.stationTaskId && !this.finishCreateTasks){
       this._api.getStationTask(this.station.stationTaskId).subscribe(response => {
         switch (response.code) {
           case 200:
             this._creationDate = response.item.creationDate;
             const config: DateRangeOptions = {
-              minDate: new Date((this._creationDate).toString().slice(0, 4) + '-' + (this._creationDate).toString().slice(4, 6) + '-' + (this._creationDate).toString().slice(6, 8)),
-              maxDate: new Date(((Number((this._creationDate).toString().slice(0, 4))) + 1).toString() + '-' + (this._creationDate).toString().slice(4, 6) + '-' + (this._creationDate).toString().slice(6, 8))
+              minDate: UtilitiesService.generateArrayDate(this._creationDate,false),
+              maxDate: UtilitiesService.generateArrayDate(this._creationDate, true),
+              startDate: this.start.timeStamp,
+              endDate: this.end.timeStamp
             };
             this._dateService.open(config).afterClosed().subscribe(response => {
               switch (response.code) {
@@ -257,14 +280,10 @@ export class ListTasksComponent implements OnInit, DoCheck , OnDestroy{
                   if(this.others){
                     this._tokenTwo = undefined;
                     this.notCalendarTasks = [];
-                    this.getNotCalendarTask()
+                    this.getNotCalendarTask();
                   }else{
                     this._token = undefined;
-                    this.listTask = {
-                      historyTasks: [],
-                      previousTasks: [],
-                      todayTasks: []
-                    };
+                    this.listTask = {historyTasks: [], previousTasks: [], todayTasks: []};
                     this.getStationTask();
                   }
                   break;
@@ -277,20 +296,22 @@ export class ListTasksComponent implements OnInit, DoCheck , OnDestroy{
   }
 
   public taskFilter(): void {
-    this._filterService.open(this.filter).afterClosed().subscribe(response => {
-      switch (response.code) {
-        case 1:
-          this.filter = response.filter;
-          this.listTask = {historyTasks: [], previousTasks: [], todayTasks: []};
-          this._token = undefined;
-          if(this.filter === 0){
-            this.resetFilters();
-          }else{
-            this.getStationTask();
-          }
-          break;
-      }
-    });
+    if(!this.finishCreateTasks){
+      this._filterService.open(this.filter).afterClosed().subscribe(response => {
+        switch (response.code) {
+          case 1:
+            this.filter = response.filter;
+            this.listTask = {historyTasks: [], previousTasks: [], todayTasks: []};
+            this._token = undefined;
+            if(this.filter === 0){
+              this.resetFilters();
+            }else{
+              this.getStationTask();
+            }
+            break;
+        }
+      });
+    }
   }
 
   public resetFilters(getTasks?: boolean): void {
@@ -316,19 +337,21 @@ export class ListTasksComponent implements OnInit, DoCheck , OnDestroy{
   }
 
   public search(): void {
-    this._taskFilterNameService.open(this.utils.taskTemplates).afterClosed().subscribe(response => {
-      switch (response.code) {
-        case 1:
-          this._taskType = response.data.toString();
-          this.listTask = {historyTasks: [], previousTasks: [], todayTasks: []};
-          this._token = undefined;
-          this._tokenTwo = undefined;
-          this.getStationTask();
-          break;
-        default:
-          break;
-      }
-    });
+    if(!this.finishCreateTasks){
+      this._taskFilterNameService.open(this.utils.taskTemplates).afterClosed().subscribe(response => {
+        switch (response.code) {
+          case 1:
+            this._taskType = response.data.toString();
+            this.listTask = {historyTasks: [], previousTasks: [], todayTasks: []};
+            this._token = undefined;
+            this._tokenTwo = undefined;
+            this.getStationTask();
+            break;
+          default:
+            break;
+        }
+      });
+    }
   }
 
   public createStationTasks(): void {
@@ -391,8 +414,12 @@ export class ListTasksComponent implements OnInit, DoCheck , OnDestroy{
   }
 
   public goTaskInfo(task: any, type?:number): void{
+    const today = UtilitiesService.createPersonalTimeStamp(new Date());
     if(!this.others){
       if(task.original.status === 3 && this.user.role !== 7){
+        return;
+      }
+      if(task.original.originalDate>today.timeStamp && this.user.role !== 7){
         return;
       }
       this._modalScroll.nativeElement.scroll({top: 0});

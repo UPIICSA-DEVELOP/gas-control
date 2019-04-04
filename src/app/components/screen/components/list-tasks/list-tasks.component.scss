@@ -76,11 +76,10 @@
           padding: 0;
           display: flex;
           margin-bottom: 12px;
-          height: 88px;
+          height: 92px;
           mat-card-content{
             display: flex;
             width: 100%;
-            min-height: 88px;
             position: relative;
             padding: 12px;
           }
@@ -89,7 +88,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            width: 48px;
+            margin: 12px;
             @media screen and (max-width: 900px){
               width: 25%;
             }
@@ -103,18 +102,18 @@
             }
           }
           .content{
-            width: 85%;
+            width: 90%;
             height: 100%;
             .head{
               color: #000000;
               font-weight: 700;
-              font-size: 14px;
+              font-size: 13px;
             }
             .text{
               color: #707070;
               font-weight: 400;
               font-size: 12px;
-              margin-top: 5px;
+              margin-top: 4px;
               white-space: nowrap;
               overflow: hidden;
               text-overflow: ellipsis;

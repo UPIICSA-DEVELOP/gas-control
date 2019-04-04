@@ -12,12 +12,12 @@
     <div class="container">
       <form [formGroup]="dateForm" (ngSubmit)="applyDate(dateForm.value)">
         <mat-form-field>
-          <input formControlName="startDate" matInput [matDatepicker]="pickerStart" placeholder="Fecha inicial" [min]="range.minDate" [max]="range.maxDate">
+          <input formControlName="startDate" matInput [matDatepicker]="pickerStart" placeholder="Fecha inicial" [min]="data.minDate" [max]="data.maxDate">
           <mat-datepicker-toggle matSuffix [for]="pickerStart"></mat-datepicker-toggle>
           <mat-datepicker #pickerStart></mat-datepicker>
         </mat-form-field>
         <mat-form-field>
-          <input formControlName="endDate" matInput [matDatepicker]="pickerEnd" placeholder="Fecha final" [min]="range.minDate" [max]="range.maxDate">
+          <input formControlName="endDate" matInput [matDatepicker]="pickerEnd" placeholder="Fecha final" [min]="data.minDate" [max]="data.maxDate">
           <mat-datepicker-toggle matSuffix [for]="pickerEnd"></mat-datepicker-toggle>
           <mat-datepicker #pickerEnd></mat-datepicker>
         </mat-form-field>

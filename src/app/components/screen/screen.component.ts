@@ -20,6 +20,9 @@ import {SasisopaService} from '@app/components/screen/components/sasisopa/sasiso
 import {MetaService} from '@app/core/services/meta/meta.service';
 import {SgmService} from '@app/components/screen/components/sgm/sgm.service';
 import {ApiLoaderService} from '@app/core/services/api/api-loader.service';
+import {SignaturePadService} from '@app/core/components/signature-pad/signature-pad.service';
+import {UploadFileService} from '@app/core/components/upload-file/upload-file.service';
+import {SnackBarService} from '@app/core/services/snackbar/snackbar.service';
 
 @Component({
   selector: 'app-screen',
@@ -47,7 +50,10 @@ export class ScreenComponent implements OnInit, AfterViewInit, OnDestroy{
     private _sharedService: SharedService,
     private _sasisopaService: SasisopaService,
     private _sgmService: SgmService,
-    private _metaService: MetaService
+    private _metaService: MetaService,
+    private _signatureService: SignaturePadService,
+    private _uploadFile: UploadFileService,
+    private _snackBarService: SnackBarService
   ) {
     this._subscriptionLoader = this._apiLoader.getProgress().subscribe(load=>{this.load = load});
     this.menu = true;
@@ -114,19 +120,7 @@ export class ScreenComponent implements OnInit, AfterViewInit, OnDestroy{
         'Para continuar es necesario registrar su firma digital',
         'REGISTRAR').afterClosed().subscribe(() =>{
         LocalStorageService.setItem(Constants.NotSignature, true);
-        switch (user.role) {
-          case 1:
-          case 2:
-          case 3:
-            this._router.navigate(['/home/profile/consultancy']).then();
-            break;
-          case 4:
-          case 5:
-          case 6:
-            this._router.navigate(['/home/profile/user']).then();
-            break;
-        }
-        this.getDashboardInformation(this._stationId);
+        this.drawSignature(user);
       });
     }else{
       this.getDashboardInformation(this._stationId);
@@ -185,7 +179,7 @@ export class ScreenComponent implements OnInit, AfterViewInit, OnDestroy{
         }
       });
     }else{
-      LocalStorageService.setItem(Constants.NotCalendarTask,true);
+      this._sharedService.setNotification({type: SharedTypeNotification.NotCreateTasks, value: true});
     }
   }
 
@@ -202,13 +196,13 @@ export class ScreenComponent implements OnInit, AfterViewInit, OnDestroy{
       switch (response.code){
         case 200:
           if(response.item.status!==3){
-            this._sharedService.setNotification({type: SharedTypeNotification.ListTask, value: true});
             this.createTasks(id);
+          }else{
+            this._sharedService.setNotification({type: SharedTypeNotification.FinishCreateTasks, value: response.item});
           }
           break;
         case 400:
           this.stationActive.stationTaskId = id ? id : response.item.id;
-          this._sharedService.setNotification({type: SharedTypeNotification.ListTask, value: false});
           break;
         default:
           break;
@@ -311,4 +305,66 @@ export class ScreenComponent implements OnInit, AfterViewInit, OnDestroy{
     }
   }
 
+  private drawSignature(user: any):void{
+    this._signatureService.open().afterClosed().subscribe(response=>{
+      switch (response.code){
+        case 1:
+          let formSignature = new FormData();
+          formSignature.append('path','');
+          formSignature.append('fileName','signature-'+user.id+'-'+ new Date().getTime()+'.png');
+          formSignature.append('isImage','true');
+          formSignature.append('file',response.blob);
+          this.loadSignature(formSignature);
+          break;
+      }
+    });
+  }
+
+  private loadSignature(file: FormData): void{
+    this._uploadFile.upload(file).subscribe(response=>{
+      if(response){
+        const signature = {
+          blobName: response.item.blobName,
+          thumbnail: response.item.thumbnail
+        };
+        this.getUser(signature);
+      }else{
+        this.onErrorOccur();
+      }
+    })
+  }
+
+  private getUser(newSignatureElement: any): void{
+    this._api.getPerson(CookieService.getCookie(Constants.IdSession)).subscribe(response=>{
+      switch (response.code){
+        case 200:
+          let person = response.item;
+          person.signature = newSignatureElement;
+          this.updatePerson(person);
+          break;
+        default:
+          this.onErrorOccur();
+          break;
+      }
+    });
+  }
+
+  private updatePerson(person: any): void{
+    this._api.updatePerson(person).subscribe(response=>{
+      switch (response.code){
+        case 200:
+          this._snackBarService.openSnackBar('Firma actualizada', 'OK', 3000);
+          LocalStorageService.removeItem(Constants.NotSignature);
+          this.getDashboardInformation(this._stationId);
+          break;
+        default:
+          this.onErrorOccur();
+          break;
+      }
+    })
+  }
+
+  private onErrorOccur():void{
+    this._snackBarService.openSnackBar('Ha ocurrido un error, por favor intente después', 'OK', 3000);
+  }
 }

@@ -332,11 +332,6 @@ export class UserProfileComponent implements OnInit, OnDestroy {
           this.profileImage = this.user.profileImage.thumbnail;
           this.blobName = this.user.profileImage.blobName;
         }
-        if (this.user.countryCode){
-          if (!this.user.countryCode.includes('+')) {
-            this.user.countryCode = '+' + this.user.countryCode;
-          }
-        }
         if(this.user.signature){
           this.signature = this.user.signature.thumbnail
         }
@@ -425,21 +420,6 @@ export class UserProfileComponent implements OnInit, OnDestroy {
       ssn: this.userInformation.ssn
     });
     this.detectChange();
-    if (LocalStorageService.getItem(Constants.NotSignature)) {
-      this._signaturePad.open().afterClosed().subscribe(response=>{
-        switch (response.code){
-          case 1:
-            this.signature = response.base64;
-            this._formSignature = new FormData();
-            this._formSignature.append('path', '');
-            this._formSignature.append('fileName', 'signature-'+this.user.id+'-'+new Date().getTime()+'.png');
-            this._formSignature.append('isImage', 'true');
-            this._formSignature.append('file', response.blob);
-            this.uploadSignature();
-            break;
-        }
-      });
-    }
   }
 
   public updateProfile(data: any):void{

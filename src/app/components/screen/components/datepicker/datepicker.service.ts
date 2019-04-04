@@ -11,6 +11,8 @@ import {DatepickerComponent} from 'app/components/screen/components/datepicker/d
 export interface DateRangeOptions {
   minDate: Date;
   maxDate: Date;
+  startDate?: number;
+  endDate?: number;
 }
 
 @Injectable()
