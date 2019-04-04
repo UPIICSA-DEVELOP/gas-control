@@ -197,6 +197,7 @@ export class ScreenComponent implements OnInit, AfterViewInit, OnDestroy{
         case 200:
           if(response.item.status!==3){
             this.createTasks(id);
+            this._sharedService.setNotification({type: SharedTypeNotification.BuildingTasks, value: response.item});
           }else{
             this._sharedService.setNotification({type: SharedTypeNotification.FinishCreateTasks, value: response.item});
           }
@@ -219,7 +220,7 @@ export class ScreenComponent implements OnInit, AfterViewInit, OnDestroy{
   }
 
   public openSasisopaModal():void{
-    this._sasisopaService.open();
+    this._sasisopaService.open({stationId: this.stationActive.id, utils: this.utils});
   }
 
   public openSGMModal():void{

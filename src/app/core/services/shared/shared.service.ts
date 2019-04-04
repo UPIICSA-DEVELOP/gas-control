@@ -16,7 +16,8 @@ export enum SharedTypeNotification {
   HwgActive,
   FinishEditTask,
   FinishCreateTasks,
-  NotCreateTasks
+  NotCreateTasks,
+  BuildingTasks
 }
 
 @Injectable()

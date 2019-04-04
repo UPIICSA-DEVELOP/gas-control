@@ -170,6 +170,10 @@ export class ListTasksComponent implements OnInit, OnDestroy{
         case SharedTypeNotification.CreationTask:
           this.notCalendar = false;
           this.load = true;
+          break;
+        case SharedTypeNotification.BuildingTasks:
+          this.load = true;
+          break;
       }
     })
   }
