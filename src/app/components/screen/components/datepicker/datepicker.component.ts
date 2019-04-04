@@ -8,6 +8,7 @@ import {Component, Inject, OnInit} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
 import {FormBuilder, FormGroup} from '@angular/forms';
 import {SnackBarService} from '@app/core/services/snackbar/snackbar.service';
+import {UtilitiesService} from '@app/core/utilities/utilities.service';
 
 @Component({
   selector: 'app-datepicker',
@@ -19,7 +20,7 @@ export class DatepickerComponent implements OnInit {
   public startDate: Date = new Date();
   public endDate: Date = new Date();
   constructor(
-  @Inject(MAT_DIALOG_DATA) public range: any,
+  @Inject(MAT_DIALOG_DATA) public data: any,
     private _dialogRef: MatDialogRef<DatepickerComponent>,
     private _formBuilder: FormBuilder,
     private _snackBarService: SnackBarService
@@ -30,6 +31,10 @@ export class DatepickerComponent implements OnInit {
       startDate:['',[]],
       endDate:['',[]]
     });
+    this.dateForm.patchValue({
+      startDate: UtilitiesService.generateArrayDate(this.data.startDate, false),
+      endDate: UtilitiesService.generateArrayDate(this.data.endDate, false)
+    })
   }
   public close():void{
     this._dialogRef.close({code: -1})
