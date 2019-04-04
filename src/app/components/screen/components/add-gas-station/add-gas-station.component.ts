@@ -476,7 +476,7 @@ export class AddGasStationComponent implements OnInit, OnDestroy {
     this.newStation.patchValue({
       legalRepresentative: this.legalName
     });
-    this._modalScroll.nativeElement.scroll({top: 0});
+    this._modalScroll.nativeElement.scrollTop = '0';
     this.step = 0
   }
 
@@ -729,7 +729,7 @@ export class AddGasStationComponent implements OnInit, OnDestroy {
                     'Hemos enviado un email de validación de cuenta a: ' + this.legalRepresentative.email,
                     'ACEPTAR').afterClosed().subscribe(() => {
                       this.step = 0; this.listExist = true;
-                      this._modalScroll.nativeElement.scroll({top: 0});
+                      this._modalScroll.nativeElement.scrollTop = '0';
                     this.load_two = false;
                     });
                   break;
@@ -758,7 +758,7 @@ export class AddGasStationComponent implements OnInit, OnDestroy {
                     'Hemos enviado un email de validación de cuenta a: ' + this.legalRepresentative.email,
                     'ACEPTAR').afterClosed().subscribe(() => {
                       this.step = 0; this.listExist = true;
-                      this._modalScroll.nativeElement.scroll({top: 0});
+                      this._modalScroll.nativeElement.scrollTop = '0';
                       this.load_two = false;
                     });
                   break;
@@ -794,7 +794,7 @@ export class AddGasStationComponent implements OnInit, OnDestroy {
                     'Hemos enviado un email de validación de cuenta a: ' + this.manger.email,
                     'ACEPTAR').afterClosed().subscribe(() => {
                       this.step = 0;
-                      this._modalScroll.nativeElement.scroll({top: 0});
+                      this._modalScroll.nativeElement.scrollTop = '0';
                       this.load_two = false;
                     });
                   break;
@@ -823,7 +823,7 @@ export class AddGasStationComponent implements OnInit, OnDestroy {
                     'Hemos enviado un email de validación de cuenta a: ' + this.manger.email,
                     'ACEPTAR').afterClosed().subscribe(() => {
                       this.step = 0;
-                      this._modalScroll.nativeElement.scroll({top: 0});
+                      this._modalScroll.nativeElement.scrollTop = '0';
                       this.load_two = false;
                     });
                   break;
@@ -845,6 +845,7 @@ export class AddGasStationComponent implements OnInit, OnDestroy {
         case 200:
           this._snackBarService.openSnackBar('Estación creada con exito', 'OK', 3000);
           this.station.id = response.item.id;
+          this._modalScroll.nativeElement.scrollTop = '0';
           this.step = 3;
           break;
         case 470:
@@ -935,20 +936,24 @@ export class AddGasStationComponent implements OnInit, OnDestroy {
         });
         break;
       case 1:
-        this._modalScroll.nativeElement.scroll({top: 0});
+        this._modalScroll.nativeElement.scrollTop = '0';
           this.step = 0;
         break;
       case 2:
-        this._modalScroll.nativeElement.scroll({top: 0});
+        this._modalScroll.nativeElement.scrollTop = '0';
         this.step = 0;
          break;
       case 3:
-        this._router.navigate(['/home']).then(()=>{
-          if (this.station && this.station.id){
-            this._sharedService.setNotification({type: SharedTypeNotification.ChangeStation, value: this.station.id});
-          }
+        if(this.user.role === 7){
           this._dialogRef.close();
-        });
+        }else{
+          this._router.navigate(['/home']).then(()=>{
+            if (this.station && this.station.id){
+              this._sharedService.setNotification({type: SharedTypeNotification.ChangeStation, value: this.station.id});
+            }
+            this._dialogRef.close();
+          });
+        }
          break;
     }
   }
@@ -973,11 +978,17 @@ export class AddGasStationComponent implements OnInit, OnDestroy {
     this._api.createStationTask(task).subscribe(response=>{
       switch (response.code){
         case 200:
-          LocalStorageService.removeItem(Constants.NotCalendarTask);
-          this._router.navigate(['/home'], {queryParams: {station: stationId}}).then(()=>{
+          if(this.user.role === 7){
             this._dialogRef.close();
-            this._sharedService.setNotification({type: SharedTypeNotification.CreationTask,value:response.item});
-          });
+          }else{
+            this._router.navigate(['/home'], {queryParams: {station: stationId}}).then(()=>{
+              this._dialogRef.close();
+              if(!this._data){
+                this._sharedService.setNotification({type: SharedTypeNotification.ChangeStation, value: this.station.id});
+              }
+              this._sharedService.setNotification({type: SharedTypeNotification.CreationTask,value:response.item});
+            });
+          }
           break;
         default:
           this._snackBarService.openSnackBar('Ha ocurrido un error, por favor, intente de nuevo', 'OK', 3000);
@@ -1017,7 +1028,7 @@ export class AddGasStationComponent implements OnInit, OnDestroy {
   }
 
   public openPersonForm(isManager: boolean):void{
-    this._modalScroll.nativeElement.scroll({top: 0});
+    this._modalScroll.nativeElement.scrollTop = '0';
     if(isManager){
       this.step = 2;
     }else{
@@ -1034,7 +1045,7 @@ export class AddGasStationComponent implements OnInit, OnDestroy {
       }
     }
     for(let j = 0; j<this.tanks.length; j++){
-      if(((!this.tanks[j].capacity || !this.tanks[j].year) && this.tanks[j].fuelType) || ((this.tanks[j].capacity || this.tanks[j].year) && !this.tanks[j].fuelType)){
+      if((!this.tanks[j].capacity  && this.tanks[j].fuelType) || (this.tanks[j].capacity && !this.tanks[j].fuelType)){
         this._snackBarService.openSnackBar('Complete los campos para el tanque ' + (j+1),'OK',3000);
         return false;
       }
