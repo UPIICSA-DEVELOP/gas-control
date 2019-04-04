@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="1.2.0-beta.2"></a>
+# [1.2.0-beta.2](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/compare/v1.2.0-beta.1...v1.2.0-beta.2) (2019-04-04)
+
+
+### Bug Fixes
+
+* Solving error on data with default value ([40148d5](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/40148d5))
+
+
+
 <a name="1.2.0-beta.1"></a>
 # [1.2.0-beta.1](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/compare/v1.2.0-beta.0...v1.2.0-beta.1) (2019-04-04)
 
