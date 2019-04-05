@@ -137,9 +137,10 @@ export class EndPoints{
             });
             res.status(200).end(response.body, 'binary');
           }).catch(error => {
-            res.status(400).end(JSON.stringify(
+            console.error(error);
+            res.status(500).end(JSON.stringify(
               {
-                code: 400,
+                code: 500,
                 description: 'Bad request ' + error
               }
             ));
