@@ -129,7 +129,7 @@ export class EndPoints{
           const { url } = req.query;
           const commons = new Commons();
           const urlDecrypt: string = Commons.getDecrypt("123456$#@$^@1ERF", decodeURIComponent(url));
-          commons.downloadFile(urlDecrypt).then((response: any) => {
+          commons.downloadFile(encodeURI(urlDecrypt)).then((response: any) => {
             const headers = response.response.headers;
             res.set({
               'Content-Type': headers['content-type'],

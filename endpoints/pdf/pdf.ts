@@ -74,7 +74,7 @@ export class Pdf{
           return this._commons.request(Pdf.BACKEND_URL + 'getUtils');
         default:
           this._response.code = 400;
-          this._response.description = 'Bad Request |' + response.description;
+          this._response.description = 'Bad Request - saveFullSasisopa|' + response.description;
           Pdf.finish(this._response);
           break;
       }
@@ -89,7 +89,7 @@ export class Pdf{
         default:
           this._response.item = null;
           this._response.code = 400;
-          this._response.description = 'Bad Request |' + response.description;
+          this._response.description = 'Bad Request - getStation|' + response.description;
           Pdf.finish(this._response);
           break;
       }
@@ -112,7 +112,7 @@ export class Pdf{
         default:
           this._response.item = null;
           this._response.code = 400;
-          this._response.description = 'Bad Request ' + response.description;
+          this._response.description = 'Bad Request - listCollaborators | ' + response.description;
           Pdf.finish(this._response);
           break;
       }
@@ -124,7 +124,7 @@ export class Pdf{
         default:
           this._response.item = null;
           this._response.code = 400;
-          this._response.description = 'Bad Request |' + response.description;
+          this._response.description = 'Bad Request - getSasisopa |' + response.description;
           Pdf.finish(this._response);
           break;
       }
@@ -135,7 +135,7 @@ export class Pdf{
           if(response.item.sasisopaDocuments.length === 0 || response.item.brigade.brigadeElems.length === 0){
             this._response.item = null;
             this._response.code = 400;
-            this._response.description = 'Bad Request | sasisopaDocuments or brigadeElems is empty';
+            this._response.description = 'Bad Request - sasisopaDocuments | sasisopaDocuments or brigadeElems is empty';
             Pdf.finish(this._response);
           }else{
             infoPdfGenerator.sasisopaDocuments = response.item.sasisopaDocuments || [];
@@ -188,6 +188,11 @@ export class Pdf{
       });
       infoPdfGenerator.listTasks = finalTaskList;
       this.initPdfGenerator(infoPdfGenerator);
+      Pdf.finish(this._response);
+    }).catch(error => {
+      this._response.item = null;
+      this._response.code = 400;
+      this._response.description = 'Bad Request |' + error;
       Pdf.finish(this._response);
     });
 

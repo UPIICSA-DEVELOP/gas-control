@@ -884,7 +884,7 @@ class PdfGenerator{
    });
    uploaded.splice(1, 0, this._sasisopaTemplates[2].fileCS);
    const body = {id: this._stationId, date: this._date, files: uploaded};
-   return await this._commons.request(PdfGenerator.BACKEND_URL + 'saveFullSasisopa', 'POST', body);
+   return await this._commons.request(PdfGenerator.BACKEND_URL + 'saveFullSasisopa', 'POST', body, false, true);
  }
 
   private static finish(response: any): void{

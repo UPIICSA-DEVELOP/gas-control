@@ -97,7 +97,7 @@ export class Commons{
   }
 
 
-  public request(url, method?: string, data?: any, form?: boolean): Promise<any>{
+  public request(url, method?: string, data?: any, form?: boolean, body?: boolean): Promise<any>{
     return new Promise((resolve, reject) => {
       const request = require('request');
       let options;
@@ -105,7 +105,11 @@ export class Commons{
         if(form){
           options = {url: url, json: true, method: 'POST', formData: data, headers: {'User-Agent': Commons.PROXY_NAME} };
         }else{
-          options = {url: url, json: true, method: 'POST', form: data,  headers: {'User-Agent': Commons.PROXY_NAME}};
+          if(body){
+            options = {url: url, json: true, method: 'POST', body: data,  headers: {'User-Agent': Commons.PROXY_NAME}};
+          }else{
+            options = {url: url, json: true, method: 'POST', form: data,  headers: {'User-Agent': Commons.PROXY_NAME}};
+          }
         }
       }else{
         options = {url: url, json: true};
