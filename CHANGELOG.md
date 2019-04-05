@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="1.2.0-beta.8"></a>
+# [1.2.0-beta.8](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/compare/v1.2.0-beta.7...v1.2.0-beta.8) (2019-04-05)
+
+
+### Bug Fixes
+
+* **List Tasks Building:** solve error in message to build station tasks ([4943539](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/4943539))
+* **PdfGenerator:** Solving saveFullSasisopa files and adding more logs ([099b8aa](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/099b8aa))
+
+
+
 <a name="1.2.0-beta.7"></a>
 # [1.2.0-beta.7](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/compare/v1.2.0-beta.6...v1.2.0-beta.7) (2019-04-05)
 
