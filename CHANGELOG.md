@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="1.2.0-beta.6"></a>
+# [1.2.0-beta.6](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/compare/v1.2.0-beta.5...v1.2.0-beta.6) (2019-04-05)
+
+
+### Bug Fixes
+
+* **BC:** Set phone number on whatsApp key ([9b25a50](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/9b25a50))
+
+
+
 <a name="1.2.0-beta.5"></a>
 # [1.2.0-beta.5](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/compare/v1.2.0-beta.4...v1.2.0-beta.5) (2019-04-05)
 
