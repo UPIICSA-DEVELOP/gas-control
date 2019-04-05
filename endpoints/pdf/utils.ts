@@ -1,7 +1,8 @@
 export interface PdfGeneratorData {
   stationId: string,
   stationRFC: string,
-  businessName: string
+  businessName: string,
+  date: number,
   sasisopaTemplates: any[],
   listTanks: any[],
   listCollaborators: any[],

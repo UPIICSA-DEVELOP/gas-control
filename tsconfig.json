@@ -16,7 +16,8 @@
     },
     "types": [
       "node",
-      "googlemaps"
+      "googlemaps",
+      "crypto-js"
     ],
     "typeRoots": [
       "node_modules/@types"

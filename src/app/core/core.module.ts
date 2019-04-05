@@ -47,6 +47,7 @@ import {TaskFilterNameService} from '@app/components/screen/components/task-filt
 import {ImageVisorService} from '@app/core/components/image-visor/image-visor.service';
 import {ImageVisorComponent} from '@app/core/components/image-visor/image-visor.component';
 import {SgmService} from '@app/components/screen/components/sgm/sgm.service';
+import {HashService} from '@app/core/utilities/hash.service';
 
 @NgModule({
   imports: [
@@ -110,6 +111,7 @@ import {SgmService} from '@app/components/screen/components/sgm/sgm.service';
     UpdatePasswordService,
     ShareService,
     UtilitiesService,
+    HashService,
     UploadFileService,
     PipesModule,
     CurrencyPipe,

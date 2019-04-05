@@ -3,7 +3,7 @@
   "info": {
     "description": "",
     "version": "1.0.0",
-    "title": "inSpector FrontEnd API Rest"
+    "title": "inSpector Proxy API Rest"
   },
   "host": "inspector-develop.maplander.com",
   "basePath": "/endpoints/v1",
@@ -261,10 +261,10 @@
         "parameters": [
           {
             "in": "query",
-            "name": "url",
+            "name": "encryptingString",
             "type": "string",
             "required": true,
-            "description": "Url File or Image"
+            "description": "Url File or Image encrypted"
           }
         ],
         "responses": {

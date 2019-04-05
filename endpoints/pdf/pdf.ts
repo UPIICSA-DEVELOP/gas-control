@@ -49,6 +49,7 @@ export class Pdf{
     const infoPdfGenerator: PdfGeneratorData = {
       stationRFC: '',
       stationId: this._stationId,
+      date: 0,
       sasisopaTemplates: [],
       businessName: '',
       listProcedures: [],
@@ -69,6 +70,7 @@ export class Pdf{
           this._response.item = {
             date: response.item.date
           };
+          infoPdfGenerator.date = response.item.date;
           return this._commons.request(Pdf.BACKEND_URL + 'getUtils');
         default:
           this._response.code = 400;

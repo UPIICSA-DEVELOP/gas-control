@@ -12,6 +12,7 @@ class PdfGenerator{
   private _stationId: string;
   private _stationRFC: string;
   private _businessName: string;
+  private _date: number;
   private _sasisopaTemplates: any[];
   private _tanksList: any[];
   private _brigadeList: any[];
@@ -41,6 +42,7 @@ class PdfGenerator{
     this._proceduresList = data.listProcedures;
     this._sasisopaDocuments = data.sasisopaDocuments;
     this._sasisopaTemplates = data.sasisopaTemplates;
+    this._date = data.date;
     this._response = {
       code: 200,
       description: 'OK'
@@ -881,7 +883,7 @@ class PdfGenerator{
      }
    });
    uploaded.splice(1, 0, this._sasisopaTemplates[2].fileCS);
-   const body = {id: this._stationId, files: uploaded};
+   const body = {id: this._stationId, date: this._date, files: uploaded};
    return await this._commons.request(PdfGenerator.BACKEND_URL + 'saveFullSasisopa', 'POST', body);
  }
 
