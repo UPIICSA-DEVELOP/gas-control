@@ -63,7 +63,7 @@ export interface BCData{
   lastName: string,
   workPosition: string,
   countryCode: string,
-  whatsApp: string,
+  phone: string,
   email: string,
   companyName: string,
   industryCode: number | string,

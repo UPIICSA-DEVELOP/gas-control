@@ -3,7 +3,7 @@ import {BCData} from './pdf/utils';
 export class BC{
 
   private _response: any;
-  private _data: BCData;
+  private _data: any;
 
   constructor(data: BCData){
     this._response = {
@@ -16,7 +16,7 @@ export class BC{
       lastName: data.lastName || '',
       workPosition: data.workPosition || '',
       countryCode: data.countryCode || '',
-      whatsApp: data.whatsApp || '',
+      whatsApp: data.phone || '',
       email: data.email || '',
       companyName: data.companyName || '',
       industryCode: data.industryCode || '',
