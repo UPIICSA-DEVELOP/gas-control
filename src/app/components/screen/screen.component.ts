@@ -78,11 +78,6 @@ export class ScreenComponent implements OnInit, AfterViewInit, OnDestroy{
  private checkChanges():void{
    this._subscriptionShared = this._sharedService.getNotifications().subscribe((response: SharedNotification)=>{
      switch (response.type){
-       case SharedTypeNotification.CreationTask:
-         if(response.value){
-           this.createTasks(response.value.id);
-         }
-         break;
        case SharedTypeNotification.ChangeStation:
          this._stationId = response.value;
          this.getDashboardInformation(this._stationId);
@@ -149,7 +144,6 @@ export class ScreenComponent implements OnInit, AfterViewInit, OnDestroy{
             case 7:
               this.stationActive = response[0].item;
               LocalStorageService.setItem(Constants.StationInDashboard, {id: this.stationActive.id, name: this.stationActive.businessName});
-              this.validateTaskInStation();
               break;
           }
         }
@@ -178,8 +172,6 @@ export class ScreenComponent implements OnInit, AfterViewInit, OnDestroy{
             break;
         }
       });
-    }else{
-      this._sharedService.setNotification({type: SharedTypeNotification.NotCreateTasks, value: true});
     }
   }
 
@@ -188,25 +180,6 @@ export class ScreenComponent implements OnInit, AfterViewInit, OnDestroy{
       title: 'Dashboard | ' + this.utils.groupIcons[station.type-1].name + ' - ' + station.name,
       description: null,
       url: this._router.url
-    })
-  }
-
-  private createTasks(id?: string):void{
-    this._api.buildTaskByStation(id || this.stationActive.stationTaskId).subscribe(response=>{
-      switch (response.code){
-        case 200:
-        case 400:
-          if(response.item.status!==3){
-            this.createTasks(id);
-            this._sharedService.setNotification({type: SharedTypeNotification.BuildingTasks, value: response.item});
-          }else{
-            this._sharedService.setNotification({type: SharedTypeNotification.FinishCreateTasks, value: response});
-            this.stationActive.stationTaskId = id ? id : response.item.id;
-          }
-          break;
-        default:
-          return;
-      }
     })
   }
 
@@ -261,9 +234,6 @@ export class ScreenComponent implements OnInit, AfterViewInit, OnDestroy{
           break;
       }
     }
-    if(this.stationActive){
-      this.validateTaskInStation();
-    }
   }
 
   private prepareDashboardToStationWorkers(response: any, onlyOneStation?: any): void{
@@ -290,18 +260,6 @@ export class ScreenComponent implements OnInit, AfterViewInit, OnDestroy{
         default:
           break;
       }
-    }
-    if(this.stationActive){
-      this.validateTaskInStation();
-    }
-  }
-
-
-  private validateTaskInStation():void{
-    if(!this.validateTaskCreated()){
-      this.openTaskCalendar();
-    }else{
-      this.createTasks();
     }
   }
 
