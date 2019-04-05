@@ -13,12 +13,12 @@
         <div *ngIf="!reportConfig.reportView" class="settings">
           <mat-icon class="filter-icon">filter_list</mat-icon>
           <mat-chip-list>
-            <mat-chip *ngIf="!others" [color]="'primary'" selected (click)="taskFilter()">
+            <mat-chip *ngIf="!others" [disabled]="notCalendar" [selectable]="!notCalendar" [color]="'primary'" selected (click)="taskFilter()">
               Filtro por tareas:
               <span>&nbsp;{{typeFilter[filter]}}&nbsp;</span>
               <mat-icon>edit</mat-icon>
             </mat-chip>
-            <mat-chip [color]="'primary'" selected (click)="dateFilter()">
+            <mat-chip [disabled]="notCalendar" [selectable]="!notCalendar" [color]="'primary'" selected (click)="dateFilter()">
               Fecha:
               <span *ngIf="today">&nbsp;{{start.textDate}}&nbsp;</span>
               <span *ngIf="!today">&nbsp;{{start.textDate}} - {{end.textDate}}&nbsp;</span>
@@ -28,13 +28,13 @@
         </div>
         <div class="search">
           <mat-spinner [color]="'primary'" *ngIf="load" [diameter]="24"></mat-spinner>
-          <button *ngIf="others && !reportConfig.reportView" mat-icon-button (click)="resetFilters()">
+          <button [color]="'primary'" [disabled]="notCalendar" *ngIf="others && !reportConfig.reportView" mat-icon-button (click)="resetFilters()">
             <mat-icon>refresh</mat-icon>
           </button>
-          <button *ngIf="others && !reportConfig.reportView" mat-icon-button (click)="closeOthers()">
+          <button [color]="'primary'" *ngIf="others && !reportConfig.reportView" mat-icon-button (click)="closeOthers()">
             <mat-icon>close</mat-icon>
           </button>
-          <button mat-icon-button *ngIf="!others && !reportConfig.reportView" (click)="search()">
+          <button [color]="'primary'" [disabled]="notCalendar" mat-icon-button *ngIf="!others && !reportConfig.reportView" (click)="search()">
             <mat-icon>search</mat-icon>
           </button>
         </div>

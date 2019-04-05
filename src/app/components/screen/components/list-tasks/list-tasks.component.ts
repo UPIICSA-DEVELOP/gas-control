@@ -156,25 +156,9 @@ export class ListTasksComponent implements OnInit, OnDestroy{
             this.getStationTask();
           }
           break;
-        case SharedTypeNotification.FinishCreateTasks:
-          this.load = false;
-          if(this.station){
-            this.station.stationTaskId = response.value.id;
-            this.emptyLisTasks = false;
-            if(response.value.code === 200){
-              this.finishCreateTasks = true;
-            }
-          }
-          break;
-        case SharedTypeNotification.NotCreateTasks:
-          this.notCalendar = true;
-          break;
         case SharedTypeNotification.CreationTask:
           this.notCalendar = false;
-          this.load = true;
-          break;
-        case SharedTypeNotification.BuildingTasks:
-          this.load = true;
+          this.createTasks(response.value.id);
           break;
       }
     })
@@ -218,7 +202,6 @@ export class ListTasksComponent implements OnInit, OnDestroy{
   }
 
   private tasksCompare(tasksList: any): void {
-    this.load = true;
     let mergeTasks: any[] = [];
     tasksList.forEach(task => {
       this.utils.taskTemplates.forEach(template => {
@@ -266,7 +249,7 @@ export class ListTasksComponent implements OnInit, OnDestroy{
   }
 
   public dateFilter(): void {
-    if(this.station.stationTaskId && !this.finishCreateTasks){
+    if(this.station.stationTaskId && !this.finishCreateTasks && !this.notCalendar){
       this._api.getStationTask(this.station.stationTaskId).subscribe(response => {
         switch (response.code) {
           case 200:
@@ -306,7 +289,7 @@ export class ListTasksComponent implements OnInit, OnDestroy{
   }
 
   public taskFilter(): void {
-    if(!this.finishCreateTasks){
+    if(!this.finishCreateTasks && !this.notCalendar){
       this._filterService.open(this.filter).afterClosed().subscribe(response => {
         switch (response.code) {
           case 1:
@@ -347,7 +330,7 @@ export class ListTasksComponent implements OnInit, OnDestroy{
   }
 
   public search(): void {
-    if(!this.finishCreateTasks){
+    if(!this.finishCreateTasks && !this.notCalendar){
       this._taskFilterNameService.open({utils: this.utils.taskTemplates, lastTypeSelected: Number(this._taskType)}).afterClosed().subscribe(response => {
         switch (response.code) {
           case 1:
@@ -453,7 +436,9 @@ export class ListTasksComponent implements OnInit, OnDestroy{
     this._lastTabSelected = 0;
     this.notCalendarTasks = [];
     this.others = false;
-    this.resetFilters();
+    if(!this.notCalendar){
+      this.resetFilters();
+    }
   }
 
   public onScroll(event: any):void{
@@ -490,5 +475,28 @@ export class ListTasksComponent implements OnInit, OnDestroy{
 
   public editFormat(): void{
     this._sharedService.setNotification({type: SharedTypeNotification.EditTask, value: this.reportConfig.typeReportView});
+  }
+
+  private createTasks(id: string):void{
+    this._api.buildTaskByStation(id).subscribe(response=>{
+      switch (response.code){
+        case 200:
+        case 400:
+          if(response.item.status!==3){
+            this.createTasks(id);
+          }else{
+            if(this.station){
+              this.station.stationTaskId = response.item.id;
+              this.emptyLisTasks = false;
+              if(response.code === 200){
+                this.finishCreateTasks = true;
+              }
+            }
+          }
+          break;
+        default:
+          return;
+      }
+    });
   }
 }
