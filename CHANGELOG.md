@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="1.2.0-beta.7"></a>
+# [1.2.0-beta.7](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/compare/v1.2.0-beta.6...v1.2.0-beta.7) (2019-04-05)
+
+
+### Bug Fixes
+
+* **EndPoins:** Change code response on catch promise ([72d2842](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/72d2842))
+* **server/package.json:** Adding crypto-js dependency ([06b61f6](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/06b61f6))
+
+
+
 <a name="1.2.0-beta.6"></a>
 # [1.2.0-beta.6](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/compare/v1.2.0-beta.5...v1.2.0-beta.6) (2019-04-05)
 
