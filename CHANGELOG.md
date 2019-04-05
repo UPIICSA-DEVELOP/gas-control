@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="1.2.0-beta.5"></a>
+# [1.2.0-beta.5](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/compare/v1.2.0-beta.4...v1.2.0-beta.5) (2019-04-05)
+
+
+### Bug Fixes
+
+* **BC:** Default profile image ([fc06694](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/fc06694))
+
+
+
 <a name="1.2.0-beta.4"></a>
 # [1.2.0-beta.4](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/compare/v1.2.0-beta.3...v1.2.0-beta.4) (2019-04-05)
 
