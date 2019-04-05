@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="1.2.0-beta.4"></a>
+# [1.2.0-beta.4](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/compare/v1.2.0-beta.3...v1.2.0-beta.4) (2019-04-05)
+
+
+### Bug Fixes
+
+* **ListTasks:** validate token to paged ([2b43012](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/2b43012))
+
+
+### Features
+
+* Adding ecrypt and decrypt for PDF files ([89e4a68](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/89e4a68))
+
+
+
 <a name="1.2.0-beta.3"></a>
 # [1.2.0-beta.3](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/compare/v1.2.0-beta.2...v1.2.0-beta.3) (2019-04-04)
 
