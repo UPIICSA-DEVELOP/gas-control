@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="1.2.0-beta.9"></a>
+# [1.2.0-beta.9](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/compare/v1.2.0-beta.8...v1.2.0-beta.9) (2019-04-06)
+
+
+### Bug Fixes
+
+* **JoinPDF:** Solving files on item object and set headers and buffer ([949abe8](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/949abe8))
+
+
+
 <a name="1.2.0-beta.8"></a>
 # [1.2.0-beta.8](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/compare/v1.2.0-beta.7...v1.2.0-beta.8) (2019-04-05)
 
