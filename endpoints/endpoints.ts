@@ -174,10 +174,17 @@ export class EndPoints{
           const { fork } = require('child_process'), path = require('path');
           const process = fork(path.resolve(__dirname, 'endpoints', 'join-pdf.js'));
           process.on('message', (data) => {
-            if(data.code){
-              res.status(data.code).end(JSON.stringify(data));
+            if(!data.code){
+              const document = new Buffer(data, 'binary');
+              res.writeHead(200, {
+                'Content-Disposition': 'attachment; filename=document.pdf',
+                'Content-Length': document.length.toString(),
+                'Content-Transfer-Encoding': 'binary',
+                'Content-Type':'application/pdf'
+              });
+              res.end(document);
             }else{
-              res.status(200).end(data, 'binary');
+              res.status(data.code).end(JSON.stringify(data));
             }
           });
           const data = {
@@ -186,11 +193,11 @@ export class EndPoints{
           process.send(data);
         }
       }catch (e){
-        console.error(e);
+        console.error(e.message);
         res.status(500).end(JSON.stringify(
           {
             code: 500,
-            description: 'Internal server error'
+            description: 'Internal server error ' + e.message
           }
         ))
       }

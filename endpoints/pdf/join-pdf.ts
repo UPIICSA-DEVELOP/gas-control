@@ -22,12 +22,21 @@ export class JoinPdf{
     this._commons.request(JoinPdf.BACKEND_URL + 'getSasisopa?stationId=' + id).then(response => {
      switch (response.code){
        case 200:
-         const files = response.fullSasisopa.files || [];
-         const urls: string[] = [];
-         files.forEach(file => {
-           urls.push(file.thumbnail);
-         });
-         return this.downloadFiles(urls);
+         if( response.item.fullSasisopa.files){
+           const files = response.item.fullSasisopa.files || [];
+           const urls: string[] = [];
+           files.forEach(file => {
+             urls.push(file.thumbnail);
+           });
+           return this.downloadFiles(urls);
+         }else{
+           this._response = {
+             code: 400,
+             description: 'Bad Request | files object does not exist on fullSasisopa'
+           };
+           JoinPdf.finish(this._response);
+         }
+         break;
        default:
          this._response = {
            code: 400,
