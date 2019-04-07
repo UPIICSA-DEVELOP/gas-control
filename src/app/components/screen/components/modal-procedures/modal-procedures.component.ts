@@ -5,8 +5,11 @@
  */
 
 import {Component, Inject, OnInit} from '@angular/core';
-import {Constants} from '@app/core/constants.core';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
+import {HashService} from '@app/core/utilities/hash.service';
+import {Constants} from '@app/core/constants.core';
+import {LocalStorageService} from '@app/core/services/local-storage/local-storage.service';
+import {PdfVisorService} from '@app/core/components/pdf-visor/pdf-visor.service';
 
 @Component({
   selector: 'app-modal-procedures',
@@ -16,15 +19,21 @@ import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
 export class ModalProceduresComponent implements OnInit {
   public procedures: any[];
   public selected: boolean[];
+  public seeCheckbox: boolean;
   constructor(
     @Inject(MAT_DIALOG_DATA) private _data: any,
-    private _dialogRef: MatDialogRef<ModalProceduresComponent>
+    private _dialogRef: MatDialogRef<ModalProceduresComponent>,
+    private _pdf: PdfVisorService
   ) {
+    this.seeCheckbox = true;
     this.selected = [];
     this.procedures = this._data.utils;
   }
 
   ngOnInit() {
+    if(this._data.notVisibleChecks){
+      this.seeCheckbox = this._data.notVisibleChecks;
+    }
     this.initArray();
   }
 
@@ -36,6 +45,23 @@ export class ModalProceduresComponent implements OnInit {
       }
     });
     this._dialogRef.close({code: 1, data: procedure});
+  }
+
+  public openFile(url:any):void{
+    const user = LocalStorageService.getItem(Constants.UserInSession);
+    switch (user.role){
+      case 1:
+      case 2:
+      case 3:
+      case 7:
+        this._pdf.open({file: url, url: HashService.set("123456$#@$^@1ERF", url), notIsUrl: false});
+        break;
+      case 5:
+      case 4:
+      case 6:
+        this._pdf.open({file: url, url: HashService.set("123456$#@$^@1ERF", url), notIsUrl: false, hideOptions: true});
+        break;
+    }
   }
 
   private initArray():void{
