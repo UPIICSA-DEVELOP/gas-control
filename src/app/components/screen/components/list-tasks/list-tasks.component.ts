@@ -39,6 +39,7 @@ export class ListTasksComponent implements OnInit, OnDestroy{
   public station: any;
   @Input() set stationInfo(stationObj: any) {
     if (stationObj) {
+      this.finishCreateTasks = false;
       this.others = false;
       this._token = undefined;
       this.listTask = {todayTasks: [], previousTasks: [], historyTasks: []};
@@ -46,6 +47,7 @@ export class ListTasksComponent implements OnInit, OnDestroy{
       this.resetFilters(true);
       this.station = stationObj;
       if(this.station.stationTaskId){
+        this.notCalendar = false;
         this.getStationTask();
       }else{
         this.notCalendar = true;
@@ -63,6 +65,7 @@ export class ListTasksComponent implements OnInit, OnDestroy{
   public zones: any[];
   public priority: any[];
   public typeFilter: string[];
+  public frequency: string[];
   public filter: number;
   public load: boolean;
   public user: any;
@@ -108,6 +111,7 @@ export class ListTasksComponent implements OnInit, OnDestroy{
     this.priority = Constants.Level;
     this.zones = Constants.Zones;
     this.typeFilter = Constants.Filters;
+    this.frequency = Constants.Frequency;
     this._firstOpen = true;
     this._taskType = '0';
     this.notCalendarTasks = [];
@@ -217,7 +221,8 @@ export class ListTasksComponent implements OnInit, OnDestroy{
             hwg: template.hwg,
             typeReport: template.typeReport,
             status: task.status,
-            evidence: template.evidence
+            evidence: template.evidence,
+            frequency: template.frequency
           });
         }
       });
