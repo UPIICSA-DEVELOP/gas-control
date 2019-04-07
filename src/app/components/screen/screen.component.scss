@@ -93,11 +93,12 @@
             width: 100%;
             text-align: start;
             font-weight: 500;
-            color: #707070;
             display: flex;
             mat-icon{
               margin-right: 8px;
-              color:mat-color($primary);
+            }
+            span{
+              color: #707070;
             }
             .sass-icon{
               width: 24px;

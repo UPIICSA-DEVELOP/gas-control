@@ -335,6 +335,20 @@ export class UtilitiesService {
     }
   }
 
+  static addSubtractDaysFromDate(date: Date, days: number, isAdd: boolean): Date{
+    try{
+      if(isAdd){
+        date.setDate(date.getDate() + days);
+      }else{
+        date.setDate(date.getDate() - days);
+      }
+      return date;
+    }catch(e){
+      console.error(e.message);
+      return null;
+    }
+  }
+
   static removeFormatTime(value: any): number{
     if(value === '' || value === undefined || value === null){
       return 0;

@@ -203,7 +203,7 @@ body{
 
 .sasisopa-panel{
   mat-dialog-container{
-    min-width: 45vw;
+    width: 45vw;
     max-height: 75vh;
     padding: 0;
     @media screen and (max-width: 1200px){

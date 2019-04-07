@@ -8,37 +8,51 @@
   height: 100%;
   mat-dialog-content{
     height: 100%;
-    margin: 0;
+    min-height: 75vh;
+    max-height: none;
+    margin: 16px;
     overflow: hidden;
     display: flex;
     flex-direction: column;
     align-content: center;
-    padding: 8px 0;
+    padding: 0;
     position: relative;
     .close{
       position: absolute;
       top: 0;
       left: 0;
-      margin: 16px;
+      margin: 0;
     }
     .header{
+      width: 100%;
+      min-height: 72px;
       display: flex;
       flex-direction: column;
-      margin: 24px 0;
       align-items: center;
+    }
+    .actions-ssp{
+      display: flex;
+      justify-content: space-around;
+      @media screen and (max-width: 800px){
+        display: block;
+      }
+      mat-card{
+        width: 45%;
+        @media screen and (max-width: 800px){
+          margin: 4px 0;
+          width: 100%;
+        }
+      }
     }
     .sasisopa-logo{
       width: 28px;
-      height: 28px;
-    }
-    .sgm-logo{
       height: 28px;
     }
     .text{
       margin-top: 20px;
     }
     mat-divider{
-      width: 85%;
+      width: 95%;
       margin: auto;
     }
     .features{
@@ -64,5 +78,213 @@
         margin: 36px auto;
       }
     }
+    .divider{
+      min-height: 28px;
+      padding: 0 8px;
+      border-left: 1px solid;
+      display: flex;
+      align-items: center;
+    }
+    .card-box{
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin: 4px 0;
+    }
+    .card-item{
+      width: 90%;
+      cursor: pointer;
+    }
+    .content-item{
+      display: flex;
+      color: #707070;
+      align-items: center;
+      .icon{
+        margin:  0 4px;
+      }
+    }
+    .annexes{
+      display: flex;
+      @media screen and (max-width: 800px){
+        display: block;
+      }
+      .columns{
+        width: 50%;
+        @media screen and (max-width: 800px){
+          width: 100%;
+        }
+      }
+    }
+    .annexe{
+      margin: 16px;
+      .head{
+        color: #707070;
+        margin-right: 12px;
+      }
+      .divider.head{
+        width: 100%;
+        height: 24px;
+        display: flex;
+        justify-content: center;
+      }
+      .color{
+        color: #707070;
+        margin-right: 8px;
+      }
+      .point{
+        color: #707070;
+        text-align: center;
+      }
+      .procedures{
+        width: 100%;
+        margin: 8px auto;
+        mat-card-content{
+          display: flex;
+          align-items: center;
+          .vertical-divider{
+            display: flex;
+            align-items: center;
+            min-height: 32px;
+            padding: 0 8px;
+            border-left: 1px solid #707070;
+          }
+        }
+      }
+      .signature-section{
+        margin: 16px auto;
+        width: 90%;
+        font-size: 16px;
+      }
+      .signatures{
+        display: flex;
+        flex-wrap: wrap;
+        margin: 18px auto;
+        justify-content: center;
+        padding: 8px 0;
+        .item-sign{
+          width: 45%;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          text-align: center;
+          .head{
+            font-size: 11px;
+            color: #707070;
+            padding: 8px 0;
+          }
+          .img-space{
+            width:65%;
+            height: 60px;
+          }
+          .divide{
+            height: 1px;
+            background-color: #707070;
+            width: 80%;
+          }
+          .name{
+            color: #707070;
+            font-size: 11px;
+          }
+          .jobTitle{
+            padding-top: 3px;
+            color: #707070;
+            font-size: 14px;
+          }
+        }
+      }
+    }
   }
+  .save{
+    display: flex;
+    justify-content: center;
+    margin: 16px 0;
+  }
+  td, th {
+    border: 1px solid #dddddd;
+    text-align: center;
+    padding: 8px;
+    font-weight: normal;
+  }
+  tr:nth-child(even) {
+    background-color: #dddddd;
+  }
+  .add{
+    color: #257602;
+  }
+  .remove{
+    color: #E00000;
+  }
+  .calendar{
+    width: 100%;
+    height: 100%;
+    left: 0;
+    opacity: 0;
+    position: absolute;
+    top: 0;
+    z-index: 2;
+    cursor: pointer;
+  }
+  .task{
+    cursor: pointer;
+    padding: 0;
+    display: flex;
+    margin-bottom: 12px;
+    height: 92px;
+    .priority{
+      width: 1%;
+      position: relative;
+      top: 0;
+      left: 0;
+      border-radius: 4px 0 0 4px;
+    }
+    mat-card-content{
+      display: flex;
+      width: 100%;
+      position: relative;
+      padding: 12px;
+    }
+    .date{
+      text-align: center;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin: 12px;
+      @media screen and (max-width: 900px){
+        width: 25%;
+      }
+      .text-bold{
+        color: #707070;
+        font-weight: 500;
+        font-size: 16px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+    }
+    .content{
+      width: 90%;
+      height: 100%;
+      .head{
+        color: #000000;
+        font-weight: 700;
+        font-size: 13px;
+      }
+      .text{
+        color: #707070;
+        font-weight: 400;
+        font-size: 12px;
+        margin-top: 4px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+    }
+  }
+  .progress {
+    position: absolute;
+    top: 56px;
+    z-index: 4;
+  }
+
 }

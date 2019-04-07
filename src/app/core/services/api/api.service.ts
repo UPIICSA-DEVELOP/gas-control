@@ -310,6 +310,17 @@ export class ApiService implements OnDestroy{
     });
   }
 
+  public getFullSasisopa(stationId: string, isSGMBoolean: boolean): Observable<any>{
+    let params = new HttpParams();
+    params = params.append('stationId', stationId);
+    params = params.append('isSGM', isSGMBoolean?'true':'false');
+    const headers = new HttpHeaders().set('Content-Type', 'text/plain; charset=utf-8');
+    return this._http.get('https://inspector-develop.maplander.com/endpoints/v1/pdf', {
+      headers: headers,
+      params: params
+    });
+  }
+
   public getCompleteInfoDashboard(userId: string, refId: string, role: number, onlyOneStationId?: any): Observable<any>{
     let response1 = null;
     let response2 = this.getUtils();
@@ -584,5 +595,13 @@ export class ApiService implements OnDestroy{
 
   public saveBrigade(brigadeElems: any): Observable<any>{
     return this._http.post(ApiService.API_URL_COMPLETE + 'saveBrigade', brigadeElems);
+  }
+
+  public saveEvidenceDate(stationId: string, date: number): Observable<any>{
+    const options = {
+      id: stationId,
+      date: date
+    };
+    return this._http.post(ApiService.API_URL_COMPLETE + 'saveEvidenceDate', options);
   }
 }

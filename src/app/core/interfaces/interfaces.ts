@@ -322,3 +322,23 @@ export interface IncidenceReport {
 /**
  * END: TaskReport Formats 1-9
  */
+
+
+export interface SasisopaDocument {
+  annexed: number;
+  id?: number;
+  file: any;
+  stationId: number | string;
+  type: number;
+}
+
+export interface BrigadeElems {
+  lastName: string;
+  name: string;
+  position: string;
+}
+
+export interface Brigade {
+  id?: number;
+  brigadeElems: BrigadeElems[];
+}

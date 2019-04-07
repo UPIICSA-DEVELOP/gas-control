@@ -6,20 +6,558 @@
 
 <div id="sasisopa">
   <mat-dialog-content>
+    <mat-progress-bar [mode]="'indeterminate'" *ngIf="load" class="progress"></mat-progress-bar>
     <div class="close">
       <button mat-icon-button (click)="close()">
-        <mat-icon>arrow_back</mat-icon>
+        <mat-icon *ngIf="elementInView === 0">close</mat-icon>
+        <mat-icon *ngIf="elementInView !== 0">arrow_back</mat-icon>
       </button>
     </div>
     <div class="header">
       <img class="sasisopa-logo" src="../../../../assets/image/ssp_2.png">
       <div class="text">SASISOPA</div>
     </div>
-    <mat-divider></mat-divider>
-    <div class="features">
-      <div class="text-one">Muy pronto</div>
-      <div class="text-two">podrá acceder a nuevas funciones</div>
-      <img class="clock" src="../../../../assets/image/timer.png">
-    </div>
+    <ng-container [ngSwitch]="elementInView">
+      <div *ngSwitchCase="0">
+        <div class="actions-ssp">
+          <mat-card (click)="openSasisopaTemplate(false)" style="cursor: pointer;">
+            <mat-card-content class="content-item">
+              <mat-icon class="icon">insert_drive_file</mat-icon>
+              <div class="divider">VER PLANTILLA</div>
+            </mat-card-content>
+          </mat-card>
+          <div *ngIf="generate; then buttonSSP else card"></div>
+          <ng-template #buttonSSP>
+            <div style="width: 45%; display: flex; justify-content: space-around; align-items: center">
+              <button style="height: 36px" mat-flat-button (click)="generateSasisopa()" [color]="'primary'">GENERAR</button>
+              <button style="height: 36px" mat-flat-button [color]="'primary'" [disabled]="!isAvailable">VER</button>
+            </div>
+          </ng-template>
+          <ng-template #card>
+            <mat-card (click)="generateSasisopa()" style="cursor:pointer">
+              <mat-card-content class="content-item">
+                <mat-icon class="icon">insert_drive_file</mat-icon>
+                <div class="divider">GENERAR</div>
+              </mat-card-content>
+            </mat-card>
+          </ng-template>
+        </div>
+        <div style="margin: 16px; color: #707070; font-size: 14px;" *ngIf="generate && !isAvailable && dateGeneration.length !== 0">Documento disponible hasta el {{dateGeneration[0]}} {{dateGeneration[1]}} {{dateGeneration[2]}}</div>
+        <div style="width: 100%;height: 24px;display: flex;justify-content: center;">
+          <mat-divider></mat-divider>
+        </div>
+        <div class="annexes">
+          <div class="columns">
+            <div class="card-box">
+              <mat-card (click)="changeElementOnView(1)" class="card-item">
+                <mat-card-content class="content-item">
+                  <mat-icon class="icon">insert_drive_file</mat-icon>
+                  <div class="divider">Anexo 1</div>
+                </mat-card-content>
+              </mat-card>
+            </div>
+          </div>
+          <div class="columns">
+            <div class="card-box">
+              <mat-card (click)="changeElementOnView(2)" class="card-item">
+                <mat-card-content class="content-item">
+                  <mat-icon class="icon">insert_drive_file</mat-icon>
+                  <div class="divider">Anexo 2</div>
+                </mat-card-content>
+              </mat-card>
+            </div>
+          </div>
+        </div>
+        <div class="annexes">
+          <div class="columns">
+            <div class="card-box">
+              <mat-card (click)="changeElementOnView(3)" class="card-item">
+                <mat-card-content class="content-item">
+                  <mat-icon class="icon">insert_drive_file</mat-icon>
+                  <div class="divider">Anexo 3</div>
+                </mat-card-content>
+              </mat-card>
+            </div>
+          </div>
+          <div class="columns">
+            <div class="card-box">
+              <mat-card (click)="changeElementOnView(4)" class="card-item">
+                <mat-card-content class="content-item">
+                  <mat-icon class="icon">insert_drive_file</mat-icon>
+                  <div class="divider">Anexo 4</div>
+                </mat-card-content>
+              </mat-card>
+            </div>
+          </div>
+        </div>
+        <div class="annexes">
+          <div class="columns">
+            <div class="card-box">
+              <mat-card (click)="changeElementOnView(5)" class="card-item">
+                <mat-card-content class="content-item">
+                  <mat-icon class="icon">insert_drive_file</mat-icon>
+                  <div class="divider">Anexo 5</div>
+                </mat-card-content>
+              </mat-card>
+            </div>
+          </div>
+          <div class="columns">
+            <div class="card-box">
+              <mat-card (click)="changeElementOnView(6)" class="card-item">
+                <mat-card-content class="content-item">
+                  <mat-icon class="icon">insert_drive_file</mat-icon>
+                  <div class="divider">Anexo 6</div>
+                </mat-card-content>
+              </mat-card>
+            </div>
+          </div>
+        </div>
+        <div class="annexes">
+          <div class="columns">
+            <div class="card-box">
+              <mat-card (click)="changeElementOnView(7)" class="card-item">
+                <mat-card-content class="content-item">
+                  <mat-icon class="icon">insert_drive_file</mat-icon>
+                  <div class="divider">Anexo 7</div>
+                </mat-card-content>
+              </mat-card>
+            </div>
+          </div>
+          <div class="columns">
+            <div class="card-box">
+              <mat-card (click)="changeElementOnView(8)" class="card-item">
+                <mat-card-content class="content-item">
+                  <mat-icon class="icon">insert_drive_file</mat-icon>
+                  <div class="divider">Anexo 8</div>
+                </mat-card-content>
+              </mat-card>
+            </div>
+          </div>
+        </div>
+        <div class="annexes">
+          <div class="columns">
+            <div class="card-box">
+              <mat-card (click)="changeElementOnView(9)" class="card-item">
+                <mat-card-content class="content-item">
+                  <mat-icon class="icon">insert_drive_file</mat-icon>
+                  <div class="divider">Anexo 9</div>
+                </mat-card-content>
+              </mat-card>
+            </div>
+          </div>
+          <div class="columns">
+            <div class="card-box">
+              <mat-card (click)="changeElementOnView(10)" class="card-item">
+                <mat-card-content class="content-item">
+                  <mat-icon class="icon">insert_drive_file</mat-icon>
+                  <div class="divider">Firmas</div>
+                </mat-card-content>
+              </mat-card>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="annexe" *ngSwitchCase="1">
+        <div class="head">
+          ANEXO 1
+        </div>
+        <div class="divider-head">
+          <mat-divider></mat-divider>
+        </div>
+        <p class="point">Punto 2. La evaluación de la integridad física y operativa de las instalaciones mediante procedimientos, instrumentos y metodologias reconocidos en el sector hidrocarburo</p>
+        <mat-card class="procedures" style="cursor: pointer" (click)="openModalProcedures()">
+          <mat-card-content>
+            <mat-icon class="color">insert_drive_file</mat-icon>
+            <div class="vertical-divider">Procedimientos de la estación</div>
+          </mat-card-content>
+        </mat-card>
+        <div class="signature-section">
+          Autorizados para registrar en formatos
+        </div>
+        <div class="signatures">
+          <div class="item-sign" *ngFor="let collaborator of listCollaborators;">
+            <div class="head">Nombre y firma del responsable</div>
+            <img *ngIf="collaborator.signature && collaborator.signature.thumbnail" [src]="collaborator.signature.thumbnail" class="img-space">
+            <div *ngIf="!collaborator.signature || !collaborator.signature.thumbnail" class="img-space"></div>
+            <div class="divide"></div>
+            <div class="name">{{collaborator.name}} {{collaborator.lastName}}</div>
+            <ng-container [ngSwitch]="collaborator.role">
+              <div *ngSwitchCase="4" class="jobTitle">Representante Legal</div>
+              <div *ngSwitchCase="5" class="jobTitle">Encargado de Estación</div>
+              <div *ngSwitchCase="6" class="jobTitle">Coordinador de estación</div>
+            </ng-container>
+          </div>
+        </div>
+      </div>
+      <div class="annexe" *ngSwitchCase="2">
+        <div class="head">
+          ANEXO 2
+        </div>
+        <div class="divider-head">
+          <mat-divider></mat-divider>
+        </div>
+        <p class="point">Punto 3. La identificación de riesgos, análisis, evaluación, medidas de prevención, monitoreo, mitigación y evaluación de incidentes, accidentes, pérdidas esperadas en los distintos escenarios de riesgo,
+          así como las consecuencias que los riesgos presentan a la población, medio ambiente, a las instalaciones y edificaciones comprendidas dentro del perimetro de las instalaciones industriales y en las inmediaciones</p>
+        <mat-card class="procedures">
+          <mat-card-content>
+            <app-upload-file (onLoad)="loadFile($event, 2, 1)" [layoutTemplate]="button" [type]="'file'">
+              <ng-template #button>
+                <mat-icon class="color" svgIcon="icons:upload"></mat-icon>
+              </ng-template>
+            </app-upload-file>
+            <div class="vertical-divider">Análisis de riesgos</div>
+          </mat-card-content>
+        </mat-card>
+        <mat-card class="procedures">
+          <mat-card-content>
+            <app-upload-file (onLoad)="loadFile($event, 2, 2)" [layoutTemplate]="button" [type]="'file'">
+              <ng-template #button>
+                <mat-icon class="color" svgIcon="icons:upload"></mat-icon>
+              </ng-template>
+            </app-upload-file>
+            <div class="vertical-divider">Identificación de riesgos</div>
+          </mat-card-content>
+        </mat-card>
+        <div style="display: flex; flex-direction: column">
+          <div style="color: #707070; font-size: 16px; margin: 8px 0">
+            Tabla 1 Sustancias químicas
+          </div>
+          <table style="width: 100%">
+            <tr>
+              <th style="width: 50%; text-align: left">Forma de alacenamiento:</th>
+              <th style="width: 50%; text-align: left">Tanque</th>
+            </tr>
+            <tr>
+              <th style="width: 50%; text-align: left">Área de uso:</th>
+              <th style="width: 50%; text-align: left">Almacenamiento y venta de combustible</th>
+            </tr>
+            <tr>
+              <th style="width: 50%; text-align: left">Caracteríticas de almacenamiento o distribución:</th>
+              <th style="width: 50%; text-align: left">La sustancia química se encuentra almacenada en un tanque enterrado, posteriorente es transferido al despachador para su venta</th>
+            </tr>
+          </table>
+          <div style="margin: 8px 0">
+            Tanques de combustible
+          </div>
+          <div style="color: #707070; margin: 8px 0" *ngIf="!station || !station.fuelTanks">
+            No hay tanques registrados
+          </div>
+          <table *ngIf="station && station.fuelTanks" style="width:100%" id="table">
+            <tr style="text-align: center">
+              <th>N° Tanque</th>
+              <th>Capacidad</th>
+              <th>Combustible</th>
+            </tr>
+            <tr *ngFor="let item of station.fuelTanks; let i = index" style="text-align: center">
+              <th>{{i+1}}</th>
+              <th>{{item.capacity}} lts</th>
+              <th>
+                <ng-container [ngSwitch]="item.fuelType">
+                  <span *ngSwitchCase="1">Magna</span>
+                  <span *ngSwitchCase="2">Premium</span>
+                  <span *ngSwitchCase="3">Diésel</span>
+                </ng-container>
+              </th>
+            </tr>
+          </table>
+        </div>
+        <div class="save">
+          <button mat-flat-button (click)="saveChanges(elementInView)" [color]="'primary'">GUARDAR CAMBIOS</button>
+        </div>
+      </div>
+      <div class="annexe" *ngSwitchCase="3">
+        <div class="head">
+          ANEXO 3
+        </div>
+        <div class="divider-head">
+          <mat-divider></mat-divider>
+        </div>
+        <p class="point">Punto 6. La asignación de funciones y responsabilidades para implementar, administrar y mejorar el propio sistema de administración</p>
+        <mat-card class="procedures">
+          <mat-card-content>
+            <app-upload-file (onLoad)="loadFile($event, 3, 3)" [layoutTemplate]="button" [type]="'file'">
+              <ng-template #button>
+                <mat-icon class="color" svgIcon="icons:upload"></mat-icon>
+              </ng-template>
+            </app-upload-file>
+            <div class="vertical-divider">Organigrama de la estación</div>
+          </mat-card-content>
+        </mat-card>
+        <mat-card class="procedures">
+          <mat-card-content>
+            <app-upload-file (onLoad)="loadFile($event, 3, 4)" [layoutTemplate]="button" [type]="'file'">
+              <ng-template #button>
+                <mat-icon class="color" svgIcon="icons:upload"></mat-icon>
+              </ng-template>
+            </app-upload-file>
+            <div class="vertical-divider">Actividades del personal</div>
+          </mat-card-content>
+        </mat-card>
+        <div style="display: flex; flex-direction: column; margin: 12px 0;">
+          <div style="width: 100%; text-align: center; color: #707070">Conformación de la Brigada</div>
+          <div style="display: flex; justify-content: space-between; align-items: center">
+            <div style="font-weight: 600; font-size: 16px">Brigadistas</div>
+            <button mat-icon-button (click)="addRemoveBrigadeElem(true)">
+              <mat-icon class="add">add</mat-icon>
+            </button>
+          </div>
+          <ng-container *ngFor="let element of brigade; let i=index">
+            <div style="display: flex; justify-content: space-between; align-items: center">
+              <div style="color: #707070">Brigadista {{i+1}}</div>
+              <button mat-icon-button (click)="addRemoveBrigadeElem(false, i)"><mat-icon class="remove">remove</mat-icon></button>
+            </div>
+            <mat-form-field style="width: 100%">
+              <input matInput placeholder="Nombre(s)" required [(ngModel)]="element.name">
+              <mat-error *ngIf="!element.name">
+                Este campo es obligatorio
+              </mat-error>
+            </mat-form-field>
+            <mat-form-field style="width: 100%">
+              <input matInput placeholder="Apellido(s)" required [(ngModel)]="element.lastName">
+              <mat-error *ngIf="!element.lastName">
+                Este campo es obligatorio
+              </mat-error>
+            </mat-form-field>
+            <mat-form-field style="width: 100%">
+              <input matInput placeholder="Cargo en la brigada" required [(ngModel)]="element.position">
+              <mat-error *ngIf="!element.position">
+                Este campo es obligatorio
+              </mat-error>
+            </mat-form-field>
+          </ng-container>
+        </div>
+        <div class="save">
+          <button mat-flat-button (click)="saveChanges(elementInView)" [color]="'primary'">GUARDAR CAMBIOS</button>
+        </div>
+      </div>
+      <div class="annexe" *ngSwitchCase="4">
+        <div class="head">
+          ANEXO 4
+        </div>
+        <div class="divider-head">
+          <mat-divider></mat-divider>
+        </div>
+        <p class="point">Punto 7. El plan general de capacitación y entrenamiento en seguridad industrial, seguridad operativa y protección al medio ambiente</p>
+        <mat-card class="procedures">
+          <mat-card-content>
+            <app-upload-file (onLoad)="loadFile($event, 4, 5)" [layoutTemplate]="button" [type]="'file'">
+              <ng-template #button>
+                <mat-icon class="color" svgIcon="icons:upload"></mat-icon>
+              </ng-template>
+            </app-upload-file>
+            <div class="vertical-divider">Calendario de capacitación y entrenamiento</div>
+          </mat-card-content>
+        </mat-card>
+        <div class="save">
+          <button mat-flat-button (click)="saveChanges(elementInView)" [color]="'primary'">GUARDAR CAMBIOS</button>
+        </div>
+      </div>
+      <div class="annexe" *ngSwitchCase="5">
+        <div class="head">
+          ANEXO 5
+        </div>
+        <div class="divider-head">
+          <mat-divider></mat-divider>
+        </div>
+        <p class="point">Punto 8. El control de actividades y procesos</p>
+        <mat-card class="procedures" style="cursor: pointer;" (click)="openSasisopaTemplate(true)">
+          <mat-card-content>
+            <mat-icon class="color">insert_drive_file</mat-icon>
+            <div class="vertical-divider">Manual de llenada de tareas</div>
+          </mat-card-content>
+        </mat-card>
+        <mat-card class="procedures">
+          <input [matDatepicker]="picker" [max]="maxDate" [min]="minDate" class="calendar" [(ngModel)]="date" (click)="picker.open()" (ngModelChange)="getStationTasks()">
+          <mat-datepicker touchUi #picker></mat-datepicker>
+          <mat-card-content>
+            <mat-icon class="color">assignment</mat-icon>
+            <div class="vertical-divider">Evidencia de llenado de tareas</div>
+          </mat-card-content>
+        </mat-card>
+        <div style="color: #707070; margin: 12px 0;">
+          <div *ngIf="dateSelected; then dateFormat else notSelected"></div>
+          <ng-template #dateFormat>
+            Fecha seleccionada: {{dateSelected}}
+          </ng-template>
+          <ng-template #notSelected>
+            Fecha no seleccionada
+          </ng-template>
+        </div>
+        <div *ngIf="listTasks.length !== 0; then completeList else emptyListTasks"></div>
+        <ng-template #completeList>
+          <div *ngFor="let task of listTasks">
+            <mat-card matRipple class="task" (click)="goTaskInfo(task)">
+              <div class="priority" *ngIf="task.origin.level === 3" style="background-color:#E00000"></div>
+              <div class="priority" *ngIf="task.origin.level === 1" style="background-color:#257602"></div>
+              <div class="priority" *ngIf="task.origin.level === 2" style="background-color:#FFD800"></div>
+              <mat-card-content>
+                <div class="date">
+                  <div>
+                    <div class="text-bold">{{task.date[0]}}</div>
+                    <div class="text-bold">{{task.date[1]}}</div>
+                  </div>
+                </div>
+                <div class="content">
+                  <div class="head">{{task.origin.name}}</div>
+                  <div class="text">{{zones[task.origin.zone-1]}}</div>
+                  <div class="text">{{priority[task.origin.level-1]}}</div>
+                </div>
+                <div style="position: absolute; bottom: 0; right: 0; margin: 16px;">
+                  <div>{{frequency[task.origin.frequency-1]}}</div>
+                </div>
+              </mat-card-content>
+            </mat-card>
+          </div>
+        </ng-template>
+        <ng-template #emptyListTasks>
+          <div style="display:flex; justify-content: center; align-items: center;">
+            <div *ngIf="dateSelected">No hay tareas terminadas</div>
+          </div>
+        </ng-template>
+        <div class="save">
+          <button mat-flat-button (click)="saveChanges(elementInView)" [color]="'primary'">GUARDAR CAMBIOS</button>
+        </div>
+      </div>
+      <div class="annexe" *ngSwitchCase="6">
+        <div class="head">
+          ANEXO 6
+        </div>
+        <div class="divider-head">
+          <mat-divider></mat-divider>
+        </div>
+        <p class="point">Punto 11. Las disposiciones para los contratistas en materia de seguridad industrial, seguridad operativa y protección al medio ambiente</p>
+        <mat-card class="procedures">
+          <mat-card-content>
+            <app-upload-file (onLoad)="loadFile($event, 6, 6)" [layoutTemplate]="button" [type]="'file'">
+              <ng-template #button>
+                <mat-icon class="color" svgIcon="icons:upload"></mat-icon>
+              </ng-template>
+            </app-upload-file>
+            <div class="vertical-divider">Permiso de trabajo (Contratistas)</div>
+          </mat-card-content>
+        </mat-card>
+        <div class="save">
+          <button mat-flat-button (click)="saveChanges(elementInView)" [color]="'primary'">GUARDAR CAMBIOS</button>
+        </div>
+      </div>
+      <div class="annexe" *ngSwitchCase="7">
+        <div class="head">
+          ANEXO 7
+        </div>
+        <div class="divider-head">
+          <mat-divider></mat-divider>
+        </div>
+        <p class="point">Punto 14. Los mecanismos para el monitoreo, verificación y evaluación de la implementación y desempeño del propio sistema de administración</p>
+        <mat-card class="procedures">
+          <mat-card-content>
+            <app-upload-file (onLoad)="loadFile($event, 9, 7)" [layoutTemplate]="button" [type]="'file'">
+              <ng-template #button>
+                <mat-icon class="color" svgIcon="icons:upload"></mat-icon>
+              </ng-template>
+            </app-upload-file>
+            <div class="vertical-divider">Programa de auditoría interna</div>
+          </mat-card-content>
+        </mat-card>
+        <mat-card class="procedures">
+          <mat-card-content>
+            <app-upload-file (onLoad)="loadFile($event, 9, 8)" [layoutTemplate]="button" [type]="'file'">
+              <ng-template #button>
+                <mat-icon class="color" svgIcon="icons:upload"></mat-icon>
+              </ng-template>
+            </app-upload-file>
+            <div class="vertical-divider">Personal que lo realiza</div>
+          </mat-card-content>
+        </mat-card>
+        <div class="save">
+          <button mat-flat-button (click)="saveChanges(elementInView)" [color]="'primary'">GUARDAR CAMBIOS</button>
+        </div>
+      </div>
+      <div class="annexe" *ngSwitchCase="8">
+        <div class="head">
+          ANEXO 8
+        </div>
+        <div class="divider-head">
+          <mat-divider></mat-divider>
+        </div>
+        <p class="point">Punto 17. La revisión de los resultados en la verificación</p>
+        <mat-card class="procedures">
+          <mat-card-content>
+            <app-upload-file (onLoad)="loadFile($event, 10, 9)" [layoutTemplate]="button" [type]="'file'">
+              <ng-template #button>
+                <mat-icon class="color" svgIcon="icons:upload"></mat-icon>
+              </ng-template>
+            </app-upload-file>
+            <div class="vertical-divider">Auditorías</div>
+          </mat-card-content>
+        </mat-card>
+        <mat-card class="procedures">
+          <mat-card-content>
+            <app-upload-file (onLoad)="loadFile($event, 10, 10)" [layoutTemplate]="button" [type]="'file'">
+              <ng-template #button>
+                <mat-icon class="color" svgIcon="icons:upload"></mat-icon>
+              </ng-template>
+            </app-upload-file>
+            <div class="vertical-divider">Decisiones a tomar</div>
+          </mat-card-content>
+        </mat-card>
+        <mat-card class="procedures">
+          <mat-card-content>
+            <app-upload-file (onLoad)="loadFile($event, 10, 11)" [layoutTemplate]="button" [type]="'file'">
+              <ng-template #button>
+                <mat-icon class="color" svgIcon="icons:upload"></mat-icon>
+              </ng-template>
+            </app-upload-file>
+            <div class="vertical-divider">Conclusiones</div>
+          </mat-card-content>
+        </mat-card>
+        <div class="save">
+          <button mat-flat-button (click)="saveChanges(elementInView)" [color]="'primary'">GUARDAR CAMBIOS</button>
+        </div>
+      </div>
+      <div class="annexe" *ngSwitchCase="9">
+        <div class="head">
+          ANEXO 9
+        </div>
+        <div class="divider-head">
+          <mat-divider></mat-divider>
+        </div>
+        <p class="point">Punto 18. El informe periódico del desempeño en materia de seguridad indutrial, seguridad operativa y protección al medio ambiente</p>
+        <mat-card class="procedures">
+          <mat-card-content>
+            <app-upload-file (onLoad)="loadFile($event, 11, 12)" [layoutTemplate]="button" [type]="'file'">
+              <ng-template #button>
+                <mat-icon class="color" svgIcon="icons:upload"></mat-icon>
+              </ng-template>
+            </app-upload-file>
+            <div class="vertical-divider">Comunicacion de resultados</div>
+          </mat-card-content>
+        </mat-card>
+        <div class="save">
+          <button mat-flat-button (click)="saveChanges(elementInView)" [color]="'primary'">GUARDAR CAMBIOS</button>
+        </div>
+      </div>
+      <div class="annexe" *ngSwitchCase="10">
+        <div class="head">
+          FIRMAS
+        </div>
+        <div class="divider-head">
+          <mat-divider></mat-divider>
+        </div>
+        <p class="point">Firmas de autorización por la alta de dirección del regulado</p>
+        <div class="signatures">
+          <div class="item-sign" *ngFor="let collaborator of listCollaborators;">
+            <ng-container [ngSwitch]="collaborator.role">
+              <div *ngSwitchCase="4" class="head">Nombre y firma del representante legal</div>
+              <div *ngSwitchCase="5" class="head">Nombre y firma. Testigo 1</div>
+              <div *ngSwitchCase="6" class="head">Nombre y firma. Testigo 2</div>
+            </ng-container>
+            <img *ngIf="collaborator.signature && collaborator.signature.thumbnail" [src]="collaborator.signature.thumbnail" class="img-space">
+            <div *ngIf="!collaborator.signature || !collaborator.signature.thumbnail" class="img-space"></div>
+            <div class="divide"></div>
+            <div class="name">{{collaborator.name}} {{collaborator.lastName}}</div>
+          </div>
+        </div>
+      </div>
+    </ng-container>
   </mat-dialog-content>
 </div>
