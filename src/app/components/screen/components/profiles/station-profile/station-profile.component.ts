@@ -389,8 +389,8 @@ export class StationProfileComponent implements OnInit, OnDestroy {
 
   private initYears():void{
     const year = new Date();
-    for(let x = 0; x<50; x++){
-      this.yearSelector.push(year.getFullYear() - x);
+    for(let x = 1969; x<=year.getFullYear(); x++){
+      this.yearSelector.push(x);
     }
   }
 }
