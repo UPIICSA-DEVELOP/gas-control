@@ -19,92 +19,93 @@
     </div>
     <ng-container [ngSwitch]="elementOnView">
       <div *ngSwitchCase="0" style="display: flex; margin: 12px 0;">
-        <div style="margin: 0 4px;width: 50%; height: 100%;">
+        <div class="columns">
           <div *ngIf="generate; then buttonsSGM else card"></div>
           <ng-template #card>
-            <mat-card (click)="generateSgm()" style="width: 100%;margin: 8px 0;cursor: pointer; padding: 8px">
+            <mat-card (click)="generateSgm()" style="width: 100%;margin: 8px 0;cursor: pointer;">
               <mat-card-content style="display: flex; align-items: center">
-                <mat-icon style="color: #707070">insert_drive_file</mat-icon>
+                <mat-icon class="gray">insert_drive_file</mat-icon>
                 <div class="divider">GENERAR</div>
               </mat-card-content>
             </mat-card>
           </ng-template>
           <ng-template #buttonsSGM>
-            <div style="display: flex; justify-content: space-around; align-items: center">
-              <button style="height: 36px" mat-flat-button (click)="generateSGM()" [color]="'primary'">GENERAR</button>
+            <div class="fuel-type">
+              <button style="height: 36px" mat-flat-button (click)="generateSgm()" [color]="'primary'">GENERAR</button>
               <button style="height: 36px" mat-flat-button [color]="'primary'" [disabled]="!isAvailable">VER</button>
             </div>
           </ng-template>
-          <mat-card (click)="seeFile(templates[3].fileCS.thumbnail)" style="width: 100%;margin: 8px 0;cursor: pointer; padding: 8px">
-            <mat-card-content style="display: flex; align-items: center">
-              <mat-icon style="color: #707070">insert_drive_file</mat-icon>
+          <div class="date-available" *ngIf="generate && !isAvailable && dateGeneration.length !== 0">Documento disponible hasta el {{dateGeneration[0]}} {{dateGeneration[1]}} {{dateGeneration[2]}}</div>
+          <mat-card (click)="seeFile(templates[3].fileCS.thumbnail)" class="list-and-template">
+            <mat-card-content>
+              <mat-icon class="gray">insert_drive_file</mat-icon>
               <div class="divider">VER PLANTILLA</div>
             </mat-card-content>
           </mat-card>
-          <mat-card (click)="getStationTasks(true)" style="width: 100%;margin: 8px 0;cursor: pointer; padding: 8px">
-            <mat-card-content style="display: flex; align-items: center">
-              <mat-icon style="color: #707070">insert_drive_file</mat-icon>
+          <mat-card (click)="getStationTasks(true)" class="list-and-template">
+            <mat-card-content>
+              <mat-icon class="gray">insert_drive_file</mat-icon>
               <div class="divider">Anexo 1</div>
             </mat-card-content>
           </mat-card>
-          <mat-card (click)="getStationTasks(false)" style="width: 100%;margin: 8px 0;cursor: pointer; padding: 8px">
-            <mat-card-content style="display: flex; align-items: center">
-              <mat-icon style="color: #707070">insert_drive_file</mat-icon>
+          <mat-card (click)="getStationTasks(false)" class="list-and-template">
+            <mat-card-content>
+              <mat-icon class="gray">insert_drive_file</mat-icon>
               <div class="divider">Anexo 2</div>
             </mat-card-content>
           </mat-card>
-          <div style="margin: 8px 0; height: 1px; background-color: #707070"></div>
-          <div *ngIf="station" style="width: 100%; text-align: center; font-size: 12px">
-            6.2.2 Software {{station.name}} mantiene el control de los dato de medición de volumen mediante el siguiente software:
+          <div class="divide"></div>
+          <div *ngIf="station" class="software-type">
+            <div>6.2.2 Software</div> <br> {{station.name}} mantiene el control de los datos de medición de volumen mediante el siguiente software:
           </div>
-          <div style="color: #707070; margin: 8px 0; width: 100%; text-align: center; font-size: 12px">Consulte la hoja de seguridad correspondiente a su tipo de combustible</div>
-          <div style="display: flex; justify-content: space-around; align-items: center">
+          <div class="fuel-type-text">Consulte la hoja de seguridad correspondiente a su tipo de combustible</div>
+          <div class="fuel-type">
             <mat-checkbox [(ngModel)]="magna"></mat-checkbox>
-            <mat-card (click)="seeFile(templates[0].fileCS.thumbnail)" style="width: 80%;margin: 8px 0;cursor: pointer; padding: 8px">
-              <mat-card-content style="display: flex; align-items: center">
-                <mat-icon style="color: #707070">insert_drive_file</mat-icon>
+            <mat-card (click)="seeFile(templates[0].fileCS.thumbnail)" class="fuel">
+              <mat-card-content>
+                <mat-icon class="gray">insert_drive_file</mat-icon>
                 <div class="divider">Magna</div>
               </mat-card-content>
             </mat-card>
           </div>
-          <div style="display: flex; justify-content: space-around; align-items: center">
+          <div class="fuel-type">
             <mat-checkbox [(ngModel)]="premium"></mat-checkbox>
-            <mat-card (click)="seeFile(templates[1].fileCS.thumbnail)" style="width: 80%;margin: 8px 0;cursor: pointer; padding: 8px">
-              <mat-card-content style="display: flex; align-items: center">
-                <mat-icon style="color: #707070">insert_drive_file</mat-icon>
+            <mat-card (click)="seeFile(templates[1].fileCS.thumbnail)" class="fuel">
+              <mat-card-content>
+                <mat-icon class="gray">insert_drive_file</mat-icon>
                 <div class="divider">Premium</div>
               </mat-card-content>
             </mat-card>
           </div>
-          <div style="display: flex; justify-content: space-around; align-items: center">
+          <div class="fuel-type">
             <mat-checkbox [(ngModel)]="diesel"></mat-checkbox>
-            <mat-card (click)="seeFile(templates[2].fileCS.thumbnail)" style="width: 80%;margin: 8px 0;cursor: pointer; padding: 8px">
-              <mat-card-content style="display: flex; align-items: center">
-                <mat-icon style="color: #707070">insert_drive_file</mat-icon>
+            <mat-card (click)="seeFile(templates[2].fileCS.thumbnail)" class="fuel">
+              <mat-card-content>
+                <mat-icon class="gray">insert_drive_file</mat-icon>
                 <div class="divider">Diesel</div>
               </mat-card-content>
             </mat-card>
           </div>
-          <div style="width: 100%; display: flex; justify-content: center;">
-            <button class="save" mat-flat-button (click)="saveSgmSelection()" [color]="'primary'">GUARDAR CAMBIOS</button>
+          <div class="save">
+            <button mat-flat-button (click)="saveSgmSelection()" [color]="'primary'">GUARDAR CAMBIOS</button>
           </div>
         </div>
-        <div style="margin: 0 4px;width: 50%; height: 100%; overflow: auto;">
-          <div *ngIf="station" style="margin:12px 0;text-align: center;width: 100%; font-size: 12px">
-            6.2.3 Registros. {{station.name}} mantiene el registro de las mediciones del volumen en tanques de almacenamiento utilizando el software:
+        <div class="columns">
+          <div *ngIf="station" class="software-type">
+            <div>6.2.3 Registros</div> <br> {{station.name}} mantiene el registro de las mediciones del volumen en tanques de almacenamiento utilizando el software:
           </div>
-          <div *ngIf="station" style="margin:12px 0;text-align: center;width: 100%; font-size: 12px">
-            6.3.1 Equipos de medición. {{station.name}} cuenta con los siguentes equipos en su sistema de medición:
+          <div *ngIf="station" class="software-type">
+            <div>6.3.1 Equipos de medición</div> <br> {{station.name}} cuenta con los siguentes equipos en su sistema de medición:
           </div>
-          <div style="margin:12px 0;text-align: center;color: #707070;width: 100%; font-size: 12px">
+          <div class="fuel-type-text">
             Defina el software y el equipo de telemedición que utiliza
           </div>
           <mat-radio-group [(ngModel)]="software">
-            <div style="display: flex; justify-content: space-between; align-items: center;" *ngFor="let item of sgmDocument; let i = index">
+            <div style="display: flex; justify-content: space-around; align-items: center;" *ngFor="let item of sgmDocument; let i = index">
               <mat-radio-button [value]="i+1"></mat-radio-button>
-              <mat-card (click)="seeFile(item.fileCS.thumbnail)" style="cursor: pointer; margin: 8px 0; width: 85%; padding: 8px">
+              <mat-card (click)="seeFile(item.fileCS.thumbnail)" style="cursor: pointer; margin: 8px 0; width: 85%;">
                 <mat-card-content style="display: flex; align-items: center">
-                  <mat-icon style="color: #707070">insert_drive_file</mat-icon>
+                  <mat-icon class="gray">insert_drive_file</mat-icon>
                   <div class="divider">{{item.name}}</div>
                 </mat-card-content>
               </mat-card>
@@ -112,8 +113,8 @@
           </mat-radio-group>
         </div>
       </div>
-      <div style="overflow: auto; width: 90%; margin: 0 auto;" *ngSwitchCase="1">
-        <div style="margin: 8px 0; width: 100%; text-align: center">Evidencia de la Prueba de funcionamiento de sensores (motobomba, espace anular y pozos de observacion)</div>
+      <div style="width: 75%; margin: 0 auto;" *ngSwitchCase="1">
+        <div style="margin: 8px 0; width: 100%; text-align: center">Evidencia de la Prueba de funcionamiento de sensores (motobomba, espacio anular y pozos de observacion)</div>
         <div *ngIf="listTasks.length !== 0; then completeList else emptyListTasks"></div>
         <ng-template #completeList>
           <div *ngFor="let task of listTasks">
@@ -142,12 +143,12 @@
         </ng-template>
         <ng-template #emptyListTasks>
           <div style="display:flex; justify-content: center; align-items: center; margin-top: 16px;">
-            <div style="color: #707070">No hay registro de este tipo de tareas aún</div>
+            <div class="gray">No hay registro de este tipo de tareas aún</div>
           </div>
         </ng-template>
       </div>
-      <div style="overflow: auto; width: 90%; margin: 0 auto;" *ngSwitchCase="2">
-        <div style="margin: 8px 0; width: 100%; text-align: center">Evidencia de funcionamient0 de sensores de dispensario</div>
+      <div style="width: 75%; margin: 0 auto;" *ngSwitchCase="2">
+        <div style="margin: 8px 0; width: 100%; text-align: center">Evidencia de funcionamiento de sensores de dispensario</div>
         <div *ngIf="listTasks.length !== 0; then completeList else emptyListTasks"></div>
         <ng-template #completeList>
           <div *ngFor="let task of listTasks">
@@ -176,7 +177,7 @@
         </ng-template>
         <ng-template #emptyListTasks>
           <div style="display:flex; justify-content: center; align-items: center; margin-top: 16px;">
-            <div style="color: #707070">No hay registro de este tipo de tareas aún</div>
+            <div class="gray">No hay registro de este tipo de tareas aún</div>
           </div>
         </ng-template>
       </div>

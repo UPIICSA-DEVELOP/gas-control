@@ -7,13 +7,9 @@
 #sgm{
   height: 100%;
   mat-dialog-content{
-    height: 95vh;
+    min-height: 95vh;
     max-height: none;
     margin: 0;
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
-    align-content: center;
     padding: 16px;
     position: relative;
     .close{
@@ -23,9 +19,10 @@
       margin: 16px;
     }
     .header{
+      width: 100%;
+      min-height: 72px;
       display: flex;
       flex-direction: column;
-      padding: 24px 0;
       align-items: center;
     }
     .sgm-logo{
@@ -34,9 +31,10 @@
     .text{
       margin-top: 12px;
     }
-    mat-divider{
-      width: 85%;
-      margin: auto;
+    .divide{
+      margin: 32px 0;
+      height: 1px;
+      background-color: #707070;
     }
     .features{
       flex-direction: column;
@@ -65,7 +63,7 @@
   .divider{
     min-height: 24px;
     padding: 0 8px;
-    border-left: 1px solid;
+    border-left: 1px solid #707070;
     display: flex;
     align-items: center;
   }
@@ -75,18 +73,22 @@
     left: 0;
     z-index: 4;
   }
+  .date-available{
+    margin: 16px;
+    color: #707070;
+    font-size: 14px;
+  }
   .save{
-    height: 28px;
-    padding: 0;
+    width: 100%;
     display: flex;
-    line-height: normal;
+    justify-content: center;
+    margin: 16px 0;
   }
   .task{
-    cursor: pointer;
     padding: 0;
     display: flex;
     margin-bottom: 12px;
-    height: 92px;
+    height: 96px;
     .priority{
       width: 1%;
       position: relative;
@@ -136,5 +138,49 @@
         text-overflow: ellipsis;
       }
     }
+  }
+  .columns{
+    padding: 0 24px;
+    width: 50%;
+    height: 100%;
+  }
+  .fuel-type{
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    .fuel{
+      width: 80%;
+      margin: 12px 0;
+      cursor: pointer;
+      mat-card-content{
+        display: flex;
+        align-items: center;
+      }
+    }
+  }
+  .gray{
+    color: #707070;
+  }
+  .list-and-template{
+    width: 100%;
+    margin: 16px 0;
+    cursor: pointer;
+    mat-card-content{
+      display: flex;
+      align-items: center;
+    }
+  }
+  .software-type{
+    width: 100%;
+    text-align: justify;
+    font-size: 12px;
+    margin: 12px 0;
+  }
+  .fuel-type-text{
+    color: #707070;
+    margin: 12px 0;
+    width: 100%;
+    text-align: justify;
+    font-size: 12px
   }
 }
