@@ -164,11 +164,11 @@
         <div class="divider-head">
           <mat-divider></mat-divider>
         </div>
-        <p class="point">Punto 2. La evaluación de la integridad física y operativa de las instalaciones mediante procedimientos, instrumentos y metodologias reconocidos en el sector hidrocarburo</p>
+        <p class="point">Punto 2. La evaluación de la integridad física y operativa de las instalaciones mediante procedimientos, instrumentos y metodologías reconocidos en el sector hidrocarburo</p>
         <mat-card class="procedures" style="cursor: pointer" (click)="openModalProcedures()">
           <mat-card-content>
             <mat-icon class="color">insert_drive_file</mat-icon>
-            <div class="vertical-divider">Procedimientos de la estación</div>
+            <div class="vertical-divider">Procedimientos de la Estación</div>
           </mat-card-content>
         </mat-card>
         <div class="signature-section">
@@ -197,7 +197,7 @@
           <mat-divider></mat-divider>
         </div>
         <p class="point">Punto 3. La identificación de riesgos, análisis, evaluación, medidas de prevención, monitoreo, mitigación y evaluación de incidentes, accidentes, pérdidas esperadas en los distintos escenarios de riesgo,
-          así como las consecuencias que los riesgos presentan a la población, medio ambiente, a las instalaciones y edificaciones comprendidas dentro del perimetro de las instalaciones industriales y en las inmediaciones</p>
+          así como las consecuencias que los riesgos presentan a la población, medio ambiente, a las instalaciones y edificaciones comprendidas dentro del perímetro de las instalaciones industriales y en las inmediaciones</p>
         <mat-card class="procedures">
           <mat-card-content>
             <app-upload-file (onLoad)="loadFile($event, 2, 1)" [layoutTemplate]="button" [type]="'file'">
@@ -224,7 +224,7 @@
           </div>
           <table style="width: 100%">
             <tr>
-              <th style="width: 50%; text-align: left">Forma de alacenamiento:</th>
+              <th style="width: 50%; text-align: left">Forma de almacenamiento:</th>
               <th style="width: 50%; text-align: left">Tanque</th>
             </tr>
             <tr>
@@ -232,8 +232,8 @@
               <th style="width: 50%; text-align: left">Almacenamiento y venta de combustible</th>
             </tr>
             <tr>
-              <th style="width: 50%; text-align: left">Caracteríticas de almacenamiento o distribución:</th>
-              <th style="width: 50%; text-align: left">La sustancia química se encuentra almacenada en un tanque enterrado, posteriorente es transferido al despachador para su venta</th>
+              <th style="width: 50%; text-align: left">Características de almacenamiento o distribución:</th>
+              <th style="width: 50%; text-align: left">La sustancia química se encuentra almacenada en un tanque enterrado, posteriormente es transferido al despachador para su venta</th>
             </tr>
           </table>
           <div style="margin: 8px 0">
@@ -280,7 +280,7 @@
                 <mat-icon class="color" svgIcon="icons:upload"></mat-icon>
               </ng-template>
             </app-upload-file>
-            <div class="vertical-divider">Organigrama de la estación</div>
+            <div class="vertical-divider">Organigrama de la Estación</div>
           </mat-card-content>
         </mat-card>
         <mat-card class="procedures">
@@ -306,28 +306,30 @@
               <div style="color: #707070">Brigadista {{i+1}}</div>
               <button mat-icon-button (click)="addRemoveBrigadeElem(false, i)"><mat-icon class="remove">remove</mat-icon></button>
             </div>
-            <mat-form-field style="width: 100%">
-              <input matInput placeholder="Nombre(s)" required [(ngModel)]="element.name">
-              <mat-error *ngIf="!element.name">
-                Este campo es obligatorio
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field style="width: 100%">
-              <input matInput placeholder="Apellido(s)" required [(ngModel)]="element.lastName">
-              <mat-error *ngIf="!element.lastName">
-                Este campo es obligatorio
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field style="width: 100%">
-              <input matInput placeholder="Cargo en la brigada" required [(ngModel)]="element.position">
-              <mat-error *ngIf="!element.position">
-                Este campo es obligatorio
-              </mat-error>
-            </mat-form-field>
+            <form>
+              <mat-form-field style="width: 100%">
+                <input matInput placeholder="Nombre(s)" required [(ngModel)]="element.name" [ngModelOptions]="{standalone: true}">
+                <mat-error *ngIf="!element.name">
+                  Este campo es obligatorio
+                </mat-error>
+              </mat-form-field>
+              <mat-form-field style="width: 100%">
+                <input matInput placeholder="Apellido(s)" required [(ngModel)]="element.lastName" [ngModelOptions]="{standalone: true}">
+                <mat-error *ngIf="!element.lastName">
+                  Este campo es obligatorio
+                </mat-error>
+              </mat-form-field>
+              <mat-form-field style="width: 100%">
+                <input matInput placeholder="Cargo en la brigada" required [(ngModel)]="element.position" [ngModelOptions]="{standalone: true}">
+                <mat-error *ngIf="!element.position">
+                  Este campo es obligatorio
+                </mat-error>
+              </mat-form-field>
+              <div class="save" *ngIf="i+1 === brigade.length">
+                <button mat-flat-button (click)="validateBrigade()" [color]="'primary'">GUARDAR CAMBIOS</button>
+              </div>
+            </form>
           </ng-container>
-        </div>
-        <div class="save">
-          <button mat-flat-button (click)="saveChanges(elementInView)" [color]="'primary'">GUARDAR CAMBIOS</button>
         </div>
       </div>
       <div class="annexe" *ngSwitchCase="4">
@@ -363,7 +365,7 @@
         <mat-card class="procedures" style="cursor: pointer;" (click)="openSasisopaTemplate(true)">
           <mat-card-content>
             <mat-icon class="color">insert_drive_file</mat-icon>
-            <div class="vertical-divider">Manual de llenada de tareas</div>
+            <div class="vertical-divider">Manual de llenado de tareas</div>
           </mat-card-content>
         </mat-card>
         <mat-card class="procedures">
@@ -521,7 +523,7 @@
         <div class="divider-head">
           <mat-divider></mat-divider>
         </div>
-        <p class="point">Punto 18. El informe periódico del desempeño en materia de seguridad indutrial, seguridad operativa y protección al medio ambiente</p>
+        <p class="point">Punto 18. El informe periódico del desempeño en materia de seguridad industrial, seguridad operativa y protección al medio ambiente</p>
         <mat-card class="procedures">
           <mat-card-content>
             <app-upload-file (onLoad)="loadFile($event, 11, 12)" [layoutTemplate]="button" [type]="'file'">
