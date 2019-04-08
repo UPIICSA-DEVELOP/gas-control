@@ -2,6 +2,27 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="1.3.0-beta.0"></a>
+# [1.3.0-beta.0](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/compare/v1.2.0...v1.3.0-beta.0) (2019-04-08)
+
+
+### Bug Fixes
+
+* **LisTasks:** add frequency in tasks cards ([4fd2074](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/4fd2074))
+* **ModalProcedures:** implementation to only see documents ([1515111](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/1515111))
+* **ModalProcedures:** solve error in hide checkbox ([2de0248](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/2de0248))
+* **Sasisopa:** solve errors in view ([2d5ec20](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/2d5ec20))
+* **Station Information:** solve error in tanks year installation ([4942aaa](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/4942aaa))
+
+
+### Features
+
+* **SASISOPA:** Implement sasisopa logic ([35094dd](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/35094dd))
+* **SGM:** implementation SGM logic ([bc2c095](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/bc2c095))
+* Adding new endpoint for genereate PDF SGM ([11da942](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/11da942))
+
+
+
 <a name="1.2.0"></a>
 # [1.2.0](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/compare/v1.2.0-beta.10...v1.2.0) (2019-04-06)
 
