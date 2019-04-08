@@ -386,7 +386,7 @@
         <div *ngIf="listTasks.length !== 0; then completeList else emptyListTasks"></div>
         <ng-template #completeList>
           <div *ngFor="let task of listTasks">
-            <mat-card matRipple class="task" (click)="goTaskInfo(task)">
+            <mat-card class="task">
               <div class="priority" *ngIf="task.origin.level === 3" style="background-color:#E00000"></div>
               <div class="priority" *ngIf="task.origin.level === 1" style="background-color:#257602"></div>
               <div class="priority" *ngIf="task.origin.level === 2" style="background-color:#FFD800"></div>

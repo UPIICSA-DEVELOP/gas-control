@@ -11,7 +11,7 @@ import {ApiLoaderService} from '@app/core/services/api/api-loader.service';
 import {Subscription} from 'rxjs/Rx';
 import {UtilitiesService} from '@app/core/utilities/utilities.service';
 import {ModalProceduresService} from '@app/components/screen/components/modal-procedures/modal-procedures.service';
-import {BrigadeElems, SasisopaDocument} from '@app/core/interfaces/interfaces';
+import {Brigade, BrigadeElems, SasisopaDocument} from '@app/core/interfaces/interfaces';
 import {UploadFileService} from '@app/core/components/upload-file/upload-file.service';
 import {PdfVisorService} from '@app/core/components/pdf-visor/pdf-visor.service';
 import {Constants} from '@app/core/constants.core';
@@ -216,7 +216,7 @@ export class SasisopaComponent implements OnInit, OnDestroy {
   }
 
   private saveBrigade():void{
-    const options ={
+    const options: Brigade ={
       id: this.station.id,
       brigadeElems: this.brigade
     };
@@ -429,7 +429,7 @@ export class SasisopaComponent implements OnInit, OnDestroy {
       this._snackBarService.openSnackBar('Por favor, complete la información para generar el SASISOPA','OK',3000);
       return;
     }else{
-      this._api.getFullSasisopa(this.station.id, false).subscribe(response =>{
+      this._api.getFullPDF(this.station.id, false).subscribe(response =>{
         switch(response.code){
           case 200:
             this.generate = true;
