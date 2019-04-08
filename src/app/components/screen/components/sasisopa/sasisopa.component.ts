@@ -47,6 +47,7 @@ export class SasisopaComponent implements OnInit, OnDestroy {
   private _token: string;
   private _change: boolean;
   private _forms: FormData[];
+  private _invalid: boolean;
   constructor(
     @Inject(MAT_DIALOG_DATA) private _data,
     private _matDialogRef: MatDialogRef<SasisopaComponent>,
@@ -65,13 +66,14 @@ export class SasisopaComponent implements OnInit, OnDestroy {
     this.dateSelected = undefined;
     this.date = undefined;
     this._change = false;
+    this._invalid = false;
     this.maxDate = UtilitiesService.addSubtractDaysFromDate(new Date, 1, false);
     this.minDate = undefined;
     this.station = undefined;
     this._token = undefined;
     this.elementInView = 0;
     this.listCollaborators = [];
-    this.brigade = [];
+    this.brigade = [{name: undefined, lastName: undefined, position: undefined}];
     this.listTasks = [];
     this._forms = [];
     this.isAvailable = false;
@@ -208,6 +210,8 @@ export class SasisopaComponent implements OnInit, OnDestroy {
     this._api.saveSasisopaDocument(element).subscribe(response => {
       switch(response.code){
         case 200:
+          this._change = false;
+          this.saveChanges(element.annexed);
           break;
         default:
           break;
@@ -223,6 +227,8 @@ export class SasisopaComponent implements OnInit, OnDestroy {
     this._api.saveBrigade(options).subscribe(response => {
       switch(response.code){
         case 200:
+          this._change = false;
+          this.saveChanges(3);
           break;
         default:
           break;
@@ -235,11 +241,22 @@ export class SasisopaComponent implements OnInit, OnDestroy {
     this._api.saveEvidenceDate(this.station.id, evidenceDate.timeStamp).subscribe(response => {
       switch(response.code){
         case 200:
+          this._change = false;
           break;
         default:
           break;
       }
     });
+  }
+
+  public validateBrigade():void{
+    for(let i = 0; i<this.brigade.length; i++){
+      if(!this.brigade[i].name || !this.brigade[i].lastName || !this.brigade[i].position){
+        this._snackBarService.openSnackBar('Por favor, complete los campos','OK',3000);
+        return;
+      }
+    }
+    this.saveBrigade();
   }
 
   public saveChanges(index: number):void{
@@ -253,18 +270,21 @@ export class SasisopaComponent implements OnInit, OnDestroy {
           this.uploadFile(index,2);
           return;
         }
+        this._snackBarService.openSnackBar('Información actualizada','OK',3000);
         break;
       case 4:
         if(this._forms[4]){
           this.uploadFile(index,5);
           return;
         }
+        this._snackBarService.openSnackBar('Información actualizada','OK',3000);
         break;
       case 6:
         if(this._forms[5]){
           this.uploadFile(index,6);
           return;
         }
+        this._snackBarService.openSnackBar('Información actualizada','OK',3000);
         break;
       case 7:
         if(this._forms[6]){
@@ -275,6 +295,7 @@ export class SasisopaComponent implements OnInit, OnDestroy {
           this.uploadFile(index + 2,8);
           return;
         }
+        this._snackBarService.openSnackBar('Información actualizada','OK',3000);
         break;
       case 8:
         if(this._forms[8]){
@@ -289,6 +310,7 @@ export class SasisopaComponent implements OnInit, OnDestroy {
           this.uploadFile(index + 2, 11);
           return;
         }
+        this._snackBarService.openSnackBar('Información actualizada','OK',3000);
         break;
       case 9:
         if(this._forms[11]){
@@ -305,10 +327,11 @@ export class SasisopaComponent implements OnInit, OnDestroy {
           this.uploadFile(index,4);
           return;
         }
-        this.saveBrigade();
+        this._snackBarService.openSnackBar('Información actualizada','OK',3000);
         break;
       case 5:
         this.saveEvidenceDate();
+        this._snackBarService.openSnackBar('Información actualizada','OK',3000);
         break;
     }
   }
