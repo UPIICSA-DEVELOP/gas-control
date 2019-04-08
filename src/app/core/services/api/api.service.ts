@@ -310,7 +310,7 @@ export class ApiService implements OnDestroy{
     });
   }
 
-  public getFullSasisopa(stationId: string, isSGMBoolean: boolean): Observable<any>{
+  public getFullPDF(stationId: string, isSGMBoolean: boolean): Observable<any>{
     let params = new HttpParams();
     params = params.append('stationId', stationId);
     params = params.append('isSGM', isSGMBoolean?'true':'false');
@@ -603,5 +603,15 @@ export class ApiService implements OnDestroy{
       date: date
     };
     return this._http.post(ApiService.API_URL_COMPLETE + 'saveEvidenceDate', options);
+  }
+
+  public getSgm(stationId: string):Observable<any>{
+    let params = new HttpParams();
+    params = params.append('stationId', stationId);
+    return this._http.get(ApiService.API_URL_COMPLETE + 'getSgm', {params: params});
+  }
+
+  public saveSgmSelection(item: any): Observable<any>{
+    return this._http.post(ApiService.API_URL_COMPLETE + 'saveSgmSelection', item);
   }
 }

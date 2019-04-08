@@ -196,7 +196,7 @@ export class ScreenComponent implements OnInit, AfterViewInit, OnDestroy{
   }
 
   public openSGMModal():void{
-    this._sgmService.open();
+    this._sgmService.open({utils:this.utils, stationId: this.stationActive.id});
   }
 
   public openNotifications():void{

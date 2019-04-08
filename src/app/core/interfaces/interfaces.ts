@@ -342,3 +342,11 @@ export interface Brigade {
   id?: number;
   brigadeElems: BrigadeElems[];
 }
+
+export interface SgmSelection {
+  diesel: boolean;
+  id?: string;
+  magna: boolean;
+  premium: boolean;
+  software: string | number;
+}
