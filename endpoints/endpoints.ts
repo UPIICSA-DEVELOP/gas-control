@@ -170,7 +170,7 @@ export class EndPoints{
             }
           ))
         }else {
-          const { stationId } = req.query;
+          const { stationId, isSGM } = req.query;
           const { fork } = require('child_process'), path = require('path');
           const process = fork(path.resolve(__dirname, 'endpoints', 'join-pdf.js'));
           process.on('message', (data) => {
@@ -188,7 +188,8 @@ export class EndPoints{
             }
           });
           const data = {
-            stationId: stationId
+            stationId: stationId,
+            isSGM: isSGM || false
           };
           process.send(data);
         }

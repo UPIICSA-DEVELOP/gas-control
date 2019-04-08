@@ -167,7 +167,7 @@
             "name": "isSGM",
             "type": "boolean",
             "default": false,
-            "description": "Is SGM document)"
+            "description": "Is SGM document"
           }
         ],
         "responses": {
@@ -208,7 +208,7 @@
           "application/json"
         ],
         "produces": [
-          "application/octet-stream",
+          "application/pdf",
           "application/json"
         ],
         "parameters": [
@@ -218,6 +218,13 @@
             "type": "string",
             "required": true,
             "description": "Station ID"
+          },
+          {
+            "in": "query",
+            "name": "isSGM",
+            "type": "boolean",
+            "default": false,
+            "description": "Is SGM document"
           }
         ],
         "responses": {

@@ -75,7 +75,7 @@ export class Commons{
   }
 
 
-  public buildPDF(html: any): Promise<Buffer>{
+  public buildPDF(html: any, pageSize?: string): Promise<Buffer>{
     return new Promise((resolve, reject) => {
       try {
         const puppeteer = require('puppeteer');
@@ -84,7 +84,7 @@ export class Commons{
           const page = await browser.newPage();
           await page.setContent(html);
           const pdf = await page.pdf({
-            format: 'A4'
+            format: pageSize ? pageSize : 'A4'
           });
           await browser.close();
           resolve(pdf);
@@ -134,6 +134,16 @@ export class Commons{
         resolve({response: res, body: body});
       });
     });
+  }
+
+  public static searchObject(array: any[], key: string, value: any): any{
+    let obj = null;
+    array.forEach(item => {
+      if(item[key] === value){
+        obj = item;
+      }
+    });
+    return obj;
   }
 
   public static async asyncForEach(array, callback) {

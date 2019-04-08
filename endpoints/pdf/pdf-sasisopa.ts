@@ -1,9 +1,9 @@
 
 
 import {Commons} from './commons'
-import {AttachedType, ReportType, TypeFuel, CreatePDFOptions, ParseHTMLOptions, PdfGeneratorData} from './utils';
+import {AttachedType, ReportType, TypeFuel, CreatePDFOptions, ParseHTMLOptions, PDFSASISOPAData} from './utils';
 
-class PdfGenerator{
+class PdfSASISOPA{
 
   private static BACKEND_URL = 'https://schedule-maplander.appspot.com/_ah/api/communication/v1/';
   private static EMPTY_INPUT = 'N/A';
@@ -22,14 +22,14 @@ class PdfGenerator{
   private _sasisopaDocuments: any[];
 
 
-  constructor(data: PdfGeneratorData){
+  constructor(data: PDFSASISOPAData){
 
     if(!data){
       return;
     }
     require('nconf').argv().env().file({ file: 'config.json' });
     if(require('nconf').get('BACKEND_URL')){
-      PdfGenerator.BACKEND_URL = require('nconf').get('BACKEND_URL');
+      PdfSASISOPA.BACKEND_URL = require('nconf').get('BACKEND_URL');
     }
     this._commons = new Commons();
     this._stationId = data.stationId;
@@ -47,7 +47,7 @@ class PdfGenerator{
       code: 200,
       description: 'OK'
     };
-    console.log('PdfGenerator Initiated', new Date());
+    console.log('PdfSASISOPA Initiated', new Date());
     this.init();
   }
 
@@ -124,7 +124,6 @@ class PdfGenerator{
       tmp_buffer_file.push(response.body);
       return this.createEvidenceByTasks();
     }).then(buffersEvidences => {
-      console.log('Evidences ready');
       buffersEvidences.forEach(bufferEvidence => {
         tmp_buffer_file.push(bufferEvidence);
       });
@@ -191,21 +190,21 @@ class PdfGenerator{
     }).then(response => {
       switch (response.code){
         case 200:
-          console.log('PdfGenerator Finished', new Date());
-          PdfGenerator.finish(this._response);
+          console.log('PdfSASISOPA Finished', new Date());
+          PdfSASISOPA.finish(this._response);
           break;
         default:
           console.error(response);
           this._response.code = 500;
           this._response.description = 'Internal Server Error ' + response.description;
-          PdfGenerator.finish(this._response);
+          PdfSASISOPA.finish(this._response);
           break;
       }
     }).catch(error => {
       console.error(error);
       this._response.code = 500;
       this._response.description = 'Internal Server Error ' + error;
-      PdfGenerator.finish(this._response);
+      PdfSASISOPA.finish(this._response);
     });
 
   }
@@ -237,7 +236,13 @@ class PdfGenerator{
       }).then(buffer => {
         resolve(buffer);
       }).catch(error => {
-        console.log('createPDF', error);
+        const e = {
+          message: error.message,
+          name: error.name,
+          stack: error.stack,
+          properties: error.properties,
+        };
+        console.log(JSON.stringify({error: e}));
         reject(error);
       });
     });
@@ -439,7 +444,7 @@ class PdfGenerator{
               // Equipment [END]
 
 
-              document.getElementById('materials').textContent = item.toolsAndMaterials || PdfGenerator.EMPTY_INPUT;
+              document.getElementById('materials').textContent = item.toolsAndMaterials || PdfSASISOPA.EMPTY_INPUT;
 
 
               // Procedures [START]
@@ -461,15 +466,15 @@ class PdfGenerator{
                 document.getElementById('list-procedures').appendChild(ol);
               }else{
                 const p = document.createElement('p');
-                p.innerText = PdfGenerator.EMPTY_INPUT;
+                p.innerText = PdfSASISOPA.EMPTY_INPUT;
                 document.getElementById('list-procedures').appendChild(p);
               }
 
               // Procedures [END]
 
-              document.getElementById('manager-authorization').textContent = item.description || PdfGenerator.EMPTY_INPUT;
+              document.getElementById('manager-authorization').textContent = item.description || PdfSASISOPA.EMPTY_INPUT;
 
-              document.getElementById('observations').textContent = item.	observations || PdfGenerator.EMPTY_INPUT;
+              document.getElementById('observations').textContent = item.	observations || PdfSASISOPA.EMPTY_INPUT;
 
               if(item.evidence){
                 document.getElementById('evidence').src = item.fileCS.thumbnail;
@@ -501,16 +506,16 @@ class PdfGenerator{
               document.getElementById('li-time-2').textContent = Commons.createTimeString(item.endTime.toString());
               document.getElementById('li-folio').textContent = Commons.formatFolio(item.folio.toString());
 
-              document.getElementById('brand').textContent = item.brand || PdfGenerator.EMPTY_INPUT;
-              document.getElementById('model').textContent = item.model || PdfGenerator.EMPTY_INPUT;
-              document.getElementById('control').textContent = item.controlNumber || PdfGenerator.EMPTY_INPUT;
+              document.getElementById('brand').textContent = item.brand || PdfSASISOPA.EMPTY_INPUT;
+              document.getElementById('model').textContent = item.model || PdfSASISOPA.EMPTY_INPUT;
+              document.getElementById('control').textContent = item.controlNumber || PdfSASISOPA.EMPTY_INPUT;
 
               document.getElementById('pressure').textContent = item.pressure;
               document.getElementById('purge').textContent = item.purge;
               document.getElementById('shooting').textContent = item.securityValve;
 
-              document.getElementById('modify').textContent = item.modifications || PdfGenerator.EMPTY_INPUT;
-              document.getElementById('observations').textContent = item.observations || PdfGenerator.EMPTY_INPUT;
+              document.getElementById('modify').textContent = item.modifications || PdfSASISOPA.EMPTY_INPUT;
+              document.getElementById('observations').textContent = item.observations || PdfSASISOPA.EMPTY_INPUT;
 
 
               if(item.evidence){
@@ -639,7 +644,7 @@ class PdfGenerator{
               document.getElementById('alarm-svr').textContent = item.vrsAlarm;
               document.getElementById('alarm-emergency').textContent = item.emergencyStop;
 
-              document.getElementById('observations').textContent = item.observations || PdfGenerator.EMPTY_INPUT;
+              document.getElementById('observations').textContent = item.observations || PdfSASISOPA.EMPTY_INPUT;
 
               if(item.evidence){
                 document.getElementById('evidence').src = item.fileCS.thumbnail;
@@ -789,7 +794,7 @@ class PdfGenerator{
                 document.getElementById('list-procedures').appendChild(ol);
               }else{
                 const p = document.createElement('p');
-                p.innerText = PdfGenerator.EMPTY_INPUT;
+                p.innerText = PdfSASISOPA.EMPTY_INPUT;
                 document.getElementById('list-procedures').appendChild(p);
               }
 
@@ -805,9 +810,15 @@ class PdfGenerator{
           }
 
         });
-      }catch (e){
-        console.error('parseHTML',e.message);
-        reject(e.message);
+      }catch (error){
+        const e = {
+          message: error.message,
+          name: error.name,
+          stack: error.stack,
+          properties: error.properties,
+        };
+        console.log(JSON.stringify({error: e}));
+        reject(JSON.stringify({error: e}));
       }
 
     });
@@ -863,7 +874,7 @@ class PdfGenerator{
          value: file,
          options: {
            filename: 'sasisopa-'+ new Date().getTime() + '.pdf',
-           contentType: 'image/png'
+           contentType: 'application/pdf'
          }
        },
        isImage: 'false',
@@ -884,7 +895,7 @@ class PdfGenerator{
    });
    uploaded.splice(1, 0, this._sasisopaTemplates[2].fileCS);
    const body = {id: this._stationId, date: this._date, files: uploaded};
-   return await this._commons.request(PdfGenerator.BACKEND_URL + 'saveFullSasisopa', 'POST', body, false, true);
+   return await this._commons.request(PdfSASISOPA.BACKEND_URL + 'saveFullSasisopa', 'POST', body, false, true);
  }
 
   private static finish(response: any): void{
@@ -894,6 +905,6 @@ class PdfGenerator{
 }
 
 
-process.on('message', (data: PdfGeneratorData) => {
-  new PdfGenerator(data);
+process.on('message', (data: PDFSASISOPAData) => {
+  new PdfSASISOPA(data);
 });

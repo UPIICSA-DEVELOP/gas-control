@@ -57,7 +57,10 @@
     "morgan": "^1.9.1",
     "winston": "^3.2.0",
     "pdfjs-dist": "^2.0.943",
-    "crypto-js": "^3.1.9-1"
+    "crypto-js": "^3.1.9-1",
+    "jszip": "^2.6.1",
+    "docxtemplater": "^3.9.9",
+    "word2pdf-promises": "^1.2.0"
   },
   "private": true
 }

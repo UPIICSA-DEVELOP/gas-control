@@ -15,10 +15,14 @@ export class JoinPdf{
     if(require('nconf').get('BACKEND_URL')){
       JoinPdf.BACKEND_URL = require('nconf').get('BACKEND_URL');
     }
-    this.init(data.stationId);
+    if(data.isSGM){
+      this.initSGM(data.stationId);
+    }else{
+      this.initSASISOPA(data.stationId);
+    }
   }
 
-  private init(id: string): void{
+  private initSASISOPA(id: string): void{
     this._commons.request(JoinPdf.BACKEND_URL + 'getSasisopa?stationId=' + id).then(response => {
      switch (response.code){
        case 200:
@@ -56,7 +60,48 @@ export class JoinPdf{
         description: 'Internal Sever Error ' + error
       };
       JoinPdf.finish(this._response);
-    })
+    });
+  }
+
+  private initSGM(id: string): void{
+    this._commons.request(JoinPdf.BACKEND_URL + 'getSgm?stationId=' + id).then(response => {
+      switch (response.code){
+        case 200:
+          if(response.item.fullSgm.files){
+            const files = response.item.fullSgm.files || [];
+            const urls: string[] = [];
+            files.forEach(file => {
+              urls.push(file.thumbnail);
+            });
+            return this.downloadFiles(urls);
+          }else{
+            this._response = {
+              code: 400,
+              description: 'Bad Request | files object does not exist on fullSgm'
+            };
+            JoinPdf.finish(this._response);
+          }
+          break;
+        default:
+          this._response = {
+            code: 400,
+            description: 'Bad Request ' + response
+          };
+          JoinPdf.finish(this._response);
+          break;
+      }
+    }).then(response => {
+      return this._commons.joinPDF(response);
+    }).then(buffer => {
+      this._response = buffer;
+      JoinPdf.finish(this._response);
+    }).catch(error => {
+      this._response = {
+        code: 500,
+        description: 'Internal Sever Error ' + error
+      };
+      JoinPdf.finish(this._response);
+    });
   }
 
   private async downloadFiles(urls: string[]): Promise<Buffer[]>{

@@ -1,4 +1,4 @@
-export interface PdfGeneratorData {
+export interface PDFSASISOPAData {
   stationId: string,
   stationRFC: string,
   businessName: string,
@@ -10,6 +10,20 @@ export interface PdfGeneratorData {
   listTasks: any[],
   listProcedures: any[],
   sasisopaDocuments: any[]
+}
+
+export interface PDFSGMData{
+  stationId: string,
+  businessName: string,
+  crePermission: string,
+  address: string,
+  rfc: string,
+  date: number,
+  sgmSelection: any,
+  proceduresList: any[],
+  taskListAnnexed1: any[],
+  taskListAnnexed2: any[],
+  sgmDocuments: any[]
 }
 
 export interface ParseHTMLOptions{
@@ -75,5 +89,6 @@ export interface BCData{
 }
 
 export interface JoinPdfData{
-  stationId: string
+  stationId: string,
+  isSGM: boolean
 }

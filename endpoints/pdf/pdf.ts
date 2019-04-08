@@ -1,5 +1,5 @@
 import {Commons} from './commons'
-import {PdfData, PdfGeneratorData} from './utils';
+import {PdfData, PDFSASISOPAData, PDFSGMData} from './utils';
 import * as nconfg from 'nconf';
 
 
@@ -11,8 +11,6 @@ export class Pdf{
   private _response: any;
   private _taskTemplate: any[];
   private _uTaskTemplate: any[];
-  private _uTasks: any;
-  private _tasks: any[];
   private _stationId: string;
 
   constructor(data: PdfData){
@@ -27,26 +25,29 @@ export class Pdf{
     }
     this._stationId = data.stationId;
     this._commons = new Commons();
-    this._tasks = [];
-    this._uTasks = {
-      incidences: [],
-      hwc: [],
-      fr: []
-    };
-    this._taskTemplate = [];
-    this._uTaskTemplate = [];
     this._response = {
       code: 200,
       description: 'OK'
     };
-    this.init();
+    this._taskTemplate = [];
+    if(data.isSGM){
+      this.initSGM();
+    }else{
+      this._uTaskTemplate = [];
+      this.initSASISOPA();
+    }
   }
 
-  private init(): void {
+  private initSASISOPA(): void {
 
-    let stationTaskId, date;
+    let stationTaskId, date, tasks;
+    const uTasks = {
+      incidences: [],
+      hwc: [],
+      fr: []
+    };
 
-    const infoPdfGenerator: PdfGeneratorData = {
+    const infoPdfGenerator: PDFSASISOPAData = {
       stationRFC: '',
       stationId: this._stationId,
       date: 0,
@@ -74,7 +75,7 @@ export class Pdf{
           return this._commons.request(Pdf.BACKEND_URL + 'getUtils');
         default:
           this._response.code = 400;
-          this._response.description = 'Bad Request - saveFullSasisopa|' + response.description;
+          this._response.description = 'Bad Request - saveFullSasisopa|' + JSON.stringify(response);
           Pdf.finish(this._response);
           break;
       }
@@ -89,7 +90,7 @@ export class Pdf{
         default:
           this._response.item = null;
           this._response.code = 400;
-          this._response.description = 'Bad Request - getStation|' + response.description;
+          this._response.description = 'Bad Request - getStation |' + JSON.stringify(response);
           Pdf.finish(this._response);
           break;
       }
@@ -112,7 +113,7 @@ export class Pdf{
         default:
           this._response.item = null;
           this._response.code = 400;
-          this._response.description = 'Bad Request - listCollaborators | ' + response.description;
+          this._response.description = 'Bad Request - listCollaborators | ' + JSON.stringify(response);
           Pdf.finish(this._response);
           break;
       }
@@ -124,7 +125,7 @@ export class Pdf{
         default:
           this._response.item = null;
           this._response.code = 400;
-          this._response.description = 'Bad Request - getSasisopa |' + response.description;
+          this._response.description = 'Bad Request - getSasisopa |' + JSON.stringify(response);
           Pdf.finish(this._response);
           break;
       }
@@ -148,46 +149,46 @@ export class Pdf{
         default:
           this._response.item = null;
           this._response.code = 400;
-          this._response.description = 'Bad Request |' + response.description;
+          this._response.description = 'Bad Request |' + JSON.stringify(response);
           Pdf.finish(this._response);
           break;
       }
     }).then(response => {
-      this._tasks = response.items || [];
+      tasks = response.items || [];
       const params = '?stationTaskId='+ stationTaskId +'&type=1&fromDate='+ date + '&untilDate=' + date;
       return this._commons.request(Pdf.BACKEND_URL + 'listUTask' + params);
     }).then(response => {
-      this._uTasks.fr = response.items || [];
+      uTasks.fr = response.items || [];
       const params = '?stationTaskId='+ stationTaskId +'&type=2&fromDate='+ date + '&untilDate=' + date;
       return this._commons.request(Pdf.BACKEND_URL + 'listUTask' + params);
     }).then(response => {
-      this._uTasks.hwc = response.items || [];
+      uTasks.hwc = response.items || [];
       const params = '?stationTaskId='+ stationTaskId +'&type=3&fromDate='+ date + '&untilDate=' + date;
       return this._commons.request(Pdf.BACKEND_URL + 'listUTask' + params);
     }).then(reponse => {
-      this._uTasks.incidences = reponse.items || [];
-      return this.getTasksByTemplateId(this._tasks, this._taskTemplate);
+      uTasks.incidences = reponse.items || [];
+      return this.getTasksByTemplateId(tasks, this._taskTemplate);
     }).then(items => {
       items.forEach(i => {
         finalTaskList.push(Pdf.clearTaskByFolio(i));
       });
-      return this.getTasksByTemplateId(this._uTasks.fr, this._uTaskTemplate);
+      return this.getTasksByTemplateId(uTasks.fr, this._uTaskTemplate);
     }).then(items => {
       items.forEach(i => {
         finalTaskList.push(Pdf.clearTaskByFolio(i));
       });
-      return this.getTasksByTemplateId(this._uTasks.hwc, this._uTaskTemplate);
+      return this.getTasksByTemplateId(uTasks.hwc, this._uTaskTemplate);
     }).then(items => {
       items.forEach(i => {
         finalTaskList.push(Pdf.clearTaskByFolio(i));
       });
-      return this.getTasksByTemplateId(this._uTasks.incidences, this._uTaskTemplate);
+      return this.getTasksByTemplateId(uTasks.incidences, this._uTaskTemplate);
     }).then(items => {
       items.forEach(i => {
         finalTaskList.push(Pdf.clearTaskByFolio(i));
       });
       infoPdfGenerator.listTasks = finalTaskList;
-      this.initPdfGenerator(infoPdfGenerator);
+      this.initPDFSASISOPA(infoPdfGenerator);
       Pdf.finish(this._response);
     }).catch(error => {
       this._response.item = null;
@@ -196,6 +197,121 @@ export class Pdf{
       Pdf.finish(this._response);
     });
 
+  }
+
+  private initSGM(): void{
+
+    let date = null, stationTaskId = null, tasks;
+
+    const data: PDFSGMData = {
+      stationId: this._stationId,
+      businessName: '',
+      crePermission: '',
+      address: '',
+      rfc: '',
+      date: 0,
+      sgmSelection: null,
+      proceduresList: [],
+      taskListAnnexed1: [],
+      taskListAnnexed2: [],
+      sgmDocuments: []
+    };
+
+    const body = {id: this._stationId};
+
+    this._commons.request(Pdf.BACKEND_URL + 'getUtils').then(response => {
+      switch (response.code){
+        case 200:
+          data.sgmDocuments = response.item.sgmDocuments;
+          this._taskTemplate = response.item.taskTemplates;
+          return this._commons.request(Pdf.BACKEND_URL + 'saveFullSgm', 'POST', body);
+        default:
+          this._response.code = 400;
+          this._response.description = 'Bad Request | ' + JSON.stringify(response);
+          Pdf.finish(this._response);
+          break;
+      }
+    }).then(response => {
+      switch (response.code){
+        case 200:
+          date = response.item.date;
+          data.date = date;
+          return this._commons.request(Pdf.BACKEND_URL + 'getStation?id=' + this._stationId);
+        default:
+          this._response.code = 400;
+          this._response.description = 'Bad Request | ' + JSON.stringify(response);
+          Pdf.finish(this._response);
+          break;
+      }
+    }).then(response => {
+      switch (response.code){
+        case 200:
+          data.businessName = response.item.businessName;
+          data.crePermission = response.item.crePermission;
+          data.address = response.item.address;
+          data.rfc = response.item.rfc;
+          stationTaskId = response.item.stationTaskId;
+          return this._commons.request(Pdf.BACKEND_URL + 'getSgm?stationId=' + this._stationId);
+        default:
+          this._response.code = 400;
+          this._response.description = 'Bad Request | ' + JSON.stringify(response);
+          Pdf.finish(this._response);
+          break;
+      }
+    }).then(response => {
+      switch (response.code){
+        case 200:
+          data.sgmSelection = response.item.sgmSelection;
+          const params = '?stationTaskId=' + stationTaskId + '&type=31&status=4';
+          return this._commons.request(Pdf.BACKEND_URL + 'listTask' + params);
+        default:
+          this._response.code = 400;
+          this._response.description = 'Bad Request | ' + JSON.stringify(response);
+          Pdf.finish(this._response);
+          break;
+      }
+    }).then(response => {
+      switch (response.code){
+        case 200:
+          tasks = response.items || [];
+          return this.getTasksByTemplateId(tasks, this._taskTemplate);
+        default:
+          this._response.code = 400;
+          this._response.description = 'Bad Request | ' + JSON.stringify(response);
+          Pdf.finish(this._response);
+          break;
+      }
+    }).then(items => {
+      items.forEach(item => {
+        data.taskListAnnexed1.push(Pdf.clearTaskByFolio(item));
+      });
+      const params = '?stationTaskId=' + stationTaskId + '&type=41&status=4';
+      return this._commons.request(Pdf.BACKEND_URL + 'listTask' + params);
+    }).then(response => {
+      switch (response.code){
+        case 200:
+          tasks = response.items || [];
+          return this.getTasksByTemplateId(tasks, this._taskTemplate);
+        default:
+          this._response.code = 400;
+          this._response.description = 'Bad Request | ' + JSON.stringify(response);
+          Pdf.finish(this._response);
+          break;
+      }
+    }).then(items => {
+      items.forEach(item => {
+        data.taskListAnnexed2.push(Pdf.clearTaskByFolio(item));
+      });
+      this.initPDFSGM(data);
+      this._response.item = {
+        date: date
+      };
+      Pdf.finish(this._response);
+    }).catch(error => {
+      this._response.code = 500;
+      this._response.description = 'Internal Server Error | ' + error;
+      Pdf.finish(this._response);
+    });
   }
 
   private static clearTaskByFolio(task: any[]): any{
@@ -224,10 +340,20 @@ export class Pdf{
     return finalTasks;
   }
 
-  private initPdfGenerator(data: any): void{
+  private initPDFSASISOPA(data: any): void{
     const { fork } = require('child_process');
     const path = require('path');
-    const process = fork(path.resolve(__dirname, 'pdf-generator.js'));
+    const process = fork(path.resolve(__dirname, 'pdf-sasisopa.js'));
+    process.on('message', (data) => {
+      console.log(data);
+    });
+    process.send(data);
+  }
+
+  private initPDFSGM(data: any): void{
+    const { fork } = require('child_process');
+    const path = require('path');
+    const process = fork(path.resolve(__dirname, 'pdf-sgm.js'));
     process.on('message', (data) => {
       console.log(data);
     });
