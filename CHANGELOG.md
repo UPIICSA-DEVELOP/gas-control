@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="1.3.0-beta.1"></a>
+# [1.3.0-beta.1](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/compare/v1.3.0-beta.0...v1.3.0-beta.1) (2019-04-08)
+
+
+### Bug Fixes
+
+* Encode URL for download files ([4ef53d1](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/4ef53d1))
+
+
+
 <a name="1.3.0-beta.0"></a>
 # [1.3.0-beta.0](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/compare/v1.2.0...v1.3.0-beta.0) (2019-04-08)
 
