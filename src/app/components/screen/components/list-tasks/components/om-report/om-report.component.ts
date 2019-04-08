@@ -285,7 +285,7 @@ export class OmReportComponent implements OnInit, OnDestroy {
       case 2:
         if (isAdd) {
           this._proceduresService.open(
-            {utils: this.utils.procedures, proceduresSelected: this.procedures}
+            {utils: this.utils.procedures, proceduresSelected: this.procedures, notVisibleChecks:false}
           ).afterClosed().subscribe(response => {
             switch (response.code) {
               case 1:

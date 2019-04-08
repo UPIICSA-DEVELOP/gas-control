@@ -235,7 +235,7 @@ export class IncidenceReportComponent implements OnInit, OnDestroy {
   public addRemoveArrayItem(isAdd: boolean, index?: number): void{
     if(isAdd){
       this._proceduresService.open(
-        {utils: this.utils.procedures, proceduresSelected: this.procedures}
+        {utils: this.utils.procedures, proceduresSelected: this.procedures, notVisibleChecks: false}
       ).afterClosed().subscribe(response=>{
         switch (response.code){
           case 1:

@@ -31,9 +31,7 @@ export class ModalProceduresComponent implements OnInit {
   }
 
   ngOnInit() {
-    if(this._data.notVisibleChecks){
-      this.seeCheckbox = this._data.notVisibleChecks;
-    }
+    this.seeCheckbox = this._data.notVisibleChecks;
     this.initArray();
   }
 
