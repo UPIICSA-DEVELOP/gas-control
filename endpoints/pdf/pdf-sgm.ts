@@ -434,7 +434,7 @@ export class PdfSGM{
   private async downloadFiles(urls: string[]): Promise<Buffer[]>{
     const files: Buffer[] = [];
     await Commons.asyncForEach(urls, async (url) => {
-      const file: any = await this._commons.downloadFile(url);
+      const file: any = await this._commons.downloadFile(encodeURI(url));
       files.push(file.body);
     });
     return files;

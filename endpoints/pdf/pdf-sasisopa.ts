@@ -828,7 +828,7 @@ class PdfSASISOPA{
   private async downloadFilesByAttached(urls: string[]): Promise<Buffer[]>{
     const buffers: Buffer[] = [];
     await Commons.asyncForEach(urls, async (url) => {
-      const response: any = await this._commons.downloadFile(url);
+      const response: any = await this._commons.downloadFile(encodeURI(url));
       buffers.push(response.body);
     });
     return buffers;
