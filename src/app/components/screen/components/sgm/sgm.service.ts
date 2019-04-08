@@ -8,6 +8,11 @@ import { Injectable } from '@angular/core';
 import {MatDialog, MatDialogRef} from '@angular/material';
 import {SgmComponent} from '@app/components/screen/components/sgm/sgm.component';
 
+export interface SgmConfig{
+  stationId: string;
+  utils: any;
+}
+
 @Injectable()
 export class SgmService {
 
@@ -15,7 +20,7 @@ export class SgmService {
     private _matDialog: MatDialog
   ) { }
 
-  public open():MatDialogRef<SgmComponent>{
-    return this._matDialog.open(SgmComponent,{panelClass: 'sgm-panel', disableClose: true});
+  public open(config?: SgmConfig):MatDialogRef<SgmComponent>{
+    return this._matDialog.open(SgmComponent,{panelClass: 'sgm-panel', disableClose: true, data: config || null});
   }
 }

@@ -8,23 +8,22 @@
   <mat-toolbar [color]="'primary'" style="justify-content: space-between;">
     Procedimientos
     <button mat-icon-button (click)="finishSelectProcedures()">
-      <mat-icon>check</mat-icon>
+      <mat-icon *ngIf="!seeCheckbox">check</mat-icon>
+      <mat-icon *ngIf="seeCheckbox">close</mat-icon>
     </button>
   </mat-toolbar>
   <mat-dialog-content>
     <div style="width: 100%" *ngFor="let procedure of procedures; let i = index">
       <div  style="display: flex; width: 100%; justify-content: space-around; align-items: center">
-        <mat-card>
+        <mat-card (click)="openFile(procedure.fileCS.thumbnail)">
           <mat-card-content>
             <div class="icon">
               <mat-icon>insert_drive_file</mat-icon>
             </div>
-            <a class="divider" [href]="procedure.fileCS.thumbnail">
-              {{procedure.name}}
-            </a>
+            <div class="divider">{{procedure.name}}</div>
           </mat-card-content>
         </mat-card>
-        <mat-checkbox [(ngModel)]="selected[i]"></mat-checkbox>
+        <mat-checkbox *ngIf="!seeCheckbox" [(ngModel)]="selected[i]"></mat-checkbox>
       </div>
     </div>
   </mat-dialog-content>

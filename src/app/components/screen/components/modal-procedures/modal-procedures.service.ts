@@ -11,6 +11,7 @@ import {ModalProceduresComponent} from '@app/components/screen/components/modal-
 export interface ProceduresConfig {
   utils: any;
   proceduresSelected: number[];
+  notVisibleChecks?: boolean;
 }
 
 @Injectable()

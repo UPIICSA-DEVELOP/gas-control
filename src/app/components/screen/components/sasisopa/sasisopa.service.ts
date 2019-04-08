@@ -8,6 +8,11 @@ import { Injectable } from '@angular/core';
 import {MatDialog, MatDialogRef} from '@angular/material';
 import {SasisopaComponent} from '@app/components/screen/components/sasisopa/sasisopa.component';
 
+export interface SasisopaConfigurations{
+  stationId: string;
+  utils: any[];
+}
+
 @Injectable()
 export class SasisopaService {
 
@@ -15,7 +20,7 @@ export class SasisopaService {
     private _matDialog: MatDialog
   ) { }
 
-  public open():MatDialogRef<SasisopaComponent>{
-    return this._matDialog.open(SasisopaComponent,{panelClass: 'sasisopa-panel', disableClose: true});
+  public open(config?: SasisopaConfigurations):MatDialogRef<SasisopaComponent>{
+    return this._matDialog.open(SasisopaComponent,{panelClass: 'sasisopa-panel', disableClose: true, data: config || null});
   }
 }

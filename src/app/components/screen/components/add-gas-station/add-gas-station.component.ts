@@ -145,7 +145,7 @@ export class AddGasStationComponent implements OnInit, OnDestroy {
     this.yearSelector = [];
     this.listExist = true;
     this.bloodGroup = Constants.bloodGroup;
-    this.frequency = Constants.Frecuency;
+    this.frequency = Constants.Frequency;
     this.priority = Constants.Level;
     this.zone = Constants.Zones;
     this.addImage = false;
@@ -1128,8 +1128,8 @@ export class AddGasStationComponent implements OnInit, OnDestroy {
 
   private initYears():void{
     const year = new Date();
-    for(let x = 0; x<50; x++){
-      this.yearSelector.push(year.getFullYear() - x);
+    for(let x = 1968; x<=year.getFullYear(); x++){
+      this.yearSelector.push(x);
     }
   }
 }

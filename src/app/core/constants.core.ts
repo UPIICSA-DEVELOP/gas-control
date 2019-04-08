@@ -79,7 +79,7 @@ export class Constants {
     'Otros'
   ];
 
-  public static Frecuency = [
+  public static Frequency = [
     'Diario',
     'Cada 3 días',
     'Semanal',
