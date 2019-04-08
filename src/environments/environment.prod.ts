@@ -3,6 +3,7 @@ export const environment = {
   url: 'https://app.inspectordenormas.com/',
   backendUrl: 'https://inspector-backend.appspot.com',
   develop: false,
+  local: false,
   VERSION: require('../../package.json').version,
   firebase: {
     apiKey: "AIzaSyDTrMvI7rKzqvylqMFWitUTO2A2YKdEuWk",

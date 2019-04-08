@@ -3,6 +3,7 @@ export const environment = {
   url: 'https://inspector-develop.maplander.com/',
   backendUrl: 'https://schedule-maplander.appspot.com',
   develop: true,
+  local: false,
   VERSION: require('../../package.json').version,
   firebase: {
     apiKey: "AIzaSyAQg07U_ZighMWpsym9Meu7qqqEhf5JP8Q",

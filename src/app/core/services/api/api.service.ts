@@ -15,6 +15,7 @@ import {Subscription} from 'rxjs/Rx';
 import {environment} from '@env/environment';
 import {SessionStorageService} from '@app/core/services/session-storage/session-storage.service';
 import {Constants} from '@app/core/constants.core';
+import {env} from 'nconf';
 
 
 @Injectable()
@@ -26,12 +27,13 @@ export class ApiService implements OnDestroy{
   private static API_VERSION = 'v1/';
   private static API_URL_COMPLETE = ApiService.API_URL + ApiService.API_PATH + ApiService.API_CHANNEL + ApiService.API_VERSION;
   private _subscriptionNetwork: Subscription;
-
+  private static PROXY_ENDPOINTS;
   constructor(
     private _http: HttpClient,
     private _networkService: NetworkService,
     private _snackBarService: SnackBarService
   ) {
+    ApiService.PROXY_ENDPOINTS = environment.local ? 'https://inspector-develop.maplander.com/' : environment.url;
     this.initNetwork();
   }
 
@@ -304,7 +306,7 @@ export class ApiService implements OnDestroy{
     params = params.append('profileImage', data.profileImage || '');
     params = params.append('profileImageThumbnail', data.profileImageThumbnail || '');
     const headers = new HttpHeaders().set('Content-Type', 'text/plain; charset=utf-8');
-    return this._http.get('https://inspector-develop.maplander.com/endpoints/v1/bc', {
+    return this._http.get(ApiService.PROXY_ENDPOINTS + 'endpoints/v1/bc', {
       headers: headers,
       params: params
     });
@@ -314,11 +316,7 @@ export class ApiService implements OnDestroy{
     let params = new HttpParams();
     params = params.append('stationId', stationId);
     params = params.append('isSGM', isSGMBoolean?'true':'false');
-    const headers = new HttpHeaders().set('Content-Type', 'text/plain; charset=utf-8');
-    return this._http.get('https://inspector-develop.maplander.com/endpoints/v1/pdf', {
-      headers: headers,
-      params: params
-    });
+    return this._http.get(ApiService.PROXY_ENDPOINTS + 'endpoints/v1/pdf', {params: params});
   }
 
   public getCompleteInfoDashboard(userId: string, refId: string, role: number, onlyOneStationId?: any): Observable<any>{
@@ -602,7 +600,7 @@ export class ApiService implements OnDestroy{
       id: stationId,
       date: date
     };
-    return this._http.post(ApiService.API_URL_COMPLETE + 'saveEvidenceDate', options);
+    return this._http.post(ApiService.API_URL_COMPLETE + 'saveEvidencesDate', options);
   }
 
   public getSgm(stationId: string):Observable<any>{
