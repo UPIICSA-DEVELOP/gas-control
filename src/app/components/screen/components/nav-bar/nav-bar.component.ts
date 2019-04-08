@@ -13,7 +13,6 @@ import {Router} from '@angular/router';
 import {LocalStorageService} from '@app/core/services/local-storage/local-storage.service';
 import {ApiLoaderService} from '@app/core/services/api/api-loader.service';
 import {Subscription} from 'rxjs/Rx';
-import {environment} from '@env/environment';
 import {SessionStorageService} from '@app/core/services/session-storage/session-storage.service';
 
 @Component({
@@ -26,8 +25,6 @@ export class NavBarComponent implements OnInit, DoCheck, OnDestroy  {
   public user: any = {};
   public load: boolean;
   public imageExist: boolean = false;
-  public version: string;
-  public showVersion: boolean;
   private _subscriptionLoader: Subscription;
   constructor(
     @Inject(DOCUMENT) private _document: Document,
@@ -41,8 +38,6 @@ export class NavBarComponent implements OnInit, DoCheck, OnDestroy  {
 
   ngOnInit() {
     this._subscriptionLoader = this._apiLoader.getProgress().subscribe(load => this.load = load);
-    this.showVersion = environment.develop;
-    this.version = environment.VERSION;
   }
 
   ngDoCheck(): void {
