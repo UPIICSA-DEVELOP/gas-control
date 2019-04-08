@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="1.3.0-beta.3"></a>
+# [1.3.0-beta.3](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/compare/v1.3.0-beta.2...v1.3.0-beta.3) (2019-04-08)
+
+
+### Bug Fixes
+
+* **SASISOPA:** solve errors in save changes ([86755a4](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/86755a4))
+* **SGM:** solve view errors in SGM modal ([e0a5425](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/e0a5425))
+* **StationProfile:** solve errors in wells fields ([cccc05a](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/cccc05a))
+
+
+
 <a name="1.3.0-beta.2"></a>
 # [1.3.0-beta.2](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/compare/v1.3.0-beta.1...v1.3.0-beta.2) (2019-04-08)
 
