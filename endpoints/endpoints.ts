@@ -98,7 +98,7 @@ export class EndPoints{
           });
           const data = {
             stationId: stationId,
-            isSGM: isSGM || false
+            isSGM: (isSGM && isSGM === 'true')
           };
           process.send(data);
         }
@@ -189,7 +189,7 @@ export class EndPoints{
           });
           const data = {
             stationId: stationId,
-            isSGM: isSGM || false
+            isSGM: (isSGM && isSGM === 'true')
           };
           process.send(data);
         }
