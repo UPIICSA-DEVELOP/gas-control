@@ -349,6 +349,23 @@ export class UtilitiesService {
     }
   }
 
+  static downloadFileByBlob(file: Blob | string, fileName: string): void{
+    try{
+      const a = document.createElement("a");
+      document.body.appendChild(a);
+      a.style.display = "none";
+      if(file instanceof Blob){
+        file = window.URL.createObjectURL(file);
+      }
+      a.href = file;
+      a.download = fileName;
+      a.click();
+      window.URL.revokeObjectURL(file);
+    }catch (e){
+      throw e;
+    }
+  }
+
   static removeFormatTime(value: any): number{
     if(value === '' || value === undefined || value === null){
       return 0;

@@ -57,7 +57,7 @@ export class ModalProceduresComponent implements OnInit {
       case 5:
       case 4:
       case 6:
-        this._pdf.open({file: url, url: HashService.set("123456$#@$^@1ERF", url), notIsUrl: false, hideOptions: true});
+        this._pdf.open({file: url, url: HashService.set("123456$#@$^@1ERF", url), notIsUrl: false, hideDownload: true});
         break;
     }
   }

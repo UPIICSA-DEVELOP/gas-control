@@ -1,6 +1,6 @@
 import {Component, Inject, OnInit} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
-import {DomSanitizer} from '@angular/platform-browser';
+import {UtilitiesService} from '@app/core/utilities/utilities.service';
 
 @Component({
   selector: 'app-pdf-visor',
@@ -9,19 +9,26 @@ import {DomSanitizer} from '@angular/platform-browser';
 })
 export class PdfVisorComponent implements OnInit {
 
-  public url: any;
+
+  public pdfSrc: any;
+  public hideDownload: boolean;
+
   constructor(
     @Inject(MAT_DIALOG_DATA) private _data: any,
-    private _dom: DomSanitizer,
     private _dialogRef: MatDialogRef<PdfVisorComponent>
   ) { }
 
   ngOnInit() {
-    if(this._data.hideOptions){
-      this.url = this._dom.bypassSecurityTrustResourceUrl(this._data.url + '#toolbar=0');
-    }else{
-      this.url = this._dom.bypassSecurityTrustResourceUrl(this._data.url);
-    }
+    this.pdfSrc = this._data.url;
+    this.hideDownload = this._data.hideDownload || false;
+  }
+
+  public downloadFile(): void{
+    UtilitiesService.downloadFileByBlob(this.pdfSrc, 'document.pdf')
+  }
+
+  public close(): void{
+    this._dialogRef.close();
   }
 
 }

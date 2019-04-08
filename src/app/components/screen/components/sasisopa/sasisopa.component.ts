@@ -134,7 +134,7 @@ export class SasisopaComponent implements OnInit, OnDestroy {
     }else{
       url = this._data.utils.sasisopaTemplates[0].fileCS.thumbnail;
     }
-    this._pdf.open({file: url, url: HashService.set("123456$#@$^@1ERF", url), notIsUrl: false, hideOptions: true})
+    this._pdf.open({file: url, url: HashService.set("123456$#@$^@1ERF", url), notIsUrl: false, hideDownload: true})
   }
 
   public addRemoveBrigadeElem(isAdd: boolean, index?: number): void{

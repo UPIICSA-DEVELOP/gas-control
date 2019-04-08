@@ -48,6 +48,7 @@ import {ImageVisorService} from '@app/core/components/image-visor/image-visor.se
 import {ImageVisorComponent} from '@app/core/components/image-visor/image-visor.component';
 import {SgmService} from '@app/components/screen/components/sgm/sgm.service';
 import {HashService} from '@app/core/utilities/hash.service';
+import {PdfViewerModule} from 'ng2-pdf-viewer';
 
 @NgModule({
   imports: [
@@ -59,6 +60,7 @@ import {HashService} from '@app/core/utilities/hash.service';
     FormsModule,
     ReactiveFormsModule,
     ImageCropperModule,
+    PdfViewerModule,
     AmazingTimePickerModule,
     AgmCoreModule.forRoot({
       apiKey: Constants.GoogleApiKey,
