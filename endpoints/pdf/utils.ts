@@ -79,7 +79,7 @@ export interface BCData{
   countryCode: string,
   phone: string,
   email: string,
-  companyName: string,
+  company: string,
   industryCode: number | string,
   website: string,
   urlLogo: string | 'https://www.googleapis.com/download/storage/v1/b/businesscardgcs/o/alex4%2F2019-02-25-193347461favicon.png?generation=1551123227641233&alt=media',

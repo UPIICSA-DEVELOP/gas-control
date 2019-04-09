@@ -18,7 +18,7 @@ export class BC{
       countryCode: data.countryCode || '',
       whatsApp: data.phone || '',
       email: data.email || '',
-      companyName: data.companyName || '',
+      companyName: data.company || '',
       industryCode: data.industryCode || '',
       website: data.website || '',
       urlLogo: data.urlLogo || 'https://www.googleapis.com/download/storage/v1/b/businesscardgcs/o/alex4%2F2019-02-25-193347461favicon.png?generation=1551123227641233&alt=media',
