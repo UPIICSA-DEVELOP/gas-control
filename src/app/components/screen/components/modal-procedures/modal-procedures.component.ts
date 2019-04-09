@@ -50,14 +50,14 @@ export class ModalProceduresComponent implements OnInit {
     switch (user.role){
       case 1:
       case 2:
-      case 3:
       case 7:
-        this._pdf.open({file: url, url: HashService.set("123456$#@$^@1ERF", url), notIsUrl: false});
+        this._pdf.open({urlOrFile: HashService.set("123456$#@$^@1ERF", url)});
         break;
-      case 5:
+      case 3:
       case 4:
+      case 5:
       case 6:
-        this._pdf.open({file: url, url: HashService.set("123456$#@$^@1ERF", url), notIsUrl: false, hideDownload: true});
+        this._pdf.open({urlOrFile: HashService.set("123456$#@$^@1ERF", url), hideDownload: true});
         break;
     }
   }
