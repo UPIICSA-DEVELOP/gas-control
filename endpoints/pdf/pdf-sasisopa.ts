@@ -67,6 +67,11 @@ class PdfSASISOPA{
       return this.createPDF({option: AttachedType.Attached_1});  // Attached 1
     }).then(buffer => {
       tmp_buffer_file.push(buffer);
+      return this.getProcedures();
+    }).then(buffers => {
+      buffers.forEach(buffer => {
+        tmp_buffer_file.push(buffer);
+      });
       return this._commons.joinPDF(tmp_buffer_file);
     }).then(buffer => {
       buffers.push(buffer);
@@ -846,6 +851,15 @@ class PdfSASISOPA{
       urls.push(file.file.thumbnail);
     });
     return urls;
+  }
+
+
+  private async getProcedures(): Promise<Buffer[]>{
+    const urls: string[] = [];
+    this._proceduresList.forEach(procedure => {
+      urls.push(procedure.fileCS.thumbnail);
+    });
+    return await this.downloadFilesByAttached(urls);
   }
 
   private async createEvidenceByTasks(): Promise<Buffer[]>{
