@@ -312,11 +312,18 @@ export class ApiService implements OnDestroy{
     });
   }
 
-  public getFullPDF(stationId: string, isSGMBoolean: boolean): Observable<any>{
+  public getFullPDF(stationId: string, isSGM: boolean): Observable<any>{
     let params = new HttpParams();
     params = params.append('stationId', stationId);
-    params = params.append('isSGM', isSGMBoolean?'true':'false');
+    params = params.append('isSGM', isSGM?'true':'false');
     return this._http.get(ApiService.PROXY_ENDPOINTS + 'endpoints/v1/pdf', {params: params});
+  }
+
+  public joinPDF(stationId: string, isSGM: boolean): Observable<any>{
+    let params = new HttpParams();
+    params = params.append('stationId', stationId);
+    params = params.append('isSGM', isSGM?'true':'false');
+    return this._http.get(ApiService.PROXY_ENDPOINTS + 'endpoints/v1/joinPDF', {responseType: 'blob' as 'json', params: params});
   }
 
   public getCompleteInfoDashboard(userId: string, refId: string, role: number, onlyOneStationId?: any): Observable<any>{

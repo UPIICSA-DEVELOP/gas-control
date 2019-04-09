@@ -4,9 +4,11 @@
  *  Proprietary and confidential
  */
 
-import {AfterViewInit, Component, ElementRef, Inject, Input, OnInit, PLATFORM_ID, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, ElementRef, Inject, Input, OnDestroy, OnInit, PLATFORM_ID, ViewChild} from '@angular/core';
 import {isPlatformBrowser} from '@angular/common';
 import { Chart } from 'chart.js';
+import {SharedService, SharedTypeNotification} from '@app/core/services/shared/shared.service';
+import {Subscription} from 'rxjs/Rx';
 
 
 @Component({
@@ -14,7 +16,7 @@ import { Chart } from 'chart.js';
   templateUrl: './station-status.component.html',
   styleUrls: ['./station-status.component.scss']
 })
-export class StationStatusComponent implements OnInit, AfterViewInit{
+export class StationStatusComponent implements OnInit, AfterViewInit, OnDestroy{
   private _station: any;
   @Input() set station(stationObj: any){
     if(stationObj){
@@ -30,20 +32,34 @@ export class StationStatusComponent implements OnInit, AfterViewInit{
   public data: any;
   public chart: any;
   private _chartConfig: any;
+  private _subscriptionShared: Subscription;
   constructor(
-    @Inject(PLATFORM_ID) private _platformId
+    @Inject(PLATFORM_ID) private _platformId,
+    private _sharedService: SharedService
   ){
     this.showGraphic = isPlatformBrowser(this._platformId);
   }
 
   ngOnInit(): void {
-
+    this._subscriptionShared = this._sharedService.getNotifications().subscribe(response=>{
+      switch (response.type){
+        case SharedTypeNotification.FinishEditTask:
+          this._station.doneTasks = response.value.doneTasks;
+          this._station.progress = response.value.progress;
+          this.createConfigGraphic(this._station);
+          break;
+      }
+    });
   }
 
   ngAfterViewInit():void{
     if(this._station){
       this.createConfigGraphic(this._station);
     }
+  }
+
+  ngOnDestroy(): void{
+    this._subscriptionShared.unsubscribe();
   }
 
   private createConfigGraphic(station: any){
