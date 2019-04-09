@@ -85,7 +85,20 @@ export class SgmComponent implements OnInit {
   }
 
   public seeFile(url: any):void{
-    this._pdf.open({file: url, url: HashService.set("123456$#@$^@1ERF", url), notIsUrl: false});
+    const user = LocalStorageService.getItem(Constants.UserInSession);
+    switch (user.role){
+      case 1:
+      case 2:
+      case 7:
+        this._pdf.open({urlOrFile: HashService.set("123456$#@$^@1ERF", url)});
+        break;
+      case 3:
+      case 4:
+      case 5:
+      case 6:
+        this._pdf.open({urlOrFile: HashService.set("123456$#@$^@1ERF", url), hideDownload: true});
+        break;
+    }
   }
 
   public saveSgmSelection():void{
@@ -242,13 +255,13 @@ export class SgmComponent implements OnInit {
         case 1:
         case 2:
         case 7:
-          this._pdf.open({file: response, url: HashService.set("123456$#@$^@1ERF", response), notIsUrl: true });
+          this._pdf.open({urlOrFile: response});
           break;
         case 3:
         case 4:
         case 5:
         case 6:
-          this._pdf.open({file: response, url: HashService.set("123456$#@$^@1ERF", response), notIsUrl: true, hideDownload: true });
+          this._pdf.open({urlOrFile: response, hideDownload: true });
           break;
       }
     });
