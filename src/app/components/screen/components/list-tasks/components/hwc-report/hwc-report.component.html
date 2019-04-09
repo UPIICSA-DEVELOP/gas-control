@@ -63,7 +63,7 @@
           <div *ngIf="editable; then loadManifest else seeManifest"></div>
           <ng-template #seeManifest>
             <div style="background-color: #707070; color: #FFFFFF; border-radius: 4px; cursor: pointer; padding: 2px 4px;">
-              <a *ngIf="hwcReport && hwcReport.fileCS" style="text-decoration: none; color: #FFFFFF;" [href]="hwcReport.fileCS.thumbnail">MANIFIESTO</a>
+              <div *ngIf="hwcReport && hwcReport.fileCS" style="text-decoration: none; color: #FFFFFF;" (click)="seeReport()">MANIFIESTO</div>
               <span *ngIf="!hwcReport || !hwcReport.fileCS">MANIFIESTO</span>
             </div>
           </ng-template>

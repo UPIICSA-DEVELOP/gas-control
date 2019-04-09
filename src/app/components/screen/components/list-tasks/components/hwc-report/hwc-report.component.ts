@@ -18,6 +18,8 @@ import {Subscription} from 'rxjs/Rx';
 import {Constants} from '@app/core/constants.core';
 import {LocalStorageService} from '@app/core/services/local-storage/local-storage.service';
 import {UploadFileResponse} from '@app/core/components/upload-file/upload-file.component';
+import {PdfVisorService} from '@app/core/components/pdf-visor/pdf-visor.service';
+import {HashService} from '@app/core/utilities/hash.service';
 
 @Component({
   selector: 'app-hwc-report',
@@ -59,6 +61,7 @@ export class HwcReportComponent implements OnInit, OnDestroy {
   private _subscriptionLoader: Subscription;
   private _subscriptionShared: Subscription;
   private _loads: boolean[];
+  private _files: any;
   constructor(
     private _api: ApiService,
     private _apiLoader: ApiLoaderService,
@@ -66,7 +69,8 @@ export class HwcReportComponent implements OnInit, OnDestroy {
     private _uploadFile: UploadFileService,
     private _signatureService: SignaturePadService,
     private _snackBarService: SnackBarService,
-    private _sharedService: SharedService
+    private _sharedService: SharedService,
+    private _pdf: PdfVisorService
   ) {
     this.editable = false;
     this._loads = [false, false];
@@ -210,6 +214,7 @@ export class HwcReportComponent implements OnInit, OnDestroy {
   public loadFile(ev: UploadFileResponse):void {
     this.file = true;
     this._loads[0] = true;
+    this._files = ev.file;
     this._file = new FormData();
     this._file.append('path','Taks-'+this._taskId);
     this._file.append('fileName', 'manifest-'+this._taskId+new Date().getTime()+'.pdf');
@@ -311,6 +316,22 @@ export class HwcReportComponent implements OnInit, OnDestroy {
         }
       })
     }
+  }
 
+  public seeReport(): void{
+    const user = LocalStorageService.getItem(Constants.UserInSession);
+    switch (user.role){
+      case 1:
+      case 2:
+      case 4:
+      case 7:
+        this._pdf.open({urlOrFile: this._loads[0] ? this._files : HashService.set('123456$#@$^@1ERF',this.hwcReport.fileCS.thumbnail)});
+        break;
+      case 3:
+      case 5:
+      case 6:
+        this._pdf.open({urlOrFile: HashService.set('123456$#@$^@1ERF',this.hwcReport.fileCS.thumbnail)});
+        break;
+    }
   }
 }
