@@ -16,6 +16,7 @@ import {HashService} from '@app/core/utilities/hash.service';
 import {SgmSelection} from '@app/core/interfaces/interfaces';
 import {UtilitiesService} from '@app/core/utilities/utilities.service';
 import {Constants} from '@app/core/constants.core';
+import {LocalStorageService} from '@app/core/services/local-storage/local-storage.service';
 
 @Component({
   selector: 'app-sgm',
@@ -121,7 +122,7 @@ export class SgmComponent implements OnInit {
             this.generate = true;
             this.dateGeneration = UtilitiesService.convertDate(response.item.fullSgm.date);
             const today = UtilitiesService.createPersonalTimeStamp(new Date());
-            if(response.item.date < today.timeStamp){
+          if(response.item.fullSgm.date <= today.timeStamp){
               this.isAvailable = true;
             }
           }
@@ -207,7 +208,7 @@ export class SgmComponent implements OnInit {
             this.generate = true;
             this.dateGeneration = UtilitiesService.convertDate(response.item.date);
             const today = UtilitiesService.createPersonalTimeStamp(new Date);
-            if(response.item.date < today.timeStamp){
+            if(response.item.date <= today.timeStamp){
               this.isAvailable = true;
             }
             break;
@@ -234,4 +235,22 @@ export class SgmComponent implements OnInit {
     return newList;
   }
 
+    public seeSGM(): void{
+    this._api.joinPDF(this.station.id, true).subscribe(response => {
+      const user = LocalStorageService.getItem(Constants.UserInSession);
+      switch (user.role){
+        case 1:
+        case 2:
+        case 7:
+          this._pdf.open({file: response, url: HashService.set("123456$#@$^@1ERF", response), notIsUrl: true });
+          break;
+        case 3:
+        case 4:
+        case 5:
+        case 6:
+          this._pdf.open({file: response, url: HashService.set("123456$#@$^@1ERF", response), notIsUrl: true, hideDownload: true });
+          break;
+      }
+    });
+  }
 }

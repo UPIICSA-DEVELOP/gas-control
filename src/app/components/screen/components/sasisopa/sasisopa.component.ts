@@ -19,6 +19,7 @@ import {HashService} from '@app/core/utilities/hash.service';
 import {UploadFileResponse} from '@app/core/components/upload-file/upload-file.component';
 import {DialogService} from '@app/core/components/dialog/dialog.service';
 import {SnackBarService} from '@app/core/services/snackbar/snackbar.service';
+import {LocalStorageService} from '@app/core/services/local-storage/local-storage.service';
 
 @Component({
   selector: 'app-sasisopa',
@@ -355,7 +356,7 @@ export class SasisopaComponent implements OnInit, OnDestroy {
             this.generate = true;
             this.dateGeneration = UtilitiesService.convertDate(response.item.fullSasisopa.date);
             const today = UtilitiesService.createPersonalTimeStamp(new Date());
-            if(response.item.date < today.timeStamp){
+            if(response.item.fullSasisopa.date <= today.timeStamp){
               this.isAvailable = true;
             }
           }
@@ -458,7 +459,7 @@ export class SasisopaComponent implements OnInit, OnDestroy {
             this.generate = true;
             this.dateGeneration = UtilitiesService.convertDate(response.item.date);
             const today = UtilitiesService.createPersonalTimeStamp(new Date);
-            if(response.item.date < today.timeStamp){
+            if(response.item.date <= today.timeStamp){
               this.isAvailable = true;
             }
             break;
@@ -468,5 +469,24 @@ export class SasisopaComponent implements OnInit, OnDestroy {
         }
       });
     }
+  }
+
+  public seeSasisopa(): void{
+    this._api.joinPDF(this.station.id, false).subscribe(response => {
+      const user = LocalStorageService.getItem(Constants.UserInSession);
+      switch (user.role){
+        case 1:
+        case 2:
+        case 7:
+          this._pdf.open({file: response, url: HashService.set("123456$#@$^@1ERF", response), notIsUrl: true });
+          break;
+        case 3:
+        case 4:
+        case 5:
+        case 6:
+          this._pdf.open({file: response, url: HashService.set("123456$#@$^@1ERF", response), notIsUrl: true, hideDownload: true });
+          break;
+      }
+    });
   }
 }

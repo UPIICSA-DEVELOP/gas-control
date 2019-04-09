@@ -30,7 +30,7 @@
           <ng-template #buttonSSP>
             <div style="width: 45%; display: flex; justify-content: space-around; align-items: center">
               <button style="height: 36px" mat-flat-button (click)="generateSasisopa()" [color]="'primary'">GENERAR</button>
-              <button style="height: 36px" mat-flat-button [color]="'primary'" [disabled]="!isAvailable">VER</button>
+              <button style="height: 36px" mat-flat-button [color]="'primary'" [disabled]="!isAvailable" (click)="seeSasisopa()">VER</button>
             </div>
           </ng-template>
           <ng-template #card>

@@ -32,7 +32,7 @@
           <ng-template #buttonsSGM>
             <div class="fuel-type">
               <button style="height: 36px" mat-flat-button (click)="generateSgm()" [color]="'primary'">GENERAR</button>
-              <button style="height: 36px" mat-flat-button [color]="'primary'" [disabled]="!isAvailable">VER</button>
+              <button style="height: 36px" mat-flat-button [color]="'primary'" [disabled]="!isAvailable" (click)="seeSGM()">VER</button>
             </div>
           </ng-template>
           <div class="date-available" *ngIf="generate && !isAvailable && dateGeneration.length !== 0">Documento disponible hasta el {{dateGeneration[0]}} {{dateGeneration[1]}} {{dateGeneration[2]}}</div>
