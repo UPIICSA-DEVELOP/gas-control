@@ -2,6 +2,35 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="1.3.0-beta.4"></a>
+# [1.3.0-beta.4](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/compare/v1.3.0-beta.3...v1.3.0-beta.4) (2019-04-09)
+
+
+### Bug Fixes
+
+* **Admin:** add footer ([314107c](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/314107c))
+* **Admin:** add footer class ([0796eae](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/0796eae))
+* **Bc:** Solving company name ([8c36106](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/8c36106))
+* **Benzene Study Load:** add visor to documents local and url ([b957071](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/b957071))
+* **Documentation:** add visor to documents ([ea1eb4b](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/ea1eb4b))
+* **joinPDF:** prepare pdf to see ([5ec323e](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/5ec323e))
+* **PdfVisor:** change implementation to view document ([252298c](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/252298c))
+* **Procedures:** change rules to download files ([96e5d7c](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/96e5d7c))
+* **SASISOPA:** add view pdf and text errors ([dba5df2](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/dba5df2))
+* **sgm:** spell correction ([654ce5e](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/654ce5e))
+* **SGM:** solve error in see sgm document ([10c5bb6](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/10c5bb6))
+* **Static Pages:** validate redirect with user role or redirect to login ([0f6e42d](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/0f6e42d))
+* **StationStatus:** solve errors in update chart ([5360b63](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/5360b63))
+* **Tasks:** add pdf viewer to manifests ([452e618](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/452e618))
+
+
+### Features
+
+* **index:** Adding Google Analytics ([3fd83cd](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/3fd83cd))
+* **PdfSASISOPA:** Adding procedures to attached 1 ([6f935fb](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/6f935fb))
+
+
+
 <a name="1.3.0-beta.3"></a>
 # [1.3.0-beta.3](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/compare/v1.3.0-beta.2...v1.3.0-beta.3) (2019-04-08)
 
