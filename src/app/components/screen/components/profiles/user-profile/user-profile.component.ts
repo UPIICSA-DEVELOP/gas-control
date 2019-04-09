@@ -24,6 +24,7 @@ import {Person, PersonInformation} from '@app/core/interfaces/interfaces';
 import {Subscription} from 'rxjs/Rx';
 import {ShareService} from '@app/core/components/share/share.service';
 import {AuthService} from '@app/core/services/auth/auth.service';
+import {HashService} from '@app/core/utilities/hash.service';
 
 @Component({
   selector: 'app-user-profile',
@@ -582,7 +583,7 @@ export class UserProfileComponent implements OnInit, OnDestroy {
   }
 
   public openStudy():void{
-    this._pdfVisor.open({url: this.file, file: this.file, notIsUrl: this.newFile});
+    this._pdfVisor.open({urlOrFile: this.newFile ? this.file: HashService.set("123456$#@$^@1ERF", this.file), hideDownload: false});
   }
 
   public validateEmailExist():void{
