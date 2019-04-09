@@ -9,6 +9,7 @@ import {animate, keyframes, query, stagger, style, transition, trigger} from '@a
 import {ApiService} from '@app/core/services/api/api.service';
 import {LocalStorageService} from '@app/core/services/local-storage/local-storage.service';
 import {Constants} from '@app/core/constants.core';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-terms',
@@ -43,7 +44,8 @@ export class TermsComponent implements OnInit {
   public company: string;
   public address: string;
   constructor(
-    private _api: ApiService
+    private _api: ApiService,
+    private _router: Router
   ) {
     this.user = '';
     this.company = '';
@@ -52,6 +54,30 @@ export class TermsComponent implements OnInit {
 
   ngOnInit() {
     this.getCompanyName();
+  }
+
+  public redirectTo():void{
+    const user = LocalStorageService.getItem(Constants.UserInSession);
+    if(user){
+      switch(user.role){
+        case 1:
+        case 2:
+        case 3:
+        case 4:
+        case 5:
+        case 6:
+          this._router.navigate(['/home']).then();
+          break;
+        case 7:
+          this._router.navigate(['/admin']).then();
+          break;
+        default:
+          this._router.navigate(['/login']).then();
+          break
+      }
+    }else{
+      this._router.navigate(['/login']).then();
+    }
   }
 
   private getCompanyName():void{

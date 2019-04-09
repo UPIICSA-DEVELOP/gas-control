@@ -5,15 +5,13 @@
  */
 
 import { Injectable } from '@angular/core';
-import {MatDialog, MatDialogRef} from '@angular/material';
+import {MatDialog} from '@angular/material';
 import {PdfVisorComponent} from '@app/core/components/pdf-visor/pdf-visor.component';
 import {ApiService} from '@app/core/services/api/api.service';
 
 
 export interface PdfVisorOptions {
-  url: string,
-  file?: File,
-  notIsUrl?: boolean
+  urlOrFile: any,
   hideDownload?: boolean
 }
 
@@ -26,21 +24,24 @@ export class PdfVisorService {
   ) { }
 
   public open(options: PdfVisorOptions): void{
-    if(options.notIsUrl){
-      if(!options.file) {
-        console.error(new Error('File is required'));
-        return;
+    if(options.urlOrFile instanceof Blob || typeof options.urlOrFile === 'string'){
+      let file = null;
+      if(typeof options.urlOrFile === 'string'){
+        this._api.getFile(options.urlOrFile.toString()).subscribe(response => {
+          file = response;
+          file = window.URL.createObjectURL(new Blob([file], {type: 'application/pdf'}));
+          this._dialog.open(PdfVisorComponent,{panelClass:'pdf-visor-panel', data:{url: file, hideDownload: options.hideDownload}});
+        });
+      }else{
+        file = window.URL.createObjectURL(new Blob([options.urlOrFile], {type: 'application/pdf'}));
+        this._dialog.open(PdfVisorComponent,{panelClass:'pdf-visor-panel', data:{url: file, hideDownload: options.hideDownload}});
       }
+    }else if (options.urlOrFile instanceof File){
       const reader = new FileReader();
-      reader.readAsDataURL(options.file);
+      reader.readAsDataURL(options.urlOrFile);
       reader.onload = () => {
-        this._dialog.open(PdfVisorComponent,{panelClass:'pdf-visor-panel', data:reader.result});
+        this._dialog.open(PdfVisorComponent,{panelClass:'pdf-visor-panel', data:{url: reader.result, hideDownload: options.hideDownload}});
       };
-    }else{
-      this._api.getFile(options.url).subscribe(response => {
-        const url = window.URL.createObjectURL(new Blob([response], {type: 'application/pdf'}));
-        this._dialog.open(PdfVisorComponent,{panelClass:'pdf-visor-panel', data:{url: url, hideDownload: options.hideDownload}});
-      });
     }
   }
 }

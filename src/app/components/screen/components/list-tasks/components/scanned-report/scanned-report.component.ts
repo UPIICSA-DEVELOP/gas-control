@@ -17,6 +17,8 @@ import {Subscription} from 'rxjs/Rx';
 import {UploadFileResponse} from '@app/core/components/upload-file/upload-file.component';
 import {Constants} from '@app/core/constants.core';
 import {LocalStorageService} from '@app/core/services/local-storage/local-storage.service';
+import {PdfVisorService} from '@app/core/components/pdf-visor/pdf-visor.service';
+import {HashService} from '@app/core/utilities/hash.service';
 
 @Component({
   selector: 'app-scanned-report',
@@ -54,13 +56,15 @@ export class ScannedReportComponent implements OnInit, OnDestroy {
   private _subscriptionShared: Subscription;
   private _copyTasks: ScannedReport;
   private _hwgElement: HWGReport;
+  private _file: any;
   constructor(
     private _api: ApiService,
     private _apiLoader: ApiLoaderService,
     private _uploadFile: UploadFileService,
     private _signatureService: SignaturePadService,
     private _sharedService: SharedService,
-    private _snackBarService: SnackBarService
+    private _snackBarService: SnackBarService,
+    private _pdf: PdfVisorService
   ) {
     this.startValidate = false;
     this.date = [];
@@ -174,6 +178,7 @@ export class ScannedReportComponent implements OnInit, OnDestroy {
     this.error = false;
     this._loads[0] = true;
     this.file = true;
+    this._file = ev.file;
     this._evidence = new FormData();
     this._evidence.append('path', 'Task-'+this._taskId);
     this._evidence.append('fileName', 'manifest-'+this._taskId+new Date().getTime()+'.pdf');
@@ -322,5 +327,22 @@ export class ScannedReportComponent implements OnInit, OnDestroy {
 
   public startValidateForm():void{
     this.startValidate = true;
+  }
+
+  public seeReport(): void{
+    const user = LocalStorageService.getItem(Constants.UserInSession);
+    switch (user.role){
+      case 1:
+      case 2:
+      case 4:
+      case 7:
+        this._pdf.open({urlOrFile: this._loads[0] ? this._file : HashService.set('123456$#@$^@1ERF',this.scannedReport.fileCS.thumbnail)});
+        break;
+      case 3:
+      case 5:
+      case 6:
+        this._pdf.open({urlOrFile: HashService.set('123456$#@$^@1ERF',this.scannedReport.fileCS.thumbnail)});
+        break;
+    }
   }
 }

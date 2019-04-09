@@ -6,6 +6,9 @@
 
 import { Component, OnInit } from '@angular/core';
 import {animate, keyframes, query, stagger, style, transition, trigger} from '@angular/animations';
+import {Router} from '@angular/router';
+import {LocalStorageService} from '@app/core/services/local-storage/local-storage.service';
+import {Constants} from '@app/core/constants.core';
 
 @Component({
   selector: 'app-privacy',
@@ -37,9 +40,33 @@ import {animate, keyframes, query, stagger, style, transition, trigger} from '@a
 })
 export class PrivacyComponent implements OnInit {
 
-  constructor() { }
+  constructor(
+    private _router: Router) { }
 
   ngOnInit() {
   }
 
+  public redirectTo():void{
+    const user = LocalStorageService.getItem(Constants.UserInSession);
+    if(user){
+      switch(user.role){
+        case 1:
+        case 2:
+        case 3:
+        case 4:
+        case 5:
+        case 6:
+          this._router.navigate(['/home']).then();
+          break;
+        case 7:
+          this._router.navigate(['/admin']).then();
+          break;
+        default:
+          this._router.navigate(['/login']).then();
+          break
+      }
+    }else{
+      this._router.navigate(['/login']).then();
+    }
+  }
 }

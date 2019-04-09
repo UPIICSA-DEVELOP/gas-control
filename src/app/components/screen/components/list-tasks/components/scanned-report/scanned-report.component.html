@@ -19,12 +19,12 @@
     <div *ngIf="editable; then changeManifest else seeManifest"></div>
     <ng-template #seeManifest>
       <mat-card *ngIf="scannedReport && scannedReport.fileCS" style="width: 95%; margin: 12px 0;">
-        <a style="text-decoration: none; color: #707070;" [href]="scannedReport.fileCS.thumbnail">
+        <div style="text-decoration: none; color: #707070;" (click)="seeReport()">
           <mat-card-content style="display: flex; align-items: center; font-weight: 600; color: #707070; padding: 0; margin: 0;">
             <mat-icon style="margin: 0 12px">insert_drive_file</mat-icon>
             <div>Manifiesto</div>
           </mat-card-content>
-        </a>
+        </div>
       </mat-card>
       <mat-card *ngIf="!scannedReport || !scannedReport.fileCS;" style="width: 95%; margin: 12px 0;">
         <mat-card-content style="display: flex; align-items: center; font-weight: 600; color: #707070; padding: 0; margin: 0;">

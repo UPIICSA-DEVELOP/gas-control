@@ -1033,20 +1033,9 @@ export class AddGasStationComponent implements OnInit, OnDestroy {
   }
 
   public openStudy(isManager: boolean):void{
-    let options: PdfVisorOptions;
-    if (!isManager){
-      options={
-        url: this.file,
-        file: this.file,
-        notIsUrl: this.newFile
-      }
-    }else{
-      options={
-        url: this.fileTwo,
-        file: this.fileTwo,
-        notIsUrl: this.newFileTwo
-      }
-    }
+    let options: PdfVisorOptions = {
+      urlOrFile: (!isManager) ? this.file : this.fileTwo
+    };
     this._pdfVisor.open(options);
   }
 

@@ -14,6 +14,10 @@ import {ApiLoaderService} from '@app/core/services/api/api-loader.service';
 import {SnackBarService} from '@app/core/services/snackbar/snackbar.service';
 import {Document} from  '@app/core/interfaces/interfaces'
 import {Subscription} from 'rxjs/Rx';
+import {PdfVisorService} from '@app/core/components/pdf-visor/pdf-visor.service';
+import {LocalStorageService} from '@app/core/services/local-storage/local-storage.service';
+import {Constants} from '@app/core/constants.core';
+import {HashService} from '@app/core/utilities/hash.service';
 
 @Component({
   selector: 'app-documentation',
@@ -58,7 +62,8 @@ export class DocumentationComponent implements OnInit, OnDestroy {
     private _activateRoute: ActivatedRoute,
     private _api: ApiService,
     private _apiLoader: ApiLoaderService,
-    private _snackBarService: SnackBarService
+    private _snackBarService: SnackBarService,
+    private _pdf: PdfVisorService
   ) {
     this.isASEA = true;
     this.docsAsea=[undefined,undefined,undefined,undefined,undefined,undefined,undefined,undefined,undefined,undefined,undefined,undefined,undefined,undefined,undefined,undefined,undefined];
@@ -224,5 +229,23 @@ export class DocumentationComponent implements OnInit, OnDestroy {
 
   public closeDocumentation():void{
     this._router.navigate(['/home/profile/gas-station'], {queryParams:{id: this.stationId}}).then();
+  }
+
+  public openPdf(index: number, isAsea: boolean): void{
+    const user = LocalStorageService.getItem(Constants.UserInSession);
+    const url = isAsea ? this.docsAsea[index].file.thumbnail : this.docsCre[index].file.thumbnail;
+    switch (user.role){
+      case 1:
+      case 2:
+      case 4:
+      case 7:
+        this._pdf.open({urlOrFile:  HashService.set("123456$#@$^@1ERF", url)});
+        break;
+      case 3:
+      case 5:
+      case 6:
+        this._pdf.open({urlOrFile: HashService.set("123456$#@$^@1ERF", url), hideDownload: true});
+        break;
+    }
   }
 }

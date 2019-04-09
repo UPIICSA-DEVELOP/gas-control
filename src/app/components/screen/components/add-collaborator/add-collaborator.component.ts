@@ -345,7 +345,7 @@ export class AddCollaboratorComponent implements OnInit, OnDestroy {
     })
   }
   public openStudy():void{
-    this._pdfVisor.open({url: this.file, file: this.file, notIsUrl: true});
+    this._pdfVisor.open({urlOrFile: this.file});
   }
 
   private createBCard(person: any, personInformation: any):void{
