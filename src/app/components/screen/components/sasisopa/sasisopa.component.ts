@@ -114,19 +114,17 @@ export class SasisopaComponent implements OnInit, OnDestroy {
         ).afterClosed().subscribe(response =>{
           switch(response.code){
             case 1:
-              this.initFormArray();
-              this.elementInView = 0;
-              break;
-            default:
-              this.elementInView = 0;
               this._change = false;
+              this.initFormArray();
+              this.getSasisopa();
+              this.elementInView = 0;
               break;
           }
         });
       }else{
         this.elementInView = 0;
+        this.getSasisopa();
       }
-      this.getSasisopa();
     }else{
       this._matDialogRef.close();
     }
@@ -459,6 +457,9 @@ export class SasisopaComponent implements OnInit, OnDestroy {
   private initFormArray():void {
     for(let i = 0; i < 12; i++){
       this._forms.push(undefined);
+    }
+    for(let i = 0; i < 12; i++){
+      this.docFile[i] = null;
     }
   }
 
