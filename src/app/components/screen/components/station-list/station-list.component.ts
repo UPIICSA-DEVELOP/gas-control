@@ -166,7 +166,7 @@ export class StationListComponent implements OnInit, DoCheck {
       this.stationList = this.stations;
     }else{
       for(let x=0; x < this.stations.length; x++){
-        if(UtilitiesService.removeDiacritics(this.stations[x].managerName).toLowerCase().includes(text) || this.stations[x].email.toLowerCase().includes(text) || this.stations[x].phoneNumber.includes(text) || UtilitiesService.removeDiacritics(this.stations[x].name).toLowerCase().includes(text)){
+        if(this.stations[x].email.toLowerCase().includes(text) || this.stations[x].phoneNumber.includes(text) || UtilitiesService.removeDiacritics(this.stations[x].name).toLowerCase().includes(text)){
           newArray.push(this.stations[x]);
         }else {
           for (let i= 0; i<this.groupIcon.groupIcons.length; i++){

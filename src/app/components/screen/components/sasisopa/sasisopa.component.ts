@@ -20,6 +20,7 @@ import {UploadFileResponse} from '@app/core/components/upload-file/upload-file.c
 import {DialogService} from '@app/core/components/dialog/dialog.service';
 import {SnackBarService} from '@app/core/services/snackbar/snackbar.service';
 import {LocalStorageService} from '@app/core/services/local-storage/local-storage.service';
+import {environment} from '@env/environment';
 
 @Component({
   selector: 'app-sasisopa',
@@ -42,10 +43,11 @@ export class SasisopaComponent implements OnInit, OnDestroy {
   public frequency: string[];
   public generate: boolean;
   public isAvailable: boolean;
-  private dateGeneration: string[];
   public sasisopaDocs: any[];
   public docFile: any[];
   public errors: boolean[];
+  public dateGeneration: string[];
+  public isDevelop: boolean;
   private _subscriptionLoader: Subscription;
   private _token: string;
   private _change: boolean;
@@ -62,6 +64,7 @@ export class SasisopaComponent implements OnInit, OnDestroy {
     private _dialogService: DialogService,
     private _snackBarService: SnackBarService
   ) {
+    this.isDevelop = environment.develop;
     this.docFile = [null, null, null, null, null, null, null, null, null, null, null, null];
     this.sasisopaDocs = [null, null, null, null, null, null, null, null, null, null, null, null];
     this.errors = [false, false, false, false,  false, false, false, false];
@@ -114,19 +117,17 @@ export class SasisopaComponent implements OnInit, OnDestroy {
         ).afterClosed().subscribe(response =>{
           switch(response.code){
             case 1:
-              this.initFormArray();
-              this.elementInView = 0;
-              break;
-            default:
-              this.elementInView = 0;
               this._change = false;
+              this.initFormArray();
+              this.getSasisopa();
+              this.elementInView = 0;
               break;
           }
         });
       }else{
         this.elementInView = 0;
+        this.getSasisopa();
       }
-      this.getSasisopa();
     }else{
       this._matDialogRef.close();
     }
@@ -459,6 +460,9 @@ export class SasisopaComponent implements OnInit, OnDestroy {
   private initFormArray():void {
     for(let i = 0; i < 12; i++){
       this._forms.push(undefined);
+    }
+    for(let i = 0; i < 12; i++){
+      this.docFile[i] = null;
     }
   }
 

@@ -28,9 +28,10 @@
           </mat-card>
           <div *ngIf="generate; then buttonSSP else card"></div>
           <ng-template #buttonSSP>
-            <div style="width: 45%; display: flex; justify-content: space-around; align-items: center">
+            <div style="width: 50%; display: flex; justify-content: space-around; align-items: center">
               <button style="height: 36px" mat-flat-button (click)="generateSasisopa()" [color]="'primary'">GENERAR</button>
               <button style="height: 36px" mat-flat-button [color]="'primary'" [disabled]="!isAvailable" (click)="seeSasisopa()">VER</button>
+              <button *ngIf="isDevelop" style="height: 36px" mat-flat-button [color]="'primary'" (click)="seeSasisopa()">VER TMP</button>
             </div>
           </ng-template>
           <ng-template #card>
@@ -226,8 +227,8 @@
           <mat-card-content>
             <app-upload-file (onLoad)="loadFile($event, 2, 1)" [layoutTemplate]="button" [type]="'file'">
               <ng-template #button>
-                <mat-icon *ngIf="!sasisopaDocs[0]" class="color" svgIcon="icons:upload"></mat-icon>
-                <mat-icon *ngIf="sasisopaDocs[0]" class="color">autorenew</mat-icon>
+                <mat-icon *ngIf="!sasisopaDocs[0] && !docFile[0]" class="color" svgIcon="icons:upload"></mat-icon>
+                <mat-icon *ngIf="sasisopaDocs[0] || docFile[0]" class="color">autorenew</mat-icon>
               </ng-template>
             </app-upload-file>
             <div (click)="seeDocuments(1)" class="vertical-divider">Análisis de riesgos</div>
@@ -237,8 +238,8 @@
           <mat-card-content>
             <app-upload-file (onLoad)="loadFile($event, 2, 2)" [layoutTemplate]="button" [type]="'file'">
               <ng-template #button>
-                <mat-icon *ngIf="!sasisopaDocs[1]" class="color" svgIcon="icons:upload"></mat-icon>
-                <mat-icon *ngIf="sasisopaDocs[1]" class="color">autorenew</mat-icon>
+                <mat-icon *ngIf="!sasisopaDocs[1] && !docFile[1]" class="color" svgIcon="icons:upload"></mat-icon>
+                <mat-icon *ngIf="sasisopaDocs[1] || docFile[1]" class="color">autorenew</mat-icon>
               </ng-template>
             </app-upload-file>
             <div (click)="seeDocuments(2)" class="vertical-divider">Identificación de riesgos</div>
@@ -303,8 +304,8 @@
           <mat-card-content>
             <app-upload-file (onLoad)="loadFile($event, 3, 3)" [layoutTemplate]="button" [type]="'file'">
               <ng-template #button>
-                <mat-icon *ngIf="!sasisopaDocs[2]" class="color" svgIcon="icons:upload"></mat-icon>
-                <mat-icon *ngIf="sasisopaDocs[2]" class="color">autorenew</mat-icon>
+                <mat-icon *ngIf="!sasisopaDocs[2] && !docFile[2]" class="color" svgIcon="icons:upload"></mat-icon>
+                <mat-icon *ngIf="sasisopaDocs[2] || docFile[2]" class="color">autorenew</mat-icon>
               </ng-template>
             </app-upload-file>
             <div (click)="seeDocuments(3)" class="vertical-divider">Organigrama de la Estación</div>
@@ -314,8 +315,8 @@
           <mat-card-content>
             <app-upload-file (onLoad)="loadFile($event, 3, 4)" [layoutTemplate]="button" [type]="'file'">
               <ng-template #button>
-                <mat-icon *ngIf="!sasisopaDocs[3]" class="color" svgIcon="icons:upload"></mat-icon>
-                <mat-icon *ngIf="sasisopaDocs[3]" class="color">autorenew</mat-icon>
+                <mat-icon *ngIf="!sasisopaDocs[3] && !docFile[3]" class="color" svgIcon="icons:upload"></mat-icon>
+                <mat-icon *ngIf="sasisopaDocs[3] || docFile[3]" class="color">autorenew</mat-icon>
               </ng-template>
             </app-upload-file>
             <div (click)="seeDocuments(4)" class="vertical-divider">Actividades del personal</div>
@@ -372,8 +373,8 @@
           <mat-card-content>
             <app-upload-file (onLoad)="loadFile($event, 4, 5)" [layoutTemplate]="button" [type]="'file'">
               <ng-template #button>
-                <mat-icon *ngIf="!sasisopaDocs[4]" class="color" svgIcon="icons:upload"></mat-icon>
-                <mat-icon *ngIf="sasisopaDocs[4]" class="color">autorenew</mat-icon>
+                <mat-icon *ngIf="!sasisopaDocs[4] && !docFile[4]" class="color" svgIcon="icons:upload"></mat-icon>
+                <mat-icon *ngIf="sasisopaDocs[4] || docFile[4]" class="color">autorenew</mat-icon>
               </ng-template>
             </app-upload-file>
             <div (click)="seeDocuments(5)" class="vertical-divider">Calendario de capacitación y entrenamiento</div>
@@ -461,8 +462,8 @@
           <mat-card-content>
             <app-upload-file (onLoad)="loadFile($event, 6, 6)" [layoutTemplate]="button" [type]="'file'">
               <ng-template #button>
-                <mat-icon *ngIf="!sasisopaDocs[5]" class="color" svgIcon="icons:upload"></mat-icon>
-                <mat-icon *ngIf="sasisopaDocs[5]" class="color">autorenew</mat-icon>
+                <mat-icon *ngIf="!sasisopaDocs[5] && !docFile[5]" class="color" svgIcon="icons:upload"></mat-icon>
+                <mat-icon *ngIf="sasisopaDocs[5] || docFile[5]" class="color">autorenew</mat-icon>
               </ng-template>
             </app-upload-file>
             <div (click)="seeDocuments(6)" class="vertical-divider">Permiso de trabajo (Contratistas)</div>
@@ -484,8 +485,8 @@
           <mat-card-content>
             <app-upload-file (onLoad)="loadFile($event, 9, 7)" [layoutTemplate]="button" [type]="'file'">
               <ng-template #button>
-                <mat-icon *ngIf="!sasisopaDocs[6]" class="color" svgIcon="icons:upload"></mat-icon>
-                <mat-icon *ngIf="sasisopaDocs[6]" class="color">autorenew</mat-icon>
+                <mat-icon *ngIf="!sasisopaDocs[6] && !docFile[6]" class="color" svgIcon="icons:upload"></mat-icon>
+                <mat-icon *ngIf="sasisopaDocs[6] || docFile[6]" class="color">autorenew</mat-icon>
               </ng-template>
             </app-upload-file>
             <div (click)="seeDocuments(7)" class="vertical-divider">Programa de auditoría interna</div>
@@ -495,8 +496,8 @@
           <mat-card-content>
             <app-upload-file (onLoad)="loadFile($event, 9, 8)" [layoutTemplate]="button" [type]="'file'">
               <ng-template #button>
-                <mat-icon *ngIf="!sasisopaDocs[7]" class="color" svgIcon="icons:upload"></mat-icon>
-                <mat-icon *ngIf="sasisopaDocs[7]" class="color">autorenew</mat-icon>
+                <mat-icon *ngIf="!sasisopaDocs[7] && !docFile[7]" class="color" svgIcon="icons:upload"></mat-icon>
+                <mat-icon *ngIf="sasisopaDocs[7] || docFile[7]" class="color">autorenew</mat-icon>
               </ng-template>
             </app-upload-file>
             <div (click)="seeDocuments(8)" class="vertical-divider">Personal que lo realiza</div>
@@ -518,8 +519,8 @@
           <mat-card-content>
             <app-upload-file (onLoad)="loadFile($event, 10, 9)" [layoutTemplate]="button" [type]="'file'">
               <ng-template #button>
-                <mat-icon *ngIf="!sasisopaDocs[8]" class="color" svgIcon="icons:upload"></mat-icon>
-                <mat-icon *ngIf="sasisopaDocs[8]" class="color">autorenew</mat-icon>
+                <mat-icon *ngIf="!sasisopaDocs[8] && !docFile[8]" class="color" svgIcon="icons:upload"></mat-icon>
+                <mat-icon *ngIf="sasisopaDocs[8] || docFile[8]" class="color">autorenew</mat-icon>
               </ng-template>
             </app-upload-file>
             <div (click)="seeDocuments(9)" class="vertical-divider">Auditorías</div>
@@ -529,8 +530,8 @@
           <mat-card-content>
             <app-upload-file (onLoad)="loadFile($event, 10, 10)" [layoutTemplate]="button" [type]="'file'">
               <ng-template #button>
-                <mat-icon *ngIf="!sasisopaDocs[9]" class="color" svgIcon="icons:upload"></mat-icon>
-                <mat-icon *ngIf="sasisopaDocs[9]" class="color">autorenew</mat-icon>
+                <mat-icon *ngIf="!sasisopaDocs[9] && !docFile[9]" class="color" svgIcon="icons:upload"></mat-icon>
+                <mat-icon *ngIf="sasisopaDocs[9] || docFile[9]" class="color">autorenew</mat-icon>
               </ng-template>
             </app-upload-file>
             <div (click)="seeDocuments(10)" class="vertical-divider">Decisiones a tomar</div>
@@ -540,8 +541,8 @@
           <mat-card-content>
             <app-upload-file (onLoad)="loadFile($event, 10, 11)" [layoutTemplate]="button" [type]="'file'">
               <ng-template #button>
-                <mat-icon *ngIf="!sasisopaDocs[10]" class="color" svgIcon="icons:upload"></mat-icon>
-                <mat-icon *ngIf="sasisopaDocs[10]" class="color">autorenew</mat-icon>
+                <mat-icon *ngIf="!sasisopaDocs[10] && !docFile[10]" class="color" svgIcon="icons:upload"></mat-icon>
+                <mat-icon *ngIf="sasisopaDocs[10] || docFile[10]" class="color">autorenew</mat-icon>
               </ng-template>
             </app-upload-file>
             <div (click)="seeDocuments(11)" class="vertical-divider">Conclusiones</div>
@@ -563,8 +564,8 @@
           <mat-card-content>
             <app-upload-file (onLoad)="loadFile($event, 11, 12)" [layoutTemplate]="button" [type]="'file'">
               <ng-template #button>
-                <mat-icon *ngIf="!sasisopaDocs[11]" class="color" svgIcon="icons:upload"></mat-icon>
-                <mat-icon *ngIf="sasisopaDocs[11]" class="color">autorenew</mat-icon>
+                <mat-icon *ngIf="!sasisopaDocs[11] && !docFile[11]" class="color" svgIcon="icons:upload"></mat-icon>
+                <mat-icon *ngIf="sasisopaDocs[11] || docFile[11]" class="color">autorenew</mat-icon>
               </ng-template>
             </app-upload-file>
             <div (click)="seeDocuments(12)" class="vertical-divider">Comunicación de resultados</div>

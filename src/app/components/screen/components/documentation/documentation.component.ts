@@ -93,7 +93,6 @@ export class DocumentationComponent implements OnInit, OnDestroy {
           } else {
             this.docsCre = [];
           }
-          console.log(this.docsCre);
           break;
         default:
           break;
@@ -109,7 +108,6 @@ export class DocumentationComponent implements OnInit, OnDestroy {
           } else {
             this.docsAsea = [];
           }
-          console.log(this.docsAsea);
           break;
         default:
           break;
