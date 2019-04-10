@@ -82,8 +82,8 @@ export interface BCData{
   company: string,
   industryCode: number | string,
   website: string,
-  urlLogo: string | 'https://www.googleapis.com/download/storage/v1/b/businesscardgcs/o/alex4%2F2019-02-25-193347461favicon.png?generation=1551123227641233&alt=media',
-  urlLogoThumbnail: string | 'https://lh3.googleusercontent.com/-3ntbjcrEgMf8ekZz7lLWXZFQKTte5FeDr9xBzhAh5S5IhdVSjM4scB-Dz5U8-lhR-4hxYdDfgb0grvajnJo-LG78ZMFjDm4Qw',
+  profileImage: string,
+  profileImageThumbnail: string,
   cardUrl: string,
   cardUrlThumbnail: string
 }
