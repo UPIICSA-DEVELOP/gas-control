@@ -2,6 +2,23 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="1.3.0-beta.5"></a>
+# [1.3.0-beta.5](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/compare/v1.3.0-beta.4...v1.3.0-beta.5) (2019-04-10)
+
+
+### Bug Fixes
+
+* **Documentation:** solve errors in responsive design ([51ca6ae](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/51ca6ae))
+* **NavBar:** modify contextual menu for mobiles ([82e33f0](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/82e33f0))
+* **Notifications:** solve error in notify card ([e432697](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/e432697))
+* **SASISOPA:** add temporary button to see document in develop ([f150d80](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/f150d80))
+* **SASISOPA:** solve error in document load icon ([8f41ffc](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/8f41ffc))
+* **SGM:** add temporary button to see document in develop ([aff7efc](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/aff7efc))
+* **StationList:** remove manager field ([572adb9](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/572adb9))
+* **StationProfile:** disable write in workShifts inputs ([a3928d4](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/a3928d4))
+
+
+
 <a name="1.3.0-beta.4"></a>
 # [1.3.0-beta.4](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/compare/v1.3.0-beta.3...v1.3.0-beta.4) (2019-04-09)
 
