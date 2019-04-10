@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="1.3.0-beta.6"></a>
+# [1.3.0-beta.6](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/compare/v1.3.0-beta.5...v1.3.0-beta.6) (2019-04-10)
+
+
+### Bug Fixes
+
+* **BC:** Updating param pfofile image ([2c6a0f3](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/2c6a0f3))
+
+
+
 <a name="1.3.0-beta.5"></a>
 # [1.3.0-beta.5](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/compare/v1.3.0-beta.4...v1.3.0-beta.5) (2019-04-10)
 
