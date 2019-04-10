@@ -58,7 +58,7 @@
   overflow: auto;
   mat-card{
     margin: 8px 0;
-    height: 88px;
+    min-height: 88px;
     mat-card-content{
       display: flex;
       justify-content: space-between;
