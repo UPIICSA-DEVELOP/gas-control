@@ -4,7 +4,7 @@
  *  Proprietary and confidential
  */
 
-import {Component, Inject, OnInit} from '@angular/core';
+import {Component, Inject, OnDestroy, OnInit} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
 import {ApiService} from '@app/core/services/api/api.service';
 import {ApiLoaderService} from '@app/core/services/api/api-loader.service';
@@ -17,13 +17,14 @@ import {SgmSelection} from '@app/core/interfaces/interfaces';
 import {UtilitiesService} from '@app/core/utilities/utilities.service';
 import {Constants} from '@app/core/constants.core';
 import {LocalStorageService} from '@app/core/services/local-storage/local-storage.service';
+import {environment} from '@env/environment';
 
 @Component({
   selector: 'app-sgm',
   templateUrl: './sgm.component.html',
   styleUrls: ['./sgm.component.scss']
 })
-export class SgmComponent implements OnInit {
+export class SgmComponent implements OnInit, OnDestroy {
   public station: any;
   public sgmDocument: any[];
   public templates: any[];
@@ -39,7 +40,8 @@ export class SgmComponent implements OnInit {
   public frequency: string[];
   public generate: boolean;
   public isAvailable: boolean;
-  private dateGeneration: string[];
+  public dateGeneration: string[];
+  public isDevelop: boolean;
   private _subscriptionLoader: Subscription;
   private _token: string;
   constructor(
@@ -51,6 +53,7 @@ export class SgmComponent implements OnInit {
     private _dialogService: DialogService,
     private _snackBarService: SnackBarService
   ) {
+    this.isDevelop = environment.develop;
     this.zones = Constants.Zones;
     this.frequency = Constants.Frequency;
     this.priority = Constants.Level;
@@ -73,6 +76,10 @@ export class SgmComponent implements OnInit {
     this.getStation();
     this.getSgm();
     this.sortSgmArray();
+  }
+
+  ngOnDestroy() {
+    this._subscriptionLoader.unsubscribe();
   }
 
   public close():void{
