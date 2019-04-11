@@ -9,7 +9,7 @@ import * as compression from 'compression';
 import * as nconfg from 'nconf';
 import * as express from 'express';
 import {Logger} from '../logger';
-import {APIError} from '../../endpoints/commons/class';
+import {APIError} from '../../api/commons/class';
 
 export class ServerLite{
 

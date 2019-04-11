@@ -49,7 +49,7 @@ export class EndPoints{
       }else{
         const { company, name, lastName, workPosition, phone, email, website, countryCode, industryCode, profileImage, profileImageThumbnail } = req.query;
         const { fork } = require('child_process'), path = require('path');
-        const process = fork(path.resolve(__dirname, 'endpoints', 'bc.js'));
+        const process = fork(path.resolve(__dirname, 'api', 'bc.js'));
         process.on('message', (data) => {
           res.status(data.code).end(JSON.stringify(data));
         });
@@ -80,7 +80,7 @@ export class EndPoints{
       }else {
         const { stationId, isSGM } = req.query;
         const { fork } = require('child_process'), path = require('path');
-        const process = fork(path.resolve(__dirname, 'endpoints', 'pdf.js'));
+        const process = fork(path.resolve(__dirname, 'api', 'pdf.js'));
         process.on('message', (data: DefaultResponse | APIError) => {
           res.status(data.code).end(JSON.stringify(data));
         });
@@ -128,7 +128,7 @@ export class EndPoints{
       }else {
         const { stationId, isSGM } = req.query;
         const { fork } = require('child_process'), path = require('path');
-        const process = fork(path.resolve(__dirname, 'endpoints', 'join-pdf.js'));
+        const process = fork(path.resolve(__dirname, 'api', 'join-pdf.js'));
         process.on('message', (data) => {
           if(!data.code){
             const document = new Buffer(data, 'binary');

@@ -30,7 +30,7 @@ module.exports = {
     __filename: false
   },
   output: {
-    path: path.resolve(__dirname, '../', 'dist/endpoints'),
+    path: path.resolve(__dirname, '../', 'dist/api'),
     filename: '[name].js'
   },
   module: {
