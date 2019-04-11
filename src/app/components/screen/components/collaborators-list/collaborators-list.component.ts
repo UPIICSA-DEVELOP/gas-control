@@ -332,19 +332,23 @@ export class CollaboratorsListComponent implements OnInit, OnDestroy {
   }
 
   public back():void{
-    this._dialogService.confirmDialog(
-      '¿Desea salir sin guardar cambios?',
-      '',
-      'ACEPTAR',
-      'CANCELAR').afterClosed().subscribe(response=>{
-      switch (response.code) {
-        case 1:
-          this.register=false;
-          break;
-        default:
-          break;
-      }
-    })
+    if(this.changes){
+      this._dialogService.confirmDialog(
+        '¿Desea salir sin guardar cambios?',
+        '',
+        'ACEPTAR',
+        'CANCELAR').afterClosed().subscribe(response=>{
+        switch (response.code) {
+          case 1:
+            this.register=false;
+            break;
+          default:
+            break;
+        }
+      });
+    }else{
+      this.register = false;
+    }
   }
 
   public search(event: any): void{

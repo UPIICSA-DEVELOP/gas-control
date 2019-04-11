@@ -33,13 +33,19 @@
           <mat-icon>more_vert</mat-icon>
         </button>
         <mat-menu #menu_one>
-          <button mat-menu-item *ngIf="user && user.role !== 7" (click)="navigateProfile()" class="button-user">
-            <img class="image-user" *ngIf="imageExist" [src]="user.profileImage" alt="User profile image">
+          <button class="menu-buttons" mat-menu-item *ngIf="user && user.role !== 7" (click)="navigateProfile()">
+            <img class="profile-img" *ngIf="imageExist" [src]="user.profileImage" alt="User profile image">
             <mat-icon *ngIf="!imageExist">account_circle</mat-icon>
-            Perfil
+            <span>Perfil</span>
           </button>
-          <button mat-menu-item *ngIf="user && (user.role<=3 || user.role===7)" (click)="openCollaboratorsList()"> <mat-icon>supervisor_account</mat-icon> Colaboradores</button>
-          <button mat-menu-item *ngIf="user && user.role !== 7" (click)="logOut()"><mat-icon>exit_to_app</mat-icon>Salir</button>
+          <button class="menu-buttons" mat-menu-item *ngIf="user && (user.role<=3 || user.role===7)" (click)="openCollaboratorsList()">
+            <mat-icon>supervisor_account</mat-icon>
+            <span>Colaboradores</span>
+          </button>
+          <button class="menu-buttons" mat-menu-item *ngIf="user && user.role !== 7" (click)="logOut()">
+            <mat-icon>exit_to_app</mat-icon>
+            <span>Salir</span>
+          </button>
         </mat-menu>
       </div>
     </mat-toolbar>

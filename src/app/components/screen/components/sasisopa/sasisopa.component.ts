@@ -103,6 +103,10 @@ export class SasisopaComponent implements OnInit, OnDestroy {
 
   public changeElementOnView(type: number): void{
     this.elementInView = type;
+    if(type === 5 && this.date){
+      const date = UtilitiesService.createPersonalTimeStamp(this.date);
+      this.getStationTasks(date.timeStamp);
+    }
     this.resetErrors();
   }
 
@@ -367,10 +371,8 @@ export class SasisopaComponent implements OnInit, OnDestroy {
           if(response.item.brigade){
             this.brigade = response.item.brigade.brigadeElems;
           }
-          if(response.item.evidenceDate){
-            this.date = UtilitiesService.generateArrayDate(response.item.evidenceDate.date,false, false);
-            const date = UtilitiesService.createPersonalTimeStamp(this.date);
-            this.getStationTasks(date.timeStamp);
+          if(response.item.evidencesDate){
+            this.date = UtilitiesService.generateArrayDate(response.item.evidencesDate.date,false, false);
           }
           if(response.item.sasisopaDocuments){
             const sasisopaDocs = UtilitiesService.sortJSON(response.item.sasisopaDocuments, 'type', 'asc');

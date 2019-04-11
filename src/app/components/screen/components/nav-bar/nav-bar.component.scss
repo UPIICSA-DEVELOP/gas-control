@@ -89,25 +89,23 @@
       }
     }
 
-    .user{
-      .button-user{
-        min-width: 28px;
-        line-height: 28px;
-        padding: 0;
+    .button-user{
+      min-width: 28px;
+      line-height: 28px;
+      padding: 0;
+      border-radius: 50%;
+      margin: 0 16px;
+
+      .image-user{
+        width: 28px;
+        height: 28px;
         border-radius: 50%;
-        margin: 0 16px;
-
-        .image-user{
-          width: 28px;
-          height: 28px;
-          border-radius: 50%;
-          background-color: #FFFFFF;
-        }
-        mat-icon{
-          color: #FFFFFF;
-        }
-
+        background-color: #FFFFFF;
       }
+      mat-icon{
+        color: #FFFFFF;
+      }
+
     }
 
   }
@@ -115,6 +113,18 @@
   #progress{
     display: flex;
     align-items: center;
+  }
+
+  .menu-buttons{
+    display: flex;
+    align-items: center;
+    .profile-img{
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background-color: #FFFFFF;
+      margin-right: 16px;
+    }
   }
 
 }
