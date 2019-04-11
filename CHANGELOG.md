@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="1.3.0-beta.9"></a>
+# [1.3.0-beta.9](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/compare/v1.3.0-beta.8...v1.3.0-beta.9) (2019-04-11)
+
+
+### Bug Fixes
+
+* **AddCollaborator:** enable role selector ([0a96d8b](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/0a96d8b))
+* **AddGasStation:** disable add manager and add vrs boolean ([330dc55](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/330dc55))
+* **CollaboratorsList:** change send email for send whatsapp ([c3d7a4e](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/c3d7a4e))
+* **DirectoryList:** change send email for send whatsapp and add button to change role ([0d7f6d0](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/0d7f6d0))
+* **Station Information:** remove managerName in station information[Dashboard and Profile] ([00278b3](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/00278b3))
+* Rename key name to reportName for report ([38e5dad](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/38e5dad))
+
+
+
 <a name="1.3.0-beta.8"></a>
 # [1.3.0-beta.8](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/compare/v1.3.0-beta.7...v1.3.0-beta.8) (2019-04-11)
 
