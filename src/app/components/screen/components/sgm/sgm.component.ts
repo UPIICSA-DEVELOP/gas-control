@@ -83,12 +83,7 @@ export class SgmComponent implements OnInit, OnDestroy {
   }
 
   public close():void{
-    if(this.elementOnView !== 0){
-      this.elementOnView = 0;
-      this._token = null;
-    }else{
-      this._matDialogRef.close();
-    }
+    this._matDialogRef.close();
   }
 
   public seeFile(url: any):void{
@@ -119,6 +114,7 @@ export class SgmComponent implements OnInit, OnDestroy {
     this._api.saveSgmSelection(selection).subscribe(response => {
       switch (response.code){
         case 200:
+          this.getSgm();
           this._snackBarService.openSnackBar('Información actualizada', 'OK', 3000);
           break;
           default:
@@ -178,6 +174,7 @@ export class SgmComponent implements OnInit, OnDestroy {
 
   public getStationTasks(isAnnexedOne: boolean):void{
     let type = '0';
+    this._token = null;
     if(isAnnexedOne){
       this.elementOnView = 1;
       type = '41';
@@ -255,7 +252,7 @@ export class SgmComponent implements OnInit, OnDestroy {
     return newList;
   }
 
-    public seeSGM(): void{
+  public seeSGM(): void{
     this._api.joinPDF(this.station.id, true).subscribe(response => {
       const user = LocalStorageService.getItem(Constants.UserInSession);
       switch (user.role){

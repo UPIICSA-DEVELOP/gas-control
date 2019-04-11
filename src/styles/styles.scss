@@ -217,11 +217,12 @@ body{
 
 .sgm-panel{
   mat-dialog-container{
-    width: 60vw;
+    width: 65vw;
     padding: 0;
-    max-height: 95vh;
+    overflow: hidden;
+    max-height: 90vh;
     @media screen and (max-width: 800px){
-      width: 80vw;
+      width: 90vw;
     }
   }
 }

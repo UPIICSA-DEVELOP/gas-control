@@ -7,7 +7,7 @@
 #sgm{
   height: 100%;
   mat-dialog-content{
-    min-height: 95vh;
+    min-height: 90vh;
     max-height: none;
     margin: 0;
     padding: 16px;
@@ -26,7 +26,7 @@
       align-items: center;
     }
     .sgm-logo{
-      height: 28px;
+      height: 40px;
     }
     .text{
       margin-top: 12px;
@@ -74,7 +74,7 @@
     z-index: 4;
   }
   .date-available{
-    margin: 16px;
+    margin: 8px 24px;
     color: #707070;
     font-size: 14px;
   }
@@ -88,7 +88,7 @@
     padding: 0;
     display: flex;
     margin-bottom: 12px;
-    height: 96px;
+    height: 124px;
     .priority{
       width: 1%;
       position: relative;
@@ -163,7 +163,7 @@
   }
   .list-and-template{
     width: 100%;
-    margin: 16px 0;
+    margin: 8px 0;
     cursor: pointer;
     mat-card-content{
       display: flex;
@@ -176,12 +176,24 @@
     font-size: 12px;
     font-weight: 600;
     margin: 12px 0;
+    padding: 0 8px;
   }
   .fuel-type-text{
     color: #707070;
     margin: 12px 0;
     width: 100%;
     text-align: justify;
-    font-size: 12px
+    font-size: 12px;
+    padding: 0 8px;
+  }
+  .background{
+    width: 400px;
+    height: 200px;
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    background: url("https://www.googleapis.com/download/storage/v1/b/businesscardgcs/o/alex4%2F2019-02-05-205017759Web-Fondo-gas-poca-transparencia.png?generation=1549399820762438&alt=media") no-repeat bottom;
+    background-size: cover;
+    z-index: 0;
   }
 }
