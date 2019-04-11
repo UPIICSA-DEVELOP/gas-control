@@ -9,8 +9,8 @@ import * as path from "path";
 import * as compression from 'compression';
 import * as nconfg from 'nconf';
 import * as express from 'express';
-import {ServerLite} from './server_lite';
 import {Logger} from '../logger';
+import {APIError} from '../../api/commons/class';
 
 export class ServerStandard {
 
@@ -33,6 +33,7 @@ export class ServerStandard {
 
   public initRouter(): void{
     if(this._postponeRouter){
+      this.initHandlers();
       this.router();
     }else{
       throw 'Postpone Router option does not exist on constructor';
@@ -73,6 +74,7 @@ export class ServerStandard {
     this.app.set('view engine', 'html');
     this.app.set('views', ServerStandard.DIR);
     if(!this._postponeRouter){
+      this.initHandlers();
       this.router();
     }
   }
@@ -95,6 +97,11 @@ export class ServerStandard {
     this.app.use(morgan('combined', { stream: logger.init().stream, skip: ServerStandard.skipLog }));
   }
 
+  private initHandlers(): void{
+    ServerStandard.handlerExceptionAndRejection();
+    this.app.use(ServerStandard.handlerErrors);
+  }
+
   private static skipLog(req, res): boolean{
     let url = req.url;
     if(url.indexOf('?')>0)
@@ -103,15 +110,26 @@ export class ServerStandard {
   }
 
   private static globalHeaders(req: any, res: any, next: any): void{
-    res.setHeader("Access-Control-Allow-Origin", "*");
-    res.setHeader("Access-Control-Allow-Headers", "X-Requested-With");
     res.header('X-Powered-By', 'MapLander');
     next();
   }
 
   private static handlerErrors(err: any, req: any, res: any, next: any): void{
-    console.error(err.stack);
-    next(err);
+    if(err instanceof APIError){
+      return res.status(err.code).send(err);
+    }
+    res.status(500).send(err);
+  }
+
+  private static handlerExceptionAndRejection(): void{
+    process.on('uncaughtException', ServerStandard.handleFatalErrors);
+    process.on('unhandledRejection', ServerStandard.handleFatalErrors);
+  }
+
+  private static handleFatalErrors(err: any, req: any, res: any, next:any): void{
+    console.error('handleFatalErrors', err.message);
+    console.error('handleFatalErrors', err.stack);
+    process.exit(1);
   }
 
   private static angularRouter(req, res): void{

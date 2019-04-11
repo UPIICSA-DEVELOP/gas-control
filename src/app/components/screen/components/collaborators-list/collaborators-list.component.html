@@ -66,9 +66,9 @@
                     </button>
                   </div>
                   <div class="button">
-                    <a href="mailto:{{collaborator.email}}" class="link">
-                      <button matTooltip="Enviar email" mat-button>
-                        <mat-icon>mail</mat-icon>
+                    <a href="https://wa.me/{{collaborator.countryCode || '52'}}{{collaborator.phoneNumber}}" class="link" target="_blank">
+                      <button matTooltip="Enviar WhatsApp" mat-button>
+                        <mat-icon svgIcon="icons:whatsapp"></mat-icon>
                       </button>
                     </a>
                   </div>

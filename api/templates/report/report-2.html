@@ -51,10 +51,6 @@
     .center{
       text-align: center;
     }
-    .title-tank{
-      font-size: 10pt;
-      font-weight: bold;
-    }
     .text{
       font-weight: normal;
     }
@@ -92,11 +88,11 @@
 
   <article id="global-container">
     <h1 id="title" class="center">Reporte inSpéctor</h1>
-    <p class="sub-title center">
-      Revisión del sistema de recuperación de vapores
+    <p class="sub-title center" id="sub-title">
+      Limpiar y sujetar tierra física de compresor e hidroneumático
     </p>
     <p id="binnacle" class="center">
-      Sistema de recuperación de vapores
+      Compresor de aire
     </p>
     <br>
     <br>
@@ -105,93 +101,57 @@
         Fecha: <span class="li-value" id="li-date">01 Ene 19</span>
       </li>
       <li class="list-item">
+        Hora de inicio: <span class="li-value" id="li-time-1">08:00 a.m.</span>
+      </li>
+      <li class="list-item">
         Folio: <span class="li-value" id="li-folio">0092-A678-C32</span>
+      </li>
+      <li class="list-item">
+        Hora de término: <span class="li-value" id="li-time-2">09:00 a.m.</span>
       </li>
     </ul>
     <br>
     <br>
     <div class="container">
 
-      <div id="list-dispensaries">
-        <p class="sub-title">Dispensarios: </p>
-        <!--<ol type="1">
-          <li>Magna</li>
-          <li>Premium</li>
-        </ol>-->
-      </div>
-
-      <br>
-
-      <table>
-        <tr class="item">
-          <td>Pistola </td>
-          <td id="gun">Satisfactorio</td>
-        </tr>
-        <tr class="item">
-          <td>Break away</td>
-          <td id="break">Satisfactorio</td>
-        </tr>
-        <tr class="item">
-          <td>Equipo</td>
-          <td id="equipment">Turbina</td>
-        </tr>
-        <tr class="item">
-          <td>Manguera larga</td>
-          <td id="hose-large">Satisfactorio</td>
-        </tr>
-        <tr class="item">
-          <td>Manguera corta</td>
-          <td id="hose-short">Satisfactorio</td>
-        </tr>
-      </table>
-
-      <br>
-
-      <p class="sub-title">Lista de tanques: </p>
-
-
-      <br>
-
-      <div id="list-tanks">
-        <div id="item-to-select">
-          <div id="item-tank">
-            <span class="title-tank" id="title-tank">Tanque 1</span>
-            <table id="table">
-              <tr class="item">
-                <td>Tipo de combustible </td>
-                <td id="gas">Magna</td>
-              </tr>
-              <tr class="item">
-                <td>Tapa y adaptador de vapor</td>
-                <td id="adapter-steam">Satisfactorio</td>
-              </tr>
-              <tr class="item">
-                <td>Tapa y adaptador de llenado</td>
-                <td id="adapter-fill">Satisfactorio</td>
-              </tr>
-              <tr class="item">
-                <td>Válvula de sobrellenado</td>
-                <td id="over-fill">Satisfactorio</td>
-              </tr>
-              <tr class="item">
-                <td>Válvula de presión-vacío</td>
-                <td id="pressure">Satisfactorio</td>
-              </tr>
-            </table>
-          </div>
-        </div>
-      </div>
-
-      <br>
 
       <p class="sub-title">
-        Alarma SVR endendido: <span id="alarm-svr" class="text">Satisfactorio</span>
+        Marca: <span id="brand" class="text">N/A</span>
       </p>
 
       <br>
 
       <p class="sub-title">
-        Alarma de paro de emergencia: <span  id="alarm-emergency" class="text">Satisfactorio</span>
+        Modelo: <span id="model" class="text">N/A</span>
+      </p>
+
+      <br>
+
+      <p class="sub-title">
+        No. de control: <span id="control" class="text">N/A</span>
+      </p>
+
+      <br>
+
+      <table>
+        <tr class="item">
+          <td>Presión del manómetro (Kg/cm2)</td>
+          <td id="pressure">8</td>
+        </tr>
+        <tr class="item">
+          <td>Purga o descarga</td>
+          <td id="purge">Función correcta</td>
+        </tr>
+        <tr class="item">
+          <td>Disparo manual de válvula de seguridad</td>
+          <td id="shooting">Función incorrecta</td>
+        </tr>
+      </table>
+
+      <br>
+
+      <p class="sub-title">
+        Modificaciones y medidas correctivas: <span id="modify" class="text">N/A</span>
       </p>
 
       <br>
@@ -208,9 +168,17 @@
         <br>
       </div>
 
+
       <div  id="parent-evidence"  style="width: 50%; margin: 0 auto; background-color: #dddddd; padding-bottom: calc(50% / 4 * 3); position: relative; display: flex; justify-content: center;">
         <img style="position: absolute; height: 100%;" id="evidence" src="https://fscomps.fotosearch.com/compc/UNS/UNS082/compresor-de-aire-gasolinera-un-fotos__u12133678.jpg">
       </div>
+
+      <br>
+      <br>
+      <br>
+
+      <div id="report-3"></div>
+
 
       <br>
       <br>

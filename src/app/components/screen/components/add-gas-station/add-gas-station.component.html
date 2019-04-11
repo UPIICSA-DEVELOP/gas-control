@@ -93,7 +93,7 @@
                     Se requieren de 8 a 13 digitos
                   </mat-error>
                 </mat-form-field>
-                <div class="modal">
+                <!--div class="modal">
                   <div class="mask" (click)="openPersonForm(true)"></div>
                   <mat-form-field class="inputs">
                     <input formControlName="manager" matInput placeholder="Encargado de estación" required type="text" (keyup)="openPersonForm(true)">
@@ -101,7 +101,7 @@
                       Este campo es obligatorio
                     </mat-error>
                   </mat-form-field>
-                </div>
+                </div-->
                 <mat-form-field class="inputs">
                   <input formControlName="workers" matInput placeholder="No. de trabajadores">
                 </mat-form-field>
@@ -115,11 +115,11 @@
                   </div>
                   <div *ngFor="let turn of workShifts; let i = index">
                     <div class="input-content">
-                      <mat-form-field class="address">
-                        <input placeholder="Inicio" matInput (time)="changeDate($event,i,true)" appDisableWrite value="{{turn.start | formatTime}}" >
+                      <mat-form-field style="width: 45%">
+                        <input placeholder="Inicio" matInput (time)="changeDate($event,i,true)" appDisableWrite value="{{turn.start | formatTime}}" readonly="readonly">
                       </mat-form-field>
-                      <mat-form-field class="address">
-                        <input placeholder="Término" matInput (time)="changeDate($event,i,false)" appDisableWrite value="{{turn.end | formatTime}}">
+                      <mat-form-field style="width: 45%">
+                        <input placeholder="Término" matInput (time)="changeDate($event,i,false)" appDisableWrite value="{{turn.end | formatTime}}" readonly="readonly">
                       </mat-form-field>
                       <button type="button" *ngIf="workShifts.length>1" mat-icon-button (click)="addRemoveTurn(true,1, i)" class="remove" [disabled]=" user.role===6 || user.role===7">
                         <mat-icon>remove</mat-icon>
@@ -134,12 +134,10 @@
                   </div>
                   <div class="fuel-selector">
                     <mat-form-field class="width-form">
-                      <input formControlName="monitoringWells" matInput placeholder="De monitoreo" type="text"
-                             aria-label="Station monitoring wells">
+                      <input formControlName="monitoringWells" matInput placeholder="De monitoreo" type="text" aria-label="Station monitoring wells">
                     </mat-form-field>
                     <mat-form-field class="width-form">
-                      <input formControlName="observationWells" matInput placeholder="De observación" type="text"
-                             aria-label="Station observable wells">
+                      <input formControlName="observationWells" matInput placeholder="De observación" type="text" aria-label="Station observable wells">
                     </mat-form-field>
                   </div>
                 </div>
@@ -164,16 +162,14 @@
                             </mat-select>
                           </mat-form-field>
                         </div>
-                        <mat-radio-group class="fuel-selector" aria-label="Station tank fuel type"
-                                         [(ngModel)]="tank.fuelType" [ngModelOptions]="{standalone: true}">
+                        <mat-radio-group class="fuel-selector" aria-label="Station tank fuel type" [(ngModel)]="tank.fuelType" [ngModelOptions]="{standalone: true}">
                           <mat-radio-button [value]="1">Magna</mat-radio-button>
                           <mat-radio-button [value]="2">Premium</mat-radio-button>
                           <mat-radio-button [value]="3">Diesel</mat-radio-button>
                         </mat-radio-group>
                       </div>
                       <div class="button-container">
-                        <button *ngIf="tanks.length>1" type="button" mat-icon-button (click)="addRemoveTurn(true,2, i)"
-                                class="remove">
+                        <button *ngIf="tanks.length>1" type="button" mat-icon-button (click)="addRemoveTurn(true,2, i)" class="remove">
                           <mat-icon>remove</mat-icon>
                         </button>
                       </div>
@@ -186,8 +182,7 @@
                     <span>Dispensarios</span>
                   </div>
                   <div>
-                    <button type="button" mat-icon-button (click)="addRemoveTurn(false, 3)"
-                    >
+                    <button type="button" mat-icon-button (click)="addRemoveTurn(false, 3)">
                       <mat-icon>add</mat-icon>
                     </button>
                   </div>
@@ -197,16 +192,14 @@
                     <div class="inputs">
                       <div class="head">Dispensario {{i+1}}</div>
                       <div class="hoses">
-                        <mat-form-field>
-                          <input matInput placeholder="No. de Mangueras" type="number" aria-label="Station hoses number"
-                                 [(ngModel)]="dispenser.hoses" [ngModelOptions]="{standalone: true}">
+                        <mat-form-field class="field">
+                          <input matInput placeholder="No. de Mangueras" type="number" aria-label="Station hoses number" [(ngModel)]="dispenser.hoses" [ngModelOptions]="{standalone: true}">
                         </mat-form-field>
-                        <mat-form-field>
-                          <input matInput placeholder="No. de serie" type="text" aria-label="Station hoses cre id"
-                                 [(ngModel)]="dispenser.identifier" [ngModelOptions]="{standalone: true}">
+                        <mat-form-field class="field">
+                          <input matInput placeholder="No. de serie" type="text" aria-label="Station hoses cre id" [(ngModel)]="dispenser.identifier" [ngModelOptions]="{standalone: true}">
                         </mat-form-field>
                       </div>
-                      <section class="hoses" aria-label="Station hoses fuel type">
+                      <section class="hoses" style="flex-wrap: wrap" aria-label="Station hoses fuel type">
                         <mat-checkbox [(ngModel)]="dispenser.magna" [ngModelOptions]="{standalone: true}">
                           Magna
                         </mat-checkbox>
@@ -219,13 +212,25 @@
                       </section>
                     </div>
                     <div class="button">
-                      <button type="button" *ngIf="dispensers.length>1" mat-icon-button (click)="addRemoveTurn(true,3, i)"
-                              class="remove">
+                      <button type="button" *ngIf="dispensers.length>1" mat-icon-button (click)="addRemoveTurn(true,3, i)" class="remove">
                         <mat-icon>remove</mat-icon>
                       </button>
                     </div>
                   </div>
                 </div>
+                <mat-divider></mat-divider>
+                <div class="header-two">
+                  <div style="margin: 16px 0;">
+                    <span>Sistema de recuperación de vapores</span>
+                  </div>
+                </div>
+                <div style="color: #707070; display: flex; text-align: justify; margin: 8px;">
+                  Su estación cuenta con sistema de recuperación de vapores
+                </div>
+                <mat-radio-group formControlName="vrs" style="display: flex; justify-content: space-around;">
+                  <mat-radio-button [value]="true">Si</mat-radio-button>
+                  <mat-radio-button [value]="false">No</mat-radio-button>
+                </mat-radio-group>
                 <div class="form-button">
                   <button mat-flat-button aria-label="LogIn" [disabled]="load" [color]="'primary'" mat-button>AÑADIR</button>
                 </div>

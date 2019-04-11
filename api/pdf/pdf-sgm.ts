@@ -1,5 +1,6 @@
 import {Commons} from './commons';
-import {AttachedType, CreatePDFOptions, ParseHTMLOptions, PDFSGMData, ReportType, TypeFuel} from './utils';
+import {CreatePDFOptions, ParseHTMLOptions, PDFSGMData} from '../commons/interfaces';
+import {AttachedType, ReportType} from '../commons/enum';
 
 
 export class PdfSGM{
@@ -194,6 +195,8 @@ export class PdfSGM{
               resolve(jsdom.serialize());
               break;
             case ReportType.Report_1: // OM Report
+
+              document.getElementById('sub-title').textContent = item.name;
 
               document.getElementById('sheet').style.padding = '25mm !important';
 

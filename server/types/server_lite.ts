@@ -8,8 +8,8 @@ import * as path from "path";
 import * as compression from 'compression';
 import * as nconfg from 'nconf';
 import * as express from 'express';
-import {App} from '../server';
 import {Logger} from '../logger';
+import {APIError} from '../../api/commons/class';
 
 export class ServerLite{
 
@@ -32,21 +32,22 @@ export class ServerLite{
 
   public initRouter(): void{
     if(this._postponeRouter){
+      this.initHandlers();
       this.router();
     }else{
-      throw 'Postpone Router option does not exist on constructor';
+      throw 'Postpone Router option does not exist on constructor as argument';
     }
   }
 
   private initConfig(): void{
     this._port = process.env.PORT || nconfg.get('PORT') || 8090;
     this.app.use(ServerLite.globalHeaders);
-    this.app.use(ServerLite.handlerErrors);
     this.createLogger();
     this.app.use(compression({level: 9}));
     this.app.use('/.well-known', express.static(__dirname + '/.well-known'));
     this.app.use(express.static(ServerLite.DIR));
     if(!this._postponeRouter){
+      this.initHandlers();
       this.router();
     }
   }
@@ -65,19 +66,35 @@ export class ServerLite{
   }
 
   private static globalHeaders(req: any, res: any, next: any): void{
-    res.setHeader("Access-Control-Allow-Origin", "*");
-    res.setHeader("Access-Control-Allow-Headers", "X-Requested-With");
     res.header('X-Powered-By', 'MapLander');
     next();
   }
 
+  private initHandlers(): void{
+    ServerLite.handlerExceptionAndRejection();
+    this.app.use(ServerLite.handlerErrors);
+  }
+
   private static handlerErrors(err: any, req: any, res: any, next: any): void{
-    console.error(err.stack);
-    next(err);
+    if(err instanceof APIError){
+      return res.status(err.code).send(err);
+    }
+    res.status(500).send(err);
+  }
+
+  private static handlerExceptionAndRejection(): void{
+    process.on('uncaughtException', ServerLite.handleFatalErrors);
+    process.on('unhandledRejection', ServerLite.handleFatalErrors);
+  }
+
+  private static handleFatalErrors(err: any, req: any, res: any, next:any): void{
+    console.error('handleFatalErrors', err.message);
+    console.error('handleFatalErrors', err.stack);
+    process.exit(1);
   }
 
   private router(): void{
-    this.app.get('*', function (req, res) {
+    this.app.get('*',  (req, res) => {
       res.redirect('/#' + req.url);
     });
     this.initServer();

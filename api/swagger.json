@@ -3,7 +3,7 @@
   "info": {
     "description": "",
     "version": "1.0.0",
-    "title": "inSpector Proxy API Rest"
+    "title": "inSpector API Rest"
   },
   "host": "inspector-develop.maplander.com",
   "basePath": "/endpoints/v1",

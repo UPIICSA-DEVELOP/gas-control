@@ -74,8 +74,7 @@
             </mat-form-field>
           </div>
           <mat-form-field class="number">
-            <input formControlName="phoneNumber" matInput placeholder="Número celular" required type="text"
-                   aria-label="New collaborator cellphone number" #phoneNumber>
+            <input formControlName="phoneNumber" matInput placeholder="Número celular" required type="text" aria-label="New collaborator cellphone number" #phoneNumber>
             <mat-error *ngIf="newPerson.controls['phoneNumber'].hasError('required')">
               Este campo es obligatorio
             </mat-error>
@@ -88,11 +87,16 @@
           </mat-form-field>
         </div>
         <mat-form-field class="inputs">
-          <input matInput placeholder="Rol" [disabled]="true" [value]="roleType[5]">
+          <mat-select formControlName="role" placeholder="Rol" required aria-label="New collaborator role">
+            <mat-option value="5">Encargado de Estación</mat-option>
+            <mat-option value="6">Coordinador de Estación</mat-option>
+          </mat-select>
+          <mat-error *ngIf="newPerson.controls['role'].hasError('required')">
+            Este campo es obligatorio
+          </mat-error>
         </mat-form-field>
         <mat-form-field class="inputs">
-          <input formControlName="jobTitle" matInput placeholder="Cargo" required type="text"
-                 aria-label="New collaborator job title">
+          <input formControlName="jobTitle" matInput placeholder="Cargo" required type="text" aria-label="New collaborator job title">
           <mat-error *ngIf="newPerson.controls['jobTitle'].hasError('required')">
             Este campo es obligatorio
           </mat-error>

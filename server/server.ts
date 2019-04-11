@@ -9,8 +9,9 @@ import 'zone.js/dist/zone-node'
 import {enableProdMode} from '@angular/core';
 import {ServerStandard} from './types/server_standard';
 import {ServerLite} from './types/server_lite';
-import {EndPoints} from '../endpoints/endpoints';
+
 import * as nconfg from 'nconf';
+import {EndPoints} from '../api/endpoints';
 
 enableProdMode();
 
@@ -66,7 +67,7 @@ export class App {
 
   private static configEndPoints(app: any): void{
     const swaggerUi = require('swagger-ui-express');
-    const swaggerDocument = require('../dist/endpoints/swagger.json');
+    const swaggerDocument = require('../dist/api/swagger.json');
     const options = {
       customCss: '.swagger-ui .topbar { display: none }'
     };
