@@ -4,7 +4,7 @@
  * Proprietary and confidential
  */
 
-import {Component, DoCheck, Input, OnChanges, OnDestroy, OnInit, SimpleChanges} from '@angular/core';
+import {Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges} from '@angular/core';
 import {ApiService} from '@app/core/services/api/api.service';
 import {SnackBarService} from '@app/core/services/snackbar/snackbar.service';
 import {DialogService} from '@app/core/components/dialog/dialog.service';
@@ -71,7 +71,7 @@ export class DirectoryListComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   public deleteCollaborator(id: string, index: number, role: number){
-    if (role<=5){
+    if (role<=4){
       this._dialogService.alertDialog(
         'Información',
         'No es posible eliminar este usuario',
@@ -135,6 +135,37 @@ export class DirectoryListComponent implements OnInit, OnChanges, OnDestroy {
           break;
       }
     })
+  }
+
+  public changeRoleCollaborator(person: any):void{
+    let newRole = 0;
+    switch (person.role){
+      case 5:
+        newRole = 6;
+        break;
+      case 6:
+        newRole = 5;
+        break;
+    }
+    const message = '¿Desea cambiar el rol de '+person.name+' '+person.lastName+' a '+this.roleType[newRole-1]+'?';
+    this._dialogService.confirmDialog(message,'','ACEPTAR','CANCELAR').afterClosed().subscribe(response=>{
+      switch (response.code){
+        case 1:
+          this._api.updateRolePerson(person.id, newRole).subscribe(response=>{
+            switch (response.code) {
+              case 200:
+                this._snackBarService.openSnackBar('Rol actualizado', 'OK', 2000);
+                this.getCollaborators();
+                break;
+              default:
+                this._snackBarService.openSnackBar('No se ha podido actualizar el rol', 'OK', 2000);
+                this.getCollaborators();
+                break;
+            }
+          });
+          break;
+      }
+    });
   }
 
 }

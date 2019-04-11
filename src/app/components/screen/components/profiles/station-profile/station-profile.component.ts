@@ -185,7 +185,7 @@ export class StationProfileComponent implements OnInit, OnDestroy {
       address:['',[Validators.required]],
       phoneNumber:['',[Validators.required, Validators.minLength(8), Validators.maxLength(13)]],
       email:['', [Validators.required, Validators.email]],
-      managerName:[{value:'', disabled: true},[]],
+      /*managerName:[{value:'', disabled: true},[]],*/
       workers:['',[]],
       monitoringWells:['',[]],
       observationWells:['',[]]
@@ -233,7 +233,7 @@ export class StationProfileComponent implements OnInit, OnDestroy {
             address:this.station.address,
             phoneNumber:this.station.phoneNumber,
             email:this.station.email,
-            managerName:this.station.managerName,
+            /*managerName:this.station.managerName,*/
             workers:this.station.workers,
             monitoringWells:this.station.monitoringWells,
             observationWells: this.station.observationWells,

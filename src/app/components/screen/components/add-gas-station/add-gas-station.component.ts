@@ -49,6 +49,7 @@ interface Station {
   workShifts?: any;
   fuelTanks?: any;
   dispensers?: any;
+  vapourRecoverySystem: boolean;
 }
 
 @Component({
@@ -212,10 +213,11 @@ export class AddGasStationComponent implements OnInit, OnDestroy {
       address: ['', [Validators.required]],
       phoneNumber: ['', [Validators.required, Validators.minLength(8), Validators.maxLength(13)]],
       legalRepresentative:['',[Validators.required]],
-      manager:['',[Validators.required]],
+      /*manager:['',[Validators.required]],*/
       workers: ['', []],
       monitoringWells: ['', []],
-      observationWells: ['', []]
+      observationWells: ['', []],
+      vrs: [false, []]
     });
   }
 
@@ -468,7 +470,8 @@ export class AddGasStationComponent implements OnInit, OnDestroy {
         idLegalRepresentative: this.legalId,
         legalRepresentativeName: this.legalName,
         idManager: this.managerId,
-        managerName: this.managerName
+        managerName: this.managerName,
+        vapourRecoverySystem: data.vrs
       };
       this.createStation();
     }

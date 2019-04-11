@@ -39,14 +39,19 @@
                 <mat-divider></mat-divider>
                 <div class="action-buttons">
                   <div class="button">
-                    <button mat-button *ngIf="collaborator.role===6" matTooltip="Eliminar" (click)="deleteCollaborator(collaborator.id, i, collaborator.role)">
+                    <button mat-button *ngIf="collaborator.role!==4" matTooltip="Eliminar" (click)="deleteCollaborator(collaborator.id, i, collaborator.role)">
                       <mat-icon>delete</mat-icon>
                     </button>
                   </div>
                   <div class="button">
-                    <a href="mailto:{{collaborator.email}}" class="link">
-                      <button matTooltip="Enviar email" mat-button>
-                        <mat-icon>mail</mat-icon>
+                    <button *ngIf="(user.role<5 || user.role===7) && collaborator.role!==4" mat-button (click)="changeRoleCollaborator(collaborator)">
+                      <mat-icon matTooltip="Cambiar rol" svgIcon="icons:change_role"></mat-icon>
+                    </button>
+                  </div>
+                  <div class="button">
+                    <a href="https://wa.me/{{collaborator.countryCode || '52'}}{{collaborator.phoneNumber}}" class="link" target="_blank">
+                      <button matTooltip="Enviar WhatsApp" mat-button>
+                        <mat-icon svgIcon="icons:whatsapp"></mat-icon>
                       </button>
                     </a>
                   </div>
