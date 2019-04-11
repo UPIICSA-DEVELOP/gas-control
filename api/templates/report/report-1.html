@@ -29,15 +29,16 @@
       margin: 0;
     }
     .sheet{
-      padding: 0 25mm 25mm 25mm !important;
+      padding: 0 25mm 25mm 25mm;
     }
     .item{
       border: 1px solid #dddddd;
       padding: 8px;
       margin: 1px;
     }
-    table{
-      width: 100%;
+    #table{
+      width: 95%;
+      margin: 0 2.5%;
     }
     #title{
       font-size: 18pt;
@@ -50,9 +51,6 @@
     }
     .center{
       text-align: center;
-    }
-    .text{
-      font-weight: normal;
     }
     #binnacle{
       font-weight: bold;
@@ -83,16 +81,16 @@
 </head>
 <body class="letter">
 
-<section class="sheet">
+<section class="sheet" id="sheet">
 
 
   <article id="global-container">
     <h1 id="title" class="center">Reporte inSpéctor</h1>
-    <p class="sub-title center">
-      Limpiar y sujetar tierra física de compresor e hidroneumático
+    <p class="sub-title center" id="sub-title">
+      Retoque de porterías, huesos y bases de dispensarios de aire y agua
     </p>
     <p id="binnacle" class="center">
-      Compresor de aire
+      Operación y mantenimiento
     </p>
     <br>
     <br>
@@ -112,64 +110,103 @@
     </ul>
     <br>
     <br>
+    <table id="table">
+      <tr class="item">
+        <td>Tipo de mantenimiento</td>
+        <td id="type-maintenance">Preventivo</td>
+      </tr>
+      <tr class="item">
+        <td>Actividad a realizar</td>
+        <td id="activity">Eléctrico</td>
+      </tr>
+      <tr class="item">
+        <td>Tipo de personal</td>
+        <td id="type-personal">Interno</td>
+      </tr>
+    </table>
+    <br>
+    <br>
+
     <div class="container">
 
 
+      <div id="list-personal">
+        <p class="sub-title">
+          Personal involucrado:
+        </p>
+        <!--<ol type="1">
+          <li>Juan Carlos Hernández</li>
+          <li>Luis Manuel Pérez</li>
+        </ol>-->
+      </div>
+
+      <br>
+
+      <div id="list-equipment">
+        <p class="sub-title">
+          Equipo de protección utilizado:
+        </p>
+        <!--<ol type="1">
+          <li>Ropa de algodón</li>
+          <li>Zapato industrial</li>
+          <li>Guantes</li>
+          <li>Cubrebocas</li>
+        </ol>-->
+      </div>
+
+      <br>
+
+
       <p class="sub-title">
-        Marca: <span id="brand" class="text">N/A</span>
+        Herramientas y materiales utilizados:
+      </p>
+      <p class="paragraph" id="materials">
+        Palas, jabón, cubetas
+      </p>
+
+      <br>
+
+      <div id="list-procedures">
+        <p class="sub-title">
+          Procedimientos utilizados:
+        </p>
+        <!--<ol type="1">
+          <li>Candadeo y bloqueo de líneas eléctricas y de producto</li>
+          <li>Trabajos con fuentes que generan ignición </li>
+          <li>Trabajos en alturas</li>
+        </ol>-->
+      </div>
+
+
+      <br>
+
+      <p class="sub-title">
+        Si la actividad es crítica , requiere autorización del gerente:
+      </p>
+      <p class="paragraph" id="manager-authorization">
+        Se autoriza al personal de la empresa Ductos de México a realizar el cambio de la tubería correspondiente, autoriza la actividad en Gerente de la Estación Juan Camilo Sánchez.
       </p>
 
       <br>
 
       <p class="sub-title">
-        Modelo: <span id="model" class="text">N/A</span>
+        Observaciones:
       </p>
-
-      <br>
-
-      <p class="sub-title">
-        No. de control: <span id="control" class="text">N/A</span>
-      </p>
-
-      <br>
-
-      <table>
-        <tr class="item">
-          <td>Presión del manómetro (Kg/cm2)</td>
-          <td id="pressure">8</td>
-        </tr>
-        <tr class="item">
-          <td>Purga o descarga</td>
-          <td id="purge">Función correcta</td>
-        </tr>
-        <tr class="item">
-          <td>Disparo manual de válvula de seguridad</td>
-          <td id="shooting">Función incorrecta</td>
-        </tr>
-      </table>
-
-      <br>
-
-      <p class="sub-title">
-        Modificaciones y medidas correctivas: <span id="modify" class="text">N/A</span>
-      </p>
-
-      <br>
-
-      <p class="sub-title">
-        Observaciones: <span id="observations" class="text">N/A</span>
+      <p class="paragraph" id="observations">
+        Se realiza chequeo de la zona y no se encuentran anomalías.
       </p>
 
       <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
 
+
       <div id="title-evidence">
+        <br>
         <br>
         <p class="sub-title center">Evidencia fotográfica</p>
         <br>
       </div>
 
-
-      <div  id="parent-evidence"  style="width: 50%; margin: 0 auto; background-color: #dddddd; padding-bottom: calc(50% / 4 * 3); position: relative; display: flex; justify-content: center;">
+      <div id="parent-evidence" style="width: 50%; margin: 0 auto; background-color: #dddddd; padding-bottom: calc(50% / 4 * 3); position: relative; display: flex; justify-content: center;">
         <img style="position: absolute; height: 100%;" id="evidence" src="https://fscomps.fotosearch.com/compc/UNS/UNS082/compresor-de-aire-gasolinera-un-fotos__u12133678.jpg">
       </div>
 

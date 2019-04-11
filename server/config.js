@@ -22,12 +22,14 @@
     ENV: 'dev',
     PORT: 8090,
     SERVER: 2,
+    FRONT_URL: 'https://inspector-develop.maplander.com/',
     BACKEND_URL: 'https://schedule-maplander.appspot.com/_ah/api/communication/v1/'
   };
 
   if(process.env.NODE_ENV === 'prod'){
     data.ENV = 'prod';
     data.PORT = 9090;
+    data.FRONT_URL = 'https://app.inspectordenormas.com/';
     data.BACKEND_URL = 'https://inspector-backend.appspot.com/_ah/api/communication/v1/';
   }
 

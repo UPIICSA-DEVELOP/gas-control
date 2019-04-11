@@ -1,7 +1,8 @@
 
 
 import {Commons} from './commons'
-import {AttachedType, ReportType, TypeFuel, CreatePDFOptions, ParseHTMLOptions, PDFSASISOPAData} from './utils';
+import {CreatePDFOptions, ParseHTMLOptions, PDFSASISOPAData} from '../commons/interfaces';
+import {AttachedType, ReportType, TypeFuel} from '../commons/enum';
 
 class PdfSASISOPA{
 
@@ -365,6 +366,8 @@ class PdfSASISOPA{
 
             case ReportType.Report_1: // OM Report
 
+              document.getElementById('sub-title').textContent = item.name;
+
               document.getElementById('li-date').textContent = newDate[0] + ' ' + newDate[1] + ' ' + newDate[2];
               document.getElementById('li-time-1').textContent = Commons.createTimeString(item.startTime.toString());
               document.getElementById('li-time-2').textContent = Commons.createTimeString(item.endTime.toString());
@@ -506,6 +509,8 @@ class PdfSASISOPA{
               break;
             case ReportType.Report_2: // Compressor Report
 
+              document.getElementById('sub-title').textContent = item.name;
+
               document.getElementById('li-date').textContent = newDate[0] + ' ' + newDate[1] + ' ' + newDate[2];
               document.getElementById('li-time-1').textContent = Commons.createTimeString(item.startTime.toString());
               document.getElementById('li-time-2').textContent = Commons.createTimeString(item.endTime.toString());
@@ -596,6 +601,8 @@ class PdfSASISOPA{
               break;
             case ReportType.Report_4: // VRS Report
 
+              document.getElementById('sub-title').textContent = item.name;
+
               document.getElementById('li-date').textContent = newDate[0] + ' ' + newDate[1] + ' ' + newDate[2];
               document.getElementById('li-folio').textContent = Commons.formatFolio(item.folio.toString());
 
@@ -666,7 +673,7 @@ class PdfSASISOPA{
               break;
             case ReportType.Report_5: // Scanned Report
 
-              console.log('Scanned', item);
+              document.getElementById('binnacle').textContent = item.name;
 
               document.getElementById('li-date').textContent = newDate[0] + ' ' + newDate[1] + ' ' + newDate[2];
               document.getElementById('li-folio').textContent = Commons.formatFolio(item.folio.toString());

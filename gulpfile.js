@@ -12,15 +12,15 @@ gulp.task('clean:zip', function () {
 
 gulp.task('templates', function() {
   return gulp.src([
-    './endpoints/templates/**/**',
-    './endpoints/docs/**/**',
-  ]).pipe(gulp.dest('./dist/endpoints/templates'));
+    './api/templates/**/**',
+    './api/docs/**/**',
+  ]).pipe(gulp.dest('./dist/api/templates'));
 });
 
-gulp.task('endpoints', ['templates'], function() {
+gulp.task('api', ['templates'], function() {
   return gulp.src([
-    './endpoints/*.json'
-  ]).pipe(gulp.dest('./dist/endpoints'));
+    './api/*.json'
+  ]).pipe(gulp.dest('./dist/api'));
 });
 
 gulp.task('zip', () => {
