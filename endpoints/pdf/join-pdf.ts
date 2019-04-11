@@ -1,6 +1,6 @@
 
 import {Commons} from './commons';
-import {JoinPdfData} from './utils';
+import {JoinPdfData} from '../commons/interfaces';
 
 export class JoinPdf{
 

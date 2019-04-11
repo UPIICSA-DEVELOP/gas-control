@@ -1,7 +1,8 @@
 
 
 import {Commons} from './commons'
-import {AttachedType, ReportType, TypeFuel, CreatePDFOptions, ParseHTMLOptions, PDFSASISOPAData} from './utils';
+import {CreatePDFOptions, ParseHTMLOptions, PDFSASISOPAData} from '../commons/interfaces';
+import {AttachedType, ReportType, TypeFuel} from '../commons/enum';
 
 class PdfSASISOPA{
 

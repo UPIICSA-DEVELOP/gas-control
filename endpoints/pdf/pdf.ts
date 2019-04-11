@@ -1,46 +1,36 @@
 import {Commons} from './commons'
-import {PdfData, PDFSASISOPAData, PDFSGMData} from './utils';
-import * as nconfg from 'nconf';
-
-
+import {PdfData, PDFSASISOPAData, PDFSGMData} from '../commons/interfaces';
+import {APIError, DefaultResponse, ServerError} from '../commons/class';
 
 export class Pdf{
 
   private static BACKEND_URL = 'https://schedule-maplander.appspot.com/_ah/api/communication/v1/';
   private _commons: Commons;
-  private _response: any;
   private _taskTemplate: any[];
   private _uTaskTemplate: any[];
   private _stationId: string;
 
-  constructor(data: PdfData){
-    if(!data){
-      this._response.code = 422;
-      this._response.description = 'Incomplete Params';
-      Pdf.finish(this._response);
-    }
+  constructor(){
     require('nconf').argv().env().file({ file: 'config.json' });
     if(require('nconf').get('BACKEND_URL')){
       Pdf.BACKEND_URL = require('nconf').get('BACKEND_URL');
     }
-    this._stationId = data.stationId;
     this._commons = new Commons();
-    this._response = {
-      code: 200,
-      description: 'OK'
-    };
     this._taskTemplate = [];
+  }
+
+  public async init(data: PdfData): Promise<DefaultResponse | APIError>{
+    this._stationId = data.stationId;
     if(data.isSGM){
-      this.initSGM();
+      return await this.initSGM();
     }else{
-      this._uTaskTemplate = [];
-      this.initSASISOPA();
+      return await this.initSASISOPA();
     }
   }
 
-  private initSASISOPA(): void {
+  private async initSASISOPA(): Promise<DefaultResponse | APIError> {
 
-    let stationTaskId, date, tasks;
+    let stationTaskId, dateForFilter, tasks;
     const uTasks = {
       incidences: [],
       hwc: [],
@@ -65,141 +55,117 @@ export class Pdf{
 
     const body = {id: this._stationId};
 
-    this._commons.request(Pdf.BACKEND_URL + 'saveFullSasisopa', 'POST', body).then(response => {
+    let response, params, items;
+
+    try{
+
+      response = await this._commons.request(Pdf.BACKEND_URL + 'saveFullSasisopa', 'POST', body);
       switch (response.code) {
         case 200:
-          this._response.item = {
-            date: response.item.date
-          };
           infoPdfGenerator.date = response.item.date;
-          return this._commons.request(Pdf.BACKEND_URL + 'getUtils');
-        default:
-          this._response.code = 400;
-          this._response.description = 'Bad Request - saveFullSasisopa|' + JSON.stringify(response);
-          Pdf.finish(this._response);
           break;
+        default:
+          return new APIError('Bad Request ' + JSON.stringify(response), 400);
       }
-    }).then(response => {
+      response = await this._commons.request(Pdf.BACKEND_URL + 'getUtils');
       switch (response.code) {
         case 200:
-          this._taskTemplate = response.item.taskTemplates;
-          this._uTaskTemplate = response.item.uTaskTemplates;
-          infoPdfGenerator.sasisopaTemplates = response.item.sasisopaTemplates;
-          infoPdfGenerator.listProcedures = response.item.procedures;
-          return this._commons.request(Pdf.BACKEND_URL + 'getStation?id=' + this._stationId);
-        default:
-          this._response.item = null;
-          this._response.code = 400;
-          this._response.description = 'Bad Request - getStation |' + JSON.stringify(response);
-          Pdf.finish(this._response);
+          this._taskTemplate = response.item.taskTemplates || [];
+          this._uTaskTemplate = response.item.uTaskTemplates || [];
+          infoPdfGenerator.sasisopaTemplates = response.item.sasisopaTemplates || [];
+          infoPdfGenerator.listProcedures = response.item.procedures || [];
           break;
+        default:
+          return new APIError('Bad Request ' + JSON.stringify(response), 400);
       }
-    }).then(response => {
+      response = await this._commons.request(Pdf.BACKEND_URL + 'getStation?id=' + this._stationId);
       switch (response.code) {
         case 200:
           infoPdfGenerator.businessName = response.item.businessName || '';
           infoPdfGenerator.stationRFC = response.item.rfc || '';
           infoPdfGenerator.listTanks = response.item.fuelTanks || [];
           stationTaskId = response.item.stationTaskId;
-          if(!stationTaskId){
-            this._response.item = null;
-            this._response.code = 400;
-            this._response.description = 'Bad Request | stationTaskId does not exist';
-            Pdf.finish(this._response);
-          }else{
-            return this._commons.request(Pdf.BACKEND_URL + 'listCollaborators?isConsultancy=false&refId=' + this._stationId);
+          if (!stationTaskId) {
+            return new APIError('Bad RequestStation Task id does not exist ' + JSON.stringify(response), 400);
           }
           break;
         default:
-          this._response.item = null;
-          this._response.code = 400;
-          this._response.description = 'Bad Request - listCollaborators | ' + JSON.stringify(response);
-          Pdf.finish(this._response);
-          break;
+          return new APIError('Bad Request ' + JSON.stringify(response), 400);
       }
-    }).then(response => {
-      switch (response.code) {
-        case 200:
-          infoPdfGenerator.listCollaborators = response.items || [];
-          return this._commons.request(Pdf.BACKEND_URL + 'getSasisopa?stationId=' + this._stationId);
-        default:
-          this._response.item = null;
-          this._response.code = 400;
-          this._response.description = 'Bad Request - getSasisopa |' + JSON.stringify(response);
-          Pdf.finish(this._response);
-          break;
-      }
-    }).then(response => {
+      response = await this._commons.request(Pdf.BACKEND_URL + 'listCollaborators?isConsultancy=false&refId=' + this._stationId);
 
       switch (response.code) {
         case 200:
-          if(response.item.sasisopaDocuments.length === 0 || response.item.brigade.brigadeElems.length === 0){
-            this._response.item = null;
-            this._response.code = 400;
-            this._response.description = 'Bad Request - sasisopaDocuments | sasisopaDocuments or brigadeElems is empty';
-            Pdf.finish(this._response);
-          }else{
+          infoPdfGenerator.listCollaborators = response.items || [];
+          break;
+        default:
+          return new APIError('Bad Request ' + JSON.stringify(response), 400);
+      }
+      response = await this._commons.request(Pdf.BACKEND_URL + 'getSasisopa?stationId=' + this._stationId);
+
+      switch (response.code) {
+        case 200:
+          if (response.item.sasisopaDocuments.length === 0 || response.item.brigade.brigadeElems.length === 0) {
+            return new APIError('Bad Request sasisopaDocuments and brigadeElems length is equst to zero' + JSON.stringify(response), 400);
+          } else {
             infoPdfGenerator.sasisopaDocuments = response.item.sasisopaDocuments || [];
             infoPdfGenerator.listBrigade = response.item.brigade.brigadeElems || [];
-            date = response.item.evidencesDate.date;
-            const params = '?stationTaskId=' + stationTaskId + '&fromDate=' + date + '&status=4&untilDate=' + date;
-            return this._commons.request(Pdf.BACKEND_URL + 'listTask' + params);
+            dateForFilter = response.item.evidencesDate.date;
+            params = `?stationTaskId=${stationTaskId}&fromDate=${dateForFilter}&status=4&untilDate=${dateForFilter}`;
           }
           break;
         default:
-          this._response.item = null;
-          this._response.code = 400;
-          this._response.description = 'Bad Request |' + JSON.stringify(response);
-          Pdf.finish(this._response);
-          break;
+          return new APIError('Bad Request ' + JSON.stringify(response), 400);
       }
-    }).then(response => {
+      response = await this._commons.request(Pdf.BACKEND_URL + 'listTask' + params);
       tasks = response.items || [];
-      const params = '?stationTaskId='+ stationTaskId +'&type=1&fromDate='+ date + '&untilDate=' + date;
-      return this._commons.request(Pdf.BACKEND_URL + 'listUTask' + params);
-    }).then(response => {
+      params = `?stationTaskId=${stationTaskId}&type=1&fromDate=${dateForFilter}&untilDate=${dateForFilter}`;
+      response = await this._commons.request(Pdf.BACKEND_URL + 'listUTask' + params);
+
       uTasks.fr = response.items || [];
-      const params = '?stationTaskId='+ stationTaskId +'&type=2&fromDate='+ date + '&untilDate=' + date;
-      return this._commons.request(Pdf.BACKEND_URL + 'listUTask' + params);
-    }).then(response => {
+      params = `?stationTaskId=${stationTaskId}&type=2&fromDate=${dateForFilter}&untilDate=${dateForFilter}`;
+      response = await this._commons.request(Pdf.BACKEND_URL + 'listUTask' + params);
+
       uTasks.hwc = response.items || [];
-      const params = '?stationTaskId='+ stationTaskId +'&type=3&fromDate='+ date + '&untilDate=' + date;
-      return this._commons.request(Pdf.BACKEND_URL + 'listUTask' + params);
-    }).then(reponse => {
-      uTasks.incidences = reponse.items || [];
-      return this.getTasksByTemplateId(tasks, this._taskTemplate);
-    }).then(items => {
+      params = `?stationTaskId=${stationTaskId}&type=3&fromDate=${dateForFilter}&untilDate=${dateForFilter}`;
+      response = await this._commons.request(Pdf.BACKEND_URL + 'listUTask' + params);
+
+      uTasks.incidences = response.items || [];
+      items = await this.getTasksByTemplateId(tasks, this._taskTemplate);
+
       items.forEach(i => {
         finalTaskList.push(Pdf.clearTaskByFolio(i));
       });
-      return this.getTasksByTemplateId(uTasks.fr, this._uTaskTemplate);
-    }).then(items => {
+
+      items = await this.getTasksByTemplateId(uTasks.fr, this._uTaskTemplate);
+
       items.forEach(i => {
         finalTaskList.push(Pdf.clearTaskByFolio(i));
       });
-      return this.getTasksByTemplateId(uTasks.hwc, this._uTaskTemplate);
-    }).then(items => {
+
+      items = await this.getTasksByTemplateId(uTasks.hwc, this._uTaskTemplate);
+
       items.forEach(i => {
         finalTaskList.push(Pdf.clearTaskByFolio(i));
       });
-      return this.getTasksByTemplateId(uTasks.incidences, this._uTaskTemplate);
-    }).then(items => {
+      items = await this.getTasksByTemplateId(uTasks.incidences, this._uTaskTemplate);
+
       items.forEach(i => {
         finalTaskList.push(Pdf.clearTaskByFolio(i));
       });
       infoPdfGenerator.listTasks = finalTaskList;
       this.initPDFSASISOPA(infoPdfGenerator);
-      Pdf.finish(this._response);
-    }).catch(error => {
-      this._response.item = null;
-      this._response.code = 400;
-      this._response.description = 'Bad Request |' + error;
-      Pdf.finish(this._response);
-    });
+
+      return new DefaultResponse({date: infoPdfGenerator.date});
+
+    }catch (e){
+      return new APIError(e.message, 500);
+    }
+
 
   }
 
-  private initSGM(): void{
+  private async initSGM(): Promise<DefaultResponse | APIError> {
 
     let date = null, stationTaskId = null, tasks;
 
@@ -219,31 +185,34 @@ export class Pdf{
 
     const body = {id: this._stationId};
 
-    this._commons.request(Pdf.BACKEND_URL + 'getUtils').then(response => {
+    let response, params, items;
+
+    try{
+
+      response = await this._commons.request(Pdf.BACKEND_URL + 'getUtils');
+
       switch (response.code){
         case 200:
           data.sgmDocuments = response.item.sgmDocuments;
           this._taskTemplate = response.item.taskTemplates;
-          return this._commons.request(Pdf.BACKEND_URL + 'saveFullSgm', 'POST', body);
-        default:
-          this._response.code = 400;
-          this._response.description = 'Bad Request | ' + JSON.stringify(response);
-          Pdf.finish(this._response);
           break;
+        default:
+          return new APIError('Bad Request ' + JSON.stringify(response), 400);
       }
-    }).then(response => {
+
+      response = await this._commons.request(Pdf.BACKEND_URL + 'saveFullSgm', 'POST', body);
+
       switch (response.code){
         case 200:
           date = response.item.date;
           data.date = date;
-          return this._commons.request(Pdf.BACKEND_URL + 'getStation?id=' + this._stationId);
-        default:
-          this._response.code = 400;
-          this._response.description = 'Bad Request | ' + JSON.stringify(response);
-          Pdf.finish(this._response);
           break;
+        default:
+          return new APIError('Bad Request ' + JSON.stringify(response), 400);
       }
-    }).then(response => {
+
+      response = await this._commons.request(Pdf.BACKEND_URL + 'getStation?id=' + this._stationId);
+
       switch (response.code){
         case 200:
           data.businessName = response.item.businessName;
@@ -251,67 +220,64 @@ export class Pdf{
           data.address = response.item.address;
           data.rfc = response.item.rfc;
           stationTaskId = response.item.stationTaskId;
-          return this._commons.request(Pdf.BACKEND_URL + 'getSgm?stationId=' + this._stationId);
-        default:
-          this._response.code = 400;
-          this._response.description = 'Bad Request | ' + JSON.stringify(response);
-          Pdf.finish(this._response);
           break;
+        default:
+          return new APIError('Bad Request ' + JSON.stringify(response), 400);
       }
-    }).then(response => {
+
+      response = await this._commons.request(Pdf.BACKEND_URL + 'getSgm?stationId=' + this._stationId);
+
       switch (response.code){
         case 200:
           data.sgmSelection = response.item.sgmSelection;
-          const params = '?stationTaskId=' + stationTaskId + '&type=31&status=4';
-          return this._commons.request(Pdf.BACKEND_URL + 'listTask' + params);
-        default:
-          this._response.code = 400;
-          this._response.description = 'Bad Request | ' + JSON.stringify(response);
-          Pdf.finish(this._response);
           break;
+        default:
+          return new APIError('Bad Request ' + JSON.stringify(response), 400);
       }
-    }).then(response => {
+
+      params = `?stationTaskId=${stationTaskId}&type=31&status=4`;
+      response = await this._commons.request(Pdf.BACKEND_URL + 'listTask' + params);
+
       switch (response.code){
         case 200:
           tasks = response.items || [];
-          return this.getTasksByTemplateId(tasks, this._taskTemplate);
-        default:
-          this._response.code = 400;
-          this._response.description = 'Bad Request | ' + JSON.stringify(response);
-          Pdf.finish(this._response);
           break;
+        default:
+          return new APIError('Bad Request ' + JSON.stringify(response), 400);
       }
-    }).then(items => {
+
+      items = await this.getTasksByTemplateId(tasks, this._taskTemplate);
+
       items.forEach(item => {
         data.taskListAnnexed1.push(Pdf.clearTaskByFolio(item));
       });
-      const params = '?stationTaskId=' + stationTaskId + '&type=41&status=4';
-      return this._commons.request(Pdf.BACKEND_URL + 'listTask' + params);
-    }).then(response => {
+
+      params = `?stationTaskId=${stationTaskId}&type=41&status=4`;
+
+      response = await this._commons.request(Pdf.BACKEND_URL + 'listTask' + params);
+
       switch (response.code){
         case 200:
           tasks = response.items || [];
-          return this.getTasksByTemplateId(tasks, this._taskTemplate);
-        default:
-          this._response.code = 400;
-          this._response.description = 'Bad Request | ' + JSON.stringify(response);
-          Pdf.finish(this._response);
           break;
+        default:
+          return new APIError('Bad Request ' + JSON.stringify(response), 400);
       }
-    }).then(items => {
+
+      items = await this.getTasksByTemplateId(tasks, this._taskTemplate);
+
       items.forEach(item => {
         data.taskListAnnexed2.push(Pdf.clearTaskByFolio(item));
       });
+
       this.initPDFSGM(data);
-      this._response.item = {
-        date: date
-      };
-      Pdf.finish(this._response);
-    }).catch(error => {
-      this._response.code = 500;
-      this._response.description = 'Internal Server Error | ' + error;
-      Pdf.finish(this._response);
-    });
+
+      return new DefaultResponse({date: data.date});
+
+    }catch (e){
+      return new APIError(e.message, 500);
+    }
+
   }
 
   private static clearTaskByFolio(task: any[]): any{
@@ -360,7 +326,6 @@ export class Pdf{
     process.send(data);
   }
 
-
   private getTask(type: number, id: string): Promise<any>{
     switch (type){
       case 1:
@@ -382,12 +347,13 @@ export class Pdf{
     }
   }
 
-  private static finish(response: any): void{
-    process.send(response);
-  }
-
 }
 
 process.on('message', (data: PdfData) => {
-  new Pdf(data);
+  const pdf = new Pdf();
+  pdf.init(data).then((response: DefaultResponse | APIError) => {
+    process.send(response);
+  }).catch(error => {
+    process.send(error);
+  })
 });

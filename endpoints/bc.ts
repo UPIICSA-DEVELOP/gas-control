@@ -1,4 +1,4 @@
-import {BCData} from './pdf/utils';
+import {BCData} from './commons/interfaces';
 
 export class BC{
 

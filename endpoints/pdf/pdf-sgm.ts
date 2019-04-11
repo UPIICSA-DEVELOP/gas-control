@@ -1,5 +1,6 @@
 import {Commons} from './commons';
-import {AttachedType, CreatePDFOptions, ParseHTMLOptions, PDFSGMData, ReportType, TypeFuel} from './utils';
+import {CreatePDFOptions, ParseHTMLOptions, PDFSGMData} from '../commons/interfaces';
+import {AttachedType, ReportType} from '../commons/enum';
 
 
 export class PdfSGM{

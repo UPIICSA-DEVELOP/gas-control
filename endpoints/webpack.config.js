@@ -8,7 +8,6 @@ module.exports = {
     ['join-pdf']: path.join(__dirname, 'pdf', 'join-pdf.ts'),
     ['pdf']: path.join(__dirname, 'pdf', 'pdf.ts'),
     ['commons']: path.join(__dirname, 'pdf', 'commons.ts'),
-    ['utils']: path.join(__dirname, 'pdf', 'utils.ts'),
     ['bc']: path.join(__dirname, 'bc.ts'),
     ['endpoints']: path.join(__dirname, 'endpoints.ts')
   },
