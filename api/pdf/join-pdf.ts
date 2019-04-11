@@ -1,107 +1,94 @@
 
 import {Commons} from './commons';
 import {JoinPdfData} from '../commons/interfaces';
+import {APIError} from '../commons/class';
 
 export class JoinPdf{
 
   private static BACKEND_URL = 'https://schedule-maplander.appspot.com/_ah/api/communication/v1/';
-  private _response: any;
-
   private  _commons: Commons;
 
-  constructor(data: JoinPdfData){
+  constructor(){
     this._commons = new Commons();
     require('nconf').argv().env().file({ file: 'config.json' });
     if(require('nconf').get('BACKEND_URL')){
       JoinPdf.BACKEND_URL = require('nconf').get('BACKEND_URL');
     }
+  }
+
+  public async init(data: JoinPdfData): Promise<Buffer | APIError>{
     if(data.isSGM){
-      this.initSGM(data.stationId);
+      return await this.initSGM(data.stationId);
     }else{
-      this.initSASISOPA(data.stationId);
+      return await this.initSASISOPA(data.stationId);
     }
   }
 
-  private initSASISOPA(id: string): void{
-    this._commons.request(JoinPdf.BACKEND_URL + 'getSasisopa?stationId=' + id).then(response => {
-     switch (response.code){
-       case 200:
-         if( response.item.fullSasisopa.files){
-           const files = response.item.fullSasisopa.files || [];
-           const urls: string[] = [];
-           files.forEach(file => {
-             urls.push(file.thumbnail);
-           });
-           return this.downloadFiles(urls);
-         }else{
-           this._response = {
-             code: 400,
-             description: 'Bad Request | files object does not exist on fullSasisopa'
-           };
-           JoinPdf.finish(this._response);
-         }
-         break;
-       default:
-         this._response = {
-           code: 400,
-           description: 'Bad Request ' + response
-         };
-         JoinPdf.finish(this._response);
-         break;
-     }
-    }).then(response => {
-      return this._commons.joinPDF(response);
-    }).then(buffer => {
-      this._response = buffer;
-      JoinPdf.finish(this._response);
-    }).catch(error => {
-      this._response = {
-        code: 500,
-        description: 'Internal Sever Error ' + error
-      };
-      JoinPdf.finish(this._response);
-    });
+  private async initSASISOPA(id: string): Promise<Buffer | APIError>{
+
+    const urls:  string[]  = [];
+    let response;
+
+    try{
+      response = await this._commons.request(JoinPdf.BACKEND_URL + 'getSasisopa?stationId=' + id);
+
+      switch (response.code){
+        case 200:
+          if( response.item.fullSasisopa.files){
+            const files = response.item.fullSasisopa.files || [];
+            files.forEach(file => {
+              urls.push(file.thumbnail);
+            });
+          }else{
+            return new APIError('Bad Request files object does not exist on fullSasisopa', 400);
+          }
+          break;
+        default:
+          return new APIError('Bad Request ' + JSON.stringify(response), 400);
+      }
+
+      response = await this.downloadFiles(urls);
+
+      response = await this._commons.joinPDF(response);
+
+      return new Buffer(response, 'binary')
+    }catch (e){
+      return new APIError(e.message, 500);
+    }
   }
 
-  private initSGM(id: string): void{
-    this._commons.request(JoinPdf.BACKEND_URL + 'getSgm?stationId=' + id).then(response => {
+  private async initSGM(id: string): Promise<Buffer | APIError>{
+
+    const urls: string[] = [];
+    let response;
+
+    try{
+      response = await this._commons.request(JoinPdf.BACKEND_URL + 'getSgm?stationId=' + id);
+
       switch (response.code){
         case 200:
           if(response.item.fullSgm.files){
             const files = response.item.fullSgm.files || [];
-            const urls: string[] = [];
             files.forEach(file => {
               urls.push(file.thumbnail);
             });
-            return this.downloadFiles(urls);
           }else{
-            this._response = {
-              code: 400,
-              description: 'Bad Request | files object does not exist on fullSgm'
-            };
-            JoinPdf.finish(this._response);
+            return new APIError('Bad Request files object does not exist on fullSgm', 400);
           }
           break;
         default:
-          this._response = {
-            code: 400,
-            description: 'Bad Request ' + response
-          };
-          JoinPdf.finish(this._response);
-          break;
+          return new APIError('Bad Request ' + JSON.stringify(response), 400);
       }
-    }).then(response => {
-      return this._commons.joinPDF(response);
-    }).then(buffer => {
-      this._response = buffer;
-      JoinPdf.finish(this._response);
-    }).catch(error => {
-      this._response = {
-        code: 500,
-        description: 'Internal Sever Error ' + error
-      };
-      JoinPdf.finish(this._response);
-    });
+
+      response =  await this.downloadFiles(urls);
+
+      response = await this._commons.joinPDF(response);
+
+      return new Buffer(response, 'binary');
+
+    }catch (e){
+     return new APIError(e.message, 500);
+    }
   }
 
   private async downloadFiles(urls: string[]): Promise<Buffer[]>{
@@ -113,12 +100,13 @@ export class JoinPdf{
     return buffers;
   }
 
-  private static finish(response: any): void{
-    process.send(response);
-  }
-
 }
 
 process.on('message', (data: JoinPdfData) => {
-  new JoinPdf(data)
+  const join = new JoinPdf();
+  join.init(data).then(response => {
+    process.send(response);
+  }).catch(error => {
+    process.send(error);
+  });
 });
