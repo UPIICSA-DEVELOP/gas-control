@@ -196,6 +196,8 @@ export class PdfSGM{
               break;
             case ReportType.Report_1: // OM Report
 
+              document.getElementById('sub-title').textContent = item.name;
+
               document.getElementById('sheet').style.padding = '25mm !important';
 
               document.getElementById('li-date').textContent = newDate[0] + ' ' + newDate[1] + ' ' + newDate[2];

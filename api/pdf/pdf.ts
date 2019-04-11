@@ -296,6 +296,7 @@ export class Pdf{
               response.items.forEach((item) => {
                 item.typeReport = template.typeReport;
                 item.evidence = template.evidence;
+                item.name = template.name;
               });
               finalTasks.push(response.items);
             }
