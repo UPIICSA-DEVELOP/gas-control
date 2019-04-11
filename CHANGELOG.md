@@ -2,6 +2,23 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="1.3.0-beta.7"></a>
+# [1.3.0-beta.7](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/compare/v1.3.0-beta.6...v1.3.0-beta.7) (2019-04-11)
+
+
+### Bug Fixes
+
+* **CollaboratorsList:** modify back  button message ([195eeab](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/195eeab))
+* **NavBar:** modify contextual menu for mobiles ([848b3ac](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/848b3ac))
+* **SASISOPA:** solve error in get evidencesDate ([178bf12](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/178bf12))
+
+
+### Features
+
+* **server:** Adding new error handling ([bb15c06](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/bb15c06))
+
+
+
 <a name="1.3.0-beta.6"></a>
 # [1.3.0-beta.6](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/compare/v1.3.0-beta.5...v1.3.0-beta.6) (2019-04-10)
 
