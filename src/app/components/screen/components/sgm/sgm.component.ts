@@ -83,12 +83,7 @@ export class SgmComponent implements OnInit, OnDestroy {
   }
 
   public close():void{
-    if(this.elementOnView !== 0){
-      this.elementOnView = 0;
-      this._token = null;
-    }else{
-      this._matDialogRef.close();
-    }
+    this._matDialogRef.close();
   }
 
   public seeFile(url: any):void{
@@ -119,6 +114,7 @@ export class SgmComponent implements OnInit, OnDestroy {
     this._api.saveSgmSelection(selection).subscribe(response => {
       switch (response.code){
         case 200:
+          this.getSgm();
           this._snackBarService.openSnackBar('Información actualizada', 'OK', 3000);
           break;
           default:
@@ -126,6 +122,136 @@ export class SgmComponent implements OnInit, OnDestroy {
           break;
       }
     })
+  }
+
+  public getStationTasks(isAnnexedOne: boolean):void{
+    let type = '0';
+    this._token = null;
+    if(isAnnexedOne){
+      this.elementOnView = 1;
+      type = '41';
+    }else{
+      this.elementOnView = 2;
+      type = '31';
+    }
+    this._api.listTask({
+      stationTaskId: this.station.stationTaskId,
+      startDate: '',
+      status: '4',
+      endDate: '',
+      firstOpen: true,
+      type: type,
+      cursor: this._token
+    }).subscribe(response => {
+      switch (response.code){
+        case 200:
+          if(this._token === response.nextPageToken){
+            this._token = null;
+          }else{
+            this._token = response.nextPageToken;
+          }
+          this.listTasks = this.buildListTasks(response.items);
+          break;
+        default:
+          this.listTasks = [];
+          break;
+      }
+    });
+  }
+
+  public generateSgm():void{
+    if(this.generate && this.dateGeneration.length !== 0){
+      this._dialogService.confirmDialog(
+        'Esta operación reiniciará la fecha para la generación del documento',
+        '¿Desea continuar?',
+        'ACEPTAR',
+        'CANCELAR'
+      ).afterClosed().subscribe(response => {
+        switch (response.code){
+          case 1:
+            let error = false;
+            if(!this.magna && !this.premium && !this.diesel){
+              error = true
+            }
+            if(!this.software){
+              error = true;
+            }
+            if(error){
+              this._snackBarService.openSnackBar('Por favor, complete la información para generar el SGM','OK',3000);
+              return;
+            }else{
+              this._api.getFullPDF(this.station.id, true).subscribe(response =>{
+                switch(response.code){
+                  case 200:
+                    this.generate = true;
+                    this.dateGeneration = UtilitiesService.convertDate(response.item.date);
+                    const today = UtilitiesService.createPersonalTimeStamp(new Date);
+                    if(response.item.date <= today.timeStamp){
+                      this.isAvailable = true;
+                    }
+                    break;
+                  default:
+                    this._snackBarService.openSnackBar('Ha ocurrido un error, por favor intente más tarde', 'OK', 3000);
+                    break;
+                }
+              });
+            }
+            break;
+        }
+      });
+    }else{
+      let error = false;
+      if(!this.magna && !this.premium && !this.diesel){
+        error = true
+      }
+      if(!this.software){
+        error = true;
+      }
+      if(error){
+        this._snackBarService.openSnackBar('Por favor, complete la información para generar el SGM','OK',3000);
+        return;
+      }else{
+        this._api.getFullPDF(this.station.id, true).subscribe(response =>{
+          switch(response.code){
+            case 200:
+              this.generate = true;
+              this.dateGeneration = UtilitiesService.convertDate(response.item.date);
+              const today = UtilitiesService.createPersonalTimeStamp(new Date);
+              if(response.item.date <= today.timeStamp){
+                this.isAvailable = true;
+              }
+              break;
+            default:
+              this._snackBarService.openSnackBar('Ha ocurrido un error, por favor intente más tarde', 'OK', 3000);
+              break;
+          }
+        });
+      }
+    }
+  }
+
+  public seeSGM(): void{
+    this._api.joinPDF(this.station.id, true).subscribe(response => {
+      const user = LocalStorageService.getItem(Constants.UserInSession);
+      switch (user.role){
+        case 1:
+        case 2:
+        case 7:
+          this._pdf.open({urlOrFile: response});
+          break;
+        case 3:
+        case 4:
+        case 5:
+        case 6:
+          this._pdf.open({urlOrFile: response, hideDownload: true });
+          break;
+      }
+    });
+  }
+
+  public changeOptions(newView: number): void{
+    this.getSgm();
+    this.elementOnView = newView;
   }
 
   private getSgm(): void{
@@ -176,70 +302,6 @@ export class SgmComponent implements OnInit, OnDestroy {
     });
   }
 
-  public getStationTasks(isAnnexedOne: boolean):void{
-    let type = '0';
-    if(isAnnexedOne){
-      this.elementOnView = 1;
-      type = '41';
-    }else{
-      this.elementOnView = 2;
-      type = '31';
-    }
-    this._api.listTask({
-      stationTaskId: this.station.stationTaskId,
-      startDate: '',
-      status: '4',
-      endDate: '',
-      firstOpen: true,
-      type: type,
-      cursor: this._token
-    }).subscribe(response => {
-      switch (response.code){
-        case 200:
-          if(this._token === response.nextPageToken){
-            this._token = null;
-          }else{
-            this._token = response.nextPageToken;
-          }
-          this.listTasks = this.buildListTasks(response.items);
-          break;
-        default:
-          this.listTasks = [];
-          break;
-      }
-    });
-  }
-
-  public generateSgm():void{
-    let error = false;
-    if(!this.magna && !this.premium && !this.diesel){
-      error = true
-    }
-    if(!this.software){
-      error = true;
-    }
-    if(error){
-      this._snackBarService.openSnackBar('Por favor, complete la información para generar el SGM','OK',3000);
-      return;
-    }else{
-      this._api.getFullPDF(this.station.id, true).subscribe(response =>{
-        switch(response.code){
-          case 200:
-            this.generate = true;
-            this.dateGeneration = UtilitiesService.convertDate(response.item.date);
-            const today = UtilitiesService.createPersonalTimeStamp(new Date);
-            if(response.item.date <= today.timeStamp){
-              this.isAvailable = true;
-            }
-            break;
-          default:
-            this._snackBarService.openSnackBar('Ha ocurrido un error, por favor intente más tarde', 'OK', 3000);
-            break;
-        }
-      });
-    }
-  }
-
   private buildListTasks(listTask: any): any[]{
     let newList = [];
     if(!listTask){
@@ -255,22 +317,4 @@ export class SgmComponent implements OnInit, OnDestroy {
     return newList;
   }
 
-    public seeSGM(): void{
-    this._api.joinPDF(this.station.id, true).subscribe(response => {
-      const user = LocalStorageService.getItem(Constants.UserInSession);
-      switch (user.role){
-        case 1:
-        case 2:
-        case 7:
-          this._pdf.open({urlOrFile: response});
-          break;
-        case 3:
-        case 4:
-        case 5:
-        case 6:
-          this._pdf.open({urlOrFile: response, hideDownload: true });
-          break;
-      }
-    });
-  }
 }

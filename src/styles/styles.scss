@@ -203,25 +203,24 @@ body{
 
 .sasisopa-panel{
   mat-dialog-container{
-    width: 45vw;
-    max-height: 75vh;
+    width: 70vw;
+    max-height: 95vh;
+    overflow: hidden;
     padding: 0;
-    @media screen and (max-width: 1200px){
-      width: 50vw;
-    }
     @media screen and (max-width: 800px){
-      width: 80vw;
+      width: 90vw;
     }
   }
 }
 
 .sgm-panel{
   mat-dialog-container{
-    width: 60vw;
+    width: 70vw;
     padding: 0;
-    max-height: 95vh;
+    overflow: hidden;
+    height: 95vh;
     @media screen and (max-width: 800px){
-      width: 80vw;
+      width: 90vw;
     }
   }
 }

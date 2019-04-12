@@ -305,6 +305,9 @@ export class ApiService implements OnDestroy{
     params = params.append('website', data.website || '');
     params = params.append('profileImage', data.profileImage || '');
     params = params.append('profileImageThumbnail', data.profileImageThumbnail || '');
+    if(data.bCardId){
+      params = params.append('bCardId', data.bCardId);
+    }
     const headers = new HttpHeaders().set('Content-Type', 'text/plain; charset=utf-8');
     return this._http.get(ApiService.PROXY_ENDPOINTS + 'endpoints/v1/bc', {
       headers: headers,
