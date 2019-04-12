@@ -117,7 +117,7 @@
             "in": "query",
             "name": "bCardId",
             "type": "string",
-            "description": "BC identifier"
+            "description": "BC identifier, if attribute exists, the BCard is updated else create new"
           }
         ],
         "responses": {
