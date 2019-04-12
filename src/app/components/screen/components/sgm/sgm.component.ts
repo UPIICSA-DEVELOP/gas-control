@@ -160,32 +160,73 @@ export class SgmComponent implements OnInit, OnDestroy {
   }
 
   public generateSgm():void{
-    let error = false;
-    if(!this.magna && !this.premium && !this.diesel){
-      error = true
-    }
-    if(!this.software){
-      error = true;
-    }
-    if(error){
-      this._snackBarService.openSnackBar('Por favor, complete la información para generar el SGM','OK',3000);
-      return;
-    }else{
-      this._api.getFullPDF(this.station.id, true).subscribe(response =>{
-        switch(response.code){
-          case 200:
-            this.generate = true;
-            this.dateGeneration = UtilitiesService.convertDate(response.item.date);
-            const today = UtilitiesService.createPersonalTimeStamp(new Date);
-            if(response.item.date <= today.timeStamp){
-              this.isAvailable = true;
+    if(this.generate && this.dateGeneration.length !== 0){
+      this._dialogService.confirmDialog(
+        'Esta operación reiniciará la fecha para la generación del documento',
+        '¿Desea continuar?',
+        'ACEPTAR',
+        'CANCELAR'
+      ).afterClosed().subscribe(response => {
+        switch (response.code){
+          case 1:
+            let error = false;
+            if(!this.magna && !this.premium && !this.diesel){
+              error = true
             }
-            break;
-          default:
-            this._snackBarService.openSnackBar('Ha ocurrido un error, por favor intente más tarde', 'OK', 3000);
+            if(!this.software){
+              error = true;
+            }
+            if(error){
+              this._snackBarService.openSnackBar('Por favor, complete la información para generar el SGM','OK',3000);
+              return;
+            }else{
+              this._api.getFullPDF(this.station.id, true).subscribe(response =>{
+                switch(response.code){
+                  case 200:
+                    this.generate = true;
+                    this.dateGeneration = UtilitiesService.convertDate(response.item.date);
+                    const today = UtilitiesService.createPersonalTimeStamp(new Date);
+                    if(response.item.date <= today.timeStamp){
+                      this.isAvailable = true;
+                    }
+                    break;
+                  default:
+                    this._snackBarService.openSnackBar('Ha ocurrido un error, por favor intente más tarde', 'OK', 3000);
+                    break;
+                }
+              });
+            }
             break;
         }
       });
+    }else{
+      let error = false;
+      if(!this.magna && !this.premium && !this.diesel){
+        error = true
+      }
+      if(!this.software){
+        error = true;
+      }
+      if(error){
+        this._snackBarService.openSnackBar('Por favor, complete la información para generar el SGM','OK',3000);
+        return;
+      }else{
+        this._api.getFullPDF(this.station.id, true).subscribe(response =>{
+          switch(response.code){
+            case 200:
+              this.generate = true;
+              this.dateGeneration = UtilitiesService.convertDate(response.item.date);
+              const today = UtilitiesService.createPersonalTimeStamp(new Date);
+              if(response.item.date <= today.timeStamp){
+                this.isAvailable = true;
+              }
+              break;
+            default:
+              this._snackBarService.openSnackBar('Ha ocurrido un error, por favor intente más tarde', 'OK', 3000);
+              break;
+          }
+        });
+      }
     }
   }
 
