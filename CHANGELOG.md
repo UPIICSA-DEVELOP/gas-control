@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="1.3.0-beta.12"></a>
+# [1.3.0-beta.12](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/compare/v1.3.0-beta.11...v1.3.0-beta.12) (2019-04-12)
+
+
+### Bug Fixes
+
+* **Schedule Tasks:** solve error in alert to role 6 ([f4156d9](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/f4156d9))
+
+
+
 <a name="1.3.0-beta.11"></a>
 # [1.3.0-beta.11](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/compare/v1.3.0-beta.10...v1.3.0-beta.11) (2019-04-12)
 
