@@ -145,8 +145,11 @@
 
         .title{
           margin: 8px 0;
-          h1, h2, p{
-            margin: 0;
+          h2, p{
+            margin: 2px 0;
+          }
+          h1{
+            margin: -2px 0;
           }
         }
 
