@@ -64,7 +64,7 @@ export class BC{
       const item = {
         id: response.ubcLite.id,
         userId: response.ubcLite.userId,
-        cardThumbnail: this._data.cardUrlThumbnail,
+        cardThumbnail: body.cardThumbnail,
         dynamicLink: response.ubcLite.dynamicLink,
         dynamicSignIn: response.ubcLite.dynamicSignIn
       };

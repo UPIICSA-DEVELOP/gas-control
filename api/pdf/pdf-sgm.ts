@@ -196,7 +196,7 @@ export class PdfSGM{
               break;
             case ReportType.Report_1: // OM Report
 
-              document.getElementById('sub-title').textContent = item.name;
+              document.getElementById('sub-title').textContent = item.reportName;
 
               document.getElementById('sheet').style.padding = '25mm !important';
 
