@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="1.3.0-beta.11"></a>
+# [1.3.0-beta.11](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/compare/v1.3.0-beta.10...v1.3.0-beta.11) (2019-04-12)
+
+
+### Bug Fixes
+
+* Remove more 3 backups ([fb2d40d](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/fb2d40d))
+* **BC:** Solving assing cardThumbnail to item response ([08eb47a](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/08eb47a))
+
+
+
 <a name="1.3.0-beta.10"></a>
 # [1.3.0-beta.10](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/compare/v1.3.0-beta.9...v1.3.0-beta.10) (2019-04-12)
 
