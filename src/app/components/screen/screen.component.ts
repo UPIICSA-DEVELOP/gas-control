@@ -144,6 +144,9 @@ export class ScreenComponent implements OnInit, AfterViewInit, OnDestroy{
             case 7:
               this.stationActive = response[0].item;
               LocalStorageService.setItem(Constants.StationInDashboard, {id: this.stationActive.id, name: this.stationActive.businessName});
+              if(!this.stationActive.stationTaskId){
+                this.openTaskCalendar();
+              }
               break;
           }
         }
@@ -159,7 +162,7 @@ export class ScreenComponent implements OnInit, AfterViewInit, OnDestroy{
     return this.stationActive.stationTaskId;
   }
 
-  public openTaskCalendar():void{
+  private openTaskCalendar():void{
     if(this.role===6){
       this._dialogService.alertDialog(
         'Información',
@@ -213,6 +216,9 @@ export class ScreenComponent implements OnInit, AfterViewInit, OnDestroy{
         case 200:
           this.stationActive = response.item;
           LocalStorageService.setItem(Constants.StationInDashboard, {id: this.stationActive.id, name: this.stationActive.businessName});
+          if(!this.stationActive.stationTaskId){
+            this.openTaskCalendar();
+          }
           break;
         default:
           this.getDashboardInformation(null);
@@ -225,6 +231,9 @@ export class ScreenComponent implements OnInit, AfterViewInit, OnDestroy{
           if(response.item.stationLites){
             this.stationActive = response.item.stationLites[0];
             LocalStorageService.setItem(Constants.StationInDashboard, {id: this.stationActive.id, name: this.stationActive.businessName});
+            if(!this.stationActive.stationTaskId){
+              this.openTaskCalendar();
+            }
           }else{
             this.stationActive = undefined
           }
@@ -242,6 +251,9 @@ export class ScreenComponent implements OnInit, AfterViewInit, OnDestroy{
         case 200:
           this.stationActive = response.item;
           LocalStorageService.setItem(Constants.StationInDashboard, {id: this.stationActive.id, name: this.stationActive.businessName});
+          if(!this.stationActive.stationTaskId){
+            this.openTaskCalendar();
+          }
           break;
         default:
           this.getDashboardInformation(null);
@@ -253,6 +265,9 @@ export class ScreenComponent implements OnInit, AfterViewInit, OnDestroy{
           if(response.item.station){
             this.stationActive = response.item.station;
             LocalStorageService.setItem(Constants.StationInDashboard, {id: this.stationActive.id, name: this.stationActive.businessName});
+            if(!this.stationActive.stationTaskId){
+              this.openTaskCalendar();
+            }
           }else{
             this.stationActive = undefined;
           }
