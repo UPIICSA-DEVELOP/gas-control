@@ -515,7 +515,8 @@ export class UserProfileComponent implements OnInit, OnDestroy {
       industryCode: '1',
       website: this.user.website || '',
       profileImage: this.user.profileImage ? this.user.profileImage.blobName : null,
-      profileImageThumbnail: this.user.profileImage ? this.user.profileImage.thumbnail + '=s1200': null
+      profileImageThumbnail: this.user.profileImage ? this.user.profileImage.thumbnail + '=s1200': null,
+      bCardId: this.user.bCard ? this.user.bCard.id : null
     };
     this._api.businessCardService(data).subscribe(response => {
       switch (response.code){
