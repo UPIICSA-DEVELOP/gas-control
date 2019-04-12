@@ -124,54 +124,6 @@ export class SgmComponent implements OnInit, OnDestroy {
     })
   }
 
-  private getSgm(): void{
-    this._api.getSgm(this._data.stationId).subscribe(response => {
-      switch(response.code){
-        case 200:
-          if(response.item.sgmSelection){
-            this.software = Number(response.item.sgmSelection.software);
-            this.magna = response.item.sgmSelection.magna;
-            this.premium = response.item.sgmSelection.premium;
-            this.diesel = response.item.sgmSelection.diesel;
-          }
-          if(response.item.fullSgm){
-            this.generate = true;
-            this.dateGeneration = UtilitiesService.convertDate(response.item.fullSgm.date);
-            const today = UtilitiesService.createPersonalTimeStamp(new Date());
-          if(response.item.fullSgm.date <= today.timeStamp){
-              this.isAvailable = true;
-            }
-          }
-          break;
-        default:
-          break;
-      }
-    })
-  }
-
-  private getStation(): void{
-    this._api.getStation(this._data.stationId).subscribe(response => {
-      switch (response.code){
-        case 200:
-          this.station = response.item;
-          break;
-        default:
-          this.station = null;
-          break;
-      }
-    });
-  }
-
-  private sortSgmArray():void{
-    this._data.utils.sgmDocuments.forEach(item => {
-      if(Number(item.id) <= 10){
-        this.sgmDocument.push(item);
-      }else{
-        this.templates.push(item);
-      }
-    });
-  }
-
   public getStationTasks(isAnnexedOne: boolean):void{
     let type = '0';
     this._token = null;
@@ -237,21 +189,6 @@ export class SgmComponent implements OnInit, OnDestroy {
     }
   }
 
-  private buildListTasks(listTask: any): any[]{
-    let newList = [];
-    if(!listTask){
-      return newList;
-    }
-    listTask.forEach(item =>{
-      this._data.utils.taskTemplates.forEach(origin => {
-        if(item.type == origin.id){
-          newList.push({date: UtilitiesService.convertDate(item.date), origin: origin});
-        }
-      });
-    });
-    return newList;
-  }
-
   public seeSGM(): void{
     this._api.joinPDF(this.station.id, true).subscribe(response => {
       const user = LocalStorageService.getItem(Constants.UserInSession);
@@ -270,4 +207,73 @@ export class SgmComponent implements OnInit, OnDestroy {
       }
     });
   }
+
+  public changeOptions(newView: number): void{
+    this.getSgm();
+    this.elementOnView = newView;
+  }
+
+  private getSgm(): void{
+    this._api.getSgm(this._data.stationId).subscribe(response => {
+      switch(response.code){
+        case 200:
+          if(response.item.sgmSelection){
+            this.software = Number(response.item.sgmSelection.software);
+            this.magna = response.item.sgmSelection.magna;
+            this.premium = response.item.sgmSelection.premium;
+            this.diesel = response.item.sgmSelection.diesel;
+          }
+          if(response.item.fullSgm){
+            this.generate = true;
+            this.dateGeneration = UtilitiesService.convertDate(response.item.fullSgm.date);
+            const today = UtilitiesService.createPersonalTimeStamp(new Date());
+          if(response.item.fullSgm.date <= today.timeStamp){
+              this.isAvailable = true;
+            }
+          }
+          break;
+        default:
+          break;
+      }
+    })
+  }
+
+  private getStation(): void{
+    this._api.getStation(this._data.stationId).subscribe(response => {
+      switch (response.code){
+        case 200:
+          this.station = response.item;
+          break;
+        default:
+          this.station = null;
+          break;
+      }
+    });
+  }
+
+  private sortSgmArray():void{
+    this._data.utils.sgmDocuments.forEach(item => {
+      if(Number(item.id) <= 10){
+        this.sgmDocument.push(item);
+      }else{
+        this.templates.push(item);
+      }
+    });
+  }
+
+  private buildListTasks(listTask: any): any[]{
+    let newList = [];
+    if(!listTask){
+      return newList;
+    }
+    listTask.forEach(item =>{
+      this._data.utils.taskTemplates.forEach(origin => {
+        if(item.type == origin.id){
+          newList.push({date: UtilitiesService.convertDate(item.date), origin: origin});
+        }
+      });
+    });
+    return newList;
+  }
+
 }
