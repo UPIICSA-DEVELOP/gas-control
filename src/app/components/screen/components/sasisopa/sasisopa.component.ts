@@ -102,7 +102,29 @@ export class SasisopaComponent implements OnInit, OnDestroy {
   }
 
   public changeElementOnView(type: number): void{
-    this.elementInView = type;
+    if(type === this.elementInView){
+      return;
+    }
+    if(this._change){
+      this._dialogService.confirmDialog(
+        '¿Desea salir sin guarda cambios?',
+        '',
+        'ACEPTAR',
+        'CANCELAR'
+      ).afterClosed().subscribe(response =>{
+        switch(response.code){
+          case 1:
+            this._change = false;
+            this.initFormArray();
+            this.getSasisopa();
+            this.elementInView = type;
+            break;
+        }
+      });
+    }else{
+      this.elementInView = type;
+      this.getSasisopa();
+    }
     if(type === 5 && this.date){
       const date = UtilitiesService.createPersonalTimeStamp(this.date);
       this.getStationTasks(date.timeStamp);
@@ -111,27 +133,18 @@ export class SasisopaComponent implements OnInit, OnDestroy {
   }
 
   public close():void{
-    if(this.elementInView !== 0){
-      if(this._change){
-        this._dialogService.confirmDialog(
-          '¿Desea salir sin guarda cambios?',
-          '',
-          'ACEPTAR',
-          'CANCELAR'
-        ).afterClosed().subscribe(response =>{
-          switch(response.code){
+    if(this._change){
+      this._dialogService.confirmDialog(
+        '¿Desea salir sin guardar cambios?',
+        '',
+        'ACEPTAR',
+        'CANCELAR').afterClosed().subscribe(response=>{
+          switch (response.code){
             case 1:
-              this._change = false;
-              this.initFormArray();
-              this.getSasisopa();
-              this.elementInView = 0;
+              this._matDialogRef.close();
               break;
           }
-        });
-      }else{
-        this.elementInView = 0;
-        this.getSasisopa();
-      }
+      })
     }else{
       this._matDialogRef.close();
     }
@@ -469,59 +482,126 @@ export class SasisopaComponent implements OnInit, OnDestroy {
   }
 
   public generateSasisopa():void{
-    let error = false;
-    for(let i = 0; i<this.listCollaborators.length; i++){
-      if(!this.listCollaborators[i].signature || !this.listCollaborators[i].signature.thumbnail){
-        this.errors[0] = true;
-        error = true;
-      }
-    }
-    if(!this.sasisopaDocs[0] || !this.sasisopaDocs[1]){
-      this.errors[1] = true;
-      error = true;
-    }
-    if(!this.sasisopaDocs[2] || !this.sasisopaDocs[3] || this.brigade.length === 0){
-      this.errors[2] = true;
-      error = true;
-    }
-    if(!this.sasisopaDocs[4]){
-      this.errors[3] = true;
-      error = true;
-    }
-    if(!this.date){
-      this.errors[4] = true;
-      error = true;
-    }
-    if(!this.sasisopaDocs[5]){
-      this.errors[5] = true;
-      error = true;
-    }
-    if(!this.sasisopaDocs[6] || !this.sasisopaDocs[7]){
-      this.errors[6] = true;
-      error = true;
-    }
-    if(!this.sasisopaDocs[11]){
-      this.errors[7] = true;
-      error = true;
-    }
-    if(error){
-      return;
-    }else{
-      this._api.getFullPDF(this.station.id, false).subscribe(response =>{
-        switch(response.code){
-          case 200:
-            this.generate = true;
-            this.dateGeneration = UtilitiesService.convertDate(response.item.date);
-            const today = UtilitiesService.createPersonalTimeStamp(new Date);
-            if(response.item.date <= today.timeStamp){
-              this.isAvailable = true;
+    if(this.generate && this.dateGeneration.length !== 0){
+      this._dialogService.confirmDialog(
+        'Esta operación reiniciará la fecha para la generación del documento',
+        '¿Desea Continuar?',
+        'ACEPTAR',
+        'CANCELAR').afterClosed().subscribe(response =>{
+        switch (response.code){
+          case 1:
+            let error = false;
+            for(let i = 0; i<this.listCollaborators.length; i++){
+              if(!this.listCollaborators[i].signature || !this.listCollaborators[i].signature.thumbnail){
+                this.errors[0] = true;
+                error = true;
+              }
+            }
+            if(!this.sasisopaDocs[0] || !this.sasisopaDocs[1]){
+              this.errors[1] = true;
+              error = true;
+            }
+            if(!this.sasisopaDocs[2] || !this.sasisopaDocs[3] || this.brigade.length === 0){
+              this.errors[2] = true;
+              error = true;
+            }
+            if(!this.sasisopaDocs[4]){
+              this.errors[3] = true;
+              error = true;
+            }
+            if(!this.date){
+              this.errors[4] = true;
+              error = true;
+            }
+            if(!this.sasisopaDocs[5]){
+              this.errors[5] = true;
+              error = true;
+            }
+            if(!this.sasisopaDocs[6] || !this.sasisopaDocs[7]){
+              this.errors[6] = true;
+              error = true;
+            }
+            if(!this.sasisopaDocs[11]){
+              this.errors[7] = true;
+              error = true;
+            }
+            if(error){
+              return;
+            }else{
+              this._api.getFullPDF(this.station.id, false).subscribe(response =>{
+                switch(response.code){
+                  case 200:
+                    this.generate = true;
+                    this.dateGeneration = UtilitiesService.convertDate(response.item.date);
+                    const today = UtilitiesService.createPersonalTimeStamp(new Date);
+                    if(response.item.date <= today.timeStamp){
+                      this.isAvailable = true;
+                    }
+                    break;
+                  default:
+                    this._snackBarService.openSnackBar('Ha ocurrido un error, por favor intente más tarde', 'OK', 3000);
+                    break;
+                }
+              });
             }
             break;
-          default:
-            this._snackBarService.openSnackBar('Ha ocurrido un error, por favor intente más tarde', 'OK', 3000);
-            break;
         }
-      });
+      })
+    }else{
+      let error = false;
+      for(let i = 0; i<this.listCollaborators.length; i++){
+        if(!this.listCollaborators[i].signature || !this.listCollaborators[i].signature.thumbnail){
+          this.errors[0] = true;
+          error = true;
+        }
+      }
+      if(!this.sasisopaDocs[0] || !this.sasisopaDocs[1]){
+        this.errors[1] = true;
+        error = true;
+      }
+      if(!this.sasisopaDocs[2] || !this.sasisopaDocs[3] || this.brigade.length === 0){
+        this.errors[2] = true;
+        error = true;
+      }
+      if(!this.sasisopaDocs[4]){
+        this.errors[3] = true;
+        error = true;
+      }
+      if(!this.date){
+        this.errors[4] = true;
+        error = true;
+      }
+      if(!this.sasisopaDocs[5]){
+        this.errors[5] = true;
+        error = true;
+      }
+      if(!this.sasisopaDocs[6] || !this.sasisopaDocs[7]){
+        this.errors[6] = true;
+        error = true;
+      }
+      if(!this.sasisopaDocs[11]){
+        this.errors[7] = true;
+        error = true;
+      }
+      if(error){
+        return;
+      }else{
+        this._api.getFullPDF(this.station.id, false).subscribe(response =>{
+          switch(response.code){
+            case 200:
+              this.generate = true;
+              this.dateGeneration = UtilitiesService.convertDate(response.item.date);
+              const today = UtilitiesService.createPersonalTimeStamp(new Date);
+              if(response.item.date <= today.timeStamp){
+                this.isAvailable = true;
+              }
+              break;
+            default:
+              this._snackBarService.openSnackBar('Ha ocurrido un error, por favor intente más tarde', 'OK', 3000);
+              break;
+          }
+        });
+      }
     }
   }
 
