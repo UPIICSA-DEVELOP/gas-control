@@ -32,20 +32,19 @@
 
   if(setup){
     const commands = [
-      'sudo unzip /var/www/html/app.inspector.com/deploy/config/bundle.zip -d /var/www/html/app.inspector.com/deploy/config',
-      'sudo rm -rf /var/www/html/app.inspector.com/deploy/config/bundle.zip',
-      'sudo npm install --unsafe-perm --prefix /var/www/html/app.inspector.com/deploy/config'
+      'sudo unzip /var/www/html/app.inspector.com/deploy/bash/bundle.zip -d /var/www/html/app.inspector.com/deploy/bash',
+      'sudo rm -rf /var/www/html/app.inspector.com/deploy/bash/bundle.zip'
     ];
     execute(commands);
   }else{
     let commands = null;
     if(environment === 'dev'){
      commands = [
-        'sudo node /var/www/html/app.inspector.com/deploy/config/dev.js'
+        'sudo bash /var/www/html/app.inspector.com/deploy/bash/dev.sh'
       ];
     }else{
       commands = [
-        'sudo node /var/www/html/app.inspector.com/deploy/config/prod.js'
+        'sudo bash /var/www/html/app.inspector.com/deploy/bash/prod.sh'
       ];
     }
     execute(commands);

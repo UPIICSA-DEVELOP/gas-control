@@ -28,7 +28,7 @@
     "api": "gulp api && webpack --mode production --config api/webpack.config.js --progress --colors",
     "deeplinks:dev": "set NODE_ENV=dev&& node deep-links/deep-links.js",
     "deeplinks:prod": "set NODE_ENV=prod&& node deep-links/deep-links.js",
-    "setup-deploy": "gulp zip --file hooks/config && node deploy/scp --filePath hooks/config/bundle.zip --destination /var/www/html/app.inspector.com/deploy/config && node hooks/remotely --setup",
+    "setup-deploy": "gulp zip --file hooks/bash && node hooks/scp --filePath hooks/bash/bundle.zip --destination /var/www/html/app.inspector.com/deploy/bash && node hooks/remotely --setup",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e"
