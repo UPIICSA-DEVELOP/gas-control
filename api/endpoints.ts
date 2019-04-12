@@ -47,7 +47,7 @@ export class EndPoints{
       if (!errors.isEmpty()) {
         return next(new APIError(`Incomplete params, consult ${EndPoints.FRONT_URL}`, 422));
       }else{
-        const { company, name, lastName, workPosition, phone, email, website, countryCode, industryCode, profileImage, profileImageThumbnail } = req.query;
+        const { company, name, lastName, workPosition, phone, email, website, countryCode, industryCode, profileImage, profileImageThumbnail, bCardId} = req.query;
         const { fork } = require('child_process'), path = require('path');
         const process = fork(path.resolve(__dirname, 'api', 'bc.js'));
         process.on('message', (data) => {
@@ -64,7 +64,8 @@ export class EndPoints{
           industryCode: industryCode,
           website: website || null,
           profileImage: profileImage || null,
-          profileImageThumbnail: profileImageThumbnail || null
+          profileImageThumbnail: profileImageThumbnail || null,
+          bCardId: bCardId || null
         });
       }
     }catch (e){
