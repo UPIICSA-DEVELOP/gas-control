@@ -26,7 +26,8 @@ export class BC{
       urlLogo: data.profileImage || BC.DEFAULT_PROFILE_IMAGE.original,
       urlLogoThumbnail: data.profileImageThumbnail || BC.DEFAULT_PROFILE_IMAGE.thumbnail,
       cardUrl: data.cardUrl || '',
-      cardUrlThumbnail: data.cardUrlThumbnail || ''
+      cardUrlThumbnail: data.cardUrlThumbnail || '',
+      bCardId: data.bCardId
     };
     return await this.createBC();
   }
@@ -34,7 +35,7 @@ export class BC{
 
   private async createBC(): Promise<DefaultResponse | APIError>{
 
-    let response;
+    let response, bCard, newBCardFile;
 
     try {
       response = await this.parseInfo();
@@ -43,10 +44,12 @@ export class BC{
 
       response = await this.uploadImage(response);
 
+      newBCardFile = response;
+
       const body = {
         industryCode: this._data.industryCode,
-        cardUrl: response.mainUrl,
-        cardThumbnail: response.secondaryUrl,
+        cardUrl: newBCardFile.mainUrl,
+        cardThumbnail: newBCardFile.secondaryUrl,
         countryCode: this._data.countryCode,
         companyName: this._data.companyName,
         email: this._data.email,
@@ -59,20 +62,66 @@ export class BC{
         workPosition: this._data.workPosition
       };
 
-      response = await this.createBusinessCard(body);
+      if(this._data.bCardId){
+        response = await this.getBusinessCard(this._data.bCardId);
+        switch(response.code){
+          case 1:
+            bCard = response.bCard;
+            bCard.name.text = this._data.name;
+            bCard.email.text = this._data.email;
+            bCard.lastName.text = this._data.lastName;
+            bCard.whatsApp.text = this._data.whatsApp;
+            bCard.companyName.text = this._data.companyName;
+            bCard.webSite.text = this._data.website;
+            bCard.workPosition.text = this._data.workPosition;
+            bCard.logo.thumbnail = this._data.urlLogoThumbnail;
+            bCard.cardUrl = newBCardFile.mainUrl;
+            bCard.cardThumbnail = newBCardFile.secondaryUrl;
+            response = await this.updateBusinessCard(bCard);
+            break;
+          case 3:
+            response  = await this.createBusinessCard(body);
+            break;
+          default:
+            return new APIError('Bad Request ' + JSON.stringify(response), 400);
+        }
+      }else{
+        response  = await this.createBusinessCard(body);
+      }
 
-      const item = {
-        id: response.ubcLite.id,
-        userId: response.ubcLite.userId,
-        cardThumbnail: body.cardThumbnail,
-        dynamicLink: response.ubcLite.dynamicLink,
-        dynamicSignIn: response.ubcLite.dynamicSignIn
-      };
+
+      let item;
+
+      if(this._data.bCardId){
+
+        switch (response.code){
+          case 1:
+            item = {
+              id: response.bCard.id,
+              userId: response.bCard.userId,
+              cardThumbnail: body.cardThumbnail,
+              dynamicLink: response.bCard.dynamicLink,
+              dynamicSignIn: undefined
+            };
+            break;
+          default:
+            return new APIError('Bad Request ' + JSON.stringify(response), 400);
+        }
+
+      }else{
+        item = {
+          id: response.ubcLite.id,
+          userId: response.ubcLite.userId,
+          cardThumbnail: body.cardThumbnail,
+          dynamicLink: response.ubcLite.dynamicLink,
+          dynamicSignIn: response.ubcLite.dynamicSignIn
+        };
+      }
 
       return new DefaultResponse(item);
 
     } catch (e) {
-      return new APIError(e.message, 500);
+      return new APIError(e, 500);
     }
 
 
@@ -156,7 +205,7 @@ export class BC{
         if(err){
           reject(new Error(err));
         }
-        if(body.success === 'true'){
+        if(httpResponse.statusCode === 200){
          resolve(body);
         }else{
           reject(new Error('An error occurred'));
@@ -174,16 +223,55 @@ export class BC{
         json: true
       }, (err,httpResponse,body) => {
         if(err){
-          reject(new Error(err));
+          reject(new Error('An error occurred'));
         }
-        if(body.code === 200) {
+        if(httpResponse.statusCode === 200) {
           resolve(body);
         }else{
-          reject(new Error('An error occurred'));
+          reject(new APIError('An error occurred ' + JSON.stringify(body), 400));
         }
       });
     });
   }
+
+  private async updateBusinessCard(body: any): Promise<any>{
+    const request = require('request');
+    return new Promise<any>((resolve, reject) => {
+      request.put({
+        url: 'https://business-card-74ca5.appspot.com/_ah/api/communicationchannel/v1/updateBCard',
+        json: body
+      }, (err,httpResponse,body) => {
+        if(err){
+          reject(new Error('An error occurred'));
+        }
+        if(httpResponse.statusCode === 200) {
+          resolve(body);
+        }else{
+          reject(new APIError('An error occurred ' + JSON.stringify(body), 400));
+        }
+      });
+    });
+  }
+
+  private async getBusinessCard(id: string): Promise<any>{
+    const request = require('request');
+    return new Promise<any>((resolve, reject) => {
+      request.get({
+        url: `https://business-card-74ca5.appspot.com/_ah/api/communicationchannel/v1/getBCard?id=${id}`,
+        json: true
+      }, (err,httpResponse,body) => {
+        if(err){
+          reject(new Error('An error occurred'));
+        }
+        if(httpResponse.statusCode === 200) {
+          resolve(body);
+        }else{
+          reject(new APIError('An error occurred ' + JSON.stringify(body), 400));
+        }
+      });
+    });
+  }
+
 
 
 }

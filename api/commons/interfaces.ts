@@ -61,6 +61,7 @@ export interface BCData{
   profileImageThumbnail: string,
   cardUrl: string,
   cardUrlThumbnail: string
+  bCardId: string
 }
 
 export interface JoinPdfData{
