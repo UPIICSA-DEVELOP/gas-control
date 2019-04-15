@@ -34,7 +34,8 @@ export class SgmComponent implements OnInit, OnDestroy {
   public premium: boolean;
   public diesel: boolean;
   public elementOnView: number;
-  public listTasks: any[];
+  public listTasksOne: any[];
+  public listTasksTwo: any[];
   public zones: string[];
   public priority: string[];
   public frequency: string[];
@@ -42,8 +43,10 @@ export class SgmComponent implements OnInit, OnDestroy {
   public isAvailable: boolean;
   public dateGeneration: string[];
   public isDevelop: boolean;
+  public errors: boolean[];
   private _subscriptionLoader: Subscription;
   private _token: string;
+  private _tokenTwo: string;
   constructor(
     @Inject(MAT_DIALOG_DATA) private _data,
     private _matDialogRef: MatDialogRef<SgmComponent>,
@@ -53,6 +56,7 @@ export class SgmComponent implements OnInit, OnDestroy {
     private _dialogService: DialogService,
     private _snackBarService: SnackBarService
   ) {
+    this.errors = [false, false, false, false];
     this.isDevelop = environment.develop;
     this.zones = Constants.Zones;
     this.frequency = Constants.Frequency;
@@ -67,8 +71,10 @@ export class SgmComponent implements OnInit, OnDestroy {
     this.premium = false;
     this.diesel = false;
     this.elementOnView = 0;
-    this.listTasks = [];
+    this.listTasksOne = [];
+    this.listTasksTwo = [];
     this._token = undefined;
+    this._tokenTwo = undefined;
   }
 
   ngOnInit() {
@@ -124,23 +130,15 @@ export class SgmComponent implements OnInit, OnDestroy {
     })
   }
 
-  public getStationTasks(isAnnexedOne: boolean):void{
-    let type = '0';
+  private getStationTasksAnnexeOne():void{
     this._token = null;
-    if(isAnnexedOne){
-      this.elementOnView = 1;
-      type = '41';
-    }else{
-      this.elementOnView = 2;
-      type = '31';
-    }
     this._api.listTask({
       stationTaskId: this.station.stationTaskId,
       startDate: '',
       status: '4',
       endDate: '',
       firstOpen: true,
-      type: type,
+      type: '31',
       cursor: this._token
     }).subscribe(response => {
       switch (response.code){
@@ -150,10 +148,37 @@ export class SgmComponent implements OnInit, OnDestroy {
           }else{
             this._token = response.nextPageToken;
           }
-          this.listTasks = this.buildListTasks(response.items);
+          this.listTasksOne = this.buildListTasks(response.items);
           break;
         default:
-          this.listTasks = [];
+          this.listTasksOne = [];
+          break;
+      }
+    });
+  }
+
+  private getStationTasksAnnexeTwo():void{
+    this._tokenTwo = null;
+    this._api.listTask({
+      stationTaskId: this.station.stationTaskId,
+      startDate: '',
+      status: '4',
+      endDate: '',
+      firstOpen: true,
+      type: '41',
+      cursor: this._tokenTwo
+    }).subscribe(response => {
+      switch (response.code){
+        case 200:
+          if(this._tokenTwo === response.nextPageToken){
+            this._tokenTwo = null;
+          }else{
+            this._tokenTwo = response.nextPageToken;
+          }
+          this.listTasksTwo = this.buildListTasks(response.items);
+          break;
+        default:
+          this.listTasksTwo = [];
           break;
       }
     });
@@ -170,14 +195,23 @@ export class SgmComponent implements OnInit, OnDestroy {
         switch (response.code){
           case 1:
             let error = false;
+            if(this.listTasksOne.length === 0){
+              this.errors[0] = true;
+              error = true;
+            }
+            if(this.listTasksTwo.length === 0){
+              this.errors[1] = true;
+              error = true;
+            }
             if(!this.magna && !this.premium && !this.diesel){
+              this.errors[2] = true;
               error = true
             }
             if(!this.software){
+              this.errors[3] = true;
               error = true;
             }
             if(error){
-              this._snackBarService.openSnackBar('Por favor, complete la información para generar el SGM','OK',3000);
               return;
             }else{
               this._api.getFullPDF(this.station.id, true).subscribe(response =>{
@@ -201,14 +235,23 @@ export class SgmComponent implements OnInit, OnDestroy {
       });
     }else{
       let error = false;
+      if(this.listTasksOne.length === 0){
+        this.errors[0] = true;
+        error = true;
+      }
+      if(this.listTasksTwo.length === 0){
+        this.errors[1] = true;
+        error = true;
+      }
       if(!this.magna && !this.premium && !this.diesel){
+        this.errors[2] = true;
         error = true
       }
       if(!this.software){
+        this.errors[3] = true;
         error = true;
       }
       if(error){
-        this._snackBarService.openSnackBar('Por favor, complete la información para generar el SGM','OK',3000);
         return;
       }else{
         this._api.getFullPDF(this.station.id, true).subscribe(response =>{
@@ -250,7 +293,7 @@ export class SgmComponent implements OnInit, OnDestroy {
   }
 
   public changeOptions(newView: number): void{
-    this.getSgm();
+    this.resetErrors();
     this.elementOnView = newView;
   }
 
@@ -284,6 +327,10 @@ export class SgmComponent implements OnInit, OnDestroy {
       switch (response.code){
         case 200:
           this.station = response.item;
+          if(this.station.stationTaskId){
+            this.getStationTasksAnnexeOne();
+            this.getStationTasksAnnexeTwo();
+          }
           break;
         default:
           this.station = null;
@@ -317,4 +364,9 @@ export class SgmComponent implements OnInit, OnDestroy {
     return newList;
   }
 
+  private resetErrors(): void{
+    for(let i = 0; i < 4; i++){
+      this.errors[i] = false;
+    }
+  }
 }

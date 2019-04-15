@@ -7,9 +7,10 @@
 #sgm{
   height: 100%;
   mat-dialog-content{
-    min-height: 95vh;
+    height: 95vh;
     max-height: none;
     margin: 0;
+    overflow: hidden;
     padding: 16px;
     position: relative;
     .close{
@@ -26,7 +27,6 @@
       align-items: center;
     }
     .sgm-logo{
-      height: 40px;
     }
     .text{
       margin-top: 12px;
@@ -143,6 +143,7 @@
   .content-sgm{
     display: flex;
     width: 100%;
+    height: calc(100% - 64px);
     padding: 24px;
     .column-one{
       width: 40%;
@@ -167,11 +168,12 @@
       width: 60%;
       height: 100%;
       padding: 0 12px;
+      position: relative;
       .first-view{
         display: flex;
         align-items: center;
         flex-direction: column;
-        margin-top: 36px;
+        margin: auto;
         color: #707070;
         .desc{
           text-align: center;
@@ -189,7 +191,7 @@
       .measurement-equipment{
         margin-top: 36px;
         overflow: auto;
-        height: 448px;
+        height: calc(100% - 36px);
         .item{
           display: flex;
           justify-content: space-around;
@@ -258,5 +260,8 @@
     background: url("https://www.googleapis.com/download/storage/v1/b/businesscardgcs/o/alex4%2F2019-02-05-205017759Web-Fondo-gas-poca-transparencia.png?generation=1549399820762438&alt=media") no-repeat bottom;
     background-size: cover;
     z-index: 0;
+  }
+  .error{
+    font-size: 11px;
   }
 }
