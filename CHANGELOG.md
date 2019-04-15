@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="1.3.0-beta.15"></a>
+# [1.3.0-beta.15](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/compare/v1.3.0-beta.14...v1.3.0-beta.15) (2019-04-15)
+
+
+### Bug Fixes
+
+* **AddGasStation:** solve error to notify components finish schedule tasks in role 7 ([826116b](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/826116b))
+* **Collaborators:** change phone button for email button ([507774f](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/507774f))
+* **Notifications:** change space in date text ([49bf8d7](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/49bf8d7))
+* **README.md:** Updating tasks and information of project ([2fbe4c2](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/2fbe4c2))
+* **SASISOPA:** change styles to sasisopa modal ([e3c661f](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/e3c661f))
+* **Screen:** change businessName for name station ([b9e66be](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/b9e66be))
+* **SGM:** add errors for incomplete information ([ea6e448](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/ea6e448))
+
+
+
 <a name="1.3.0-beta.14"></a>
 # [1.3.0-beta.14](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/compare/v1.3.0-beta.13...v1.3.0-beta.14) (2019-04-12)
 
