@@ -1005,6 +1005,7 @@ export class AddGasStationComponent implements OnInit, OnDestroy {
       switch (response.code){
         case 200:
           if(this.user.role === 7){
+            this._sharedService.setNotification({type: SharedTypeNotification.CreationTask,value:response.item});
             this._dialogRef.close();
           }else{
             this._router.navigate(['/home'], {queryParams: {station: stationId}}).then(()=>{
