@@ -62,7 +62,7 @@ export class ListStationsComponent implements OnInit {
       this.stationList = this.stationListCopy;
     }else{
       for(let x=0; x < this.stationListCopy.length; x++){
-        if(UtilitiesService.removeDiacritics(this.stationListCopy[x].managerName).toLowerCase().includes(text) || this.stationListCopy[x].email.toLowerCase().includes(text) || this.stationListCopy[x].phoneNumber.includes(text) || UtilitiesService.removeDiacritics(this.stationListCopy[x].name).toLowerCase().includes(text)){
+        if(this.stationListCopy[x].email.toLowerCase().includes(text) || this.stationListCopy[x].phoneNumber.includes(text) || UtilitiesService.removeDiacritics(this.stationListCopy[x].name).toLowerCase().includes(text)){
           newArray.push(this.stationListCopy[x]);
         }else {
           for (let i= 0; i<this.utils.length; i++){
