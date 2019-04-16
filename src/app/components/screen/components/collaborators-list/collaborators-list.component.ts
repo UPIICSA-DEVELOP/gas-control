@@ -54,7 +54,6 @@ export class CollaboratorsListComponent implements OnInit, OnDestroy {
   public addImage: boolean;
   public addSign: boolean;
   public user: any;
-  public id: string;
   public country: string;
   public load: boolean;
   public collaborator: any[];
@@ -119,7 +118,7 @@ export class CollaboratorsListComponent implements OnInit, OnDestroy {
   }
 
   public getCollaborators(): void {
-    this.id = CookieService.getCookie(Constants.IdSession);
+    const id = CookieService.getCookie(Constants.IdSession);
     this.user = LocalStorageService.getItem(Constants.UserInSession);
     this._api.listCollaborators(this._refId, 'true').subscribe(response=>{
       switch (response.code) {
@@ -127,7 +126,7 @@ export class CollaboratorsListComponent implements OnInit, OnDestroy {
           let user = null;
           this.collaborators = UtilitiesService.sortJSON(response.items,'name','asc');
           for (let i = 0; i< this.collaborators.length; i++){
-            if(this.collaborators[i].id === this.id){
+            if(this.collaborators[i].id === id){
                 user = this.collaborators[i];
             }
           }
