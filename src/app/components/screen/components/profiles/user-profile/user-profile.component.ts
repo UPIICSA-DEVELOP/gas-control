@@ -507,7 +507,7 @@ export class UserProfileComponent implements OnInit, OnDestroy {
     const data = {
       name: this.user.name || '',
       lastName: this.user.lastName  || '',
-      company: company || '',
+      company: this.user.role === 4 ? '' : (company || ''),
       phone: this.user.phoneNumber || '',
       workPosition: this.user.jobTitle || '',
       email: this.user.email || '',
