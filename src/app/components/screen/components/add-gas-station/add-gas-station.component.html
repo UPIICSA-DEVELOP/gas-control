@@ -106,6 +106,26 @@
                   <input formControlName="workers" matInput placeholder="No. de trabajadores">
                 </mat-form-field>
                 <mat-divider></mat-divider>
+                <div class="header-two">
+                  <div style="margin: 16px 0;">
+                    <span>Sistema de recuperación de vapores</span>
+                  </div>
+                </div>
+                <div style="display: flex; align-items: center; justify-content: space-between">
+                  <div style="color: #707070; display: flex; text-align: justify; margin: 8px; width: 45%;">
+                    Su estación cuenta con sistema de recuperación de vapores
+                  </div>
+                  <mat-form-field style="width: 45%">
+                    <mat-select formControlName="vrs" required placeholder="Seleccione">
+                      <mat-option [value]="true">Si</mat-option>
+                      <mat-option [value]="false">No</mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="newStation.controls['vrs'].hasError('required')">
+                      Este campo es obligatorio
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+                <mat-divider></mat-divider>
                 <div>
                   <div class="double-inputs">
                     <span>Turnos</span>
@@ -218,19 +238,6 @@
                     </div>
                   </div>
                 </div>
-                <mat-divider></mat-divider>
-                <div class="header-two">
-                  <div style="margin: 16px 0;">
-                    <span>Sistema de recuperación de vapores</span>
-                  </div>
-                </div>
-                <div style="color: #707070; display: flex; text-align: justify; margin: 8px;">
-                  Su estación cuenta con sistema de recuperación de vapores
-                </div>
-                <mat-radio-group formControlName="vrs" style="display: flex; justify-content: space-around;">
-                  <mat-radio-button [value]="true">Si</mat-radio-button>
-                  <mat-radio-button [value]="false">No</mat-radio-button>
-                </mat-radio-group>
                 <div class="form-button">
                   <button mat-flat-button aria-label="LogIn" [disabled]="load" [color]="'primary'" mat-button>AÑADIR</button>
                 </div>

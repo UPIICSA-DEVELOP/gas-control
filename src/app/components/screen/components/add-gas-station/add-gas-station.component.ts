@@ -217,7 +217,7 @@ export class AddGasStationComponent implements OnInit, OnDestroy {
       workers: ['', []],
       monitoringWells: ['', []],
       observationWells: ['', []],
-      vrs: [false, []]
+      vrs: ['', [Validators.required]]
     });
   }
 
