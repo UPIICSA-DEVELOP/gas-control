@@ -84,7 +84,7 @@
             <div class="annexe-head">Evidencia de la Prueba de funcionamiento de sensores (motobomba, espacio anular y pozos de observación)</div>
             <div *ngIf="listTasksTwo.length !== 0; then completeList else emptyListTasks"></div>
             <ng-template #completeList>
-              <div style="overflow: auto;max-height: 370px;">
+              <div style="overflow: auto; height: calc(100% - 88px);">
                 <div style="width: 85%; margin: auto" *ngFor="let task of listTasksTwo">
                   <mat-card class="task">
                     <div class="priority" *ngIf="task.origin.level === 3" style="background-color:#E00000"></div>
@@ -120,7 +120,7 @@
             <div style="font-weight: 600; margin: 8px 0; width: 100%; text-align: center">Evidencia de la Prueba de funcionamiento de sensores de dispensario</div>
             <div *ngIf="listTasksOne.length !== 0; then completeList else emptyListTasks"></div>
             <ng-template #completeList>
-              <div style="overflow: auto;max-height: 370px;">
+              <div style="overflow: auto; height: calc(100% - 88px);">
                 <div style="width: 85%; margin: auto" *ngFor="let task of listTasksOne">
                   <mat-card class="task">
                     <div class="priority" *ngIf="task.origin.level === 3" style="background-color:#E00000"></div>
