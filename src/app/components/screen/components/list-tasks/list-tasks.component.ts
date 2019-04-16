@@ -143,7 +143,7 @@ export class ListTasksComponent implements OnInit, OnDestroy{
             this.resetFilters(true);
             this.others = true;
             this.notCalendarTasks = [];
-            this._modalScroll.nativeElement.scroll({top: 0});
+            this._modalScroll.nativeElement.scrollTop = '0';
             this.getNotCalendarTask();
           }
           break;
@@ -424,10 +424,10 @@ export class ListTasksComponent implements OnInit, OnDestroy{
       if(task.original.originalDate>today.timeStamp && this.user.role !== 7){
         return;
       }
-      this._modalScroll.nativeElement.scroll({top: 0});
+      this._modalScroll.nativeElement.scrollTop = '0';
       this.reportConfig = {reportView: true, taskElement: task, typeReportView: task.original.typeReport, status: task.original.status};
     }else{
-      this._modalScroll.nativeElement.scroll({top: 0});
+      this._modalScroll.nativeElement.scrollTop = '0';
       this.reportConfig = {reportView: true, taskElement: task, typeReportView: type, status: 4};
     }
   }
@@ -475,7 +475,7 @@ export class ListTasksComponent implements OnInit, OnDestroy{
         break;
     }
     this.reportConfig = {reportView: true, status: 1, taskElement: {id: 0, status: 1, item: this.utils.uTaskTemplates[type-1], hwg: false}, typeReportView: type_two};
-    this._modalScroll.nativeElement.scroll({top: 0});
+    this._modalScroll.nativeElement.scrollTop = '0';
   }
 
   public editFormat(): void{
