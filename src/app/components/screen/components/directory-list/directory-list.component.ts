@@ -4,7 +4,7 @@
  * Proprietary and confidential
  */
 
-import {Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges} from '@angular/core';
+import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {ApiService} from '@app/core/services/api/api.service';
 import {SnackBarService} from '@app/core/services/snackbar/snackbar.service';
 import {DialogService} from '@app/core/components/dialog/dialog.service';
@@ -20,8 +20,14 @@ import {Subscription} from 'rxjs/index';
   templateUrl: './directory-list.component.html',
   styleUrls: ['./directory-list.component.scss']
 })
-export class DirectoryListComponent implements OnInit, OnChanges, OnDestroy {
-  @Input() public gasStation: any;
+export class DirectoryListComponent implements OnInit, OnDestroy {
+  public gasStation: any;
+  @Input() set collaboratorsInfo(stationObj: any){
+    if(stationObj){
+      this.gasStation = stationObj;
+      this.getCollaborators();
+    }
+  }
   @Input() public utils: any;
   public collaborators: any[];
   public roleType: string[];
@@ -47,12 +53,6 @@ export class DirectoryListComponent implements OnInit, OnChanges, OnDestroy {
     this.onChangesComponents();
   }
 
-  ngOnChanges(changes: SimpleChanges): void {
-    if(this.gasStation){
-      this.getCollaborators();
-    }
-  }
-
   ngOnDestroy(): void{
     this._subscriptionShared.unsubscribe();
   }
@@ -61,7 +61,18 @@ export class DirectoryListComponent implements OnInit, OnChanges, OnDestroy {
     this._api.listCollaborators(this.gasStation.id, 'false').subscribe( response=>{
       switch (response.code) {
         case 200:
-          this.collaborators = UtilitiesService.sortJSON(response.items, 'name', 'asc');
+          const id = CookieService.getCookie(Constants.IdSession);
+          let user = null;
+          this.collaborators = UtilitiesService.sortJSON(response.items,'name','asc');
+          for (let i = 0; i< this.collaborators.length; i++){
+            if(this.collaborators[i].id === id){
+              user = this.collaborators[i];
+            }
+          }
+          if (user){
+            const index = this.collaborators.indexOf(user);
+            this.collaborators.splice(index, 1);
+          }
           this.collaborator = this.collaborators;
           break;
         default:
