@@ -22,7 +22,7 @@
         <div style="display: flex; justify-content: space-around">
           <button style="height: 36px;" mat-flat-button (click)="generateSasisopa()" [color]="'primary'">GENERAR</button>
           <button style="height: 36px;" mat-flat-button [color]="'primary'" [disabled]="!isAvailable" (click)="seeSasisopa()">VER</button>
-          <button *ngIf="isDevelop" style="height: 36px;" mat-flat-button [color]="'primary'" (click)="seeSasisopa()">VER TMP</button>
+          <button *ngIf="isDevelop && generate" style="height: 36px;" mat-flat-button [color]="'primary'" (click)="seeSasisopa()">VER TMP</button>
         </div>
         <div style="margin: 8px 0; color: #707070; font-size: 14px;" *ngIf="generate && !isAvailable && dateGeneration.length !== 0">Documento disponible hasta el {{dateGeneration[0]}} {{dateGeneration[1]}} {{dateGeneration[2]}}</div>
         <mat-card (click)="openSasisopaTemplate(false)" style="cursor: pointer; margin: 24px 0 12px;padding: 6px">

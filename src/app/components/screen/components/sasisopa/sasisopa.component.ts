@@ -5,7 +5,7 @@
  */
 
 import {Component, Inject, OnDestroy, OnInit} from '@angular/core';
-import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
+import {DateAdapter, MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
 import {ApiService} from '@app/core/services/api/api.service';
 import {ApiLoaderService} from '@app/core/services/api/api-loader.service';
 import {Subscription} from 'rxjs/Rx';
@@ -62,7 +62,8 @@ export class SasisopaComponent implements OnInit, OnDestroy {
     private _uploadFileService: UploadFileService,
     private _pdf: PdfVisorService,
     private _dialogService: DialogService,
-    private _snackBarService: SnackBarService
+    private _snackBarService: SnackBarService,
+    private _adapter: DateAdapter<any>
   ) {
     this.isDevelop = environment.develop;
     this.docFile = [null, null, null, null, null, null, null, null, null, null, null, null];
@@ -90,6 +91,7 @@ export class SasisopaComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    this._adapter.setLocale('es');
     this._subscriptionLoader = this._apiLoader.getProgress().subscribe(load=>{this.load = load});
     this.getStation();
     this.getStationCollaborators();
@@ -102,6 +104,7 @@ export class SasisopaComponent implements OnInit, OnDestroy {
   }
 
   public changeElementOnView(type: number): void{
+    const lastView = this.elementInView;
     if(type === this.elementInView){
       return;
     }
@@ -125,9 +128,19 @@ export class SasisopaComponent implements OnInit, OnDestroy {
       this.elementInView = type;
       this.getSasisopa();
     }
+
     if(type === 5 && this.date){
       const date = UtilitiesService.createPersonalTimeStamp(this.date);
       this.getStationTasks(date.timeStamp);
+    }else if(type === 5){
+      if(new Date().getTime() < (this.minDate.getTime()+(1000*60*60*24*2))){
+        this._dialogService.alertDialog(
+          'No existe un rango de fechas para poder seleccionar',
+          'Por favor, intente después',
+          'ACEPTAR').afterClosed().subscribe(()=>{
+          this.elementInView = lastView;
+        });
+      }
     }
     this.resetErrors();
   }
@@ -193,6 +206,7 @@ export class SasisopaComponent implements OnInit, OnDestroy {
       this._change = false;
       this.date = UtilitiesService.generateArrayDate(datePrevious, false, false);
     }
+
     const date = UtilitiesService.createPersonalTimeStamp(this.date);
     this.dateSelected = date.textDate;
     this._api.listTask({
@@ -401,9 +415,7 @@ export class SasisopaComponent implements OnInit, OnDestroy {
             this.generate = true;
             this.dateGeneration = UtilitiesService.convertDate(response.item.fullSasisopa.date);
             const today = UtilitiesService.createPersonalTimeStamp(new Date());
-            if(response.item.fullSasisopa.date <= today.timeStamp){
-              this.isAvailable = true;
-            }
+            this.isAvailable = (response.item.date <= today.timeStamp);
           }
           break;
         default:
@@ -417,11 +429,19 @@ export class SasisopaComponent implements OnInit, OnDestroy {
       switch (response.code){
         case 200:
           const list = UtilitiesService.sortJSON(response.items, 'role', 'asc');
-          for(let i = 0; i < 3; i++){
-            if(list[i]){
-              this.listCollaborators.push(list[i]);
+          let rolesList =[undefined, undefined, undefined];
+          for(let i = 0; i < list.length; i++){
+            if(list[i].role === 4 && !rolesList[0]){
+              rolesList[0] = list[i];
+            }
+            if(list[i].role === 5 && !rolesList[1]){
+              rolesList[1] = list[i];
+            }
+            if(list[i].role === 6 && !rolesList[2]){
+              rolesList[2] = list[i];
             }
           }
+          this.listCollaborators = rolesList.filter(function (item) {return item !== undefined;});
           break;
         default:
           break;
@@ -448,7 +468,7 @@ export class SasisopaComponent implements OnInit, OnDestroy {
       switch (response.code){
         case 200:
           const startDate = response.item.creationDate;
-          this.minDate = UtilitiesService.generateArrayDate(startDate, false, false);
+          this.minDate = UtilitiesService.generateArrayDate(startDate, false, true);
           break;
         default:
           this.minDate = UtilitiesService.addSubtractDaysFromDate(new Date(), 7, false);
@@ -482,7 +502,7 @@ export class SasisopaComponent implements OnInit, OnDestroy {
   }
 
   public generateSasisopa():void{
-    if(this.generate && this.dateGeneration.length !== 0){
+    if(this.generate && !this.isAvailable){
       this._dialogService.confirmDialog(
         'Esta operación reiniciará la fecha para la generación del documento',
         '¿Desea Continuar?',
@@ -534,9 +554,7 @@ export class SasisopaComponent implements OnInit, OnDestroy {
                     this.generate = true;
                     this.dateGeneration = UtilitiesService.convertDate(response.item.date);
                     const today = UtilitiesService.createPersonalTimeStamp(new Date);
-                    if(response.item.date <= today.timeStamp){
-                      this.isAvailable = true;
-                    }
+                    this.isAvailable = (response.item.date <= today.timeStamp);
                     break;
                   default:
                     this._snackBarService.openSnackBar('Ha ocurrido un error, por favor intente más tarde', 'OK', 3000);
@@ -592,9 +610,7 @@ export class SasisopaComponent implements OnInit, OnDestroy {
               this.generate = true;
               this.dateGeneration = UtilitiesService.convertDate(response.item.date);
               const today = UtilitiesService.createPersonalTimeStamp(new Date);
-              if(response.item.date <= today.timeStamp){
-                this.isAvailable = true;
-              }
+              this.isAvailable = (response.item.date <= today.timeStamp);
               break;
             default:
               this._snackBarService.openSnackBar('Ha ocurrido un error, por favor intente más tarde', 'OK', 3000);
