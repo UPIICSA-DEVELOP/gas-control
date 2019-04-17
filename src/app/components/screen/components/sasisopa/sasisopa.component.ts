@@ -528,6 +528,13 @@ export class SasisopaComponent implements OnInit, OnDestroy {
             if(!this.sasisopaDocs[2] || !this.sasisopaDocs[3] || this.brigade.length === 0){
               this.errors[2] = true;
               error = true;
+            }else if (this.brigade.length !==0 ){
+              for(let i = 0; i < this.brigade.length; i++){
+                if(!this.brigade[i].name || !this.brigade[i].lastName || !this.brigade[i].position){
+                  this.errors[2] = true;
+                  error = true;
+                }
+              }
             }
             if(!this.sasisopaDocs[4]){
               this.errors[3] = true;
@@ -584,6 +591,13 @@ export class SasisopaComponent implements OnInit, OnDestroy {
       if(!this.sasisopaDocs[2] || !this.sasisopaDocs[3] || this.brigade.length === 0){
         this.errors[2] = true;
         error = true;
+      }else if (this.brigade.length !==0 ){
+        for(let i = 0; i < this.brigade.length; i++){
+          if(!this.brigade[i].name || !this.brigade[i].lastName || !this.brigade[i].position){
+            this.errors[2] = true;
+            error = true;
+          }
+        }
       }
       if(!this.sasisopaDocs[4]){
         this.errors[3] = true;
