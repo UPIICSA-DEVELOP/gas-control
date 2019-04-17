@@ -2,6 +2,26 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="1.3.0-beta.16"></a>
+# [1.3.0-beta.16](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/compare/v1.3.0-beta.15...v1.3.0-beta.16) (2019-04-17)
+
+
+### Bug Fixes
+
+* **AdGasStation:** modify element to vrs indicator ([e90353c](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/e90353c))
+* **Collaborators:** optimize function to see collaborators card ([be77339](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/be77339))
+* **Datepicker:** modify language in calendars ([01d19eb](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/01d19eb))
+* **DirectoryList:** modify input to set station information ([59c9dbf](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/59c9dbf))
+* **ListStations:** solve error in search bar ([9fa27ec](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/9fa27ec))
+* **ListTasks:** change method to change scroll position ([b15f132](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/b15f132))
+* **SASISOPA:** solve errors in SASISOPA ([dc73b2b](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/dc73b2b))
+* **Screen:** modify input name in child component ([f2543a5](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/f2543a5))
+* **SGM:** change styles to resize elements in modal ([cd49888](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/cd49888))
+* **StationStatus:** change chart size ([32969f3](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/32969f3))
+* **UserProfile:** modify text in company for role 4 ([08d021e](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/08d021e))
+
+
+
 <a name="1.3.0-beta.15"></a>
 # [1.3.0-beta.15](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/compare/v1.3.0-beta.14...v1.3.0-beta.15) (2019-04-15)
 
