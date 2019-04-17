@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="1.3.0-beta.17"></a>
+# [1.3.0-beta.17](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/compare/v1.3.0-beta.16...v1.3.0-beta.17) (2019-04-17)
+
+
+### Bug Fixes
+
+* **PDF:** Validate object exits on response getSasisopa ([6109a63](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/6109a63))
+
+
+
 <a name="1.3.0-beta.16"></a>
 # [1.3.0-beta.16](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/compare/v1.3.0-beta.15...v1.3.0-beta.16) (2019-04-17)
 
