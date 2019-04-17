@@ -285,29 +285,27 @@
                   <div style="color: #707070">Brigadista {{i+1}}</div>
                   <button mat-icon-button (click)="addRemoveBrigadeElem(false, i)"><mat-icon class="remove">remove</mat-icon></button>
                 </div>
-                <form>
-                  <mat-form-field style="width: 100%">
-                    <input matInput placeholder="Nombre(s)" required [(ngModel)]="element.name" [ngModelOptions]="{standalone: true}">
-                    <mat-error *ngIf="!element.name">
-                      Este campo es obligatorio
-                    </mat-error>
-                  </mat-form-field>
-                  <mat-form-field style="width: 100%">
-                    <input matInput placeholder="Apellido(s)" required [(ngModel)]="element.lastName" [ngModelOptions]="{standalone: true}">
-                    <mat-error *ngIf="!element.lastName">
-                      Este campo es obligatorio
-                    </mat-error>
-                  </mat-form-field>
-                  <mat-form-field style="width: 100%">
-                    <input matInput placeholder="Cargo en la brigada" required [(ngModel)]="element.position" [ngModelOptions]="{standalone: true}">
-                    <mat-error *ngIf="!element.position">
-                      Este campo es obligatorio
-                    </mat-error>
-                  </mat-form-field>
-                  <div class="save" *ngIf="i+1 === brigade.length">
-                    <button mat-flat-button (click)="validateBrigade()" [color]="'primary'">GUARDAR CAMBIOS</button>
-                  </div>
-                </form>
+                <mat-form-field style="width: 100%">
+                  <input matInput placeholder="Nombre(s)" [(ngModel)]="element.name" [ngModelOptions]="{standalone: true}">
+                  <mat-error *ngIf="!element.name">
+                    Este campo es obligatorio
+                  </mat-error>
+                </mat-form-field>
+                <mat-form-field style="width: 100%">
+                  <input matInput placeholder="Apellido(s)" [(ngModel)]="element.lastName" [ngModelOptions]="{standalone: true}">
+                  <mat-error *ngIf="!element.lastName">
+                    Este campo es obligatorio
+                  </mat-error>
+                </mat-form-field>
+                <mat-form-field style="width: 100%">
+                  <input matInput placeholder="Cargo en la brigada" [(ngModel)]="element.position" [ngModelOptions]="{standalone: true}">
+                  <mat-error *ngIf="!element.position">
+                    Este campo es obligatorio
+                  </mat-error>
+                </mat-form-field>
+                <div class="save" *ngIf="i+1 === brigade.length">
+                  <button mat-flat-button (click)="validateBrigade()" [color]="'primary'">GUARDAR CAMBIOS</button>
+                </div>
               </ng-container>
             </div>
           </div>
