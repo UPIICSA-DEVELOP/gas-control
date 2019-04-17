@@ -20,12 +20,11 @@ import {ModalStationService} from '@app/components/screen/components/modal-stati
 import {UploadFileResponse} from '@app/core/components/upload-file/upload-file.component';
 import {DialogService} from '@app/core/components/dialog/dialog.service';
 import {PdfVisorOptions, PdfVisorService} from '@app/core/components/pdf-visor/pdf-visor.service';
-import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
+import {DateAdapter, MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
 import {UtilitiesService} from '@app/core/utilities/utilities.service';
 import {Person, PersonInformation, Task} from '@app/core/interfaces/interfaces';
 import {SharedService, SharedTypeNotification} from '@app/core/services/shared/shared.service';
 import {Subscription} from 'rxjs/Rx';
-
 interface Station {
   id?: string;
   businessName: string;
@@ -138,7 +137,8 @@ export class AddGasStationComponent implements OnInit, OnDestroy {
     private _dialogService: DialogService,
     private _pdfVisor: PdfVisorService,
     private _sharedService: SharedService,
-    private _dialogRef: MatDialogRef<AddGasStationComponent>
+    private _dialogRef: MatDialogRef<AddGasStationComponent>,
+    private _adapter: DateAdapter<any>
   ) {
     this.disableButton = [false, false];
     this.taskNotCalendar = true;
@@ -172,6 +172,7 @@ export class AddGasStationComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    this._adapter.setLocale('es');
     this.initYears();
     this.initCalendar();
     this.initManagerForm();

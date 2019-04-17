@@ -5,7 +5,7 @@
  */
 
 import {Component, Inject, OnInit} from '@angular/core';
-import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
+import {DateAdapter, MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
 import {FormBuilder, FormGroup} from '@angular/forms';
 import {SnackBarService} from '@app/core/services/snackbar/snackbar.service';
 import {UtilitiesService} from '@app/core/utilities/utilities.service';
@@ -23,10 +23,12 @@ export class DatepickerComponent implements OnInit {
   @Inject(MAT_DIALOG_DATA) public data: any,
     private _dialogRef: MatDialogRef<DatepickerComponent>,
     private _formBuilder: FormBuilder,
-    private _snackBarService: SnackBarService
+    private _snackBarService: SnackBarService,
+    private _adapter: DateAdapter<any>
   ) { }
 
   ngOnInit() {
+    this._adapter.setLocale('es');
     this.dateForm = this._formBuilder.group({
       startDate:['',[]],
       endDate:['',[]]
