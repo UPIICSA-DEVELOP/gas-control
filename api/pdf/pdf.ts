@@ -105,7 +105,7 @@ export class Pdf{
 
       switch (response.code) {
         case 200:
-          if (response.item.sasisopaDocuments.length === 0 || response.item.brigade.brigadeElems.length === 0) {
+          if (response.item.sasisopaDocuments && response.item.sasisopaDocuments.length === 0 || response.item.brigade && response.item.brigade.brigadeElems.length === 0) {
             return new APIError('Bad Request sasisopaDocuments and brigadeElems length is equst to zero' + JSON.stringify(response), 400);
           } else {
             infoPdfGenerator.sasisopaDocuments = response.item.sasisopaDocuments || [];
