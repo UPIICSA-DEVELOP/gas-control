@@ -24,7 +24,14 @@ export class PdfVisorService {
   ) { }
 
   public open(options: PdfVisorOptions): void{
-    if(options.urlOrFile instanceof Blob || typeof options.urlOrFile === 'string'){
+
+    if (Object.prototype.toString.call(options.urlOrFile) === '[object File]'){
+      const reader = new FileReader();
+      reader.readAsDataURL(options.urlOrFile);
+      reader.onload = () => {
+        this._dialog.open(PdfVisorComponent,{panelClass:'pdf-visor-panel', data:{url: reader.result, hideDownload: options.hideDownload}});
+      };
+    }else{
       let file = null;
       if(typeof options.urlOrFile === 'string'){
         this._api.getFile(options.urlOrFile.toString()).subscribe(response => {
@@ -36,12 +43,6 @@ export class PdfVisorService {
         file = window.URL.createObjectURL(new Blob([options.urlOrFile], {type: 'application/pdf'}));
         this._dialog.open(PdfVisorComponent,{panelClass:'pdf-visor-panel', data:{url: file, hideDownload: options.hideDownload}});
       }
-    }else if (options.urlOrFile instanceof File){
-      const reader = new FileReader();
-      reader.readAsDataURL(options.urlOrFile);
-      reader.onload = () => {
-        this._dialog.open(PdfVisorComponent,{panelClass:'pdf-visor-panel', data:{url: reader.result, hideDownload: options.hideDownload}});
-      };
     }
   }
 }

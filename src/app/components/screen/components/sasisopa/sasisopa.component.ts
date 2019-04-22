@@ -305,13 +305,17 @@ export class SasisopaComponent implements OnInit, OnDestroy {
   }
 
   public validateBrigade():void{
-    for(let i = 0; i<this.brigade.length; i++){
-      if(!this.brigade[i].name || !this.brigade[i].lastName || !this.brigade[i].position){
-        this._snackBarService.openSnackBar('Por favor, complete los campos','OK',3000);
-        return;
+    if(this.brigade.length === 1 && !this.brigade[0].name && !this.brigade[0].lastName && !this.brigade[0].position){
+      this.saveChanges(3);
+    }else{
+      for(let i = 0; i<this.brigade.length; i++){
+        if(!this.brigade[i].name || !this.brigade[i].lastName || !this.brigade[i].position){
+          this._snackBarService.openSnackBar('Por favor, complete los campos','OK',3000);
+          return;
+        }
       }
+      this.saveBrigade();
     }
-    this.saveBrigade();
   }
 
   public saveChanges(index: number):void{
@@ -524,6 +528,13 @@ export class SasisopaComponent implements OnInit, OnDestroy {
             if(!this.sasisopaDocs[2] || !this.sasisopaDocs[3] || this.brigade.length === 0){
               this.errors[2] = true;
               error = true;
+            }else if (this.brigade.length !==0 ){
+              for(let i = 0; i < this.brigade.length; i++){
+                if(!this.brigade[i].name || !this.brigade[i].lastName || !this.brigade[i].position){
+                  this.errors[2] = true;
+                  error = true;
+                }
+              }
             }
             if(!this.sasisopaDocs[4]){
               this.errors[3] = true;
@@ -580,6 +591,13 @@ export class SasisopaComponent implements OnInit, OnDestroy {
       if(!this.sasisopaDocs[2] || !this.sasisopaDocs[3] || this.brigade.length === 0){
         this.errors[2] = true;
         error = true;
+      }else if (this.brigade.length !==0 ){
+        for(let i = 0; i < this.brigade.length; i++){
+          if(!this.brigade[i].name || !this.brigade[i].lastName || !this.brigade[i].position){
+            this.errors[2] = true;
+            error = true;
+          }
+        }
       }
       if(!this.sasisopaDocs[4]){
         this.errors[3] = true;
