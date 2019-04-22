@@ -150,7 +150,7 @@
               Autorizados para registrar en formatos
             </div>
             <div class="signatures">
-              <div class="item-sign" *ngFor="let collaborator of listCollaborators;">
+              <div class="item-sign" *ngFor="let collaborator of listPerson;">
                 <div class="head">Nombre y firma del responsable</div>
                 <img *ngIf="collaborator.signature && collaborator.signature.thumbnail" [src]="collaborator.signature.thumbnail" class="img-space">
                 <div *ngIf="!collaborator.signature || !collaborator.signature.thumbnail" class="img-space"></div>

@@ -30,6 +30,7 @@ import {environment} from '@env/environment';
 export class SasisopaComponent implements OnInit, OnDestroy {
   public elementInView: number;
   public listCollaborators: any[];
+  public listPerson: any[];
   public load: boolean;
   public station: any;
   public brigade: BrigadeElems[];
@@ -85,6 +86,7 @@ export class SasisopaComponent implements OnInit, OnDestroy {
     this.listCollaborators = [];
     this.brigade = [{name: undefined, lastName: undefined, position: undefined}];
     this.listTasks = [];
+    this.listPerson = [];
     this._forms = [];
     this.isAvailable = false;
     this.generate = false;
@@ -433,6 +435,7 @@ export class SasisopaComponent implements OnInit, OnDestroy {
       switch (response.code){
         case 200:
           const list = UtilitiesService.sortJSON(response.items, 'role', 'asc');
+          this.listPerson = list;
           let rolesList =[undefined, undefined, undefined];
           for(let i = 0; i < list.length; i++){
             if(list[i].role === 4 && !rolesList[0]){
