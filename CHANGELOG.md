@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="1.3.0-beta.18"></a>
+# [1.3.0-beta.18](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/compare/v1.3.0-beta.17...v1.3.0-beta.18) (2019-04-22)
+
+
+### Bug Fixes
+
+* **PdfVisor:** solve errors convert File ([1611d93](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/1611d93))
+* **SASISOPA:** change validations to brigade ([0c84388](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/0c84388))
+* **SASISOPA:** validations elements into brigade to generate SASISOPA ([a0de794](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/a0de794))
+
+
+
 <a name="1.3.0-beta.17"></a>
 # [1.3.0-beta.17](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/compare/v1.3.0-beta.16...v1.3.0-beta.17) (2019-04-17)
 
