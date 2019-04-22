@@ -68,7 +68,6 @@ export class NotificationsComponent implements OnInit{
             for(let i = 0; i<this.notifications.length;i++){
               this.notifications[i].date = UtilitiesService.convertDate(this.notifications[i].date)
             }
-            console.log(this.notifications);
           }else{
             this.notifications = [];
           }
