@@ -190,9 +190,9 @@ export class StationListComponent implements OnInit, DoCheck {
     }
   }
 
-  public changeStation(id: string):void{
+  public changeStation(id: string, newNotification: boolean):void{
     this._router.navigate(['/home']).then(()=>{
-      this._sharedService.setNotification({type: SharedTypeNotification.ChangeStation, value: id});
+      this._sharedService.setNotification({type: SharedTypeNotification.ChangeStation, value: {id: id, newNotification: newNotification}});
     });
 
   }

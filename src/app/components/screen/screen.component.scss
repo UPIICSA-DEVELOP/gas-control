@@ -95,7 +95,7 @@
             font-weight: 500;
             display: flex;
             mat-icon{
-              margin-right: 8px;
+              margin-right: 4px;
             }
             span{
               color: #707070;
@@ -103,11 +103,11 @@
             .sass-icon{
               width: 24px;
               height: 24px;
-              margin-right: 8px;
+              margin-right: 4px;
             }
             .sgm{
               width: 24px;
-              margin-right: 8px;
+              margin-right: 4px;
             }
           }
         }
@@ -181,6 +181,13 @@
   }
   /deep/.mat-drawer.mat-drawer-side {
     z-index: 1;
+  }
+  /deep/.mat-badge-small .mat-badge-content{
+    width: 10px;
+    height: 10px;
+    line-height: 10px;
+    top: 0;
+    right: 0;
   }
 }
 
