@@ -3,6 +3,7 @@
 import {Commons} from './commons'
 import {CreatePDFOptions, ParseHTMLOptions, PDFSASISOPAData} from '../commons/interfaces';
 import {AttachedType, ReportType, TypeFuel} from '../commons/enum';
+const chalk = require('chalk');
 
 class PdfSASISOPA{
 
@@ -21,6 +22,7 @@ class PdfSASISOPA{
   private _tasksList: any[];
   private _proceduresList: any[];
   private _sasisopaDocuments: any[];
+  private _id: string;
 
 
   constructor(data: PDFSASISOPAData){
@@ -48,7 +50,8 @@ class PdfSASISOPA{
       code: 200,
       description: 'OK'
     };
-    console.log('PdfSASISOPA Initiated', new Date());
+    this._id = Math.round(Math.random() * 1000).toString();
+    console.info(chalk.blue('PdfSASISOPA Initiated ' + new Date() + ' ID-' + this._id));
     this.init();
   }
 
@@ -191,12 +194,11 @@ class PdfSASISOPA{
       return this.createPDF({option: AttachedType.Signatures})  // Signatures
     }).then(buffer => {
       buffers.push(buffer);
-      console.log('Files', buffers.length);
       return this.uploadFiles(buffers);
     }).then(response => {
       switch (response.code){
         case 200:
-          console.log('PdfSASISOPA Finished', new Date());
+          console.info(chalk.blue('PdfSASISOPA Finished ' + new Date() + ' ID-'+this._id));
           PdfSASISOPA.finish(this._response);
           break;
         default:
@@ -248,7 +250,7 @@ class PdfSASISOPA{
           stack: error.stack,
           properties: error.properties,
         };
-        console.log(JSON.stringify({error: e}));
+        console.info(JSON.stringify({error: e}));
         reject(error);
       });
     });
@@ -829,7 +831,7 @@ class PdfSASISOPA{
           stack: error.stack,
           properties: error.properties,
         };
-        console.log(JSON.stringify({error: e}));
+        console.info(JSON.stringify({error: e}));
         reject(JSON.stringify({error: e}));
       }
 
@@ -902,12 +904,10 @@ class PdfSASISOPA{
        path: this._stationRFC + '/' + this._stationId + '/SASISOPA',
        fileName: 'sasisopa-'+ index +'-'+ new Date().getTime() + '.pdf'
      };
-     console.log(`Upload file ${index} started  | `, new Date());
      let response = await this._commons.request('https://schedule-maplander.appspot.com/upload', 'POST', formData, true);
      switch (response.code){
        case 200:
          uploaded.push(response.item);
-         console.log(`Upload file ${index} finalize | `, new Date());
          break;
        default:
          console.error(response);
@@ -921,6 +921,7 @@ class PdfSASISOPA{
 
   private static finish(response: any): void{
     process.send(response);
+    process.exit(0);
   }
 
 }

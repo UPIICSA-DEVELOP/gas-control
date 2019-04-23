@@ -57,6 +57,7 @@
     "@types/crypto-js": "^3.1.43",
     "@types/googlemaps": "^3.30.16",
     "amazing-time-picker": "^1.8.0",
+    "chalk": "^2.4.2",
     "chart.js": "^2.7.3",
     "crypto-js": "^3.1.9-1",
     "docxtemplater": "^3.9.9",

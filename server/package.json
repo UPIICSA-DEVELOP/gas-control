@@ -61,7 +61,8 @@
     "jszip": "^2.6.1",
     "docxtemplater": "^3.9.9",
     "word2pdf-promises": "^1.2.0",
-    "ng2-pdf-viewer": "^5.2.4"
+    "ng2-pdf-viewer": "^5.2.4",
+    "chalk": "^2.4.2"
   },
   "private": true
 }

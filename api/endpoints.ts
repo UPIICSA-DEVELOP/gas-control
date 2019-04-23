@@ -49,11 +49,15 @@ export class EndPoints{
       }else{
         const { company, name, lastName, workPosition, phone, email, website, countryCode, industryCode, profileImage, profileImageThumbnail, bCardId} = req.query;
         const { fork } = require('child_process'), path = require('path');
-        const process = fork(path.resolve(__dirname, 'api', 'bc.js'));
-        process.on('message', (data) => {
+        const child = fork(path.resolve(__dirname, 'api', 'bc.js'));
+        child.on('message', (data) => {
           res.status(data.code).end(JSON.stringify(data));
         });
-        process.send({
+        child.on('close', (code) => {
+          console.info(`Close child process ${child.pid} BC | RAM ${Commons.getFreeMemory()} MB | Code ${code}`);
+        });
+        console.info(`Open child process ${child.pid} BC | RAM ${Commons.getFreeMemory()} MB`);
+        child.send({
           name: name,
           lastName: lastName,
           company: company,
@@ -81,15 +85,19 @@ export class EndPoints{
       }else {
         const { stationId, isSGM } = req.query;
         const { fork } = require('child_process'), path = require('path');
-        const process = fork(path.resolve(__dirname, 'api', 'pdf.js'));
-        process.on('message', (data: DefaultResponse | APIError) => {
+        const child = fork(path.resolve(__dirname, 'api', 'pdf.js'));
+        child.on('message', (data: DefaultResponse | APIError) => {
           res.status(data.code).end(JSON.stringify(data));
+        });
+        child.on('close', (code) => {
+          console.info(`Close child process ${child.pid} PDF | RAM ${Commons.getFreeMemory()} MB | Code ${code}`);
         });
         const data = {
           stationId: stationId,
           isSGM: (isSGM && isSGM === 'true')
         };
-        process.send(data);
+        console.info(`Open child process ${child.pid} PDF | RAM ${Commons.getFreeMemory()} MB`);
+        child.send(data);
       }
     }catch (e){
       return next(new ServerError(e.message));
@@ -129,8 +137,8 @@ export class EndPoints{
       }else {
         const { stationId, isSGM } = req.query;
         const { fork } = require('child_process'), path = require('path');
-        const process = fork(path.resolve(__dirname, 'api', 'join-pdf.js'));
-        process.on('message', (data) => {
+        const child = fork(path.resolve(__dirname, 'api', 'join-pdf.js'));
+        child.on('message', (data) => {
           if(!data.code){
             const document = new Buffer(data, 'binary');
             res.writeHead(200, {
@@ -144,11 +152,15 @@ export class EndPoints{
             res.status(data.code).end(JSON.stringify(data));
           }
         });
+        child.on('close', (code) => {
+          console.info(`Close child process ${child.pid} JoinPDF | RAM ${Commons.getFreeMemory()} MB | Code ${code}`);
+        });
         const data = {
           stationId: stationId,
           isSGM: (isSGM && isSGM === 'true')
         };
-        process.send(data);
+        console.info(`Open child process ${child.pid} JoinPDF | RAM ${Commons.getFreeMemory()} MB`);
+        child.send(data);
       }
     }catch (e){
       return next(new ServerError(e.message));

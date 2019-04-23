@@ -1,6 +1,7 @@
 import {Commons} from './commons';
 import {CreatePDFOptions, ParseHTMLOptions, PDFSGMData} from '../commons/interfaces';
 import {AttachedType, ReportType} from '../commons/enum';
+const chalk = require('chalk');
 
 
 export class PdfSGM{
@@ -11,6 +12,7 @@ export class PdfSGM{
   private _commons: Commons;
   private _response: any;
   private _data: PDFSGMData;
+  private _id: string;
 
   constructor(data: PDFSGMData){
     this._commons = new Commons();
@@ -19,7 +21,8 @@ export class PdfSGM{
       description: 'OK'
     };
     this._data = data;
-    console.log('PdfSGM Initiated', new Date());
+    this._id = Math.round(Math.random() * 1000).toString();
+    console.info(chalk.blue('PdfSGM Initiated ' +  new Date() + ' ID-' + this._id));
     this.init();
   }
 
@@ -82,7 +85,7 @@ export class PdfSGM{
     }).then(response => {
       switch (response.code){
         case 200:
-          console.log('PdfSGM Finished', new Date());
+          console.info(chalk.blue('PdfSGM Finished ' +  new Date() + ' ID-' + this._id));
           PdfSGM.finish(this._response);
           break;
         default:
@@ -122,7 +125,7 @@ export class PdfSGM{
         stack: error.stack,
         properties: error.properties,
       };
-      console.log(JSON.stringify({error: e}));
+      console.error(JSON.stringify({error: e}));
       throw error;
     }
     return doc.getZip().generate({type: 'nodebuffer'});
@@ -155,7 +158,7 @@ export class PdfSGM{
           stack: error.stack,
           properties: error.properties,
         };
-        console.log(JSON.stringify({error: e}));
+        console.error(JSON.stringify({error: e}));
         reject(error);
       });
     });
@@ -395,7 +398,7 @@ export class PdfSGM{
           stack: error.stack,
           properties: error.properties,
         };
-        console.log(JSON.stringify({error: e}));
+        console.error(JSON.stringify({error: e}));
         reject(JSON.stringify({error: e}));
       }
 
@@ -458,12 +461,10 @@ export class PdfSGM{
         path: this._data.rfc + '/' + this._data.stationId + '/SGM',
         fileName: 'sgm-'+ index +'-'+ new Date().getTime() + '.pdf'
       };
-      console.log(`Upload file ${index} started  | `, new Date());
       let response = await this._commons.request('https://schedule-maplander.appspot.com/upload', 'POST', formData, true);
       switch (response.code){
         case 200:
           uploaded.push(response.item);
-          console.log(`Upload file ${index} finalize | `, new Date());
           break;
         default:
           console.error(response);
@@ -476,6 +477,7 @@ export class PdfSGM{
 
   private static finish(response: any): void{
     process.send(response);
+    process.exit(0)
   }
 
 }

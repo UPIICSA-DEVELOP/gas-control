@@ -136,6 +136,12 @@ export class Commons{
     });
   }
 
+
+  public static getFreeMemory(onGB?: boolean): string{
+    const os = require('os');
+    return (!onGB) ? Math.round((os.freemem() / 1024) / 1024).toString() : Math.round(((os.freemem() / 1024) / 1024) / 1024).toString();
+  }
+
   public static searchObject(array: any[], key: string, value: any): any{
     let obj = null;
     array.forEach(item => {

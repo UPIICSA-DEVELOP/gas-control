@@ -280,7 +280,9 @@ process.on('message', (data: BCData) => {
   const bc = new BC();
   bc.init(data).then(response => {
     process.send(response);
+    process.exit(0);
   }).catch(error => {
     process.send(error);
+    process.exit(0);
   });
 });

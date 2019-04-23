@@ -106,7 +106,13 @@ process.on('message', (data: JoinPdfData) => {
   const join = new JoinPdf();
   join.init(data).then(response => {
     process.send(response);
+    setTimeout(() => {
+      process.exit(0);
+    }, 2000);
   }).catch(error => {
     process.send(error);
+    setTimeout(() => {
+      process.exit(0);
+    }, 2000);
   });
 });

@@ -1,6 +1,7 @@
 import {Commons} from './commons'
 import {PdfData, PDFSASISOPAData, PDFSGMData} from '../commons/interfaces';
-import {APIError, DefaultResponse, ServerError} from '../commons/class';
+import {APIError, DefaultResponse} from '../commons/class';
+const chalk = require('chalk');
 
 export class Pdf{
 
@@ -310,21 +311,33 @@ export class Pdf{
   private initPDFSASISOPA(data: any): void{
     const { fork } = require('child_process');
     const path = require('path');
-    const process = fork(path.resolve(__dirname, 'pdf-sasisopa.js'));
-    process.on('message', (data) => {
-      console.log(data);
+    const child = fork(path.resolve(__dirname, 'pdf-sasisopa.js'));
+    child.on('message', (data) => {
+      console.info(`Close child process ${child.pid} SASISOPA | RAM ${Commons.getFreeMemory()} MB`);
+      console.info(data);
     });
-    process.send(data);
+    child.on('close', (code) => {
+      console.info(`Close child process ${child.pid} SASISOPA | RAM ${Commons.getFreeMemory()} MB | Code ${code}`);
+      process.exit(0);
+    });
+    console.info(`Open child process ${child.pid} SASISOPA | RAM ${Commons.getFreeMemory()} MB`);
+    child.send(data);
   }
 
   private initPDFSGM(data: any): void{
     const { fork } = require('child_process');
     const path = require('path');
-    const process = fork(path.resolve(__dirname, 'pdf-sgm.js'));
-    process.on('message', (data) => {
-      console.log(data);
+    const child = fork(path.resolve(__dirname, 'pdf-sgm.js'));
+    child.on('message', (data) => {
+      console.info(`Close child process ${child.pid} SGM | RAM ${Commons.getFreeMemory()} MB`);
+      console.info(data);
     });
-    process.send(data);
+    child.on('close', (code) => {
+      console.info(`Close child process ${child.pid} SGM | RAM ${Commons.getFreeMemory()} MB | Code ${code}`);
+      process.exit(0);
+    });
+    console.info(`Close child process ${child.pid} SGM | RAM ${Commons.getFreeMemory()} MB`);
+    child.send(data);
   }
 
   private getTask(type: number, id: string): Promise<any>{
