@@ -138,7 +138,10 @@
                   </mat-error>
                 </mat-form-field>
                 <mat-form-field class="inputs">
-                  <input [attr.disabled]="disabledInputs?true:null" formControlName="officePhone" matInput placeholder="Número de la consultora" type="tel" aria-label="Consultancy phone number" maxlength="13">
+                  <input [attr.disabled]="disabledInputs?true:null" formControlName="officePhone" required matInput placeholder="Número de la consultora" type="tel" aria-label="Consultancy phone number" maxlength="13">
+                  <mat-error *ngIf="profileForm.controls['officePhone'].hasError('required')">
+                    Este campo es obligatorio
+                  </mat-error>
                   <mat-error *ngIf="profileForm.controls['officePhone'].hasError('minlength')">
                     Se requieren de 8 a 13 dígitos
                   </mat-error>

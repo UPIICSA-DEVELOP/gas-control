@@ -20,7 +20,6 @@ import {UpdatePasswordService} from '@app/core/components/update-password/update
 import {animate, keyframes, query, stagger, style, transition, trigger} from '@angular/animations';
 import {UploadFileResponse} from '@app/core/components/upload-file/upload-file.component';
 import {SignaturePadService} from '@app/core/components/signature-pad/signature-pad.service';
-import {LocalStorageService} from '@app/core/services/local-storage/local-storage.service';
 import {Consultancy, Person} from '@app/core/interfaces/interfaces';
 import {Subscription} from 'rxjs/Rx';
 import {ShareService} from '@app/core/components/share/share.service';
@@ -114,10 +113,6 @@ export class ProfileComponent implements OnInit, OnDestroy {
   }
 
   public closeProfile(){
-    if (LocalStorageService.getItem(Constants.NotSignature)){
-      this._snackBarService.openSnackBar('Por favor, guarde su firma antes de salir','OK', 3000);
-      return;
-    }
     if (this.change){
       this.saveChangeBeforeExit();
       return;
@@ -277,9 +272,6 @@ export class ProfileComponent implements OnInit, OnDestroy {
           blob: response.item.blobName || ''
         };
         this.newSignature = false;
-        if(LocalStorageService.getItem(Constants.NotSignature)){
-          this.user.signature = this.newSig;
-        }
         this.updateProfile(this.profileForm.value);
       }
     });
@@ -408,16 +400,19 @@ export class ProfileComponent implements OnInit, OnDestroy {
       businessName: ['', [Validators.required]],
       rfc: [{value: '', disabled: true}, [Validators.required]],
       address: ['', [Validators.required]],
-      officePhone: ['', [Validators.minLength(8), Validators.maxLength(13)]]
+      officePhone: ['', [Validators.minLength(8), Validators.maxLength(13), Validators.required]]
     });
     this.getUserInfo();
   }
 
   public updateProfile(data: any, event?: any): void {
+    this.validateDisabledInputs(true);
     if (this.profileForm.invalid) {
+      this.validateDisabledInputs();
       return;
     }
     if(!this.signature){
+      this.validateDisabledInputs();
       this._snackBarService.openSnackBar('Por favor, registre su firma','OK', 3000);
       return;
     }
@@ -490,6 +485,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
           }
           break;
         default:
+          this.validateDisabledInputs();
           this._dialogService.alertDialog('No se pudo acceder', 'Se produjo un error de comunicación con el servidor', 'ACEPTAR');
           break;
       }
@@ -504,7 +500,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
             this.saveConsultancyData();
           break;
         default:
-          this.validateDisabledInputs(false);
+          this.validateDisabledInputs();
           this._dialogService.alertDialog('No se pudo acceder', 'Se produjo un error de comunicación con el servidor', 'ACEPTAR');
           break;
       }
@@ -515,14 +511,12 @@ export class ProfileComponent implements OnInit, OnDestroy {
     this._api.updateConsultancy(this.consultancy).subscribe(response=>{
       switch (response.code){
         case 200:
-          LocalStorageService.removeItem(Constants.NotSignature);
           this.change = false;
           this._snackBarService.openSnackBar('Información actualizada','OK',3000);
-          this.validateDisabledInputs(false);
-          this._router.navigate(['/home']).then();
+          this.validateDisabledInputs();
           break;
         default:
-          this.validateDisabledInputs(false);
+          this.validateDisabledInputs();
           this._dialogService.alertDialog('No se pudo acceder', 'Se produjo un error de comunicación con el servidor', 'ACEPTAR');
           break;
       }
@@ -557,6 +551,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
           }
           break;
         default:
+          this.validateDisabledInputs();
           this._snackBarService.closeSnackBar();
           this._snackBarService.openSnackBar('Ha ocurrido un error, por favor, intente de nuevo', 'OK', 3000);
           break;
