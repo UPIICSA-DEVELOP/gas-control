@@ -16,6 +16,7 @@ import {AddStationService} from '@app/components/screen/components/add-gas-stati
 import {TaskFilterNameService} from '@app/components/screen/components/task-filter-name/task-filter-name.service';
 import {SharedNotification, SharedService, SharedTypeNotification} from '@app/core/services/shared/shared.service';
 import {Subscription} from 'rxjs';
+import {SnackBarService} from '@app/core/services/snackbar/snackbar.service';
 
 export interface TaskLists {
   todayTasks?: any[];
@@ -93,7 +94,8 @@ export class ListTasksComponent implements OnInit, OnDestroy{
     private _apiLoader: ApiLoaderService,
     private _addStationService: AddStationService,
     private _taskFilterNameService: TaskFilterNameService,
-    private _sharedService: SharedService
+    private _sharedService: SharedService,
+    private _snackBarService: SnackBarService
   ) {
     this._firstGet = false;
     this.listTask = {historyTasks: [], previousTasks: [], todayTasks: []};
@@ -419,9 +421,11 @@ export class ListTasksComponent implements OnInit, OnDestroy{
     const today = UtilitiesService.createPersonalTimeStamp(new Date());
     if(!this.others){
       if(task.original.status === 3 && this.user.role !== 7){
+        this._snackBarService.openSnackBar('No es posible visualizar tareas vencidas','OK',3000);
         return;
       }
       if(task.original.originalDate>today.timeStamp && this.user.role !== 7){
+        this._snackBarService.openSnackBar('No es posible visualizar tareas programadas','OK',3000);
         return;
       }
       this._modalScroll.nativeElement.scrollTop = '0';
