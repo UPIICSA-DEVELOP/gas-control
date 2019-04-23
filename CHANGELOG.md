@@ -2,6 +2,23 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="1.3.0-beta.21"></a>
+# [1.3.0-beta.21](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/compare/v1.3.0-beta.20...v1.3.0-beta.21) (2019-04-23)
+
+
+### Bug Fixes
+
+* **AddConsultancy:** make as required consultancyNumber field ([6a5e6bb](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/6a5e6bb))
+* **AdminNotifications:** modify space between date and trash button ([93f928e](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/93f928e))
+* **ListTasks:** add snackBar when user try to open a task in status 3 or schedule ([223511f](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/223511f))
+* **ProfileConsultancy:** modify required field in consultancy information ([d0e9707](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/d0e9707))
+* **Screen:** change validations to role 6 ([738d0a3](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/738d0a3))
+* **StationProfile:** modify validation to see button in role 6 ([ce6748a](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/ce6748a))
+* **UserProfile:** delete redirect to home ([3d80dd3](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/3d80dd3))
+* change message to validate role 6 ([db20e47](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/db20e47))
+
+
+
 <a name="1.3.0-beta.20"></a>
 # [1.3.0-beta.20](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/compare/v1.3.0-beta.19...v1.3.0-beta.20) (2019-04-23)
 
