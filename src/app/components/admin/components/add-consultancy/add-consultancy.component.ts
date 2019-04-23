@@ -212,7 +212,7 @@ export class AddConsultancyComponent implements OnInit, OnDestroy {
         company: ['', [Validators.required]],
         rfc: ['', [Validators.required]],
         address: ['', [Validators.required]],
-        consultancyNumber: ['',[Validators.minLength(8), Validators.maxLength(13)]],
+        consultancyNumber: ['',[Validators.minLength(8), Validators.maxLength(13), Validators.required]],
         group: [false, [Validators.required]]
       });
     }else{

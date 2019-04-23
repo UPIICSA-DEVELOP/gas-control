@@ -106,8 +106,7 @@
                     </div>
 
                   <mat-form-field class="number">
-                    <input formControlName="phoneNumber" matInput placeholder="Numero celular" type="text" required
-                           aria-label="User phone number" #phoneNumber>
+                    <input formControlName="phoneNumber" matInput placeholder="Número celular" type="text" required aria-label="User phone number" #phoneNumber>
                     <mat-error *ngIf="ownerForm.controls['phoneNumber'].hasError('required')">
                       Este campo es obligatorio
                     </mat-error>
@@ -203,12 +202,15 @@
                   </mat-error>
                 </mat-form-field>
                 <mat-form-field>
-                  <input formControlName="consultancyNumber" matInput placeholder="Numero de la consultora" type="text" aria-label="Consultancy Number" maxlength="13">
+                  <input formControlName="consultancyNumber" matInput placeholder="Número de la consultora" required type="text" aria-label="Consultancy Number" maxlength="13">
                   <mat-error *ngIf="consultancyForm.controls['consultancyNumber'].hasError('minlength')">
                     Se requieren de 8 a 13 dígitos
                   </mat-error>
                   <mat-error *ngIf="consultancyForm.controls['consultancyNumber'].hasError('maxlength')">
                     Se requieren de 8 a 13 dígitos
+                  </mat-error>
+                  <mat-error *ngIf="consultancyForm.controls['consultancyNumber'].hasError('required')">
+                    Este campo es obligatorio
                   </mat-error>
                 </mat-form-field>
                 <mat-radio-group formControlName="group">
