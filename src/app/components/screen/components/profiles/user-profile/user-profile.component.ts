@@ -122,10 +122,6 @@ export class UserProfileComponent implements OnInit, OnDestroy {
   }
 
   public closeProfile():void{
-    if (LocalStorageService.getItem(Constants.NotSignature)){
-      this._snackBarService.openSnackBar('Por favor, guarde su firma antes de salir','OK', 3000);
-      return;
-    }
     if (this.change){
       this.saveChangeBeforeExit();
       return;
@@ -206,9 +202,6 @@ export class UserProfileComponent implements OnInit, OnDestroy {
           blob: response.item.blobName || ''
         };
         this.newSignature = false;
-        if(LocalStorageService.getItem(Constants.NotSignature)){
-          this.user.signature = this.newSig;
-        }
         this.updateProfile(this.profileForm.value);
       }
     });
@@ -572,9 +565,7 @@ export class UserProfileComponent implements OnInit, OnDestroy {
       switch (response.code){
         case 200:
           this.change = false;
-          LocalStorageService.removeItem(Constants.NotSignature);
           this._snackBarService.openSnackBar('Información actualizada','OK',3000);
-          this._router.navigate(['/home']).then();
           break;
         default:
           this._dialogService.alertDialog('No se pudo acceder', 'Se produjo un error de comunicación con el servidor', 'ACEPTAR');
