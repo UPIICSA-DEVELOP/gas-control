@@ -204,7 +204,7 @@ export class ScreenComponent implements OnInit, AfterViewInit, OnDestroy{
     if(this.role !== 6){
       this._sasisopaService.open({utils: this.utils, stationId: this.stationActive.id});
     }else{
-      this._snackBarService.openSnackBar('Esta acción no esta permitida para este rol','OK',3000);
+      this._snackBarService.openSnackBar('Usted no tiene permiso para visualizar este módulo','OK',3000);
     }
   }
 
@@ -212,7 +212,7 @@ export class ScreenComponent implements OnInit, AfterViewInit, OnDestroy{
     if(this.role !== 6){
       this._sgmService.open({utils:this.utils, stationId: this.stationActive.id});
     }else{
-      this._snackBarService.openSnackBar('Esta acción no esta permitida para este rol','OK',3000);
+      this._snackBarService.openSnackBar('Usted no tiene permiso para visualizar este módulo','OK',3000);
     }
   }
 

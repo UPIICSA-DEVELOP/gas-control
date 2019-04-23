@@ -399,7 +399,7 @@ export class StationProfileComponent implements OnInit, OnDestroy {
     if(this.user.role !== 6){
       this._router.navigate(['/home/documents'],{queryParams:{station: this.station.id}}).then();
     }else{
-      this._snackBarService.openSnackBar('Esta acción no esta permitida para este rol','OK',3000);
+      this._snackBarService.openSnackBar('Usted no tiene permiso para visualizar este módulo','OK',3000);
     }
   }
 }
