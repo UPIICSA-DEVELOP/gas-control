@@ -198,7 +198,7 @@
       </div>
       <div class="dispensers-information">
         <div class="documentation">
-          <button mat-button [color]="'primary'" type="button" *ngIf="user.role!==6" [routerLink]="'/home/documents'" [queryParams]="{station: station.id}">
+          <button mat-button [color]="'primary'" type="button" (click)="goToDocumentation()">
             Documentación <mat-icon>keyboard_backspace</mat-icon>
           </button>
         </div>

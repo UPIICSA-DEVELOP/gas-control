@@ -281,7 +281,6 @@ export class StationProfileComponent implements OnInit, OnDestroy {
         case 200:
           this.change = false;
           this._snackBarService.openSnackBar('Información actualizada','OK',3000);
-          this._router.navigate(['/home'], {queryParams:{station: this.station.id}}).then();
           break;
         default:
           this._dialogService.alertDialog('No se pudo acceder', 'Se produjo un error de comunicación con el servidor', 'ACEPTAR');
@@ -393,6 +392,14 @@ export class StationProfileComponent implements OnInit, OnDestroy {
     const year = new Date();
     for(let x = 1969; x<=year.getFullYear(); x++){
       this.yearSelector.push(x);
+    }
+  }
+
+  public goToDocumentation(): void{
+    if(this.user.role !== 6){
+      this._router.navigate(['/home/documents'],{queryParams:{station: this.station.id}}).then();
+    }else{
+      this._snackBarService.openSnackBar('Esta acción no esta permitida para este rol','OK',3000);
     }
   }
 }
