@@ -201,11 +201,19 @@ export class ScreenComponent implements OnInit, AfterViewInit, OnDestroy{
   }
 
   public openSasisopaModal():void{
-    this._sasisopaService.open({utils: this.utils, stationId: this.stationActive.id});
+    if(this.role !== 6){
+      this._sasisopaService.open({utils: this.utils, stationId: this.stationActive.id});
+    }else{
+      this._snackBarService.openSnackBar('Esta acción no esta permitida para este rol','OK',3000);
+    }
   }
 
   public openSGMModal():void{
-    this._sgmService.open({utils:this.utils, stationId: this.stationActive.id});
+    if(this.role !== 6){
+      this._sgmService.open({utils:this.utils, stationId: this.stationActive.id});
+    }else{
+      this._snackBarService.openSnackBar('Esta acción no esta permitida para este rol','OK',3000);
+    }
   }
 
   public openNotifications():void{

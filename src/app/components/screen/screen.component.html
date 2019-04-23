@@ -55,12 +55,12 @@
                 <mat-icon>library_books</mat-icon>
                 <span>Procedimientos</span>
               </button>
-              <button mat-button [disabled]="!stationActive.stationTaskId" (click)="openSasisopaModal()" *ngIf="role!==6">
+              <button mat-button [disabled]="!stationActive.stationTaskId" (click)="openSasisopaModal()">
                 <img *ngIf="stationActive.stationTaskId" class="sass-icon" src="../../../assets/image/ssp_blue.png">
                 <img *ngIf="!stationActive.stationTaskId" style="margin-right: 4px" src="../../../assets/image/ssp_disabled.png">
                 <span>SASISOPA</span>
               </button>
-              <button mat-button [disabled]="!stationActive.stationTaskId" (click)="openSGMModal()" *ngIf="role!==6">
+              <button mat-button [disabled]="!stationActive.stationTaskId" (click)="openSGMModal()">
                 <img *ngIf="stationActive.stationTaskId" class="sgm" src="../../../assets/image/sgm.png">
                 <img *ngIf="!stationActive.stationTaskId" class="sgm" src="../../../assets/image/sgm_disabled.png">
                 <span>Sistema de Gestión de Mediciones</span>
