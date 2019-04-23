@@ -36,6 +36,7 @@ export class ScreenComponent implements OnInit, AfterViewInit, OnDestroy{
   public menu: boolean;
   public utils: any;
   public load: boolean;
+  public newNotification: boolean;
   private _stationId: any;
   private _subscriptionShared: Subscription;
   private _subscriptionLoader: Subscription;
@@ -57,6 +58,7 @@ export class ScreenComponent implements OnInit, AfterViewInit, OnDestroy{
   ) {
     this._subscriptionLoader = this._apiLoader.getProgress().subscribe(load=>{this.load = load});
     this.menu = true;
+    this.newNotification = false;
   }
 
   ngOnInit() {
@@ -79,7 +81,8 @@ export class ScreenComponent implements OnInit, AfterViewInit, OnDestroy{
    this._subscriptionShared = this._sharedService.getNotifications().subscribe((response: SharedNotification)=>{
      switch (response.type){
        case SharedTypeNotification.ChangeStation:
-         this._stationId = response.value;
+         this._stationId = response.value.id;
+         this.newNotification = response.value.newNotification;
          this.getDashboardInformation(this._stationId);
          break;
        case SharedTypeNotification.FinishEditTask:
@@ -96,6 +99,9 @@ export class ScreenComponent implements OnInit, AfterViewInit, OnDestroy{
 
   private initNotifications(): void{
     this._auth.onNotificationsReceived().subscribe(response=>{
+      if(response.data['gcm.notification.stationId'] === this.stationActive.id){
+        this.newNotification = true;
+      }
       const notification = new Notification(response.notification.title, {
         icon: environment.url+'favicon.png',
         body: response.notification.body,
@@ -203,6 +209,7 @@ export class ScreenComponent implements OnInit, AfterViewInit, OnDestroy{
   }
 
   public openNotifications():void{
+    this.newNotification = false;
     if(this.role !== 7){
       this._router.navigate(['/home/notifications'], {queryParams:{id: this.stationActive.id}}).then();
     }else{
@@ -231,6 +238,9 @@ export class ScreenComponent implements OnInit, AfterViewInit, OnDestroy{
           if(response.item.stationLites){
             this.stationActive = response.item.stationLites[0];
             LocalStorageService.setItem(Constants.StationInDashboard, {id: this.stationActive.id, name: this.stationActive.businessName});
+            if(this.stationActive.newNotification){
+              this.newNotification = true;
+            }
             if(!this.stationActive.stationTaskId){
               this.openTaskCalendar();
             }
@@ -265,6 +275,9 @@ export class ScreenComponent implements OnInit, AfterViewInit, OnDestroy{
           if(response.item.station){
             this.stationActive = response.item.station;
             LocalStorageService.setItem(Constants.StationInDashboard, {id: this.stationActive.id, name: this.stationActive.businessName});
+            if(response.item.newNotification){
+              this.newNotification = true;
+            }
             if(!this.stationActive.stationTaskId){
               this.openTaskCalendar();
             }
