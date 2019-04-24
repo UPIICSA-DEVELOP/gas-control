@@ -1,0 +1,107 @@
+/*!
+ *  Copyright (C) MapLander S de R.L de C.V - All Rights Reserved
+ *  Unauthorized copying of this file, via any medium is strictly prohibited
+ *  Proprietary and confidential
+ */
+
+#task-card{
+  width: 100%;
+  .item{
+    padding: 0;
+    display: flex;
+    margin-bottom: 12px;
+    min-height: 92px;
+    mat-card-content{
+      display: flex;
+      width: 100%;
+      position: relative;
+      padding: 12px;
+    }
+    .date{
+      text-align: center;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin: 12px;
+      .text-bold{
+        color: #707070;
+        font-weight: 500;
+        font-size: 16px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+    }
+    .content{
+      width: 80%;
+      height: 100%;
+      @media screen and (max-width: 800px){
+        width: 75%;
+      }
+      .head{
+        color: #000000;
+        font-weight: 700;
+        font-size: 13px;
+      }
+      .text{
+        color: #707070;
+        font-weight: 400;
+        font-size: 12px;
+        margin-top: 4px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+    }
+    .frequency{
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      margin: 16px;
+    }
+    .status{
+      position: absolute;
+      top: 0;
+      right: 0;
+      margin: 16px;
+      .done{
+        color: #257602;
+        font-size: 16px;
+        width: 16px;
+        height: 16px;
+      }
+      .pending{
+        color: #707070;
+        font-size: 16px;
+        width: 16px;
+        height: 16px;
+      }
+      .latest{
+        color: #E00000;
+        font-size: 16px;
+        width: 16px;
+        height: 16px;
+      }
+    }
+  }
+  .basic{
+    background-color: #257602;
+  }
+  .medium{
+    background-color: #FFD800;
+  }
+  .critical{
+    background-color: #E00000;
+  }
+  .priority{
+    width: 1%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    border-radius: 4px 0 0 4px;
+  }
+  /deep/ .mat-card .last-child {
+    margin-bottom: 0;
+  }
+}

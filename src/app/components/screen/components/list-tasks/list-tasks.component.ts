@@ -63,10 +63,7 @@ export class ListTasksComponent implements OnInit, OnDestroy{
   public start: any;
   public end: any;
   public today: boolean;
-  public zones: any[];
-  public priority: any[];
   public typeFilter: string[];
-  public frequency: string[];
   public filter: number;
   public load: boolean;
   public user: any;
@@ -110,10 +107,7 @@ export class ListTasksComponent implements OnInit, OnDestroy{
     this.filter = 0;
     this.startDate = new Date();
     this.endDate = new Date();
-    this.priority = Constants.Level;
-    this.zones = Constants.Zones;
     this.typeFilter = Constants.Filters;
-    this.frequency = Constants.Frequency;
     this._firstOpen = true;
     this._taskType = '0';
     this.notCalendarTasks = [];

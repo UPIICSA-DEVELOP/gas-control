@@ -18,6 +18,21 @@ export class TimePickerService {
   ) { }
 
   public open(): IDialogResult{
-    return  this.atp.open();
+    return  this.atp.open({
+      theme: 'material-blue',
+      arrowStyle: {
+        background: 'blue',
+        color: 'white'
+      },
+      preference:{
+        labels:{
+          ok: 'ACEPTAR',
+          cancel: 'CANCELAR'
+        }
+      },
+      animation: 'fade',
+      locale: 'mx',
+      changeToMinutes: true
+    });
   }
 }
