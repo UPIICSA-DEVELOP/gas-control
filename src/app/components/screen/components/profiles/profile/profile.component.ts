@@ -560,7 +560,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
   };
 
   private validateDisabledInputs(disable?: boolean): void{
-    if(this.user.role !== 1){
+    if(this.user.role === 3){
       this.disabledInputs = true;
     }else{
       this.disabledInputs = disable;
