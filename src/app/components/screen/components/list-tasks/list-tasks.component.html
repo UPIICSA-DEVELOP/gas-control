@@ -80,103 +80,28 @@
               <div class="card-list" *ngFor="let task of listTask.todayTasks;">
                 <div *ngIf="task.type === 1; then dividerText else taskCard"></div>
                 <ng-template #dividerText>
-                  <div class="head-bold" style="margin: 8px 0">{{task.title}}</div>
+                  <div style="margin: 8px 0; font-weight: 600;">{{task.title}}</div>
                 </ng-template>
                 <ng-template #taskCard>
-                  <mat-card (click)="goTaskInfo(task)" matRipple class="task">
-                    <div class="priority" *ngIf="task.original.level === 3" style="background-color:#E00000"></div>
-                    <div class="priority" *ngIf="task.original.level === 1" style="background-color:#257602"></div>
-                    <div class="priority" *ngIf="task.original.level === 2" style="background-color:#FFD800"></div>
-                    <mat-card-content>
-                      <div class="date">
-                        <div>
-                          <div class="text-bold">{{task.original.date[0]}}</div>
-                          <div class="text-bold">{{task.original.date[1]}}</div>
-                        </div>
-                      </div>
-                      <div class="content">
-                        <div class="head">{{task.original.name}}</div>
-                        <div class="text">{{zones[task.original.zone-1]}}</div>
-                        <div class="text">{{priority[task.original.level-1]}}</div>
-                      </div>
-                      <div style="position: absolute; top: 0; right: 0; margin: 16px;">
-                        <mat-icon class="done" *ngIf="task.original.status === 4">check</mat-icon>
-                        <mat-icon class="latest" *ngIf="task.original.status === 3">close</mat-icon>
-                        <mat-icon class="pending" svgIcon="icons:task_previous" *ngIf=" task.original.status === 2"></mat-icon>
-                      </div>
-                      <div style="position: absolute; bottom: 0; right: 0; margin: 16px;">
-                        <div>{{frequency[task.original.frequency-1]}}</div>
-                      </div>
-                    </mat-card-content>
-                  </mat-card>
+                  <app-task-card (click)="goTaskInfo(task)" [implementation]="1" [taskInfo]="task"></app-task-card>
                 </ng-template>
               </div>
               <div class="card-list" *ngFor="let task of listTask.previousTasks;">
                 <div *ngIf="task.type === 1; then dividerText else taskCard"></div>
                 <ng-template #dividerText>
-                  <div class="head-bold" style="margin: 8px 0">{{task.title}}</div>
+                  <div style="margin: 8px 0; font-weight: 600;">{{task.title}}</div>
                 </ng-template>
                 <ng-template #taskCard>
-                  <mat-card matRipple (click)="goTaskInfo(task)" class="task">
-                    <div class="priority" *ngIf="task.original.level === 3" style="background-color:#E00000"></div>
-                    <div class="priority" *ngIf="task.original.level === 1" style="background-color:#257602"></div>
-                    <div class="priority" *ngIf="task.original.level === 2" style="background-color:#FFD800"></div>
-                    <mat-card-content>
-                      <div class="date">
-                        <div>
-                          <div class="text-bold">{{task.original.date[0]}}</div>
-                          <div class="text-bold">{{task.original.date[1]}}</div>
-                        </div>
-                      </div>
-                      <div class="content">
-                        <div class="head">{{task.original.name}}</div>
-                        <div class="text">{{zones[task.original.zone-1]}}</div>
-                        <div class="text">{{priority[task.original.level-1]}}</div>
-                      </div>
-                      <div style="position: absolute; top: 0; right: 0; margin: 16px;">
-                        <mat-icon style="color: #257602; font-size: 16px; width: 16px; height: 16px;" *ngIf="task.original.status === 4">check</mat-icon>
-                        <mat-icon style="color: #E00000; font-size: 16px; width: 16px; height: 16px;" *ngIf="task.original.status === 3">close</mat-icon>
-                        <mat-icon style="color: #707070; font-size: 16px; width: 16px; height: 16px;" svgIcon="icons:task_previous" *ngIf=" task.original.status === 2"></mat-icon>
-                      </div>
-                      <div style="position: absolute; bottom: 0; right: 0; margin: 16px;">
-                        <div>{{frequency[task.original.frequency-1]}}</div>
-                      </div>
-                    </mat-card-content>
-                  </mat-card>
+                  <app-task-card (click)="goTaskInfo(task)" [implementation]="1" [taskInfo]="task"></app-task-card>
                 </ng-template>
               </div>
               <div class="card-list" *ngFor="let task of listTask.historyTasks;">
                 <div *ngIf="task.type === 1; then dividerText else taskCard"></div>
                 <ng-template #dividerText>
-                  <div class="head-bold" style="margin: 8px 0">{{task.title}}</div>
+                  <div style="margin: 8px 0; font-weight: 600;">{{task.title}}</div>
                 </ng-template>
                 <ng-template #taskCard>
-                  <mat-card matRipple class="task" (click)="goTaskInfo(task)">
-                    <div class="priority" *ngIf="task.original.level === 3" style="background-color:#E00000"></div>
-                    <div class="priority" *ngIf="task.original.level === 1" style="background-color:#257602"></div>
-                    <div class="priority" *ngIf="task.original.level === 2" style="background-color:#FFD800"></div>
-                    <mat-card-content>
-                      <div class="date">
-                        <div>
-                          <div class="text-bold">{{task.original.date[0]}}</div>
-                          <div class="text-bold">{{task.original.date[1]}}</div>
-                        </div>
-                      </div>
-                      <div class="content">
-                        <div class="head">{{task.original.name}}</div>
-                        <div class="text">{{zones[task.original.zone-1]}}</div>
-                        <div class="text">{{priority[task.original.level-1]}}</div>
-                      </div>
-                      <div style="position: absolute; top: 0; right: 0; margin: 16px;">
-                        <mat-icon style="color: #257602; font-size: 16px; width: 16px; height: 16px;" *ngIf="task.original.status === 4">check</mat-icon>
-                        <mat-icon style="color: #E00000; font-size: 16px; width: 16px; height: 16px;" *ngIf="task.original.status === 3">close</mat-icon>
-                        <mat-icon style="color: #707070; font-size: 16px; width: 16px; height: 16px;" svgIcon="icons:task_previous" *ngIf=" task.original.status === 2"></mat-icon>
-                      </div>
-                      <div style="position: absolute; bottom: 0; right: 0; margin: 16px;">
-                        <div>{{frequency[task.original.frequency-1]}}</div>
-                      </div>
-                    </mat-card-content>
-                  </mat-card>
+                  <app-task-card (click)="goTaskInfo(task)" [implementation]="1" [taskInfo]="task"></app-task-card>
                 </ng-template>
               </div>
             </ng-template>
