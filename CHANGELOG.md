@@ -2,6 +2,27 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="1.3.0-beta.22"></a>
+# [1.3.0-beta.22](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/compare/v1.3.0-beta.21...v1.3.0-beta.22) (2019-04-24)
+
+
+### Bug Fixes
+
+* **Assets:** modify whatsapp icon ([7f3a6b0](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/7f3a6b0))
+* **ListTasks:** implement Component to see cards ([7178057](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/7178057))
+* **NavBar:** solve error in profile image style ([88d19d5](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/88d19d5))
+* **ProfileConsultancy:** change validation to modify consultancy info ([5a2ed08](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/5a2ed08))
+* **StationProfile:** modify validations in arrays ([b27c1ef](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/b27c1ef))
+* **TaskInAnnexed:** implement component to see list tasks ([8620346](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/8620346))
+* **TimePicker:** modify clock styles ([eb91cac](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/eb91cac))
+
+
+### Features
+
+* **TaskCard:** add component to card task detail ([5fbb0e5](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/5fbb0e5))
+
+
+
 <a name="1.3.0-beta.21"></a>
 # [1.3.0-beta.21](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/compare/v1.3.0-beta.20...v1.3.0-beta.21) (2019-04-23)
 
