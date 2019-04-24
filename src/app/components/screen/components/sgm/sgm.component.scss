@@ -84,62 +84,6 @@
     justify-content: center;
     margin: 16px 0;
   }
-  .task{
-    padding: 0;
-    display: flex;
-    margin-bottom: 12px;
-    height: 124px;
-    .priority{
-      width: 1%;
-      position: relative;
-      top: 0;
-      left: 0;
-      border-radius: 4px 0 0 4px;
-    }
-    mat-card-content{
-      display: flex;
-      width: 100%;
-      position: relative;
-      padding: 12px;
-    }
-    .date{
-      text-align: center;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      margin: 12px;
-      @media screen and (max-width: 900px){
-        width: 25%;
-      }
-      .text-bold{
-        color: #707070;
-        font-weight: 500;
-        font-size: 16px;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-      }
-    }
-    .content{
-      width: 90%;
-      height: 100%;
-      .head{
-        color: #000000;
-        font-weight: 700;
-        font-size: 13px;
-      }
-      .text{
-        color: #707070;
-        font-weight: 400;
-        font-size: 12px;
-        margin-top: 4px;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-      }
-    }
-  }
-
   .content-sgm{
     display: flex;
     width: 100%;
@@ -148,6 +92,12 @@
     .column-one{
       width: 40%;
       height: 100%;
+      .buttons-sgm{
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        margin-top: 36px;
+      }
       .action{
         height: 36px;
       }
@@ -169,6 +119,11 @@
       height: 100%;
       padding: 0 12px;
       position: relative;
+      .tab-zero{
+        display: flex;
+        align-items: center;
+        height: 100%;
+      }
       .first-view{
         display: flex;
         align-items: center;
@@ -210,6 +165,7 @@
       }
     }
   }
+
   .fuel-type{
     display: flex;
     justify-content: space-around;
@@ -251,6 +207,20 @@
     text-align: justify;
     font-size: 12px;
     padding: 0 8px;
+  }
+  .task-header{
+    overflow: auto;
+    height: calc(100% - 88px);
+  }
+  .item-list{
+    width: 85%;
+    margin: auto;
+  }
+  .empty-list-task{
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 16px;
   }
   .background{
     width: 400px;

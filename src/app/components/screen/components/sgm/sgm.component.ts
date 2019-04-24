@@ -36,9 +36,6 @@ export class SgmComponent implements OnInit, OnDestroy {
   public elementOnView: number;
   public listTasksOne: any[];
   public listTasksTwo: any[];
-  public zones: string[];
-  public priority: string[];
-  public frequency: string[];
   public generate: boolean;
   public isAvailable: boolean;
   public dateGeneration: string[];
@@ -58,9 +55,6 @@ export class SgmComponent implements OnInit, OnDestroy {
   ) {
     this.errors = [false, false, false, false];
     this.isDevelop = environment.develop;
-    this.zones = Constants.Zones;
-    this.frequency = Constants.Frequency;
-    this.priority = Constants.Level;
     this.dateGeneration = [];
     this.isAvailable = false;
     this.generate = false;
@@ -357,7 +351,22 @@ export class SgmComponent implements OnInit, OnDestroy {
     listTask.forEach(item =>{
       this._data.utils.taskTemplates.forEach(origin => {
         if(item.type == origin.id){
-          newList.push({date: UtilitiesService.convertDate(item.date), origin: origin});
+          newList.push({
+            original: {
+              id: item.id,
+              type: item.type,
+              date: UtilitiesService.convertDate(item.date),
+              originalDate: item.date,
+              name: origin.name,
+              zone: origin.zone,
+              level: origin.level,
+              hwg: origin.hwg,
+              typeReport: origin.typeReport,
+              status: item.status,
+              evidence: origin.evidence,
+              frequency: origin.frequency
+            }
+          });
         }
       });
     });

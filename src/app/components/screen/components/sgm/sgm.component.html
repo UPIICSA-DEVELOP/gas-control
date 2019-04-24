@@ -18,7 +18,7 @@
     </div>
     <div class="content-sgm">
       <div class="column-one">
-        <div class="fuel-type" style="margin-top: 36px;">
+        <div class="buttons-sgm">
           <button class="action" mat-flat-button (click)="generateSgm()" [color]="'primary'">GENERAR</button>
           <button class="action" mat-flat-button [color]="'primary'" [disabled]="!isAvailable" (click)="seeSGM()">VER</button>
           <button *ngIf="isDevelop && generate" class="action" mat-flat-button [color]="'primary'" (click)="seeSGM()">VER TMP</button>
@@ -32,36 +32,36 @@
             </mat-card-content>
           </mat-card>
           <mat-card (click)="changeOptions(2)" class="list-and-template">
-            <mat-card-content>
-              <mat-icon [ngStyle]="{'color':elementOnView === 2 ? '#0d47a1' : '#707070'}">insert_drive_file</mat-icon>
-              <div [ngStyle]="{'color':elementOnView === 2 ? '#0d47a1' : '#707070'}" class="divider bold-text">Anexo 1</div>
+            <mat-card-content [ngStyle]="{'color':elementOnView === 2 ? '#0d47a1' : '#707070'}">
+              <mat-icon>insert_drive_file</mat-icon>
+              <div class="divider bold-text">Anexo 1</div>
             </mat-card-content>
           </mat-card>
           <mat-error *ngIf="errors[0]" class="error">
             Debe existir al menos una tarea
           </mat-error>
           <mat-card (click)="changeOptions(1)" class="list-and-template">
-            <mat-card-content>
-              <mat-icon [ngStyle]="{'color':elementOnView === 1 ? '#0d47a1' : '#707070'}">insert_drive_file</mat-icon>
-              <div [ngStyle]="{'color':elementOnView === 1 ? '#0d47a1' : '#707070'}" class="divider bold-text">Anexo 2</div>
+            <mat-card-content [ngStyle]="{'color':elementOnView === 1 ? '#0d47a1' : '#707070'}">
+              <mat-icon>insert_drive_file</mat-icon>
+              <div class="divider bold-text">Anexo 2</div>
             </mat-card-content>
           </mat-card>
           <mat-error *ngIf="errors[1]" class="error">
             Debe existir al menos una tarea
           </mat-error>
           <mat-card (click)="changeOptions(3)" class="list-and-template">
-            <mat-card-content>
-              <mat-icon [ngStyle]="{'color':elementOnView === 3 ? '#0d47a1' : '#707070'}">insert_drive_file</mat-icon>
-              <div [ngStyle]="{'color':elementOnView === 3 ? '#0d47a1' : '#707070'}" class="divider bold-text">Hoja de datos de Seguridad</div>
+            <mat-card-content [ngStyle]="{'color':elementOnView === 3 ? '#0d47a1' : '#707070'}">
+              <mat-icon>insert_drive_file</mat-icon>
+              <div class="divider bold-text">Hoja de datos de Seguridad</div>
             </mat-card-content>
           </mat-card>
           <mat-error *ngIf="errors[2]" class="error">
             Debe seleccionar al menos una opción
           </mat-error>
           <mat-card (click)="changeOptions(4)" class="list-and-template">
-            <mat-card-content>
-              <mat-icon [ngStyle]="{'color':elementOnView === 4 ? '#0d47a1' : '#707070'}">description</mat-icon>
-              <div [ngStyle]="{'color':elementOnView === 4 ? '#0d47a1' : '#707070'}" class="divider bold-text">Manuales de equipos de medición de tanques de almacenamiento</div>
+            <mat-card-content [ngStyle]="{'color':elementOnView === 4 ? '#0d47a1' : '#707070'}">
+              <mat-icon>description</mat-icon>
+              <div class="divider bold-text">Manuales de equipos de medición de tanques de almacenamiento</div>
             </mat-card-content>
           </mat-card>
           <mat-error *ngIf="errors[3]" class="error">
@@ -72,7 +72,7 @@
       <mat-divider [vertical]="true"></mat-divider>
       <div class="column-two">
         <ng-container [ngSwitch]="elementOnView">
-          <div style="display: flex; align-items: center; height: 100%;" *ngSwitchCase="0">
+          <div class="tab-zero" *ngSwitchCase="0">
             <div class="first-view">
               <div class="desc">De acuerdo a las disposiciones administrativas de carácter general en materia de medición aplicables a la actividad de almacenamiento de
                 petróleo, petrolíferos y petroquímicos.</div>
@@ -84,70 +84,30 @@
             <div class="annexe-head">Evidencia de la Prueba de funcionamiento de sensores (motobomba, espacio anular y pozos de observación)</div>
             <div *ngIf="listTasksTwo.length !== 0; then completeList else emptyListTasks"></div>
             <ng-template #completeList>
-              <div style="overflow: auto; height: calc(100% - 88px);">
-                <div style="width: 85%; margin: auto" *ngFor="let task of listTasksTwo">
-                  <mat-card class="task">
-                    <div class="priority" *ngIf="task.origin.level === 3" style="background-color:#E00000"></div>
-                    <div class="priority" *ngIf="task.origin.level === 1" style="background-color:#257602"></div>
-                    <div class="priority" *ngIf="task.origin.level === 2" style="background-color:#FFD800"></div>
-                    <mat-card-content>
-                      <div class="date">
-                        <div>
-                          <div class="text-bold">{{task.date[0]}}</div>
-                          <div class="text-bold">{{task.date[1]}}</div>
-                        </div>
-                      </div>
-                      <div class="content">
-                        <div class="head">{{task.origin.name}}</div>
-                        <div class="text">{{zones[task.origin.zone-1]}}</div>
-                        <div class="text">{{priority[task.origin.level-1]}}</div>
-                      </div>
-                      <div style="position: absolute; bottom: 0; right: 0; margin: 16px;">
-                        <div>{{frequency[task.origin.frequency-1]}}</div>
-                      </div>
-                    </mat-card-content>
-                  </mat-card>
+              <div class="task-header">
+                <div class="item-list" *ngFor="let task of listTasksTwo">
+                  <app-task-card [implementation]="3" [taskInfo]="task"></app-task-card>
                 </div>
               </div>
             </ng-template>
             <ng-template #emptyListTasks>
-              <div style="display:flex; justify-content: center; align-items: center; margin-top: 16px;">
+              <div class="empty-list-task">
                 <div class="gray">No hay registro de este tipo de tareas aún</div>
               </div>
             </ng-template>
           </div>
           <div class="top-space" *ngSwitchCase="2">
-            <div style="font-weight: 600; margin: 8px 0; width: 100%; text-align: center">Evidencia de la Prueba de funcionamiento de sensores de dispensario</div>
+            <div class="annexe-head">Evidencia de la Prueba de funcionamiento de sensores de dispensario</div>
             <div *ngIf="listTasksOne.length !== 0; then completeList else emptyListTasks"></div>
             <ng-template #completeList>
-              <div style="overflow: auto; height: calc(100% - 88px);">
-                <div style="width: 85%; margin: auto" *ngFor="let task of listTasksOne">
-                  <mat-card class="task">
-                    <div class="priority" *ngIf="task.origin.level === 3" style="background-color:#E00000"></div>
-                    <div class="priority" *ngIf="task.origin.level === 1" style="background-color:#257602"></div>
-                    <div class="priority" *ngIf="task.origin.level === 2" style="background-color:#FFD800"></div>
-                    <mat-card-content>
-                      <div class="date">
-                        <div>
-                          <div class="text-bold">{{task.date[0]}}</div>
-                          <div class="text-bold">{{task.date[1]}}</div>
-                        </div>
-                      </div>
-                      <div class="content">
-                        <div class="head">{{task.origin.name}}</div>
-                        <div class="text">{{zones[task.origin.zone-1]}}</div>
-                        <div class="text">{{priority[task.origin.level-1]}}</div>
-                      </div>
-                      <div style="position: absolute; bottom: 0; right: 0; margin: 16px;">
-                        <div>{{frequency[task.origin.frequency-1]}}</div>
-                      </div>
-                    </mat-card-content>
-                  </mat-card>
+              <div class="task-header">
+                <div class="item-list" *ngFor="let task of listTasksOne">
+                  <app-task-card [implementation]="3" [taskInfo]="task"></app-task-card>
                 </div>
               </div>
             </ng-template>
             <ng-template #emptyListTasks>
-              <div style="display:flex; justify-content: center; align-items: center; margin-top: 16px;">
+              <div class="empty-list-task">
                 <div class="gray">No hay registro de este tipo de tareas aún</div>
               </div>
             </ng-template>
