@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="1.3.1-beta.1"></a>
+## [1.3.1-beta.1](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/compare/v1.3.1-beta.0...v1.3.1-beta.1) (2019-04-24)
+
+
+### Bug Fixes
+
+* **Collaborators:** modify background color ([6f1727b](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/6f1727b))
+* **Documentation:** solver error in responsive ([2efb67e](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/2efb67e))
+* **ListTasks:** add schedule tasks with divider ([5b57d75](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/5b57d75))
+* **ProfileConsultancy:** change time to validate disabled inputs ([494ee8a](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/494ee8a))
+* **SASISOPA:** solve error in save file ([d58a5a8](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/d58a5a8))
+* **StationProfile:** add margin to information card ([d2f3d1a](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/d2f3d1a))
+
+
+
 <a name="1.3.1-beta.0"></a>
 ## [1.3.1-beta.0](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/compare/v1.3.0...v1.3.1-beta.0) (2019-04-24)
 
