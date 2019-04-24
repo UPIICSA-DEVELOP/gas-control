@@ -268,7 +268,13 @@ export class SasisopaComponent implements OnInit, OnDestroy {
         case 200:
           this._change = false;
           this.sasisopaDocs[element.type - 1] = element;
-          this.saveChanges(element.annexed);
+          let index = 0;
+          if(element.annexed >= 9){
+            index = element.annexed - 2;
+          }else{
+            index = element.annexed;
+          }
+          this.saveChanges(index);
           break;
         default:
           break;
@@ -378,6 +384,7 @@ export class SasisopaComponent implements OnInit, OnDestroy {
           this.uploadFile(index + 2, 12);
           return;
         }
+        this._snackBarService.openSnackBar('Información actualizada','OK',3000);
         break;
       case 3:
         if(this._forms[2]){

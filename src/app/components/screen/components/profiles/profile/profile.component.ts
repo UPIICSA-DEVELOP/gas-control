@@ -511,9 +511,9 @@ export class ProfileComponent implements OnInit, OnDestroy {
     this._api.updateConsultancy(this.consultancy).subscribe(response=>{
       switch (response.code){
         case 200:
+          this.validateDisabledInputs();
           this.change = false;
           this._snackBarService.openSnackBar('Información actualizada','OK',3000);
-          this.validateDisabledInputs();
           break;
         default:
           this.validateDisabledInputs();
