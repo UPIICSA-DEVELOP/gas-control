@@ -1,0 +1,36 @@
+<!--
+  ~  Copyright (C) MapLander S de R.L de C.V - All Rights Reserved
+  ~  Unauthorized copying of this file, via any medium is strictly prohibited
+  ~  Proprietary and confidential
+  -->
+
+<div id="task-card">
+  <mat-card [ngStyle]="{'cursor': typeCard === 1 ? 'pointer':'initial'}" matRipple [matRippleDisabled]="disabledRipple" class="item">
+    <div class="priority basic" *ngIf="information.original.level === 1"></div>
+    <div class="priority medium" *ngIf="information.original.level === 2"></div>
+    <div class="priority critical" *ngIf="information.original.level === 3"></div>
+    <mat-card-content class="last-child">
+      <div class="date">
+        <div>
+          <div class="text-bold">{{information.original.date[0]}}</div>
+          <div class="text-bold">{{information.original.date[1]}}</div>
+        </div>
+      </div>
+      <div class="content">
+        <div class="head">{{information.original.name}}</div>
+        <div class="text">{{zones[information.original.zone-1]}}</div>
+        <div class="text">{{priority[information.original.level-1]}}</div>
+      </div>
+      <div class="status" *ngIf="typeCard === 1 || typeCard === 4">
+        <ng-container [ngSwitch]="information.original.status">
+          <mat-icon class="pending" *ngSwitchCase="2" svgIcon="icons:task_previous"></mat-icon>
+          <mat-icon class="latest" *ngSwitchCase="3">close</mat-icon>
+          <mat-icon class="done" *ngSwitchCase="4">check</mat-icon>
+        </ng-container>
+      </div>
+      <div class="frequency">
+        <div>{{frequency[information.original.frequency-1]}}</div>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>
