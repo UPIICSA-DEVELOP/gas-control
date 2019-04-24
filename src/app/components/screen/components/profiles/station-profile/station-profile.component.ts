@@ -49,9 +49,6 @@ export class StationProfileComponent implements OnInit, OnDestroy {
   public workShifts:any[];
   public tanks:any[];
   public dispensers:any[];
-  public workShiftsCopy:any[];
-  public tanksCopy:any[];
-  public dispensersCopy:any[];
   public capacities: any[];
   public stationForm: FormGroup;
   public station: any;
@@ -78,9 +75,6 @@ export class StationProfileComponent implements OnInit, OnDestroy {
     this.workShifts = [];
     this.tanks = [];
     this.dispensers = [];
-    this.workShiftsCopy = [];
-    this.tanksCopy = [];
-    this.dispensersCopy = [];
     this.user = LocalStorageService.getItem(Constants.UserInSession);
     this.capacities = Constants.Capacities;
   }
@@ -118,20 +112,7 @@ export class StationProfileComponent implements OnInit, OnDestroy {
             break;
         }
       });
-    } else if(this.validateChangesOnArrays()){
-      this._dialogService.confirmDialog(
-        '¿Desea salir sin guardar cambios?',
-        '',
-        'ACEPTAR',
-        'CANCELAR'
-      ).afterClosed().subscribe(response=>{
-        switch (response.code) {
-          case 1:
-            this._router.navigate(['/home']).then();
-            break;
-        }
-      });
-    } else{
+    }else{
       this._router.navigate(['/home']).then();
     }
   }
@@ -200,24 +181,18 @@ export class StationProfileComponent implements OnInit, OnDestroy {
           this.station = response.item;
           if (this.station.dispensers) {
             this.dispensers = Object.assign([], this.station.dispensers);
-            this.dispensersCopy = Object.assign([], this.station.dispensers);
           }else{
             this.dispensers.push({hoses: undefined, identifier: undefined, magna: false, premium: false, diesel: false});
-            this.dispensersCopy.push({hoses: undefined, identifier: undefined, magna: false, premium: false, diesel: false});
           }
           if (this.station.fuelTanks){
             this.tanks = Object.assign([], this.station.fuelTanks);
-            this.tanksCopy = Object.assign([], this.station.fuelTanks);
           }else{
             this.tanks.push({capacity: undefined, fuelType: undefined, year: undefined});
-            this.tanksCopy.push({capacity: undefined, fuelType: undefined, year: undefined});
           }
           if (this.station.workShifts){
             this.workShifts = Object.assign([],this.station.workShifts);
-            this.workShiftsCopy = Object.assign([],this.station.workShifts);
           }else{
             this.workShifts.push({start: undefined, end: undefined});
-            this.workShiftsCopy.push({start: undefined, end: undefined});
           }
           if (this.station.location) {
             this.latLng = {
@@ -258,7 +233,7 @@ export class StationProfileComponent implements OnInit, OnDestroy {
     if(!this.validateStationArrays()){
       return;
     }
-    this.clearStationArray();
+    //this.clearStationArray();
     this.station.crePermission = (data.crePermission ? data.crePermission: undefined);
     this.station.name = data.name;
     this.station.businessName = data.businessName;
@@ -273,9 +248,9 @@ export class StationProfileComponent implements OnInit, OnDestroy {
       this.station.location.latitude = (this.latLng.latitude?this.latLng.latitude:19.432675);
       this.station.location.longitude = (this.latLng.longitude? this.latLng.longitude: -99.133461);
     }
-    this.station.workShifts = (this.workShifts.length>0 ? this.workShifts:undefined);
-    this.station.fuelTanks = (this.tanks.length>0 ? this.tanks:undefined);
-    this.station.dispensers = (this.dispensers.length>0 ? this.dispensers:undefined);
+    this.station.workShifts = this.workShifts.filter(function (item) {return item !== undefined;});
+    this.station.fuelTanks = this.tanks.filter(function (item) {return item !== undefined;});
+    this.station.dispensers = this.dispensers.filter(function (item) {return item !== undefined;});
    this._api.updateStation(this.station).subscribe(response => {
       switch (response.code) {
         case 200:
@@ -341,37 +316,6 @@ export class StationProfileComponent implements OnInit, OnDestroy {
       }
     }
     return true;
-  }
-
-  private clearStationArray():void{
-    for (let i = 0; i<this.workShifts.length; i++){
-      if(!this.workShifts[i].start && !this.workShifts[i].end){
-        this.workShifts.splice(i, 1);
-      }
-    }
-    for(let j = 0; j<this.tanks.length; j++){
-      if(!this.tanks[j].capacity && !this.tanks[j].fuelType && !this.tanks[j].year){
-        this.tanks.splice(j,1);
-      }
-    }
-    for (let k = 0; k<this.dispensers.length; k++){
-      if(!this.dispensers[k].hoses && !this.dispensers[k].identifier && this.dispensers[k].magna === false && this.dispensers[k].premium === false && this.dispensers[k].diesel === false){
-        this.dispensers.splice(k, 1);
-      }
-    }
-  }
-
-  private validateChangesOnArrays():boolean {
-    if(this.workShifts.length !== this.workShiftsCopy.length){
-      return true;
-    }
-    if(this.tanks.length !== this.tanksCopy.length){
-      return true;
-    }
-    if(this.dispensers.length !== this.dispensersCopy.length){
-      return true;
-    }
-    return false;
   }
 
   public onArrayChange(ev: any):void{
