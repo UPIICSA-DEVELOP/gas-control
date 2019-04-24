@@ -22,6 +22,7 @@ export interface TaskLists {
   todayTasks?: any[];
   previousTasks?: any[];
   historyTasks?: any[];
+  scheduleTasks?: any[];
 }
 
 export interface Report {
@@ -43,7 +44,7 @@ export class ListTasksComponent implements OnInit, OnDestroy{
       this.finishCreateTasks = false;
       this.others = false;
       this._token = undefined;
-      this.listTask = {todayTasks: [], previousTasks: [], historyTasks: []};
+      this.listTask = {todayTasks: [], previousTasks: [], historyTasks: [], scheduleTasks: []};
       this.goBackList();
       this.resetFilters(true);
       this.station = stationObj;
@@ -95,7 +96,7 @@ export class ListTasksComponent implements OnInit, OnDestroy{
     private _snackBarService: SnackBarService
   ) {
     this._firstGet = false;
-    this.listTask = {historyTasks: [], previousTasks: [], todayTasks: []};
+    this.listTask = {historyTasks: [], previousTasks: [], todayTasks: [], scheduleTasks: []};
     this.reportConfig = {reportView: false, taskElement: null, typeReportView: 0, status: 0};
     this.emptyLisTasks = true;
     this._token = undefined;
@@ -151,7 +152,7 @@ export class ListTasksComponent implements OnInit, OnDestroy{
             this._tokenTwo = undefined;
             this.getNotCalendarTask();
           }else{
-            this.listTask = {todayTasks: [], previousTasks: [], historyTasks: []};
+            this.listTask = {todayTasks: [], previousTasks: [], historyTasks: [], scheduleTasks: []};
             this._token = undefined;
             this.getStationTask();
           }
@@ -188,10 +189,10 @@ export class ListTasksComponent implements OnInit, OnDestroy{
             this.emptyLisTasks = false;
             this.tasksCompare(response.items);
           }else{
-            if(this._firstOpen && this._taskType === '0' && this.filter === 0 && (this.listTask.historyTasks.length === 0 && this.listTask.previousTasks.length === 0 && this.listTask.todayTasks.length === 0)){
+            if(this._firstOpen && this._taskType === '0' && this.filter === 0 && (this.listTask.historyTasks.length === 0 && this.listTask.previousTasks.length === 0 && this.listTask.todayTasks.length === 0 && this.listTask.scheduleTasks.length === 0)){
               this.finishCreateTasks = true;
             }else{
-              this.emptyLisTasks = (this.listTask.historyTasks.length === 0 && this.listTask.previousTasks.length === 0 && this.listTask.todayTasks.length === 0);
+              this.emptyLisTasks = (this.listTask.historyTasks.length === 0 && this.listTask.previousTasks.length === 0 && this.listTask.todayTasks.length === 0 && this.listTask.scheduleTasks.length === 0);
             }
           }
           break;
@@ -228,12 +229,20 @@ export class ListTasksComponent implements OnInit, OnDestroy{
   }
 
   public sortTaskArrayByStatus(tasksList: any): void {
+    const today = UtilitiesService.createPersonalTimeStamp(new Date());
     tasksList.forEach( task => {
       if(task.status === 1){
-        if(this.listTask.todayTasks.length === 0 && this.filter === 0){
-          this.listTask.todayTasks.push({type: 1, title: 'Hoy', original: null, id: ''});
+        if(today.timeStamp < task.originalDate){
+          if(this.listTask.scheduleTasks.length === 0 && this.filter === 0){
+            this.listTask.scheduleTasks.push({type: 1, title: 'Programadas', original: null, id: ''});
+          }
+          this.listTask.scheduleTasks.push({type: 2, title: '', original: task, id: task.id});
+        }else{
+          if(this.listTask.todayTasks.length === 0 && this.filter === 0){
+            this.listTask.todayTasks.push({type: 1, title: 'Hoy', original: null, id: ''});
+          }
+          this.listTask.todayTasks.push({type: 2, title: '', original: task, id: task.id});
         }
-        this.listTask.todayTasks.push({type: 2, title: '', original: task, id: task.id});
       }else if(task.status === 2){
         if(this.listTask.previousTasks.length === 0 && this.filter === 0){
           this.listTask.previousTasks.push({type: 1, title: 'Atrasadas', original: null, id: ''});
@@ -277,7 +286,7 @@ export class ListTasksComponent implements OnInit, OnDestroy{
                     this.getNotCalendarTask();
                   }else{
                     this._token = undefined;
-                    this.listTask = {historyTasks: [], previousTasks: [], todayTasks: []};
+                    this.listTask = {historyTasks: [], previousTasks: [], todayTasks: [], scheduleTasks: []};
                     this.getStationTask();
                   }
                   break;
@@ -295,7 +304,7 @@ export class ListTasksComponent implements OnInit, OnDestroy{
         switch (response.code) {
           case 1:
             this.filter = response.filter;
-            this.listTask = {historyTasks: [], previousTasks: [], todayTasks: []};
+            this.listTask = {historyTasks: [], previousTasks: [], todayTasks: [], scheduleTasks:[]};
             this._token = undefined;
             if(this.filter === 0){
               this.resetFilters();
@@ -324,7 +333,7 @@ export class ListTasksComponent implements OnInit, OnDestroy{
         this.notCalendarTasks = [];
         this.getNotCalendarTask();
       }else{
-        this.listTask = {todayTasks:[], previousTasks: [], historyTasks:[]};
+        this.listTask = {todayTasks:[], previousTasks: [], historyTasks:[],scheduleTasks:[]};
         this.getStationTask();
       }
     }
@@ -336,7 +345,7 @@ export class ListTasksComponent implements OnInit, OnDestroy{
         switch (response.code) {
           case 1:
             this._taskType = response.data.toString();
-            this.listTask = {historyTasks: [], previousTasks: [], todayTasks: []};
+            this.listTask = {historyTasks: [], previousTasks: [], todayTasks: [], scheduleTasks:[]};
             this._token = undefined;
             this._tokenTwo = undefined;
             this.getStationTask();

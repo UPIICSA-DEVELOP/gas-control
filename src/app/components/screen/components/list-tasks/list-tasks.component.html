@@ -75,8 +75,17 @@
             </div>
           </ng-template>
           <ng-template #completeList>
-            <div *ngIf="listTask.todayTasks.length === 0 && listTask.previousTasks.length === 0 && listTask.historyTasks.length === 0; then message else list"></div>
+            <div *ngIf="listTask.todayTasks.length === 0 && listTask.previousTasks.length === 0 && listTask.historyTasks.length === 0 && listTask.scheduleTasks.length === 0; then message else list"></div>
             <ng-template #list>
+              <div class="card-list" *ngFor="let task of listTask.scheduleTasks;">
+                <div *ngIf="task.type === 1; then dividerText else taskCard"></div>
+                <ng-template #dividerText>
+                  <div style="margin: 8px 0; font-weight: 600;">{{task.title}}</div>
+                </ng-template>
+                <ng-template #taskCard>
+                  <app-task-card (click)="goTaskInfo(task)" [implementation]="1" [taskInfo]="task"></app-task-card>
+                </ng-template>
+              </div>
               <div class="card-list" *ngFor="let task of listTask.todayTasks;">
                 <div *ngIf="task.type === 1; then dividerText else taskCard"></div>
                 <ng-template #dividerText>
