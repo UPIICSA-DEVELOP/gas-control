@@ -60,7 +60,6 @@ export class UploadFileComponent implements OnInit {
   public onChangeFile(event): void{
     const file = event.target.value;
     const fileName = event.target.files[0].name;
-    console.log(file);
     if(this.validateTypeExist()){
       switch (this.type){
         case UploadFileType.image:
