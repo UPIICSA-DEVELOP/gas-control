@@ -491,9 +491,7 @@ export class ListTasksComponent implements OnInit, OnDestroy{
             if(this.station){
               this.station.stationTaskId = response.item.id;
               this.emptyLisTasks = false;
-              if(response.code === 200){
-                this.finishCreateTasks = true;
-              }
+              this.finishCreateTasks = true;
             }
           }
           break;
