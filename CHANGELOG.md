@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="1.3.1-beta.0"></a>
+## [1.3.1-beta.0](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/compare/v1.3.0...v1.3.1-beta.0) (2019-04-24)
+
+
+### Bug Fixes
+
+* change countries on english to spanish ([1e01a6a](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/1e01a6a))
+* **ListTasks:** modify validation to message ([6aba563](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/6aba563))
+* **VRS:** add vrs indicator ([86b1cff](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/86b1cff))
+
+
+
 <a name="1.3.0"></a>
 # [1.3.0](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/compare/v1.3.0-beta.23...v1.3.0) (2019-04-24)
 
