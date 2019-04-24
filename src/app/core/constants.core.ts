@@ -134,12 +134,12 @@ export class Constants {
 
   public static countries = [
     {
-      name: 'Afghanistan',
+      name: 'Afghanistán',
       code: '93',
       iso: 'AF'
     },
     {
-      name: 'Aland Islands',
+      name: 'Islas Áland',
       code: '358',
       iso: 'AX'
     },
@@ -149,12 +149,12 @@ export class Constants {
       iso: 'AL'
     },
     {
-      name: 'Algeria',
+      name: 'Argelia',
       code: '213',
       iso: 'DZ'
     },
     {
-      name: 'American Samoa',
+      name: 'Samoa Americana',
       code: '1684',
       iso: 'AS'
     },
@@ -169,17 +169,17 @@ export class Constants {
       iso: 'AO'
     },
     {
-      name: 'Anguilla',
+      name: 'Anguila',
       code: '1264',
       iso: 'AI'
     },
     {
-      name: 'Antarctica',
+      name: 'Antártida',
       code: '672',
       iso: 'AQ'
     },
     {
-      name: 'Antigua and Barbuda',
+      name: 'Antigua y Barbuda',
       code: '1268',
       iso: 'AG'
     },
@@ -209,7 +209,7 @@ export class Constants {
       iso: 'AT'
     },
     {
-      name: 'Azerbaijan',
+      name: 'Azerbaiyán',
       code: '994',
       iso: 'AZ'
     },
@@ -219,12 +219,12 @@ export class Constants {
       iso: 'BS'
     },
     {
-      name: 'Bahrain',
+      name: 'Baréin',
       code: '973',
       iso: 'BH'
     },
     {
-      name: 'Bangladesh',
+      name: 'Bangladés',
       code: '880',
       iso: 'BD'
     },
@@ -234,62 +234,62 @@ export class Constants {
       iso: 'BB'
     },
     {
-      name: 'Belarus',
+      name: 'Belarús',
       code: '375',
       iso: 'BY'
     },
     {
-      name: 'Belgium',
+      name: 'Bélgica',
       code: '32',
       iso: 'BE'
     },
     {
-      name: 'Belize',
+      name: 'Belice',
       code: '501',
       iso: 'BZ'
     },
     {
-      name: 'Benin',
+      name: 'Benín',
       code: '229',
       iso: 'BJ'
     },
     {
-      name: 'Bermuda',
+      name: 'Islas Bermudas',
       code: '1441',
       iso: 'BM'
     },
     {
-      name: 'Bhutan',
+      name: 'Bután',
       code: '975',
       iso: 'BT'
     },
     {
-      name: 'Bolivia, Plurinational State of',
+      name: 'Bolivia',
       code: '591',
       iso: 'BO'
     },
     {
-      name: 'Bosnia and Herzegovina',
+      name: 'Bosnia y Herzegovina',
       code: '387',
       iso: 'BA'
     },
     {
-      name: 'Botswana',
+      name: 'Botsuana',
       code: '267',
       iso: 'BW'
     },
     {
-      name: 'Brazil',
+      name: 'Brasil',
       code: '55',
       iso: 'BR'
     },
     {
-      name: 'British Indian Ocean Territory',
+      name: 'Territotio Británico del Océano Índico',
       code: '246',
       iso: 'IO'
     },
     {
-      name: 'Brunei Darussalam',
+      name: 'Brunéi',
       code: '673',
       iso: 'BN'
     },
@@ -309,32 +309,32 @@ export class Constants {
       iso: 'BI'
     },
     {
-      name: 'Cambodia',
+      name: 'Camboya',
       code: '855',
       iso: 'KH'
     },
     {
-      name: 'Cameroon',
+      name: 'Camerún',
       code: '237',
       iso: 'CM'
     },
     {
-      name: 'Canada',
+      name: 'Canadá',
       code: '1',
       iso: 'CA'
     },
     {
-      name: 'Cape Verde',
+      name: 'Cabo Verde',
       code: '238',
       iso: 'CV'
     },
     {
-      name: 'Cayman Islands',
+      name: 'Islas Caimán',
       code: ' 345',
       iso: 'KY'
     },
     {
-      name: 'Central African Republic',
+      name: 'República Centroafricana',
       code: '236',
       iso: 'CF'
     },
@@ -354,12 +354,12 @@ export class Constants {
       iso: 'CN'
     },
     {
-      name: 'Christmas Island',
+      name: 'Isla de Navidad',
       code: '61',
       iso: 'CX'
     },
     {
-      name: 'Cocos (Keeling) Islands',
+      name: 'Islas Cocos',
       code: '61',
       iso: 'CC'
     },
@@ -369,7 +369,7 @@ export class Constants {
       iso: 'CO'
     },
     {
-      name: 'Comoros',
+      name: 'Comoras',
       code: '269',
       iso: 'KM'
     },
@@ -379,12 +379,12 @@ export class Constants {
       iso: 'CG'
     },
     {
-      name: 'Congo, The Democratic Republic of the Congo',
+      name: 'República Democratica del Congo',
       code: '243',
       iso: 'CD'
     },
     {
-      name: 'Cook Islands',
+      name: 'Islas Cook',
       code: '682',
       iso: 'CK'
     },
@@ -394,12 +394,12 @@ export class Constants {
       iso: 'CR'
     },
     {
-      name: 'Cote d\'Ivoire',
+      name: 'Costa de Marfíl',
       code: '225',
       iso: 'CI'
     },
     {
-      name: 'Croatia',
+      name: 'Croacia',
       code: '385',
       iso: 'HR'
     },
@@ -409,22 +409,22 @@ export class Constants {
       iso: 'CU'
     },
     {
-      name: 'Cyprus',
+      name: 'Chipre',
       code: '357',
       iso: 'CY'
     },
     {
-      name: 'Czech Republic',
+      name: 'República Checa',
       code: '420',
       iso: 'CZ'
     },
     {
-      name: 'Denmark',
+      name: 'Dinamarca',
       code: '45',
       iso: 'DK'
     },
     {
-      name: 'Djibouti',
+      name: 'Yibuti',
       code: '253',
       iso: 'DJ'
     },
@@ -434,7 +434,7 @@ export class Constants {
       iso: 'DM'
     },
     {
-      name: 'Dominican Republic',
+      name: 'República Dominicana',
       code: '1849',
       iso: 'DO'
     },
@@ -444,7 +444,7 @@ export class Constants {
       iso: 'EC'
     },
     {
-      name: 'Egypt',
+      name: 'Egipto',
       code: '20',
       iso: 'EG'
     },
@@ -454,7 +454,7 @@ export class Constants {
       iso: 'SV'
     },
     {
-      name: 'Equatorial Guinea',
+      name: 'Guinea Ecuatorial',
       code: '240',
       iso: 'GQ'
     },
@@ -469,47 +469,47 @@ export class Constants {
       iso: 'EE'
     },
     {
-      name: 'Ethiopia',
+      name: 'Etiopía',
       code: '251',
       iso: 'ET'
     },
     {
-      name: 'Falkland Islands (Malvinas)',
+      name: 'Islas Malvinas',
       code: '500',
       iso: 'FK'
     },
     {
-      name: 'Faroe Islands',
+      name: 'Islas Feroe',
       code: '298',
       iso: 'FO'
     },
     {
-      name: 'Fiji',
+      name: 'Fiyi',
       code: '679',
       iso: 'FJ'
     },
     {
-      name: 'Finland',
+      name: 'Finlandia',
       code: '358',
       iso: 'FI'
     },
     {
-      name: 'France',
+      name: 'Francia',
       code: '33',
       iso: 'FR'
     },
     {
-      name: 'French Guiana',
+      name: 'Guayana Francesa',
       code: '594',
       iso: 'GF'
     },
     {
-      name: 'French Polynesia',
+      name: 'Polinesia Francesa',
       code: '689',
       iso: 'PF'
     },
     {
-      name: 'Gabon',
+      name: 'Gabón',
       code: '241',
       iso: 'GA'
     },
@@ -524,7 +524,7 @@ export class Constants {
       iso: 'GE'
     },
     {
-      name: 'Germany',
+      name: 'Alemania',
       code: '49',
       iso: 'DE'
     },
@@ -539,22 +539,22 @@ export class Constants {
       iso: 'GI'
     },
     {
-      name: 'Greece',
+      name: 'Grecia',
       code: '30',
       iso: 'GR'
     },
     {
-      name: 'Greenland',
+      name: 'Tierra Verde',
       code: '299',
       iso: 'GL'
     },
     {
-      name: 'Grenada',
+      name: 'Granada',
       code: '1473',
       iso: 'GD'
     },
     {
-      name: 'Guadeloupe',
+      name: 'Guadalupe',
       code: '590',
       iso: 'GP'
     },
@@ -579,22 +579,22 @@ export class Constants {
       iso: 'GN'
     },
     {
-      name: 'Guinea-Bissau',
+      name: 'Guinea-Bisáu',
       code: '245',
       iso: 'GW'
     },
     {
-      name: 'Guyana',
+      name: 'Guayana',
       code: '595',
       iso: 'GY'
     },
     {
-      name: 'Haiti',
+      name: 'Haití',
       code: '509',
       iso: 'HT'
     },
     {
-      name: 'Holy See (Vatican City State)',
+      name: 'Ciudad del Vaticano',
       code: '379',
       iso: 'VA'
     },
@@ -609,12 +609,12 @@ export class Constants {
       iso: 'HK'
     },
     {
-      name: 'Hungary',
+      name: 'Hungría',
       code: '36',
       iso: 'HU'
     },
     {
-      name: 'Iceland',
+      name: 'Islandia',
       code: '354',
       iso: 'IS'
     },
@@ -629,22 +629,22 @@ export class Constants {
       iso: 'ID'
     },
     {
-      name: 'Iran, Islamic Republic of Persian Gulf',
+      name: 'Irán',
       code: '98',
       iso: 'IR'
     },
     {
-      name: 'Iraq',
+      name: 'Irak',
       code: '964',
       iso: 'IQ'
     },
     {
-      name: 'Ireland',
+      name: 'Irlanda',
       code: '353',
       iso: 'IE'
     },
     {
-      name: 'Isle of Man',
+      name: 'Isla del Hombre',
       code: '44',
       iso: 'IM'
     },
@@ -654,7 +654,7 @@ export class Constants {
       iso: 'IL'
     },
     {
-      name: 'Italy',
+      name: 'Italia',
       code: '39',
       iso: 'IT'
     },
@@ -664,7 +664,7 @@ export class Constants {
       iso: 'JM'
     },
     {
-      name: 'Japan',
+      name: 'Japón',
       code: '81',
       iso: 'JP'
     },
@@ -674,17 +674,17 @@ export class Constants {
       iso: 'JE'
     },
     {
-      name: 'Jordan',
+      name: 'Jordán',
       code: '962',
       iso: 'JO'
     },
     {
-      name: 'Kazakhstan',
+      name: 'Kazajistán',
       code: '77',
       iso: 'KZ'
     },
     {
-      name: 'Kenya',
+      name: 'Kenia',
       code: '254',
       iso: 'KE'
     },
@@ -694,12 +694,12 @@ export class Constants {
       iso: 'KI'
     },
     {
-      name: 'Korea, Democratic People\'s Republic of Korea',
+      name: 'Corea del Norte',
       code: '850',
       iso: 'KP'
     },
     {
-      name: 'Korea, Republic of South Korea',
+      name: 'Corea del Sur',
       code: '82',
       iso: 'KR'
     },
@@ -709,7 +709,7 @@ export class Constants {
       iso: 'KW'
     },
     {
-      name: 'Kyrgyzstan',
+      name: 'Kyrguistán',
       code: '996',
       iso: 'KG'
     },
@@ -719,17 +719,17 @@ export class Constants {
       iso: 'LA'
     },
     {
-      name: 'Latvia',
+      name: 'Letonia',
       code: '371',
       iso: 'LV'
     },
     {
-      name: 'Lebanon',
+      name: 'Líbano',
       code: '961',
       iso: 'LB'
     },
     {
-      name: 'Lesotho',
+      name: 'Lesoto',
       code: '266',
       iso: 'LS'
     },
@@ -739,7 +739,7 @@ export class Constants {
       iso: 'LR'
     },
     {
-      name: 'Libyan Arab Jamahiriya',
+      name: 'Libia',
       code: '218',
       iso: 'LY'
     },
@@ -749,12 +749,12 @@ export class Constants {
       iso: 'LI'
     },
     {
-      name: 'Lithuania',
+      name: 'Lituania',
       code: '370',
       iso: 'LT'
     },
     {
-      name: 'Luxembourg',
+      name: 'Luxemburgo',
       code: '352',
       iso: 'LU'
     },
@@ -764,7 +764,7 @@ export class Constants {
       iso: 'MO'
     },
     {
-      name: 'Macedonia',
+      name: 'República de Macedonia',
       code: '389',
       iso: 'MK'
     },
@@ -779,12 +779,12 @@ export class Constants {
       iso: 'MW'
     },
     {
-      name: 'Malaysia',
+      name: 'Malasia',
       code: '60',
       iso: 'MY'
     },
     {
-      name: 'Maldives',
+      name: 'Maldivas',
       code: '960',
       iso: 'MV'
     },
@@ -799,12 +799,12 @@ export class Constants {
       iso: 'MT'
     },
     {
-      name: 'Marshall Islands',
+      name: 'Islas Marshall',
       code: '692',
       iso: 'MH'
     },
     {
-      name: 'Martinique',
+      name: 'Martinica',
       code: '596',
       iso: 'MQ'
     },
@@ -814,7 +814,7 @@ export class Constants {
       iso: 'MR'
     },
     {
-      name: 'Mauritius',
+      name: 'Mauricio',
       code: '230',
       iso: 'MU'
     },
@@ -824,22 +824,22 @@ export class Constants {
       iso: 'YT'
     },
     {
-      name: 'Mexico',
+      name: 'México',
       code: '52',
       iso: 'MX'
     },
     {
-      name: 'Micronesia, Federated States of Micronesia',
+      name: 'Micronesia',
       code: '691',
       iso: 'FM'
     },
     {
-      name: 'Moldova',
+      name: 'Moldavia',
       code: '373',
       iso: 'MD'
     },
     {
-      name: 'Monaco',
+      name: 'Mónaco',
       code: '377',
       iso: 'MC'
     },
@@ -859,7 +859,7 @@ export class Constants {
       iso: 'MS'
     },
     {
-      name: 'Morocco',
+      name: 'Marruecos',
       code: '212',
       iso: 'MA'
     },
@@ -889,22 +889,22 @@ export class Constants {
       iso: 'NP'
     },
     {
-      name: 'Netherlands',
+      name: 'Paises Bajos',
       code: '31',
       iso: 'NL'
     },
     {
-      name: 'Netherlands Antilles',
+      name: 'Antillas Neerlandesas',
       code: '599',
       iso: 'AN'
     },
     {
-      name: 'New Caledonia',
+      name: 'Nueva Caledonia',
       code: '687',
       iso: 'NC'
     },
     {
-      name: 'New Zealand',
+      name: 'Nueva Zelanda',
       code: '64',
       iso: 'NZ'
     },
@@ -914,7 +914,7 @@ export class Constants {
       iso: 'NI'
     },
     {
-      name: 'Niger',
+      name: 'Níger',
       code: '227',
       iso: 'NE'
     },
@@ -929,47 +929,47 @@ export class Constants {
       iso: 'NU'
     },
     {
-      name: 'Norfolk Island',
+      name: 'Islas Norfolk',
       code: '672',
       iso: 'NF'
     },
     {
-      name: 'Northern Mariana Islands',
+      name: 'Islas Marianas del Norte',
       code: '1670',
       iso: 'MP'
     },
     {
-      name: 'Norway',
+      name: 'Noruega',
       code: '47',
       iso: 'NO'
     },
     {
-      name: 'Oman',
+      name: 'Omán',
       code: '968',
       iso: 'OM'
     },
     {
-      name: 'Pakistan',
+      name: 'Pakistán',
       code: '92',
       iso: 'PK'
     },
     {
-      name: 'Palau',
+      name: 'Palaos',
       code: '680',
       iso: 'PW'
     },
     {
-      name: 'Palestinian Territory, Occupied',
+      name: 'Palestina',
       code: '970',
       iso: 'PS'
     },
     {
-      name: 'Panama',
+      name: 'Panamá',
       code: '507',
       iso: 'PA'
     },
     {
-      name: 'Papua New Guinea',
+      name: 'Papúa Nueva Guinea',
       code: '675',
       iso: 'PG'
     },
@@ -979,22 +979,22 @@ export class Constants {
       iso: 'PY'
     },
     {
-      name: 'Peru',
+      name: 'Perú',
       code: '51',
       iso: 'PE'
     },
     {
-      name: 'Philippines',
+      name: 'Filipinas',
       code: '63',
       iso: 'PH'
     },
     {
-      name: 'Pitcairn',
+      name: 'Islas Pitcairn',
       code: '872',
       iso: 'PN'
     },
     {
-      name: 'Poland',
+      name: 'Polonia',
       code: '48',
       iso: 'PL'
     },
@@ -1014,17 +1014,17 @@ export class Constants {
       iso: 'QA'
     },
     {
-      name: 'Romania',
+      name: 'Rumania',
       code: '40',
       iso: 'RO'
     },
     {
-      name: 'Russia',
+      name: 'Rusia',
       code: '7',
       iso: 'RU'
     },
     {
-      name: 'Rwanda',
+      name: 'Ruanda',
       code: '250',
       iso: 'RW'
     },
@@ -1034,37 +1034,37 @@ export class Constants {
       iso: 'RE'
     },
     {
-      name: 'Saint Barthelemy',
+      name: 'San Bartolomé',
       code: '590',
       iso: 'BL'
     },
     {
-      name: 'Saint Helena, Ascension and Tristan Da Cunha',
+      name: 'Santa Helena',
       code: '290',
       iso: 'SH'
     },
     {
-      name: 'Saint Kitts and Nevis',
+      name: 'San Cristóbal y Nieves',
       code: '1869',
       iso: 'KN'
     },
     {
-      name: 'Saint Lucia',
+      name: 'Santa Lucía',
       code: '1758',
       iso: 'LC'
     },
     {
-      name: 'Saint Martin',
+      name: 'San Martín',
       code: '590',
       iso: 'MF'
     },
     {
-      name: 'Saint Pierre and Miquelon',
+      name: 'San Pedro y Miquelón',
       code: '508',
       iso: 'PM'
     },
     {
-      name: 'Saint Vincent and the Grenadines',
+      name: 'San Vincente y las Granadinas',
       code: '1784',
       iso: 'VC'
     },
@@ -1079,12 +1079,12 @@ export class Constants {
       iso: 'SM'
     },
     {
-      name: 'Sao Tome and Principe',
+      name: 'Santo Tomé y Príncipe',
       code: '239',
       iso: 'ST'
     },
     {
-      name: 'Saudi Arabia',
+      name: 'Arabia Saudita',
       code: '966',
       iso: 'SA'
     },
@@ -1104,27 +1104,27 @@ export class Constants {
       iso: 'SC'
     },
     {
-      name: 'Sierra Leone',
+      name: 'Sierra Leona',
       code: '232',
       iso: 'SL'
     },
     {
-      name: 'Singapore',
+      name: 'Singapur',
       code: '65',
       iso: 'SG'
     },
     {
-      name: 'Slovakia',
+      name: 'Eslovaquia',
       code: '421',
       iso: 'SK'
     },
     {
-      name: 'Slovenia',
+      name: 'Eslovenia',
       code: '386',
       iso: 'SI'
     },
     {
-      name: 'Solomon Islands',
+      name: 'Islands Salomón',
       code: '677',
       iso: 'SB'
     },
@@ -1134,22 +1134,22 @@ export class Constants {
       iso: 'SO'
     },
     {
-      name: 'South Africa',
+      name: 'Sudáfrica',
       code: '27',
       iso: 'ZA'
     },
     {
-      name: 'South Sudan',
+      name: 'Sudán del Sur',
       code: '211',
       iso: 'SS'
     },
     {
-      name: 'South Georgia and the South Sandwich Islands',
+      name: 'Islas Georgias del Sur y Sandwich del Sur',
       code: '500',
       iso: 'GS'
     },
     {
-      name: 'Spain',
+      name: 'España',
       code: '34',
       iso: 'ES'
     },
@@ -1159,7 +1159,7 @@ export class Constants {
       iso: 'LK'
     },
     {
-      name: 'Sudan',
+      name: 'Sudán',
       code: '249',
       iso: 'SD'
     },
@@ -1169,27 +1169,27 @@ export class Constants {
       iso: 'SR'
     },
     {
-      name: 'Svalbard and Jan Mayen',
+      name: 'Svalbard y Jan Mayen',
       code: '47',
       iso: 'SJ'
     },
     {
-      name: 'Swaziland',
+      name: 'Suazilandia',
       code: '268',
       iso: 'SZ'
     },
     {
-      name: 'Sweden',
+      name: 'Suecia',
       code: '46',
       iso: 'SE'
     },
     {
-      name: 'Switzerland',
+      name: 'Suiza',
       code: '41',
       iso: 'CH'
     },
     {
-      name: 'Syrian Arab Republic',
+      name: 'Siria',
       code: '963',
       iso: 'SY'
     },
@@ -1199,22 +1199,22 @@ export class Constants {
       iso: 'TW'
     },
     {
-      name: 'Tajikistan',
+      name: 'Tayikistán',
       code: '992',
       iso: 'TJ'
     },
     {
-      name: 'Tanzania, United Republic of Tanzania',
+      name: 'Tanzania',
       code: '255',
       iso: 'TZ'
     },
     {
-      name: 'Thailand',
+      name: 'Tailandia',
       code: '66',
       iso: 'TH'
     },
     {
-      name: 'Timor-Leste',
+      name: 'Timor Oriental',
       code: '670',
       iso: 'TL'
     },
@@ -1234,27 +1234,27 @@ export class Constants {
       iso: 'TO'
     },
     {
-      name: 'Trinidad and Tobago',
+      name: 'Trinidad y Tobago',
       code: '1868',
       iso: 'TT'
     },
     {
-      name: 'Tunisia',
+      name: 'Túnez',
       code: '216',
       iso: 'TN'
     },
     {
-      name: 'Turkey',
+      name: 'Turquía',
       code: '90',
       iso: 'TR'
     },
     {
-      name: 'Turkmenistan',
+      name: 'Turkmenistán',
       code: '993',
       iso: 'TM'
     },
     {
-      name: 'Turks and Caicos Islands',
+      name: 'Islas Turcas y Caicos',
       code: '1649',
       iso: 'TC'
     },
@@ -1269,22 +1269,22 @@ export class Constants {
       iso: 'UG'
     },
     {
-      name: 'Ukraine',
+      name: 'Ucrania',
       code: '380',
       iso: 'UA'
     },
     {
-      name: 'United Arab Emirates',
+      name: 'Emiratos Árabes Unidos',
       code: '971',
       iso: 'AE'
     },
     {
-      name: 'United Kingdom',
+      name: 'Reino Unido',
       code: '44',
       iso: 'GB'
     },
     {
-      name: 'United States',
+      name: 'Estados Unidos',
       code: '1',
       iso: 'US'
     },
@@ -1294,7 +1294,7 @@ export class Constants {
       iso: 'UY'
     },
     {
-      name: 'Uzbekistan',
+      name: 'Uzbekistán',
       code: '998',
       iso: 'UZ'
     },
@@ -1304,7 +1304,7 @@ export class Constants {
       iso: 'VU'
     },
     {
-      name: 'Venezuela, Bolivarian Republic of Venezuela',
+      name: 'Venezuela',
       code: '58',
       iso: 'VE'
     },
@@ -1314,17 +1314,17 @@ export class Constants {
       iso: 'VN'
     },
     {
-      name: 'Virgin Islands, British',
+      name: 'Islas Vírgenes Británicas',
       code: '1284',
       iso: 'VG'
     },
     {
-      name: 'Virgin Islands, U.S.',
+      name: 'Islas Vírgenes de los Estados Unidos',
       code: '1340',
       iso: 'VI'
     },
     {
-      name: 'Wallis and Futuna',
+      name: 'Wallis y Futuna',
       code: '681',
       iso: 'WF'
     },
@@ -1339,7 +1339,7 @@ export class Constants {
       iso: 'ZM'
     },
     {
-      name: 'Zimbabwe',
+      name: 'Zimbabue',
       code: '263',
       iso: 'ZW'
     }
