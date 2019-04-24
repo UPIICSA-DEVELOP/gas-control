@@ -976,7 +976,7 @@ export class AddGasStationComponent implements OnInit, OnDestroy {
         }else{
           this._router.navigate(['/home']).then(()=>{
             if (this.station && this.station.id){
-              this._sharedService.setNotification({type: SharedTypeNotification.ChangeStation, value: this.station.id});
+              this._sharedService.setNotification({type: SharedTypeNotification.ChangeStation, value: {id:this.station.id, newNotification: false}});
             }
             this._dialogRef.close();
           });
@@ -1009,10 +1009,10 @@ export class AddGasStationComponent implements OnInit, OnDestroy {
             this._sharedService.setNotification({type: SharedTypeNotification.CreationTask,value:response.item});
             this._dialogRef.close();
           }else{
-            this._router.navigate(['/home'], {queryParams: {station: stationId}}).then(()=>{
+            this._router.navigate(['/home']).then(()=>{
               this._dialogRef.close();
               if(!this._data){
-                this._sharedService.setNotification({type: SharedTypeNotification.ChangeStation, value: this.station.id});
+                this._sharedService.setNotification({type: SharedTypeNotification.ChangeStation, value: {id: stationId, newNotification: false}});
               }
               this._sharedService.setNotification({type: SharedTypeNotification.CreationTask,value:response.item});
             });

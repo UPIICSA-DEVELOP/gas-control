@@ -167,6 +167,7 @@ export class StationProfileComponent implements OnInit, OnDestroy {
       phoneNumber:['',[Validators.required, Validators.minLength(8), Validators.maxLength(13)]],
       email:['', [Validators.required, Validators.email]],
       /*managerName:[{value:'', disabled: true},[]],*/
+      vrs: [{value: false, disabled: true}, []],
       workers:['',[]],
       monitoringWells:['',[]],
       observationWells:['',[]]
@@ -209,6 +210,7 @@ export class StationProfileComponent implements OnInit, OnDestroy {
             phoneNumber:this.station.phoneNumber,
             email:this.station.email,
             /*managerName:this.station.managerName,*/
+            vrs: this.station.vapourRecoverySystem,
             workers:this.station.workers,
             monitoringWells:this.station.monitoringWells,
             observationWells: this.station.observationWells,
@@ -233,7 +235,6 @@ export class StationProfileComponent implements OnInit, OnDestroy {
     if(!this.validateStationArrays()){
       return;
     }
-    //this.clearStationArray();
     this.station.crePermission = (data.crePermission ? data.crePermission: undefined);
     this.station.name = data.name;
     this.station.businessName = data.businessName;

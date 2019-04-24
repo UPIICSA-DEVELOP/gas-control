@@ -74,6 +74,12 @@
               <input formControlName="managerName" matInput placeholder="Encargado de Estación" required type="text" aria-label="Station manager">
             </mat-form-field-->
             <mat-form-field class="inputs">
+              <mat-select formControlName="vrs" placeholder="Sistema de recuperación de vapores">
+                <mat-option [value]="true">Si</mat-option>
+                <mat-option [value]="false">No</mat-option>
+              </mat-select>
+            </mat-form-field>
+            <mat-form-field class="inputs">
               <input formControlName="workers" matInput placeholder="No. de trabajadores" type="number" aria-label="Station workers">
             </mat-form-field>
             <mat-divider></mat-divider>
