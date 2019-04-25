@@ -3,6 +3,7 @@
 import {Commons} from './commons'
 import {CreatePDFOptions, ParseHTMLOptions, PDFSASISOPAData} from '../commons/interfaces';
 import {AttachedType, ReportType, TypeFuel} from '../commons/enum';
+import {deprecate} from 'util';
 const chalk = require('chalk');
 
 class PdfSASISOPA{
@@ -24,7 +25,7 @@ class PdfSASISOPA{
   private _sasisopaDocuments: any[];
   private _id: string;
 
-
+  @deprecate
   constructor(data: PDFSASISOPAData){
 
     if(!data){
@@ -156,7 +157,7 @@ class PdfSASISOPA{
     }).then(buffer => {
       tmp_buffer_file = [];
       tmp_buffer_file.push(buffer);
-      const urls = this.searchURLSByAttached(9);
+      const urls = this.searchURLSByAttached(7);
       return this.downloadFilesByAttached(urls);
     }).then(response => {
       response.forEach(item => {
@@ -169,7 +170,7 @@ class PdfSASISOPA{
     }).then(buffer => {
       tmp_buffer_file = [];
       tmp_buffer_file.push(buffer);
-      const urls = this.searchURLSByAttached(10);
+      const urls = this.searchURLSByAttached(8);
       return this.downloadFilesByAttached(urls);
     }).then(response => {
       response.forEach(item => {
@@ -182,7 +183,7 @@ class PdfSASISOPA{
     }).then(buffer => {
       tmp_buffer_file = [];
       tmp_buffer_file.push(buffer);
-      const urls = this.searchURLSByAttached(11);
+      const urls = this.searchURLSByAttached(9);
       return this.downloadFilesByAttached(urls);
     }).then(response => {
       response.forEach(item => {
