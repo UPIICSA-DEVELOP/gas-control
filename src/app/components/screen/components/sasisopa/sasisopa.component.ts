@@ -250,7 +250,6 @@ export class SasisopaComponent implements OnInit, OnDestroy {
     this._uploadFileService.upload(this._forms[index-1]).subscribe(response => {
       if(response){
         this._forms[index-1] = undefined;
-        this.docFile[index-1] = undefined;
         const doc: SasisopaDocument = {
           annexed: annexed,
           file: response.item,
@@ -267,14 +266,9 @@ export class SasisopaComponent implements OnInit, OnDestroy {
       switch(response.code){
         case 200:
           this._change = false;
-          this.sasisopaDocs[element.type - 1] = element;
-          let index = 0;
-          if(element.annexed >= 9){
-            index = element.annexed - 2;
-          }else{
-            index = element.annexed;
-          }
-          this.saveChanges(index);
+          this.sasisopaDocs[element.type - 1] = response.item;
+          this.docFile[element.type - 1] = undefined;
+          this.saveChanges(element.annexed);
           break;
         default:
           break;
@@ -355,18 +349,18 @@ export class SasisopaComponent implements OnInit, OnDestroy {
         break;
       case 7:
         if(this._forms[6]){
-          this.uploadFile(index + 2,7);
+          this.uploadFile(index,7);
           return;
         }
         if(this._forms[7]){
-          this.uploadFile(index + 2,8);
+          this.uploadFile(index,8);
           return;
         }
         this._snackBarService.openSnackBar('Información actualizada','OK',3000);
         break;
       case 8:
         if(this._forms[8]){
-          this.uploadFile(index + 2, 9);
+          this.uploadFile(index, 9);
           return;
         }
         if(this._forms[9]){
@@ -428,7 +422,7 @@ export class SasisopaComponent implements OnInit, OnDestroy {
             this.generate = true;
             this.dateGeneration = UtilitiesService.convertDate(response.item.fullSasisopa.date);
             const today = UtilitiesService.createPersonalTimeStamp(new Date());
-            this.isAvailable = (response.item.date <= today.timeStamp);
+            this.isAvailable = (response.item.fullSasisopa.date <= today.timeStamp);
           }
           break;
         default:
