@@ -132,6 +132,7 @@ export class SasisopaComponent implements OnInit, OnDestroy {
     }
 
     if(type === 5 && this.date){
+      this._token = null;
       const date = UtilitiesService.createPersonalTimeStamp(this.date);
       this.getStationTasks(date.timeStamp);
     }else if(type === 5){
