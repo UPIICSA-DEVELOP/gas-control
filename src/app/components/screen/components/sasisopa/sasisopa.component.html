@@ -17,8 +17,8 @@
       <div class="head-text">SASISOPA</div>
       <div class="text">(Sistema de Administración de Seguridad Industrial, Seguridad Operativa y Protección al Medio Ambiente)</div>
     </div>
-    <div style="width: 100%;height: calc(100% - 96px);padding: 32px 16px 16px 16px;display: flex;">
-      <div style="width: 40%; height: 100%; overflow-y: auto; padding: 0 4px;">
+    <div class="ssp-container">
+      <div class="annexes-menu">
         <div style="display: flex; justify-content: space-around">
           <button style="height: 36px;" mat-flat-button (click)="generateSasisopa()" [color]="'primary'">GENERAR</button>
           <button style="height: 36px;" mat-flat-button [color]="'primary'" [disabled]="!isAvailable" (click)="seeSasisopa()">VER</button>
@@ -126,7 +126,7 @@
           </div>
         </div>
       </div>
-      <div style="width: 60%; height: 100%; overflow-y: auto; padding: 0 4px; position: relative;">
+      <div class="annexe-view">
         <ng-container [ngSwitch]="elementInView">
           <div style="display: flex; justify-content: center; align-items: center; height: 100%;" *ngSwitchCase="0">
             <p style="color: #707070;text-align: justify;padding: 24px;">Conformación, implementación y seguimiento del Sistema de Administración de Seguridad Industrial, Seguridad Operativa y Protección al ambiente (SASISOPA)</p>

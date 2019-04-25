@@ -25,32 +25,45 @@
       display: flex;
       flex-direction: column;
       align-items: center;
+      .sasisopa-logo{
+        width: 64px;
+        height: 64px;
+        color: #707070;
+      }
+      .head-text{
+        font-weight: 600;
+        font-size: 20px;
+      }
+      .text{
+        margin-top: 8px;
+      }
     }
-    .actions-ssp{
+    .ssp-container{
+      width: 100%;
+      height: calc(100% - 96px);
+      padding: 32px 16px 16px 16px;
       display: flex;
-      justify-content: space-around;
       @media screen and (max-width: 800px){
         display: block;
       }
-      mat-card{
-        width: 45%;
+      .annexes-menu{
+        width: 40%;
+        height: 100%;
+        overflow-y: auto;
+        padding: 0 4px;
         @media screen and (max-width: 800px){
-          margin: 4px 0;
           width: 100%;
         }
       }
-    }
-    .sasisopa-logo{
-      width: 64px;
-      height: 64px;
-      color: #707070;
-    }
-    .head-text{
-      font-weight: 600;
-      font-size: 20px;
-    }
-    .text{
-      margin-top: 8px;
+      .annexe-view{
+        width: 60%;
+        height: 100%;
+        overflow-y: auto;
+        padding: 0 4px;
+        @media screen and (max-width: 800px){
+          width: 100%;
+        }
+      }
     }
     mat-divider{
       width: 95%;
@@ -85,18 +98,6 @@
       border-left: 1px solid #707070;
       display: flex;
       align-items: center;
-    }
-    .card-box{
-      width: 100%;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      margin: 4px 0;
-    }
-    .card-item{
-      width: 90%;
-      cursor: pointer;
     }
     .content-item{
       display: flex;
@@ -186,55 +187,55 @@
         }
       }
     }
-  }
-  .save{
-    display: flex;
-    justify-content: center;
-    margin: 16px 0;
-  }
-  td, th {
-    border: 1px solid #dddddd;
-    text-align: center;
-    padding: 8px;
-    font-weight: normal;
-  }
-  tr:nth-child(even) {
-    background-color: #dddddd;
-  }
-  .add{
-    color: #257602;
-  }
-  .remove{
-    color: #E00000;
-  }
-  .calendar{
-    width: 100%;
-    height: 100%;
-    left: 0;
-    opacity: 0;
-    position: absolute;
-    top: 0;
-    z-index: 2;
-    cursor: pointer;
-  }
-  .progress {
-    position: absolute;
-    top: 0;
-    left: 0;
-    z-index: 4;
-  }
-  .error{
-    font-size: 11px;
-    padding-left: 16px;
-  }
-  .background{
-    width: 400px;
-    height: 200px;
-    position: absolute;
-    bottom: 0;
-    right: 0;
-    background: url("https://www.googleapis.com/download/storage/v1/b/businesscardgcs/o/alex4%2F2019-02-05-205017759Web-Fondo-gas-poca-transparencia.png?generation=1549399820762438&alt=media") no-repeat bottom;
-    background-size: cover;
-    z-index: 0;
+    .save{
+      display: flex;
+      justify-content: center;
+      margin: 16px 0;
+    }
+    td, th {
+      border: 1px solid #dddddd;
+      text-align: center;
+      padding: 8px;
+      font-weight: normal;
+    }
+    tr:nth-child(even) {
+      background-color: #dddddd;
+    }
+    .add{
+      color: #257602;
+    }
+    .remove{
+      color: #E00000;
+    }
+    .calendar{
+      width: 100%;
+      height: 100%;
+      left: 0;
+      opacity: 0;
+      position: absolute;
+      top: 0;
+      z-index: 2;
+      cursor: pointer;
+    }
+    .progress {
+      position: absolute;
+      top: 0;
+      left: 0;
+      z-index: 4;
+    }
+    .error{
+      font-size: 11px;
+      padding-left: 16px;
+    }
+    .background{
+      width: 400px;
+      height: 200px;
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      background: url("https://www.googleapis.com/download/storage/v1/b/businesscardgcs/o/alex4%2F2019-02-05-205017759Web-Fondo-gas-poca-transparencia.png?generation=1549399820762438&alt=media") no-repeat bottom;
+      background-size: cover;
+      z-index: 0;
+    }
   }
 }
