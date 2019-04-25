@@ -63,6 +63,17 @@
     .actions{
       position: absolute;
       right: 16px;
+      @media screen and (max-width: 900px){
+        display: none;
+      }
+    }
+    .menus{
+      display: none;
+      position: absolute;
+      right: 16px;
+      @media screen and (max-width: 900px){
+        display: block;
+      }
     }
   }
 

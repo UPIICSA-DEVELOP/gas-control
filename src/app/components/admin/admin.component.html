@@ -14,6 +14,21 @@
       <button mat-button routerLink="/admin/notifications">Notificaciones</button>
       <button mat-icon-button matTooltip="Cerrar Sesión" (click)="signOut()"><mat-icon>exit_to_app</mat-icon></button>
     </div>
+    <div class="menus">
+      <button mat-icon-button [mat-menu-trigger-for]="context_menu">
+        <mat-icon>more_vert</mat-icon>
+      </button>
+      <mat-menu #context_menu>
+        <button mat-menu-item routerLink="/admin/notifications">
+          <mat-icon>notifications</mat-icon>
+          <span>Notificaciones</span>
+        </button>
+        <button mat-menu-item (click)="signOut()">
+          <mat-icon>exit_to_app</mat-icon>
+          <span>Cerrar Sesión</span>
+        </button>
+      </mat-menu>
+    </div>
   </mat-toolbar>
 
   <div class="container">
