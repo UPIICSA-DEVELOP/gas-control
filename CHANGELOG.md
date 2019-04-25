@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="1.3.2-beta.2"></a>
+## [1.3.2-beta.2](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/compare/v1.3.2-beta.1...v1.3.2-beta.2) (2019-04-25)
+
+
+### Bug Fixes
+
+* **SASISOPA:** null token in annexe five and move css rules ([f2334ae](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/f2334ae))
+* Change annotation for jsdoc ([e0eb61a](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/e0eb61a))
+
+
+
 <a name="1.3.2-beta.1"></a>
 ## [1.3.2-beta.1](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/compare/v1.3.2-beta.0...v1.3.2-beta.1) (2019-04-25)
 
