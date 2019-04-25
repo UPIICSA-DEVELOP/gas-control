@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="1.3.2-beta.0"></a>
+## [1.3.2-beta.0](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/compare/v1.3.1...v1.3.2-beta.0) (2019-04-25)
+
+
+### Bug Fixes
+
+* **Admin:** add contextual menu to responsive ([4748574](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/4748574))
+* **Profiles:** add space to bCard in responsive ([06ad162](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/06ad162))
+* **SASISOPA:** change annexed number to match with android ([74b9e1b](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/74b9e1b))
+
+
+
 <a name="1.3.1"></a>
 ## [1.3.1](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/compare/v1.3.1-beta.2...v1.3.1) (2019-04-25)
 
