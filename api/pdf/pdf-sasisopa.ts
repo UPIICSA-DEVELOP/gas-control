@@ -25,7 +25,9 @@ class PdfSASISOPA{
   private _sasisopaDocuments: any[];
   private _id: string;
 
-  @deprecate
+  /**
+   * @deprecated
+   * */
   constructor(data: PDFSASISOPAData){
 
     if(!data){
