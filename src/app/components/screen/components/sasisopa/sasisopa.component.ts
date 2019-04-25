@@ -364,18 +364,18 @@ export class SasisopaComponent implements OnInit, OnDestroy {
           return;
         }
         if(this._forms[9]){
-          this.uploadFile(index + 2, 10);
+          this.uploadFile(index, 10);
           return;
         }
         if(this._forms[10]){
-          this.uploadFile(index + 2, 11);
+          this.uploadFile(index, 11);
           return;
         }
         this._snackBarService.openSnackBar('Información actualizada','OK',3000);
         break;
       case 9:
         if(this._forms[11]){
-          this.uploadFile(index + 2, 12);
+          this.uploadFile(index, 12);
           return;
         }
         this._snackBarService.openSnackBar('Información actualizada','OK',3000);
