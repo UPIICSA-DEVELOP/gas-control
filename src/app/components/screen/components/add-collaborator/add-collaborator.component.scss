@@ -81,9 +81,9 @@
         box-shadow: 0 3px 1px 1px rgba(0, 0, 0, 0.1), 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, .10);
       }
       mat-icon{
-        width: 80px;
-        height: 80px;
-        font-size: 80px;
+        width: 70px;
+        height: 70px;
+        font-size: 70px;
         color: #707070;
         background-color: #FFFFFF;
         border-radius: 50%;
@@ -94,24 +94,24 @@
       width: 90%;
     }
     .phone{
+      width: 90%;
+      margin: auto;
       display: flex;
-      justify-content: center;
-      .code{
-        width: 72px; margin-right: 16px
-      }
+      justify-content: space-between;
       .number{
-        width: 56%;
+        width: 70%;
       }
     }
     .website{
+      width: 90%;
+      margin: auto;
       display: flex;
-      justify-content: center;
+      justify-content: space-between;
       .protocol{
-        width: 86px;
-        margin-right: 16px;
+        width: 25%;
       }
       .url{
-        width: 54%;
+        width: 70%;
       }
     }
     .formHead {
@@ -130,11 +130,11 @@
       display: flex;
       justify-content: center;
       background-color: #FFFFFF;
-      border-style: solid;
-      border-width: 1.25px;
+      border: 1.25px solid;
       align-items: center;
+      min-height: 174px;
       span{
-        margin: 54px 0;
+        margin: auto;
       }
       .imageSignature {
         width: 100%;
