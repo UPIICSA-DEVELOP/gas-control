@@ -22,10 +22,11 @@ import {RouterStateService} from '@app/core/services/router-state/router-state.s
 import {NetworkService} from '@app/core/services/connection/network.service';
 import {PriorityService} from '@app/core/services/priority/priority.service';
 import {AuthService} from '@app/core/services/auth/auth.service';
-import {UserProfileService} from '@app/core/services/profiles/user-profile.service';
+import {UserProfileService} from '@app/components/screen/components/profiles/user-profile/user-profile.service';
 import {SharedService} from '@app/core/services/shared/shared.service';
 import {AuthRouterService} from '@app/core/services/auth/auth-router.service';
-import {ResetPassRouterService} from '@app/core/services/reset-pass/reset-pass-router.service';
+import {ResetPassRouterService} from '@app/components/screen/child/reset-pass/reset-pass-router.service';
+import {ProfileService} from '@app/components/screen/components/profiles/profile/profile.service';
 
 
 
@@ -53,7 +54,8 @@ import {ResetPassRouterService} from '@app/core/services/reset-pass/reset-pass-r
     AuthRouterService,
     ResetPassRouterService,
     UserProfileService,
-    SharedService
+    SharedService,
+    ProfileService
   ]
 })
 export class ServicesModule {

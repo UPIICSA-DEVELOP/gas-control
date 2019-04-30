@@ -6,7 +6,6 @@
 
 import {Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {ApiService} from '@app/core/services/api/api.service';
-import {CookieService} from '@app/core/services/cookie/cookie.service';
 import {Constants} from '@app/core/constants.core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {ApiLoaderService} from '@app/core/services/api/api-loader.service';
@@ -15,7 +14,7 @@ import {SnackBarService} from '@app/core/services/snackbar/snackbar.service';
 import {CountryCodeService} from '@app/core/components/country-code/country-code.service';
 import {LocationOptions, LocationService} from '@app/core/components/location/location.service';
 import {UploadFileService} from '@app/core/components/upload-file/upload-file.service';
-import {Router} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {UpdatePasswordService} from '@app/core/components/update-password/update-password.service';
 import {animate, keyframes, query, stagger, style, transition, trigger} from '@angular/animations';
 import {UploadFileResponse} from '@app/core/components/upload-file/upload-file.component';
@@ -92,7 +91,8 @@ export class ProfileComponent implements OnInit, OnDestroy {
     private _updatePasswordService: UpdatePasswordService,
     private _signaturePad: SignaturePadService,
     private _shareService: ShareService,
-    private _auth: AuthService
+    private _auth: AuthService,
+    private _activateRouter: ActivatedRoute
   ) {
     this.isDirector = false;
     this.role = Constants.roles;
@@ -105,6 +105,8 @@ export class ProfileComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.initUserInfo();
+    this.getUserInfo(this._activateRouter.snapshot.data.data.user);
+    this.getConsultancyInfo(this._activateRouter.snapshot.data.data.consultancy);
     this._subscriptionLoader = this._apiLoaderService.getProgress().subscribe(load => { this.load = load;});
   }
 
@@ -277,82 +279,85 @@ export class ProfileComponent implements OnInit, OnDestroy {
     });
   }
 
-  private getUserInfo(): void {
-    this._api.getPerson(CookieService.getCookie(Constants.IdSession)).subscribe(response => {
-      switch (response.code) {
-        case 200:
-          this.user = {
-            id: response.item.id,
-            refId: response.item.refId,
-            country: (response.item.country?response.item.country:''),
-            countryCode: response.item.countryCode || '',
-            email: response.item.email,
-            jobTitle: response.item.jobTitle,
-            lastName: response.item.lastName,
-            name: response.item.name,
-            password: response.item.password,
-            phoneNumber: response.item.phoneNumber,
-            profileImage: (response.item.profileImage?{
-              blobName: (response.item.profileImage? response.item.profileImage.blobName : undefined),
-              thumbnail: (response.item.profileImage? response.item.profileImage.thumbnail : undefined)
-            }:undefined),
-            role: response.item.role,
-            signature: (response.item.signature?{
-              blobName: (response.item.signature?response.item.signature.blobName : undefined),
-              thumbnail: (response.item.signature?response.item.signature.thumbnail : undefined),
-            }:undefined),
-            website: response.item.website || '',
-            bCard: (response.item.bCard?response.item.bCard:undefined)
-          };
-          if (this.user.profileImage){
-            this.profileImage = this.user.profileImage.thumbnail;
-            this.blobName = this.user.profileImage.blobName;
+  private getUserInfo(response: any): void {
+    switch (response.code) {
+      case 200:
+        this.user = {
+          id: response.item.id,
+          refId: response.item.refId,
+          country: (response.item.country?response.item.country:''),
+          countryCode: response.item.countryCode || '',
+          email: response.item.email,
+          jobTitle: response.item.jobTitle,
+          lastName: response.item.lastName,
+          name: response.item.name,
+          password: response.item.password,
+          phoneNumber: response.item.phoneNumber,
+          profileImage: (response.item.profileImage?{
+            blobName: (response.item.profileImage? response.item.profileImage.blobName : undefined),
+            thumbnail: (response.item.profileImage? response.item.profileImage.thumbnail : undefined)
+          }:undefined),
+          role: response.item.role,
+          signature: (response.item.signature?{
+            blobName: (response.item.signature?response.item.signature.blobName : undefined),
+            thumbnail: (response.item.signature?response.item.signature.thumbnail : undefined),
+          }:undefined),
+          website: response.item.website || '',
+          bCard: (response.item.bCard?response.item.bCard:undefined)
+        };
+        if (this.user.profileImage){
+          this.profileImage = this.user.profileImage.thumbnail;
+          this.blobName = this.user.profileImage.blobName;
+        }
+        if(this.user.signature){
+          this.signature = this.user.signature.thumbnail
+        }
+        if (this.user.website){
+          if (this.user.website.includes('http://')){
+            this.user.website = this.user.website.replace('http://','');
+            this.protocol = 'http://';
+          } else {
+            this.user.website = this.user.website.replace('https://','');
+            this.protocol = 'https://';
           }
-          if(this.user.signature){
-            this.signature = this.user.signature.thumbnail
-          }
-          if (this.user.website){
-            if (this.user.website.includes('http://')){
-              this.user.website = this.user.website.replace('http://','');
-              this.protocol = 'http://';
-            } else {
-              this.user.website = this.user.website.replace('https://','');
-              this.protocol = 'https://';
-            }
-          }
-          this.userRole = this.role[this.user.role-1];
-          this.getConsultancyInfo();
-          break;
-      }
-    });
+        }
+        this.userRole = this.role[this.user.role-1];
+        break;
+      default:
+        this._snackBarService.openSnackBar('No se ha podido acceder intente más tarde','OK',3000);
+        this._router.navigate(['/home']).then();
+        break;
+    }
   }
 
-  private getConsultancyInfo():void{
-    this._api.getConsultancy(this.user.refId).subscribe(response=>{
-      switch (response.code){
-        case 200:
-          this.consultancy = {
-            address: response.item.address,
-            businessName: response.item.businessName,
-            id: response.item.id,
-            location: {
-              latitude: (response.item.location?response.item.location.latitude : 19.432675),
-              longitude: (response.item.location?response.item.location.longitude : -99.133461)
-            },
-            officePhone: response.item.officePhone || '',
-            rfc: response.item.rfc,
-            group: response.item.group || false
+  private getConsultancyInfo(response: any):void{
+    switch (response.code){
+      case 200:
+        this.consultancy = {
+          address: response.item.address,
+          businessName: response.item.businessName,
+          id: response.item.id,
+          location: {
+            latitude: (response.item.location?response.item.location.latitude : 19.432675),
+            longitude: (response.item.location?response.item.location.longitude : -99.133461)
+          },
+          officePhone: response.item.officePhone || '',
+          rfc: response.item.rfc,
+          group: response.item.group || false
+        };
+        if (this.consultancy.location){
+          this.latLong = {
+            latitude: this.consultancy.location.latitude,
+            longitude: this.consultancy.location.longitude
           };
-          if (this.consultancy.location){
-            this.latLong = {
-              latitude: this.consultancy.location.latitude,
-              longitude: this.consultancy.location.longitude
-            };
-          }
-          this.patchForm();
-          break;
-      }
-    })
+        }
+        this.patchForm();
+        break;
+      default:
+        this._snackBarService.openSnackBar('No se ha podido acceder intente más tarde','OK',3000);
+        this._router.navigate(['/home']).then();
+        break;
+    }
   }
 
   private patchForm():void{
@@ -402,7 +407,6 @@ export class ProfileComponent implements OnInit, OnDestroy {
       address: ['', [Validators.required]],
       officePhone: ['', [Validators.minLength(8), Validators.maxLength(13), Validators.required]]
     });
-    this.getUserInfo();
   }
 
   public updateProfile(data: any, event?: any): void {

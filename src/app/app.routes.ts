@@ -20,14 +20,15 @@ import {StationListComponent} from '@app/components/screen/components/station-li
 import {AddCollaboratorComponent} from '@app/components/screen/components/add-collaborator/add-collaborator.component';
 import {DocumentationComponent} from '@app/components/screen/components/documentation/documentation.component';
 import {ProceduresComponent} from '@app/components/screen/components/procedures/procedures.component';
-import {UserProfileService} from '@app/core/services/profiles/user-profile.service';
+import {UserProfileService} from '@app/components/screen/components/profiles/user-profile/user-profile.service';
 import {PrivacyComponent} from '@app/components/screen/child/privacy/privacy.component';
 import {AdminComponent} from '@app/components/admin/admin.component';
 import {TermsComponent} from '@app/components/screen/child/terms/terms.component';
 import {CookiesComponent} from '@app/components/screen/child/cookies/cookies.component';
 import {AuthRouterService} from '@app/core/services/auth/auth-router.service';
-import {ResetPassRouterService} from '@app/core/services/reset-pass/reset-pass-router.service';
+import {ResetPassRouterService} from '@app/components/screen/child/reset-pass/reset-pass-router.service';
 import {AdminNotificationsComponent} from '@app/components/admin/components/admin-notifications/admin-notifications.component';
+import {ProfileService} from '@app/components/screen/components/profiles/profile/profile.service';
 const URL_BASE = environment.url;
 
 export const appRoutes: Routes = [
@@ -102,7 +103,8 @@ export const appRoutes: Routes = [
             data:{
               title: 'Perfil',
               url: URL_BASE + 'home/profile/consultancy'
-            }
+            },
+            resolve: {data: ProfileService}
           },
           {
             path: 'user',
