@@ -77,8 +77,11 @@
             <mat-icon class="icon">insert_drive_file</mat-icon>
             <div style="font-weight: 600" class="divider">Anexo 5</div>
           </div>
-          <mat-error class="error" *ngIf="errors[4]">
+          <mat-error class="error" *ngIf="errors[4] && !emptyTasks">
             Falta establecer fecha
+          </mat-error>
+          <mat-error class="error" *ngIf="errors[4] && emptyTasks">
+            Debe existir al menos una tarea
           </mat-error>
         </div>
         <mat-divider></mat-divider>

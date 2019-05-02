@@ -39,9 +39,6 @@ export class SasisopaComponent implements OnInit, OnDestroy {
   public minDate: Date;
   public listTasks: any[];
   public dateSelected: string;
-  public zones: string[];
-  public priority: string[];
-  public frequency: string[];
   public generate: boolean;
   public isAvailable: boolean;
   public sasisopaDocs: any[];
@@ -49,6 +46,7 @@ export class SasisopaComponent implements OnInit, OnDestroy {
   public errors: boolean[];
   public dateGeneration: string[];
   public isDevelop: boolean;
+  public emptyTasks: boolean;
   private _subscriptionLoader: Subscription;
   private _token: string;
   private _change: boolean;
@@ -66,14 +64,12 @@ export class SasisopaComponent implements OnInit, OnDestroy {
     private _snackBarService: SnackBarService,
     private _adapter: DateAdapter<any>
   ) {
+    this.emptyTasks = false;
     this.isDevelop = environment.develop;
     this.docFile = [null, null, null, null, null, null, null, null, null, null, null, null];
     this.sasisopaDocs = [null, null, null, null, null, null, null, null, null, null, null, null];
     this.errors = [false, false, false, false,  false, false, false, false];
     this.dateGeneration = [];
-    this.zones = Constants.Zones;
-    this.frequency = Constants.Frequency;
-    this.priority = Constants.Level;
     this.dateSelected = undefined;
     this.date = undefined;
     this._change = false;
@@ -541,7 +537,7 @@ export class SasisopaComponent implements OnInit, OnDestroy {
                 error = true;
               }
             }
-            if(!this.sasisopaDocs[0] || !this.sasisopaDocs[1]){
+            if(!this.sasisopaDocs[0] || !this.sasisopaDocs[1] || !this.station.fuelTanks || this.station.fuelTanks.length === 0){
               this.errors[1] = true;
               error = true;
             }
@@ -563,6 +559,10 @@ export class SasisopaComponent implements OnInit, OnDestroy {
             if(!this.date){
               this.errors[4] = true;
               error = true;
+            }
+            if(this.listTasks.length === 0 && !this.errors[4]){
+              this.errors[4] = true;
+              this.emptyTasks = true;
             }
             if(!this.sasisopaDocs[5]){
               this.errors[5] = true;
@@ -604,7 +604,7 @@ export class SasisopaComponent implements OnInit, OnDestroy {
           error = true;
         }
       }
-      if(!this.sasisopaDocs[0] || !this.sasisopaDocs[1]){
+      if(!this.sasisopaDocs[0] || !this.sasisopaDocs[1] || !this.station.fuelTanks || this.station.fuelTanks.length === 0){
         this.errors[1] = true;
         error = true;
       }
@@ -626,6 +626,10 @@ export class SasisopaComponent implements OnInit, OnDestroy {
       if(!this.date){
         this.errors[4] = true;
         error = true;
+      }
+      if(this.listTasks.length === 0 && !this.errors[4]){
+        this.errors[4] = true;
+        this.emptyTasks = true;
       }
       if(!this.sasisopaDocs[5]){
         this.errors[5] = true;
@@ -679,6 +683,7 @@ export class SasisopaComponent implements OnInit, OnDestroy {
   }
 
   private resetErrors(): void{
+    this.emptyTasks = false;
     for(let i = 0; i < 8; i++){
       this.errors[i] = false;
     }
