@@ -163,11 +163,6 @@ export class ScreenComponent implements OnInit, AfterViewInit, OnDestroy{
     }
   }
 
-
-  public validateTaskCreated():boolean{
-    return this.stationActive.stationTaskId;
-  }
-
   private openTaskCalendar():void{
     if(this.role===6){
       this._dialogService.alertDialog(

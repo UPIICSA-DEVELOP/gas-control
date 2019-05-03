@@ -29,6 +29,7 @@ import {AuthRouterService} from '@app/core/services/auth/auth-router.service';
 import {ResetPassRouterService} from '@app/components/screen/child/reset-pass/reset-pass-router.service';
 import {AdminNotificationsComponent} from '@app/components/admin/components/admin-notifications/admin-notifications.component';
 import {ProfileService} from '@app/components/screen/components/profiles/profile/profile.service';
+import {StationProfileService} from '@app/components/screen/components/profiles/station-profile/station-profile.service';
 const URL_BASE = environment.url;
 
 export const appRoutes: Routes = [
@@ -116,8 +117,9 @@ export const appRoutes: Routes = [
             }
           },
           {
-            path: 'gas-station',
+            path: 'gas-station/:id',
             component: StationProfileComponent,
+            resolve: {data: StationProfileService},
             data:{
               title: 'Estación de servicio',
               url: URL_BASE + 'home/profile/gas-station'

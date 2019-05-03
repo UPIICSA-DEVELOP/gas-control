@@ -49,7 +49,6 @@ export class StationProfileComponent implements OnInit, OnDestroy {
   public workShifts:any[];
   public tanks:any[];
   public dispensers:any[];
-  public capacities: any[];
   public stationForm: FormGroup;
   public station: any;
   public gasImage: string;
@@ -57,7 +56,6 @@ export class StationProfileComponent implements OnInit, OnDestroy {
   public latLng: any;
   public load: boolean;
   public gasName: string;
-  private id: string;
   public user: any;
   public yearSelector: number[];
   private _subscriptionLoader: Subscription;
@@ -76,15 +74,13 @@ export class StationProfileComponent implements OnInit, OnDestroy {
     this.tanks = [];
     this.dispensers = [];
     this.user = LocalStorageService.getItem(Constants.UserInSession);
-    this.capacities = Constants.Capacities;
   }
 
   ngOnInit() {
     this.initYears();
-    if (this._activatedRouter.snapshot.queryParams.id) {
-      this.id = this._activatedRouter.snapshot.queryParams.id;
-      this.initForm();
-    }
+    this.initForm();
+    this.getStation(this._activatedRouter.snapshot.data.data.station);
+    this.getUtils(this._activatedRouter.snapshot.data.data.utils);
     this._subscriptionLoader = this._apiLoader.getProgress().subscribe(load => {this.load = load; });
   }
 
@@ -145,15 +141,13 @@ export class StationProfileComponent implements OnInit, OnDestroy {
     });
   }
 
-  public getUtils(): void{
-    this._api.getUtils().subscribe(response=>{
-      switch (response.code) {
-        case 200:
-          this.gasName = response.item.groupIcons[this.station.type-1].name;
-          this.gasImage = response.item.groupIcons[this.station.type-1].fileCS.thumbnail;
-          break;
-      }
-    })
+  public getUtils(response: any): void{
+    switch (response.code) {
+      case 200:
+        this.gasName = response.item.groupIcons[this.station.type-1].name;
+        this.gasImage = response.item.groupIcons[this.station.type-1].fileCS.thumbnail;
+        break;
+    }
   }
 
   private initForm():void{
@@ -172,60 +166,56 @@ export class StationProfileComponent implements OnInit, OnDestroy {
       monitoringWells:['',[]],
       observationWells:['',[]]
     });
-    this.getStation();
   }
 
-  private getStation():void{
-    this._api.getStation(this.id).subscribe(response=>{
-      switch (response.code) {
-        case 200:
-          this.station = response.item;
-          if (this.station.dispensers) {
-            this.dispensers = Object.assign([], this.station.dispensers);
-          }else{
-            this.dispensers.push({hoses: undefined, identifier: undefined, magna: false, premium: false, diesel: false});
+  private getStation(response: any):void{
+    switch (response.code) {
+      case 200:
+        this.station = response.item;
+        if (this.station.dispensers) {
+          this.dispensers = Object.assign([], this.station.dispensers);
+        }else{
+          this.dispensers.push({hoses: undefined, identifier: undefined, magna: false, premium: false, diesel: false});
+        }
+        if (this.station.fuelTanks){
+          this.tanks = Object.assign([], this.station.fuelTanks);
+        }else{
+          this.tanks.push({capacity: undefined, fuelType: undefined, year: undefined});
+        }
+        if (this.station.workShifts){
+          this.workShifts = Object.assign([],this.station.workShifts);
+        }else{
+          this.workShifts.push({start: undefined, end: undefined});
+        }
+        if (this.station.location) {
+          this.latLng = {
+            latitude: this.station.location.latitude,
+            longitude: this.station.location.longitude
           }
-          if (this.station.fuelTanks){
-            this.tanks = Object.assign([], this.station.fuelTanks);
-          }else{
-            this.tanks.push({capacity: undefined, fuelType: undefined, year: undefined});
-          }
-          if (this.station.workShifts){
-            this.workShifts = Object.assign([],this.station.workShifts);
-          }else{
-            this.workShifts.push({start: undefined, end: undefined});
-          }
-          if (this.station.location) {
-            this.latLng = {
-              latitude: this.station.location.latitude,
-              longitude: this.station.location.longitude
-            }
-          }
-          this.stationForm.patchValue({
-            name:this.station.name,
-            businessName:this.station.businessName,
-            rfc: this.station.rfc,
-            crePermission:this.station.crePermission,
-            address:this.station.address,
-            phoneNumber:this.station.phoneNumber,
-            email:this.station.email,
-            /*managerName:this.station.managerName,*/
-            vrs: this.station.vapourRecoverySystem,
-            workers:this.station.workers,
-            monitoringWells:this.station.monitoringWells,
-            observationWells: this.station.observationWells,
-            legalRepresentative: this.station.legalRepresentativeName
-          });
-          this.getUtils();
-          if (this.user.role===6){
-            this.stationForm.disable();
-          }
-          this.detectChanges();
-          break;
-        default:
-          break;
-      }
-    });
+        }
+        this.stationForm.patchValue({
+          name:this.station.name,
+          businessName:this.station.businessName,
+          rfc: this.station.rfc,
+          crePermission:this.station.crePermission,
+          address:this.station.address,
+          phoneNumber:this.station.phoneNumber,
+          email:this.station.email,
+          /*managerName:this.station.managerName,*/
+          vrs: this.station.vapourRecoverySystem,
+          workers:this.station.workers,
+          monitoringWells:this.station.monitoringWells,
+          observationWells: this.station.observationWells,
+          legalRepresentative: this.station.legalRepresentativeName
+        });
+        if (this.user.role===6){
+          this.stationForm.disable();
+        }
+        this.detectChanges();
+        break;
+      default:
+        break;
+    }
   }
 
   public saveStationInformation(data: any): void{
