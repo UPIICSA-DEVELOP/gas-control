@@ -191,9 +191,11 @@ export class SasisopaComponent implements OnInit, OnDestroy {
 
   public addRemoveBrigadeElem(isAdd: boolean, index?: number): void{
     if(isAdd){
+      this._change = true;
       this.brigade.push({name: '', lastName: '', position: ''});
     }else{
       if(this.brigade.length>1){
+        this._change = true;
         this.brigade.splice(index, 1);
       }
     }
@@ -201,6 +203,7 @@ export class SasisopaComponent implements OnInit, OnDestroy {
 
   public getStationTasks(datePrevious?: number):void{
     this._change = true;
+    this._token = null
     if(datePrevious){
       this._change = false;
       this.date = UtilitiesService.generateArrayDate(datePrevious, false, false);
@@ -214,7 +217,7 @@ export class SasisopaComponent implements OnInit, OnDestroy {
       status: '4',
       endDate: date.timeStamp,
       firstOpen: false,
-      type: '',
+      type: '0',
       cursor: this._token
     }).subscribe(response => {
       switch (response.code){
@@ -708,5 +711,9 @@ export class SasisopaComponent implements OnInit, OnDestroy {
         this._pdf.open({urlOrFile: this.docFile[type-1] ? this.docFile[type-1]: HashService.set("123456$#@$^@1ERF",this.sasisopaDocs[type-1].file.thumbnail), hideDownload: true});
         break;
     }
+  }
+
+  public changeInput(ev: any):void{
+    this._change = true;
   }
 }
