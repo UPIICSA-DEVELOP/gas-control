@@ -238,8 +238,7 @@ export class FeReportComponent implements OnInit, OnDestroy {
         !this.extinguisher[i].expiration ||
         !this.extinguisher[i].hose ||
         !this.extinguisher[i].manometer ||
-        !this.extinguisher[i].safe ||
-        !this.extinguisher[i].unity
+        !this.extinguisher[i].safe
       ){
         this.extinguisherErrors[i] = true;
         error = true;

@@ -298,7 +298,7 @@ export interface FireExtinguisher {
   hose: string;
   manometer: string;
   safe: string;
-  unity: string;
+  unity?: string;
 }
 
 /**
