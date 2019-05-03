@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="1.3.2-beta.4"></a>
+## [1.3.2-beta.4](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/compare/v1.3.2-beta.3...v1.3.2-beta.4) (2019-05-03)
+
+
+### Bug Fixes
+
+* **FEReport:** solve error in extinguishers list ([6005cbe](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/6005cbe))
+* **SASISOPA:** validate changes in annexed 5 ([f79f79c](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/f79f79c))
+* **StationProfile:** change query param to path param ([979738c](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/979738c))
+
+
+
 <a name="1.3.2-beta.3"></a>
 ## 1.3.2-beta.3 (2019-05-02)
 
