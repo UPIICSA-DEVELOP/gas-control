@@ -2,6 +2,28 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="1.4.0-beta.0"></a>
+# [1.4.0-beta.0](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/compare/v1.3.2-beta.2...v1.4.0-beta.0) (2019-05-06)
+
+
+### Bug Fixes
+
+* **AddCollaborator:** change space for row whit double inputs ([b219be8](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/b219be8))
+* **ConsultancyProfile:** implement resolve to get information to profile ([26c5a67](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/26c5a67))
+* **FEReport:** solve error in extinguishers list ([6005cbe](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/6005cbe))
+* **ResetePassword:** change file path ([ef726c0](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/ef726c0))
+* **SASISOPA:** validate changes in annexed 5 ([f79f79c](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/f79f79c))
+* **SASISOPA:** validate tanks and list task to generate sasisopa ([11b8430](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/11b8430))
+* **StationProfile:** change query param to path param ([979738c](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/979738c))
+* **UserProfile:** change resolve to get user information ([a5ec9f5](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/a5ec9f5))
+
+
+### Features
+
+* Adding Thread pool and marked as DEPRECATED ([dc4fb61](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/dc4fb61))
+
+
+
 <a name="1.3.2"></a>
 ## [1.3.2](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/compare/v1.3.2-beta.4...v1.3.2) (2019-05-03)
 
