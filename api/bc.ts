@@ -3,6 +3,13 @@ import {APIError, DefaultResponse} from './commons/class';
 
 export class BC{
 
+
+  /**
+   *
+   * @deprecated
+   *
+   * */
+
   private static DEFAULT_PROFILE_IMAGE = {
     original: 'https://www.googleapis.com/download/storage/v1/b/businesscardgcs/o/alex4%2F2019-02-25-193347461favicon.png?generation=1551123227641233&alt=media',
     thumbnail: 'https://lh3.googleusercontent.com/-3ntbjcrEgMf8ekZz7lLWXZFQKTte5FeDr9xBzhAh5S5IhdVSjM4scB-Dz5U8-lhR-4hxYdDfgb0grvajnJo-LG78ZMFjDm4Qw'
@@ -12,6 +19,11 @@ export class BC{
   constructor(){
   }
 
+  /**
+   *
+   * @deprecated
+   *
+   * */
   public async init(data: BCData): Promise<DefaultResponse | APIError>{
     this._data = {
       name: data.name || '',

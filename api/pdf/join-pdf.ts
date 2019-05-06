@@ -5,6 +5,13 @@ import {APIError} from '../commons/class';
 
 export class JoinPdf{
 
+
+  /**
+   *
+   * @deprecated
+   *
+   * */
+
   private static BACKEND_URL = 'https://schedule-maplander.appspot.com/_ah/api/communication/v1/';
   private  _commons: Commons;
 
@@ -16,6 +23,11 @@ export class JoinPdf{
     }
   }
 
+  /**
+   *
+   * @deprecated
+   *
+   * */
   public async init(data: JoinPdfData): Promise<Buffer | APIError>{
     if(data.isSGM){
       return await this.initSGM(data.stationId);

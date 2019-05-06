@@ -2,12 +2,12 @@ const gulp = require('gulp');
 const del = require('del');
 const zip = require('gulp-zip');
 
-gulp.task('clean', function () {
-  return del(['./dist']);
-});
+const paths = {
+  dist: 'dist'
+};
 
-gulp.task('clean:zip', function () {
-  return del(['./dist/dist.zip']);
+gulp.task('clean', function () {
+  return del([paths.dist]);
 });
 
 gulp.task('templates', function() {

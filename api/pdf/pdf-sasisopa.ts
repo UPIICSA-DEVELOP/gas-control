@@ -8,6 +8,13 @@ const chalk = require('chalk');
 
 class PdfSASISOPA{
 
+
+  /**
+   *
+   * @deprecated
+   *
+   * */
+
   private static BACKEND_URL = 'https://schedule-maplander.appspot.com/_ah/api/communication/v1/';
   private static EMPTY_INPUT = 'N/A';
   private _commons: Commons;
@@ -58,6 +65,11 @@ class PdfSASISOPA{
     this.init();
   }
 
+  /**
+   *
+   * @deprecated
+   *
+   * */
   private init(): void{
 
 

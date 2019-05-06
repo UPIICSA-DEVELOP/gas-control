@@ -4,9 +4,20 @@ import {check, validationResult} from 'express-validator/check';
 import {Commons} from './pdf/commons';
 import * as express from 'express';
 import {APIError, DefaultResponse, ServerError} from './commons/class';
-
+import {PdfData} from './commons/interfaces';
+import {ThreadPool} from './thread-pool';
 
 export class EndPoints{
+
+
+  /**
+   *
+   * @deprecated
+   *
+   * Migrate to new repository {@link https://api-inspector.maplander.com/}
+   * Available until: July 2019
+   *
+   * */
 
   private _router: express.Router;
   private static FRONT_URL = 'https://inspector-develop.maplander.com/endpoints/v1/api-docs/';
@@ -21,6 +32,9 @@ export class EndPoints{
     this.configEndPoints();
   }
 
+  /**
+   * @deprecated
+   * */
   public bootstrap(): express.Router{
     return this._router;
   }
@@ -84,20 +98,13 @@ export class EndPoints{
         return next(new APIError(`Incomplete params, consult ${EndPoints.FRONT_URL}`, 422));
       }else {
         const { stationId, isSGM } = req.query;
-        const { fork } = require('child_process'), path = require('path');
-        const child = fork(path.resolve(__dirname, 'api', 'pdf.js'));
-        child.on('message', (data: DefaultResponse | APIError) => {
-          res.status(data.code).end(JSON.stringify(data));
-        });
-        child.on('close', (code) => {
-          console.info(`Close child process ${child.pid} PDF | RAM ${Commons.getFreeMemory()} MB | Code ${code}`);
-        });
-        const data = {
+        const data: PdfData = {
           stationId: stationId,
           isSGM: (isSGM && isSGM === 'true')
         };
-        console.info(`Open child process ${child.pid} PDF | RAM ${Commons.getFreeMemory()} MB`);
-        child.send(data);
+        ThreadPool.bootstrap().newProcess(data).then((response: DefaultResponse | APIError) => {
+          res.status(response.code).end(JSON.stringify(response));
+        });
       }
     }catch (e){
       return next(new ServerError(e.message));

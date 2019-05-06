@@ -6,6 +6,13 @@ const chalk = require('chalk');
 
 export class PdfSGM{
 
+
+  /**
+   *
+   * @deprecated
+   *
+   * */
+
   private static BACKEND_URL = 'https://schedule-maplander.appspot.com/_ah/api/communication/v1/';
   private static EMPTY_INPUT = 'N/A';
 
@@ -26,6 +33,11 @@ export class PdfSGM{
     this.init();
   }
 
+  /**
+   *
+   * @deprecated
+   *
+   * */
   private init(): void{
 
     const word2pdf = require('word2pdf-promises');

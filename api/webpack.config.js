@@ -9,7 +9,8 @@ module.exports = {
     ['pdf']: path.join(__dirname, 'pdf', 'pdf.ts'),
     ['commons']: path.join(__dirname, 'pdf', 'commons.ts'),
     ['bc']: path.join(__dirname, 'bc.ts'),
-    ['endpoints']: path.join(__dirname, 'endpoints.ts')
+    ['endpoints']: path.join(__dirname, 'endpoints.ts'),
+    ['thread-pool']: path.join(__dirname, 'thread-pool.ts')
   },
   resolve: {
     extensions: ['.ts', '.js']

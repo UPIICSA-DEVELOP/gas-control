@@ -65,6 +65,14 @@ export class App {
     server.initRouter();
   }
 
+  /**
+   *
+   * @deprecated
+   *
+   * Migrate to new repository {@link https://api-inspector.maplander.com/}
+   * Available until: July 2019
+   *
+   * */
   private static configEndPoints(app: any): void{
     const swaggerUi = require('swagger-ui-express');
     const swaggerDocument = require('../dist/api/swagger.json');

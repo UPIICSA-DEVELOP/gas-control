@@ -1,8 +1,21 @@
 
 export class Commons{
 
+
+  /**
+   *
+   * @deprecated
+   *
+   * */
+
   private static PROXY_NAME = 'inSpector Proxy/1.0.0';
 
+
+  /**
+   *
+   * @deprecated
+   *
+   * */
   public joinPDF(arrayBuffers: any[]): Promise<Buffer>{
     const hummus = require('hummus');
     const memoryStreams = require('memory-streams');
@@ -35,6 +48,11 @@ export class Commons{
     });
   }
 
+  /**
+   *
+   * @deprecated
+   *
+   * */
   public static async splitPDF(buffer: Buffer, numPagesByFile?: number): Promise<Buffer[]>{
     const buffers: Buffer[] = [];
     const pdfjsLib = require('pdfjs-dist');
@@ -75,6 +93,11 @@ export class Commons{
   }
 
 
+  /**
+   *
+   * @deprecated
+   *
+   * */
   public buildPDF(html: any, pageSize?: string): Promise<Buffer>{
     return new Promise((resolve, reject) => {
       try {
@@ -96,7 +119,11 @@ export class Commons{
     });
   }
 
-
+  /**
+   *
+   * @deprecated
+   *
+   * */
   public request(url, method?: string, data?: any, form?: boolean, body?: boolean): Promise<any>{
     return new Promise((resolve, reject) => {
       const request = require('request');
@@ -123,6 +150,11 @@ export class Commons{
     });
   }
 
+  /**
+   *
+   * @deprecated
+   *
+   * */
   public downloadFile(url: string): Promise<any>{
     return new Promise((resolve, reject) => {
       const request = require('request');
@@ -136,12 +168,21 @@ export class Commons{
     });
   }
 
-
+  /**
+   *
+   * @deprecated
+   *
+   * */
   public static getFreeMemory(onGB?: boolean): string{
     const os = require('os');
     return (!onGB) ? Math.round((os.freemem() / 1024) / 1024).toString() : Math.round(((os.freemem() / 1024) / 1024) / 1024).toString();
   }
 
+  /**
+   *
+   * @deprecated
+   *
+   * */
   public static searchObject(array: any[], key: string, value: any): any{
     let obj = null;
     array.forEach(item => {
@@ -152,14 +193,23 @@ export class Commons{
     return obj;
   }
 
+  /**
+   *
+   * @deprecated
+   *
+   * */
   public static async asyncForEach(array, callback) {
     for (let index = 0; index < array.length; index++) {
       await callback(array[index], index, array);
     }
   }
 
-  public static bubbleSort(array: any[], key: string)
-  {
+  /**
+   *
+   * @deprecated
+   *
+   * */
+  public static bubbleSort(array: any[], key: string) {
     let swapped;
     do {
       swapped = false;
@@ -174,7 +224,11 @@ export class Commons{
     } while (swapped);
   }
 
-
+  /**
+   *
+   * @deprecated
+   *
+   * */
   static createTimeString(date: string): string{
     try{
       if(date.length < 4){
@@ -212,6 +266,11 @@ export class Commons{
     }
   }
 
+  /**
+   *
+   * @deprecated
+   *
+   * */
   static convertDate(date: number): string[]{
     /**
      *
@@ -276,6 +335,11 @@ export class Commons{
 
   }
 
+  /**
+   *
+   * @deprecated
+   *
+   * */
   public static formatFolio(value: string): string{
     try {
       switch (value.length){
@@ -302,6 +366,11 @@ export class Commons{
     }
   }
 
+  /**
+   *
+   * @deprecated
+   *
+   * */
   static setEncrypt(keys: any, value: any): string{
     const CryptoJS = require('crypto-js');
     try{
@@ -321,6 +390,11 @@ export class Commons{
     }
   }
 
+  /**
+   *
+   * @deprecated
+   *
+   * */
   static getDecrypt(keys: any, value: any): string{
     const CryptoJS = require('crypto-js');
     try{

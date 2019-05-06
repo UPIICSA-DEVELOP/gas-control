@@ -20,6 +20,11 @@ export class Pdf{
     this._taskTemplate = [];
   }
 
+  /**
+   *
+   * @deprecated
+   *
+   * */
   public async init(data: PdfData): Promise<DefaultResponse | APIError>{
     this._stationId = data.stationId;
     if(data.isSGM){
@@ -155,9 +160,8 @@ export class Pdf{
         finalTaskList.push(Pdf.clearTaskByFolio(i));
       });
       infoPdfGenerator.listTasks = finalTaskList;
-      this.initPDFSASISOPA(infoPdfGenerator);
 
-      return new DefaultResponse({date: infoPdfGenerator.date});
+      return new DefaultResponse({pdf: infoPdfGenerator, item: {date: infoPdfGenerator.date}});
 
     }catch (e){
       return new APIError(e.message, 500);
@@ -271,9 +275,7 @@ export class Pdf{
         data.taskListAnnexed2.push(Pdf.clearTaskByFolio(item));
       });
 
-      this.initPDFSGM(data);
-
-      return new DefaultResponse({date: data.date});
+      return new DefaultResponse({pdf: data, item: {date: data.date}});
 
     }catch (e){
       return new APIError(e.message, 500);
@@ -308,38 +310,6 @@ export class Pdf{
     return finalTasks;
   }
 
-  private initPDFSASISOPA(data: any): void{
-    const { fork } = require('child_process');
-    const path = require('path');
-    const child = fork(path.resolve(__dirname, 'pdf-sasisopa.js'));
-    child.on('message', (data) => {
-      console.info(`Close child process ${child.pid} SASISOPA | RAM ${Commons.getFreeMemory()} MB`);
-      console.info(data);
-    });
-    child.on('close', (code) => {
-      console.info(`Close child process ${child.pid} SASISOPA | RAM ${Commons.getFreeMemory()} MB | Code ${code}`);
-      process.exit(0);
-    });
-    console.info(`Open child process ${child.pid} SASISOPA | RAM ${Commons.getFreeMemory()} MB`);
-    child.send(data);
-  }
-
-  private initPDFSGM(data: any): void{
-    const { fork } = require('child_process');
-    const path = require('path');
-    const child = fork(path.resolve(__dirname, 'pdf-sgm.js'));
-    child.on('message', (data) => {
-      console.info(`Close child process ${child.pid} SGM | RAM ${Commons.getFreeMemory()} MB`);
-      console.info(data);
-    });
-    child.on('close', (code) => {
-      console.info(`Close child process ${child.pid} SGM | RAM ${Commons.getFreeMemory()} MB | Code ${code}`);
-      process.exit(0);
-    });
-    console.info(`Close child process ${child.pid} SGM | RAM ${Commons.getFreeMemory()} MB`);
-    child.send(data);
-  }
-
   private getTask(type: number, id: string): Promise<any>{
     switch (type){
       case 1:
@@ -367,7 +337,9 @@ process.on('message', (data: PdfData) => {
   const pdf = new Pdf();
   pdf.init(data).then((response: DefaultResponse | APIError) => {
     process.send(response);
+    process.exit(0);
   }).catch(error => {
     process.send(error);
+    process.exit(-1);
   })
 });

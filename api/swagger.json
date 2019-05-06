@@ -31,6 +31,7 @@
           "Business Card"
         ],
         "summary": "Create a Business Card",
+        "deprecated": true,
         "description": "This method creates a first Business Card for any user, compatible with inSpector and Business Card applications, time response between 1-5s",
         "consumes": [
           "application/json"
@@ -153,6 +154,7 @@
         "tags": [
           "SASISOPA"
         ],
+        "deprecated": true,
         "summary": "Create a attached file with custom information",
         "consumes": [
           "application/json"
@@ -209,6 +211,7 @@
         "tags": [
           "SASISOPA"
         ],
+        "deprecated": true,
         "summary": "Create a PDF file joining multiples files",
         "consumes": [
           "application/json"
@@ -263,6 +266,7 @@
         "tags": [
           "Utils"
         ],
+        "deprecated": true,
         "summary": "Download file as Buffer",
         "consumes": [
           "application/json"
