@@ -41,6 +41,7 @@ export class SgmComponent implements OnInit, OnDestroy {
   public dateGeneration: string[];
   public isDevelop: boolean;
   public errors: boolean[];
+  private _change: boolean;
   private _subscriptionLoader: Subscription;
   private _token: string;
   private _tokenTwo: string;
@@ -83,7 +84,21 @@ export class SgmComponent implements OnInit, OnDestroy {
   }
 
   public close():void{
-    this._matDialogRef.close();
+    if(this._change){
+      this._dialogService.confirmDialog(
+        '¿Desea salir sin guardar cambios?',
+        '',
+        'ACEPTAR',
+        'CANCELAR').afterClosed().subscribe(response=>{
+        switch (response.code){
+          case 1:
+            this._matDialogRef.close();
+            break;
+        }
+      });
+    }else{
+      this._matDialogRef.close();
+    }
   }
 
   public seeFile(url: any):void{
@@ -115,6 +130,7 @@ export class SgmComponent implements OnInit, OnDestroy {
       switch (response.code){
         case 200:
           this.getSgm();
+          this._change = false;
           this._snackBarService.openSnackBar('Información actualizada', 'OK', 3000);
           break;
           default:
@@ -122,60 +138,6 @@ export class SgmComponent implements OnInit, OnDestroy {
           break;
       }
     })
-  }
-
-  private getStationTasksAnnexeOne():void{
-    this._token = null;
-    this._api.listTask({
-      stationTaskId: this.station.stationTaskId,
-      startDate: '',
-      status: '4',
-      endDate: '',
-      firstOpen: true,
-      type: '31',
-      cursor: this._token
-    }).subscribe(response => {
-      switch (response.code){
-        case 200:
-          if(this._token === response.nextPageToken){
-            this._token = null;
-          }else{
-            this._token = response.nextPageToken;
-          }
-          this.listTasksOne = this.buildListTasks(response.items);
-          break;
-        default:
-          this.listTasksOne = [];
-          break;
-      }
-    });
-  }
-
-  private getStationTasksAnnexeTwo():void{
-    this._tokenTwo = null;
-    this._api.listTask({
-      stationTaskId: this.station.stationTaskId,
-      startDate: '',
-      status: '4',
-      endDate: '',
-      firstOpen: true,
-      type: '41',
-      cursor: this._tokenTwo
-    }).subscribe(response => {
-      switch (response.code){
-        case 200:
-          if(this._tokenTwo === response.nextPageToken){
-            this._tokenTwo = null;
-          }else{
-            this._tokenTwo = response.nextPageToken;
-          }
-          this.listTasksTwo = this.buildListTasks(response.items);
-          break;
-        default:
-          this.listTasksTwo = [];
-          break;
-      }
-    });
   }
 
   public generateSgm():void{
@@ -188,82 +150,12 @@ export class SgmComponent implements OnInit, OnDestroy {
       ).afterClosed().subscribe(response => {
         switch (response.code){
           case 1:
-            let error = false;
-            if(this.listTasksOne.length === 0){
-              this.errors[0] = true;
-              error = true;
-            }
-            if(this.listTasksTwo.length === 0){
-              this.errors[1] = true;
-              error = true;
-            }
-            if(!this.magna && !this.premium && !this.diesel){
-              this.errors[2] = true;
-              error = true
-            }
-            if(!this.software){
-              this.errors[3] = true;
-              error = true;
-            }
-            if(error){
-              return;
-            }else{
-              this._api.getFullPDF(this.station.id, true).subscribe(response =>{
-                switch(response.code){
-                  case 200:
-                    this.generate = true;
-                    this.dateGeneration = UtilitiesService.convertDate(response.item.date);
-                    const today = UtilitiesService.createPersonalTimeStamp(new Date);
-                    if(response.item.date <= today.timeStamp){
-                      this.isAvailable = true;
-                    }
-                    break;
-                  default:
-                    this._snackBarService.openSnackBar('Ha ocurrido un error, por favor intente más tarde', 'OK', 3000);
-                    break;
-                }
-              });
-            }
+            this.validateSgm();
             break;
         }
       });
     }else{
-      let error = false;
-      if(this.listTasksOne.length === 0){
-        this.errors[0] = true;
-        error = true;
-      }
-      if(this.listTasksTwo.length === 0){
-        this.errors[1] = true;
-        error = true;
-      }
-      if(!this.magna && !this.premium && !this.diesel){
-        this.errors[2] = true;
-        error = true
-      }
-      if(!this.software){
-        this.errors[3] = true;
-        error = true;
-      }
-      if(error){
-        return;
-      }else{
-        this._api.getFullPDF(this.station.id, true).subscribe(response =>{
-          switch(response.code){
-            case 200:
-              this.generate = true;
-              this.dateGeneration = UtilitiesService.convertDate(response.item.date);
-              const today = UtilitiesService.createPersonalTimeStamp(new Date);
-              if(response.item.date <= today.timeStamp){
-                this.isAvailable = true;
-              }
-              break;
-            default:
-              this._snackBarService.openSnackBar('Ha ocurrido un error, por favor intente más tarde', 'OK', 3000);
-              break;
-          }
-        });
-      }
+      this.validateSgm();
     }
   }
 
@@ -287,8 +179,15 @@ export class SgmComponent implements OnInit, OnDestroy {
   }
 
   public changeOptions(newView: number): void{
+    if(newView === this.elementOnView){
+      return;
+    }
     this.resetErrors();
     this.elementOnView = newView;
+  }
+
+  public detectChanges():void{
+    this._change = true;
   }
 
   private getSgm(): void{
@@ -305,7 +204,7 @@ export class SgmComponent implements OnInit, OnDestroy {
             this.generate = true;
             this.dateGeneration = UtilitiesService.convertDate(response.item.fullSgm.date);
             const today = UtilitiesService.createPersonalTimeStamp(new Date());
-          if(response.item.fullSgm.date <= today.timeStamp){
+            if(response.item.fullSgm.date <= today.timeStamp){
               this.isAvailable = true;
             }
           }
@@ -314,6 +213,45 @@ export class SgmComponent implements OnInit, OnDestroy {
           break;
       }
     })
+  }
+
+  private validateSgm():void{
+    let error = false;
+    if(this.listTasksOne.length === 0){
+      this.errors[0] = true;
+      error = true;
+    }
+    if(this.listTasksTwo.length === 0){
+      this.errors[1] = true;
+      error = true;
+    }
+    if(!this.magna && !this.premium && !this.diesel){
+      this.errors[2] = true;
+      error = true
+    }
+    if(!this.software){
+      this.errors[3] = true;
+      error = true;
+    }
+    if(error){
+      return;
+    }else{
+      this._api.getFullPDF(this.station.id, true).subscribe(response =>{
+        switch(response.code){
+          case 200:
+            this.generate = true;
+            this.dateGeneration = UtilitiesService.convertDate(response.item.date);
+            const today = UtilitiesService.createPersonalTimeStamp(new Date);
+            if(response.item.date <= today.timeStamp){
+              this.isAvailable = true;
+            }
+            break;
+          default:
+            this._snackBarService.openSnackBar('Ha ocurrido un error, por favor intente más tarde', 'OK', 3000);
+            break;
+        }
+      });
+    }
   }
 
   private getStation(): void{
@@ -377,5 +315,59 @@ export class SgmComponent implements OnInit, OnDestroy {
     for(let i = 0; i < 4; i++){
       this.errors[i] = false;
     }
+  }
+
+  private getStationTasksAnnexeOne():void{
+    this._token = null;
+    this._api.listTask({
+      stationTaskId: this.station.stationTaskId,
+      startDate: '',
+      status: '4',
+      endDate: '',
+      firstOpen: true,
+      type: '31',
+      cursor: this._token
+    }).subscribe(response => {
+      switch (response.code){
+        case 200:
+          if(this._token === response.nextPageToken){
+            this._token = null;
+          }else{
+            this._token = response.nextPageToken;
+          }
+          this.listTasksOne = this.buildListTasks(response.items);
+          break;
+        default:
+          this.listTasksOne = [];
+          break;
+      }
+    });
+  }
+
+  private getStationTasksAnnexeTwo():void{
+    this._tokenTwo = null;
+    this._api.listTask({
+      stationTaskId: this.station.stationTaskId,
+      startDate: '',
+      status: '4',
+      endDate: '',
+      firstOpen: true,
+      type: '41',
+      cursor: this._tokenTwo
+    }).subscribe(response => {
+      switch (response.code){
+        case 200:
+          if(this._tokenTwo === response.nextPageToken){
+            this._tokenTwo = null;
+          }else{
+            this._tokenTwo = response.nextPageToken;
+          }
+          this.listTasksTwo = this.buildListTasks(response.items);
+          break;
+        default:
+          this.listTasksTwo = [];
+          break;
+      }
+    });
   }
 }
