@@ -44,20 +44,20 @@
                     </button>
                   </div>
                   <div class="button">
-                    <button *ngIf="(user.role!==6 || user.role===7) && collaborator.role!==4" mat-button (click)="changeRoleCollaborator(collaborator)">
-                      <mat-icon matTooltip="Cambiar rol" svgIcon="icons:change_role"></mat-icon>
+                    <button mat-button *ngIf="(user.role!==6 || user.role===7) && collaborator.role!==4" matTooltip="Cambiar rol" (click)="changeRoleCollaborator(collaborator)">
+                      <mat-icon svgIcon="icons:change_role"></mat-icon>
                     </button>
                   </div>
                   <div class="button">
                     <a href="https://wa.me/{{collaborator.countryCode || '52'}}{{collaborator.phoneNumber}}" class="link" target="_blank">
-                      <button matTooltip="Enviar WhatsApp" mat-button>
+                      <button mat-button matTooltip="Enviar WhatsApp">
                         <mat-icon svgIcon="icons:whatsapp"></mat-icon>
                       </button>
                     </a>
                   </div>
                   <div class="button">
                     <a href="https://mail.google.com/mail/?view=cm&fs=1&to={{collaborator.email}}" target="_blank" class="link">
-                      <button matTooltip="Enviar email" mat-button>
+                      <button mat-button matTooltip="Enviar email">
                         <mat-icon>email</mat-icon>
                       </button>
                     </a>

@@ -61,8 +61,8 @@
                     </button>
                   </div>
                   <div class="button">
-                    <button *ngIf="(user.role<3 || user.role===7) && collaborator.role!==1" mat-button (click)="changeRoleCollaborator(collaborator)">
-                      <mat-icon matTooltip="Cambiar rol" svgIcon="icons:change_role"></mat-icon>
+                    <button matTooltip="Cambiar rol" *ngIf="(user.role<3 || user.role===7) && collaborator.role!==1" mat-button (click)="changeRoleCollaborator(collaborator)">
+                      <mat-icon svgIcon="icons:change_role"></mat-icon>
                     </button>
                   </div>
                   <div class="button">
