@@ -126,7 +126,11 @@ export class SasisopaComponent implements OnInit, OnDestroy {
       this.elementInView = type;
       this.getSasisopa();
     }
-    if(type === 5){
+    if(type === 5 && this.date){
+      this._token = null;
+      const date = UtilitiesService.createPersonalTimeStamp(this.date);
+      this.getStationTasks(date.timeStamp);
+    }else if(type === 5){
       if(new Date().getTime() < (this.minDate.getTime()+(1000*60*60*24*2))){
         this._dialogService.alertDialog(
           'No existe un rango de fechas para poder seleccionar',
@@ -401,7 +405,10 @@ export class SasisopaComponent implements OnInit, OnDestroy {
           }
           if(response.item.evidencesDate){
             this.date = UtilitiesService.generateArrayDate(response.item.evidencesDate.date,false, false);
-            this.getStationTasks(response.item.evidencesDate.date);
+            if(this.station && this.station.stationTaskId){
+              this._token = null;
+              this.getStationTasks(response.item.evidencesDate.date);
+            }
           }
           if(response.item.sasisopaDocuments){
             const sasisopaDocs = UtilitiesService.sortJSON(response.item.sasisopaDocuments, 'type', 'asc');
