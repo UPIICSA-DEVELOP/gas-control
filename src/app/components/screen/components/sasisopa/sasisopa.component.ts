@@ -126,12 +126,7 @@ export class SasisopaComponent implements OnInit, OnDestroy {
       this.elementInView = type;
       this.getSasisopa();
     }
-
-    if(type === 5 && this.date){
-      this._token = null;
-      const date = UtilitiesService.createPersonalTimeStamp(this.date);
-      this.getStationTasks(date.timeStamp);
-    }else if(type === 5){
+    if(type === 5){
       if(new Date().getTime() < (this.minDate.getTime()+(1000*60*60*24*2))){
         this._dialogService.alertDialog(
           'No existe un rango de fechas para poder seleccionar',
@@ -203,12 +198,11 @@ export class SasisopaComponent implements OnInit, OnDestroy {
 
   public getStationTasks(datePrevious?: number):void{
     this._change = true;
-    this._token = null
+    this._token = null;
     if(datePrevious){
       this._change = false;
       this.date = UtilitiesService.generateArrayDate(datePrevious, false, false);
     }
-
     const date = UtilitiesService.createPersonalTimeStamp(this.date);
     this.dateSelected = date.textDate;
     this._api.listTask({
@@ -407,6 +401,7 @@ export class SasisopaComponent implements OnInit, OnDestroy {
           }
           if(response.item.evidencesDate){
             this.date = UtilitiesService.generateArrayDate(response.item.evidencesDate.date,false, false);
+            this.getStationTasks(response.item.evidencesDate.date);
           }
           if(response.item.sasisopaDocuments){
             const sasisopaDocs = UtilitiesService.sortJSON(response.item.sasisopaDocuments, 'type', 'asc');
@@ -533,136 +528,78 @@ export class SasisopaComponent implements OnInit, OnDestroy {
         'CANCELAR').afterClosed().subscribe(response =>{
         switch (response.code){
           case 1:
-            let error = false;
-            for(let i = 0; i<this.listCollaborators.length; i++){
-              if(!this.listCollaborators[i].signature || !this.listCollaborators[i].signature.thumbnail){
-                this.errors[0] = true;
-                error = true;
-              }
-            }
-            if(!this.sasisopaDocs[0] || !this.sasisopaDocs[1] || !this.station.fuelTanks || this.station.fuelTanks.length === 0){
-              this.errors[1] = true;
-              error = true;
-            }
-            if(!this.sasisopaDocs[2] || !this.sasisopaDocs[3] || this.brigade.length === 0){
-              this.errors[2] = true;
-              error = true;
-            }else if (this.brigade.length !==0 ){
-              for(let i = 0; i < this.brigade.length; i++){
-                if(!this.brigade[i].name || !this.brigade[i].lastName || !this.brigade[i].position){
-                  this.errors[2] = true;
-                  error = true;
-                }
-              }
-            }
-            if(!this.sasisopaDocs[4]){
-              this.errors[3] = true;
-              error = true;
-            }
-            if(!this.date){
-              this.errors[4] = true;
-              error = true;
-            }
-            if(this.listTasks.length === 0 && !this.errors[4]){
-              this.errors[4] = true;
-              this.emptyTasks = true;
-            }
-            if(!this.sasisopaDocs[5]){
-              this.errors[5] = true;
-              error = true;
-            }
-            if(!this.sasisopaDocs[6] || !this.sasisopaDocs[7]){
-              this.errors[6] = true;
-              error = true;
-            }
-            if(!this.sasisopaDocs[11]){
-              this.errors[7] = true;
-              error = true;
-            }
-            if(error){
-              return;
-            }else{
-              this._api.getFullPDF(this.station.id, false).subscribe(response =>{
-                switch(response.code){
-                  case 200:
-                    this.generate = true;
-                    this.dateGeneration = UtilitiesService.convertDate(response.item.date);
-                    const today = UtilitiesService.createPersonalTimeStamp(new Date);
-                    this.isAvailable = (response.item.date <= today.timeStamp);
-                    break;
-                  default:
-                    this._snackBarService.openSnackBar('Ha ocurrido un error, por favor intente más tarde', 'OK', 3000);
-                    break;
-                }
-              });
-            }
+            this.validateSasisopa();
             break;
         }
       })
     }else{
-      let error = false;
-      for(let i = 0; i<this.listCollaborators.length; i++){
-        if(!this.listCollaborators[i].signature || !this.listCollaborators[i].signature.thumbnail){
-          this.errors[0] = true;
+      this.validateSasisopa();
+    }
+  }
+
+  private validateSasisopa():void{
+    let error = false;
+    for(let i = 0; i<this.listCollaborators.length; i++){
+      if(!this.listCollaborators[i].signature || !this.listCollaborators[i].signature.thumbnail){
+        this.errors[0] = true;
+        error = true;
+      }
+    }
+    if(!this.sasisopaDocs[0] || !this.sasisopaDocs[1] || !this.station.fuelTanks || this.station.fuelTanks.length === 0){
+      this.errors[1] = true;
+      error = true;
+    }
+    if(!this.sasisopaDocs[2] || !this.sasisopaDocs[3] || this.brigade.length === 0){
+      this.errors[2] = true;
+      error = true;
+    }else if (this.brigade.length !==0 ){
+      for(let i = 0; i < this.brigade.length; i++){
+        if(!this.brigade[i].name || !this.brigade[i].lastName || !this.brigade[i].position){
+          this.errors[2] = true;
           error = true;
         }
       }
-      if(!this.sasisopaDocs[0] || !this.sasisopaDocs[1] || !this.station.fuelTanks || this.station.fuelTanks.length === 0){
-        this.errors[1] = true;
-        error = true;
-      }
-      if(!this.sasisopaDocs[2] || !this.sasisopaDocs[3] || this.brigade.length === 0){
-        this.errors[2] = true;
-        error = true;
-      }else if (this.brigade.length !==0 ){
-        for(let i = 0; i < this.brigade.length; i++){
-          if(!this.brigade[i].name || !this.brigade[i].lastName || !this.brigade[i].position){
-            this.errors[2] = true;
-            error = true;
-          }
+    }
+    if(!this.sasisopaDocs[4]){
+      this.errors[3] = true;
+      error = true;
+    }
+    if(!this.date){
+      this.errors[4] = true;
+      error = true;
+    }
+    if(this.listTasks.length === 0 && !this.errors[4]){
+      this.errors[4] = true;
+      this.emptyTasks = true;
+    }
+    if(!this.sasisopaDocs[5]){
+      this.errors[5] = true;
+      error = true;
+    }
+    if(!this.sasisopaDocs[6] || !this.sasisopaDocs[7]){
+      this.errors[6] = true;
+      error = true;
+    }
+    if(!this.sasisopaDocs[11]){
+      this.errors[7] = true;
+      error = true;
+    }
+    if(error){
+      return;
+    }else{
+      this._api.getFullPDF(this.station.id, false).subscribe(response =>{
+        switch(response.code){
+          case 200:
+            this.generate = true;
+            this.dateGeneration = UtilitiesService.convertDate(response.item.date);
+            const today = UtilitiesService.createPersonalTimeStamp(new Date);
+            this.isAvailable = (response.item.date <= today.timeStamp);
+            break;
+          default:
+            this._snackBarService.openSnackBar('Ha ocurrido un error, por favor intente más tarde', 'OK', 3000);
+            break;
         }
-      }
-      if(!this.sasisopaDocs[4]){
-        this.errors[3] = true;
-        error = true;
-      }
-      if(!this.date){
-        this.errors[4] = true;
-        error = true;
-      }
-      if(this.listTasks.length === 0 && !this.errors[4]){
-        this.errors[4] = true;
-        this.emptyTasks = true;
-      }
-      if(!this.sasisopaDocs[5]){
-        this.errors[5] = true;
-        error = true;
-      }
-      if(!this.sasisopaDocs[6] || !this.sasisopaDocs[7]){
-        this.errors[6] = true;
-        error = true;
-      }
-      if(!this.sasisopaDocs[11]){
-        this.errors[7] = true;
-        error = true;
-      }
-      if(error){
-        return;
-      }else{
-        this._api.getFullPDF(this.station.id, false).subscribe(response =>{
-          switch(response.code){
-            case 200:
-              this.generate = true;
-              this.dateGeneration = UtilitiesService.convertDate(response.item.date);
-              const today = UtilitiesService.createPersonalTimeStamp(new Date);
-              this.isAvailable = (response.item.date <= today.timeStamp);
-              break;
-            default:
-              this._snackBarService.openSnackBar('Ha ocurrido un error, por favor intente más tarde', 'OK', 3000);
-              break;
-          }
-        });
-      }
+      });
     }
   }
 
