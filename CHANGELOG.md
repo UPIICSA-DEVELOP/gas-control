@@ -2,6 +2,25 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="1.4.0-beta.2"></a>
+# [1.4.0-beta.2](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/compare/v1.4.0-beta.0...v1.4.0-beta.2) (2019-05-07)
+
+
+### Bug Fixes
+
+* **Collaborators:** change tooltip for buttons ([5f3d2f2](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/5f3d2f2))
+* **ImageVisor:** modify modal for image with high definition ([21f4092](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/21f4092))
+* **Interfaces:** update models ([cef3470](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/cef3470))
+* **ListTasks:** validate token for not schedule tasks ([28df810](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/28df810))
+* **reports:** reduce styles code ([05af2d0](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/05af2d0))
+* **SASISOPA:** solve error in annexe five ([9706de3](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/9706de3))
+* **Styles:** add class for image visor ([8ee7f9b](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/8ee7f9b))
+* **TaskCard:** change modifier for material class ([c68172b](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/c68172b))
+* Adding deprecated to all endpoints to docs ([6e104db](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/6e104db))
+* include dependencies licenses ([3de9e1f](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/3de9e1f))
+
+
+
 <a name="1.4.0-beta.1"></a>
 # [1.4.0-beta.1](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/compare/v1.3.2...v1.4.0-beta.1) (2019-05-07)
 
