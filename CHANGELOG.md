@@ -2,6 +2,29 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="1.4.0-beta.1"></a>
+# [1.4.0-beta.1](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/compare/v1.3.2...v1.4.0-beta.1) (2019-05-07)
+
+
+### Bug Fixes
+
+* **Collaborators:** change tooltip for buttons ([5f3d2f2](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/5f3d2f2))
+* **ImageVisor:** modify modal for image with high definition ([21f4092](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/21f4092))
+* **Interfaces:** update models ([cef3470](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/cef3470))
+* include dependencies licenses ([3de9e1f](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/3de9e1f))
+* **ListTasks:** validate token for not schedule tasks ([28df810](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/28df810))
+* **reports:** reduce styles code ([05af2d0](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/05af2d0))
+* **SASISOPA:** solve error in annexe five ([9706de3](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/9706de3))
+* **Styles:** add class for image visor ([8ee7f9b](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/8ee7f9b))
+* **TaskCard:** change modifier for material class ([c68172b](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/c68172b))
+
+
+### Features
+
+* Adding Thread pool and marked as DEPRECATED ([dc4fb61](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/dc4fb61))
+
+
+
 <a name="1.4.0-beta.0"></a>
 # [1.4.0-beta.0](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/compare/v1.3.2-beta.2...v1.4.0-beta.0) (2019-05-06)
 
