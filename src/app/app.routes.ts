@@ -30,6 +30,7 @@ import {ResetPassRouterService} from '@app/components/screen/child/reset-pass/re
 import {AdminNotificationsComponent} from '@app/components/admin/components/admin-notifications/admin-notifications.component';
 import {ProfileService} from '@app/components/screen/components/profiles/profile/profile.service';
 import {StationProfileService} from '@app/components/screen/components/profiles/station-profile/station-profile.service';
+import {DocumentationService} from '@app/components/screen/components/documentation/documentation.service';
 const URL_BASE = environment.url;
 
 export const appRoutes: Routes = [
@@ -44,8 +45,9 @@ export const appRoutes: Routes = [
     },
     children: [
       {
-        path:'documents',
+        path:'documents/:id',
         component: DocumentationComponent,
+        resolve:{data: DocumentationService},
         data:{
           title: 'Documentación',
           url: URL_BASE + 'home/documents'

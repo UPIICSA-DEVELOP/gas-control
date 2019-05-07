@@ -28,6 +28,7 @@ import {AuthRouterService} from '@app/core/services/auth/auth-router.service';
 import {ResetPassRouterService} from '@app/components/screen/child/reset-pass/reset-pass-router.service';
 import {ProfileService} from '@app/components/screen/components/profiles/profile/profile.service';
 import {StationProfileService} from '@app/components/screen/components/profiles/station-profile/station-profile.service';
+import {DocumentationService} from '@app/components/screen/components/documentation/documentation.service';
 
 
 
@@ -57,7 +58,8 @@ import {StationProfileService} from '@app/components/screen/components/profiles/
     UserProfileService,
     SharedService,
     ProfileService,
-    StationProfileService
+    StationProfileService,
+    DocumentationService
   ]
 })
 export class ServicesModule {
