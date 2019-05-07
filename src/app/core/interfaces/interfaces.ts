@@ -33,28 +33,34 @@ export interface PersonInformation {
 }
 
 export interface GasStation {
-  id?: string;
-  businessName: string;
-  rfc: string;
-  crePermission?: string;
-  name: string;
-  email: string;
   address: string;
-  location: any;
-  phoneNumber: string;
-  workers: string;
+  businessName: string;
+  complete?: boolean;
+  crePermission?: string;
+  dispensers?: Dispensers[];
+  doneTasks?: number;
+  email: string;
+  endPaymentDate?: number;
+  folio?: number;
+  fuelTanks?: FuelTanks[];
+  id?: string;
   idConsultancy: string;
-  progress: number;
-  monitoringWells: number;
-  observationWells: number;
+  idLegalRepresentative: string;
+  legalRepresentativeName: string;
+  location: any;
+  monitoringWells?: number;
+  name: string;
+  observationWells?: number;
+  paymentDate?: number;
+  phoneNumber: string;
+  progress?: number;
+  rfc: string;
+  stationTaskId?: string;
+  totalTasks?: number;
   type: number;
-  idManager?: string;
-  idLegalRepresentative?: string;
-  managerName?: string;
-  legalRepresentativeName?: string;
-  workShifts?: WorkShifts;
-  fuelTanks?: FuelTanks;
-  dispensers?: Dispensers;
+  vapourRecoverySystem: boolean;
+  workShifts?: WorkShifts[];
+  workers?: number;
 }
 
 /**
@@ -349,4 +355,18 @@ export interface SgmSelection {
   magna: boolean;
   premium: boolean;
   software: string | number;
+}
+
+export interface TaskLists {
+  todayTasks?: any[];
+  previousTasks?: any[];
+  historyTasks?: any[];
+  scheduleTasks?: any[];
+}
+
+export interface Report {
+  taskElement: any;
+  typeReportView: number;
+  reportView: boolean;
+  status: number;
 }
