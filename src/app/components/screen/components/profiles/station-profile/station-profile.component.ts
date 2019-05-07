@@ -16,6 +16,7 @@ import {DialogService} from '@app/core/components/dialog/dialog.service';
 import {Constants} from '@app/core/constants.core';
 import {LocalStorageService} from '@app/core/services/local-storage/local-storage.service';
 import {Subscription} from 'rxjs/Rx';
+import {Dispensers, FuelTanks, GasStation, WorkShifts} from '@app/core/interfaces/interfaces';
 
 @Component({
   selector: 'app-station-profile',
@@ -46,18 +47,17 @@ import {Subscription} from 'rxjs/Rx';
   host: {'[@fadeInAnimation]': ''}
 })
 export class StationProfileComponent implements OnInit, OnDestroy {
-  public workShifts:any[];
-  public tanks:any[];
-  public dispensers:any[];
+  public workShifts:WorkShifts[];
+  public tanks:FuelTanks[];
+  public dispensers:Dispensers[];
   public stationForm: FormGroup;
-  public station: any;
-  public gasImage: string;
-  public change: boolean = false;
-  public latLng: any;
+  public station: GasStation;
   public load: boolean;
-  public gasName: string;
+  public utils: any;
   public user: any;
   public yearSelector: number[];
+  private _latLng: any;
+  private _change: boolean;
   private _subscriptionLoader: Subscription;
   constructor(
     private _router: Router,
@@ -81,7 +81,7 @@ export class StationProfileComponent implements OnInit, OnDestroy {
     this.initForm();
     this.getStation(this._activatedRouter.snapshot.data.data.station);
     this.getUtils(this._activatedRouter.snapshot.data.data.utils);
-    this._subscriptionLoader = this._apiLoader.getProgress().subscribe(load => {this.load = load; });
+    this._subscriptionLoader = this._apiLoader.getProgress().subscribe(load => {this.load = load;});
   }
 
   ngOnDestroy(): void{
@@ -89,13 +89,13 @@ export class StationProfileComponent implements OnInit, OnDestroy {
   }
 
   public detectChanges(): void{
-    this.stationForm.valueChanges.subscribe(value => {
-      this.change = true;
+    this.stationForm.valueChanges.subscribe(() => {
+      this._change = true;
     })
   }
 
   public closeProfile():void{
-    if (this.change){
+    if (this._change){
       this._dialogService.confirmDialog(
         '¿Desea salir sin guardar cambios?',
         '',
@@ -118,16 +118,16 @@ export class StationProfileComponent implements OnInit, OnDestroy {
       lat: 19.432675,
       lng: -99.133461
     };
-    if (this.latLng){
+    if (this._latLng){
       latLng = {
-        lat: this.latLng.latitude,
-        lng: this.latLng.longitude
+        lat: this._latLng.latitude,
+        lng: this._latLng.longitude
       }
     }
     this._locationService.open(latLng).afterClosed().subscribe(response=>{
       switch (response.code) {
         case 1:
-          this.latLng ={
+          this._latLng ={
             latitude: response.location.lat,
             longitude: response.location.lng
           };
@@ -144,8 +144,7 @@ export class StationProfileComponent implements OnInit, OnDestroy {
   public getUtils(response: any): void{
     switch (response.code) {
       case 200:
-        this.gasName = response.item.groupIcons[this.station.type-1].name;
-        this.gasImage = response.item.groupIcons[this.station.type-1].fileCS.thumbnail;
+        this.utils = response.item;
         break;
     }
   }
@@ -155,7 +154,7 @@ export class StationProfileComponent implements OnInit, OnDestroy {
       name:['',[Validators.required]],
       businessName:['',[Validators.required]],
       legalRepresentative:[{value:'', disabled: true},[]],
-      rfc: ['',[Validators.required]],
+      rfc: [{value: '', disabled: true},[Validators.required]],
       crePermission:['',[]],
       address:['',[Validators.required]],
       phoneNumber:['',[Validators.required, Validators.minLength(8), Validators.maxLength(13)]],
@@ -171,7 +170,36 @@ export class StationProfileComponent implements OnInit, OnDestroy {
   private getStation(response: any):void{
     switch (response.code) {
       case 200:
-        this.station = response.item;
+        this.station = {
+          address: response.item.address,
+          businessName: response.item.businessName,
+          complete: response.item.complete,
+          crePermission: response.item.crePermission,
+          dispensers: response.item.dispensers,
+          doneTasks: response.item.doneTasks,
+          email: response.item.email,
+          endPaymentDate: response.item.endPaymentDate,
+          folio: response.item.folio,
+          fuelTanks: response.item.fuelTanks,
+          id: response.item.id,
+          idConsultancy: response.item.idConsultancy,
+          idLegalRepresentative: response.item.idLegalRepresentative,
+          legalRepresentativeName: response.item.legalRepresentativeName,
+          location: response.item.location,
+          monitoringWells: response.item.monitoringWells,
+          name: response.item.name,
+          observationWells: response.item.observationWells,
+          paymentDate: response.item.paymentDate,
+          phoneNumber: response.item.phoneNumber,
+          progress: response.item.progress,
+          rfc: response.item.rfc,
+          stationTaskId: response.item.stationTaskId,
+          totalTasks: response.item.totalTasks,
+          type: response.item.type,
+          vapourRecoverySystem: response.item.vapourRecoverySystem,
+          workShifts: response.item.workShifts,
+          workers: response.item.workers
+        };
         if (this.station.dispensers) {
           this.dispensers = Object.assign([], this.station.dispensers);
         }else{
@@ -188,34 +216,40 @@ export class StationProfileComponent implements OnInit, OnDestroy {
           this.workShifts.push({start: undefined, end: undefined});
         }
         if (this.station.location) {
-          this.latLng = {
+          this._latLng = {
             latitude: this.station.location.latitude,
             longitude: this.station.location.longitude
           }
         }
-        this.stationForm.patchValue({
-          name:this.station.name,
-          businessName:this.station.businessName,
-          rfc: this.station.rfc,
-          crePermission:this.station.crePermission,
-          address:this.station.address,
-          phoneNumber:this.station.phoneNumber,
-          email:this.station.email,
-          /*managerName:this.station.managerName,*/
-          vrs: this.station.vapourRecoverySystem,
-          workers:this.station.workers,
-          monitoringWells:this.station.monitoringWells,
-          observationWells: this.station.observationWells,
-          legalRepresentative: this.station.legalRepresentativeName
-        });
-        if (this.user.role===6){
-          this.stationForm.disable();
-        }
-        this.detectChanges();
+        this.patchForm();
         break;
       default:
+        this._snackBarService.openSnackBar('No se ha podido acceder, intente más tarde','OK',3000);
+        this._router.navigate(['/home']).then();
         break;
     }
+  }
+
+  private patchForm():void{
+    this.stationForm.patchValue({
+      name:this.station.name,
+      businessName:this.station.businessName,
+      rfc: this.station.rfc,
+      crePermission:this.station.crePermission,
+      address:this.station.address,
+      phoneNumber:this.station.phoneNumber,
+      email:this.station.email,
+      /*managerName:this.station.managerName,*/
+      vrs: this.station.vapourRecoverySystem,
+      workers:this.station.workers,
+      monitoringWells:this.station.monitoringWells,
+      observationWells: this.station.observationWells,
+      legalRepresentative: this.station.legalRepresentativeName
+    });
+    if (this.user.role===6){
+      this.stationForm.disable();
+    }
+    this.detectChanges();
   }
 
   public saveStationInformation(data: any): void{
@@ -235,9 +269,9 @@ export class StationProfileComponent implements OnInit, OnDestroy {
     this.station.workers = data.workers;
     this.station.observationWells = data.observationWells;
     this.station.monitoringWells = data.monitoringWells;
-    if (this.latLng) {
-      this.station.location.latitude = (this.latLng.latitude?this.latLng.latitude:19.432675);
-      this.station.location.longitude = (this.latLng.longitude? this.latLng.longitude: -99.133461);
+    if (this._latLng) {
+      this.station.location.latitude = (this._latLng.latitude?this._latLng.latitude:19.432675);
+      this.station.location.longitude = (this._latLng.longitude? this._latLng.longitude: -99.133461);
     }
     this.station.workShifts = this.workShifts.filter(function (item) {return item !== undefined;});
     this.station.fuelTanks = this.tanks.filter(function (item) {return item !== undefined;});
@@ -245,7 +279,7 @@ export class StationProfileComponent implements OnInit, OnDestroy {
    this._api.updateStation(this.station).subscribe(response => {
       switch (response.code) {
         case 200:
-          this.change = false;
+          this._change = false;
           this._snackBarService.openSnackBar('Información actualizada','OK',3000);
           break;
         default:
@@ -256,7 +290,7 @@ export class StationProfileComponent implements OnInit, OnDestroy {
   }
 
   public addRemoveTurn(remove: boolean, type: number, index?: number): void{
-    this.change = true;
+    this._change = true;
     if(!remove){
       switch (type) {
         case 1:
@@ -309,13 +343,13 @@ export class StationProfileComponent implements OnInit, OnDestroy {
     return true;
   }
 
-  public onArrayChange(ev: any):void{
-    this.change = true;
+  public onArrayChange():void{
+    this._change = true;
   }
 
 
   public changeDate(ev: any, index: number, isStart: boolean):void{
-    this.change = true;
+    this._change = true;
     if(isStart){
       this.workShifts[index].start = ev;
     }else{
@@ -332,7 +366,7 @@ export class StationProfileComponent implements OnInit, OnDestroy {
 
   public goToDocumentation(): void{
     if(this.user.role !== 6){
-      this._router.navigate(['/home/documents'],{queryParams:{station: this.station.id}}).then();
+      this._router.navigate(['/home/documents', this.station.id]).then();
     }else{
       this._snackBarService.openSnackBar('Usted no tiene permiso para visualizar este módulo','OK',3000);
     }
