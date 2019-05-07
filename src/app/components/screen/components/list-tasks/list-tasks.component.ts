@@ -17,20 +17,8 @@ import {TaskFilterNameService} from '@app/components/screen/components/task-filt
 import {SharedNotification, SharedService, SharedTypeNotification} from '@app/core/services/shared/shared.service';
 import {Subscription} from 'rxjs';
 import {SnackBarService} from '@app/core/services/snackbar/snackbar.service';
+import {Report, TaskLists} from '@app/core/interfaces/interfaces';
 
-export interface TaskLists {
-  todayTasks?: any[];
-  previousTasks?: any[];
-  historyTasks?: any[];
-  scheduleTasks?: any[];
-}
-
-export interface Report {
-  taskElement: any;
-  typeReportView: number;
-  reportView: boolean;
-  status: number;
-}
 @Component({
   selector: 'app-list-tasks',
   templateUrl: './list-tasks.component.html',
@@ -99,8 +87,6 @@ export class ListTasksComponent implements OnInit, OnDestroy{
     this.listTask = {historyTasks: [], previousTasks: [], todayTasks: [], scheduleTasks: []};
     this.reportConfig = {reportView: false, taskElement: null, typeReportView: 0, status: 0};
     this.emptyLisTasks = true;
-    this._token = undefined;
-    this._tokenTwo = undefined;
     this.others = false;
     this.date = [];
     this.today = false;
@@ -149,11 +135,11 @@ export class ListTasksComponent implements OnInit, OnDestroy{
           this._firstGet = true;
           if(this.others){
             this.notCalendarTasks = [];
-            this._tokenTwo = undefined;
+            this._tokenTwo = null;
             this.getNotCalendarTask();
           }else{
             this.listTask = {todayTasks: [], previousTasks: [], historyTasks: [], scheduleTasks: []};
-            this._token = undefined;
+            this._token = null;
             this.getStationTask();
           }
           break;
@@ -233,23 +219,23 @@ export class ListTasksComponent implements OnInit, OnDestroy{
     tasksList.forEach( task => {
       if(task.status === 1){
         if(today.timeStamp < task.originalDate){
-          if(this.listTask.scheduleTasks.length === 0 && this.filter === 0){
+          if(this.listTask.scheduleTasks.length === 0){
             this.listTask.scheduleTasks.push({type: 1, title: 'Programadas', original: null, id: ''});
           }
           this.listTask.scheduleTasks.push({type: 2, title: '', original: task, id: task.id});
         }else{
-          if(this.listTask.todayTasks.length === 0 && this.filter === 0){
+          if(this.listTask.todayTasks.length === 0){
             this.listTask.todayTasks.push({type: 1, title: 'Hoy', original: null, id: ''});
           }
           this.listTask.todayTasks.push({type: 2, title: '', original: task, id: task.id});
         }
       }else if(task.status === 2){
-        if(this.listTask.previousTasks.length === 0 && this.filter === 0){
+        if(this.listTask.previousTasks.length === 0){
           this.listTask.previousTasks.push({type: 1, title: 'Atrasadas', original: null, id: ''});
         }
         this.listTask.previousTasks.push({type: 2, title: '', original: task, id: task.id});
       }else if(task.status === 3 || task.status === 4){
-        if(this.listTask.historyTasks.length === 0  && this.filter === 0){
+        if(this.listTask.historyTasks.length === 0 ){
           this.listTask.historyTasks.push({type: 1, title: 'Historial', original: null, id: ''});
         }
         this.listTask.historyTasks.push({type: 2, title: '', original: task, id: task.id});
@@ -365,6 +351,7 @@ export class ListTasksComponent implements OnInit, OnDestroy{
     this.goBackList();
     let type = '1';
     if(ev){
+      this._tokenTwo = null;
       this.notCalendarTasks = [];
       this._lastTabSelected = ev.index;
       switch (ev.index){
@@ -418,6 +405,7 @@ export class ListTasksComponent implements OnInit, OnDestroy{
 
   private compareNotCalendarTasks(tasks: any):void{
     tasks.forEach(task => {this.notCalendarTasks.push({id: task.id, date: UtilitiesService.convertDate(task.date),});});
+    this._firstGet = false;
   }
 
   public goTaskInfo(task: any, type?:number): void{
@@ -440,6 +428,7 @@ export class ListTasksComponent implements OnInit, OnDestroy{
   }
 
   public goBackList(): void{
+    this._firstGet = true;
     this.reportConfig = {reportView: false, taskElement: null, typeReportView: 0, status: 0};
   }
 
