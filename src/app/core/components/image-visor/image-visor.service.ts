@@ -16,6 +16,6 @@ export class ImageVisorService {
   ) { }
 
   public open(imagesArray: any[]):MatDialogRef<ImageVisorComponent>{
-    return this._dialogRef.open(ImageVisorComponent,{disableClose: true, panelClass:'modal-panel', data: imagesArray || null});
+    return this._dialogRef.open(ImageVisorComponent,{disableClose: true, panelClass:'modal-image-visor', data: imagesArray || null});
   }
 }
