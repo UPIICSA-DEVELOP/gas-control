@@ -139,6 +139,22 @@ body{
   }
 }
 
+.modal-image-visor{
+  mat-dialog-container{
+    width: 40vw;
+    padding: 0;
+    overflow: hidden;
+    height: 85vh;
+    position: relative;
+    @media screen and (max-width: 1200px){
+      width: 50vw;
+    }
+    @media screen and (max-width: 800px){
+      width: 80vw;
+    }
+  }
+}
+
 .modal-panel{
   mat-dialog-container{
     width: 35vw;
