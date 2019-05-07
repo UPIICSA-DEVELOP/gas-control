@@ -9,16 +9,8 @@
   "basePath": "/endpoints/v1",
   "tags": [
     {
-      "name": "Business Card",
-      "description": "Business Card Service"
-    },
-    {
-      "name": "SASISOPA",
-      "description": "SASISOPA Service generate attached files"
-    },
-    {
-      "name": "Utils",
-      "description": "Global services"
+      "name": "DEPRECATED",
+      "description": "This API has been deprecated, available until July 2019, Moved to https://api-inspector.maplander.com/"
     }
   ],
   "schemes": [
@@ -28,7 +20,7 @@
     "/bc": {
       "get": {
         "tags": [
-          "Business Card"
+          "DEPRECATED"
         ],
         "summary": "Create a Business Card",
         "deprecated": true,
@@ -152,7 +144,7 @@
     "/pdf": {
       "get": {
         "tags": [
-          "SASISOPA"
+          "DEPRECATED"
         ],
         "deprecated": true,
         "summary": "Create a attached file with custom information",
@@ -209,7 +201,7 @@
     "/joinPDF": {
       "get": {
         "tags": [
-          "SASISOPA"
+          "DEPRECATED"
         ],
         "deprecated": true,
         "summary": "Create a PDF file joining multiples files",
@@ -264,7 +256,7 @@
     "/download": {
       "get": {
         "tags": [
-          "Utils"
+          "DEPRECATED"
         ],
         "deprecated": true,
         "summary": "Download file as Buffer",
