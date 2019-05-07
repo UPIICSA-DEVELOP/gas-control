@@ -14,7 +14,7 @@
       </div>
     </div>
     <div class="flex-box">
-      <div class="columns">
+      <div class="column">
         <mat-form-field class="inputs">
           <mat-select formControlName="waste" placeholder="Residuo recolectado" required>
             <mat-option value="Envases contaminados con aceites">Envases contaminados con aceites</mat-option>
@@ -26,14 +26,14 @@
             Este campo es obligatorio
           </mat-error>
         </mat-form-field>
-        <div style="display: flex; justify-content: space-between; width: 90%">
-          <mat-form-field style="width: 65%">
+        <div class="waste">
+          <mat-form-field class="quantity">
             <input formControlName="quantity" matInput placeholder="Cantidad recolectada" required>
             <mat-error *ngIf="hwcForm.controls['quantity'].hasError('required')">
               Este campo es obligatorio
             </mat-error>
           </mat-form-field>
-          <mat-form-field style="width: 30%;">
+          <mat-form-field class="unity">
             <mat-select formControlName="unity" placeholder="Unidad" required>
               <mat-option value="Pzas">Pzas</mat-option>
               <mat-option value="Kg">Kg</mat-option>
@@ -58,22 +58,22 @@
           </mat-error>
         </mat-form-field>
       </div>
-      <div class="columns" style="display: flex; flex-direction: column; justify-content: center">
-        <div style="display: flex; width: 90%; justify-content: center">
+      <div class="column-two">
+        <div class="manifest">
           <div *ngIf="editable; then loadManifest else seeManifest"></div>
           <ng-template #seeManifest>
-            <div style="background-color: #707070; color: #FFFFFF; border-radius: 4px; cursor: pointer; padding: 2px 4px;">
-              <div *ngIf="hwcReport && hwcReport.fileCS" style="text-decoration: none; color: #FFFFFF;" (click)="seeReport()">MANIFIESTO</div>
+            <div class="button">
+              <div *ngIf="hwcReport && hwcReport.fileCS" (click)="seeReport()">MANIFIESTO</div>
               <span *ngIf="!hwcReport || !hwcReport.fileCS">MANIFIESTO</span>
             </div>
           </ng-template>
           <ng-template #loadManifest>
             <app-upload-file class="inputs" [layoutTemplate]="button" (onLoad)="loadFile($event)" [type]="'file'">
               <ng-template #button>
-                <div style="background-color: #707070; color: #FFFFFF; border-radius: 4px; cursor: pointer; padding: 2px 4px; display: flex; align-items: center">
+                <div class="button edit">
                   <mat-icon *ngIf="file">autorenew</mat-icon>
                   <mat-icon *ngIf="!file" svgIcon="icons:upload"></mat-icon>
-                  <span style="margin-left: 4px;">MANIFIESTO</span>
+                  <span class="text-upload">MANIFIESTO</span>
                 </div>
               </ng-template>
             </app-upload-file>
@@ -82,7 +82,7 @@
         <mat-error *ngIf="error && editable" class="error-text">
           Es necesario escanear el manifiesto
         </mat-error>
-        <div style="width: 100%;">
+        <div class="signature-box">
           <div class="text-sign">
             Nombre y firma del responsable
           </div>

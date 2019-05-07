@@ -5,8 +5,8 @@
   -->
 
 <div id="fe-report">
-  <div style="display: flex; justify-content: center; margin: 8px 0; text-align: center;">
-    <div *ngIf="task" style="font-weight: 600; font-size: 18px;">{{task.original.name}}</div>
+  <div class="head">
+    <div *ngIf="task" class="task-name">{{task.original.name}}</div>
   </div>
   <div class="task-header">
     <div class="head-bold">Revisión de extintores</div>
@@ -33,10 +33,10 @@
           </mat-form-field>
         </div>
         <div class="inputs" *ngFor="let item of extinguisher; let  i = index">
-          <div class="color" style="display: flex; justify-content: space-between; align-items: center; margin: 4px 0;">
+          <div class="list-element">
             <div>Extintor {{i+1}}</div>
-            <button type="button" mat-icon-button (click)="addRemoveExtinguisher(true)" *ngIf="editable && i === 0 "><mat-icon style="color: #257602">add</mat-icon></button>
-            <button type="button" mat-icon-button (click)="addRemoveExtinguisher(false, i)" *ngIf="editable && i !== 0"><mat-icon style="color: #E00000">remove</mat-icon></button>
+            <button type="button" mat-icon-button (click)="addRemoveExtinguisher(true)" *ngIf="editable && i === 0 "><mat-icon class="add">add</mat-icon></button>
+            <button type="button" mat-icon-button (click)="addRemoveExtinguisher(false, i)" *ngIf="editable && i !== 0"><mat-icon class="delete">remove</mat-icon></button>
           </div>
           <mat-error *ngIf="extinguisherErrors[i] && editable" class="error-text">
             Complete los campos del extintor
@@ -137,7 +137,7 @@
             </div>
           </ng-template>
           <ng-template #loadSign>
-            <div class="signature-element" (click)="loadSignature()" style="cursor: pointer" matTooltip="Cargar Firma">
+            <div class="signature-element" (click)="loadSignature()" matTooltip="Cargar Firma">
               <img *ngIf="signatureThumbnail" [src]="signatureThumbnail">
               <div class="empty-signature" *ngIf="!signatureThumbnail" ></div>
             </div>

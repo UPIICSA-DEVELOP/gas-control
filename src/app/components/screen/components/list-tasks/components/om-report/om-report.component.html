@@ -88,7 +88,7 @@
           Debe agregar al menos un nombre
         </mat-error>
         <div class="inputs" *ngIf="omReport && omReport.personnelNames && !editable">
-          <div style="padding: 3px 0" *ngFor="let item of omReport.personnelNames; let i = index">
+          <div class="procedures-list" *ngFor="let item of omReport.personnelNames; let i = index">
             <div class="procedure">{{i+1}}.- {{item}}</div>
           </div>
         </div>
@@ -152,7 +152,7 @@
           </button>
         </div>
         <div class="inputs" *ngIf="omReport && omReport.procedures && !editable">
-          <div style="padding: 3px 0" *ngFor="let procedure of omReport.procedures; let i = index;">
+          <div class="procedures-list" *ngFor="let procedure of omReport.procedures; let i = index;">
             <div class="procedure" *ngIf="procedure === 1">{{i+1}}.-{{utils.procedures[procedure-1].name}}</div>
             <div class="procedure" *ngIf="procedure === 2">{{i+1}}.-{{utils.procedures[procedure-1].name}}</div>
             <div class="procedure" *ngIf="procedure === 3">{{i+1}}.-{{utils.procedures[procedure-1].name}}</div>
@@ -294,18 +294,18 @@
     <div *ngIf="task.original.hwg" class="text-sign">
       Nombre y firma del responsable
     </div>
-    <div *ngIf="task.original.hwg" style="width: 50%; margin: 24px auto">
+    <div *ngIf="task.original.hwg" class="hwg-sign">
       <div *ngIf="!editable; then showSign else loadSign"></div>
       <ng-template #showSign>
         <div class="signature-element">
           <img *ngIf="omReport && omReport.signature" [src]="omReport.signature.thumbnail">
-          <div *ngIf="!omReport || !omReport.signature" style="width: 60%; height: 60px"></div>
+          <div *ngIf="!omReport || !omReport.signature" class="empty-signature"></div>
         </div>
       </ng-template>
       <ng-template #loadSign>
         <div class="signature-element" (click)="loadSignature()" style="cursor: pointer" matTooltip="Cargar Firma">
           <img *ngIf="signatureThumbnail" [src]="signatureThumbnail">
-          <div *ngIf="!signatureThumbnail" style="width: 60%; height: 60px"></div>
+          <div *ngIf="!signatureThumbnail" class="empty-signature"></div>
         </div>
       </ng-template>
       <div class="divider"></div>

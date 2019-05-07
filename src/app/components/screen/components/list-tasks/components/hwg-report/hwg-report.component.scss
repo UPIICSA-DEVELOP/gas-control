@@ -14,37 +14,6 @@
   .inputs{
     width: 90%;
   }
-  .divider{
-    width: 100%;
-    height: 1px;
-    background-color: #707070;
-  }
-  .default-image{
-    font-size: 56px;
-    height: 56px;
-    width: 56px;
-    color: #707070;
-  }
-  .image-header{
-    color: #707070;
-    font-size: 11px;
-    margin: 12px 0;
-    width: 90%;
-  }
-  .image-container{
-    display: flex;
-    justify-content:center;
-    align-items:center;
-    width: 100%;
-    height: 200px;
-    border: 1px solid #707070;
-  }
-  .text{
-    width: 90%;
-    font-size: 14px;
-    color: #707070;
-    text-align: justify;
-  }
   .columns{
     position: relative;
     display: flex;
@@ -52,14 +21,6 @@
     align-items: center;
     width: 50%;
     margin: 12px;
-  }
-  .times{
-    display: flex;
-    justify-content: space-between;
-    width: 90%;
-    .clock{
-      width: 45%;
-    }
   }
   .task-header{
     display: flex;
@@ -77,123 +38,43 @@
     display: flex;
     justify-content: space-between;
   }
-  .some-select{
-    display: flex;
-    justify-content: start;
-    width: 90%;
-    .select{
-      width: 45%;
-    }
-  }
-  .performance{
-    display: flex;
-    flex-direction: column;
-    margin: 12px;
-    width: 100%;
-    color: #707070;
-    font-size: 14px;
-  }
-  .checkbox-list{
-    width: 45%;
-    display: flex;
-    flex-direction: column;
-    margin: 0 8px;
-  }
   .text-divider{
     margin: 8px 0;
     color: #707070;
     width: 90%;
   }
-
   .space-box{
     display: flex;
     justify-content: space-between;
     margin: 16px 0;
     align-items: center;
   }
-  .color{
-    color: #707070;
-  }
-  .right-head{
-    display: flex;
-    justify-content: flex-end;
-  }
-  .finish{
-    display: flex;
-    justify-content: center;
-    margin: 12px 0;
-  }
   .checks-row{
     width: 45%;
     margin: 0 8px;
   }
-  .empty-list{
-    width: 100%;
-    height: 100%;
+  #hidden-button{
+    display: none;
+  }
+  .waste{
     display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    .message{
-      margin: 12px 0;
-      font-size: 20px;
-      text-align: center;
-      width: 75%;
+    justify-content: space-between;
+    width: 90%;
+    .quantity{
+      width: 65%;
     }
-    .action{
-      display: flex;
-      justify-content: center;
-      button{
-        background-color: #FFAA00;
-        color: #FFFFFF;
-        margin-top: 24px;
-      }
+    .unity{
+      width: 30%;
     }
   }
-  .card-list{
-    width: 95%;
-  }
-  .text-sign{
-    color: #707070;
-    margin: 24px 0 8px 0;
-    text-align: center;
-  }
-  .signature-element{
-    display: flex;
-    justify-content: center;
-    img{
-      width: 60%;
-      height: 60px;
-    }
-  }
-  .name{
-    display: flex;
-    justify-content: center;
-  }
-
-  /deep/.mat-checkbox-layout{
+  ::ng-deep.mat-checkbox-layout{
     white-space: normal;
     display: block;
   }
-
-  /deep/.mat-select-panel mat-option.mat-option {
+  ::ng-deep.mat-select-panel mat-option.mat-option {
     height: unset;
   }
-
-  /deep/.mat-option-text.mat-option-text {
+  ::ng-deep.mat-option-text.mat-option-text {
     white-space: normal;
-  }
-
-  .containerTask{
-    width: 100%;
-  }
-
-  .procedure{
-    font-size: 12px; color: #707070;
-  }
-
-  .evidence{
-    height: inherit;
-    padding: 8px;
   }
 }

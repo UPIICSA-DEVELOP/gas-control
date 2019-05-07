@@ -5,8 +5,8 @@
   -->
 
 <div id="scanned-report">
-  <div style="display: flex; justify-content: center; margin: 8px 0; text-align: center;">
-    <div *ngIf="task" style="font-weight: 600; font-size: 18px;">{{task.original.name}}</div>
+  <div class="head">
+    <div *ngIf="task" class="task-name">{{task.original.name}}</div>
   </div>
   <div class="task-header">
     <div class="head-bold">Limpieza ecológica</div>
@@ -15,33 +15,33 @@
       <div *ngIf="scannedReport && scannedReport.folio">Folio: {{scannedReport.folio | formatFolio}}</div>
     </div>
   </div>
-  <div style="display: flex; align-items: center; flex-direction: column">
+  <div class="file">
     <div *ngIf="editable; then changeManifest else seeManifest"></div>
     <ng-template #seeManifest>
-      <mat-card *ngIf="scannedReport && scannedReport.fileCS" style="width: 95%; margin: 12px 0;">
-        <div style="text-decoration: none; color: #707070;" (click)="seeReport()">
-          <mat-card-content style="display: flex; align-items: center; font-weight: 600; color: #707070; padding: 0; margin: 0;">
-            <mat-icon style="margin: 0 12px">insert_drive_file</mat-icon>
+      <mat-card *ngIf="scannedReport && scannedReport.fileCS">
+        <div (click)="seeReport()">
+          <mat-card-content>
+            <mat-icon class="submit-icon">insert_drive_file</mat-icon>
             <div>Manifiesto</div>
           </mat-card-content>
         </div>
       </mat-card>
-      <mat-card *ngIf="!scannedReport || !scannedReport.fileCS;" style="width: 95%; margin: 12px 0;">
-        <mat-card-content style="display: flex; align-items: center; font-weight: 600; color: #707070; padding: 0; margin: 0;">
-          <mat-icon style="margin: 0 12px">insert_drive_file</mat-icon>
+      <mat-card *ngIf="!scannedReport || !scannedReport.fileCS;">
+        <mat-card-content>
+          <mat-icon class="submit-icon">insert_drive_file</mat-icon>
           <div>Manifiesto</div>
         </mat-card-content>
       </mat-card>
     </ng-template>
     <ng-template #changeManifest>
-      <app-upload-file style="width: 100%" [layoutTemplate]="card" (onLoad)="loadFile($event)" [type]="'file'">
+      <app-upload-file class="hwg" [layoutTemplate]="card" (onLoad)="loadFile($event)" [type]="'file'">
         <ng-template #card>
-          <mat-card style="width: 95%; margin: 12px 0;">
-            <mat-card-content style="display: flex; align-items: center; font-weight: 600; color: #707070; padding: 0; margin: 0; position: relative;">
-              <mat-icon style="margin: 0 12px">insert_drive_file</mat-icon>
+          <mat-card>
+            <mat-card-content>
+              <mat-icon class="submit-icon">insert_drive_file</mat-icon>
               <div>Manifiesto</div>
-              <mat-icon style="position: absolute; right: 8px;" *ngIf="file">autorenew</mat-icon>
-              <mat-icon style="position: absolute; right: 8px;" *ngIf="!file" svgIcon="icons:upload"></mat-icon>
+              <mat-icon class="manifest-icon" *ngIf="file">autorenew</mat-icon>
+              <mat-icon class="manifest-icon" *ngIf="!file" svgIcon="icons:upload"></mat-icon>
             </mat-card-content>
           </mat-card>
         </ng-template>
@@ -51,7 +51,7 @@
       </mat-error>
     </ng-template>
     <div class="divider" *ngIf="task.original.hwg"></div>
-    <div *ngIf="task.original.hwg" style="width: 100%">
+    <div *ngIf="task.original.hwg" class="hwg">
       <div *ngIf="task.original.hwg && scannedReport">
         <app-hwg-report [taskHwgInfo]="hwgData || undefined" (formInformation)="getHWGReportInformation($event)" [validate]="startValidate"></app-hwg-report>
       </div>
@@ -62,18 +62,18 @@
     <div class="text-sign">
       Nombre y firma del responsable
     </div>
-    <div style="width: 50%; margin: 24px auto">
+    <div class="signature-container">
       <div *ngIf="!editable; then showSign else loadSign"></div>
       <ng-template #showSign>
         <div class="signature-element">
           <img *ngIf="scannedReport && scannedReport.signature" [src]="scannedReport.signature.thumbnail">
-          <div *ngIf="!scannedReport || !scannedReport.signature" style="width: 60%; height: 60px"></div>
+          <div *ngIf="!scannedReport || !scannedReport.signature" class="empty-signature"></div>
         </div>
       </ng-template>
       <ng-template #loadSign>
         <div class="signature-element" (click)="loadSignature()" style="cursor: pointer" matTooltip="Cargar Firma">
           <img *ngIf="signatureThumbnail" [src]="signatureThumbnail">
-          <div *ngIf="!signatureThumbnail" style="width: 60%; height: 60px"></div>
+          <div *ngIf="!signatureThumbnail" class="empty-signature"></div>
         </div>
       </ng-template>
       <div class="divider"></div>
