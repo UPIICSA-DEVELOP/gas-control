@@ -21,6 +21,20 @@ All notable changes to this project will be documented in this file. See [standa
 
 
 
+<a name="1.4.0-beta.2"></a>
+# [1.4.0-beta.2](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/compare/v1.4.0-beta.1...v1.4.0-beta.2) (2019-05-07)
+
+
+### Bug Fixes
+
+* **ConsultancyProfile:** remove unused variable ([90a0f86](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/90a0f86))
+* **Documentation:** change path for see documents ([1f3ae99](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/1f3ae99))
+* **SASISOPA:** solve error in annexe five with date ([35d25f0](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/35d25f0))
+* **SGM:** add alert with not save changes ([739c0ee](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/739c0ee))
+* **StationProfile:** block rfc field ([10473ff](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/10473ff))
+
+
+
 <a name="1.4.0-beta.1"></a>
 # [1.4.0-beta.1](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/compare/v1.3.2...v1.4.0-beta.1) (2019-05-07)
 

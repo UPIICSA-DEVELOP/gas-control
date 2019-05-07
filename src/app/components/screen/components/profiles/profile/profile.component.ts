@@ -55,7 +55,6 @@ import {AuthService} from '@app/core/services/auth/auth.service';
 export class ProfileComponent implements OnInit, OnDestroy {
   @ViewChild('phoneNumber') private _phoneNumberInput: ElementRef;
   private _formData: FormData;
-  private _formDeleteData: FormData;
   private _formSignature: FormData;
   public disabledInputs: boolean;
   public user: Person;
@@ -143,8 +142,6 @@ export class ProfileComponent implements OnInit, OnDestroy {
     this.deleteImage = true;
     this.newImage = false;
     this.profileImage=undefined;
-    this._formDeleteData = new FormData();
-    this._formDeleteData.append('blobName', this.blobName);
   }
 
   public changePassword(){
@@ -324,7 +321,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
         this.userRole = this.role[this.user.role-1];
         break;
       default:
-        this._snackBarService.openSnackBar('No se ha podido acceder intente más tarde','OK',3000);
+        this._snackBarService.openSnackBar('No se ha podido acceder, intente más tarde','OK',3000);
         this._router.navigate(['/home']).then();
         break;
     }
@@ -354,7 +351,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
         this.patchForm();
         break;
       default:
-        this._snackBarService.openSnackBar('No se ha podido acceder intente más tarde','OK',3000);
+        this._snackBarService.openSnackBar('No se ha podido acceder, intente más tarde','OK',3000);
         this._router.navigate(['/home']).then();
         break;
     }

@@ -20,7 +20,7 @@
       <div class="column-one">
         <div class="buttons-sgm">
           <button class="action" mat-flat-button (click)="generateSgm()" [color]="'primary'">GENERAR</button>
-          <button class="action" mat-flat-button [color]="'primary'" [disabled]="!isAvailable" (click)="seeSGM()">VER</button>
+          <button *ngIf="generate" class="action" mat-flat-button [color]="'primary'" [disabled]="!isAvailable" (click)="seeSGM()">VER</button>
           <button *ngIf="isDevelop && generate" class="action" mat-flat-button [color]="'primary'" (click)="seeSGM()">VER TMP</button>
         </div>
         <div class="date-available" *ngIf="generate && !isAvailable && dateGeneration.length !== 0">Documento disponible hasta el {{dateGeneration[0]}} {{dateGeneration[1]}} {{dateGeneration[2]}}</div>
@@ -118,7 +118,7 @@
             </div>
             <div class="fuel-type-text">Consulte la hoja de seguridad correspondiente a su tipo de combustible</div>
             <div class="fuel-type">
-              <mat-checkbox [(ngModel)]="magna"></mat-checkbox>
+              <mat-checkbox [(ngModel)]="magna" (change)="detectChanges()"></mat-checkbox>
               <mat-card (click)="seeFile(templates[0].fileCS.thumbnail)" class="fuel">
                 <mat-card-content>
                   <mat-icon class="gray">local_gas_station</mat-icon>
@@ -127,7 +127,7 @@
               </mat-card>
             </div>
             <div class="fuel-type">
-              <mat-checkbox [(ngModel)]="premium"></mat-checkbox>
+              <mat-checkbox [(ngModel)]="premium" (change)="detectChanges()"></mat-checkbox>
               <mat-card (click)="seeFile(templates[1].fileCS.thumbnail)" class="fuel">
                 <mat-card-content>
                   <mat-icon class="gray">local_gas_station</mat-icon>
@@ -136,7 +136,7 @@
               </mat-card>
             </div>
             <div class="fuel-type">
-              <mat-checkbox [(ngModel)]="diesel"></mat-checkbox>
+              <mat-checkbox [(ngModel)]="diesel" (change)="detectChanges()"></mat-checkbox>
               <mat-card (click)="seeFile(templates[2].fileCS.thumbnail)" class="fuel">
                 <mat-card-content>
                   <mat-icon class="gray">local_gas_station</mat-icon>
@@ -155,7 +155,7 @@
             <div class="fuel-type-text">
               Defina el software y el equipo de telemedición que utiliza
             </div>
-            <mat-radio-group [(ngModel)]="software">
+            <mat-radio-group [(ngModel)]="software" (change)="detectChanges()">
               <div class="item" *ngFor="let item of sgmDocument; let i = index">
                 <mat-radio-button [value]="i+1"></mat-radio-button>
                 <mat-card (click)="seeFile(item.fileCS.thumbnail)">

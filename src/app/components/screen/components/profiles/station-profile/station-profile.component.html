@@ -136,15 +136,15 @@
                   <div class="fuel">
                     <div class="fuel-selector">
                       <mat-form-field class="width-form">
-                        <input matInput placeholder="Capacidad (lts)" type="number" aria-label="Station tank fuel capacity" (change)="onArrayChange($event)" [(ngModel)]="tank.capacity" [ngModelOptions]="{standalone: true}" [disabled]="user.role===6">
+                        <input matInput placeholder="Capacidad (lts)" type="number" aria-label="Station tank fuel capacity" (change)="onArrayChange()" [(ngModel)]="tank.capacity" [ngModelOptions]="{standalone: true}" [disabled]="user.role===6">
                       </mat-form-field>
                       <mat-form-field class="width-form">
-                        <mat-select placeholder="Año de instalación" (selectionChange)="onArrayChange($event)" [(ngModel)]="tank.year" [ngModelOptions]="{standalone: true}" [disabled]="user.role===6">
+                        <mat-select placeholder="Año de instalación" (selectionChange)="onArrayChange()" [(ngModel)]="tank.year" [ngModelOptions]="{standalone: true}" [disabled]="user.role===6">
                           <mat-option *ngFor="let year of yearSelector" [value]="year">{{year}}</mat-option>
                         </mat-select>
                       </mat-form-field>
                     </div>
-                    <mat-radio-group class="fuel-selector" aria-label="Station tank fuel type" (change)="onArrayChange($event)" [(ngModel)]="tank.fuelType" [ngModelOptions]="{standalone: true}" [disabled]=" user.role===6">
+                    <mat-radio-group class="fuel-selector" aria-label="Station tank fuel type" (change)="onArrayChange()" [(ngModel)]="tank.fuelType" [ngModelOptions]="{standalone: true}" [disabled]=" user.role===6">
                       <mat-radio-button [value]="1" >Magna</mat-radio-button>
                       <mat-radio-button [value]="2">Premium</mat-radio-button>
                       <mat-radio-button [value]="3">Diesel</mat-radio-button>
@@ -175,16 +175,16 @@
                   <div class="head">Dispensario {{i+1}}</div>
                   <div class="hoses">
                     <mat-form-field class="input-turns">
-                      <input matInput placeholder="No. de mangueras" type="number" aria-label="Station hoses number" (change)="onArrayChange($event)" [(ngModel)]="dispenser.hoses" [ngModelOptions]="{standalone: true}" [disabled]=" user.role===6">
+                      <input matInput placeholder="No. de mangueras" type="number" aria-label="Station hoses number" (change)="onArrayChange()" [(ngModel)]="dispenser.hoses" [ngModelOptions]="{standalone: true}" [disabled]=" user.role===6">
                     </mat-form-field>
                     <mat-form-field class="input-turns">
-                      <input matInput placeholder="No. de serie" type="text" aria-label="Station hoses cre id" (change)="onArrayChange($event)" [(ngModel)]="dispenser.identifier" [ngModelOptions]="{standalone: true}" [disabled]=" user.role===6">
+                      <input matInput placeholder="No. de serie" type="text" aria-label="Station hoses cre id" (change)="onArrayChange()" [(ngModel)]="dispenser.identifier" [ngModelOptions]="{standalone: true}" [disabled]=" user.role===6">
                     </mat-form-field>
                   </div>
                   <section class="hoses" aria-label="Station hoses fuel type">
-                    <mat-checkbox (change)="onArrayChange($event)" [(ngModel)]="dispenser.magna" [ngModelOptions]="{standalone: true}" [disabled]=" user.role===6">Magna</mat-checkbox>
-                    <mat-checkbox (change)="onArrayChange($event)" [(ngModel)]="dispenser.premium" [ngModelOptions]="{standalone: true}" [disabled]=" user.role===6">Premium</mat-checkbox>
-                    <mat-checkbox (change)="onArrayChange($event)" [(ngModel)]="dispenser.diesel" [ngModelOptions]="{standalone: true}" [disabled]=" user.role===6">Diesel</mat-checkbox>
+                    <mat-checkbox (change)="onArrayChange()" [(ngModel)]="dispenser.magna" [ngModelOptions]="{standalone: true}" [disabled]=" user.role===6">Magna</mat-checkbox>
+                    <mat-checkbox (change)="onArrayChange()" [(ngModel)]="dispenser.premium" [ngModelOptions]="{standalone: true}" [disabled]=" user.role===6">Premium</mat-checkbox>
+                    <mat-checkbox (change)="onArrayChange()" [(ngModel)]="dispenser.diesel" [ngModelOptions]="{standalone: true}" [disabled]=" user.role===6">Diesel</mat-checkbox>
                   </section>
                 </div>
                 <div class="button">
@@ -202,7 +202,7 @@
           </div>
         </mat-card>
       </div>
-      <div class="dispensers-information">
+      <div class="basic-data">
         <div class="documentation">
           <button mat-button [color]="'primary'" type="button" (click)="goToDocumentation()">
             Documentación <mat-icon>keyboard_backspace</mat-icon>
@@ -210,11 +210,11 @@
         </div>
         <div class="info-gas-station">
           <div class="image">
-            <img *ngIf="gasImage" [src]="gasImage">
-            <mat-icon *ngIf="!gasImage">local_gas_station</mat-icon>
+            <img *ngIf="utils && station" [src]="utils.groupIcons[this.station.type-1].fileCS.thumbnail">
+            <mat-icon *ngIf="!utils || !station">local_gas_station</mat-icon>
           </div>
           <div class="info">
-            <h2>{{gasName}}</h2>
+            <h2 *ngIf="utils && station">{{utils.groupIcons[this.station.type-1].name}}</h2>
             <p class="company">{{station.businessName}}</p>
             <p class="store">{{station.name}}</p>
           </div>
@@ -226,7 +226,7 @@
     <mat-spinner></mat-spinner>
   </ng-template>
   <div class="btn-close">
-    <button mat-icon-button matTooltip="Cerrar" [disabled]="load" aria-label="Close-button" (click)="closeProfile()">
+    <button mat-icon-button matTooltip="Cerrar" aria-label="Close-button" (click)="closeProfile()">
       <mat-icon>close</mat-icon>
     </button>
   </div>

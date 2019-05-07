@@ -71,10 +71,9 @@ export class DocumentationComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    if (this._activateRoute.snapshot.queryParams.station) {
-      this.stationId = this._activateRoute.snapshot.queryParams.station;
-      this.getDocuments();
-    }
+    this.stationId = this._activateRoute.params["_value"].id;
+    this.listAseaDocs(this._activateRoute.snapshot.data.data.asea);
+    this.listCreDocs(this._activateRoute.snapshot.data.data.cre);
     this._subscriptionLoader = this._apiLoader.getProgress().subscribe(load => {this.load = load; });
   }
 
@@ -82,37 +81,40 @@ export class DocumentationComponent implements OnInit, OnDestroy {
     this._subscriptionLoader.unsubscribe();
   }
 
-  private getDocuments():void{
-    this._api.listDocumentByStation(this.stationId, '2').subscribe(response=>{
-      switch (response.code){
-        case 200:
-          if (response.items){
-            for(let i=0; i<response.items.length;i++){
-              this.docsCre[response.items[i].type-17]=response.items[0];
-            }
-          } else {
-            this.docsCre = [];
+  private listAseaDocs(response: any):void{
+    switch (response.code){
+      case 200:
+        if (response.items){
+          for(let i=0; i<response.items.length;i++){
+            this.docsAsea[response.items[i].type!==19?response.items[i].type-1:response.items[i].type-3]=response.items[0];
           }
-          break;
-        default:
-          break;
-      }
-    });
-    this._api.listDocumentByStation(this.stationId, '1').subscribe(response=>{
-      switch (response.code){
-        case 200:
-          if (response.items){
-            for(let i=0; i<response.items.length;i++){
-              this.docsAsea[response.items[i].type!==19?response.items[i].type-1:response.items[i].type-3]=response.items[0];
-            }
-          } else {
-            this.docsAsea = [];
+        } else {
+          this.docsAsea = [];
+        }
+        break;
+      default:
+        this._snackBarService.openSnackBar('No se ha podido acceder, intente más tarde','OK',3000);
+        this._router.navigate(['/home']).then();
+        break;
+    }
+  }
+
+  private listCreDocs(response: any):void{
+    switch (response.code){
+      case 200:
+        if (response.items){
+          for(let i=0; i<response.items.length;i++){
+            this.docsCre[response.items[i].type-17]=response.items[0];
           }
-          break;
-        default:
-          break;
-      }
-    });
+        } else {
+          this.docsCre = [];
+        }
+        break;
+      default:
+        this._snackBarService.openSnackBar('No se ha podido acceder, intente más tarde','OK',3000);
+        this._router.navigate(['/home']).then();
+        break;
+    }
   }
 
   public uploadFile(event: UploadFileResponse, index: number, regulationType: number, type: number){
@@ -226,7 +228,7 @@ export class DocumentationComponent implements OnInit, OnDestroy {
   }
 
   public closeDocumentation():void{
-    this._router.navigate(['/home/profile/gas-station'], {queryParams:{id: this.stationId}}).then();
+    this._router.navigate(['/home/profile/gas-station',this.stationId]).then();
   }
 
   public openPdf(index: number, isAsea: boolean): void{
