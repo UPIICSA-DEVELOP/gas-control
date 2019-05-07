@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="1.4.0"></a>
+# [1.4.0](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/compare/v1.4.0-beta.3...v1.4.0) (2019-05-07)
+
+
+
 <a name="1.4.0-beta.3"></a>
 # [1.4.0-beta.3](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/compare/v1.4.0-beta.2...v1.4.0-beta.3) (2019-05-07)
 
