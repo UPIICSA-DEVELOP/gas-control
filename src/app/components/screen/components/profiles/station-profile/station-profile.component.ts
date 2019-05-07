@@ -262,7 +262,7 @@ export class StationProfileComponent implements OnInit, OnDestroy {
     this.station.crePermission = (data.crePermission ? data.crePermission: undefined);
     this.station.name = data.name;
     this.station.businessName = data.businessName;
-    this.station.rfc = data.rfc;
+    //this.station.rfc = data.rfc;
     this.station.address = data.address;
     this.station.phoneNumber = data.phoneNumber;
     this.station.email = data.email;
