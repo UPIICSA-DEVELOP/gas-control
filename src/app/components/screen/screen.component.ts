@@ -121,7 +121,7 @@ export class ScreenComponent implements OnInit, AfterViewInit, OnDestroy{
         'Para continuar es necesario registrar su firma digital',
         'REGISTRAR').afterClosed().subscribe(() =>{
         LocalStorageService.setItem(Constants.NotSignature, true);
-        this.drawSignature(user);
+        this.drawSignature();
       });
     }else{
       this.getDashboardInformation(this._stationId);
@@ -294,13 +294,13 @@ export class ScreenComponent implements OnInit, AfterViewInit, OnDestroy{
     }
   }
 
-  private drawSignature(user: any):void{
+  private drawSignature():void{
     this._signatureService.open().afterClosed().subscribe(response=>{
       switch (response.code){
         case 1:
           let formSignature = new FormData();
           formSignature.append('path','');
-          formSignature.append('fileName','signature-'+user.id+'-'+ new Date().getTime()+'.png');
+          formSignature.append('fileName','signature-'+CookieService.getCookie(Constants.IdSession)+'-'+ new Date().getTime()+'.png');
           formSignature.append('isImage','true');
           formSignature.append('file',response.blob);
           this.loadSignature(formSignature);
