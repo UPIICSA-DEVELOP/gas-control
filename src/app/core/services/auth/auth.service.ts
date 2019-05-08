@@ -83,7 +83,6 @@ export class AuthService implements Resolve<any>{
     this._api.signOut(LocalStorageService.getItem(Constants.SessionToken)).subscribe(response=>{
       switch (response.code){
         case 200:
-          console.log(response);
           break;
         default:
           console.error(response);
