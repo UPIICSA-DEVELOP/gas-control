@@ -84,6 +84,9 @@
             margin: 8px 0;
             font-weight: 500;
             color: #707070;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            overflow: hidden;
           }
         }
         .buttons{
@@ -94,6 +97,9 @@
             text-align: start;
             font-weight: 500;
             display: flex;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
             mat-icon{
               margin-right: 4px;
             }
