@@ -30,7 +30,7 @@
           </mat-form-field>
         </div>
         <mat-form-field class="inputs">
-          <input formControlName="remissionNumber" matInput placeholder="Número de remisión" required type="text">
+          <input formControlName="remissionNumber" matInput placeholder="Número de remisión" required type="number">
           <mat-error *ngIf="frForm.controls['remissionNumber'].hasError('required')">
             Este campo es obligatorio
           </mat-error>
