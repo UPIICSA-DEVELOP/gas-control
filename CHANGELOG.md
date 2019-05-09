@@ -2,6 +2,25 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="1.4.1-beta.0"></a>
+## [1.4.1-beta.0](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/compare/v1.4.0...v1.4.1-beta.0) (2019-05-09)
+
+
+### Bug Fixes
+
+* **Auth:** remove log in signOut ([f03cae3](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/f03cae3))
+* **DialogService:** complement javadoc ([5df44d9](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/5df44d9))
+* **FrReport:** change input type to remissionNumber field ([ed363a1](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/ed363a1))
+* **SASISOPA:** move close button ([f1ed0b4](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/f1ed0b4))
+* **Screen:** modify overflow in text ([5dadc45](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/5dadc45))
+* **Screen:** solve error in load signature ([ec13291](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/ec13291))
+* **SGM:** move close button ([82ff2ad](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/82ff2ad))
+* **StationProfile:** solve error with rfc ([a43744d](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/a43744d))
+* **StationStatus:** modify color in head text ([ac0274f](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/ac0274f))
+* **Terms:** change text for role 7 ([def9cc1](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/def9cc1))
+
+
+
 <a name="1.4.0"></a>
 # [1.4.0](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/compare/v1.4.0-beta.3...v1.4.0) (2019-05-07)
 
