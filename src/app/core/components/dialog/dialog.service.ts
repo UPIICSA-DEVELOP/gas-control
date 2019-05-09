@@ -61,7 +61,7 @@ export class DialogService {
 
   /**
    * Dialog of information
-   *
+   * @param {string} title Title of dialog
    * @param {string} message Message of dialog
    * @param {string} accept Text for button accept
    *
@@ -94,7 +94,7 @@ export class DialogService {
    * @param {string} inputPlaceholder Text of placeholder of input
    * @param {string} accept Text for button accept dialog
    * @param {string} cancel Text for button cancel dialog
-   *
+   * @param {string} text Text for input placeholder
    *
    * @return {@link MatDialogRef<DialogComponent>}
    *
