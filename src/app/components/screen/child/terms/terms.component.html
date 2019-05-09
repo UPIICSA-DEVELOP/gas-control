@@ -17,7 +17,8 @@
       </div>
       <h2>1. Las Partes. -</h2>
       <p>1.1 InSpéctor S. de R.L. de C.V con dirección en Avenida Lázaro Cárdenas #2 – 17, Colonia Centro, Delegación Cuauhtémoc, Ciudad de México, C.P. 06000, que de aquí en lo sucesivo se denominará como “El Proveedor”.</p>
-      <p>1.2 {{user}} o {{company}}, con dirección en {{address}}, que de aquí en lo sucesivo se denominará como “El Cliente”.</p>
+      <p *ngIf="role!==7">1.2 {{user}} o {{company}}, con dirección en {{address}}, que de aquí en lo sucesivo se denominará como “El Cliente”.</p>
+      <p *ngIf="role===7">1.2 {{user}}, que de aquí en lo sucesivo se denominará como “El Cliente”.</p>
       <h2>2. Términos y Condiciones. -</h2>
       <p>2.1 Software como Servicio, que de aquí en lo sucesivo se denominará “SaaS”, es el modelo de distribución de software con el que El Proveedor suministra el mantenimiento, soporte y operación que usará El Cliente durante el tiempo que éste último haya contratado el servicio. El Cliente usará el sistema que de aquí en adelante se denominará “inSpéctor”, alojado por El Proveedor quien también alojará la información de El Cliente en sus sistemas y proveerá los recursos necesarios para que El Cliente explote esa información.</p>
       <p>2.2 InSpéctor es un SaaS de paga por medio de cuentas individuales por cada estación de servicio o gasolinera, para la gestión de tareas y control de cumplimiento de normas y regulaciones, a través de dispositivos móviles o de escritorio conectados a la internet.</p>

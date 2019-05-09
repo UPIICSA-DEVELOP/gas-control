@@ -43,6 +43,7 @@ export class TermsComponent implements OnInit {
   public user: string;
   public company: string;
   public address: string;
+  public role: number;
   constructor(
     private _api: ApiService,
     private _router: Router
@@ -82,8 +83,8 @@ export class TermsComponent implements OnInit {
 
   private getCompanyName():void{
     this.user = LocalStorageService.getItem(Constants.UserInSession).completeName;
-    const role = LocalStorageService.getItem(Constants.UserInSession).role;
-    switch (role){
+    this.role = LocalStorageService.getItem(Constants.UserInSession).role;
+    switch (this.role){
       case 1:
       case 2:
       case 3:
