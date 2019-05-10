@@ -2,6 +2,29 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="1.5.0-beta.0"></a>
+# [1.5.0-beta.0](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/compare/v1.4.1-beta.0...v1.5.0-beta.0) (2019-05-10)
+
+
+### Bug Fixes
+
+* add MDateResponse ([84d933b](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/84d933b))
+* **AdminNotifications:** minimize code for optimize ([fe8da59](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/fe8da59))
+* **Environments:** add url API for web services ([aed98d4](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/aed98d4))
+* **Index:** delete viewport property for compatibility with safari browser ([bb8908b](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/bb8908b))
+* **ListStationAdmin:** implement switch to active or disabled stations ([aca663e](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/aca663e))
+* **ProfileConsultancy:** solve error with disabled inputs ([a0d152c](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/a0d152c))
+* **Reports:** change validations to see scanned manifest ([4377c66](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/4377c66))
+* **SASISOPA:** implement MDate for parse Dates ([821ff29](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/821ff29))
+* **StationList:** Implement switch to control station enable or disable for role 1, 2 and 3 ([fcb4f45](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/fcb4f45))
+
+
+### Features
+
+* **MDate:** add generic class to get date formats ([4cc9652](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/4cc9652))
+
+
+
 <a name="1.4.1-beta.0"></a>
 ## [1.4.1-beta.0](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/compare/v1.4.0...v1.4.1-beta.0) (2019-05-09)
 
