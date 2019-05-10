@@ -131,6 +131,24 @@
         margin: 8px 0 52px 0;
         text-align: center;
       }
+      .on-off-station{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-top: 4px;
+        .off{
+          margin-right: 4px;
+          font-size: 12px;
+          color: #707070;
+          font-weight: 500;
+        }
+        .on{
+          margin-left: 4px;
+          font-size: 12px;
+          color: #707070;
+          font-weight: 500;
+        }
+      }
       .actions{
         position: absolute;
         bottom: 16px;

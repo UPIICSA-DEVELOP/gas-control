@@ -46,7 +46,7 @@
 
 
     <div class="container-list" *ngIf="stationList.length > 0 && utils">
-      <mat-card class="item" *ngFor="let item of stationList">
+      <mat-card class="item" *ngFor="let item of stationList; let i = index">
         <div class="image">
           <img  *ngIf="utils" [src]="utils[item.type-1].fileCS.thumbnail" alt="station logo">
         </div>
@@ -61,6 +61,11 @@
           <p class="sub-title">
             <a [href]="'tel:'+item.phoneNumber"><span>{{item.phoneNumber}}</span></a>
           </p>
+          <div class="on-off-station">
+            <span class="off">Apagado</span>
+            <mat-slide-toggle [checked]="item.enabled" (change)="changeStationEnabled($event, item.id, i)"></mat-slide-toggle>
+            <span class="on">Encendido</span>
+          </div>
         </div>
         <div class="actions">
           <button mat-button [color]="'primary'" (click)="goToDashboard(item)">VER ESTACIÓN</button>

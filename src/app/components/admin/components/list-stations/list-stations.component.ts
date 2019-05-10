@@ -29,7 +29,6 @@ export class ListStationsComponent implements OnInit {
   public title: string;
   public notResults: boolean;
   public utils: any;
-  private _completeName: string;
   constructor(
     @Inject(MAT_DIALOG_DATA) private _data: any,
     private _dialog: MatDialogRef<ListStationsComponent>,
@@ -39,20 +38,58 @@ export class ListStationsComponent implements OnInit {
     private _addStation: AddStationService,
     private _auth: AuthService
   ) {
-    this._completeName = '';
     this.title = this._data.name;
     this.stationList = [];
     this.stationListCopy = [];
   }
 
   ngOnInit() {
-    this._completeName = LocalStorageService.getItem(Constants.UserInSession).completeName;
     this.getList(this._data.id);
     this.getUtilities();
   }
 
   public close(): void{
     this._dialog.close();
+  }
+
+  public changeStationEnabled(ev: any, stationId: string, index: number): void{
+    if(ev.checked){
+      this._api.enableStation(true, stationId).subscribe(response=>{
+        switch(response.code){
+          case 200:
+            this.stationList[index].enabled = true;
+            this.stationListCopy[index].enabled = true;
+            break;
+          default:
+            break;
+        }
+      });
+    }else{
+      this._dialogService.confirmDialog(
+        'Atención',
+        'Esta acción inhabilitará el acceso de los miembros de esta estación, a la funcionalidad de inSpéctor. \n ¿Desea continuar?',
+        'ACEPTAR',
+        'CANCELAR'
+      ).afterClosed().subscribe(response=>{
+        switch(response.code){
+          case 1:
+            this._api.enableStation(false, stationId).subscribe(response=>{
+              switch(response.code){
+                case 200:
+                  this.stationList[index].enabled = false;
+                  this.stationListCopy[index].enabled = false;
+                  break;
+                default:
+                  break;
+              }
+            });
+            break;
+          default:
+            this.getList(this._data.id);
+            break;
+        }
+      })
+    }
   }
 
   public search(ev: any): void{
