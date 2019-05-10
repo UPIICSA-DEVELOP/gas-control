@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="1.5.0-beta.1"></a>
+# [1.5.0-beta.1](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/compare/v1.5.0-beta.0...v1.5.0-beta.1) (2019-05-10)
+
+
+### Bug Fixes
+
+* **Documentation:** change path param for navigate to documentation ([fc9c6be](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/fc9c6be))
+* **Documentation:** solve error to open documents ([1f31526](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/1f31526))
+* **Environments:** solve error in url api ([c139eea](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/c139eea))
+
+
+
 <a name="1.5.0-beta.0"></a>
 # [1.5.0-beta.0](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/compare/v1.4.1-beta.0...v1.5.0-beta.0) (2019-05-10)
 
