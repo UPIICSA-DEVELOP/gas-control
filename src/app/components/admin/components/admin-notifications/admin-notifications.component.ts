@@ -13,7 +13,6 @@ import {Router} from '@angular/router';
 import {CookieService} from '@app/core/services/cookie/cookie.service';
 import {Constants} from '@app/core/constants.core';
 import {Subscription} from 'rxjs/Rx';
-import {LocalStorageService} from '@app/core/services/local-storage/local-storage.service';
 import {UtilitiesService} from '@app/core/utilities/utilities.service';
 import {SessionStorageService} from '@app/core/services/session-storage/session-storage.service';
 
@@ -79,24 +78,15 @@ export class AdminNotificationsComponent implements OnInit, OnDestroy {
   }
 
   public navigateToDashboard(stationId: string, consultancyId: string): void{
-    this._api.getConsultancy(consultancyId).subscribe(response=>{
-      switch (response.code){
-        case 200:
-          let stationsView = SessionStorageService.getItem(Constants.StationAdmin) || [];
-          if(stationsView){
-            stationsView.forEach(item => {
-              item.lastView = false;
-            });
-          }
-          stationsView.push({stationId: stationId, consultancyId: consultancyId, lastView: true});
-          SessionStorageService.setItem(Constants.StationAdmin, stationsView);
-          LocalStorageService.setItem(Constants.ConsultancyInSession, {id: response.item.id, name: response.item.businessName});
-          window.open('/#/home?station='+stationId,'_blank');
-          break;
-        default:
-          break;
-      }
-    });
+    let stationsView = SessionStorageService.getItem(Constants.StationAdmin) || [];
+    if(stationsView){
+      stationsView.forEach(item => {
+        item.lastView = false;
+      });
+    }
+    stationsView.push({stationId: stationId, consultancyId: consultancyId, lastView: true});
+    SessionStorageService.setItem(Constants.StationAdmin, stationsView);
+    window.open('/#/home?station='+stationId,'_blank');
   }
 
   public deleteNotification(id: string, index: number):void{
