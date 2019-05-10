@@ -71,7 +71,7 @@ export class DocumentationComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.stationId = this._activateRoute.params["_value"].id;
+    this.stationId = this._activateRoute.params["_value"].station;
     this.listAseaDocs(this._activateRoute.snapshot.data.data.asea);
     this.listCreDocs(this._activateRoute.snapshot.data.data.cre);
     this._subscriptionLoader = this._apiLoader.getProgress().subscribe(load => {this.load = load; });

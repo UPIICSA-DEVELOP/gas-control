@@ -6,8 +6,8 @@
 
 import { Injectable } from '@angular/core';
 import {ActivatedRouteSnapshot, Resolve, RouterStateSnapshot} from '@angular/router';
-import {ApiService} from 'app/core/services/api/api.service';
-import {forkJoin} from 'rxjs/index';
+import {ApiService} from '@app/core/services/api/api.service';
+import {forkJoin} from 'rxjs';
 import {map} from 'rxjs/internal/operators';
 
 @Injectable()
