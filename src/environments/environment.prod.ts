@@ -4,6 +4,7 @@ export const environment = {
   backendUrl: 'https://inspector-backend.appspot.com',
   develop: false,
   local: false,
+  apiUrl:'https://api-inspector.maplander.com/v1/',
   VERSION: require('../../package.json').version,
   firebase: {
     apiKey: "AIzaSyDTrMvI7rKzqvylqMFWitUTO2A2YKdEuWk",
