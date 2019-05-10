@@ -109,18 +109,23 @@
   }
 
   .end{
-    width: 10%;
+    width: 15%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
   }
   .percent {
     color: #000000;
     font-weight: 600;
     font-size: 16px;
-    position: absolute;
-    bottom: 12px;
-    right: 8px;
+    margin-top: 4px;
   }
   .icon {
     color: #707070;
+    width: 36px;
+    height: 36px;
+    line-height: 36px;
   }
 
   .task-head {
@@ -145,9 +150,10 @@
     align-items: center;
     justify-content: center;
   }
-  .notify{
+  .station{
     display: flex;
     margin: 8px 0;
+    min-height: 130px;
   }
   .add{
     margin-top: 12px;
@@ -178,12 +184,39 @@
       margin: 0 12px;
     }
   }
-  /deep/.mat-badge-small .mat-badge-content{
-    width: 10px;
-    height: 10px;
-    line-height: 10px;
-    top: 0;
-    right: 0;
+  ::ng-deep.mat-badge-small .mat-badge-content{
+    width: 8px;
+    height: 8px;
+    line-height: 8px;
+    top: 8px;
+    right: 8px;
+  }
+  ::ng-deep .mat-slide-toggle-bar {
+    height: 7px !important;
+    width: 19px !important;
+  }
+
+  ::ng-deep .mat-slide-toggle-thumb {
+    height: 10px !important;
+    width: 10px !important;
+  }
+
+  ::ng-deep .mat-slide-toggle.mat-checked .mat-slide-toggle-thumb-container {
+    transform: translate3d(13px,0,0) !important;
+  }
+
+  ::ng-deep .mat-slide-toggle-thumb-container {
+    width: 12px !important;
+    height: 12px !important;
+    top: -2px !important;
+  }
+
+  ::ng-deep .mat-slide-toggle .mat-slide-toggle-ripple{
+    width: 20px;
+    height: 20px;
+    top: calc(50% - 11px);
+    left: calc(50% - 11px);
+    border-radius: 50%;
   }
 }
 

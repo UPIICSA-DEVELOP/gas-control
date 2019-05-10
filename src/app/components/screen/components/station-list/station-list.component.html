@@ -35,8 +35,8 @@
           <div *ngIf="stationList.length>0; then cards else empty"></div>
           <ng-template #cards>
             <div *ngFor="let stations of stationList; let i=index">
-              <mat-card class="notify">
-                <div (click)="changeStation(stations.id, stations.newNotification)" style="display: flex; width: 90%; text-decoration-line: none; cursor: pointer">
+              <mat-card class="station">
+                <div (click)="changeStation(stations.id, stations.newNotification, stations.enabled)" style="display: flex; width: 85%; text-decoration-line: none; cursor: pointer; align-items: center">
                   <div class="image">
                     <img class="image-station" *ngIf="groupIcon" [src]="groupIcon.groupIcons[stations.type-1].fileCS.thumbnail" alt="station image">
                     <mat-icon *ngIf="!groupIcon" class="image-station">local_gas_station</mat-icon>
@@ -45,7 +45,7 @@
                     <div>
                       <span class="task-head" *ngIf="groupIcon">{{groupIcon.groupIcons[stations.type-1].name}} - {{stations.name}}</span>
                     </div>
-                    <div class="margin">
+                    <div *ngIf="stations.crePermission" class="margin">
                       <span class="content-text">{{stations.crePermission}}</span>
                     </div>
                     <div class="margin">
@@ -63,6 +63,9 @@
                     <mat-icon class="icon" *ngIf="!notificationActive[i] && !stations.newNotification">notifications_off</mat-icon>
                     <mat-icon class="icon" *ngIf="!notificationActive[i] && stations.newNotification" matBadge="&#8288;" matBadgeSize="small" matBadgeColor="warn">notifications_off</mat-icon>
                   </button>
+                  <div>
+                    <mat-slide-toggle *ngIf="user.role<4" [checked]="stations.enabled" (change)="changeStationEnabled($event, stations.id, i)"></mat-slide-toggle>
+                  </div>
                   <div>
                     <span class="percent">{{stations.progress}}%</span>
                   </div>

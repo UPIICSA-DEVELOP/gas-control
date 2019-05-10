@@ -82,6 +82,46 @@ export class StationListComponent implements OnInit, DoCheck {
     })
   }
 
+  public changeStationEnabled(ev: any, stationId: string, index: number): void{
+    if(ev.checked){
+      this._api.enableStation(true, stationId).subscribe(response=>{
+        switch(response.code){
+          case 200:
+            this.stationList[index].enabled = true;
+            this.stations[index].enabled = true;
+            break;
+          default:
+            break;
+        }
+      });
+    }else{
+      this._dialogService.confirmDialog(
+        'Atención',
+        'Esta acción inhabilitará el acceso de los miembros de esta estación, a la funcionalidad de inSpéctor. \n ¿Desea continuar?',
+        'ACEPTAR',
+        'CANCELAR'
+      ).afterClosed().subscribe(response=>{
+        switch(response.code){
+          case 1:
+            this._api.enableStation(false, stationId).subscribe(response=>{
+              switch(response.code){
+                case 200:
+                  this.stationList[index].enabled = false;
+                  this.stations[index].enabled = false;
+                  break;
+                default:
+                  break;
+              }
+            });
+            break;
+          default:
+            this.getStationList();
+            break;
+        }
+      })
+    }
+  }
+
   public changeNotificationsStatus(id: string, status: boolean, index:number): void{
     if (status) {
       this._dialogService.confirmDialog(
@@ -118,14 +158,13 @@ export class StationListComponent implements OnInit, DoCheck {
   }
 
   private getStationList():void{
-    let user = LocalStorageService.getItem(Constants.UserInSession);
-    this.user=user;
-    switch (user.role) {
+    this.user=LocalStorageService.getItem(Constants.UserInSession);
+    switch (this.user.role) {
       case 1:
       case 2:
       case 3:
       case 7:
-        this._api.getConsultancyBasicData(CookieService.getCookie(Constants.IdSession),user.refId).subscribe(response=>{
+        this._api.getConsultancyBasicData(CookieService.getCookie(Constants.IdSession),this.user.refId).subscribe(response=>{
           switch (response.code) {
             case 200:
               this.stationList = UtilitiesService.sortJSON(response.item.stationLites,'progress','asc');
@@ -137,7 +176,7 @@ export class StationListComponent implements OnInit, DoCheck {
         });
         break;
       case 4:
-        this._api.getLegalRepresentativeBasicData(user.refId, CookieService.getCookie(Constants.IdSession)).subscribe(response=>{
+        this._api.getLegalRepresentativeBasicData(this.user.refId, CookieService.getCookie(Constants.IdSession)).subscribe(response=>{
           switch (response.code) {
             case 200:
               this.stationList = UtilitiesService.sortJSON(response.item.stationLites,'progress','asc');
@@ -190,10 +229,17 @@ export class StationListComponent implements OnInit, DoCheck {
     }
   }
 
-  public changeStation(id: string, newNotification: boolean):void{
-    this._router.navigate(['/home']).then(()=>{
-      this._sharedService.setNotification({type: SharedTypeNotification.ChangeStation, value: {id: id, newNotification: newNotification}});
-    });
-
+  public changeStation(id: string, newNotification: boolean, enabled: boolean):void{
+    if(enabled){
+      this._router.navigate(['/home']).then(()=>{
+        this._sharedService.setNotification({type: SharedTypeNotification.ChangeStation, value: {id: id, newNotification: newNotification}});
+      });
+    }else{
+      this._dialogService.alertDialog(
+        'Verificar Estado de suscripción',
+        'Esta estación esta suspendida por un problema con el último pago',
+        ''
+      )
+    }
   }
 }

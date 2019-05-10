@@ -15,7 +15,6 @@ import {Subscription} from 'rxjs/Rx';
 import {environment} from '@env/environment';
 import {SessionStorageService} from '@app/core/services/session-storage/session-storage.service';
 import {Constants} from '@app/core/constants.core';
-import {env} from 'nconf';
 
 
 @Injectable()
@@ -27,13 +26,12 @@ export class ApiService implements OnDestroy{
   private static API_VERSION = 'v1/';
   private static API_URL_COMPLETE = ApiService.API_URL + ApiService.API_PATH + ApiService.API_CHANNEL + ApiService.API_VERSION;
   private _subscriptionNetwork: Subscription;
-  private static PROXY_ENDPOINTS;
+  private static PROXY_ENDPOINTS = environment.apiUrl;
   constructor(
     private _http: HttpClient,
     private _networkService: NetworkService,
     private _snackBarService: SnackBarService
   ) {
-    ApiService.PROXY_ENDPOINTS = environment.local ? 'https://inspector-develop.maplander.com/' : environment.url;
     this.initNetwork();
   }
 
@@ -107,13 +105,13 @@ export class ApiService implements OnDestroy{
   }
 
   public uploadFileToBlob(part: FormData): Observable<any> {
-    return this._http.post('https://schedule-maplander.appspot.com/upload', part);
+    return this._http.post(ApiService.API_URL + '/upload', part);
   }
 
   public deleteFileToBlob(blobName: string): Observable<any> {
     let params = new HttpParams();
     params = params.append('blobName', blobName);
-    return this._http.delete('https://schedule-maplander.appspot.com/upload', {params: params});
+    return this._http.delete(ApiService.API_URL + '/upload', {params: params});
   }
 
   public savePersonInformation(infoPerson: any): Observable<any>{
@@ -241,7 +239,7 @@ export class ApiService implements OnDestroy{
   public getFile(url: string): Observable<any>{
     let params = new HttpParams();
     params = params.append('url', encodeURIComponent(url));
-    return this._http.get(ApiService.PROXY_ENDPOINTS + 'endpoints/v1/download', { responseType: 'blob' as 'json', params: params});
+    return this._http.get(ApiService.PROXY_ENDPOINTS + 'download', { responseType: 'blob' as 'json', params: params});
   }
 
   public createConsultancy(data: Consultancy): Observable<any>{
@@ -309,7 +307,7 @@ export class ApiService implements OnDestroy{
       params = params.append('bCardId', data.bCardId);
     }
     const headers = new HttpHeaders().set('Content-Type', 'text/plain; charset=utf-8');
-    return this._http.get(ApiService.PROXY_ENDPOINTS + 'endpoints/v1/bc', {
+    return this._http.get(ApiService.PROXY_ENDPOINTS + 'bc', {
       headers: headers,
       params: params
     });
@@ -319,14 +317,46 @@ export class ApiService implements OnDestroy{
     let params = new HttpParams();
     params = params.append('stationId', stationId);
     params = params.append('isSGM', isSGM?'true':'false');
-    return this._http.get(ApiService.PROXY_ENDPOINTS + 'endpoints/v1/pdf', {params: params});
+    const url = environment.local ? 'https://inspector-develop.maplander.com/':environment.url;
+    return this._http.get(url + 'endpoints/v1/pdf', {params: params});
+  }
+
+  public fullSasisopaRequest(stationId: string): Observable<any>{
+    const options = {
+      stationId: stationId
+    };
+    return this._http.post(ApiService.API_URL_COMPLETE + 'fullSasisopaRequest', options);
   }
 
   public joinPDF(stationId: string, isSGM: boolean): Observable<any>{
     let params = new HttpParams();
     params = params.append('stationId', stationId);
     params = params.append('isSGM', isSGM?'true':'false');
-    return this._http.get(ApiService.PROXY_ENDPOINTS + 'endpoints/v1/joinPDF', {responseType: 'blob' as 'json', params: params});
+    const url = environment.local ? 'https://inspector-develop.maplander.com/':environment.url;
+    return this._http.get(url + 'endpoints/v1/joinPDF', {responseType: 'blob' as 'json', params: params});
+  }
+
+  public exportReport (taskId: string, typeReport: number, templateId: number):Observable<any>{
+    let params = new HttpParams();
+    params = params.append('taskId', taskId);
+    params = params.append('typeReport', typeReport.toString());
+    params = params.append('templateId', templateId.toString());
+    return this._http.get(ApiService.PROXY_ENDPOINTS + 'exportReport', {responseType: 'blob' as 'json', params: params});
+  }
+
+  public exportCalendarByTaskList(filters: any): Observable<any>{
+    let params = new HttpParams();
+    if(!filters.firstOpen){
+      params = params.append('fromDate', filters.startDate);
+      params = params.append('untilDate', filters.endDate);
+    }
+    if(filters.status !== '0'){
+      params = params.append('status', filters.status);
+    }
+    if(filters.type!== '0'){
+      params = params.append('type', filters.type);
+    }
+    return this._http.get(ApiService.PROXY_ENDPOINTS + 'exportCalendarByTaskList', {responseType: 'blob' as 'json', params: params});
   }
 
   public getCompleteInfoDashboard(userId: string, refId: string, role: number, onlyOneStationId?: any): Observable<any>{
@@ -621,5 +651,13 @@ export class ApiService implements OnDestroy{
 
   public saveSgmSelection(item: any): Observable<any>{
     return this._http.post(ApiService.API_URL_COMPLETE + 'saveSgmSelection', item);
+  }
+
+  public enableStation(enable: boolean, stationId: string): Observable<any>{
+    const options = {
+      enable: enable,
+      id: stationId
+    };
+    return this._http.post(ApiService.API_URL_COMPLETE + 'enableStation', options);
   }
 }

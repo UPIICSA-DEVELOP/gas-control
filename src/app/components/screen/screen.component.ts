@@ -23,6 +23,7 @@ import {ApiLoaderService} from '@app/core/services/api/api-loader.service';
 import {SignaturePadService} from '@app/core/components/signature-pad/signature-pad.service';
 import {UploadFileService} from '@app/core/components/upload-file/upload-file.service';
 import {SnackBarService} from '@app/core/services/snackbar/snackbar.service';
+import {UtilitiesService} from '@app/core/utilities/utilities.service';
 
 @Component({
   selector: 'app-screen',
@@ -226,6 +227,9 @@ export class ScreenComponent implements OnInit, AfterViewInit, OnDestroy{
         case 200:
           this.stationActive = response.item;
           LocalStorageService.setItem(Constants.StationInDashboard, {id: this.stationActive.id, name: this.stationActive.businessName});
+          if(this.stationActive.paymentStatus !== 1 && this.role === 4){
+            this.stationBlock();
+          }
           if(!this.stationActive.stationTaskId){
             this.openTaskCalendar();
           }
@@ -239,8 +243,12 @@ export class ScreenComponent implements OnInit, AfterViewInit, OnDestroy{
         case 200:
           LocalStorageService.setItem(Constants.ConsultancyInSession, {id:response.item.consultancy.id, name: response.item.consultancy.businessName});
           if(response.item.stationLites){
-            this.stationActive = response.item.stationLites[0];
+            const list = UtilitiesService.sortJSON(response.item.stationLites, 'enabled', 'desc');
+            this.stationActive = list[0];
             LocalStorageService.setItem(Constants.StationInDashboard, {id: this.stationActive.id, name: this.stationActive.businessName});
+            if(this.role === 4 && !this.stationActive.enabled){
+              this.stationBlock();
+            }
             if(this.stationActive.newNotification){
               this.newNotification = true;
             }
@@ -292,6 +300,19 @@ export class ScreenComponent implements OnInit, AfterViewInit, OnDestroy{
           break;
       }
     }
+    if(this.stationActive.paymentStatus !== 1){
+      this.stationBlock();
+    }
+  }
+
+  private stationBlock():void{
+    this._dialogService.alertDialog(
+      'Verificar Estado de suscripción',
+      'Esta estación se encuentra suspendida por un problema con el último pago',
+      'CERRAR SESIÓN'
+    ).afterClosed().subscribe(()=>{
+      this._auth.logOut()
+    })
   }
 
   private drawSignature():void{
