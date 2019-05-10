@@ -56,7 +56,6 @@ export class ProfileComponent implements OnInit, OnDestroy {
   @ViewChild('phoneNumber') private _phoneNumberInput: ElementRef;
   private _formData: FormData;
   private _formSignature: FormData;
-  public disabledInputs: boolean;
   public user: Person;
   public consultancy: Consultancy;
   public latLong: any;
@@ -76,7 +75,6 @@ export class ProfileComponent implements OnInit, OnDestroy {
   public newSignature: boolean;
   public newSig: any;
   private _subscriptionLoader: Subscription;
-  public isDirector: boolean;
   constructor(
     private _api: ApiService,
     private _formBuilder: FormBuilder,
@@ -93,7 +91,6 @@ export class ProfileComponent implements OnInit, OnDestroy {
     private _auth: AuthService,
     private _activateRouter: ActivatedRoute
   ) {
-    this.isDirector = false;
     this.role = Constants.roles;
     this.protocol = 'http://';
     this.change = false;
@@ -167,7 +164,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
   }
 
   public detectChange(): void{
-    this.profileForm.valueChanges.subscribe( value => {
+    this.profileForm.valueChanges.subscribe( () => {
       this.change = true;
     })
   }
@@ -368,6 +365,14 @@ export class ProfileComponent implements OnInit, OnDestroy {
         }
       }
     }
+    if(this.user.role === 1){
+      this.profileForm.controls['email'].disable();
+    }
+    if(this.user.role === 3){
+      this.profileForm.controls['businessName'].disable();
+      this.profileForm.controls['address'].disable();
+      this.profileForm.controls['officePhone'].disable();
+    }
     this.profileForm.patchValue({
       name: this.user.name,
       lastName: this.user.lastName,
@@ -382,11 +387,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
       address: this.consultancy.address,
       officePhone: this.consultancy.officePhone
     });
-    this.validateDisabledInputs();
     this.detectChange();
-    if(this.user.role === 1){
-      this.isDirector = true;
-    }
   }
 
   private initUserInfo(): void {
@@ -400,20 +401,17 @@ export class ProfileComponent implements OnInit, OnDestroy {
       jobTitle: ['', [Validators.required]],
       website: ['', [Validators.pattern('[a-z0-9]+([\\-\\.]{1}[a-z0-9]+)*\\.[a-z]{2,5}(:[0-9]{1,5})?(\\/.*)?$')]],
       businessName: ['', [Validators.required]],
-      rfc: [{value: '', disabled: true}, [Validators.required]],
+      rfc: [{value: '', disabled: true},[]],
       address: ['', [Validators.required]],
       officePhone: ['', [Validators.minLength(8), Validators.maxLength(13), Validators.required]]
     });
   }
 
   public updateProfile(data: any, event?: any): void {
-    this.validateDisabledInputs(true);
     if (this.profileForm.invalid) {
-      this.validateDisabledInputs();
       return;
     }
     if(!this.signature){
-      this.validateDisabledInputs();
       this._snackBarService.openSnackBar('Por favor, registre su firma','OK', 3000);
       return;
     }
@@ -434,24 +432,27 @@ export class ProfileComponent implements OnInit, OnDestroy {
   }
 
   private saveInfoUserAndConsultancy(data: any): void{
-    const emailUpdate = this.user.email !== data.email;
+    let emailUpdate = false;
     data.code = data.code.replace('+','');
     this.user.name = data.name;
     this.user.lastName = data.lastName;
     if(this.user.role !== 1){
       this.user.email = data.email;
+      emailUpdate = this.user.email !== data.email;
     }
     this.user.countryCode = data.code;
     this.user.country = this.country;
     this.user.phoneNumber = data.phoneNumber;
     this.user.jobTitle = data.jobTitle;
     this.user.website = (data.website? this.protocol+data.website : '');
-    this.consultancy.businessName = data.businessName;
-    this.consultancy.address = data.address;
-    this.consultancy.officePhone = (data.officePhone? data.officePhone: '');
-    if (this.latLong) {
-      this.consultancy.location.latitude = (this.latLong.latitude? this.latLong.latitude: 19.432675);
-      this.consultancy.location.longitude = (this.latLong.longitude? this.latLong.longitude:-99.133461);
+    if(this.user.role !== 3){
+      this.consultancy.businessName = data.businessName;
+      this.consultancy.address = data.address;
+      this.consultancy.officePhone = (data.officePhone? data.officePhone: '');
+      if (this.latLong) {
+        this.consultancy.location.latitude = (this.latLong.latitude? this.latLong.latitude: 19.432675);
+        this.consultancy.location.longitude = (this.latLong.longitude? this.latLong.longitude:-99.133461);
+      }
     }
     if (this.newImageProfile){
       this.user.profileImage = {
@@ -474,7 +475,6 @@ export class ProfileComponent implements OnInit, OnDestroy {
 
   private saveProfileData(redirect?:boolean):void{
     if(!redirect){
-      this.validateDisabledInputs(true);
     }
     this._api.updatePerson(this.user).subscribe(response=>{
       switch (response.code){
@@ -486,7 +486,6 @@ export class ProfileComponent implements OnInit, OnDestroy {
           }
           break;
         default:
-          this.validateDisabledInputs();
           this._dialogService.alertDialog('No se pudo acceder', 'Se produjo un error de comunicación con el servidor', 'ACEPTAR');
           break;
       }
@@ -494,14 +493,12 @@ export class ProfileComponent implements OnInit, OnDestroy {
   }
 
   private updateProfileDataWithNewEmail():void{
-    this.validateDisabledInputs(true);
     this._api.updatePersonWithDifferentEmail(this.user).subscribe(response=>{
       switch (response.code){
         case 200:
             this.saveConsultancyData();
           break;
         default:
-          this.validateDisabledInputs();
           this._dialogService.alertDialog('No se pudo acceder', 'Se produjo un error de comunicación con el servidor', 'ACEPTAR');
           break;
       }
@@ -512,12 +509,18 @@ export class ProfileComponent implements OnInit, OnDestroy {
     this._api.updateConsultancy(this.consultancy).subscribe(response=>{
       switch (response.code){
         case 200:
-          this.validateDisabledInputs();
-          this.change = false;
           this._snackBarService.openSnackBar('Información actualizada','OK',3000);
+          if(this.user.role === 1){
+            this.profileForm.controls['email'].disable();
+          }
+          if(this.user.role === 3){
+            this.profileForm.controls['businessName'].disable();
+            this.profileForm.controls['address'].disable();
+            this.profileForm.controls['officePhone'].disable();
+          }
+          this.change = false;
           break;
         default:
-          this.validateDisabledInputs();
           this._dialogService.alertDialog('No se pudo acceder', 'Se produjo un error de comunicación con el servidor', 'ACEPTAR');
           break;
       }
@@ -552,21 +555,12 @@ export class ProfileComponent implements OnInit, OnDestroy {
           }
           break;
         default:
-          this.validateDisabledInputs();
           this._snackBarService.closeSnackBar();
           this._snackBarService.openSnackBar('Ha ocurrido un error, por favor, intente de nuevo', 'OK', 3000);
           break;
       }
     });
   };
-
-  private validateDisabledInputs(disable?: boolean): void{
-    if(this.user.role === 3){
-      this.disabledInputs = true;
-    }else{
-      this.disabledInputs = disable;
-    }
-  }
 
   public validateEmailExist():void{
     let email: any = {

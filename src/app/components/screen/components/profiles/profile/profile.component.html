@@ -35,7 +35,7 @@
                 </mat-error>
               </mat-form-field>
               <mat-form-field class="inputs">
-                <input [attr.disabled]="isDirector?true:null" formControlName="email" (blur)="validateEmailExist()" matInput placeholder="Email comercial" required type="email" aria-label="User email">
+                <input [attr.disabled]="load?true:null" formControlName="email" (blur)="validateEmailExist()" matInput placeholder="Email comercial" required type="email" aria-label="User email">
                 <mat-error *ngIf="profileForm.controls['email'].hasError('required')">
                   Este campo es obligatorio
                 </mat-error>
@@ -85,13 +85,13 @@
                 </mat-error>
               </mat-form-field>
               <div class="password-button">
-                <button mat-button (click)="changePassword()" type="button" aria-label="User update password">
+                <button mat-button (click)="changePassword()" type="button" aria-label="User update password" [disabled]="load">
                   Actualizar contraseña
                 </button>
               </div>
               <div style="display: flex">
                 <mat-form-field class="right-inputs">
-                  <mat-select [disabled]="load" placeholder="Protocolo" (selectionChange)="change = true" aria-label="User website protocol" [(value)]="protocol">
+                  <mat-select [attr.disabled]="load?true:null" placeholder="Protocolo" (selectionChange)="change = true" aria-label="User website protocol" [(value)]="protocol">
                     <mat-option value="http://">http://</mat-option>
                     <mat-option value="https://">https://</mat-option>
                   </mat-select>
@@ -117,20 +117,20 @@
               <div class="title">Información consultora</div>
               <div>
                 <mat-form-field class="inputs">
-                  <input [attr.disabled]="(disabledInputs)?true:null" formControlName="businessName" matInput placeholder="Empresa o Razón social" required type="text" aria-label="Consultancy name">
+                  <input [attr.disabled]="load?true:null" formControlName="businessName" matInput placeholder="Empresa o Razón social" required type="text" aria-label="Consultancy name">
                   <mat-error *ngIf="profileForm.controls['businessName'].hasError('required')">
                     Este campo es obligatorio
                   </mat-error>
                 </mat-form-field>
                 <mat-form-field class="inputs">
-                  <input formControlName="rfc" matInput placeholder="R.F.C" required type="text" aria-label="Consultancy legal identifier">
+                  <input formControlName="rfc" matInput placeholder="R.F.C" type="text" aria-label="Consultancy legal identifier">
                   <mat-error *ngIf="profileForm.controls['rfc'].hasError('required')">
                     Este campo es obligatorio
                   </mat-error>
                 </mat-form-field>
                 <mat-form-field class="inputs">
-                  <textarea [attr.disabled]="disabledInputs?true:null" cdkTextareaAutosize formControlName="address" matInput placeholder="Dirección" required type="text" aria-label="Consultancy address"></textarea>
-                  <button matSuffix matTooltip="Ubicación" type="button" mat-icon-button (click)="openSelectAddress()" [disabled]="user.role !==1 ">
+                  <textarea [attr.disabled]="load?true:null" cdkTextareaAutosize formControlName="address" matInput placeholder="Dirección" required type="text" aria-label="Consultancy address"></textarea>
+                  <button matSuffix matTooltip="Ubicación" type="button" mat-icon-button (click)="openSelectAddress()" [disabled]="user.role ===3">
                     <mat-icon class="map">map</mat-icon>
                   </button>
                   <mat-error *ngIf="profileForm.controls['address'].hasError('required')">
@@ -138,7 +138,7 @@
                   </mat-error>
                 </mat-form-field>
                 <mat-form-field class="inputs">
-                  <input [attr.disabled]="disabledInputs?true:null" formControlName="officePhone" required matInput placeholder="Número de la consultora" type="tel" aria-label="Consultancy phone number" maxlength="13">
+                  <input [attr.disabled]="load?true:null" formControlName="officePhone" required matInput placeholder="Número de la consultora" type="tel" aria-label="Consultancy phone number" maxlength="13">
                   <mat-error *ngIf="profileForm.controls['officePhone'].hasError('required')">
                     Este campo es obligatorio
                   </mat-error>
