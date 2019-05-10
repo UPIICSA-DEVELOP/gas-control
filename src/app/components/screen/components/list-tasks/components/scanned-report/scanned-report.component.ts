@@ -341,7 +341,7 @@ export class ScannedReportComponent implements OnInit, OnDestroy {
       case 3:
       case 5:
       case 6:
-        this._pdf.open({urlOrFile: HashService.set('123456$#@$^@1ERF',this.scannedReport.fileCS.thumbnail)});
+        this._pdf.open({urlOrFile: HashService.set('123456$#@$^@1ERF',this.scannedReport.fileCS.thumbnail), hideDownload: true});
         break;
     }
   }

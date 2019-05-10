@@ -330,7 +330,7 @@ export class HwcReportComponent implements OnInit, OnDestroy {
       case 3:
       case 5:
       case 6:
-        this._pdf.open({urlOrFile: HashService.set('123456$#@$^@1ERF',this.hwcReport.fileCS.thumbnail)});
+        this._pdf.open({urlOrFile: HashService.set('123456$#@$^@1ERF',this.hwcReport.fileCS.thumbnail), hideDownload: true});
         break;
     }
   }
