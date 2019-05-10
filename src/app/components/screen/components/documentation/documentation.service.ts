@@ -18,8 +18,8 @@ export class DocumentationService implements Resolve<any>{
   ) { }
 
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): any {
-    const observer1 = this._api.listDocumentByStation(route.params['id'], '1');
-    const observer2 = this._api.listDocumentByStation(route.params['id'], '2');
+    const observer1 = this._api.listDocumentByStation(route.params['station'], '1');
+    const observer2 = this._api.listDocumentByStation(route.params['station'], '2');
     return forkJoin(observer1, observer2).pipe(map((resp: any[]) => {return {asea: resp[0], cre: resp[1]}}));
   }
 }

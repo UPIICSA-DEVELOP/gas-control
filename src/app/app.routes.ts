@@ -45,9 +45,9 @@ export const appRoutes: Routes = [
     },
     children: [
       {
-        path:'documents/:id',
+        path:'documents/:station',
         component: DocumentationComponent,
-        resolve:{data: DocumentationService},
+        resolve: {data: DocumentationService},
         data:{
           title: 'Documentación',
           url: URL_BASE + 'home/documents'
