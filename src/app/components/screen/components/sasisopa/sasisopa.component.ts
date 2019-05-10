@@ -21,6 +21,7 @@ import {DialogService} from '@app/core/components/dialog/dialog.service';
 import {SnackBarService} from '@app/core/services/snackbar/snackbar.service';
 import {LocalStorageService} from '@app/core/services/local-storage/local-storage.service';
 import {environment} from '@env/environment';
+import {MDate} from '@app/core/class/MDate';
 
 @Component({
   selector: 'app-sasisopa',
@@ -51,7 +52,6 @@ export class SasisopaComponent implements OnInit, OnDestroy {
   private _token: string;
   private _change: boolean;
   private _forms: FormData[];
-  private _invalid: boolean;
   constructor(
     @Inject(MAT_DIALOG_DATA) private _data,
     private _matDialogRef: MatDialogRef<SasisopaComponent>,
@@ -73,7 +73,6 @@ export class SasisopaComponent implements OnInit, OnDestroy {
     this.dateSelected = undefined;
     this.date = undefined;
     this._change = false;
-    this._invalid = false;
     this.maxDate = UtilitiesService.addSubtractDaysFromDate(new Date, 1, false);
     this.minDate = undefined;
     this.station = undefined;
@@ -128,8 +127,7 @@ export class SasisopaComponent implements OnInit, OnDestroy {
     }
     if(type === 5 && this.date){
       this._token = null;
-      const date = UtilitiesService.createPersonalTimeStamp(this.date);
-      this.getStationTasks(date.timeStamp);
+      this.getStationTasks(MDate.getTimeStamp(this.date));
     }else if(type === 5){
       if(new Date().getTime() < (this.minDate.getTime()+(1000*60*60*24*2))){
         this._dialogService.alertDialog(
@@ -207,8 +205,8 @@ export class SasisopaComponent implements OnInit, OnDestroy {
       this._change = false;
       this.date = UtilitiesService.generateArrayDate(datePrevious, false, false);
     }
-    const date = UtilitiesService.createPersonalTimeStamp(this.date);
-    this.dateSelected = date.textDate;
+    const date = new MDate().getFullMDate(this.date);
+    this.dateSelected = date.dateText;
     this._api.listTask({
       stationTaskId: this.station.stationTaskId,
       startDate: date.timeStamp,
@@ -292,8 +290,7 @@ export class SasisopaComponent implements OnInit, OnDestroy {
   }
 
   private saveEvidenceDate():void{
-    const evidenceDate = UtilitiesService.createPersonalTimeStamp(this.date);
-    this._api.saveEvidenceDate(this.station.id, evidenceDate.timeStamp).subscribe(response => {
+    this._api.saveEvidenceDate(this.station.id, MDate.getTimeStamp(this.date)).subscribe(response => {
       switch(response.code){
         case 200:
           this._change = false;
@@ -422,9 +419,8 @@ export class SasisopaComponent implements OnInit, OnDestroy {
           }
           if(response.item.fullSasisopa){
             this.generate = true;
-            this.dateGeneration = UtilitiesService.convertDate(response.item.fullSasisopa.date);
-            const today = UtilitiesService.createPersonalTimeStamp(new Date());
-            this.isAvailable = (response.item.fullSasisopa.date <= today.timeStamp);
+            this.dateGeneration = MDate.getDateArray(response.item.fullSasisopa.date);
+            this.isAvailable = (response.item.fullSasisopa.date <= MDate.getTimeStamp(new Date()));
           }
           break;
         default:
@@ -465,6 +461,10 @@ export class SasisopaComponent implements OnInit, OnDestroy {
         case 200:
           this.station = response.item;
           this.getStationTaskEntity(response.item.stationTaskId);
+          if(this.date){
+            this._token = null;
+            this.getStationTasks(MDate.getTimeStamp(this.date));
+          }
           break;
         default:
           this.station = null;
@@ -499,7 +499,7 @@ export class SasisopaComponent implements OnInit, OnDestroy {
             original: {
               id: item.id,
               type: item.type,
-              date: UtilitiesService.convertDate(item.date),
+              date: MDate.getDateArray(item.date),
               originalDate: item.date,
               name: origin.name,
               zone: origin.zone,
@@ -598,9 +598,8 @@ export class SasisopaComponent implements OnInit, OnDestroy {
         switch(response.code){
           case 200:
             this.generate = true;
-            this.dateGeneration = UtilitiesService.convertDate(response.item.date);
-            const today = UtilitiesService.createPersonalTimeStamp(new Date);
-            this.isAvailable = (response.item.date <= today.timeStamp);
+            this.dateGeneration = MDate.getDateArray(response.item.date);
+            this.isAvailable = (response.item.date <= MDate.getTimeStamp(new Date()));
             break;
           default:
             this._snackBarService.openSnackBar('Ha ocurrido un error, por favor intente más tarde', 'OK', 3000);
