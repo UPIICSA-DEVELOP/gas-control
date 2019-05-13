@@ -35,7 +35,7 @@ export class TaskFilterNameComponent implements OnInit {
   }
 
   private getTasks():void{
-    this.taskName.push({id: 0, name: 'Todas'});
+    //this.taskName.push({id: 0, name: 'Todas'});
     for (let i = 0; i < this._taskTemplate.length; i++){
       if(this._taskTemplate[i].typeReport !== 6 && this._taskTemplate[i].typeReport !== 7 && this._taskTemplate[i].typeReport !== 9)
       this.taskName.push({id: Number(this._data.utils[i].id), name: this._data.utils[i].name});
