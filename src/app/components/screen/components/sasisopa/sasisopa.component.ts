@@ -107,7 +107,7 @@ export class SasisopaComponent implements OnInit, OnDestroy {
     }
     if(this._change){
       this._dialogService.confirmDialog(
-        '¿Desea salir sin guarda cambios?',
+        '¿Desea salir sin guardar cambios?',
         '',
         'ACEPTAR',
         'CANCELAR'
