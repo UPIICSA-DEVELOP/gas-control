@@ -346,6 +346,7 @@ export class ApiService implements OnDestroy{
 
   public exportCalendarByTaskList(filters: any): Observable<any>{
     let params = new HttpParams();
+    params = params.append('stationTaskId', filters.stationTaskId);
     if(!filters.firstOpen){
       params = params.append('fromDate', filters.startDate);
       params = params.append('untilDate', filters.endDate);
