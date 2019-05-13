@@ -86,7 +86,8 @@ export class DocumentationComponent implements OnInit, OnDestroy {
       case 200:
         if (response.items){
           for(let i=0; i<response.items.length;i++){
-            this.docsAsea[response.items[i].type!==19?response.items[i].type-1:response.items[i].type-3]=response.items[0];
+            const newType = (response.items[i].type!==19)? response.items[i].type-1 : response.items[i].type-3;
+            this.docsAsea[newType]=response.items[i];
           }
         } else {
           this.docsAsea = [];
@@ -104,7 +105,7 @@ export class DocumentationComponent implements OnInit, OnDestroy {
       case 200:
         if (response.items){
           for(let i=0; i<response.items.length;i++){
-            this.docsCre[response.items[i].type-17]=response.items[0];
+            this.docsCre[response.items[i].type-17]=response.items[i];
           }
         } else {
           this.docsCre = [];
