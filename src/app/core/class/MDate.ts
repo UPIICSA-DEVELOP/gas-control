@@ -32,7 +32,7 @@ export class MDate extends Date{
   private static selectMonthText(month: number): string{
     try {
       let text;
-      switch (month){
+      switch (Number(month)){
         case 1: text = "ene";
           break;
         case 2: text = "feb";
