@@ -18,6 +18,8 @@ import {SharedNotification, SharedService, SharedTypeNotification} from '@app/co
 import {Subscription} from 'rxjs';
 import {SnackBarService} from '@app/core/services/snackbar/snackbar.service';
 import {Report, TaskLists} from '@app/core/interfaces/interfaces';
+import {PdfVisorService} from '@app/core/components/pdf-visor/pdf-visor.service';
+import {OpenFileService} from '@app/core/components/open-file/open-file.service';
 
 @Component({
   selector: 'app-list-tasks',
@@ -81,7 +83,8 @@ export class ListTasksComponent implements OnInit, OnDestroy{
     private _addStationService: AddStationService,
     private _taskFilterNameService: TaskFilterNameService,
     private _sharedService: SharedService,
-    private _snackBarService: SnackBarService
+    private _snackBarService: SnackBarService,
+    private _openFile: OpenFileService
   ) {
     this._firstGet = false;
     this.listTask = {historyTasks: [], previousTasks: [], todayTasks: [], scheduleTasks: []};
@@ -476,6 +479,25 @@ export class ListTasksComponent implements OnInit, OnDestroy{
 
   public editFormat(): void{
     this._sharedService.setNotification({type: SharedTypeNotification.EditTask, value: this.reportConfig.typeReportView});
+  }
+
+  public exportFormat():void{
+    this._api.exportReport(
+      this.reportConfig.taskElement.id,
+      this.reportConfig.taskElement.original.typeReport,
+      this.reportConfig.taskElement.original.type).subscribe(response=>{
+      if (response){
+        this._openFile.open(response);
+      }
+    });
+  }
+
+  public exportListTasks(): void{
+    this._api.exportCalendarByTaskList(this.filters).subscribe(response => {
+      if (response){
+        this._openFile.open(response);
+      }
+    });
   }
 
   private createTasks(id: string):void{
