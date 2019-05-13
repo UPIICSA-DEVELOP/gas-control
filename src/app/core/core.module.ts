@@ -49,6 +49,8 @@ import {ImageVisorComponent} from '@app/core/components/image-visor/image-visor.
 import {SgmService} from '@app/components/screen/components/sgm/sgm.service';
 import {HashService} from '@app/core/utilities/hash.service';
 import {PdfViewerModule} from 'ng2-pdf-viewer';
+import {OpenFileComponent} from '@app/core/components/open-file/open-file.component';
+import {OpenFileService} from '@app/core/components/open-file/open-file.service';
 
 @NgModule({
   imports: [
@@ -94,7 +96,8 @@ import {PdfViewerModule} from 'ng2-pdf-viewer';
     SearchBoxCoreComponent,
     SignaturePadComponent,
     PdfVisorComponent,
-    ImageVisorComponent
+    ImageVisorComponent,
+    OpenFileComponent
   ],
   entryComponents: [
     DialogComponent,
@@ -105,7 +108,8 @@ import {PdfViewerModule} from 'ng2-pdf-viewer';
     LocationComponent,
     SignaturePadComponent,
     PdfVisorComponent,
-    ImageVisorComponent
+    ImageVisorComponent,
+    OpenFileComponent
   ],
   providers: [
     AuthService,
@@ -130,7 +134,8 @@ import {PdfViewerModule} from 'ng2-pdf-viewer';
     SasisopaService,
     SgmService,
     TaskFilterNameService,
-    ImageVisorService
+    ImageVisorService,
+    OpenFileService
   ]
 })
 export class CoreModule { }
