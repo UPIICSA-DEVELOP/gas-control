@@ -2,6 +2,29 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="1.5.0-beta.2"></a>
+# [1.5.0-beta.2](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/compare/v1.5.0-beta.1...v1.5.0-beta.2) (2019-05-13)
+
+
+### Bug Fixes
+
+* **API:** add param stationTaskId ([0290c5e](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/0290c5e))
+* **CompressorReport:** change class name (css) ([0980b38](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/0980b38))
+* **Constants:** update country list ([be71a3e](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/be71a3e))
+* **Documentation:** solve error to order documents ([6bd7b65](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/6bd7b65))
+* **ListTasks:** add button to export reports and task list ([8288ab5](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/8288ab5))
+* **MDate:** solve error in array date ([a7ae938](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/a7ae938))
+* **SASISOPA:** spell correction ([f8fcad9](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/f8fcad9))
+* **ScannedReport:** change styles ([9bb2a5e](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/9bb2a5e))
+* **TaskFilterName:** remove all option from filter ([b701062](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/b701062))
+
+
+### Features
+
+* **OpenFile:** create component to download file in background ([fc2d393](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/fc2d393))
+
+
+
 <a name="1.5.0-beta.1"></a>
 # [1.5.0-beta.1](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/compare/v1.5.0-beta.0...v1.5.0-beta.1) (2019-05-10)
 
