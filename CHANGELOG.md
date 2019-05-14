@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="1.5.0-beta.3"></a>
+# [1.5.0-beta.3](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/compare/v1.5.0-beta.2...v1.5.0-beta.3) (2019-05-14)
+
+
+### Bug Fixes
+
+* **Collaborators:** add layer to user without account active ([77cacd1](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/77cacd1))
+* **SASISOPA:** change error messages in annexes two, three and five ([50edf1a](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/50edf1a))
+
+
+
 <a name="1.5.0-beta.2"></a>
 # [1.5.0-beta.2](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/compare/v1.5.0-beta.1...v1.5.0-beta.2) (2019-05-13)
 
