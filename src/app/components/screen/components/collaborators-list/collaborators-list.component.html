@@ -41,6 +41,9 @@
           <ng-template #list>
             <div *ngFor="let collaborator of collaborators; let i = index">
               <mat-card class="collaborator">
+                <div class="notValidate" *ngIf="!collaborator.active">
+                  <div class="text-validate">Validación pendiente</div>
+                </div>
                 <mat-card-content>
                   <div class="image">
                     <img class="image-collaborator" *ngIf="collaborator.profileImage && collaborator.profileImage.thumbnail" [src]="collaborator.profileImage.thumbnail" alt="profile image">
