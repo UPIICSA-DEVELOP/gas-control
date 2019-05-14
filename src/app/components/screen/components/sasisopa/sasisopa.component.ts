@@ -48,6 +48,8 @@ export class SasisopaComponent implements OnInit, OnDestroy {
   public dateGeneration: string[];
   public isDevelop: boolean;
   public emptyTasks: boolean;
+  public emptyTanks: boolean;
+  public emptyBrigade: boolean;
   private _subscriptionLoader: Subscription;
   private _token: string;
   private _change: boolean;
@@ -65,6 +67,8 @@ export class SasisopaComponent implements OnInit, OnDestroy {
     private _adapter: DateAdapter<any>
   ) {
     this.emptyTasks = false;
+    this.emptyTanks = false;
+    this.emptyBrigade = false;
     this.isDevelop = environment.develop;
     this.docFile = [null, null, null, null, null, null, null, null, null, null, null, null];
     this.sasisopaDocs = [null, null, null, null, null, null, null, null, null, null, null, null];
@@ -316,6 +320,7 @@ export class SasisopaComponent implements OnInit, OnDestroy {
   }
 
   public saveChanges(index: number):void{
+    this.resetErrors();
     switch (index){
       case 2:
         if(this._forms[0]){
@@ -397,10 +402,10 @@ export class SasisopaComponent implements OnInit, OnDestroy {
     this._api.getSasisopa(this._data.stationId).subscribe(response => {
       switch (response.code){
         case 200:
-          if(response.item.brigade){
+          if(response.item.brigade && response.item.brigade.brigadeElems){
             this.brigade = response.item.brigade.brigadeElems;
           }
-          if(response.item.evidencesDate){
+          if(response.item.evidencesDate && response.item.evidencesDate.date){
             this.date = UtilitiesService.generateArrayDate(response.item.evidencesDate.date,false, false);
             if(this.station && this.station.stationTaskId){
               this._token = null;
@@ -417,7 +422,7 @@ export class SasisopaComponent implements OnInit, OnDestroy {
               }
             }
           }
-          if(response.item.fullSasisopa){
+          if(response.item.fullSasisopa && response.item.fullSasisopa.date){
             this.generate = true;
             this.dateGeneration = MDate.getDateArray(response.item.fullSasisopa.date);
             this.isAvailable = (response.item.fullSasisopa.date <= MDate.getTimeStamp(new Date()));
@@ -527,20 +532,51 @@ export class SasisopaComponent implements OnInit, OnDestroy {
   }
 
   public generateSasisopa():void{
-    if(this.generate && !this.isAvailable){
+    if(this._change){
       this._dialogService.confirmDialog(
-        'Esta operación reiniciará la fecha para la generación del documento',
-        '¿Desea Continuar?',
+        '¿Desea salir sin guardar cambios?',
+        '',
         'ACEPTAR',
-        'CANCELAR').afterClosed().subscribe(response =>{
+        'CANCELAR'
+      ).afterClosed().subscribe(response => {
         switch (response.code){
           case 1:
-            this.validateSasisopa();
+            this._change = false;
+            this.getSasisopa();
+            if(this.generate && !this.isAvailable){
+              this._dialogService.confirmDialog(
+                'Esta operación reiniciará la fecha para la generación del documento',
+                '¿Desea Continuar?',
+                'ACEPTAR',
+                'CANCELAR').afterClosed().subscribe(response =>{
+                switch (response.code){
+                  case 1:
+                    this.validateSasisopa();
+                    break;
+                }
+              })
+            }else{
+              this.validateSasisopa();
+            }
             break;
         }
-      })
+      });
     }else{
-      this.validateSasisopa();
+      if(this.generate && !this.isAvailable){
+        this._dialogService.confirmDialog(
+          'Esta operación reiniciará la fecha para la generación del documento',
+          '¿Desea Continuar?',
+          'ACEPTAR',
+          'CANCELAR').afterClosed().subscribe(response =>{
+          switch (response.code){
+            case 1:
+              this.validateSasisopa();
+              break;
+          }
+        })
+      }else{
+        this.validateSasisopa();
+      }
     }
   }
 
@@ -552,18 +588,33 @@ export class SasisopaComponent implements OnInit, OnDestroy {
         error = true;
       }
     }
-    if(!this.sasisopaDocs[0] || !this.sasisopaDocs[1] || !this.station.fuelTanks || this.station.fuelTanks.length === 0){
+    if(!this.sasisopaDocs[0] || !this.sasisopaDocs[1]){
       this.errors[1] = true;
       error = true;
     }
-    if(!this.sasisopaDocs[2] || !this.sasisopaDocs[3] || this.brigade.length === 0){
+    if(!this.errors[1]){
+      if(!this.station.fuelTanks || (this.station.fuelTanks && this.station.fuelTanks.length === 0)){
+        this.errors[1] = true;
+        this.emptyTanks = true;
+        error = true;
+      }
+    }
+    if(!this.sasisopaDocs[2] || !this.sasisopaDocs[3]){
       this.errors[2] = true;
       error = true;
-    }else if (this.brigade.length !==0 ){
-      for(let i = 0; i < this.brigade.length; i++){
-        if(!this.brigade[i].name || !this.brigade[i].lastName || !this.brigade[i].position){
-          this.errors[2] = true;
-          error = true;
+    }
+    if(!this.errors[2]){
+      if(!this.brigade || (this.brigade && this.brigade.length === 0)){
+        this.errors[2] = true;
+        this.emptyBrigade = true;
+        error = true;
+      }else{
+        for(let i = 0; i<this.brigade.length; i++){
+          if(!this.brigade[i].name || !this.brigade[i].lastName || !this.brigade[i].position){
+            this.errors[2] = true;
+            this.emptyBrigade = true;
+            error = true;
+          }
         }
       }
     }
@@ -578,6 +629,7 @@ export class SasisopaComponent implements OnInit, OnDestroy {
     if(this.listTasks.length === 0 && !this.errors[4]){
       this.errors[4] = true;
       this.emptyTasks = true;
+      error = true;
     }
     if(!this.sasisopaDocs[5]){
       this.errors[5] = true;
@@ -630,6 +682,8 @@ export class SasisopaComponent implements OnInit, OnDestroy {
 
   private resetErrors(): void{
     this.emptyTasks = false;
+    this.emptyTanks = false;
+    this.emptyBrigade = false;
     for(let i = 0; i < 8; i++){
       this.errors[i] = false;
     }
