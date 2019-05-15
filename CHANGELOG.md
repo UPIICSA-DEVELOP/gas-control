@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="1.5.1-beta.0"></a>
+## [1.5.1-beta.0](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/compare/v1.5.0...v1.5.1-beta.0) (2019-05-15)
+
+
+### Bug Fixes
+
+* **ListTasks:** solve error with token in others module ([73b5ff0](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/73b5ff0))
+
+
+
 <a name="1.5.0"></a>
 # [1.5.0](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/compare/v1.5.0-beta.4...v1.5.0) (2019-05-15)
 
