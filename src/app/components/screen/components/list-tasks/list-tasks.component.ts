@@ -386,14 +386,16 @@ export class ListTasksComponent implements OnInit, OnDestroy{
       this._api.listUTask(this.filters).subscribe(response=>{
         switch (response.code){
           case 200:
+            let token;
             if(this._tokenTwo === response.nextPageToken){
               this._tokenTwo = null;
+              token = true;
             }else{
               this._tokenTwo = response.nextPageToken;
             }
-            if(response.items){
+            if(response.items && !token){
               this.compareNotCalendarTasks(response.items);
-            }else{
+            }else if(!token) {
               this.notCalendarTasks = [];
             }
             break;
