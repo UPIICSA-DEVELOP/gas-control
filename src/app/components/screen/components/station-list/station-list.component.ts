@@ -235,11 +235,24 @@ export class StationListComponent implements OnInit, DoCheck {
         this._sharedService.setNotification({type: SharedTypeNotification.ChangeStation, value: {id: id, newNotification: newNotification}});
       });
     }else{
-      this._dialogService.alertDialog(
-        'Verificar Estado de suscripción',
-        'Esta estación esta suspendida por un problema con el último pago',
-        ''
-      )
+      switch (this.user.role){
+        case 1:
+        case 2:
+        case 3:
+          this._dialogService.alertDialog(
+            'Verificar Estado de suscripción',
+            'Esta estación esta suspendida por un problema con el último pago',
+            ''
+          );
+          break;
+        case 4:
+          this._dialogService.alertDialog(
+            'Verificar Estado de suscripción',
+            'Su cuenta esta suspendida por un problema con el último pago',
+            ''
+          );
+          break;
+      }
     }
   }
 }
