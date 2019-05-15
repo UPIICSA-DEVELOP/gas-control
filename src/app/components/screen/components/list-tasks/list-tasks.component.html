@@ -34,7 +34,7 @@
           <button [color]="'primary'" *ngIf="others && !reportConfig.reportView" mat-icon-button (click)="closeOthers()">
             <mat-icon>close</mat-icon>
           </button>
-          <button [color]="'primary'" [disabled]="load" mat-icon-button *ngIf="!others && !reportConfig.reportView && !notCalendar" (click)="exportListTasks()" matTooltip="Exportar lista">
+          <button [color]="'primary'" [disabled]="load" mat-icon-button *ngIf="!reportConfig.reportView && !notCalendar" (click)="exportListTasks()" matTooltip="Exportar lista">
             <mat-icon svgIcon="icons:fileDownload"></mat-icon>
           </button>
           <button [color]="'primary'" [disabled]="notCalendar" mat-icon-button *ngIf="!others && !reportConfig.reportView" (click)="search()" matTooltip="Buscar">
@@ -154,6 +154,9 @@
                 <ng-template #frReportView>
                   <div style="width: 95%">
                     <div style="display: flex; justify-content: flex-end">
+                      <button *ngIf="reportConfig.status === 4" [disabled]="load" mat-icon-button matTooltip="Exportar reporte" (click)="exportFormat()">
+                        <mat-icon svgIcon="icons:fileDownload"></mat-icon>
+                      </button>
                       <button mat-icon-button *ngIf="user.role === 7 && reportConfig.status === 4" (click)="editFormat()" matTooltip="Editar">
                         <mat-icon>edit</mat-icon>
                       </button>
@@ -198,6 +201,9 @@
                 <ng-template #incidenceReportView>
                   <div style="width: 95%">
                     <div style="display: flex; justify-content: flex-end">
+                      <button *ngIf="reportConfig.status === 4" [disabled]="load" mat-icon-button matTooltip="Exportar reporte" (click)="exportFormat()">
+                        <mat-icon svgIcon="icons:fileDownload"></mat-icon>
+                      </button>
                       <button mat-icon-button *ngIf="user.role === 7 && reportConfig.status === 4" (click)="editFormat()" matTooltip="Editar">
                         <mat-icon>edit</mat-icon>
                       </button>
@@ -242,6 +248,9 @@
                 <ng-template #frReportView>
                   <div style="width: 95%">
                     <div style="display: flex; justify-content: flex-end">
+                      <button *ngIf="reportConfig.status === 4" [disabled]="load" mat-icon-button matTooltip="Exportar reporte" (click)="exportFormat()">
+                        <mat-icon svgIcon="icons:fileDownload"></mat-icon>
+                      </button>
                       <button mat-icon-button *ngIf="user.role === 7 && reportConfig.status === 4" (click)="editFormat()" matTooltip="Editar">
                         <mat-icon>edit</mat-icon>
                       </button>

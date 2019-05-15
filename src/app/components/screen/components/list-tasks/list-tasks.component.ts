@@ -39,7 +39,7 @@ export class ListTasksComponent implements OnInit, OnDestroy{
       this.station = stationObj;
       if(this.station.stationTaskId){
         this.notCalendar = false;
-        this.getStationTask();
+        this.getStatusTask();
       }else{
         this.notCalendar = true;
       }
@@ -118,6 +118,20 @@ export class ListTasksComponent implements OnInit, OnDestroy{
   ngOnDestroy(): void{
     this._subscriptionShared.unsubscribe();
     this._subscriptionLoader.unsubscribe();
+  }
+
+  private getStatusTask(): void{
+    this._api.getStationTask(this.station.stationTaskId).subscribe(response=>{
+      switch (response.code){
+        case 200:
+          if(response.item.status === 3){
+            this.getStationTask();
+          }else{
+            this.createTasks(this.station.stationTaskId);
+          }
+          break;
+      }
+    })
   }
 
   private checkChanges():void{
@@ -394,7 +408,7 @@ export class ListTasksComponent implements OnInit, OnDestroy{
               this._tokenTwo = response.nextPageToken;
             }
             if(response.items && !token){
-              this.compareNotCalendarTasks(response.items);
+              this.compareNotCalendarTasks(response.items, Number(this.filters.type));
             }else if(!token) {
               this.notCalendarTasks = [];
             }
@@ -407,8 +421,8 @@ export class ListTasksComponent implements OnInit, OnDestroy{
     }
   }
 
-  private compareNotCalendarTasks(tasks: any):void{
-    tasks.forEach(task => {this.notCalendarTasks.push({id: task.id, date: UtilitiesService.convertDate(task.date),});});
+  private compareNotCalendarTasks(tasks: any, type: number):void{
+    tasks.forEach(task => {this.notCalendarTasks.push({id: task.id, date: UtilitiesService.convertDate(task.date), type: type});});
     this._firstGet = false;
   }
 
@@ -483,18 +497,38 @@ export class ListTasksComponent implements OnInit, OnDestroy{
   }
 
   public exportFormat():void{
-    this._api.exportReport(
-      this.reportConfig.taskElement.id,
-      this.reportConfig.taskElement.original.typeReport,
-      this.reportConfig.taskElement.original.type).subscribe(response=>{
-      if (response){
-        this._openFile.open(response);
-      }
-    });
+    if(this.others){
+      this._api.exportReport(
+        this.reportConfig.taskElement.id,
+        this.reportConfig.typeReportView,
+        this.reportConfig.taskElement.type,
+        this.others).subscribe(response=>{
+        if (response){
+          this._openFile.open(response);
+        }
+      });
+    }else{
+      this._api.exportReport(
+        this.reportConfig.taskElement.id,
+        this.reportConfig.taskElement.original.typeReport,
+        this.reportConfig.taskElement.original.type,
+        this.others).subscribe(response=>{
+        if (response){
+          this._openFile.open(response);
+        }
+      });
+    }
   }
 
   public exportListTasks(): void{
-    this._api.exportCalendarByTaskList(this.filters).subscribe(response => {
+    if(this.listTask.scheduleTasks.length === 0 &&
+      this.listTask.historyTasks.length === 0 &&
+      this.listTask.previousTasks.length === 0 &&
+      this.listTask.todayTasks.length == 0){
+      this._snackBarService.openSnackBar('No es posible exportar una lista vacía','OK',3000);
+      return;
+    }
+    this._api.exportCalendarByTaskList(this.filters, this.others).subscribe(response => {
       if (response){
         this._openFile.open(response);
       }
