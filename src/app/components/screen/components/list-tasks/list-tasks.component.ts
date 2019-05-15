@@ -18,7 +18,6 @@ import {SharedNotification, SharedService, SharedTypeNotification} from '@app/co
 import {Subscription} from 'rxjs';
 import {SnackBarService} from '@app/core/services/snackbar/snackbar.service';
 import {Report, TaskLists} from '@app/core/interfaces/interfaces';
-import {PdfVisorService} from '@app/core/components/pdf-visor/pdf-visor.service';
 import {OpenFileService} from '@app/core/components/open-file/open-file.service';
 
 @Component({
@@ -248,7 +247,7 @@ export class ListTasksComponent implements OnInit, OnDestroy{
   }
 
   public dateFilter(): void {
-    if(this.station.stationTaskId && !this.finishCreateTasks && !this.notCalendar){
+    if(this.station.stationTaskId && !this.notCalendar){
       this._api.getStationTask(this.station.stationTaskId).subscribe(response => {
         switch (response.code) {
           case 200:
@@ -288,7 +287,7 @@ export class ListTasksComponent implements OnInit, OnDestroy{
   }
 
   public taskFilter(): void {
-    if(!this.finishCreateTasks && !this.notCalendar){
+    if(!this.notCalendar){
       this._filterService.open(this.filter).afterClosed().subscribe(response => {
         switch (response.code) {
           case 1:
@@ -329,7 +328,7 @@ export class ListTasksComponent implements OnInit, OnDestroy{
   }
 
   public search(): void {
-    if(!this.finishCreateTasks && !this.notCalendar){
+    if(!this.notCalendar){
       this._taskFilterNameService.open({utils: this.utils.taskTemplates, lastTypeSelected: Number(this._taskType)}).afterClosed().subscribe(response => {
         switch (response.code) {
           case 1:
