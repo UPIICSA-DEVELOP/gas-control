@@ -1005,18 +1005,8 @@ export class AddGasStationComponent implements OnInit, OnDestroy {
     this._api.createStationTask(task).subscribe(response=>{
       switch (response.code){
         case 200:
-          if(this.user.role === 7){
-            this._sharedService.setNotification({type: SharedTypeNotification.CreationTask,value:response.item});
-            this._dialogRef.close();
-          }else{
-            this._router.navigate(['/home']).then(()=>{
-              this._dialogRef.close();
-              if(!this._data){
-                this._sharedService.setNotification({type: SharedTypeNotification.ChangeStation, value: {id: stationId, newNotification: false}});
-              }
-              this._sharedService.setNotification({type: SharedTypeNotification.CreationTask,value:response.item});
-            });
-          }
+          this._sharedService.setNotification({type: SharedTypeNotification.ChangeStation, value: {id: stationId, newNotification: false}});
+          this._dialogRef.close();
           break;
         default:
           this._snackBarService.openSnackBar('Ha ocurrido un error, por favor, intente de nuevo', 'OK', 3000);
