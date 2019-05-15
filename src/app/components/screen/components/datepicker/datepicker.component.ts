@@ -8,7 +8,7 @@ import {Component, Inject, OnInit} from '@angular/core';
 import {DateAdapter, MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
 import {FormBuilder, FormGroup} from '@angular/forms';
 import {SnackBarService} from '@app/core/services/snackbar/snackbar.service';
-import {UtilitiesService} from '@app/core/utilities/utilities.service';
+import {MDate} from '@app/core/class/MDate';
 
 @Component({
   selector: 'app-datepicker',
@@ -34,9 +34,9 @@ export class DatepickerComponent implements OnInit {
       endDate:['',[]]
     });
     this.dateForm.patchValue({
-      startDate: UtilitiesService.generateArrayDate(this.data.startDate, false, false),
-      endDate: UtilitiesService.generateArrayDate(this.data.endDate, false, false)
-    })
+      startDate: MDate.getPrimitiveDate(this.data.startDate),
+      endDate: MDate.getPrimitiveDate(this.data.endDate)
+    });
   }
   public close():void{
     this._dialogRef.close({code: -1})
