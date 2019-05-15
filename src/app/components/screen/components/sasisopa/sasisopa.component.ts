@@ -77,7 +77,7 @@ export class SasisopaComponent implements OnInit, OnDestroy {
     this.dateSelected = undefined;
     this.date = undefined;
     this._change = false;
-    this.maxDate = UtilitiesService.addSubtractDaysFromDate(new Date, 1, false);
+    this.maxDate = UtilitiesService.addSubtractDaysFromDate(new Date(), 1, false);
     this.minDate = undefined;
     this.station = undefined;
     this._token = undefined;
