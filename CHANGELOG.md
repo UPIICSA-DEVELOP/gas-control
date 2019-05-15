@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="1.5.0-beta.4"></a>
+# [1.5.0-beta.4](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/compare/v1.5.0-beta.3...v1.5.0-beta.4) (2019-05-15)
+
+
+### Bug Fixes
+
+* **ListTasks:** modify validation to filters ([cc7fa56](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/cc7fa56))
+* **SASISOPA:** change errors ([cf7686a](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/cf7686a))
+* **StationList:** change message in alert ([70d0152](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/70d0152))
+
+
+
 <a name="1.5.0-beta.3"></a>
 # [1.5.0-beta.3](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/compare/v1.5.0-beta.2...v1.5.0-beta.3) (2019-05-14)
 
