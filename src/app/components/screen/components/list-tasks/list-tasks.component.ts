@@ -501,8 +501,7 @@ export class ListTasksComponent implements OnInit, OnDestroy{
       this._api.exportReport(
         this.reportConfig.taskElement.id,
         this.reportConfig.typeReportView,
-        this.reportConfig.taskElement.type,
-        this.others).subscribe(response=>{
+        this.reportConfig.taskElement.type).subscribe(response=>{
         if (response){
           this._openFile.open(response);
         }
@@ -511,8 +510,7 @@ export class ListTasksComponent implements OnInit, OnDestroy{
       this._api.exportReport(
         this.reportConfig.taskElement.id,
         this.reportConfig.taskElement.original.typeReport,
-        this.reportConfig.taskElement.original.type,
-        this.others).subscribe(response=>{
+        this.reportConfig.taskElement.original.type).subscribe(response=>{
         if (response){
           this._openFile.open(response);
         }

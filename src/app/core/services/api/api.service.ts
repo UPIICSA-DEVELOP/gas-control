@@ -336,19 +336,17 @@ export class ApiService implements OnDestroy{
     return this._http.get(url + 'endpoints/v1/joinPDF', {responseType: 'blob' as 'json', params: params});
   }
 
-  public exportReport (taskId: string, typeReport: number, templateId: number ,uTask: boolean):Observable<any>{
+  public exportReport (taskId: string, typeReport: number, templateId: number):Observable<any>{
     let params = new HttpParams();
     params = params.append('taskId', taskId);
     params = params.append('typeReport', typeReport.toString());
     params = params.append('templateId', templateId.toString());
-    params = params.append('uTask', (uTask?'true':'false'));
     return this._http.get(ApiService.PROXY_ENDPOINTS + 'exportReport', {responseType: 'blob' as 'json', params: params});
   }
 
   public exportCalendarByTaskList(filters: any, uTask: boolean): Observable<any>{
     let params = new HttpParams();
     params = params.append('stationTaskId', filters.stationTaskId);
-    params = params.append('uTask', (uTask ? 'true':'false'));
     if(!filters.firstOpen){
       params = params.append('fromDate', filters.startDate);
       params = params.append('untilDate', filters.endDate);
@@ -356,8 +354,17 @@ export class ApiService implements OnDestroy{
     if(filters.status !== '0' && !uTask){
       params = params.append('status', filters.status);
     }
-    if(filters.type!== '0'){
-      params = params.append('type', filters.type);
+    if(uTask){
+      let type;
+      switch (filters.type){
+        case '1': type = '7';
+          break;
+        case '2': type = '6';
+          break;
+        case '3': type = '9';
+          break;
+      }
+      params = params.append('type', type);
     }
     return this._http.get(ApiService.PROXY_ENDPOINTS + 'exportCalendarByTaskList', {responseType: 'blob' as 'json', params: params});
   }
