@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="1.5.1-beta.1"></a>
+## [1.5.1-beta.1](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/compare/v1.5.1-beta.0...v1.5.1-beta.1) (2019-05-16)
+
+
+### Bug Fixes
+
+* **AddGasStation:** modify close modal ([ee500e4](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/ee500e4))
+* **API:** modify methods to get calendar and report file ([9700464](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/9700464))
+* **Datepicker:** use MDate class to parse ([2efe62d](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/2efe62d))
+* **ListTasks:** change prams to export reports and list ([2b19c99](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/2b19c99))
+* **ListTasks:** modify export for other modules ([f3c9ee2](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/f3c9ee2))
+* **PdfVisor:** disable close to click out modal ([fd524d3](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/fd524d3))
+
+
+
 <a name="1.5.1-beta.0"></a>
 ## [1.5.1-beta.0](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/compare/v1.5.0...v1.5.1-beta.0) (2019-05-15)
 
