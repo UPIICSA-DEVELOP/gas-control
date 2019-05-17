@@ -347,6 +347,7 @@ export class ApiService implements OnDestroy{
   public exportCalendarByTaskList(filters: any, uTask: boolean): Observable<any>{
     let params = new HttpParams();
     params = params.append('stationTaskId', filters.stationTaskId);
+    params = params.append('uTask', (uTask ? 'true':'false'));
     if(!filters.firstOpen){
       params = params.append('fromDate', filters.startDate);
       params = params.append('untilDate', filters.endDate);
@@ -354,17 +355,8 @@ export class ApiService implements OnDestroy{
     if(filters.status !== '0' && !uTask){
       params = params.append('status', filters.status);
     }
-    if(uTask){
-      let type;
-      switch (filters.type){
-        case '1': type = '7';
-          break;
-        case '2': type = '6';
-          break;
-        case '3': type = '9';
-          break;
-      }
-      params = params.append('type', type);
+    if(filters.type!== '0'){
+      params = params.append('typeTask', filters.type);
     }
     return this._http.get(ApiService.PROXY_ENDPOINTS + 'exportCalendarByTaskList', {responseType: 'blob' as 'json', params: params});
   }
