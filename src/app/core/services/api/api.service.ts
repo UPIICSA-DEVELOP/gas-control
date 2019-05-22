@@ -15,6 +15,7 @@ import {Subscription} from 'rxjs/Rx';
 import {environment} from '@env/environment';
 import {SessionStorageService} from '@app/core/services/session-storage/session-storage.service';
 import {Constants} from '@app/core/constants.core';
+import {map} from 'rxjs/internal/operators';
 
 
 @Injectable()
@@ -246,10 +247,6 @@ export class ApiService implements OnDestroy{
     return this._http.post(ApiService.API_URL_COMPLETE + 'createConsultancy', data);
   }
 
-  public createPerson(person: any): Observable<any>{
-    return this._http.post(ApiService.API_URL_COMPLETE + 'createPerson', person);
-  }
-
   public listConsultancy(): Observable<any>{
     return this._http.get(ApiService.API_URL_COMPLETE + 'listConsultancy',);
   }
@@ -313,6 +310,14 @@ export class ApiService implements OnDestroy{
     });
   }
 
+
+  /**
+   * Method to request pdf for SASISOPA or SGM
+   * @deprecated Replace for fullSasisopaRequest or fullSgmRequest
+   * @param {string} stationId: Station Identifier
+   * @param {boolean} isSGM: identifier for file
+   * @returns {Observable<any>} entityResponse
+   */
   public getFullPDF(stationId: string, isSGM: boolean): Observable<any>{
     let params = new HttpParams();
     params = params.append('stationId', stationId);
@@ -326,6 +331,13 @@ export class ApiService implements OnDestroy{
       stationId: stationId
     };
     return this._http.post(ApiService.API_URL_COMPLETE + 'fullSasisopaRequest', options);
+  }
+
+  public fullSgmRequest(stationId: string): Observable<any>{
+    const options = {
+      stationId: stationId
+    };
+    return this._http.post(ApiService.API_URL_COMPLETE + 'fullSgmRequest', options);
   }
 
   public joinPDF(stationId: string, isSGM: boolean): Observable<any>{

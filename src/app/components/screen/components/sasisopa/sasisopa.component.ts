@@ -646,7 +646,7 @@ export class SasisopaComponent implements OnInit, OnDestroy {
     if(error){
       return;
     }else{
-      this._api.getFullPDF(this.station.id, false).subscribe(response =>{
+      this._api.fullSasisopaRequest(this.station.id).subscribe(response =>{
         switch(response.code){
           case 200:
             this.generate = true;

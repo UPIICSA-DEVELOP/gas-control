@@ -18,6 +18,7 @@ import {UtilitiesService} from '@app/core/utilities/utilities.service';
 import {Constants} from '@app/core/constants.core';
 import {LocalStorageService} from '@app/core/services/local-storage/local-storage.service';
 import {environment} from '@env/environment';
+import {MDate} from '@app/core/class/MDate';
 
 @Component({
   selector: 'app-sgm',
@@ -202,9 +203,8 @@ export class SgmComponent implements OnInit, OnDestroy {
           }
           if(response.item.fullSgm){
             this.generate = true;
-            this.dateGeneration = UtilitiesService.convertDate(response.item.fullSgm.date);
-            const today = UtilitiesService.createPersonalTimeStamp(new Date());
-            if(response.item.fullSgm.date <= today.timeStamp){
+            this.dateGeneration = MDate.getDateArray(response.item.fullSgm.date);
+            if(response.item.fullSgm.date <= MDate.getTimeStamp(new Date())){
               this.isAvailable = true;
             }
           }
@@ -236,13 +236,12 @@ export class SgmComponent implements OnInit, OnDestroy {
     if(error){
       return;
     }else{
-      this._api.getFullPDF(this.station.id, true).subscribe(response =>{
+      this._api.fullSgmRequest(this.station.id).subscribe(response =>{
         switch(response.code){
           case 200:
             this.generate = true;
-            this.dateGeneration = UtilitiesService.convertDate(response.item.date);
-            const today = UtilitiesService.createPersonalTimeStamp(new Date);
-            if(response.item.date <= today.timeStamp){
+            this.dateGeneration = MDate.getDateArray(response.item.date);
+            if(response.item.date <= MDate.getTimeStamp(new Date())){
               this.isAvailable = true;
             }
             break;
