@@ -4,7 +4,7 @@
  * Proprietary and confidential
  */
 
-import {Component, DoCheck, OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {ApiService} from '@app/core/services/api/api.service';
 import {DialogService} from '@app/core/components/dialog/dialog.service';
 import {CookieService} from '@app/core/services/cookie/cookie.service';
@@ -44,14 +44,15 @@ import {SharedService, SharedTypeNotification} from '@app/core/services/shared/s
   ],
   host: {'[@fadeInAnimation]': ''}
 })
-export class StationListComponent implements OnInit, DoCheck {
+export class StationListComponent implements OnInit {
 
   public stationList: any[];
-  public stations: any[];
   public notificationActive: boolean[];
   public groupIcon: any;
   public user: any;
   public emptySearch: boolean;
+  private _stations: any[];
+  private _notifyCopy: boolean[];
   constructor(
     private _api: ApiService,
     private _dialogService: DialogService,
@@ -68,14 +69,6 @@ export class StationListComponent implements OnInit, DoCheck {
     this.getUtilities();
   }
 
-  ngDoCheck(): void {
-    if (this.stationList) {
-      for (let i = 0; i < this.stationList.length; i++){
-        this.notificationActive.push(this.stationList[i].activeNotification);
-      }
-    }
-  }
-
   private getUtilities():void{
     this._api.getUtils().subscribe(response=>{
       this.groupIcon = response.item;
@@ -88,7 +81,7 @@ export class StationListComponent implements OnInit, DoCheck {
         switch(response.code){
           case 200:
             this.stationList[index].enabled = true;
-            this.stations[index].enabled = true;
+            this._stations[index].enabled = true;
             break;
           default:
             break;
@@ -107,7 +100,7 @@ export class StationListComponent implements OnInit, DoCheck {
               switch(response.code){
                 case 200:
                   this.stationList[index].enabled = false;
-                  this.stations[index].enabled = false;
+                  this._stations[index].enabled = false;
                   break;
                 default:
                   break;
@@ -135,7 +128,8 @@ export class StationListComponent implements OnInit, DoCheck {
             this._api.turnOffNotificationStation(CookieService.getCookie(Constants.IdSession), id).subscribe(response=>{
               switch (response.code) {
                 case 200:
-                  this.notificationActive[index]=false;
+                  this.notificationActive[index] = false;
+                  this._notifyCopy[index] = false;
                   break;
               }
             });
@@ -146,7 +140,8 @@ export class StationListComponent implements OnInit, DoCheck {
       this._api.turnOnNotificationStation(CookieService.getCookie(Constants.IdSession), id).subscribe( response =>{
         switch (response.code) {
           case 200:
-            this.notificationActive[index]=true;
+            this.notificationActive[index] = true;
+            this._notifyCopy[index] = true;
             break;
         }
       })
@@ -168,7 +163,8 @@ export class StationListComponent implements OnInit, DoCheck {
           switch (response.code) {
             case 200:
               this.stationList = UtilitiesService.sortJSON(response.item.stationLites,'progress','asc');
-              this.stations = this.stationList;
+              this._stations = this.stationList;
+              this.getNotificationsByStation();
               break;
             default:
               break;
@@ -180,7 +176,8 @@ export class StationListComponent implements OnInit, DoCheck {
           switch (response.code) {
             case 200:
               this.stationList = UtilitiesService.sortJSON(response.item.stationLites,'progress','asc');
-              this.stations = this.stationList;
+              this._stations = this.stationList;
+              this.getNotificationsByStation();
               break;
             default:
               break;
@@ -192,6 +189,12 @@ export class StationListComponent implements OnInit, DoCheck {
     }
   }
 
+  private getNotificationsByStation():void{
+    for (let i = 0; i < this.stationList.length; i++){
+      this.notificationActive.push(this.stationList[i].activeNotification);
+    }
+  }
+
   public addStation():void{
     this._router.navigate(['/home']).then(() => {
       this._addStation.open();
@@ -200,30 +203,37 @@ export class StationListComponent implements OnInit, DoCheck {
 
   public search(event: any): void{
     const newArray = [];
+    const arrayNotify = [];
     const text = (event.srcElement.value).toLowerCase();
     if(text === ''){
-      this.stationList = this.stations;
+      this.stationList = this._stations;
+      this._notifyCopy = this.notificationActive;
     }else{
-      for(let x=0; x < this.stations.length; x++){
-        if(this.stations[x].email.toLowerCase().includes(text) || this.stations[x].phoneNumber.includes(text) || UtilitiesService.removeDiacritics(this.stations[x].name).toLowerCase().includes(text)){
-          newArray.push(this.stations[x]);
+      for(let x=0; x < this._stations.length; x++){
+        if(this._stations[x].email.toLowerCase().includes(text) || this._stations[x].phoneNumber.includes(text) || UtilitiesService.removeDiacritics(this._stations[x].name).toLowerCase().includes(text)){
+          newArray.push(this._stations[x]);
+          arrayNotify.push(this._stations[x].activeNotification);
         }else {
           for (let i= 0; i<this.groupIcon.groupIcons.length; i++){
-            if(UtilitiesService.removeDiacritics(this.groupIcon.groupIcons[i].name).toLowerCase().includes(text) && this.stations[x].type === i+1){
-              newArray.push(this.stations[x]);
+            if(UtilitiesService.removeDiacritics(this.groupIcon.groupIcons[i].name).toLowerCase().includes(text) && this._stations[x].type === i+1){
+              newArray.push(this._stations[x]);
+              arrayNotify.push(this._stations[x].activeNotification);
             }
           }
         }
-        if(this.stations[x].crePermission){
-          if(UtilitiesService.removeDiacritics(this.stations[x].crePermission).toLowerCase().includes(text)){
-            newArray.push(this.stations[x]);
+        if(this._stations[x].crePermission){
+          if(UtilitiesService.removeDiacritics(this._stations[x].crePermission).toLowerCase().includes(text)){
+            newArray.push(this._stations[x]);
+            arrayNotify.push(this._stations[x].activeNotification);
           }
         }
       }
       if(newArray.length > 0){
         this.stationList = newArray;
+        this.notificationActive = arrayNotify;
       }else{
         this.stationList = newArray;
+        this.notificationActive = arrayNotify;
         this.emptySearch = (newArray.length===0);
       }
     }
