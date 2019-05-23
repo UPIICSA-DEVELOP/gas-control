@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="1.5.2-beta.1"></a>
+## [1.5.2-beta.1](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/compare/v1.5.2-beta.0...v1.5.2-beta.1) (2019-05-23)
+
+
+### Bug Fixes
+
+* change implement to request sgm and sasisopa ([9d3c46c](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/9d3c46c))
+* **Stat:** solve error with notifications icon ([b0bf5df](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/b0bf5df))
+
+
+
 <a name="1.5.2-beta.0"></a>
 ## [1.5.2-beta.0](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/compare/v1.5.1...v1.5.2-beta.0) (2019-05-17)
 
