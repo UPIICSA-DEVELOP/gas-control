@@ -84,11 +84,16 @@ body{
 
 .location-panel{
   width: 40vw;
+  min-height: 55vh;
+  max-width: 90vh;
   mat-dialog-container{
     padding: 0 !important;
   }
+  @media screen and (max-width: 1024px){
+    width: 70vw;
+  }
   @media screen and (max-width: 600px){
-    width: 100vw;
+    width: 90vw;
   }
 }
 
@@ -98,7 +103,7 @@ body{
     min-height: 55vh;
     max-width: 90vh;
     padding: 0;
-    @media screen and (max-width: 1024px){
+    @media screen and (max-width: 1200px){
       width: 50vw;
     }
     @media screen and (max-width: 600px){
@@ -135,6 +140,7 @@ body{
     }
     @media screen and (max-width: 800px){
       width: 80vw;
+      height: 45vh;
     }
   }
 }
@@ -151,6 +157,7 @@ body{
     }
     @media screen and (max-width: 800px){
       width: 80vw;
+      height: 70vh;
     }
   }
 }
