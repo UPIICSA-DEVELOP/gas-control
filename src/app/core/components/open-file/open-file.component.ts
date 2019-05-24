@@ -23,7 +23,6 @@ export class OpenFileComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this._bottomSheet.disableClose = true;
   }
 
   public download():void{

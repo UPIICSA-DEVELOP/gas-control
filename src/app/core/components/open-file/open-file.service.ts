@@ -19,7 +19,8 @@ export class OpenFileService {
   public open(file: string): void{
     this._bottomSheet.open(OpenFileComponent, {
       panelClass: 'share-panel',
-      data: file
-    })
+      data: file,
+      disableClose: true
+    });
   }
 }
