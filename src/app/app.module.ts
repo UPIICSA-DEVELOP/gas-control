@@ -18,7 +18,7 @@ import {GestureConfig} from '@angular/material';
 import {TranslateHttpLoader} from '@ngx-translate/http-loader';
 import {TranslateLoader, TranslateModule} from '@ngx-translate/core';
 import {AngularFireMessagingModule} from '@angular/fire/messaging';
-import {ConnectionServiceModule} from 'ng-connection-service';
+//import {ConnectionServiceModule} from 'ng-connection-service';
 import {CoreModule} from '@app/core/core.module';
 import { NavBarComponent } from './components/screen/components/nav-bar/nav-bar.component';
 import {ScreenComponent} from '@app/components/screen/screen.component';
@@ -125,7 +125,7 @@ import { TaskCardComponent } from './components/screen/components/task-card/task
     InjectorModule,
     ModuleMapLoaderModule,
     HttpClientModule,
-    ConnectionServiceModule,
+    //ConnectionServiceModule,
     BrowserTransferStateModule,
     TransferHttpCacheModule,
     AngularFireModule.initializeApp(environment.firebase),

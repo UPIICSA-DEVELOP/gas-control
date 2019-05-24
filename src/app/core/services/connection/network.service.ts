@@ -7,23 +7,23 @@
 
 import { Injectable } from '@angular/core';
 import {Observable, Subject} from 'rxjs';
-import {ConnectionService} from 'ng-connection-service';
+//import {ConnectionService} from 'ng-connection-service';
 
 @Injectable()
 export class NetworkService {
 
   private _notifyNetworkChanges = new Subject<any>();
-  private _status: boolean;
+  //private _status: boolean;
 
   constructor(
-    private _connectionService: ConnectionService
+    //private _connectionService: ConnectionService
   ) { }
 
   public init(): void{
-    this._connectionService.monitor().subscribe(status => {
+    /*this._connectionService.monitor().subscribe(status => {
       this._status = status;
       this._notifyNetworkChanges.next(this._status);
-    });
+    });*/
   }
 
   public getChangesNetwork(): Observable<any>{
