@@ -19,9 +19,7 @@ export interface ConfigDialogPass {
   oldPassword: string
 }
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 export class UpdatePasswordService {
 
   constructor(
@@ -40,7 +38,7 @@ export class UpdatePasswordService {
         accept: accept || 'ACEPTAR',
         cancel: cancel || 'CANCELAR',
       },
-      disableClose: false
+      disableClose: true
     })
   }
 }
