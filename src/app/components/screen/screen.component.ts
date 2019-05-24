@@ -4,7 +4,7 @@
  *  Proprietary and confidential
  */
 
-import {AfterViewInit, Component, OnDestroy, OnInit} from '@angular/core';
+import {AfterViewInit, Component, Inject, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {ApiService} from '@app/core/services/api/api.service';
 import {CookieService} from '@app/core/services/cookie/cookie.service';
 import {Constants} from '@app/core/constants.core';
@@ -24,6 +24,7 @@ import {SignaturePadService} from '@app/core/components/signature-pad/signature-
 import {UploadFileService} from '@app/core/components/upload-file/upload-file.service';
 import {SnackBarService} from '@app/core/services/snackbar/snackbar.service';
 import {UtilitiesService} from '@app/core/utilities/utilities.service';
+import {DOCUMENT} from '@angular/common';
 
 @Component({
   selector: 'app-screen',
@@ -34,14 +35,23 @@ export class ScreenComponent implements OnInit, AfterViewInit, OnDestroy{
 
   public stationActive: any;
   public role: number;
-  public menu: boolean;
+  public opened: boolean;
+  public disabledClose: boolean;
+  public mode: string;
   public utils: any;
   public load: boolean;
   public newNotification: boolean;
   private _stationId: any;
   private _subscriptionShared: Subscription;
   private _subscriptionLoader: Subscription;
+  @ViewChild('drawer') private _drawer: any;
+
+
+
+
+
   constructor(
+    @Inject(DOCUMENT) private _document: Document,
     private _api: ApiService,
     private _apiLoader: ApiLoaderService,
     private _router: Router,
@@ -57,18 +67,25 @@ export class ScreenComponent implements OnInit, AfterViewInit, OnDestroy{
     private _uploadFile: UploadFileService,
     private _snackBarService: SnackBarService
   ) {
-    this._subscriptionLoader = this._apiLoader.getProgress().subscribe(load=>{this.load = load});
-    this.menu = true;
+    this.mode = 'side';
+    this.opened = true;
+    this.disabledClose = true;
     this.newNotification = false;
   }
 
   ngOnInit() {
+    this._subscriptionLoader = this._apiLoader.getProgress().subscribe(load=>{this.load = load});
     if(this._activateRoute.snapshot.queryParams['station']){
       this._stationId = this._activateRoute.snapshot.queryParams['station'];
     }
   }
 
   ngAfterViewInit(): void{
+    if(this._document.body.clientWidth <= 1024){
+      this.opened = false;
+      this.disabledClose = false;
+      this.mode = 'over'
+    }
     this.validateSignatureUser();
     this.initNotifications();
     this.checkChanges();
@@ -90,11 +107,17 @@ export class ScreenComponent implements OnInit, AfterViewInit, OnDestroy{
          this.stationActive.doneTasks = response.value.doneTasks;
          this.stationActive.progress = response.value.progress;
          break;
+       case SharedTypeNotification.OpenCloseMenu:
+         this._drawer.toggle();
+         break;
      }
    });
  }
 
   public addCollaborator():void{
+    if(this.mode === 'over'){
+      this._drawer.toggle();
+    }
     this._router.navigate(['/home/add-collaborator'], {queryParams:{stationId: this.stationActive.id}}).then();
   }
 
@@ -136,17 +159,17 @@ export class ScreenComponent implements OnInit, AfterViewInit, OnDestroy{
       this.role = user.role;
       this._api.getCompleteInfoDashboard(userId,user.refId,this.role,onlyOneStationId).subscribe(response=>{
         if (response){
-          this.utils = response[1].item;
+          this.utils = response.utils.item;
           switch (this.role){
             case 1:
             case 2:
             case 3:
             case 4:
-              this.prepareDashboardToConsultancy(response[0], onlyOneStationId);
+              this.prepareDashboardToConsultancy(response.station, onlyOneStationId);
               break;
             case 5:
             case 6:
-              this.prepareDashboardToStationWorkers(response[0], onlyOneStationId);
+              this.prepareDashboardToStationWorkers(response.station, onlyOneStationId);
               break;
             case 7:
               this.stationActive = response[0].item;
@@ -161,6 +184,12 @@ export class ScreenComponent implements OnInit, AfterViewInit, OnDestroy{
           this.setStationMetas(this.stationActive);
         }
       });
+    }
+  }
+
+  public closeToggle(): void{
+    if(this.mode === 'over'){
+      this._drawer.toggle();
     }
   }
 
@@ -193,12 +222,18 @@ export class ScreenComponent implements OnInit, AfterViewInit, OnDestroy{
   }
 
   public openOtherTasks():void{
+    if(this.mode === 'over'){
+      this._drawer.toggle();
+    }
     this._sharedService.setNotification({type: SharedTypeNotification.NotCalendarTask, value: true});
   }
 
   public openSasisopaModal():void{
     if(this.role !== 6){
       this._sasisopaService.open({utils: this.utils, stationId: this.stationActive.id});
+      if(this.mode === 'over'){
+        this._drawer.toggle();
+      }
     }else{
       this._snackBarService.openSnackBar('Usted no tiene permiso para visualizar este módulo','OK',3000);
     }
@@ -207,6 +242,9 @@ export class ScreenComponent implements OnInit, AfterViewInit, OnDestroy{
   public openSGMModal():void{
     if(this.role !== 6){
       this._sgmService.open({utils:this.utils, stationId: this.stationActive.id});
+      if(this.mode === 'over'){
+        this._drawer.toggle();
+      }
     }else{
       this._snackBarService.openSnackBar('Usted no tiene permiso para visualizar este módulo','OK',3000);
     }
@@ -218,6 +256,9 @@ export class ScreenComponent implements OnInit, AfterViewInit, OnDestroy{
       this._router.navigate(['/home/notifications'], {queryParams:{id: this.stationActive.id}}).then();
     }else{
       this._router.navigate(['/home/notifications'], {queryParams:{id: this.stationActive.id, admin: this.stationActive.idLegalRepresentative}}).then();
+    }
+    if(this.mode === 'over'){
+      this._drawer.toggle();
     }
   }
 

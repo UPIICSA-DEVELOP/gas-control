@@ -407,7 +407,7 @@ export class ApiService implements OnDestroy{
         }
       }
     }
-    return forkJoin(response1, response2);
+    return forkJoin(response1, response2).pipe(map((resp: any[]) => {return {station: resp[0], utils: resp[1]}}));
   }
 
   public uploadToBusinessCard(form: FormData): Observable<any>{
