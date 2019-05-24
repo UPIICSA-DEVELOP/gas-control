@@ -9,6 +9,9 @@
   height: 100%;
   .flex-box{
     display: flex;
+    @media screen and (max-width: 600px){
+      display: block;
+    }
   }
   .inputs{
     width: 90%;
@@ -25,6 +28,9 @@
     align-items: center;
     width: 50%;
     margin: 12px;
+    @media screen and (max-width: 600px){
+      width: 100%;
+    }
   }
   .column-two{
     position: relative;
@@ -34,6 +40,10 @@
     width: 50%;
     margin: 12px;
     justify-content: center;
+    @media screen and (max-width: 600px){
+      width: 100%;
+      margin: 0;
+    }
     .manifest{
       display: flex;
       width: 90%;
