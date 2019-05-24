@@ -2,6 +2,29 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="1.5.2-beta.2"></a>
+## [1.5.2-beta.2](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/compare/v1.5.2-beta.1...v1.5.2-beta.2) (2019-05-24)
+
+
+### Bug Fixes
+
+* remove connectionService ([ac1fff3](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/ac1fff3))
+* **Collaborators:** solve error in UI ([0f91e4b](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/0f91e4b))
+* **ImageVisor:** change image size in modal ([7d4e032](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/7d4e032))
+* **ListTasks:** modify filters design for responsive ([0167f29](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/0167f29))
+* **Location:** prepare modal to responsive ([16b2dc3](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/16b2dc3))
+* **OpenFile:** modify disabled close ([bab1d3a](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/bab1d3a))
+* **ProfileConsultancy:** add margin to responsive design ([2c0bd15](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/2c0bd15))
+* **ProfileUser:** disabled buttons when page load ([2c4d03e](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/2c4d03e))
+* **Screen:** implement responsive dashboard ([0890ce2](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/0890ce2))
+* **SharedService:** add type for notify components ([3e8befb](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/3e8befb))
+* **Styles:** prepare modals to responsive ([5604284](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/5604284))
+* **TaskCard:** prepare task cards to responsive ([b783058](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/b783058))
+* **TaskFormats:** implement button to drawer menu ([57ee1c9](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/57ee1c9))
+* **TaskFormats:** implement responsive in reports ([c8cba8b](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/c8cba8b))
+
+
+
 <a name="1.5.2-beta.1"></a>
 ## [1.5.2-beta.1](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/compare/v1.5.2-beta.0...v1.5.2-beta.1) (2019-05-23)
 
