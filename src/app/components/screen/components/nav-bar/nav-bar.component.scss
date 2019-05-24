@@ -88,6 +88,16 @@
         display: flex;
       }
     }
+    .main{
+      display: none;
+      position: absolute;
+      left: 0;
+      color: #FFFFFF;
+
+      @media screen and (max-width: 1024px){
+        display: flex;
+      }
+    }
 
     .button-user{
       min-width: 28px;

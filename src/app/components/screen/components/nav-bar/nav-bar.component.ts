@@ -14,6 +14,7 @@ import {LocalStorageService} from '@app/core/services/local-storage/local-storag
 import {ApiLoaderService} from '@app/core/services/api/api-loader.service';
 import {Subscription} from 'rxjs/Rx';
 import {SessionStorageService} from '@app/core/services/session-storage/session-storage.service';
+import {SharedService, SharedTypeNotification} from '@app/core/services/shared/shared.service';
 
 @Component({
   selector: 'app-nav-bar',
@@ -32,7 +33,8 @@ export class NavBarComponent implements OnInit, DoCheck, OnDestroy  {
     private _auth: AuthService,
     private _dialogService: DialogService,
     private _router: Router,
-    private _apiLoader: ApiLoaderService
+    private _apiLoader: ApiLoaderService,
+    private _sharedService: SharedService
   ) {
   }
 
@@ -98,6 +100,10 @@ export class NavBarComponent implements OnInit, DoCheck, OnDestroy  {
       });
       this._router.navigate(['/home/collaborators'],{queryParams: {consultancy: consultancyId}}).then();
     }
+  }
+
+  public openMenu():void{
+    this._sharedService.setNotification({type:SharedTypeNotification.OpenCloseMenu, value:true});
   }
 
 }
