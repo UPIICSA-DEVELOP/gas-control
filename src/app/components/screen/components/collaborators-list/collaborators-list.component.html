@@ -121,14 +121,16 @@
       </div>
       <div class="container-2">
         <form [formGroup]="newPerson" (ngSubmit)="validateImgAndSignature(newPerson.value)" class="form">
-          <img src="../../../assets/image/background.png" class="head-image" alt="background gas station">
-          <div class="profileImage">
-            <app-upload-file [layoutTemplate]="icon" (onLoad)="onLoadImage($event)" (onRemove)="onRemoveImage()" [type]="'image'">
-              <ng-template #icon>
-                <img *ngIf="blobImageProfile" [src]="blobImageProfile" alt="User profile image">
-                <mat-icon *ngIf="!blobImageProfile">add_photo_alternate</mat-icon>
-              </ng-template>
-            </app-upload-file>
+          <img src="https://www.googleapis.com/download/storage/v1/b/businesscardgcs/o/alex4%2F2019-02-05-205017759Web-Fondo-gas-poca-transparencia.png?generation=1549399820762438&alt=media" class="head-image" alt="background gas station">
+          <div class="image-head">
+            <mat-card class="profileImage">
+              <app-upload-file [layoutTemplate]="icon" (onLoad)="onLoadImage($event)" (onRemove)="onRemoveImage()" [type]="'image'">
+                <ng-template #icon>
+                  <img *ngIf="blobImageProfile" [src]="blobImageProfile" alt="User profile image">
+                  <mat-icon *ngIf="!blobImageProfile">add_photo_alternate</mat-icon>
+                </ng-template>
+              </app-upload-file>
+            </mat-card>
           </div>
           <mat-form-field class="inputs">
             <input formControlName="name" matInput placeholder="Nombre(s)" required type="text" aria-label="New collaborator name">
@@ -137,15 +139,13 @@
             </mat-error>
           </mat-form-field>
           <mat-form-field class="inputs">
-            <input formControlName="lastName" matInput placeholder="Apellido(s)" required type="text"
-                   aria-label="New collaborator lastName">
+            <input formControlName="lastName" matInput placeholder="Apellido(s)" required type="text" aria-label="New collaborator lastName">
             <mat-error *ngIf="newPerson.controls['lastName'].hasError('required')">
               Este campo es obligatorio
             </mat-error>
           </mat-form-field>
           <mat-form-field class="inputs">
-            <input (blur)="validateEmailExist()" formControlName="email" matInput placeholder="Email" required type="email"
-                   aria-label="New collaborator email">
+            <input (blur)="validateEmailExist()" formControlName="email" matInput placeholder="Email" required type="email" aria-label="New collaborator email">
             <mat-error *ngIf="newPerson.controls['email'].hasError('required')">
               Este campo es obligatorio
             </mat-error>
@@ -159,24 +159,21 @@
           <div class="modal">
             <div class="mask" (click)="selectCountryCode()"></div>
             <mat-form-field class="inputs">
-              <input (keyup)="selectCountryCode()" formControlName="country" matInput placeholder="País" required type="text"
-                     aria-label="New collaborator country">
+              <input (keyup)="selectCountryCode()" formControlName="country" matInput placeholder="País" required type="text" aria-label="New collaborator country">
               <mat-error *ngIf="newPerson.controls['country'].hasError('required')">
                 Este campo es obligatorio
               </mat-error>
             </mat-form-field>
           </div>
           <div class="phone">
-            <div class="modal">
+            <div class="modal" style="width: 25%;">
               <div class="mask" (click)="selectCountryCode()"></div>
-              <mat-form-field class="code">
-                <input formControlName="code" matInput placeholder="Código" type="text"
-                       aria-label="New collaborator countryCode">
+              <mat-form-field class="inputs">
+                <input formControlName="code" matInput placeholder="Código" type="text" aria-label="New collaborator countryCode">
               </mat-form-field>
             </div>
             <mat-form-field class="number">
-              <input formControlName="phoneNumber" matInput placeholder="Número de celular" required type="text"
-                     aria-label="New collaborator cellphone number" #phoneNumber>
+              <input formControlName="phoneNumber" matInput placeholder="Número de celular" required type="text" aria-label="New collaborator cellphone number" #phoneNumber>
               <mat-error *ngIf="newPerson.controls['phoneNumber'].hasError('required')">
                 Este campo es obligatorio
               </mat-error>

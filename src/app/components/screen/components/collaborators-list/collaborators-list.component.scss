@@ -202,12 +202,20 @@
   }
   .form {
     text-align: center;
+    .image-head{
+      width: 100%;
+      display: flex;
+      justify-content: center;
+    }
     .head-image {
       width: 80%;
     }
     .profileImage {
-      margin-top: -48px;
-      margin-bottom: 16px;
+      margin: -48px 0 16px 0;
+      border-radius: 50%;
+      width: 80px;
+      height: 80px;
+      padding: 0;
       img {
         width: 80px;
         height: 80px;
@@ -217,25 +225,26 @@
       mat-icon {
         width: 80px;
         height: 80px;
-        font-size: 80px;
+        font-size: 60px;
         color: #707070;
         background-color: #FFFFFF;
         border-radius: 50%;
         box-shadow: 0 3px 1px 1px rgba(0, 0, 0, 0.1), 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, .10);
+        display: flex;
+        justify-content: center;
+        align-items: center;
       }
     }
     .inputs {
       width: 90%;
     }
     .phone {
+      width: 90%;
+      margin: auto;
       display: flex;
-      justify-content: center;
-      .code {
-        width: 72px;
-        margin-right: 16px
-      }
+      justify-content: space-between;
       .number {
-        width: 56%;
+        width: 70%;
       }
     }
     .website {
@@ -264,9 +273,10 @@
     .signatureContainer {
       display: flex;
       justify-content: center;
-      background-color: #FFFFFF;
+      background-color: #F2F2F2;
       border: 1.25px solid;
       align-items: center;
+      cursor: pointer;
       span {
         margin: 54px 0;
       }
@@ -277,6 +287,7 @@
     .save-button {
       display: flex;
       justify-content: center;
+      padding-bottom: 16px;
     }
   }
   .modal {

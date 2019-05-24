@@ -216,7 +216,7 @@ export class CollaboratorsListComponent implements OnInit, OnDestroy {
   }
 
   private detectChanges():void{
-    this.newPerson.valueChanges.subscribe(value=>{
+    this.newPerson.valueChanges.subscribe(() => {
       this.changes = true;
     });
   }
