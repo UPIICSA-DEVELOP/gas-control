@@ -87,7 +87,7 @@
                 </mat-error>
               </mat-form-field>
               <div class="password-button">
-                <button mat-button (click)="changePassword()" type="button" aria-label="User update password">
+                <button mat-button (click)="changePassword()" type="button" aria-label="User update password" [disabled]="load">
                   Actualizar contraseña
                 </button>
               </div>
@@ -121,7 +121,7 @@
                 <input [attr.disabled]="load?true:null" formControlName="ssn" matInput placeholder="Número de seguridad social" type="text" aria-label="User social security ID">
               </mat-form-field>
               <mat-form-field class="inputs">
-                <mat-select [attr.disabled]="load?true:null" placeholder="Tipo de sangre" aria-label="User blood type" [(value)]="bloodType">
+                <mat-select [disabled]="load" placeholder="Tipo de sangre" aria-label="User blood type" [(value)]="bloodType">
                   <mat-option>-Seleccione un tipo de sangre-</mat-option>
                   <mat-option *ngFor="let blood of bloodGroup" [value]="blood">{{blood}}</mat-option>
                 </mat-select>
@@ -136,7 +136,7 @@
                     </div>
                   </ng-template>
                 </app-upload-file>
-                <button type="button" mat-icon-button matTooltip="Ver estudio" *ngIf="file" (click)="openStudy()">
+                <button type="button" [disabled]="load" mat-icon-button matTooltip="Ver estudio" *ngIf="file" (click)="openStudy()">
                   <mat-icon class="file-icon">visibility</mat-icon>
                 </button>
               </div>
