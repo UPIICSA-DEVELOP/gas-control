@@ -2,12 +2,9 @@
 #location{
   mat-toolbar{
     position: relative;
-    .btn-close{
-      position: absolute;
-      top: 0;
-      right: 0;
-      margin: 12px;
-    }
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
   }
   .container{
     padding: 16px;

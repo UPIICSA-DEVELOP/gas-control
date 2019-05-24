@@ -1,6 +1,7 @@
 <div id="location">
-  <mat-toolbar [color]="'primary'">Ubicar dirección en el mapa
-    <button class="btn-close" (click)="close()" mat-icon-button="">
+  <mat-toolbar [color]="'primary'">
+    <div style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">Ubicar dirección en el mapa</div>
+    <button (click)="close()" mat-icon-button="">
       <mat-icon>close</mat-icon>
     </button>
   </mat-toolbar>
