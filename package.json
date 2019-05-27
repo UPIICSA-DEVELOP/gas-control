@@ -1,6 +1,6 @@
 {
   "name": "com.maplander.app.inspector.front",
-  "version": "1.5.2-beta.2",
+  "version": "1.5.2-beta.3",
   "license": "UNLICENSED",
   "author": "Alejandro Lopez A <program.alopez@gmail.com> (https://alx-developer.herokuapp.com/)",
   "contributors": [
@@ -56,7 +56,6 @@
     "@ngx-translate/http-loader": "^3.0.1",
     "@types/crypto-js": "^3.1.43",
     "@types/googlemaps": "^3.30.16",
-    "amazing-time-picker": "^1.8.0",
     "chalk": "^2.4.2",
     "chart.js": "^2.7.3",
     "crypto-js": "^3.1.9-1",
@@ -77,6 +76,7 @@
     "ngx-image-cropper": "^1.2.2",
     "pdfjs-dist": "^2.0.943",
     "puppeteer": "1.13.0",
+    "rb-timepicker": "^2.1.2",
     "remote-exec": "0.0.3",
     "request": "^2.88.0",
     "rxjs": "6.3.3",

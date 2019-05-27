@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="1.5.2-beta.3"></a>
+## [1.5.2-beta.3](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/compare/v1.5.2-beta.2...v1.5.2-beta.3) (2019-05-27)
+
+
+### Bug Fixes
+
+* **CollaboratorsList:** solve error with alert to save changes ([cf1c29c](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/cf1c29c))
+
+
+
 <a name="1.5.2-beta.2"></a>
 ## [1.5.2-beta.2](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/compare/v1.5.2-beta.1...v1.5.2-beta.2) (2019-05-24)
 
