@@ -339,7 +339,8 @@ export class CollaboratorsListComponent implements OnInit, OnDestroy {
         'CANCELAR').afterClosed().subscribe(response=>{
         switch (response.code) {
           case 1:
-            this.register=false;
+            this.register = false;
+            this.changes = false;
             break;
           default:
             break;
