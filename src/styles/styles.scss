@@ -4,8 +4,10 @@
 
 @import "theme";
 @import "colors";
+@import "~rb-timepicker/_getThema.scss";
 
 @include angular-material-theme($my-app-theme);
+@include rb-timepicker-theme($my-app-theme);
 
 * {
   box-sizing: border-box;

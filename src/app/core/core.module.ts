@@ -40,8 +40,6 @@ import { PdfVisorComponent } from './components/pdf-visor/pdf-visor.component';
 import {PdfVisorService} from '@app/core/components/pdf-visor/pdf-visor.service';
 import {AddStationService} from '@app/components/screen/components/add-gas-station/add-station.service';
 import {ModalProceduresService} from '@app/components/screen/components/modal-procedures/modal-procedures.service';
-import {AmazingTimePickerModule} from 'amazing-time-picker';
-import {TimePickerService} from '@app/core/components/time-picker/time-picker.service';
 import {SasisopaService} from '@app/components/screen/components/sasisopa/sasisopa.service';
 import {TaskFilterNameService} from '@app/components/screen/components/task-filter-name/task-filter-name.service';
 import {ImageVisorService} from '@app/core/components/image-visor/image-visor.service';
@@ -63,7 +61,6 @@ import {OpenFileService} from '@app/core/components/open-file/open-file.service'
     ReactiveFormsModule,
     ImageCropperModule,
     PdfViewerModule,
-    AmazingTimePickerModule,
     AgmCoreModule.forRoot({
       apiKey: Constants.GoogleApiKey,
       libraries: [
@@ -130,7 +127,6 @@ import {OpenFileService} from '@app/core/components/open-file/open-file.service'
     PdfVisorService,
     AddStationService,
     ModalProceduresService,
-    TimePickerService,
     SasisopaService,
     SgmService,
     TaskFilterNameService,

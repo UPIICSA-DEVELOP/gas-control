@@ -42,6 +42,7 @@ import {
   MatToolbarModule,
   MatTooltipModule
 } from '@angular/material';
+import {RbTimepickerModule} from 'rb-timepicker';
 
 const MATERIAL_MODULES = [
   CommonModule,
@@ -76,7 +77,8 @@ const MATERIAL_MODULES = [
   MatDatepickerModule,
   MatNativeDateModule,
   MatStepperModule,
-  MatPaginatorModule
+  MatPaginatorModule,
+  RbTimepickerModule
 ];
 
 @NgModule({

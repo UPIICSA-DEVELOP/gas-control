@@ -7,17 +7,14 @@
 
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import {DisableWriteDirective} from '@app/core/directives/disable-write/disable-write.directive';
 
 @NgModule({
   imports: [
     CommonModule,
   ],
   declarations: [
-    DisableWriteDirective
   ],
   exports: [
-    DisableWriteDirective
   ]
 })
 export class DirectivesModule { }
