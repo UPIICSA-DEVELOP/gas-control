@@ -16,7 +16,7 @@
       <div *ngFor="let country of counties" class="country">
         <button mat-button (click)="selectCountry(country)">
           <span>{{country.name}}</span>
-          <span style="float: right">{{country.code}}</span>
+          <span style="float: right">+{{country.code}}</span>
         </button>
       </div>
     </div>
