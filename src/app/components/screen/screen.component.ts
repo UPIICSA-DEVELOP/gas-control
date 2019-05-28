@@ -172,7 +172,7 @@ export class ScreenComponent implements OnInit, AfterViewInit, OnDestroy{
               this.prepareDashboardToStationWorkers(response.station, onlyOneStationId);
               break;
             case 7:
-              this.stationActive = response[0].item;
+              this.stationActive = response.station.item;
               LocalStorageService.setItem(Constants.StationInDashboard, {id: this.stationActive.id, name: this.stationActive.businessName});
               if(!this.stationActive.stationTaskId){
                 this.openTaskCalendar();
