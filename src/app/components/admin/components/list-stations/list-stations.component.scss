@@ -19,6 +19,9 @@
       justify-content: space-between;
       .title{
         font-size: 30px;
+        @media screen and (max-width: 600px){
+          font-size: 16px;
+        }
       }
       .buttons{
         .add-station-btn{

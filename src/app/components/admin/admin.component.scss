@@ -34,6 +34,10 @@
     right: 0;
     background: url("https://lh3.googleusercontent.com/EIWxZIbTAHZ1C1Eg9lIL7lUwrLC5EAH1_d_khzBrbf-VUDqvn8tclbPaOYlAGw0AoPZyEDIteEN-CbjRtt5X2EMfpMSaX-gM") no-repeat center;
     background-size: contain;
+    @media screen and (max-width: 600px){
+      width: 300px;
+      height: 150px;
+    }
   }
 
   .progress{
@@ -81,6 +85,9 @@
     width: 100%;
     height: calc(100% - 48px);
     overflow: hidden;
+    @media screen and (max-width: 600px){
+      padding-bottom: 96px;
+    }
     .title {
       color: #707070;
     }
@@ -131,6 +138,7 @@
         @media screen and (max-width: 600px){
           flex-wrap: inherit;
           flex-direction: column;
+          justify-content: initial;
         }
       }
 
@@ -149,6 +157,7 @@
         z-index: 2;
         @media screen and (max-width: 600px){
           width: 100%;
+          min-height: 154px;
         }
 
         .image{
@@ -181,8 +190,8 @@
 
   .add-consultancy{
     position: absolute;
-    bottom: 0;
-    margin: 0 0 16px calc(50% - (230px / 2));
+    bottom: 16px;
+    left: calc(50% - (230px/2));
     z-index: 2;
     button{
       background-color: #FFAA00;
@@ -195,5 +204,9 @@
     bottom: 0;
     right: 0;
     margin: 24px;
+    @media screen and (max-width: 600px){
+      position: relative;
+      margin: -96px 0 0 24px;
+    }
   }
 }
