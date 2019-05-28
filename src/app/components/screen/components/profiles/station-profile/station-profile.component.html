@@ -94,10 +94,30 @@
                 <div class="flex-box">
                   <div class="input-content">
                     <mat-form-field class="input-turns">
-                      <input placeholder="Inicio" matInput [disabled]="user.role===6" (time)="changeDate($event,i,true)" appDisableWrite value="{{turn.start | formatTime}}" readonly="readonly">
+                      <rb-timepicker #pickerOne [colorBtn]="'primary'" (getTime)="changeDate($event,i,true)"></rb-timepicker>
+                      <input matInput
+                             placeholder="Inicio"
+                             [disabled]="user.role === 6"
+                             [ngModelOptions]="{standalone: true}"
+                             [ngModel]="turn.start | formatTime"
+                             (click)="pickerOne.open()"
+                             readonly="readonly">
+                      <button mat-icon-button [disabled]="user.role === 6" matSuffix (click)="pickerOne.open()" type="button">
+                        <mat-icon>access_time</mat-icon>
+                      </button>
                     </mat-form-field>
                     <mat-form-field class="input-turns">
-                      <input placeholder="Término" matInput [disabled]="user.role===6" (time)="changeDate($event,i,false)" appDisableWrite value="{{turn.end | formatTime}}" readonly="readonly">
+                      <rb-timepicker #pickerTwo [colorBtn]="'primary'" (getTime)="changeDate($event,i,false)"></rb-timepicker>
+                      <input matInput
+                             placeholder="Término"
+                             [disabled]="user.role===6"
+                             [ngModelOptions]="{standalone: true}"
+                             [ngModel]="turn.end | formatTime"
+                             (click)="pickerTwo.open()"
+                             readonly="readonly">
+                      <button mat-icon-button [disabled]="user.role === 6" matSuffix (click)="pickerTwo.open()" type="button">
+                        <mat-icon>access_time</mat-icon>
+                      </button>
                     </mat-form-field>
                   </div>
                   <div class="button">

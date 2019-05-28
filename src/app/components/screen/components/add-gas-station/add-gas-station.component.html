@@ -125,12 +125,34 @@
                   <div *ngFor="let turn of workShifts; let i = index">
                     <div class="input-content">
                       <mat-form-field style="width: 45%">
-                        <input placeholder="Inicio" matInput (time)="changeDate($event,i,true)" appDisableWrite value="{{turn.start | formatTime}}" readonly="readonly">
+                        <rb-timepicker #pickerOne [colorBtn]="'primary'" (getTime)="changeDate($event,i,true)"></rb-timepicker>
+                        <input matInput
+                               placeholder="Inicio"
+                               [disabled]="user.role === 6"
+                               [ngModelOptions]="{standalone: true}"
+                               [ngModel]="turn.start | formatTime"
+                               (keydown)="pickerOne.open()"
+                               (click)="pickerOne.open()"
+                               readonly="readonly">
+                        <button mat-icon-button matSuffix (click)="pickerOne.open()" type="button">
+                          <mat-icon>access_time</mat-icon>
+                        </button>
                       </mat-form-field>
                       <mat-form-field style="width: 45%">
-                        <input placeholder="Término" matInput (time)="changeDate($event,i,false)" appDisableWrite value="{{turn.end | formatTime}}" readonly="readonly">
+                        <rb-timepicker #pickerTwo [colorBtn]="'primary'" (getTime)="changeDate($event,i,false)"></rb-timepicker>
+                        <input matInput
+                               placeholder="Término"
+                               [disabled]="user.role===6"
+                               [ngModelOptions]="{standalone: true}"
+                               [ngModel]="turn.end | formatTime"
+                               (keydown)="pickerTwo.open()"
+                               (click)="pickerTwo.open()"
+                               readonly="readonly">
+                        <button mat-icon-button matSuffix (click)="pickerTwo.open()" type="button">
+                          <mat-icon>access_time</mat-icon>
+                        </button>
                       </mat-form-field>
-                      <button type="button" *ngIf="workShifts.length>1" mat-icon-button (click)="addRemoveTurn(true,1, i)" class="remove" [disabled]=" user.role===6 || user.role===7">
+                      <button type="button" *ngIf="workShifts.length>1" mat-icon-button (click)="addRemoveTurn(true,1, i)" class="remove" [disabled]=" user.role===6">
                         <mat-icon>remove</mat-icon>
                       </button>
                     </div>

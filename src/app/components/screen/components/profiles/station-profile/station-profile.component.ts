@@ -350,10 +350,11 @@ export class StationProfileComponent implements OnInit, OnDestroy {
 
   public changeDate(ev: any, index: number, isStart: boolean):void{
     this._change = true;
+    const time = ev.mTime.replace(':','');
     if(isStart){
-      this.workShifts[index].start = ev;
+      this.workShifts[index].start = time;
     }else{
-      this.workShifts[index].end = ev;
+      this.workShifts[index].end = time;
     }
   }
 
