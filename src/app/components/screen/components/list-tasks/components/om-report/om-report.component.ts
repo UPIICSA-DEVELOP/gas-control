@@ -301,8 +301,9 @@ export class OmReportComponent implements OnInit, OnDestroy {
   }
 
   public changeTime(ev: any, type: string): void {
+    const time = ev.mTime.replace(':','');
     this.omForm.patchValue({
-      [type]: this._formatTimePipe.transform(ev)
+      [type]: this._formatTimePipe.transform(time)
     });
   }
 

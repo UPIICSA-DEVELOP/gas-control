@@ -200,8 +200,9 @@ export class FrReportComponent implements OnInit, OnDestroy {
   }
 
   public changeTime(ev: any, type: string): void{
+    const time = ev.mTime.replace(':','');
     this.frForm.patchValue({
-      [type]: this._formatTimePipe.transform(ev)
+      [type]: this._formatTimePipe.transform(time)
     });
   }
 
