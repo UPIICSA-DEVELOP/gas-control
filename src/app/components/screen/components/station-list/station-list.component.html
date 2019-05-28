@@ -21,9 +21,14 @@
     <div class="container">
       <div class="head">
         <span>ESTACIONES DE SERVICIO</span>
-        <button mat-icon-button (click)="onCloseList()">
-          <mat-icon>close</mat-icon>
-        </button>
+        <div style="display: flex;">
+          <button mat-icon-button style="background-color: #FFAA00; margin: 0 4px;" (click)="addStation()">
+            <img style="width: 40px; height: 40px;" src="../../../../../assets/image/add_station_48px.png">
+          </button>
+          <button mat-icon-button style="margin: 0 4px;" (click)="onCloseList()">
+            <mat-icon>close</mat-icon>
+          </button>
+        </div>
       </div>
       <mat-form-field class="search" *ngIf="stationList">
         <input matInput placeholder="Buscar" aria-label="Search input" (input)="search($event)">
