@@ -11,7 +11,7 @@ import {DialogService} from '@app/core/components/dialog/dialog.service';
 import {ApiLoaderService} from '@app/core/services/api/api-loader.service';
 import {SnackBarService} from '@app/core/services/snackbar/snackbar.service';
 import {AuthService} from '@app/core/services/auth/auth.service';
-import {Subscription} from 'rxjs/Rx';
+import {Subscription} from 'rxjs';
 const md5 = require('md5');
 
 @Component({
@@ -21,7 +21,7 @@ const md5 = require('md5');
 })
 export class LoginComponent implements OnInit, OnDestroy {
 
-  @ViewChild('inputPassword') private _inputPassword: ElementRef;
+  @ViewChild('inputPassword', { static: true }) private _inputPassword: ElementRef;
   private _dataUser: any;
   public load: boolean;
   public loginForm: FormGroup;

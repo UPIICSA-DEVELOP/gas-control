@@ -11,7 +11,7 @@ import {ApiLoaderService} from '@app/core/services/api/api-loader.service';
 import {PdfVisorService} from '@app/core/components/pdf-visor/pdf-visor.service';
 import {DialogService} from '@app/core/components/dialog/dialog.service';
 import {SnackBarService} from '@app/core/services/snackbar/snackbar.service';
-import {Subscription} from 'rxjs/Rx';
+import {Subscription} from 'rxjs';
 import {HashService} from '@app/core/utilities/hash.service';
 import {SgmSelection} from '@app/core/interfaces/interfaces';
 import {UtilitiesService} from '@app/core/utilities/utilities.service';

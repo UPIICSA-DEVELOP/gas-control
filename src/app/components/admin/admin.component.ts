@@ -4,16 +4,14 @@
  * Proprietary and confidential
  */
 
-import {Component, Inject, OnDestroy, OnInit} from '@angular/core';
-import {PdfVisorService} from '@app/core/components/pdf-visor/pdf-visor.service';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {ApiLoaderService} from '@app/core/services/api/api-loader.service';
 import {ApiService} from '@app/core/services/api/api.service';
-import {DOCUMENT} from '@angular/common';
 import {ListStationsService} from '@app/components/admin/components/list-stations/list-stations.service';
 import {AuthService} from '@app/core/services/auth/auth.service';
 import {DialogService} from '@app/core/components/dialog/dialog.service';
 import {AddConsultancyService} from '@app/components/admin/components/add-consultancy/add-consultancy.service';
-import {Subscription} from 'rxjs/Rx';
+import {Subscription} from 'rxjs';
 
 @Component({
   selector: 'app-admin',

@@ -17,7 +17,7 @@ import {UploadFileResponse} from 'app/core/components/upload-file/upload-file.co
 import {UploadFileService} from 'app/core/components/upload-file/upload-file.service';
 import {ApiLoaderService} from 'app/core/services/api/api-loader.service';
 import {Consultancy, Person} from '@app/core/interfaces/interfaces';
-import {Subscription} from 'rxjs/Rx';
+import {Subscription} from 'rxjs';
 
 @Component({
   selector: 'app-add-consultancy',
@@ -25,8 +25,8 @@ import {Subscription} from 'rxjs/Rx';
   styleUrls: ['./add-consultancy.component.scss']
 })
 export class AddConsultancyComponent implements OnInit, OnDestroy {
-  @ViewChild('stepper') private _stepper: MatStepper;
-  @ViewChild('phoneNumber') private _phoneNumberInput: ElementRef;
+  @ViewChild('stepper', { static: true }) private _stepper: MatStepper;
+  @ViewChild('phoneNumber', { static: false }) private _phoneNumberInput: ElementRef;
   public load: boolean;
   public roles: any[];
   public protocols: any[];

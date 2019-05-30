@@ -18,7 +18,7 @@ import {LocalStorageService} from '@app/core/services/local-storage/local-storag
 import {Constants} from '@app/core/constants.core';
 import {ModalProceduresService} from '@app/components/screen/components/modal-procedures/modal-procedures.service';
 import {UploadFileResponse} from '@app/core/components/upload-file/upload-file.component';
-import {Subscription} from 'rxjs/Rx';
+import {Subscription} from 'rxjs';
 import {ApiLoaderService} from '@app/core/services/api/api-loader.service';
 import {FormatTimePipe} from '@app/core/pipes/format-time/format-time.pipe';
 

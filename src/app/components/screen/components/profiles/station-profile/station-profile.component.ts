@@ -15,7 +15,7 @@ import {SnackBarService} from '@app/core/services/snackbar/snackbar.service';
 import {DialogService} from '@app/core/components/dialog/dialog.service';
 import {Constants} from '@app/core/constants.core';
 import {LocalStorageService} from '@app/core/services/local-storage/local-storage.service';
-import {Subscription} from 'rxjs/Rx';
+import {Subscription} from 'rxjs';
 import {Dispensers, FuelTanks, GasStation, WorkShifts} from '@app/core/interfaces/interfaces';
 
 @Component({

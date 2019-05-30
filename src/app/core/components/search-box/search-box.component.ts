@@ -26,7 +26,7 @@ export interface SearchBoxStyles{
 })
 export class SearchBoxCoreComponent implements OnInit {
 
-  @ViewChild('searchBoxCore') searchBoxCore: ElementRef;
+  @ViewChild('searchBoxCore', { static: true }) searchBoxCore: ElementRef;
   @Output() onChange: EventEmitter<SearchBoxResult>;
   @Output() inputSearchBox: EventEmitter<ElementRef>;
   @Input() styles: SearchBoxStyles;

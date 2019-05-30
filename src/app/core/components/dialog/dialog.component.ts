@@ -27,8 +27,8 @@ export function ValidatePasswords(ac: AbstractControl) {
 })
 export class DialogComponent implements OnInit {
 
-  @ViewChild('inputPasswordOne') private _inputPassOne: ElementRef;
-  @ViewChild('inputPasswordTwo') private _inputPassTwo: ElementRef;
+  @ViewChild('inputPasswordOne', { static: false }) private _inputPassOne: ElementRef;
+  @ViewChild('inputPasswordTwo', { static: false }) private _inputPassTwo: ElementRef;
   public info: any;
   public showInput: boolean;
   public showDoubleInput: boolean;

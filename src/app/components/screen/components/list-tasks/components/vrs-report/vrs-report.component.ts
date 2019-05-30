@@ -15,7 +15,7 @@ import {UtilitiesService} from '@app/core/utilities/utilities.service';
 import {UploadFileService} from '@app/core/components/upload-file/upload-file.service';
 import {SignaturePadService} from '@app/core/components/signature-pad/signature-pad.service';
 import {SharedService, SharedTypeNotification} from '@app/core/services/shared/shared.service';
-import {Subscription} from 'rxjs/Rx';
+import {Subscription} from 'rxjs';
 import {Constants} from '@app/core/constants.core';
 import {LocalStorageService} from '@app/core/services/local-storage/local-storage.service';
 import {UploadFileResponse} from '@app/core/components/upload-file/upload-file.component';

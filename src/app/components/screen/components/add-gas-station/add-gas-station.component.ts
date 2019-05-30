@@ -24,7 +24,7 @@ import {DateAdapter, MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
 import {UtilitiesService} from '@app/core/utilities/utilities.service';
 import {Person, PersonInformation, Task} from '@app/core/interfaces/interfaces';
 import {SharedService, SharedTypeNotification} from '@app/core/services/shared/shared.service';
-import {Subscription} from 'rxjs/Rx';
+import {Subscription} from 'rxjs';
 interface Station {
   id?: string;
   businessName: string;
@@ -57,8 +57,8 @@ interface Station {
   styleUrls: ['./add-gas-station.component.scss']
 })
 export class AddGasStationComponent implements OnInit, OnDestroy {
-  @ViewChild('phoneNumber') private _phoneNumberInput: ElementRef;
-  @ViewChild('modalScroll') private _modalScroll: ElementRef;
+  @ViewChild('phoneNumber', { static: false }) private _phoneNumberInput: ElementRef;
+  @ViewChild('modalScroll', { static: true }) private _modalScroll: ElementRef;
   public step: number;
   public disableClose: boolean;
   public utils: any[];

@@ -21,7 +21,7 @@ import {ApiLoaderService} from '@app/core/services/api/api-loader.service';
 import {UtilitiesService} from '@app/core/utilities/utilities.service';
 import {LocalStorageService} from '@app/core/services/local-storage/local-storage.service';
 import {Person} from '@app/core/interfaces/interfaces';
-import {Subscription} from 'rxjs/Rx';
+import {Subscription} from 'rxjs';
 
 @Component({
   selector: 'app-collaborators-list',
@@ -42,7 +42,7 @@ import {Subscription} from 'rxjs/Rx';
   host: {'[@fadeInAnimation]': ''}
 })
 export class CollaboratorsListComponent implements OnInit, OnDestroy {
-  @ViewChild('phoneNumber') private _phoneNumberInput: ElementRef;
+  @ViewChild('phoneNumber', { static: false }) private _phoneNumberInput: ElementRef;
   public collaborators: any[];
   public register: boolean;
   public signature: any;

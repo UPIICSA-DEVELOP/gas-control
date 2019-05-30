@@ -26,7 +26,7 @@ import {OpenFileService} from '@app/core/components/open-file/open-file.service'
   styleUrls: ['./list-tasks.component.scss']
 })
 export class ListTasksComponent implements OnInit, OnDestroy{
-  @ViewChild('modalScroll') private _modalScroll: ElementRef;
+  @ViewChild('modalScroll', { static: false }) private _modalScroll: ElementRef;
   public station: any;
   @Input() set stationInfo(stationObj: any) {
     if (stationObj) {

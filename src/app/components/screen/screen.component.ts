@@ -44,7 +44,7 @@ export class ScreenComponent implements OnInit, AfterViewInit, OnDestroy{
   private _stationId: any;
   private _subscriptionShared: Subscription;
   private _subscriptionLoader: Subscription;
-  @ViewChild('drawer') private _drawer: any;
+  @ViewChild('drawer', { static: false }) private _drawer: any;
   constructor(
     @Inject(DOCUMENT) private _document: Document,
     private _api: ApiService,

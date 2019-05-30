@@ -13,7 +13,7 @@ import {UploadFileResponse} from '@app/core/components/upload-file/upload-file.c
 import {ApiLoaderService} from '@app/core/services/api/api-loader.service';
 import {SnackBarService} from '@app/core/services/snackbar/snackbar.service';
 import {Document} from  '@app/core/interfaces/interfaces'
-import {Subscription} from 'rxjs/Rx';
+import {Subscription} from 'rxjs';
 import {PdfVisorService} from '@app/core/components/pdf-visor/pdf-visor.service';
 import {LocalStorageService} from '@app/core/services/local-storage/local-storage.service';
 import {Constants} from '@app/core/constants.core';

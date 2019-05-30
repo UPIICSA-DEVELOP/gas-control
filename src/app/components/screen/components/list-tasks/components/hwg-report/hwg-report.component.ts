@@ -7,7 +7,7 @@
 import {Component, EventEmitter, Inject, Input, OnDestroy, OnInit, Output} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {HWGReport} from '@app/core/interfaces/interfaces';
-import {Subscription} from 'rxjs/Rx';
+import {Subscription} from 'rxjs';
 import {SharedService, SharedTypeNotification} from '@app/core/services/shared/shared.service';
 import {DOCUMENT} from '@angular/common';
 

@@ -8,7 +8,7 @@ import {Component, Inject, OnDestroy, OnInit} from '@angular/core';
 import {DateAdapter, MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
 import {ApiService} from '@app/core/services/api/api.service';
 import {ApiLoaderService} from '@app/core/services/api/api-loader.service';
-import {Subscription} from 'rxjs/Rx';
+import {Subscription} from 'rxjs';
 import {UtilitiesService} from '@app/core/utilities/utilities.service';
 import {ModalProceduresService} from '@app/components/screen/components/modal-procedures/modal-procedures.service';
 import {Brigade, BrigadeElems, SasisopaDocument} from '@app/core/interfaces/interfaces';

@@ -39,9 +39,9 @@ export function ValidateOldPassword(ac: AbstractControl) {
 })
 export class UpdatePasswordComponent implements OnInit {
 
-  @ViewChild('inputPasswordOne') private _inputPassOne: ElementRef;
-  @ViewChild('inputPasswordTwo') private _inputPassTwo: ElementRef;
-  @ViewChild('inputPasswordThree') private _inputPassThree: ElementRef;
+  @ViewChild('inputPasswordOne', { static: true }) private _inputPassOne: ElementRef;
+  @ViewChild('inputPasswordTwo', { static: true }) private _inputPassTwo: ElementRef;
+  @ViewChild('inputPasswordThree', { static: true }) private _inputPassThree: ElementRef;
   public info: any;
   public hideOne: boolean;
   public hideTwo: boolean;

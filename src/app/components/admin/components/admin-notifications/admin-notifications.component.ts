@@ -12,7 +12,7 @@ import {DialogService} from '@app/core/components/dialog/dialog.service';
 import {Router} from '@angular/router';
 import {CookieService} from '@app/core/services/cookie/cookie.service';
 import {Constants} from '@app/core/constants.core';
-import {Subscription} from 'rxjs/Rx';
+import {Subscription} from 'rxjs';
 import {UtilitiesService} from '@app/core/utilities/utilities.service';
 import {SessionStorageService} from '@app/core/services/session-storage/session-storage.service';
 

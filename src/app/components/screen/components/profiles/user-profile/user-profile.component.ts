@@ -21,7 +21,7 @@ import {SignaturePadService} from '@app/core/components/signature-pad/signature-
 import {LocalStorageService} from '@app/core/services/local-storage/local-storage.service';
 import {PdfVisorService} from '@app/core/components/pdf-visor/pdf-visor.service';
 import {Person, PersonInformation} from '@app/core/interfaces/interfaces';
-import {Subscription} from 'rxjs/Rx';
+import {Subscription} from 'rxjs';
 import {ShareService} from '@app/core/components/share/share.service';
 import {AuthService} from '@app/core/services/auth/auth.service';
 import {HashService} from '@app/core/utilities/hash.service';
@@ -55,7 +55,7 @@ import {HashService} from '@app/core/utilities/hash.service';
   host: {'[@fadeInAnimation]': ''}
 })
 export class UserProfileComponent implements OnInit, OnDestroy {
-  @ViewChild('phoneNumber') private _phoneNumberInput: ElementRef;
+  @ViewChild('phoneNumber', { static: false }) private _phoneNumberInput: ElementRef;
   private _formData: FormData;
   private _formDeleteData: FormData;
   private _formFile: FormData;

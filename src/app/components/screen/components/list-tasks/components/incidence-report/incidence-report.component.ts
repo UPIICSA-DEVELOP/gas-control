@@ -12,7 +12,7 @@ import {ApiLoaderService} from '@app/core/services/api/api-loader.service';
 import {ApiService} from '@app/core/services/api/api.service';
 import {ImageVisorService} from '@app/core/components/image-visor/image-visor.service';
 import {SnackBarService} from '@app/core/services/snackbar/snackbar.service';
-import {Subscription} from 'rxjs/Rx';
+import {Subscription} from 'rxjs';
 import {UploadFileService} from '@app/core/components/upload-file/upload-file.service';
 import {ModalProceduresService} from '@app/components/screen/components/modal-procedures/modal-procedures.service';
 import {SignaturePadService} from '@app/core/components/signature-pad/signature-pad.service';

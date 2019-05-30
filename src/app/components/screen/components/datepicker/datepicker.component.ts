@@ -17,8 +17,8 @@ import {DOCUMENT} from '@angular/common';
   styleUrls: ['./datepicker.component.scss']
 })
 export class DatepickerComponent implements OnInit, AfterViewInit {
-  @ViewChild('pickerStart') private _pickerStart: any;
-  @ViewChild('pickerEnd') private _pickerEnd: any;
+  @ViewChild('pickerStart', { static: true }) private _pickerStart: any;
+  @ViewChild('pickerEnd', { static: true }) private _pickerEnd: any;
   public dateForm: FormGroup;
   public startDate: Date = new Date();
   public endDate: Date = new Date();

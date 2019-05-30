@@ -12,7 +12,7 @@ import {DOCUMENT} from '@angular/common';
 import {Router} from '@angular/router';
 import {LocalStorageService} from '@app/core/services/local-storage/local-storage.service';
 import {ApiLoaderService} from '@app/core/services/api/api-loader.service';
-import {Subscription} from 'rxjs/Rx';
+import {Subscription} from 'rxjs';
 import {SessionStorageService} from '@app/core/services/session-storage/session-storage.service';
 import {SharedService, SharedTypeNotification} from '@app/core/services/shared/shared.service';
 

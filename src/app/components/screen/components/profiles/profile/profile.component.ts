@@ -20,7 +20,7 @@ import {animate, keyframes, query, stagger, style, transition, trigger} from '@a
 import {UploadFileResponse} from '@app/core/components/upload-file/upload-file.component';
 import {SignaturePadService} from '@app/core/components/signature-pad/signature-pad.service';
 import {Consultancy, Person} from '@app/core/interfaces/interfaces';
-import {Subscription} from 'rxjs/Rx';
+import {Subscription} from 'rxjs';
 import {ShareService} from '@app/core/components/share/share.service';
 import {AuthService} from '@app/core/services/auth/auth.service';
 
@@ -53,7 +53,7 @@ import {AuthService} from '@app/core/services/auth/auth.service';
   host: {'[@fadeInAnimation]': ''}
 })
 export class ProfileComponent implements OnInit, OnDestroy {
-  @ViewChild('phoneNumber') private _phoneNumberInput: ElementRef;
+  @ViewChild('phoneNumber', { static: false }) private _phoneNumberInput: ElementRef;
   private _formData: FormData;
   private _formSignature: FormData;
   public user: Person;

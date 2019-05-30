@@ -21,7 +21,7 @@ import {LocalStorageService} from '@app/core/services/local-storage/local-storag
 import {PdfVisorService} from '@app/core/components/pdf-visor/pdf-visor.service';
 import {SharedService, SharedTypeNotification} from '@app/core/services/shared/shared.service';
 import {Person, PersonInformation} from '@app/core/interfaces/interfaces';
-import {Subscription} from 'rxjs/Rx';
+import {Subscription} from 'rxjs';
 
 @Component({
   selector: 'app-add-collaborator',
@@ -42,7 +42,7 @@ import {Subscription} from 'rxjs/Rx';
   host: {'[@fadeInAnimation]': ''}
 })
 export class AddCollaboratorComponent implements OnInit, OnDestroy {
-  @ViewChild('phoneNumber') private _phoneNumberInput: ElementRef;
+  @ViewChild('phoneNumber', { static: true }) private _phoneNumberInput: ElementRef;
   public signature: any;
   public profileImage: any;
   public file: any;
