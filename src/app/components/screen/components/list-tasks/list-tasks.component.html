@@ -31,10 +31,10 @@
           <button [color]="'primary'" class="button" [disabled]="load" mat-icon-button *ngIf="!reportConfig.reportView && !notCalendar" (click)="exportListTasks()" matTooltip="Exportar lista">
             <mat-icon svgIcon="icons:fileDownload"></mat-icon>
           </button>
-          <button [color]="'primary'" class="button" *ngIf="others && !reportConfig.reportView" mat-icon-button (click)="resetFilters()">
+          <button [color]="'primary'" class="button" *ngIf="others && !reportConfig.reportView" mat-icon-button (click)="resetFilters()" matTooltip="Reset">
             <mat-icon>refresh</mat-icon>
           </button>
-          <button [color]="'primary'" class="button" *ngIf="others && !reportConfig.reportView" mat-icon-button (click)="closeOthers()">
+          <button [color]="'primary'" class="button" *ngIf="others && !reportConfig.reportView" mat-icon-button (click)="closeOthers()" matTooltip="Cerrar">
             <mat-icon>close</mat-icon>
           </button>
           <button [color]="'primary'" class="button" [disabled]="notCalendar" mat-icon-button *ngIf="!others && !reportConfig.reportView" (click)="search()" matTooltip="Buscar">
