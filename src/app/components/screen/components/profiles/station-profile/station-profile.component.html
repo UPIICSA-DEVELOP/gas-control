@@ -165,9 +165,9 @@
                       </mat-form-field>
                     </div>
                     <mat-radio-group class="fuel-selector" aria-label="Station tank fuel type" (change)="onArrayChange()" [(ngModel)]="tank.fuelType" [ngModelOptions]="{standalone: true}" [disabled]=" user.role===6">
-                      <mat-radio-button [value]="1" >Magna</mat-radio-button>
-                      <mat-radio-button [value]="2">Premium</mat-radio-button>
-                      <mat-radio-button [value]="3">Diesel</mat-radio-button>
+                      <mat-radio-button style="margin: 4px;" [value]="1" >Magna</mat-radio-button>
+                      <mat-radio-button style="margin: 4px;" [value]="2">Premium</mat-radio-button>
+                      <mat-radio-button style="margin: 4px;" [value]="3">Diesel</mat-radio-button>
                     </mat-radio-group>
                   </div>
                   <div class="button-container">
@@ -202,9 +202,9 @@
                     </mat-form-field>
                   </div>
                   <section class="hoses" aria-label="Station hoses fuel type">
-                    <mat-checkbox (change)="onArrayChange()" [(ngModel)]="dispenser.magna" [ngModelOptions]="{standalone: true}" [disabled]=" user.role===6">Magna</mat-checkbox>
-                    <mat-checkbox (change)="onArrayChange()" [(ngModel)]="dispenser.premium" [ngModelOptions]="{standalone: true}" [disabled]=" user.role===6">Premium</mat-checkbox>
-                    <mat-checkbox (change)="onArrayChange()" [(ngModel)]="dispenser.diesel" [ngModelOptions]="{standalone: true}" [disabled]=" user.role===6">Diesel</mat-checkbox>
+                    <mat-checkbox style="margin: 4px;" (change)="onArrayChange()" [(ngModel)]="dispenser.magna" [ngModelOptions]="{standalone: true}" [disabled]=" user.role===6">Magna</mat-checkbox>
+                    <mat-checkbox style="margin: 4px;" (change)="onArrayChange()" [(ngModel)]="dispenser.premium" [ngModelOptions]="{standalone: true}" [disabled]=" user.role===6">Premium</mat-checkbox>
+                    <mat-checkbox style="margin: 4px;" (change)="onArrayChange()" [(ngModel)]="dispenser.diesel" [ngModelOptions]="{standalone: true}" [disabled]=" user.role===6">Diesel</mat-checkbox>
                   </section>
                 </div>
                 <div class="button">
