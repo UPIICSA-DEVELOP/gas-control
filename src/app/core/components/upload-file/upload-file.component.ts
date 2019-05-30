@@ -33,7 +33,7 @@ export enum UploadFileType {
 })
 export class UploadFileComponent implements OnInit {
 
-  @ContentChild(TemplateRef, /* TODO: add static flag */ {})
+  @ContentChild(TemplateRef, {static: false})
   @Input() layoutTemplate: TemplateRef<any>;
   @Input() type: UploadFileType;
   @Output() onLoad: EventEmitter<UploadFileResponse> = new EventEmitter<UploadFileResponse>();
