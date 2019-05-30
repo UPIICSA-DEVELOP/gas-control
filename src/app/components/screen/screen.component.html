@@ -25,6 +25,11 @@
     <mat-drawer-container>
       <mat-drawer #drawer class="menu" [mode]="mode" [opened]="opened" [disableClose]="disabledClose">
         <div class="station-information" *ngIf="stationActive">
+          <div class="close">
+            <button mat-icon-button (click)="closeToggle()">
+              <mat-icon>close</mat-icon>
+            </button>
+          </div>
           <div style="margin: auto; width: 90%;">
             <div class="image">
               <div class="container">
