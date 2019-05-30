@@ -108,7 +108,7 @@
       </div>
     </ng-template>
     <ng-template #form>
-      <div class="head">
+      <div class="head" style="padding: 16px 42px !important;">
         <span>AGREGAR COLABORADOR</span>
         <div style="display: flex">
           <button class="back" mat-icon-button (click)="back()" matTooltip="Volver">
@@ -220,8 +220,7 @@
             <div class="formHead">Firma digital</div>
             <div class="signatureContainer" matTooltip="Cambiar firma" (click)="addSignature()">
               <span *ngIf="!blobSignature">Registre firma digital</span>
-              <img *ngIf="blobSignature" [src]="blobSignature" class="imageSignature"
-                   alt="New collaborator signature image">
+              <img *ngIf="blobSignature" [src]="blobSignature" class="imageSignature" alt="New collaborator signature image">
             </div>
           </div>
           <div class="save-button">
