@@ -20,14 +20,16 @@
     </div>
     <div class="form">
       <form [formGroup]="newPerson" (ngSubmit)="validateForm(newPerson.value)" class="add">
-        <img src="../../../assets/image/background.png" class="head-image" alt="background gas station">
-        <div class="profileImage">
-          <app-upload-file [layoutTemplate]="icon" (onLoad)="onLoadImage($event)" (onRemove)="onRemoveImage()" [type]="'image'">
-            <ng-template #icon>
-              <img *ngIf="blobImageProfile" [src]="blobImageProfile" alt="User profile image">
-              <mat-icon *ngIf="!blobImageProfile">add_photo_alternate</mat-icon>
-            </ng-template>
-          </app-upload-file>
+        <img src="https://www.googleapis.com/download/storage/v1/b/businesscardgcs/o/alex4%2F2019-02-05-205017759Web-Fondo-gas-poca-transparencia.png?generation=1549399820762438&alt=media" class="head-image" alt="background gas station">
+        <div class="image-head">
+          <mat-card class="profileImage">
+            <app-upload-file [layoutTemplate]="icon" (onLoad)="onLoadImage($event)" (onRemove)="onRemoveImage()" [type]="'image'">
+              <ng-template #icon>
+                <img *ngIf="blobImageProfile" [src]="blobImageProfile" alt="User profile image">
+                <mat-icon *ngIf="!blobImageProfile">add_photo_alternate</mat-icon>
+              </ng-template>
+            </app-upload-file>
+          </mat-card>
         </div>
         <mat-form-field class="inputs">
           <input formControlName="name" matInput placeholder="Nombre(s)" required type="text" aria-label="New collaborator name">
@@ -109,8 +111,7 @@
             </mat-select>
           </mat-form-field>
           <mat-form-field class="url">
-            <input formControlName="website" matInput placeholder="Website" type="url"
-                   aria-label="New collaborator website">
+            <input formControlName="website" matInput placeholder="Website" type="url" aria-label="New collaborator website">
             <mat-error *ngIf="newPerson.controls['website'].hasError('pattern')">
               Ingrese un sitio web válido
             </mat-error>

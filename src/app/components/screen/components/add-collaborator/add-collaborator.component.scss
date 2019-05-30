@@ -17,7 +17,7 @@
     width: calc(100% - 40px);
     right: 0;
     position: absolute;
-    top: 48px;
+    top: 0;
     z-index: 1;
   }
   .tap{
@@ -35,18 +35,17 @@
     }
   }
   .content{
-    margin-top: 48px;
-    height: calc(100% - 48px);
+    height: 100%;
     overflow: hidden;
     width: 100%;
-    background: #FFFFFF;
+    background: #F2F2F2;
     box-shadow: 0 2px 1px -1px rgba(0, 0, 0, 0.2), 0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12);
   }
   .head {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 16px;
+    padding: 16px 42px;
     span {
       font-weight: 700;
       font-size: 16px;
@@ -71,9 +70,17 @@
     .head-image{
       width: 80%;
     }
+    .image-head{
+      width: 100%;
+      display: flex;
+      justify-content: center;
+    }
     .profileImage{
-      margin-top: -48px;
-      margin-bottom: 16px;
+      margin: -48px 0 16px 0;
+      border-radius: 50%;
+      width: 80px;
+      height: 80px;
+      padding: 0;
       img{
         width: 80px;
         height: 80px;
@@ -81,13 +88,16 @@
         box-shadow: 0 3px 1px 1px rgba(0, 0, 0, 0.1), 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, .10);
       }
       mat-icon{
-        width: 70px;
-        height: 70px;
-        font-size: 70px;
+        width: 80px;
+        height: 80px;
+        font-size: 60px;
         color: #707070;
         background-color: #FFFFFF;
         border-radius: 50%;
         box-shadow: 0 3px 1px 1px rgba(0, 0, 0, 0.1), 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, .10);
+        display: flex;
+        justify-content: center;
+        align-items: center;
       }
     }
     .inputs{
@@ -129,12 +139,12 @@
     .signatureContainer {
       display: flex;
       justify-content: center;
-      background-color: #FFFFFF;
+      background-color: #F2F2F2;
       border: 1.25px solid;
       align-items: center;
-      min-height: 174px;
+      cursor: pointer;
       span{
-        margin: auto;
+        margin: 54px 0;
       }
       .imageSignature {
         width: 100%;
