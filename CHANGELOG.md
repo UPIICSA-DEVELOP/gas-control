@@ -2,6 +2,35 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="1.5.2-beta.4"></a>
+## [1.5.2-beta.4](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/compare/v1.5.2-beta.3...v1.5.2-beta.4) (2019-05-31)
+
+
+### Bug Fixes
+
+* **AddCollaborator:** change to full height view ([eac1e24](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/eac1e24))
+* **Admin:** implement responsive design ([4a6f5fd](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/4a6f5fd))
+* **AdminNotifications:** change to full height view ([99dba52](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/99dba52))
+* **CollaboratorList:** change to full height view ([02043bc](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/02043bc))
+* **CountryCode:** change number format ([bbeb3a9](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/bbeb3a9))
+* **DatePicker:** modify calendar view to mobiles ([daca1bb](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/daca1bb))
+* **ListTasks:** add tooltps to filter buttons ([f402157](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/f402157))
+* **ModalProcedures:** add ripple to cards ([b7059c7](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/b7059c7))
+* **NavBar:** solve error in layers ([0f2f983](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/0f2f983))
+* **Notifications:** change to full height view ([94da2f6](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/94da2f6))
+* **Procedures:** change to full height view ([7bf33ea](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/7bf33ea))
+* **Reports:** change timePicker component ([c0d65a2](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/c0d65a2))
+* **Screen:** solve error in load station ([3aec017](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/3aec017))
+* **StationInformation:** change timePicker component for workShift ([4e175d6](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/4e175d6))
+* **StationList:** add button to add station for mobiles ([2677d23](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/2677d23))
+* **StationList:** change to full height view ([ff370d4](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/ff370d4))
+* **StationProfile:** add space in radio-buttons and checkbox ([6740c26](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/6740c26))
+* **TimePicker:** add space between buttons ([173ded2](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/173ded2))
+* **TimePicker:** modify responsive to sidenav ([8f526a7](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/8f526a7))
+* **TimePicker:** modify TimePicker component ([5101ddb](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/5101ddb))
+
+
+
 <a name="1.5.2-beta.3"></a>
 ## [1.5.2-beta.3](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/compare/v1.5.2-beta.2...v1.5.2-beta.3) (2019-05-27)
 
