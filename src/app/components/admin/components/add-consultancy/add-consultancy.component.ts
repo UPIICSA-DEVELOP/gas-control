@@ -4,7 +4,7 @@
  * Proprietary and confidential
  */
 
-import {Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {Component, ElementRef, OnDestroy, OnInit, ViewChild, ViewEncapsulation} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Constants} from 'app/core/constants.core';
 import {SignaturePadService} from 'app/core/components/signature-pad/signature-pad.service';
@@ -22,7 +22,8 @@ import {Subscription} from 'rxjs';
 @Component({
   selector: 'app-add-consultancy',
   templateUrl: './add-consultancy.component.html',
-  styleUrls: ['./add-consultancy.component.scss']
+  styleUrls: ['./add-consultancy.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class AddConsultancyComponent implements OnInit, OnDestroy {
   @ViewChild('stepper', { static: true }) private _stepper: MatStepper;
@@ -82,9 +83,9 @@ export class AddConsultancyComponent implements OnInit, OnDestroy {
       lastName: ['', [Validators.required]],
       email: ['', [Validators.required, Validators.email]],
       country:  ['México', [Validators.required]],
-      countryCode:  ['+52', [Validators.required]],
+      countryCode:  ['52', [Validators.required]],
       phoneNumber: ['', [Validators.required, Validators.maxLength(13),Validators.minLength(8)]],
-      rol: [1, [Validators.required]],
+      rol: [{value: 1, disabled: true}, [Validators.required]],
       jobTitle: ['', [Validators.required]],
       protocol: ['http://',[]],
       website: ['', [Validators.pattern(Constants.REGEX_WEBSITE)]]

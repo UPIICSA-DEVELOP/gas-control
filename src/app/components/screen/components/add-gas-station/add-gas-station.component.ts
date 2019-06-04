@@ -4,7 +4,7 @@
  * Proprietary and confidential
  */
 
-import {Component, ElementRef, Inject, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {Component, ElementRef, Inject, OnDestroy, OnInit, ViewChild, ViewEncapsulation} from '@angular/core';
 import {ApiService} from '@app/core/services/api/api.service';
 import {ApiLoaderService} from '@app/core/services/api/api-loader.service';
 import {Router} from '@angular/router';
@@ -54,7 +54,8 @@ interface Station {
 @Component({
   selector: 'app-add-gas-station',
   templateUrl: './add-gas-station.component.html',
-  styleUrls: ['./add-gas-station.component.scss']
+  styleUrls: ['./add-gas-station.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class AddGasStationComponent implements OnInit, OnDestroy {
   @ViewChild('phoneNumber', { static: false }) private _phoneNumberInput: ElementRef;
