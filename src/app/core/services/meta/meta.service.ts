@@ -11,7 +11,7 @@ import {Inject, Injectable, PLATFORM_ID} from '@angular/core';
 import {Meta, Title} from '@angular/platform-browser';
 import {DOCUMENT, isPlatformServer} from '@angular/common';
 import {Router, RoutesRecognized} from '@angular/router';
-import {environment} from '@env/environment';
+import {environment} from 'environments/environment';
 
 export interface ConfigMeta  {
   title: string;
@@ -45,11 +45,11 @@ export class MetaService {
     this._route.events.pipe(
       filter(event => event instanceof RoutesRecognized),
       map( (event: RoutesRecognized) => {
-        if(event.state.root.firstChild.firstChild){
-          return event.state.root.firstChild.firstChild.data;
-        }else{
-          return event.state.root.firstChild.data;
+        let data = event.state.root.firstChild;
+        while (data.firstChild){
+          data = data.firstChild;
         }
+        return data.data;
       }),)
       .subscribe(data => {
         if(data){

@@ -6,204 +6,40 @@
  */
 
 import {Routes} from '@angular/router';
-import {environment} from '@env/environment';
-import {ScreenComponent} from '@app/components/screen/screen.component';
-import {LoginComponent} from '@app/components/login/login.component';
-import {AuthService} from '@app/core/services/auth/auth.service';
-import {ResetPassComponent} from '@app/components/screen/child/reset-pass/reset-pass.component';
-import {ProfileComponent} from '@app/components/screen/components/profiles/profile/profile.component';
-import {NotificationsComponent} from '@app/components/screen/components/notifications/notifications.component';
-import {CollaboratorsListComponent} from '@app/components/screen/components/collaborators-list/collaborators-list.component';
-import {UserProfileComponent} from '@app/components/screen/components/profiles/user-profile/user-profile.component';
-import {StationProfileComponent} from '@app/components/screen/components/profiles/station-profile/station-profile.component';
-import {StationListComponent} from '@app/components/screen/components/station-list/station-list.component';
-import {AddCollaboratorComponent} from '@app/components/screen/components/add-collaborator/add-collaborator.component';
-import {DocumentationComponent} from '@app/components/screen/components/documentation/documentation.component';
-import {ProceduresComponent} from '@app/components/screen/components/procedures/procedures.component';
-import {UserProfileService} from '@app/components/screen/components/profiles/user-profile/user-profile.service';
-import {PrivacyComponent} from '@app/components/screen/child/privacy/privacy.component';
-import {AdminComponent} from '@app/components/admin/admin.component';
-import {TermsComponent} from '@app/components/screen/child/terms/terms.component';
-import {CookiesComponent} from '@app/components/screen/child/cookies/cookies.component';
-import {AuthRouterService} from '@app/core/services/auth/auth-router.service';
-import {ResetPassRouterService} from '@app/components/screen/child/reset-pass/reset-pass-router.service';
-import {AdminNotificationsComponent} from '@app/components/admin/components/admin-notifications/admin-notifications.component';
-import {ProfileService} from '@app/components/screen/components/profiles/profile/profile.service';
-import {StationProfileService} from '@app/components/screen/components/profiles/station-profile/station-profile.service';
-import {DocumentationService} from '@app/components/screen/components/documentation/documentation.service';
-const URL_BASE = environment.url;
 
 export const appRoutes: Routes = [
-  {
-    path: 'home',
-    component: ScreenComponent,
-    canActivate: [AuthRouterService],
-    resolve: {data: AuthService},
-    data: {
-      url: URL_BASE + 'home',
-      title:'Dashboard'
-    },
-    children: [
-      {
-        path:'documents/:station',
-        component: DocumentationComponent,
-        resolve: {data: DocumentationService},
-        data:{
-          title: 'Documentación',
-          url: URL_BASE + 'home/documents'
-        }
-      },
-      {
-        path: 'notifications',
-        component: NotificationsComponent,
-        data:{
-          title: 'Notificaciones',
-          url: URL_BASE + 'home/notifications'
-        }
-      },
-      {
-        path:'collaborators',
-        component: CollaboratorsListComponent,
-        data:{
-          title: 'Colaboradores',
-          url: URL_BASE + 'home/collaborators'
-        }
-      },
-      {
-        path:'station-list',
-        component: StationListComponent,
-        data:{
-          title: 'Lista de estaciones',
-          url: URL_BASE + 'home/station-list'
-        }
-      },
-      {
-        path: 'add-collaborator',
-        component: AddCollaboratorComponent,
-        data:{
-          url: URL_BASE + 'home/add-collaborator',
-          title: 'Añadir colaborador'
-        }
-      },
-      {
-        path: 'procedures',
-        component: ProceduresComponent,
-        data:{
-          title: 'Procedimientos',
-          url: URL_BASE + 'home/procedures'
-        }
-      },
-      {
-        path: 'profile',
-        data:{
-          url: URL_BASE + 'home/profile',
-          title: 'Perfil'
-        },
-        children:[
-          {
-            path: 'consultancy',
-            component: ProfileComponent,
-            data:{
-              title: 'Perfil',
-              url: URL_BASE + 'home/profile/consultancy'
-            },
-            resolve: {data: ProfileService}
-          },
-          {
-            path: 'user',
-            component: UserProfileComponent,
-            resolve: {data: UserProfileService},
-            data:{
-              title: 'Perfil',
-              url: URL_BASE + 'home/profile/user'
-            }
-          },
-          {
-            path: 'gas-station/:id',
-            component: StationProfileComponent,
-            resolve: {data: StationProfileService},
-            data:{
-              title: 'Estación de servicio',
-              url: URL_BASE + 'home/profile/gas-station'
-            }
-          }
-        ]
-      },
-    ]
-  },
-  {
-    path: 'login',
-    component: LoginComponent,
-    canActivate: [AuthRouterService],
-    data: {
-      title:'inSpéctor - Iniciar sesión',
-      url: URL_BASE,
-    }
-  },
-  {
-    path: 'admin',
-    component: AdminComponent,
-    canActivate: [AuthRouterService],
-    resolve: {data: AuthService},
-    data: {
-      title:'Administrador',
-      url: URL_BASE
-    },
-    children: [
-      {
-        path: 'notifications',
-        component: AdminNotificationsComponent,
-        data: {
-          title: 'Notificaciones',
-          url: URL_BASE + 'admin/notifications'
-        }
-      }
-    ]
-  },
-  {
-    path: 'signin',
-    canActivate: [ResetPassRouterService],
-    component: ResetPassComponent,
-    data:{
-      title: 'Recuperar Contraseña',
-      url: URL_BASE + 'signin'
-    }
-  },
-  {
-    path: 'privacidad',
-    component: PrivacyComponent,
-    data:{
-      title:'Privacidad',
-      url: URL_BASE + 'privacidad',
-      robots: 'true',
-      canonical: 'true'
-    }
-  },
-  {
-    path: 'terminos',
-    component: TermsComponent,
-    canActivate: [AuthRouterService],
-    data:{
-      title:'Términos y Condiciones',
-      url: URL_BASE + 'terminos',
-      robots: 'true',
-      canonical: 'true'
-    }
-  },
-  {
-    path: 'cookies',
-    component: CookiesComponent,
-    data:{
-      title:'Política de Cookies',
-      url: URL_BASE + 'cookies',
-      robots: 'true',
-      canonical: 'true'
-    }
-  },
   {
     path: '',
     pathMatch: 'full',
     redirectTo:'/login'
+  },
+  {
+    path: 'login',
+    loadChildren: 'app/ui/login/login.module#LoginModule'
+  },
+  {
+    path: 'home',
+    loadChildren: 'app/ui/dashboard/dashboard.module#DashboardModule'
+  },
+  {
+    path: 'admin',
+    loadChildren: 'app/ui/admin/admin.module#AdminModule'
+  },
+  {
+    path: 'signin',
+    loadChildren: 'app/ui/reset-pass/reset-pass.module#ResetPassModule'
+  },
+  {
+    path: 'privacidad',
+    loadChildren: 'app/ui/privacy/privacy.module#PrivacyModule'
+  },
+  {
+    path: 'terminos',
+    loadChildren: 'app/ui/terms/terms.module#TermsModule'
+  },
+  {
+    path: 'cookies',
+    loadChildren: 'app/ui/cookies/cookies.module#CookiesModule'
   },
   {
     path: '**',

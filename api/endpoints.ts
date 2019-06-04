@@ -20,13 +20,10 @@ export class EndPoints{
    * */
 
   private _router: express.Router;
-  private static FRONT_URL = 'https://inspector-develop.maplander.com/endpoints/v1/api-docs/';
+  private static FRONT_URL: string;
 
   constructor(){
-    require('nconf').argv().env().file({ file: 'config.json' });
-    if(require('nconf').get('FRONT_URL')){
-      EndPoints.FRONT_URL = require('nconf').get('FRONT_URL') + 'endpoints/v1/api-docs/';
-    }
+    EndPoints.FRONT_URL = process.env.FRONT_URL || 'https://inspector-develop.maplander.com/endpoints/v1/api-docs/';
     this._router = express.Router();
     this.configHeaders();
     this.configEndPoints();

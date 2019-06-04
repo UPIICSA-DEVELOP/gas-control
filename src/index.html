@@ -1,15 +1,21 @@
 <!doctype html>
 <html lang="es-MX">
 <head>
+  <link rel="preconnect" href="//fonts.googleapis.com">
+  <link rel="preconnect" href="//maps.googleapis.com">
+  <link rel="preconnect" href="//connect.facebook.net">
+  <link rel="preconnect" href="//cdn.jsdelivr.net">
+  <link rel="preconnect" href="//ajax.googleapis.com">
   <base href="/">
   <meta charset="utf-8">
-  <meta name="author" content="">
+  <meta name="author" content="MapLander S. de R.L de C.V">
   <meta name="theme-color" content="#0d47a1">
+  <meta name="msapplication-TileColor" content="#0d47a1">
   <meta name="copyright" content="MapLander S. de R.L de C.V">
   <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
   <title>inSpéctor</title>
   <meta name="description" content="El futuro tecnológico de su Estación de Servicio ya está aquí: para optimizar operaciones, mejorar ganancias y asegurar el debido cumplimiento de las normas y regulaciones.">
-  <meta name="apple-itunes-app" content="app-id="/>
+  <meta name="apple-itunes-app" content="app-id=1451363654"/>
   <meta property="fb:app_id" content="136434956702754">
   <meta property="og:url" content="/">
   <meta property="og:type" content="website">
@@ -17,28 +23,26 @@
   <meta property="og:description" content="El futuro tecnológico de su Estación de Servicio ya está aquí: para optimizar operaciones, mejorar ganancias y asegurar el debido cumplimiento de las normas y regulaciones.">
   <meta property="og:image:width" content="200" />
   <meta property="og:image:height" content="200" />
-  <meta property="og:image" content="/favicon.png">
+  <meta property="og:image" content="assets/favicons/favicon-16x16.png">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="inSpéctor">
   <meta name="twitter:description" content="El futuro tecnológico de su Estación de Servicio ya está aquí: para optimizar operaciones, mejorar ganancias y asegurar el debido cumplimiento de las normas y regulaciones.">
-  <meta name="twitter:image" content="/favicon.png">
-  <link rel="preconnect" href="//fonts.googleapis.com">
-  <link rel="preconnect" href="//maps.googleapis.com">
-  <link rel="preconnect" href="//connect.facebook.net">
-  <link rel="preload" href="//fonts.googleapis.com">
-  <link rel="preload" href="//maps.googleapis.com">
-  <link rel="preload" href="//connect.facebook.net">
+  <meta name="twitter:image" content="assets/favicons/favicon-16x16.png">
   <link rel="manifest" href="manifest.json"/>
-  <link rel="icon" type="image/png" href="favicon.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="assets/favicons/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/favicons/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="assets/favicons/favicon-16x16.png">
+  <link rel="mask-icon" href="assets/favicons/safari-pinned-tab.svg" color="#0d47a1">
   <link rel="stylesheet" href="//fonts.googleapis.com/icon?family=Material+Icons">
-
   <noscript>
     <h3
-      style="font-family: Roboto, 'Helvetice New', 'Arial',
-      sans-serif; position: absolute;
-      bottom: 0; text-align: center;
+      style="
+      font-family: Roboto, 'Helvetice New', 'Arial', sans-serif;
+      position: absolute;
+      bottom: 0;
+      text-align: center;
       width: 99%;
-      z-index: 1;">
+      z-index: 100;">
       Lo sentimos, pero este sitio no funciona sin Javascript
     </h3>
   </noscript>
@@ -96,11 +100,78 @@
       xhr.send();
     }
   </script>
+  <style type="text/css">
+    html, body{
+      overflow: hidden;
+    }
+    .app-loading {
+      position: absolute;
+      top: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      height: 100%;
+      z-index: 100000;
+      background-color: white;
+      overflow: hidden;
+    }
+
+    .app-loading .spinner {
+      height: 40px;
+      width: 40px;
+      animation: rotate 2s linear infinite;
+      transform-origin: center center;
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      margin: auto;
+    }
+
+    .app-loading .spinner .path {
+      stroke-dasharray: 1, 200;
+      stroke-dashoffset: 0;
+      animation: dash 1.5s ease-in-out infinite;
+      stroke-linecap: round;
+      stroke: #0d47a1;
+    }
+
+    @keyframes rotate {
+      100% {
+        transform: rotate(360deg);
+      }
+    }
+
+    @keyframes dash {
+      0% {
+        stroke-dasharray: 1, 200;
+        stroke-dashoffset: 0;
+      }
+      50% {
+        stroke-dasharray: 89, 200;
+        stroke-dashoffset: -35px;
+      }
+      100% {
+        stroke-dasharray: 89, 200;
+        stroke-dashoffset: -124px;
+      }
+    }
+
+  </style>
 </head>
 <body>
   <app-in-spector>
-
+    <div class="app-loading">
+      <svg class="spinner" viewBox="0 0 34 34">
+        <circle class="path" cx="50%" cy="50%" r="15" fill="transparent" stroke-width="10%" stroke-miterlimit="10"/>
+      </svg>
+    </div>
   </app-in-spector>
+  <script type="text/javascript" src="//cdn.jsdelivr.net/npm/figlet@1.2.3/lib/figlet.min.js"></script>
+  <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
   <script src="//polyfill.io/v3/polyfill.min.js"></script>
   <!-- Global site tag (gtag.js) - Google Analytics -->
   <script async src="//www.googletagmanager.com/gtag/js?id=UA-137989523-2"></script>
@@ -111,6 +182,6 @@
 
     gtag('config', 'UA-137989523-2');
   </script>
-
+  <!-- lazy -->
 </body>
 </html>

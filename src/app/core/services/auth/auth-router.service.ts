@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot, UrlTree} from '@angular/router';
 import {Observable} from 'rxjs/Rx';
-import {CookieService} from '@app/core/services/cookie/cookie.service';
-import {Constants} from '@app/core/constants.core';
 import {LocalStorageService} from '@app/core/services/local-storage/local-storage.service';
+import {CookieService} from '@app/core/services/cookie/cookie.service';
+import {Constants} from 'app/utils/constants/constants.utils';
 
 @Injectable()
 export class AuthRouterService implements CanActivate {

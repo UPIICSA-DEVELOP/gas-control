@@ -15,7 +15,7 @@ class PdfSASISOPA{
    *
    * */
 
-  private static BACKEND_URL = 'https://schedule-maplander.appspot.com/_ah/api/communication/v1/';
+  private static BACKEND_URL: string;
   private static EMPTY_INPUT = 'N/A';
   private _commons: Commons;
   private _response: any;
@@ -40,10 +40,7 @@ class PdfSASISOPA{
     if(!data){
       return;
     }
-    require('nconf').argv().env().file({ file: 'config.json' });
-    if(require('nconf').get('BACKEND_URL')){
-      PdfSASISOPA.BACKEND_URL = require('nconf').get('BACKEND_URL');
-    }
+    PdfSASISOPA.BACKEND_URL = process.env.BACKEND_URL || 'https://schedule-maplander.appspot.com/_ah/api/communication/v1/';
     this._commons = new Commons();
     this._stationId = data.stationId;
     this._stationRFC = data.stationRFC;

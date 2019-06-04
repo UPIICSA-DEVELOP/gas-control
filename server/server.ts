@@ -7,63 +7,98 @@
 
 import 'zone.js/dist/zone-node'
 import {enableProdMode} from '@angular/core';
-import {ServerStandard} from './types/server_standard';
-import {ServerLite} from './types/server_lite';
-
-import * as nconfg from 'nconf';
 import {EndPoints} from '../api/endpoints';
+import * as express from 'express';
+import * as path from "path";
+import {Logger} from './logger';
+import * as compression from 'compression';
+import {APIError} from '../api/commons/class';
 
 enableProdMode();
 
-export class App {
+export class Server {
 
-  private _type_server: number;
+  public app: express.Application;
+  private _port: number | string;
+  private static DIR: string = path.resolve(__dirname, 'browser');
+
 
   constructor(){
-    nconfg.argv().env().file({ file: 'config.json' });
-    this._type_server = 1;
-    this.initOptions();
+    this.app = express();
+    this.initConfig();
   }
 
-  public static bootstrap(): App {
-    return new App();
+  public static bootstrap(): Server {
+    return new Server();
   }
 
-  private initOptions(): void{
-    const [,, ...args] = process.argv;
-    if(args.length > 0){
-      try{
-        args.forEach((arg, index) => {
-          if(arg === '--type'){
-            const type = args[index + 1];
-            if(type === 'lite'){
-              this._type_server = 2;
-            }
-          }
-        });
-      }catch (e){
-        throw e;
-      }
-    }else{
-      console.log('Not args');
-      this._type_server = parseInt(process.env.SERVER || nconfg.get('SERVER') || 1);
+  private initConfig(): void{
+    this._port = process.env.PORT || 8090;
+    this.app.use(Server.globalHeaders);
+    this.createLogger();
+    this.app.use(compression({level: 9}));
+    this.app.use('/.well-known', express.static(__dirname + '/.well-known'));
+    this.app.use(express.static(Server.DIR));
+    this.configEndPoints();
+    this.initHandlers();
+    this.router();
+  }
+
+  private createLogger(): void{
+    const morgan = require('morgan');
+    const logger = new Logger();
+    this.app.use(morgan('combined', { stream: logger.init().stream, skip: Server.skipLog }));
+  }
+
+  private static skipLog(req, res): boolean{
+    let url = req.url;
+    if(url.indexOf('?')>0)
+      url = url.substr(0,url.indexOf('?'));
+    return url.match(/(js|jpg|png|ico|css|woff|woff2|eot)$/ig);
+  }
+
+  private static globalHeaders(req: any, res: any, next: any): void{
+    res.header('X-Powered-By', 'MapLander');
+    next();
+  }
+
+  private initHandlers(): void{
+    Server.handlerExceptionAndRejection();
+    this.app.use(Server.handlerErrors);
+  }
+
+  private static handlerErrors(err: any, req: any, res: any, next: any): void{
+    if(err instanceof APIError){
+      return res.status(err.code).send(err);
     }
+    res.status(500).send(err);
+  }
+
+  private static handlerExceptionAndRejection(): void{
+    process.on('uncaughtException', Server.handleFatalErrors);
+    process.on('unhandledRejection', Server.handleFatalErrors);
+  }
+
+  private static handleFatalErrors(err: any, req: any, res: any, next:any): void{
+    console.error('handleFatalErrors', err.message);
+    console.error('handleFatalErrors', err.stack);
+    process.exit(1);
+  }
+
+  private router(): void{
+    this.app.get('*',  (req, res) => {
+      res.redirect('/#' + req.url);
+    });
     this.initServer();
   }
 
   private initServer(): void{
-    let server;
-    switch (this._type_server){
-      case 1: // With SSR
-        server = new ServerStandard(true);
-        break;
-      case 2: // Without SSR (Use hash)
-        server = new ServerLite(true);
-        break;
-    }
-    App.configEndPoints(server.getAppInstance());
-    server.initRouter();
+    this.app.listen(this._port, () => {
+      console.log(`Current environment ${process.env.NODE_ENV}`);
+      console.log(`Listening server lite on http://localhost:${this._port}`);
+    });
   }
+
 
   /**
    *
@@ -73,16 +108,16 @@ export class App {
    * Available until: July 2019
    *
    * */
-  private static configEndPoints(app: any): void{
+  private configEndPoints(): void{
     const swaggerUi = require('swagger-ui-express');
     const swaggerDocument = require('../dist/api/swagger.json');
     const options = {
       customCss: '.swagger-ui .topbar { display: none }'
     };
-    app.use('/endpoints/v1/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument, options));
-    app.use('/endpoints/v1', new EndPoints().bootstrap());
+    this.app.use('/endpoints/v1/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument, options));
+    this.app.use('/endpoints/v1', new EndPoints().bootstrap());
   }
 
 }
 
-App.bootstrap();
+Server.bootstrap();

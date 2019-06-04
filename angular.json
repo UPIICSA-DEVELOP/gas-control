@@ -18,13 +18,11 @@
             "polyfills": "src/polyfills.ts",
             "assets": [
               "src/assets",
-              "src/favicon.png",
-              "src/favicon.ico",
               "src/robots.txt",
               "src/manifest.json",
-              "src/apple-app-site-association",
               "src/firebase-messaging-sw.js",
-              "src/assetlinks.json"
+              "src/browserconfig.xml",
+              "src/favicon.ico"
             ],
             "styles": [
               "src/styles/styles.scss",

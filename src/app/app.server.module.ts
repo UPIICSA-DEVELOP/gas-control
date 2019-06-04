@@ -11,32 +11,20 @@ import { AppModule } from './app.module';
 import { AppComponent } from './app.component';
 import { ModuleMapLoaderModule } from '@nguniversal/module-map-ngfactory-loader';
 import {NoopAnimationsModule} from '@angular/platform-browser/animations';
-import {MaterialModule} from '@app/core/material/material.module';
-import {ServerStateInterceptor} from './app.server.interceptor';
-import {HTTP_INTERCEPTORS} from '@angular/common/http';
-import {TranslateInterceptor} from '@app/app.translate.interceptor';
+import {MaterialModule} from '@app/commons/modules/material/material.module';
+import {InterceptorsServerModule} from '@app/core/interceptors/server/interceptors.server.module';
 
 @NgModule({
   imports: [
+    AppModule,
     ServerModule,
     NoopAnimationsModule,
     ServerTransferStateModule,
     ModuleMapLoaderModule,
     MaterialModule,
-    AppModule,
+    InterceptorsServerModule
   ],
   bootstrap: [AppComponent],
-  providers: [
-    {
-      provide: HTTP_INTERCEPTORS,
-      useClass: ServerStateInterceptor,
-      multi: true,
-    },
-    {
-      provide: HTTP_INTERCEPTORS,
-      useClass: TranslateInterceptor,
-      multi: true
-    }
-  ]
+  providers: []
 })
 export class AppServerModule { }

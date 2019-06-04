@@ -13,7 +13,7 @@ export class PdfSGM{
    *
    * */
 
-  private static BACKEND_URL = 'https://schedule-maplander.appspot.com/_ah/api/communication/v1/';
+  private static BACKEND_URL: string;
   private static EMPTY_INPUT = 'N/A';
 
   private _commons: Commons;
@@ -23,6 +23,7 @@ export class PdfSGM{
 
   constructor(data: PDFSGMData){
     this._commons = new Commons();
+    PdfSGM.BACKEND_URL = process.env.BACKEND_URL || 'https://schedule-maplander.appspot.com/_ah/api/communication/v1/';
     this._response = {
       code: 200,
       description: 'OK'

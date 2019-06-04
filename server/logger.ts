@@ -4,8 +4,6 @@
  *  Proprietary and confidential
  */
 
-'use-strict';
-
 export class Logger {
 
   constructor(){

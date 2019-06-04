@@ -6,11 +6,11 @@
 
 import {Inject, Injectable, PLATFORM_ID} from '@angular/core';
 import {ActivatedRouteSnapshot, Resolve, Router, RouterStateSnapshot} from '@angular/router';
-import {CookieService, MaxAge} from '@app/core/services/cookie/cookie.service';
-import {Constants} from '@app/core/constants.core';
-import {MessagingService} from '@app/core/services/messaging/messaging.service';
+import {CookieService, MaxAge} from 'app/core/services/cookie/cookie.service';
+import {Constants} from 'app/utils/constants/constants.utils';
+import {MessagingService} from 'app/core/services/messaging/messaging.service';
 import {Observable} from 'rxjs';
-import {LocalStorageService} from '@app/core/services/local-storage/local-storage.service';
+import {LocalStorageService} from 'app/core/services/local-storage/local-storage.service';
 import {ApiService} from '@app/core/services/api/api.service';
 
 @Injectable()

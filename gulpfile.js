@@ -10,18 +10,6 @@ gulp.task('clean', function () {
   return del([paths.dist]);
 });
 
-gulp.task('templates', function() {
-  return gulp.src([
-    './api/templates/**/**',
-    './api/docs/**/**',
-  ]).pipe(gulp.dest('./dist/api/templates'));
-});
-
-gulp.task('api', ['templates'], function() {
-  return gulp.src([
-    './api/*.json'
-  ]).pipe(gulp.dest('./dist/api'));
-});
 
 gulp.task('zip', () => {
   let file = null;

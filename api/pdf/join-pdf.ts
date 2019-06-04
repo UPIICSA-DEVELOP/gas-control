@@ -12,15 +12,12 @@ export class JoinPdf{
    *
    * */
 
-  private static BACKEND_URL = 'https://schedule-maplander.appspot.com/_ah/api/communication/v1/';
+  private static BACKEND_URL: string;
   private  _commons: Commons;
 
   constructor(){
     this._commons = new Commons();
-    require('nconf').argv().env().file({ file: 'config.json' });
-    if(require('nconf').get('BACKEND_URL')){
-      JoinPdf.BACKEND_URL = require('nconf').get('BACKEND_URL');
-    }
+    JoinPdf.BACKEND_URL = process.env.BACKEND_URL || 'https://schedule-maplander.appspot.com/_ah/api/communication/v1/';
   }
 
   /**

@@ -12,11 +12,8 @@ export class Pdf{
   private _stationId: string;
 
   constructor(){
-    require('nconf').argv().env().file({ file: 'config.json' });
-    if(require('nconf').get('BACKEND_URL')){
-      Pdf.BACKEND_URL = require('nconf').get('BACKEND_URL');
-    }
     this._commons = new Commons();
+    Pdf.BACKEND_URL = process.env.BACKEND_URL || 'https://schedule-maplander.appspot.com/_ah/api/communication/v1/';
     this._taskTemplate = [];
   }
 

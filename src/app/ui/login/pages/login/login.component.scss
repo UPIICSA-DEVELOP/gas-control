@@ -1,0 +1,135 @@
+/*!
+ * Copyright (C) MapLander S de R.L de C.V - All Rights Reserved
+ *  Unauthorized copying of this file, via any medium is strictly prohibited
+ *  Proprietary and confidential
+ */
+
+@import "../../../../../styles/colors";
+
+#login {
+  mat-toolbar{
+    position: fixed;
+    width: 100%;
+    height: 48px;
+    padding: 0;
+    background-color: mat-color($primary);
+    z-index: 4;
+    top: 0;
+    .image-logo{
+      margin: 0 auto;
+      position: absolute;
+      top: 0;
+      right: 0;
+      left: 0;
+      justify-content: center;
+      display: flex;
+      img{
+        height: 40px;
+        margin: 4px;
+        outline: none;
+      }
+    }
+  }
+  width: 100vw;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #F2F2F2;
+  mat-card {
+    position: relative;
+    width: 30%;
+    height: 400px;
+    mat-card-content{
+      position: relative;
+      height: 100%;
+      width: 100%;
+      overflow: auto;
+    }
+    @media screen and (max-width: 900px) {
+      width: 90%;
+      height: 450px;
+    }
+    .head {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      img {
+        height: 120px;
+      }
+    }
+    .body{
+      margin: 24px;
+      mat-form-field{
+        width: 100%;
+      }
+      .error-login{
+        height: 12px;
+        width: 80%;
+        margin-top: -16px;
+        margin-left: calc(50% - 40%);
+      }
+      .forgot-password{
+        text-align: right;
+        color: mat-color($primary);
+        margin-top: -10px;
+        margin-bottom: 24px;
+      }
+      .icons{
+        color:#707070;
+        margin: 0 12px;
+      }
+      .see-ocult-pass{
+        color:#707070;
+      }
+      .login-actions{
+        display:flex;
+        justify-content: space-between;
+        .remember-password{
+          color: mat-color($primary);
+          width: 50%;
+          @media screen and (max-width: 900px){
+            width: 100%;
+            display: flex;
+            justify-content: center;
+          }
+        }
+        .btn-login-email{
+          display: flex;
+          button{
+            background-color: #FFAA00;
+            color: #FFFFFF;
+          }
+          @media screen and (max-width: 900px){
+            margin-top: 24px;
+            width: 100%;
+            justify-content: center;
+          }
+        }
+        @media screen and (max-width: 900px){
+          display: block;
+        }
+      }
+    }
+  }
+  .background{
+    width: 500px;
+    height: 250px;
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    background: url("https://www.googleapis.com/download/storage/v1/b/businesscardgcs/o/alex4%2F2019-01-31-171858879Web-Fondo-gas-poca-transparencia.png?generation=1548955139774223&alt=media") no-repeat bottom;
+    background-size: cover;
+    z-index: 0;
+    @media screen and (max-width: 768px), screen and (max-height: 600px) {
+      width: 300px;
+      height: 150px;
+    }
+  }
+  .progress {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    z-index: 1;
+  }
+}

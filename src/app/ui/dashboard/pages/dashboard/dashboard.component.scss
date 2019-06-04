@@ -1,0 +1,218 @@
+/*!
+ * Copyright (C) MapLander S de R.L de C.V - All Rights Reserved
+ *  Unauthorized copying of this file, via any medium is strictly prohibited
+ *  Proprietary and confidential
+ */
+@import "../../../../../styles/colors";
+#home {
+  width: 100vw;
+  height: calc(100vh - 48px);
+  margin-top: 48px;
+  .background{
+    width: 600px;
+    height: 300px;
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    background: url("https://www.googleapis.com/download/storage/v1/b/businesscardgcs/o/alex4%2F2019-02-05-205017759Web-Fondo-gas-poca-transparencia.png?generation=1549399820762438&alt=media") no-repeat bottom;
+    background-size: cover;
+    @media screen and (max-width: 768px), screen and (max-height: 600px) {
+      width: 300px;
+      height: 150px;
+    }
+  }
+  .empty{
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    padding: 0 35%;
+    text-align: center;
+
+    .text{
+      font-size: 24px;
+      font-weight: 600;
+      color: #707070;
+    }
+    .button{
+      background-color: #FFAA00;
+      color: #FFFFFF;
+      border-radius: 36px;
+      margin-top: 92px;
+    }
+  }
+  mat-drawer-container{
+    height: 100%;
+    background-color: #F2F2F2;
+
+    .menu{
+      width: 20%;
+      margin: 0 !important;
+      overflow-x: hidden;
+      @media screen and (max-width: 1024px){
+        width: 40%;
+      }
+      @media screen and (max-width: 600px){
+        width: 100%;
+      }
+      .station-information{
+        width: 100%;
+        height: 100%;
+        padding: 8px;
+        display: flex;
+        align-items: center;
+        position: relative;
+        overflow-x: hidden;
+        @media screen and (max-width: 600px){
+          height: calc(100% - 56px);
+        }
+        .image{
+          display: flex;
+          justify-content: center;
+          .container{
+            width: 80px;
+            height: 80px;
+            background-color: #FFFFFF;
+            margin: 8px 0;
+            border-radius: 50%;
+            box-shadow: 0 3px 1px 1px rgba(0, 0, 0, 0.1), 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, .10);
+            img{
+              width: 80px;
+              height: 80px;
+            }
+            mat-icon{
+              color: #707070;
+              font-size: 80px;
+            }
+          }
+        }
+        .contact{
+          margin: 16px 0;
+          text-align: center;
+          .info{
+            margin: 8px 0;
+            font-weight: 500;
+            color: #707070;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            overflow: hidden;
+          }
+        }
+        .buttons{
+          margin: 24px 0;
+          button{
+            padding: 0 4px;
+            width: 100%;
+            text-align: start;
+            font-weight: 500;
+            display: flex;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            mat-icon{
+              margin-right: 4px;
+            }
+            span{
+              color: #707070;
+            }
+            .sass-icon{
+              width: 24px;
+              height: 24px;
+              margin-right: 4px;
+            }
+            .sgm{
+              width: 24px;
+              margin-right: 4px;
+            }
+          }
+        }
+        .change-station{
+          display: flex;
+          position: absolute;
+          bottom: 16px;
+          width: 100%;
+          padding-right: 16px;
+          button{
+            background-color: #FFAA00;
+            color: #FFFFFF;
+            text-align: center;
+            width: 100%;
+            mat-icon{
+              margin-right: 8px;
+            }
+          }
+        }
+      }
+    }
+
+    .main{
+      display: flex;
+      margin: 0 !important;
+      width: 80%;
+      float: right;
+      @media screen and (max-width: 1024px){
+        width: 100%;
+      }
+      .col-1{
+        width: 70%;
+        height: 100%;
+        padding: 16px;
+        display: flex;
+        flex-direction: column;
+        @media screen and (max-width: 900px){
+          width: 100%;
+          height: calc(100% - 48px);
+        }
+        .title{
+          margin: 8px 0;
+          h2, p{
+            margin: 2px 0;
+          }
+          h1{
+            margin: -2px 0;
+          }
+        }
+
+        .tasks{
+          width: 100%;
+          height: 100%;
+          position: relative;
+        }
+      }
+
+      .col-2{
+        width: 30%;
+        height: 100%;
+        padding: 8px;
+        overflow-y: auto;
+        @media screen and (max-width: 900px){
+          display: none;
+        }
+        .directory{
+          margin-top: 16px;
+          width: 100%;
+          height: calc(75% - 16px);
+          position: relative;
+        }
+        .footer{
+          position: relative;
+          margin-top: 12px;
+        }
+      }
+
+    }
+
+  }
+  /deep/.mat-drawer.mat-drawer-side {
+    z-index: 1;
+  }
+  /deep/.mat-badge-small .mat-badge-content{
+    width: 10px;
+    height: 10px;
+    line-height: 10px;
+    top: 0;
+    right: 0;
+  }
+}
+

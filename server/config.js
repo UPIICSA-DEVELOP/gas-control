@@ -4,73 +4,52 @@
  *  Proprietary and confidential
  */
 
+const path = require('path'), fs = require('fs');
+
+const PATHS = {
+  dev: '/var/www/html/businesscard.maplander.com/develop/',
+  prod: '/var/www/html/businesscard.maplander.com/production/'
+};
 
 (function () {
 
-  // Copy dependencies
-
-  const gulp = require('gulp');
-  gulp.src([__dirname + '/package.json']).pipe(gulp.dest('./dist'));
-
-  // Create a nconfig.json
-
-  const fs = require('fs');
-  const path = require('path');
-
-
-  let data = {
-    ENV: 'dev',
-    PORT: 8090,
-    SERVER: 2,
-    FRONT_URL: 'https://inspector-develop.maplander.com/',
-    BACKEND_URL: 'https://schedule-maplander.appspot.com/_ah/api/communication/v1/'
-  };
-
-  if(process.env.NODE_ENV === 'prod'){
-    data.ENV = 'prod';
-    data.PORT = 9090;
-    data.FRONT_URL = 'https://app.inspectordenormas.com/';
-    data.BACKEND_URL = 'https://inspector-backend.appspot.com/_ah/api/communication/v1/';
+  function apps() {
+    let apps = {
+      apps: [
+        {
+          name: "app-inspector-"+process.env.NODE_ENV,
+          script: "./server.js",
+          exec_mode: "fork",
+          cwd : PATHS[process.env.NODE_ENV]
+        }
+      ]
+    };
+    fs.writeFile(path.resolve(__dirname, '../', 'dist/apps.json'), JSON.stringify(apps), function(err) {
+      if(err) {
+        return console.error(err);
+      }
+    });
   }
 
-  data = JSON.stringify(data);
-
-  fs.writeFile(path.resolve(__dirname,  '../', 'dist/config.json'), data, function(err) {
-    if(err) {
-      console.error(err);
-    }
-  });
-
-  // Create a apps.json
-
-  const dir = (process.env.NODE_ENV === 'dev')?'/var/www/html/app.inspector.com/develop/':'/var/www/html/app.inspector.com/production/';
-
-  let apps = {
-    "apps": [
-      {
-        "name": "app-inspector-"+process.env.NODE_ENV,
-        "script": "./server.js",
-        "instances": 2,
-        "exec_mode": "cluster",
-        "cwd" : dir,
-        "env": {
-          "ENV": process.env.NODE_ENV,
-          "PORT": process.env.NODE_ENV === 'dev' ? 8090 : 9090,
-          "SERVER": "2"
-        }
+  function packageJson() {
+    const file = fs.readFileSync(path.resolve(__dirname, '../', 'package.json'), 'utf8');
+    const data = JSON.parse(file.toString());
+    delete data.devDependencies;
+    delete data.scripts;
+    fs.writeFile(path.resolve(__dirname, '../', 'dist', 'package.json'), JSON.stringify(data), (err) => {
+      if(err){
+        return console.error(err);
       }
-    ]
-  };
+    });
+  }
 
-  apps = JSON.stringify(apps);
 
-  fs.writeFile(path.resolve(__dirname, '../', 'dist/apps.json'), apps, function(err) {
-    if(err) {
-      console.error(err);
-    }
-  });
+  function init() {
+    apps();
+    packageJson();
+    console.info(`Configuration created at ${new Date()}`);
+  }
 
-  console.log('Config finish');
-
+  init();
 
 })();

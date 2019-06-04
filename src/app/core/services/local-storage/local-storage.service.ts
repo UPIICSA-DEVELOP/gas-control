@@ -6,7 +6,7 @@
  */
 
 import { Injectable } from '@angular/core';
-import {UtilitiesService} from '@app/core/utilities/utilities.service';
+import {UtilitiesService} from 'app/utils/utilities/utilities';
 
 declare var window: any;
 

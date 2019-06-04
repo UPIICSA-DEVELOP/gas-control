@@ -8,13 +8,13 @@
 import {Injectable, OnDestroy} from '@angular/core';
 import {forkJoin, Observable} from 'rxjs';
 import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
-import {NetworkService} from '@app/core/services/connection/network.service';
+import {NetworkService} from '@app/core/services/network/network.service';
 import {SnackBarService} from '@app/core/services/snackbar/snackbar.service';
-import {Consultancy} from '@app/core/interfaces/interfaces';
+import {SessionStorageService} from '@app/core/services/session-storage/session-storage.service';
+import {Consultancy} from '@app/utils/interfaces/interfaces';
 import {Subscription} from 'rxjs/Rx';
 import {environment} from '@env/environment';
-import {SessionStorageService} from '@app/core/services/session-storage/session-storage.service';
-import {Constants} from '@app/core/constants.core';
+import {Constants} from '@app/utils/constants/constants.utils';
 import {map} from 'rxjs/internal/operators';
 
 
@@ -610,13 +610,6 @@ export class ApiService implements OnDestroy{
    * End: create reports by reportType
    */
 
-  private initNetwork(): void {
-    this._subscriptionNetwork = this._networkService.getChangesNetwork().subscribe(status => {
-      const text = (!status) ? 'La conexión a internet se ha perdido' : 'De nuevo en linea';
-      this._snackBarService.openSnackBar(text, 'OK', (status) ? 2000 : 0);
-    });
-  }
-
   public createFRReportAndTask(task: any, stationId: string): Observable<any>{
     return this._http.post(ApiService.API_URL_COMPLETE + 'createFRReportAndTask?stationId='+stationId+'&type=1', task);
   }
@@ -674,4 +667,13 @@ export class ApiService implements OnDestroy{
     };
     return this._http.post(ApiService.API_URL_COMPLETE + 'enableStation', options);
   }
+
+  private initNetwork(): void {
+    this._subscriptionNetwork = this._networkService.getNetworkChanges().subscribe(status => {
+      const text = (!status) ? 'La conexión a internet se ha perdido' : 'De nuevo en linea';
+      this._snackBarService.openSnackBar(text, 'OK', (status) ? 2000 : 0);
+    });
+  }
+
+
 }
