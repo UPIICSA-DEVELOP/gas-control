@@ -23,7 +23,7 @@ const Pipes = [
   declarations: Pipes,
   imports: [],
   exports: Pipes,
-  providers: []
+  providers: Pipes
 })
 
 export class SharedPipesModule {}
