@@ -39,44 +39,53 @@ Title  | Command  | Description
 Start application in localhost  | `npm run start` | Start application for development
 Build bundle for production | `npm run build` | Build application for deploy in production
 Build bundle for development | `npm run build:develop` | Build application for deploy in develop
-Test Server Side Rendering | `npm run test:ssr` | Test in localhost the server side rendering before deploy to develop/production (Prevent errors in server)
+Test Server Side Rendering | `npm run ssr` | Test in localhost the server side rendering before deploy to develop/production (Prevent errors in server)
 Build server file | `npm run server` | Build server file for develop/production
-Deploy to develop | `npm run deploy:develop ` | Deploy application to development  
+Deploy to develop | `npm run deploy:develop` | Deploy application to development  
 Deploy to production | `npm run deploy:production` | Deploy application to production 
-Generate Node config file for development | `npm run config:dev` | Generate File config.json for development
-Generate Node config file for production | `npm run config:prod` | Generate File config.json for production
-Increase version as pre release |  `standard-version --release-as patch --prerelease beta` | Update package.json with new version for release and adding the changes to CHANGELOG.md file
-Increase version as pre release |  `standard-version --release-as minor --prerelease beta` | Update package.json with new version for release and adding the changes to CHANGELOG.md file
-Increase version as pre release |  `standard-version --release-as major --prerelease beta` | Update package.json with new version for release and adding the changes to CHANGELOG.md file
-Increase version as release |  `standard-version --release-as patch` | Update package.json with new version for release and adding the changes to CHANGELOG.md file
-Increase version as release |  `standard-version --release-as minor` | Update package.json with new version for release and adding the changes to CHANGELOG.md file
-Increase version as release |  `standard-version --release-as major` | Update package.json with new version for release and adding the changes to CHANGELOG.md file
-Build API |  `gulp api && webpack --mode production --config api/webpack.config.js --progress --colors` | Build API
-Deep links for applications |  `set NODE_ENV=dev&& node deep-links/deep-links.js` | Deep links for applications for development
-Deep links for applications |  `set NODE_ENV=prod&& node deep-links/deep-links.js` | Deep links for applications for production
-Setup config for deploy |  `gulp zip --file hooks/bash && node hooks/scp --filePath hooks/bash/bundle.zip --destination /var/www/html/app.inspector.com/deploy/bash && node hooks/remotely --setup` | Hola
+Generate apps.json and package.json | `npm run config` | Generate File apps.json for start applications with PM2 and create package.json for dependencies
+Increase version as pre release |  `npm run prerelease:patch` | Update package.json with new version for release and adding the changes to CHANGELOG.md file
+Increase version as pre release |  `npm run prerelease:minor` | Update package.json with new version for release and adding the changes to CHANGELOG.md file
+Increase version as pre release |  `npm run prerelease:major` | Update package.json with new version for release and adding the changes to CHANGELOG.md file
+Increase version as release |  `npm run release:patch` | Update package.json with new version for release and adding the changes to CHANGELOG.md file
+Increase version as release |  `npm run release:minor` | Update package.json with new version for release and adding the changes to CHANGELOG.md file
+Increase version as release |  `npm run release:major` | Update package.json with new version for release and adding the changes to CHANGELOG.md file
+Build API |  `npm run api` | Build API
+Update index.html for lazy loading |  `npm run lazy` | Update index.html for improve performance with lazy loading 
+Setup for deploy |  `npm run deploy:setup` | 
 Generate bundle report | `npm run bundle-report` | Generate bundle report for inspect application size 
   
 ##Folder Structure
 
     .
-    ├── dist                            # Compiled files (server and browser) 
-    │   └── .well-known                 # Files for config Dynamic Links (IOS/Android)  
-    ├── e2e                                           
-    ├── src                             # Source files                                
+    ├── .well-known                                                 
+    ├── api  
+    ├── bin
+    ├── hooks
+    ├── server                                                   
+    ├── src                                                         
     │   ├── app
-    │   │      ├── components
-    │   │      └── core
-    │   │              ├── class
-    │   │              ├── components
-    │   │              ├── constants
-    │   │              ├── directives
-    │   │              ├── enums
-    │   │              ├── material
-    │   │              ├── models
-    │   │              ├── pipes
-    │   │              ├── services
-    │   │              └── utilities
+    │   │   ├── commons
+    |   |   |   └── modules
+    │   │   ├── core
+    │   │   |   ├── components
+    │   │   |   ├── directives
+    │   │   |   ├── services
+    │   │   |   ├── interceptors
+    |   │   │   |   ├── browser
+    |   │   │   |   └── server
+    │   │   |   ├── directives
+    │   │   |   └── pipes
+    |   |   ├── shared
+    |   │   │   ├── components
+    │   │   |   └── pipes
+    |   |   ├── ui 
+    |   |   └── utils
+    │   │       ├── class
+    │   │       ├── constants
+    │   │       ├── enums
+    │   │       ├── interfaces    
+    │   │       └── utilities      
     │   ├── assets
     │   ├── environments
     │   └── styles
