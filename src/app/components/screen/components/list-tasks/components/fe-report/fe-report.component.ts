@@ -4,7 +4,7 @@
  *  Proprietary and confidential
  */
 
-import {Component, Input, OnDestroy, OnInit} from '@angular/core';
+import {Component, Input, OnDestroy, OnInit, ViewEncapsulation} from '@angular/core';
 import {FEReport, FireExtinguisher} from '@app/core/interfaces/interfaces';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {ApiLoaderService} from '@app/core/services/api/api-loader.service';
@@ -22,7 +22,8 @@ import {FormatTimePipe} from '@app/core/pipes/format-time/format-time.pipe';
 @Component({
   selector: 'app-fe-report',
   templateUrl: './fe-report.component.html',
-  styleUrls: ['./fe-report.component.scss']
+  styleUrls: ['./fe-report.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class FeReportComponent implements OnInit, OnDestroy {
   private _taskId: string;

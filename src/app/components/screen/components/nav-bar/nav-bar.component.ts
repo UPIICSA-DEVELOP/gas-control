@@ -4,7 +4,7 @@
  *  Proprietary and confidential
  */
 
-import {Component, DoCheck, Inject, OnDestroy, OnInit, PLATFORM_ID} from '@angular/core';
+import {Component, DoCheck, Inject, OnDestroy, OnInit, PLATFORM_ID, ViewEncapsulation} from '@angular/core';
 import {AuthService} from '@app/core/services/auth/auth.service';
 import {DialogService} from '@app/core/components/dialog/dialog.service';
 import {Constants} from '@app/core/constants.core';
@@ -19,7 +19,8 @@ import {SharedService, SharedTypeNotification} from '@app/core/services/shared/s
 @Component({
   selector: 'app-nav-bar',
   templateUrl: './nav-bar.component.html',
-  styleUrls: ['./nav-bar.component.scss']
+  styleUrls: ['./nav-bar.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class NavBarComponent implements OnInit, DoCheck, OnDestroy  {
 

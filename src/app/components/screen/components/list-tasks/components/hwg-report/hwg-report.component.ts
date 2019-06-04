@@ -4,7 +4,7 @@
  *  Proprietary and confidential
  */
 
-import {Component, EventEmitter, Inject, Input, OnDestroy, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, Inject, Input, OnDestroy, OnInit, Output, ViewEncapsulation} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {HWGReport} from '@app/core/interfaces/interfaces';
 import {Subscription} from 'rxjs';
@@ -14,7 +14,8 @@ import {DOCUMENT} from '@angular/common';
 @Component({
   selector: 'app-hwg-report',
   templateUrl: './hwg-report.component.html',
-  styleUrls: ['./hwg-report.component.scss']
+  styleUrls: ['./hwg-report.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class HwgReportComponent implements OnInit, OnDestroy {
   public task: any;
@@ -95,7 +96,6 @@ export class HwgReportComponent implements OnInit, OnDestroy {
       area: task.area || undefined,
       corrosive: task.corrosive || undefined,
       explosive: task.explosive || undefined,
-      fileCS: task.fileCS || undefined,
       flammable: task.flammable || undefined,
       quantity: task.quantity || undefined,
       reactive: task.reactive || undefined,

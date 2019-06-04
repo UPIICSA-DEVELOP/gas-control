@@ -4,7 +4,7 @@
  * Proprietary and confidential
  */
 
-import {Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {Component, ElementRef, OnDestroy, OnInit, ViewChild, ViewEncapsulation} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {animate, style, transition, trigger} from '@angular/animations';
 import {Constants} from '@app/core/constants.core';
@@ -39,7 +39,8 @@ import {Subscription} from 'rxjs';
       ])
     ])
   ],
-  host: {'[@fadeInAnimation]': ''}
+  host: {'[@fadeInAnimation]': ''},
+  encapsulation: ViewEncapsulation.None
 })
 export class CollaboratorsListComponent implements OnInit, OnDestroy {
   @ViewChild('phoneNumber', { static: false }) private _phoneNumberInput: ElementRef;

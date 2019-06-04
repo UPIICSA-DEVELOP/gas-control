@@ -4,7 +4,7 @@
  *  Proprietary and confidential
  */
 
-import {Component, Input, OnDestroy, OnInit} from '@angular/core';
+import {Component, Input, OnDestroy, OnInit, ViewEncapsulation} from '@angular/core';
 import {FRReport} from '@app/core/interfaces/interfaces';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {ApiService} from '@app/core/services/api/api.service';
@@ -22,7 +22,8 @@ import {FormatTimePipe} from '@app/core/pipes/format-time/format-time.pipe';
 @Component({
   selector: 'app-fr-report',
   templateUrl: './fr-report.component.html',
-  styleUrls: ['./fr-report.component.scss']
+  styleUrls: ['./fr-report.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class FrReportComponent implements OnInit, OnDestroy {
   private _taskId: string;
@@ -123,7 +124,6 @@ export class FrReportComponent implements OnInit, OnDestroy {
       folio: task.folio || undefined,
       id: task.id || undefined,
       magna: task.magna || undefined,
-      managerName: task.managerName || undefined,
       name: task.name || undefined,
       premium: task.premium || undefined,
       receiveName: task.receiveName || undefined,

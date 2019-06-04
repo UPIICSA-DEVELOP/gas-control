@@ -4,7 +4,7 @@
  * Proprietary and confidential
  */
 
-import {Component, Inject, OnInit, PLATFORM_ID} from '@angular/core';
+import {Component, Inject, OnInit, PLATFORM_ID, ViewEncapsulation} from '@angular/core';
 import {MatDialogRef} from '@angular/material';
 import {DOCUMENT, isPlatformBrowser} from '@angular/common';
 import SignaturePad from 'signature_pad';
@@ -17,7 +17,8 @@ import {Constants} from '@app/core/constants.core';
 @Component({
   selector: 'app-signature-pad',
   templateUrl: './signature-pad.component.html',
-  styleUrls: ['./signature-pad.component.scss']
+  styleUrls: ['./signature-pad.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class SignaturePadComponent implements OnInit {
   public canvas: any;

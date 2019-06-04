@@ -4,7 +4,7 @@
  *  Proprietary and confidential
  */
 
-import {AfterViewInit, Component, Inject, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, Inject, OnDestroy, OnInit, ViewChild, ViewEncapsulation} from '@angular/core';
 import {ApiService} from '@app/core/services/api/api.service';
 import {CookieService} from '@app/core/services/cookie/cookie.service';
 import {Constants} from '@app/core/constants.core';
@@ -29,7 +29,8 @@ import {DOCUMENT} from '@angular/common';
 @Component({
   selector: 'app-screen',
   templateUrl: './screen.component.html',
-  styleUrls: ['./screen.component.scss']
+  styleUrls: ['./screen.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class ScreenComponent implements OnInit, AfterViewInit, OnDestroy{
 

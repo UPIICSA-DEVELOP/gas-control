@@ -4,7 +4,7 @@
  *  Proprietary and confidential
  */
 
-import {Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {Component, ElementRef, OnDestroy, OnInit, ViewChild, ViewEncapsulation} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {ApiService} from '@app/core/services/api/api.service';
 import {DialogService} from '@app/core/components/dialog/dialog.service';
@@ -17,7 +17,8 @@ const md5 = require('md5');
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.scss']
+  styleUrls: ['./login.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class LoginComponent implements OnInit, OnDestroy {
 

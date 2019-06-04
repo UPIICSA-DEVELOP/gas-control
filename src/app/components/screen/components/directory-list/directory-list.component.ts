@@ -4,7 +4,7 @@
  * Proprietary and confidential
  */
 
-import {Component, Input, OnDestroy, OnInit} from '@angular/core';
+import {Component, Input, OnDestroy, OnInit, ViewEncapsulation} from '@angular/core';
 import {ApiService} from '@app/core/services/api/api.service';
 import {SnackBarService} from '@app/core/services/snackbar/snackbar.service';
 import {DialogService} from '@app/core/components/dialog/dialog.service';
@@ -18,7 +18,8 @@ import {Subscription} from 'rxjs';
 @Component({
   selector: 'app-directory-list',
   templateUrl: './directory-list.component.html',
-  styleUrls: ['./directory-list.component.scss']
+  styleUrls: ['./directory-list.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class DirectoryListComponent implements OnInit, OnDestroy {
   public gasStation: any;

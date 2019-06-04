@@ -12,6 +12,7 @@ import {MessagingService} from '@app/core/services/messaging/messaging.service';
 import {Observable} from 'rxjs';
 import {LocalStorageService} from '@app/core/services/local-storage/local-storage.service';
 import {ApiService} from '@app/core/services/api/api.service';
+import {SessionStorageService} from '@app/core/services/session-storage/session-storage.service';
 
 @Injectable()
 export class AuthService implements Resolve<any>{
@@ -92,9 +93,10 @@ export class AuthService implements Resolve<any>{
     LocalStorageService.removeItem(Constants.ConsultancyInSession);
     LocalStorageService.removeItem(Constants.SessionToken);
     LocalStorageService.removeItem(Constants.NotSignature);
-    CookieService.deleteCookie(Constants.IdSession);
     LocalStorageService.removeItem(Constants.UserInSession);
     LocalStorageService.removeItem(Constants.StationInDashboard);
+    SessionStorageService.removeItem(Constants.StationAdmin);
+    CookieService.deleteCookie(Constants.IdSession);
     if(!notNavigate){
       this._router.navigate(['/']).then(() => {});
     }

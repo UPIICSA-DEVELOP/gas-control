@@ -4,7 +4,7 @@
  *  Proprietary and confidential
  */
 
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit, ViewEncapsulation} from '@angular/core';
 import {animate, style, transition, trigger} from '@angular/animations';
 import {ApiService} from '@app/core/services/api/api.service';
 import {ApiLoaderService} from '@app/core/services/api/api-loader.service';
@@ -32,7 +32,8 @@ import {SessionStorageService} from '@app/core/services/session-storage/session-
       ])
     ])
   ],
-  host: {'[@fadeInAnimation]': ''}
+  host: {'[@fadeInAnimation]': ''},
+  encapsulation: ViewEncapsulation.None
 })
 export class AdminNotificationsComponent implements OnInit, OnDestroy {
 

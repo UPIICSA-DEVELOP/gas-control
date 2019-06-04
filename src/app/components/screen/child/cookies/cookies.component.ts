@@ -4,7 +4,7 @@
  * Proprietary and confidential
  */
 
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit, ViewEncapsulation} from '@angular/core';
 import {LocalStorageService} from '@app/core/services/local-storage/local-storage.service';
 import {Router} from '@angular/router';
 import {Constants} from '@app/core/constants.core';
@@ -12,7 +12,8 @@ import {Constants} from '@app/core/constants.core';
 @Component({
   selector: 'app-cookies',
   templateUrl: './cookies.component.html',
-  styleUrls: ['./cookies.component.scss']
+  styleUrls: ['./cookies.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class CookiesComponent implements OnInit {
 

@@ -4,7 +4,7 @@
  * Proprietary and confidential
  */
 
-import {Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {Component, ElementRef, OnDestroy, OnInit, ViewChild, ViewEncapsulation} from '@angular/core';
 import {ApiService} from '@app/core/services/api/api.service';
 import {Constants} from '@app/core/constants.core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
@@ -50,7 +50,8 @@ import {AuthService} from '@app/core/services/auth/auth.service';
       ])
     ])
   ],
-  host: {'[@fadeInAnimation]': ''}
+  host: {'[@fadeInAnimation]': ''},
+  encapsulation: ViewEncapsulation.None
 })
 export class ProfileComponent implements OnInit, OnDestroy {
   @ViewChild('phoneNumber', { static: false }) private _phoneNumberInput: ElementRef;

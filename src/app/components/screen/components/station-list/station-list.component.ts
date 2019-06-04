@@ -4,7 +4,7 @@
  * Proprietary and confidential
  */
 
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ViewEncapsulation} from '@angular/core';
 import {ApiService} from '@app/core/services/api/api.service';
 import {DialogService} from '@app/core/components/dialog/dialog.service';
 import {CookieService} from '@app/core/services/cookie/cookie.service';
@@ -42,7 +42,8 @@ import {SharedService, SharedTypeNotification} from '@app/core/services/shared/s
       ])
     ])
   ],
-  host: {'[@fadeInAnimation]': ''}
+  host: {'[@fadeInAnimation]': ''},
+  encapsulation: ViewEncapsulation.None
 })
 export class StationListComponent implements OnInit {
 

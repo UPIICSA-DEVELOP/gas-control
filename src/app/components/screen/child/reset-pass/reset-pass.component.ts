@@ -4,7 +4,7 @@
  * Proprietary and confidential
  */
 
-import {Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {Component, ElementRef, OnDestroy, OnInit, ViewChild, ViewEncapsulation} from '@angular/core';
 import {SnackBarService} from '@app/core/services/snackbar/snackbar.service';
 import {DialogService} from '@app/core/components/dialog/dialog.service';
 import {Constants} from '@app/core/constants.core';
@@ -55,7 +55,8 @@ const md5 = require('md5');
       ])
     ])
   ],
-  host: {'[@fadeInAnimation]': ''}
+  host: {'[@fadeInAnimation]': ''},
+  encapsulation: ViewEncapsulation.None
 })
 export class ResetPassComponent implements OnInit, OnDestroy {
 

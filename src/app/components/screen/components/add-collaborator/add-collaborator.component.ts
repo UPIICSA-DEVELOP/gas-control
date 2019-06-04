@@ -4,7 +4,7 @@
  * Proprietary and confidential
  */
 
-import {Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {Component, ElementRef, OnDestroy, OnInit, ViewChild, ViewEncapsulation} from '@angular/core';
 import {animate, style, transition, trigger} from '@angular/animations';
 import {ApiService} from '@app/core/services/api/api.service';
 import {DialogService} from '@app/core/components/dialog/dialog.service';
@@ -39,7 +39,8 @@ import {Subscription} from 'rxjs';
       ])
     ])
   ],
-  host: {'[@fadeInAnimation]': ''}
+  host: {'[@fadeInAnimation]': ''},
+  encapsulation: ViewEncapsulation.None
 })
 export class AddCollaboratorComponent implements OnInit, OnDestroy {
   @ViewChild('phoneNumber', { static: true }) private _phoneNumberInput: ElementRef;

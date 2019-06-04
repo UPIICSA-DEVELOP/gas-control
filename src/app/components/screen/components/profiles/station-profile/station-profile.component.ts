@@ -4,13 +4,13 @@
  * Proprietary and confidential
  */
 
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit, ViewEncapsulation} from '@angular/core';
 import {animate, keyframes, query, stagger, style, transition, trigger} from '@angular/animations';
 import {ActivatedRoute, Router} from '@angular/router';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {ApiService} from '@app/core/services/api/api.service';
 import {ApiLoaderService} from '@app/core/services/api/api-loader.service';
-import {LocationOptions, LocationService} from '@app/core/components/location/location.service';
+import {LocationService} from '@app/core/components/location/location.service';
 import {SnackBarService} from '@app/core/services/snackbar/snackbar.service';
 import {DialogService} from '@app/core/components/dialog/dialog.service';
 import {Constants} from '@app/core/constants.core';
@@ -44,7 +44,8 @@ import {Dispensers, FuelTanks, GasStation, WorkShifts} from '@app/core/interface
       ])
     ])
   ],
-  host: {'[@fadeInAnimation]': ''}
+  host: {'[@fadeInAnimation]': ''},
+  encapsulation: ViewEncapsulation.None
 })
 export class StationProfileComponent implements OnInit, OnDestroy {
   public workShifts:WorkShifts[];
@@ -114,16 +115,10 @@ export class StationProfileComponent implements OnInit, OnDestroy {
   }
 
   public openLocation():void{
-    let latLng: LocationOptions = {
-      lat: 19.432675,
-      lng: -99.133461
+    const latLng = {
+      lat: this._latLng ?this._latLng.latitude : 19.432675,
+      lng: this._latLng ? this._latLng.longitude : -99.133461
     };
-    if (this._latLng){
-      latLng = {
-        lat: this._latLng.latitude,
-        lng: this._latLng.longitude
-      }
-    }
     this._locationService.open(latLng).afterClosed().subscribe(response=>{
       switch (response.code) {
         case 1:
@@ -159,7 +154,6 @@ export class StationProfileComponent implements OnInit, OnDestroy {
       address:['',[Validators.required]],
       phoneNumber:['',[Validators.required, Validators.minLength(8), Validators.maxLength(13)]],
       email:['', [Validators.required, Validators.email]],
-      /*managerName:[{value:'', disabled: true},[]],*/
       vrs: [{value: false, disabled: true}, []],
       workers:['',[]],
       monitoringWells:['',[]],
@@ -239,7 +233,6 @@ export class StationProfileComponent implements OnInit, OnDestroy {
       address:this.station.address,
       phoneNumber:this.station.phoneNumber,
       email:this.station.email,
-      /*managerName:this.station.managerName,*/
       vrs: this.station.vapourRecoverySystem,
       workers:this.station.workers,
       monitoringWells:this.station.monitoringWells,
@@ -262,7 +255,6 @@ export class StationProfileComponent implements OnInit, OnDestroy {
     this.station.crePermission = (data.crePermission ? data.crePermission: undefined);
     this.station.name = data.name;
     this.station.businessName = data.businessName;
-    //this.station.rfc = data.rfc;
     this.station.address = data.address;
     this.station.phoneNumber = data.phoneNumber;
     this.station.email = data.email;

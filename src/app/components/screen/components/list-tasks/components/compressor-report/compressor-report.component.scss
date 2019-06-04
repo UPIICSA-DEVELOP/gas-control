@@ -131,12 +131,6 @@
     display: flex;
     justify-content: center;
   }
-  ::ng-deep.mat-select-panel mat-option.mat-option {
-    height: unset;
-  }
-  ::ng-deep.mat-option-text.mat-option-text {
-    white-space: normal;
-  }
   .evidence{
     height: inherit;
     padding: 8px;

@@ -4,7 +4,7 @@
  * Proprietary and confidential
  */
 
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit, ViewEncapsulation} from '@angular/core';
 import {UploadFileService} from '@app/core/components/upload-file/upload-file.service';
 import {animate, keyframes, query, stagger, style, transition, trigger} from '@angular/animations';
 import {ActivatedRoute, Router} from '@angular/router';
@@ -45,7 +45,8 @@ import {HashService} from '@app/core/utilities/hash.service';
       ])
     ])
   ],
-  host: {'[@fadeInAnimation]': ''}
+  host: {'[@fadeInAnimation]': ''},
+  encapsulation: ViewEncapsulation.None
 })
 
 export class DocumentationComponent implements OnInit, OnDestroy {

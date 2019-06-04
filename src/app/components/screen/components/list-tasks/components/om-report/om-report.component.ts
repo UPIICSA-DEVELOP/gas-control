@@ -4,7 +4,7 @@
  *  Proprietary and confidential
  */
 
-import {Component, Input, OnDestroy, OnInit} from '@angular/core';
+import {Component, Input, OnDestroy, OnInit, ViewEncapsulation} from '@angular/core';
 import {ApiService} from '@app/core/services/api/api.service';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {HWGReport, OMReport} from '@app/core/interfaces/interfaces';
@@ -25,7 +25,8 @@ import {FormatTimePipe} from '@app/core/pipes/format-time/format-time.pipe';
 @Component({
   selector: 'app-om-report',
   templateUrl: './om-report.component.html',
-  styleUrls: ['./om-report.component.scss']
+  styleUrls: ['./om-report.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class OmReportComponent implements OnInit, OnDestroy {
   private _taskId: string;
@@ -158,7 +159,6 @@ export class OmReportComponent implements OnInit, OnDestroy {
       industrialShoes: task.industrialShoes || undefined,
       kneepads: task.kneepads || undefined,
       maintenanceType: task.maintenanceType || undefined,
-      managerName: task.managerName || undefined,
       name: task.name || undefined,
       observations: task.observations || undefined,
       personnelNames: task.personnelNames || undefined,

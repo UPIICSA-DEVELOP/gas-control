@@ -152,16 +152,6 @@
     display: flex;
     justify-content: center;
   }
-  ::ng-deep.mat-checkbox-layout{
-    white-space: normal;
-    display: block;
-  }
-  ::ng-deep.mat-select-panel mat-option.mat-option {
-    height: unset;
-  }
-  ::ng-deep.mat-option-text.mat-option-text {
-    white-space: normal;
-  }
   .input-full{
     width: 100%;
   }

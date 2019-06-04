@@ -4,7 +4,7 @@
  *  Proprietary and confidential
  */
 
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ViewEncapsulation} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {animate, style, transition, trigger} from '@angular/animations';
 import {ApiService} from '@app/core/services/api/api.service';
@@ -29,7 +29,8 @@ import {UtilitiesService} from '@app/core/utilities/utilities.service';
       ])
     ])
   ],
-  host: {'[@fadeInAnimation]': ''}
+  host: {'[@fadeInAnimation]': ''},
+  encapsulation: ViewEncapsulation.None
 })
 export class NotificationsComponent implements OnInit{
   public notifications: any[];

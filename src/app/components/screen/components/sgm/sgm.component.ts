@@ -4,7 +4,7 @@
  *  Proprietary and confidential
  */
 
-import {Component, Inject, OnDestroy, OnInit} from '@angular/core';
+import {Component, Inject, OnDestroy, OnInit, ViewEncapsulation} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
 import {ApiService} from '@app/core/services/api/api.service';
 import {ApiLoaderService} from '@app/core/services/api/api-loader.service';
@@ -23,7 +23,8 @@ import {MDate} from '@app/core/class/MDate';
 @Component({
   selector: 'app-sgm',
   templateUrl: './sgm.component.html',
-  styleUrls: ['./sgm.component.scss']
+  styleUrls: ['./sgm.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class SgmComponent implements OnInit, OnDestroy {
   public station: any;

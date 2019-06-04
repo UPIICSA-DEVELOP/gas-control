@@ -4,7 +4,7 @@
  * Proprietary and confidential
  */
 
-import {Component, Inject, OnDestroy, OnInit} from '@angular/core';
+import {Component, Inject, OnDestroy, OnInit, ViewEncapsulation} from '@angular/core';
 import {DateAdapter, MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
 import {ApiService} from '@app/core/services/api/api.service';
 import {ApiLoaderService} from '@app/core/services/api/api-loader.service';
@@ -26,7 +26,8 @@ import {MDate} from '@app/core/class/MDate';
 @Component({
   selector: 'app-sasisopa',
   templateUrl: './sasisopa.component.html',
-  styleUrls: ['./sasisopa.component.scss']
+  styleUrls: ['./sasisopa.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class SasisopaComponent implements OnInit, OnDestroy {
   public elementInView: number;

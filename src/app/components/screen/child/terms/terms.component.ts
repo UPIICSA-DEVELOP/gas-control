@@ -4,7 +4,7 @@
  * Proprietary and confidential
  */
 
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit, ViewEncapsulation} from '@angular/core';
 import {animate, keyframes, query, stagger, style, transition, trigger} from '@angular/animations';
 import {ApiService} from '@app/core/services/api/api.service';
 import {LocalStorageService} from '@app/core/services/local-storage/local-storage.service';
@@ -37,7 +37,8 @@ import {Router} from '@angular/router';
       ])
     ])
   ],
-  host: {'[@fadeInAnimation]': ''}
+  host: {'[@fadeInAnimation]': ''},
+  encapsulation: ViewEncapsulation.None
 })
 export class TermsComponent implements OnInit {
   public user: string;

@@ -122,9 +122,9 @@
   }
   .icon {
     color: #707070;
-    width: 36px;
-    height: 36px;
-    line-height: 36px;
+    //width: 36px;
+    //height: 36px;
+    //line-height: 36px;
   }
 
   .task-head {
@@ -182,40 +182,6 @@
       color:#707070;
       margin: 0 12px;
     }
-  }
-  ::ng-deep.mat-badge-small .mat-badge-content{
-    width: 8px;
-    height: 8px;
-    line-height: 8px;
-    top: 8px;
-    right: 8px;
-  }
-  ::ng-deep .mat-slide-toggle-bar {
-    height: 7px !important;
-    width: 19px !important;
-  }
-
-  ::ng-deep .mat-slide-toggle-thumb {
-    height: 10px !important;
-    width: 10px !important;
-  }
-
-  ::ng-deep .mat-slide-toggle.mat-checked .mat-slide-toggle-thumb-container {
-    transform: translate3d(13px,0,0) !important;
-  }
-
-  ::ng-deep .mat-slide-toggle-thumb-container {
-    width: 12px !important;
-    height: 12px !important;
-    top: -2px !important;
-  }
-
-  ::ng-deep .mat-slide-toggle .mat-slide-toggle-ripple{
-    width: 20px;
-    height: 20px;
-    top: calc(50% - 11px);
-    left: calc(50% - 11px);
-    border-radius: 50%;
   }
 }
 

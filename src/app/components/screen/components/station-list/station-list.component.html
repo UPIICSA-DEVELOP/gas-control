@@ -63,10 +63,8 @@
                 </div>
                 <div class="end">
                   <button mat-icon-button (click)="changeNotificationsStatus(stations.id, notificationActive[i], i)">
-                    <mat-icon class="icon" *ngIf="notificationActive[i] && stations.newNotification" matBadge="&#8288;" matBadgeSize="small" matBadgeColor="warn">notifications</mat-icon>
-                    <mat-icon class="icon" *ngIf="notificationActive[i] && !stations.newNotification">notifications</mat-icon>
-                    <mat-icon class="icon" *ngIf="!notificationActive[i] && !stations.newNotification">notifications_off</mat-icon>
-                    <mat-icon class="icon" *ngIf="!notificationActive[i] && stations.newNotification" matBadge="&#8288;" matBadgeSize="small" matBadgeColor="warn">notifications_off</mat-icon>
+                    <mat-icon class="icon hide-text" *ngIf="notificationActive[i]" matBadge="0" matBadgeSize="small" matBadgeColor="warn" [matBadgeHidden]="!stations.newNotification">notifications</mat-icon>
+                    <mat-icon class="icon hide-text" *ngIf="!notificationActive[i]" matBadge="0" matBadgeSize="small" matBadgeColor="warn" [matBadgeHidden]="!stations.newNotification">notifications_off</mat-icon>
                   </button>
                   <div>
                     <mat-slide-toggle *ngIf="user.role<4" [checked]="stations.enabled" (change)="changeStationEnabled($event, stations.id, i)"></mat-slide-toggle>

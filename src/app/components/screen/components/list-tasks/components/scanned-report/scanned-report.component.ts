@@ -4,7 +4,7 @@
  *  Proprietary and confidential
  */
 
-import {Component, Input, OnDestroy, OnInit} from '@angular/core';
+import {Component, Input, OnDestroy, OnInit, ViewEncapsulation} from '@angular/core';
 import {HWGReport, ScannedReport} from '@app/core/interfaces/interfaces';
 import {ApiService} from '@app/core/services/api/api.service';
 import {ApiLoaderService} from '@app/core/services/api/api-loader.service';
@@ -23,7 +23,8 @@ import {HashService} from '@app/core/utilities/hash.service';
 @Component({
   selector: 'app-scanned-report',
   templateUrl: './scanned-report.component.html',
-  styleUrls: ['./scanned-report.component.scss']
+  styleUrls: ['./scanned-report.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class ScannedReportComponent implements OnInit, OnDestroy {
   private _taskId: string;

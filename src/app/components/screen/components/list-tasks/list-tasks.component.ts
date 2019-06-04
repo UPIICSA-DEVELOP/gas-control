@@ -4,7 +4,7 @@
  *  Proprietary and confidential
  */
 
-import {Component, ElementRef, Input, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {Component, ElementRef, Input, OnDestroy, OnInit, ViewChild, ViewEncapsulation} from '@angular/core';
 import {DatepickerService, DateRangeOptions} from '@app/components/screen/components/datepicker/datepicker.service';
 import {TaskFilterService} from '@app/components/screen/components/task-filter/task-filter.service';
 import {ApiService} from '@app/core/services/api/api.service';
@@ -23,7 +23,8 @@ import {OpenFileService} from '@app/core/components/open-file/open-file.service'
 @Component({
   selector: 'app-list-tasks',
   templateUrl: './list-tasks.component.html',
-  styleUrls: ['./list-tasks.component.scss']
+  styleUrls: ['./list-tasks.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class ListTasksComponent implements OnInit, OnDestroy{
   @ViewChild('modalScroll', { static: false }) private _modalScroll: ElementRef;

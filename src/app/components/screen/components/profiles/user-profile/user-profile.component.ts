@@ -4,7 +4,7 @@
  * Proprietary and confidential
  */
 
-import {Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {Component, ElementRef, OnDestroy, OnInit, ViewChild, ViewEncapsulation} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {animate, keyframes, query, stagger, style, transition, trigger} from '@angular/animations';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
@@ -52,7 +52,8 @@ import {HashService} from '@app/core/utilities/hash.service';
       ])
     ])
   ],
-  host: {'[@fadeInAnimation]': ''}
+  host: {'[@fadeInAnimation]': ''},
+  encapsulation: ViewEncapsulation.None
 })
 export class UserProfileComponent implements OnInit, OnDestroy {
   @ViewChild('phoneNumber', { static: false }) private _phoneNumberInput: ElementRef;

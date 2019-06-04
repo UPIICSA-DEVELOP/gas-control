@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit, ViewEncapsulation} from '@angular/core';
 import {Constants} from '@app/core/constants.core';
 import {UtilitiesService} from '@app/core/utilities/utilities.service';
 import {MatDialogRef} from '@angular/material/dialog';
@@ -6,7 +6,8 @@ import {MatDialogRef} from '@angular/material/dialog';
 @Component({
   selector: 'app-country-code',
   templateUrl: './country-code.component.html',
-  styleUrls: ['./country-code.component.scss']
+  styleUrls: ['./country-code.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class CountryCodeComponent implements OnInit {
 

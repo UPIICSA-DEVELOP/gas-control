@@ -4,7 +4,7 @@
  * Proprietary and confidential
  */
 
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit, ViewEncapsulation} from '@angular/core';
 import {ApiLoaderService} from '@app/core/services/api/api-loader.service';
 import {ApiService} from '@app/core/services/api/api.service';
 import {ListStationsService} from '@app/components/admin/components/list-stations/list-stations.service';
@@ -16,7 +16,8 @@ import {Subscription} from 'rxjs';
 @Component({
   selector: 'app-admin',
   templateUrl: './admin.component.html',
-  styleUrls: ['./admin.component.scss']
+  styleUrls: ['./admin.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class AdminComponent implements OnInit, OnDestroy {
 

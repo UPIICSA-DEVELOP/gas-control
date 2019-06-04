@@ -4,7 +4,7 @@
  * Proprietary and confidential
  */
 
-import {Component, ElementRef, Inject, OnInit, ViewChild} from '@angular/core';
+import {Component, ElementRef, Inject, OnInit, ViewChild, ViewEncapsulation} from '@angular/core';
 import {AbstractControl, FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
 import {ConfigDialogPass} from '@app/core/components/update-password/update-password.service';
@@ -35,7 +35,8 @@ export function ValidateOldPassword(ac: AbstractControl) {
 @Component({
   selector: 'app-update-password',
   templateUrl: './update-password.component.html',
-  styleUrls: ['./update-password.component.scss']
+  styleUrls: ['./update-password.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class UpdatePasswordComponent implements OnInit {
 
