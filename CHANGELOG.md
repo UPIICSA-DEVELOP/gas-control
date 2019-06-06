@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="1.5.3-beta.0"></a>
+## [1.5.3-beta.0](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/compare/v1.5.2...v1.5.3-beta.0) (2019-06-06)
+
+
+### Bug Fixes
+
+* **footer:** add open source licenses ([efcb2d1](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/efcb2d1))
+* **footer:** open licences in new tab ([0b80573](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/0b80573))
+* **SASISOPA:** solve errors in responsive design ([0fac420](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/0fac420))
+* **SGM:** implement responsive design ([a77e64b](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/a77e64b))
+
+
+
 <a name="1.5.2"></a>
 ## [1.5.2](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/compare/v1.5.2-beta.4...v1.5.2) (2019-05-31)
 
