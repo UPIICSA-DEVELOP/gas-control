@@ -116,7 +116,7 @@ export class StationProfileComponent implements OnInit, OnDestroy {
 
   public openLocation():void{
     const latLng = {
-      lat: this._latLng ?this._latLng.latitude : 19.432675,
+      lat: this._latLng ? this._latLng.latitude : 19.432675,
       lng: this._latLng ? this._latLng.longitude : -99.133461
     };
     this._locationService.open(latLng).afterClosed().subscribe(response=>{
@@ -210,10 +210,7 @@ export class StationProfileComponent implements OnInit, OnDestroy {
           this.workShifts.push({start: undefined, end: undefined});
         }
         if (this.station.location) {
-          this._latLng = {
-            latitude: this.station.location.latitude,
-            longitude: this.station.location.longitude
-          }
+          this._latLng = this.station.location
         }
         this.patchForm();
         break;

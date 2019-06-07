@@ -14,27 +14,27 @@
           <mat-card class="head">
             <app-upload-file [layoutTemplate]="icon" (onLoad)="onLoadImage($event)" (onRemove)="onRemoveImage()" [type]="'image'">
               <ng-template #icon>
-                <img *ngIf="profileImage" [src]="profileImage" class="profileImage" alt="User profile image">
-                <mat-icon *ngIf="!profileImage" class="defaultProfileImage">add_photo_alternate</mat-icon>
+                <img *ngIf="profileImage" [src]="profileImage" profile-image alt="User profile image">
+                <mat-icon *ngIf="!profileImage" profile-image default-image>add_photo_alternate</mat-icon>
               </ng-template>
             </app-upload-file>
           </mat-card>
           <mat-card-content class="user-form">
-            <h2 class="title">Mi información</h2>
+            <h2 title>Mi información</h2>
             <div>
-              <mat-form-field class="inputs">
+              <mat-form-field inputs-person>
                 <input [attr.disabled]="load?true:null" formControlName="name" matInput placeholder="Nombre(s)" required type="text" aria-label="User name">
                 <mat-error *ngIf="profileForm.controls['name'].hasError('required')">
                   Este campo es obligatorio
                 </mat-error>
               </mat-form-field>
-              <mat-form-field class="inputs">
+              <mat-form-field inputs-person>
                 <input [attr.disabled]="load?true:null" formControlName="lastName" matInput placeholder="Apellido(s)" required type="text" aria-label="User last-name">
                 <mat-error *ngIf="profileForm.controls['lastName'].hasError('required')">
                   Este campo es obligatorio
                 </mat-error>
               </mat-form-field>
-              <mat-form-field class="inputs">
+              <mat-form-field inputs-person>
                 <input [attr.disabled]="load?true:null" formControlName="email" (blur)="validateEmailExist()" matInput placeholder="Email comercial" required type="email" aria-label="User email">
                 <mat-error *ngIf="profileForm.controls['email'].hasError('required')">
                   Este campo es obligatorio
@@ -46,23 +46,23 @@
                   Este email ya tiene un usuario asociado
                 </mat-error>
               </mat-form-field>
-              <div class="country-code">
-                <div class="mask" (click)="openListCountry()"></div>
-                <mat-form-field class="inputs">
+              <div modal>
+                <div mask (click)="openListCountry()"></div>
+                <mat-form-field inputs-person>
                   <input (keyup)="openListCountry()" [attr.disabled]="load?true:null" formControlName="country" matInput placeholder="País" type="text" required aria-label="User country">
                   <mat-error *ngIf="profileForm.controls['country'].hasError('required')">
                     Este campo es obligatorio
                   </mat-error>
                 </mat-form-field>
               </div>
-              <div style="display: flex">
-                <div class="country-code">
-                  <div class="mask" (click)="openListCountry()"></div>
-                  <mat-form-field class="right-inputs">
+              <div doble-inputs>
+                <div modal little-input>
+                  <div mask (click)="openListCountry()"></div>
+                  <mat-form-field inputs-person>
                     <input [attr.disabled]="load?true:null" formControlName="code" matInput placeholder="Código" type="text" aria-label="Phone code">
                   </mat-form-field>
                 </div>
-                <mat-form-field class="inputs">
+                <mat-form-field class="big">
                   <input [attr.disabled]="load?true:null" formControlName="phoneNumber" matInput placeholder="Número celular" required type="tel" aria-label="User cellphone number" #phoneNumber>
                   <mat-error *ngIf="profileForm.controls['phoneNumber'].hasError('required')">
                     Este campo es obligatorio
@@ -75,60 +75,56 @@
                   </mat-error>
                 </mat-form-field>
               </div>
-              <mat-form-field class="inputs">
+              <mat-form-field inputs-person>
                 <input disabled placeholder="Rol" required aria-label="User role" [value]="userRole" matInput>
               </mat-form-field>
-              <mat-form-field class="inputs">
+              <mat-form-field inputs-person>
                 <input [attr.disabled]="load?true:null" formControlName="jobTitle" matInput placeholder="Cargo" required type="text" aria-label="User job-title">
                 <mat-error *ngIf="profileForm.controls['jobTitle'].hasError('required')">
                   Este campo es obligatorio
                 </mat-error>
               </mat-form-field>
-              <div class="password-button">
+              <div password-button>
                 <button mat-button (click)="changePassword()" type="button" aria-label="User update password" [disabled]="load">
                   Actualizar contraseña
                 </button>
               </div>
-              <div style="display: flex">
-                <mat-form-field class="right-inputs">
+              <div doble-inputs>
+                <mat-form-field class="little">
                   <mat-select [attr.disabled]="load?true:null" placeholder="Protocolo" (selectionChange)="change = true" aria-label="User website protocol" [(value)]="protocol">
                     <mat-option value="http://">http://</mat-option>
                     <mat-option value="https://">https://</mat-option>
                   </mat-select>
                 </mat-form-field>
-                <mat-form-field class="inputs">
+                <mat-form-field class="big">
                   <input [attr.disabled]="load?true:null" placeholder="Website" formControlName="website" matInput type="url" aria-label="User website">
                   <mat-error *ngIf="profileForm.controls['website'].hasError('pattern')">
                     Ingrese un sitio web válido
                   </mat-error>
                 </mat-form-field>
               </div>
-              <div class="signature-input">
-                <div class="formHead">Firma digital</div>
-                <div class="signatureContainer">
-                  <div class="signature" (click)="changeSignature()" matTooltip="Cambiar firma">
-                    <span *ngIf="!signature" class="formText">Registre firma digital</span>
-                    <img *ngIf="signature" [src]="signature" class="imageSignature" alt="User signature image">
-                  </div>
-                </div>
+              <div class="formHead">Firma digital</div>
+              <div signature-container (click)="changeSignature()" matTooltip="Cambiar firma">
+                <span *ngIf="!signature">Registre firma digital</span>
+                <img *ngIf="signature" [src]="signature" alt="User signature image">
               </div>
             </div>
             <div>
-              <div class="title">Información consultora</div>
+              <div title>Información consultora</div>
               <div>
-                <mat-form-field class="inputs">
+                <mat-form-field inputs-person>
                   <input [attr.disabled]="load?true:null" formControlName="businessName" matInput placeholder="Empresa o Razón social" required type="text" aria-label="Consultancy name">
                   <mat-error *ngIf="profileForm.controls['businessName'].hasError('required')">
                     Este campo es obligatorio
                   </mat-error>
                 </mat-form-field>
-                <mat-form-field class="inputs">
+                <mat-form-field inputs-person>
                   <input formControlName="rfc" matInput placeholder="R.F.C" type="text" aria-label="Consultancy legal identifier">
                   <mat-error *ngIf="profileForm.controls['rfc'].hasError('required')">
                     Este campo es obligatorio
                   </mat-error>
                 </mat-form-field>
-                <mat-form-field class="inputs">
+                <mat-form-field inputs-person>
                   <textarea [attr.disabled]="load?true:null" cdkTextareaAutosize formControlName="address" matInput placeholder="Dirección" required type="text" aria-label="Consultancy address"></textarea>
                   <button matSuffix matTooltip="Ubicación" type="button" mat-icon-button (click)="openSelectAddress()" [disabled]="user.role ===3">
                     <mat-icon class="map">map</mat-icon>
@@ -137,7 +133,7 @@
                     Este campo es obligatorio
                   </mat-error>
                 </mat-form-field>
-                <mat-form-field class="inputs">
+                <mat-form-field inputs-person>
                   <input [attr.disabled]="load?true:null" formControlName="officePhone" required matInput placeholder="Número de la consultora" type="tel" aria-label="Consultancy phone number" maxlength="13">
                   <mat-error *ngIf="profileForm.controls['officePhone'].hasError('required')">
                     Este campo es obligatorio
@@ -152,8 +148,8 @@
               </div>
             </div>
           </mat-card-content>
-          <div class="form-button">
-            <button mat-flat-button aria-label="LogIn" [disabled]="load" [color]="'primary'">GUARDAR CAMBIOS</button>
+          <div form-button>
+            <button mat-flat-button [disabled]="load" [color]="'primary'">GUARDAR CAMBIOS</button>
           </div>
         </mat-card>
       </div>

@@ -4,7 +4,7 @@
  * Proprietary and confidential
  */
 @import "../../../../../../styles/colors";
-
+@import "../../../../../../styles/profiles";
 #profile {
   top: 0;
   width: 100vw;
@@ -33,7 +33,6 @@
     }
   }
 
-
   .progress {
     position: absolute;
     top: 0;
@@ -55,28 +54,6 @@
       width: 50%;
       height: auto;
       margin: 24px;
-      .profileImage {
-        height: 100px;
-        width: 100px;
-        font-size: 100px;
-        border-radius: 50%;
-        background-color: #FFFFFF;
-      }
-
-      .defaultProfileImage {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        width: 100px;
-        height: 100px;
-        border-radius: 50%;
-        background-color: #FFFFFF;
-      }
-
-      mat-icon {
-        font-size: 80px;
-        color: #707070;
-      }
 
       @media screen and (max-width: 800px) {
         width: 100%;
@@ -131,86 +108,11 @@
       }
     }
 
-    .inputs {
-      width: 100%;
-    }
-
-    .right-inputs {
-      width: 72px;
-      margin-right: 24px;
-    }
-
-    .country-code {
-      position: relative;
-
-      .mask {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        z-index: 2;
-        cursor: pointer;
-      }
-    }
-
-    .address {
-      position: relative;
-
-      .mask {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        z-index: 2;
-        cursor: pointer;
-      }
-    }
-
-    .form-button {
-      display: flex;
-      justify-content: center;
-      margin: 24px 0;
-    }
-
-    .formText {
-      font-weight: 500;
-      font-size: 14px;
-      color: #707070;
-      margin: 24px;
-    }
-
     .formHead {
       font-weight: 500;
       font-size: 14px;
       color: #707070;
       margin-bottom: 12px;
-    }
-    .signature-input{
-      margin-bottom: 16px;
-    }
-
-    .signatureContainer {
-      display: flex;
-      justify-content: center;
-      background-color: black;
-
-      .signature {
-        margin: 1px;
-        background-color: white;
-        width: 100%;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        cursor: pointer;
-        height: 128px;
-
-        .imageSignature {
-          width: 60%;
-          height: inherit;
-        }
-      }
     }
   }
 
@@ -236,28 +138,5 @@
     width: 100px;
     height: 100px;
     padding: 0;
-  }
-  .password-button{
-    margin-bottom: 12px;
-    color: #707070;
-    button{
-      padding: 0;
-      width: 100%;
-      text-align: left;
-      border-bottom: 1px solid gray;
-    }
-  }
-  mat-spinner{
-    z-index: 3;
-  }
-  .title {
-    font-weight: 500;
-    font-size: 24px;
-    color: mat-color($primary);
-    margin: 24px 0 16px 0;
-  }
-  .map{
-    color: #707070;
-    font-size: 14px !important;
   }
 }

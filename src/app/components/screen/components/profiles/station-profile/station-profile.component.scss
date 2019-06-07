@@ -5,6 +5,7 @@
  */
 
 @import "../../../../../../styles/colors";
+@import "../../../../../../styles/station";
 #station-profile{
   top: 0;
   width: 100vw;
@@ -63,9 +64,6 @@
         width: 95%;
         display: flex;
         justify-content: space-between;
-      }
-      .width-form{
-        width: 40%;
       }
       .text{
         margin: 16px 0;
@@ -184,11 +182,6 @@
       }
     }
   }
-  .save{
-    margin: 16px 0;
-    display: flex;
-    justify-content: center;
-  }
   .background{
     width: 600px;
     height: 300px;
@@ -222,19 +215,6 @@
     }
     mat-icon{
       color: #FFFFFF;
-    }
-  }
-  .address {
-    position: relative;
-
-    .mask {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      z-index: 2;
-      cursor: pointer;
     }
   }
 
@@ -296,14 +276,5 @@
         font-weight: 500;
       }
     }
-  }
-
-  .input-turns{
-    width: 45%;
-    position: relative;
-  }
-
-  .map{
-    color: #707070;
   }
 }
