@@ -372,9 +372,9 @@ export class UtilitiesService {
     }
     let time: boolean;
     try {
-      time = value.includes(' a.m.');
+      time = value.includes(' am');
       value = value.replace(':','');
-      value = value.replace(time ? ' a.m.':' p.m.','');
+      value = value.replace(time ? ' am':' pm','');
       value = Number(value);
       if(time && (value >= 1200 && value <= 1259)){
         value = value - 1200;

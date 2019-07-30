@@ -4,7 +4,7 @@
  * Proprietary and confidential
  */
 
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {animate, keyframes, query, stagger, style, transition, trigger} from '@angular/animations';
 import {ActivatedRoute, Router} from '@angular/router';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
@@ -17,6 +17,8 @@ import {Constants} from '@app/core/constants.core';
 import {LocalStorageService} from '@app/core/services/local-storage/local-storage.service';
 import {Subscription} from 'rxjs/Rx';
 import {Dispensers, FuelTanks, GasStation, WorkShifts} from '@app/core/interfaces/interfaces';
+import {FormatTimePipe} from '@app/core/pipes/format-time/format-time.pipe';
+import {UtilitiesService} from '@app/core/utilities/utilities.service';
 
 @Component({
   selector: 'app-station-profile',
@@ -47,6 +49,7 @@ import {Dispensers, FuelTanks, GasStation, WorkShifts} from '@app/core/interface
   host: {'[@fadeInAnimation]': ''}
 })
 export class StationProfileComponent implements OnInit, OnDestroy {
+  @ViewChild('close') private _close: ElementRef;
   public workShifts:WorkShifts[];
   public tanks:FuelTanks[];
   public dispensers:Dispensers[];
@@ -67,7 +70,8 @@ export class StationProfileComponent implements OnInit, OnDestroy {
     private _locationService: LocationService,
     private _snackBarService: SnackBarService,
     private _dialogService: DialogService,
-    private _activatedRouter: ActivatedRoute
+    private _activatedRouter: ActivatedRoute,
+    private _formatTime: FormatTimePipe
   ) {
     this.yearSelector = [];
     this.workShifts = [];
@@ -211,7 +215,14 @@ export class StationProfileComponent implements OnInit, OnDestroy {
           this.tanks.push({capacity: undefined, fuelType: undefined, year: undefined});
         }
         if (this.station.workShifts){
-          this.workShifts = Object.assign([],this.station.workShifts);
+          const arr = [];
+          this.station.workShifts.forEach(value => {
+            arr.push({
+              start: this._formatTime.transform(value.start),
+              end: this._formatTime.transform(value.end)
+            })
+          });
+          this.workShifts = Object.assign([],arr);
         }else{
           this.workShifts.push({start: undefined, end: undefined});
         }
@@ -239,7 +250,6 @@ export class StationProfileComponent implements OnInit, OnDestroy {
       address:this.station.address,
       phoneNumber:this.station.phoneNumber,
       email:this.station.email,
-      /*managerName:this.station.managerName,*/
       vrs: this.station.vapourRecoverySystem,
       workers:this.station.workers,
       monitoringWells:this.station.monitoringWells,
@@ -262,7 +272,6 @@ export class StationProfileComponent implements OnInit, OnDestroy {
     this.station.crePermission = (data.crePermission ? data.crePermission: undefined);
     this.station.name = data.name;
     this.station.businessName = data.businessName;
-    //this.station.rfc = data.rfc;
     this.station.address = data.address;
     this.station.phoneNumber = data.phoneNumber;
     this.station.email = data.email;
@@ -273,7 +282,14 @@ export class StationProfileComponent implements OnInit, OnDestroy {
       this.station.location.latitude = (this._latLng.latitude?this._latLng.latitude:19.432675);
       this.station.location.longitude = (this._latLng.longitude? this._latLng.longitude: -99.133461);
     }
-    this.station.workShifts = this.workShifts.filter(function (item) {return item !== undefined;});
+    const workShifts = [];
+    this.workShifts.forEach(value => {
+      workShifts.push({
+        start: UtilitiesService.removeFormatTime(value.start).toString(),
+        end: UtilitiesService.removeFormatTime(value.end).toString()
+      })
+    });
+    this.station.workShifts = workShifts.filter(function (item) {return item !== undefined;});
     this.station.fuelTanks = this.tanks.filter(function (item) {return item !== undefined;});
     this.station.dispensers = this.dispensers.filter(function (item) {return item !== undefined;});
    this._api.updateStation(this.station).subscribe(response => {
@@ -349,13 +365,13 @@ export class StationProfileComponent implements OnInit, OnDestroy {
 
 
   public changeDate(ev: any, index: number, isStart: boolean):void{
-    this._change = true;
-    const time = ev.mTime.replace(':','');
-    if(isStart){
-      this.workShifts[index].start = time;
-    }else{
-      this.workShifts[index].end = time;
+
+    if (isStart){
+      this.workShifts[index].start = ev;
+    }else {
+      this.workShifts[index].end = ev;
     }
+    this._change = true;
   }
 
   private initYears():void{
@@ -363,6 +379,10 @@ export class StationProfileComponent implements OnInit, OnDestroy {
     for(let x = 1969; x<=year.getFullYear(); x++){
       this.yearSelector.push(x);
     }
+  }
+
+  public openCloseClock(ev: any, isOpen: boolean): void{
+    this._close.nativeElement.style.zIndex = isOpen ? 0 : 5;
   }
 
   public goToDocumentation(): void{

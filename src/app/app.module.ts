@@ -69,6 +69,7 @@ import {HandlerErrorInterceptor} from '@app/app.handler-error.interceptor';
 import { SgmComponent } from './components/screen/components/sgm/sgm.component';
 import { AdminNotificationsComponent } from './components/admin/components/admin-notifications/admin-notifications.component';
 import { TaskCardComponent } from './components/screen/components/task-card/task-card.component';
+import {NgxMaterialTimepickerModule} from 'ngx-material-timepicker';
 
 @NgModule({
   declarations: [
@@ -141,7 +142,7 @@ import { TaskCardComponent } from './components/screen/components/task-card/task
         deps: [HttpClient]
       }
     }),
-
+    NgxMaterialTimepickerModule
   ],
   entryComponents: [
     AddGasStationComponent,

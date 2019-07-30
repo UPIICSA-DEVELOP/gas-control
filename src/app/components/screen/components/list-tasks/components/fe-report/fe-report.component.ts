@@ -223,9 +223,8 @@ export class FeReportComponent implements OnInit, OnDestroy {
   }
 
   public changeTime(ev: any, type: string): void {
-    const time = ev.mTime.replace(':','');
     this.feForm.patchValue({
-      [type]: this._formatTimePipe.transform(time)
+      [type]: ev
     });
   }
 

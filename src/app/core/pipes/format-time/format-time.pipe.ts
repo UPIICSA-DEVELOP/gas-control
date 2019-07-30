@@ -47,7 +47,7 @@ export class FormatTimePipe implements PipeTransform {
       }
       hr = hr.length===2?hr:'0'+hr;
       value = hr + ':' + min;
-      value += (time >= 0 && time < 1200)? ' a.m.':' p.m.';
+      value += (time >= 0 && time < 1200)? ' am':' pm';
     }catch (e){
       console.error(e);
       return null;

@@ -8,10 +8,8 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
-  MatAccordion,
   MatAutocompleteModule,
   MatBadgeModule,
-  MatBottomSheet,
   MatBottomSheetModule,
   MatButtonModule,
   MatButtonToggleModule,
@@ -27,7 +25,8 @@ import {
   MatInputModule,
   MatListModule,
   MatMenuModule,
-  MatNativeDateModule, MatPaginatorIntl, MatPaginatorModule,
+  MatNativeDateModule,
+  MatPaginatorModule,
   MatProgressBarModule,
   MatProgressSpinnerModule,
   MatRadioModule,
@@ -42,7 +41,6 @@ import {
   MatToolbarModule,
   MatTooltipModule
 } from '@angular/material';
-import {RbTimepickerModule} from 'rb-timepicker';
 
 const MATERIAL_MODULES = [
   CommonModule,
@@ -77,8 +75,7 @@ const MATERIAL_MODULES = [
   MatDatepickerModule,
   MatNativeDateModule,
   MatStepperModule,
-  MatPaginatorModule,
-  RbTimepickerModule
+  MatPaginatorModule
 ];
 
 @NgModule({

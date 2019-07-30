@@ -16,16 +16,26 @@
     <div class="flex-box">
       <div class="columns">
         <mat-form-field class="inputs">
-          <rb-timepicker #pickerOne [colorBtn]="'primary'" (getTime)="changeTime($event)"></rb-timepicker>
           <input matInput
                  formControlName="time"
                  placeholder="Hora"
                  required
-                 (click)="pickerOne.open()"
+                 [ngxTimepicker]="pickerOne"
                  readonly="readonly">
           <button [disabled]="!editable" mat-icon-button matSuffix (click)="pickerOne.open()" type="button">
             <mat-icon>access_time</mat-icon>
           </button>
+          <ngx-material-timepicker #pickerOne
+                                   (timeSet)="changeTime($event)"
+                                   [confirmBtnTmpl]="confirmBtn"
+                                   [cancelBtnTmpl]="cancelBtn"
+                                   [preventOverlayClick]="true"></ngx-material-timepicker>
+          <ng-template #cancelBtn>
+            <button mat-button type="button">CANCELAR</button>
+          </ng-template>
+          <ng-template #confirmBtn>
+            <button mat-button type="button">ACEPTAR</button>
+          </ng-template>
           <mat-error *ngIf="incidenceForm.controls['time'].hasError('required')">
             Este campo es obligatorio
           </mat-error>
