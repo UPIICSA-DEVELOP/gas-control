@@ -47,7 +47,7 @@ export class BC{
 
   private async createBC(): Promise<DefaultResponse | APIError>{
 
-    let response, bCard, newBCardFile;
+    let response, bCard, newBCardFile, bCardIdNotExist = false;
 
     try {
       response = await this.parseInfo();
@@ -92,6 +92,7 @@ export class BC{
             response = await this.updateBusinessCard(bCard);
             break;
           case 3:
+            bCardIdNotExist = true;
             response  = await this.createBusinessCard(body);
             break;
           default:
@@ -104,7 +105,7 @@ export class BC{
 
       let item;
 
-      if(this._data.bCardId){
+      if(this._data.bCardId && !bCardIdNotExist){
 
         switch (response.code){
           case 1:
