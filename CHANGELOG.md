@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="1.5.3-beta.1"></a>
+## [1.5.3-beta.1](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/compare/v1.5.3-beta.0...v1.5.3-beta.1) (2019-07-30)
+
+
+### Bug Fixes
+
+* Validate if bCardId really exist ([7e24fe8](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/7e24fe8))
+* **timePicker:** implements new timePicker library ([39a2758](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/39a2758))
+
+
+
 <a name="1.5.3-beta.0"></a>
 ## [1.5.3-beta.0](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/compare/v1.5.2...v1.5.3-beta.0) (2019-06-06)
 
