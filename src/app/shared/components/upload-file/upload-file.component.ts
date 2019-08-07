@@ -5,7 +5,10 @@
  *
  */
 
-import {Component, ContentChild, EventEmitter, Inject, Input, OnInit, Output, PLATFORM_ID, TemplateRef} from '@angular/core';
+import {
+  Component, ContentChild, EventEmitter, Inject, Input, OnInit, Output, PLATFORM_ID, TemplateRef,
+  ViewEncapsulation
+} from '@angular/core';
 import {SnackBarService} from '@app/core/services/snackbar/snackbar.service';
 import {MatDialog} from '@angular/material/dialog';
 import {CropImageComponent} from '@app/shared/components/crop-image/crop-image.component';
@@ -29,11 +32,12 @@ export enum UploadFileType {
   exportAs: 'app-upload-file',
   selector: 'app-upload-file',
   templateUrl: './upload-file.component.html',
-  styleUrls: ['./upload-file.component.scss']
+  styleUrls: ['./upload-file.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class UploadFileComponent implements OnInit {
 
-  @ContentChild(TemplateRef)
+  @ContentChild(TemplateRef, {static: false})
   @Input() layoutTemplate: TemplateRef<any>;
   @Input() type: UploadFileType;
   @Output() onLoad: EventEmitter<UploadFileResponse> = new EventEmitter<UploadFileResponse>();

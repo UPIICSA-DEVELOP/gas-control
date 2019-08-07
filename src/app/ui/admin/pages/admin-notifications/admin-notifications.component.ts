@@ -4,14 +4,14 @@
  *  Proprietary and confidential
  */
 
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit, ViewEncapsulation} from '@angular/core';
 import {animate, style, transition, trigger} from '@angular/animations';
 import {ApiService} from 'app/core/services/api/api.service';
 import {DialogService} from 'app/shared/components/dialog/dialog.service';
 import {Router} from '@angular/router';
 import {CookieService} from 'app/core/services/cookie/cookie.service';
 import {Constants} from 'app/utils/constants/constants.utils';
-import {Subscription} from 'rxjs/Rx';
+import {Subscription} from 'rxjs';
 import {UtilitiesService} from 'app/utils/utilities/utilities';
 import {SessionStorageService} from 'app/core/services/session-storage/session-storage.service';
 import {LoaderService} from '@app/core/components/loader/loader.service';
@@ -32,7 +32,8 @@ import {LoaderService} from '@app/core/components/loader/loader.service';
       ])
     ])
   ],
-  host: {'[@fadeInAnimation]': ''}
+  host: {'[@fadeInAnimation]': ''},
+  encapsulation: ViewEncapsulation.None
 })
 export class AdminNotificationsComponent implements OnInit, OnDestroy {
 

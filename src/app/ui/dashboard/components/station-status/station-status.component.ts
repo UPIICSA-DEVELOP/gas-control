@@ -4,17 +4,21 @@
  *  Proprietary and confidential
  */
 
-import {AfterViewInit, Component, ElementRef, Inject, Input, OnDestroy, OnInit, PLATFORM_ID, ViewChild} from '@angular/core';
+import {
+  AfterViewInit, Component, ElementRef, Inject, Input, OnDestroy, OnInit, PLATFORM_ID, ViewChild,
+  ViewEncapsulation
+} from '@angular/core';
 import {isPlatformBrowser} from '@angular/common';
 import { Chart } from 'chart.js';
 import {SharedService, SharedTypeNotification} from '@app/core/services/shared/shared.service';
-import {Subscription} from 'rxjs/Rx';
+import {Subscription} from 'rxjs';
 
 
 @Component({
   selector: 'app-station-status',
   templateUrl: './station-status.component.html',
-  styleUrls: ['./station-status.component.scss']
+  styleUrls: ['./station-status.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class StationStatusComponent implements OnInit, AfterViewInit, OnDestroy{
   private _station: any;
@@ -26,8 +30,8 @@ export class StationStatusComponent implements OnInit, AfterViewInit, OnDestroy{
       }
     }
   } ;
-  @ViewChild('canvas') private _canvas: ElementRef;
-  @ViewChild('legend') private _legend: ElementRef;
+  @ViewChild('canvas', { static: false }) private _canvas: ElementRef;
+  @ViewChild('legend', { static: true }) private _legend: ElementRef;
   public showGraphic: boolean;
   public data: any;
   public chart: any;

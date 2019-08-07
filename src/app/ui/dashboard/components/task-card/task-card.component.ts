@@ -4,15 +4,14 @@
  *  Proprietary and confidential
  */
 
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input, OnInit, ViewEncapsulation} from '@angular/core';
 import {Constants} from 'app/utils/constants/constants.utils';
-import {SnackBarService} from '@app/core/services/snackbar/snackbar.service';
-import {SharedService} from '@app/core/services/shared/shared.service';
 
 @Component({
   selector: 'app-task-card',
   templateUrl: './task-card.component.html',
-  styleUrls: ['./task-card.component.scss']
+  styleUrls: ['./task-card.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class TaskCardComponent implements OnInit {
   public information: any;
@@ -31,10 +30,7 @@ export class TaskCardComponent implements OnInit {
   public priority: string[];
   public frequency: string[];
   public disabledRipple: boolean;
-  constructor(
-    private _snackBarService: SnackBarService,
-    private _sharedService: SharedService
-  ) {
+  constructor(  ) {
     this.zones = Constants.Zones;
     this.priority = Constants.Level;
     this.frequency = Constants.Frequency;

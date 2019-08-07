@@ -4,7 +4,7 @@
  *  Proprietary and confidential
  */
 
-import {AfterViewInit, Component, Inject, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, Inject, OnDestroy, OnInit, ViewChild, ViewEncapsulation} from '@angular/core';
 import {ApiService} from 'app/core/services/api/api.service';
 import {CookieService} from 'app/core/services/cookie/cookie.service';
 import {Constants} from 'app/utils/constants/constants.utils';
@@ -29,7 +29,8 @@ import {LoaderService} from '@app/core/components/loader/loader.service';
 @Component({
   selector: 'app-screen',
   templateUrl: './dashboard.component.html',
-  styleUrls: ['./dashboard.component.scss']
+  styleUrls: ['./dashboard.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy{
 
@@ -44,7 +45,7 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy{
   private _stationId: any;
   private _subscriptionShared: Subscription;
   private _subscriptionLoader: Subscription;
-  @ViewChild('drawer') private _drawer: any;
+  @ViewChild('drawer', { static: false }) private _drawer: any;
   constructor(
     @Inject(DOCUMENT) private _document: Document,
     private _api: ApiService,

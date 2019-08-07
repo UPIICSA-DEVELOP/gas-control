@@ -4,7 +4,7 @@
  * Proprietary and confidential
  */
 
-import {Component, ElementRef, Inject, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {Component, ElementRef, Inject, OnDestroy, OnInit, ViewChild, ViewEncapsulation} from '@angular/core';
 import {ApiService} from '../../../core/services/api/api.service';
 import {Router} from '@angular/router';
 import {LocalStorageService} from '../../../core/services/local-storage/local-storage.service';
@@ -22,7 +22,7 @@ import {DateAdapter, MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
 import {UtilitiesService} from '../../../utils/utilities/utilities';
 import {Person, PersonInformation, Task} from '../../../utils/interfaces/interfaces';
 import {SharedService, SharedTypeNotification} from '../../../core/services/shared/shared.service';
-import {Subscription} from 'rxjs/Rx';
+import {Subscription} from 'rxjs';
 import {ModalStationService} from '../modal-station/modal-station.service';
 import {LoaderService} from '../../../core/components/loader/loader.service';
 interface Station {
@@ -54,11 +54,12 @@ interface Station {
 @Component({
   selector: 'app-add-gas-station',
   templateUrl: './add-gas-station.component.html',
-  styleUrls: ['./add-gas-station.component.scss']
+  styleUrls: ['./add-gas-station.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class AddGasStationComponent implements OnInit, OnDestroy {
-  @ViewChild('phoneNumber') private _phoneNumberInput: ElementRef;
-  @ViewChild('modalScroll') private _modalScroll: ElementRef;
+  @ViewChild('phoneNumber', { static: false }) private _phoneNumberInput: ElementRef;
+  @ViewChild('modalScroll', { static: true }) private _modalScroll: ElementRef;
   public step: number;
   public disableClose: boolean;
   public utils: any[];

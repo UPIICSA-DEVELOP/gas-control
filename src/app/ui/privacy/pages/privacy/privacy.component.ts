@@ -4,7 +4,7 @@
  * Proprietary and confidential
  */
 
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit, ViewEncapsulation} from '@angular/core';
 import {animate, keyframes, query, stagger, style, transition, trigger} from '@angular/animations';
 import {Router} from '@angular/router';
 import {LocalStorageService} from 'app/core/services/local-storage/local-storage.service';
@@ -36,7 +36,8 @@ import {Constants} from 'app/utils/constants/constants.utils';
       ])
     ])
   ],
-  host: {'[@fadeInAnimation]': ''}
+  host: {'[@fadeInAnimation]': ''},
+  encapsulation: ViewEncapsulation.None
 })
 export class PrivacyComponent implements OnInit {
 

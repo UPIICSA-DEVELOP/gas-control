@@ -4,7 +4,7 @@
  *  Proprietary and confidential
  */
 
-import {Component, Input, OnDestroy, OnInit} from '@angular/core';
+import {Component, Input, OnDestroy, OnInit, ViewEncapsulation} from '@angular/core';
 import {ApiService} from '@app/core/services/api/api.service';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {HWCReport} from '@app/utils/interfaces/interfaces';
@@ -13,7 +13,7 @@ import {UploadFileService} from '@app/shared/components/upload-file/upload-file.
 import {SignaturePadService} from '@app/shared/components/signature-pad/signature-pad.service';
 import {SnackBarService} from '@app/core/services/snackbar/snackbar.service';
 import {SharedService, SharedTypeNotification} from '@app/core/services/shared/shared.service';
-import {Subscription} from 'rxjs/Rx';
+import {Subscription} from 'rxjs';
 import {Constants} from '@app/utils/constants/constants.utils';
 import {LocalStorageService} from '@app/core/services/local-storage/local-storage.service';
 import {UploadFileResponse} from '@app/shared/components/upload-file/upload-file.component';
@@ -24,7 +24,8 @@ import {LoaderService} from '@app/core/components/loader/loader.service';
 @Component({
   selector: 'app-hwc-report',
   templateUrl: './hwc-report.component.html',
-  styleUrls: ['./hwc-report.component.scss']
+  styleUrls: ['./hwc-report.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class HwcReportComponent implements OnInit, OnDestroy {
   private _taskId: string;

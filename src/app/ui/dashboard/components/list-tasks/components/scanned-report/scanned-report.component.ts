@@ -4,7 +4,7 @@
  *  Proprietary and confidential
  */
 
-import {Component, Input, OnDestroy, OnInit} from '@angular/core';
+import {Component, Input, OnDestroy, OnInit, ViewEncapsulation} from '@angular/core';
 import {HWGReport, ScannedReport} from '@app/utils/interfaces/interfaces';
 import {ApiService} from '@app/core/services/api/api.service';
 import {UtilitiesService} from '@app/utils/utilities/utilities';
@@ -12,7 +12,7 @@ import {UploadFileService} from '@app/shared/components/upload-file/upload-file.
 import {SignaturePadService} from '@app/shared/components/signature-pad/signature-pad.service';
 import {SharedService, SharedTypeNotification} from '@app/core/services/shared/shared.service';
 import {SnackBarService} from '@app/core/services/snackbar/snackbar.service';
-import {Subscription} from 'rxjs/Rx';
+import {Subscription} from 'rxjs';
 import {UploadFileResponse} from '@app/shared/components/upload-file/upload-file.component';
 import {Constants} from '@app/utils/constants/constants.utils';
 import {LocalStorageService} from '@app/core/services/local-storage/local-storage.service';
@@ -23,7 +23,8 @@ import {LoaderService} from '@app/core/components/loader/loader.service';
 @Component({
   selector: 'app-scanned-report',
   templateUrl: './scanned-report.component.html',
-  styleUrls: ['./scanned-report.component.scss']
+  styleUrls: ['./scanned-report.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class ScannedReportComponent implements OnInit, OnDestroy {
   private _taskId: string;

@@ -1,0 +1,89 @@
+/*!
+ *  Copyright (C) MapLander S de R.L de C.V - All Rights Reserved
+ *  Unauthorized copying of this file, via any medium is strictly prohibited
+ *  Proprietary and confidential
+ */
+
+@import "../../node_modules/@angular/material/theming";
+@import "theme";
+@import "colors";
+
+[inputs-gas-station]{
+  width: 100%;
+}
+[modal-station]{
+  position: relative;
+  [mask-station]{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 2;
+    cursor: pointer;
+  }
+}
+[doble-input-station]{
+  display: flex;
+  justify-content: space-between;
+  mat-form-field{
+    width: 45%;
+  }
+}
+[head-array]{
+  color: $gray;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+[array-item]{
+  color: $gray;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+  section, mat-radio-group {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    mat-radio-button, mat-checkbox{
+      margin: 4px;
+    }
+  }
+  mat-form-field{
+    width: 40%;
+  }
+}
+
+[element]{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  color: #707070;
+  [inputs-array]{
+    display: flex;
+    justify-content: space-between;
+  }
+  [identifier]{
+    margin-bottom: 12px;
+  }
+  mat-form-field{
+    width: 40%;
+  }
+  section, mat-radio-group{
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    mat-radio-button, mat-checkbox{
+      margin: 4px;
+    }
+  }
+}
+
+[save-station]{
+  margin: 16px 0;
+  display: flex;
+  justify-content: center;
+}

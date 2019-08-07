@@ -4,24 +4,25 @@
  *  Proprietary and confidential
  */
 
-import {Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {Component, ElementRef, OnDestroy, OnInit, ViewChild, ViewEncapsulation} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {ApiService} from 'app/core/services/api/api.service';
 import {DialogService} from 'app/shared/components/dialog/dialog.service';
 import {SnackBarService} from 'app/core/services/snackbar/snackbar.service';
 import {AuthService} from 'app/core/services/auth/auth.service';
-import {Subscription} from 'rxjs/Rx';
+import {Subscription} from 'rxjs';
 import {LoaderService} from '@app/core/components/loader/loader.service';
 const md5 = require('md5');
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.scss']
+  styleUrls: ['./login.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class LoginComponent implements OnInit, OnDestroy {
 
-  @ViewChild('inputPassword') private _inputPassword: ElementRef;
+  @ViewChild('inputPassword', { static: true }) private _inputPassword: ElementRef;
   private _dataUser: any;
   public load: boolean;
   public loginForm: FormGroup;

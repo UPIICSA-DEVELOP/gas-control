@@ -4,7 +4,7 @@
  * Proprietary and confidential
  */
 
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit, ViewEncapsulation} from '@angular/core';
 import {UploadFileService} from '@app/shared/components/upload-file/upload-file.service';
 import {animate, keyframes, query, stagger, style, transition, trigger} from '@angular/animations';
 import {ActivatedRoute, Router} from '@angular/router';
@@ -12,7 +12,7 @@ import {ApiService} from '@app/core/services/api/api.service';
 import {UploadFileResponse} from '@app/shared/components/upload-file/upload-file.component';
 import {SnackBarService} from '@app/core/services/snackbar/snackbar.service';
 import {Document} from '@app/utils/interfaces/interfaces'
-import {Subscription} from 'rxjs/Rx';
+import {Subscription} from 'rxjs';
 import {PdfVisorService} from '@app/shared/components/pdf-visor/pdf-visor.service';
 import {LocalStorageService} from '@app/core/services/local-storage/local-storage.service';
 import {Constants} from '@app/utils/constants/constants.utils';
@@ -45,7 +45,8 @@ import {LoaderService} from '@app/core/components/loader/loader.service';
       ])
     ])
   ],
-  host: {'[@fadeInAnimation]': ''}
+  host: {'[@fadeInAnimation]': ''},
+  encapsulation: ViewEncapsulation.None
 })
 
 export class DocumentationComponent implements OnInit, OnDestroy {

@@ -341,6 +341,56 @@ app-add-collaborator{
   }
 }
 
+.mat-badge-small .mat-badge-content{
+  width: 12px !important;
+  height: 12px !important;
+  top: -2px !important;
+  right: 0 !important;
+}
+.mat-badge.hide-text .mat-badge-content {
+  color: transparent !important;
+}
+.mat-slide-toggle-bar {
+  height: 7px !important;
+  width: 19px !important;
+}
+.mat-slide-toggle-thumb {
+  height: 10px !important;
+  width: 10px !important;
+}
+.mat-slide-toggle.mat-checked .mat-slide-toggle-thumb-container {
+  transform: translate3d(13px,0,0) !important;
+}
+.mat-slide-toggle-thumb-container {
+  width: 12px !important;
+  height: 12px !important;
+  top: -2px !important;
+}
+.mat-slide-toggle .mat-slide-toggle-ripple{
+  width: 20px !important;
+  height: 20px !important;
+  top: calc(50% - 11px) !important;
+  left: calc(50% - 11px) !important;
+  border-radius: 50% !important;
+}
+
+.mat-tab-label .mat-tab-label-content{
+  white-space: normal !important;
+  display: flex !important;
+}
+.mat-tab-body-content {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  overflow: hidden !important;
+}
+.mat-radio-label{
+  white-space: normal !important;
+}
+.mat-card .last-child {
+  margin-bottom: 0 !important;
+}
+
 .timepicker {
   z-index: 1000;
   .timepicker__header {

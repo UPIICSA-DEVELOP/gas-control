@@ -6,13 +6,12 @@
  */
 
 import {Injectable, OnDestroy} from '@angular/core';
-import {forkJoin, Observable} from 'rxjs';
+import {forkJoin, Observable, Subscription} from 'rxjs';
 import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 import {NetworkService} from '@app/core/services/network/network.service';
 import {SnackBarService} from '@app/core/services/snackbar/snackbar.service';
 import {SessionStorageService} from '@app/core/services/session-storage/session-storage.service';
 import {Consultancy} from '@app/utils/interfaces/interfaces';
-import {Subscription} from 'rxjs/Rx';
 import {environment} from '@env/environment';
 import {Constants} from '@app/utils/constants/constants.utils';
 import {map} from 'rxjs/internal/operators';

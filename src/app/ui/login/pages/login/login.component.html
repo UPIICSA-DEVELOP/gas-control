@@ -36,12 +36,12 @@
             <input formControlName="password" matInput placeholder="Contraseña" #inputPassword type="password" required aria-label="User password">
             <mat-icon matPrefix class="icons"> lock</mat-icon>
             <button matSuffix aria-label="show password" type="button" mat-icon-button (click)="showPassword()">
-              <div *ngIf="hide; then passwordVisible else passwordInvisible"></div>
+              <ng-container *ngIf="hide; then passwordVisible else passwordInvisible"></ng-container>
               <ng-template #passwordVisible>
-                <mat-icon class="see-ocult-pass">visibility</mat-icon>
+                <mat-icon class="see-hide-pass">visibility</mat-icon>
               </ng-template>
               <ng-template #passwordInvisible>
-                <mat-icon class="see-ocult-pass">visibility_off</mat-icon>
+                <mat-icon class="see-hide-pass">visibility_off</mat-icon>
               </ng-template>
             </button>
             <mat-error *ngIf="loginForm.controls['password'].hasError('required')">

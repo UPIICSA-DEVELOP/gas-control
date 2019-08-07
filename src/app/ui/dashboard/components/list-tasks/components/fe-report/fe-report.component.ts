@@ -4,7 +4,7 @@
  *  Proprietary and confidential
  */
 
-import {Component, Input, OnDestroy, OnInit} from '@angular/core';
+import {Component, Input, OnDestroy, OnInit, ViewEncapsulation} from '@angular/core';
 import {FEReport, FireExtinguisher} from '@app/utils/interfaces/interfaces';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {ApiService} from '@app/core/services/api/api.service';
@@ -13,7 +13,7 @@ import {SnackBarService} from '@app/core/services/snackbar/snackbar.service';
 import {SharedService, SharedTypeNotification} from '@app/core/services/shared/shared.service';
 import {SignaturePadService} from '@app/shared/components/signature-pad/signature-pad.service';
 import {UploadFileService} from '@app/shared/components/upload-file/upload-file.service';
-import {Subscription} from 'rxjs/Rx';
+import {Subscription} from 'rxjs';
 import {Constants} from '@app/utils/constants/constants.utils';
 import {LocalStorageService} from '@app/core/services/local-storage/local-storage.service';
 import {FormatTimePipe} from '@app/shared/pipes/format-time/format-time.pipe';
@@ -22,7 +22,8 @@ import {LoaderService} from '@app/core/components/loader/loader.service';
 @Component({
   selector: 'app-fe-report',
   templateUrl: './fe-report.component.html',
-  styleUrls: ['./fe-report.component.scss']
+  styleUrls: ['./fe-report.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class FeReportComponent implements OnInit, OnDestroy {
   private _taskId: string;

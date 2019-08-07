@@ -4,7 +4,7 @@
  * Proprietary and confidential
  */
 
-import {Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {Component, ElementRef, OnDestroy, OnInit, ViewChild, ViewEncapsulation} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {animate, style, transition, trigger} from '@angular/animations';
 import {Constants} from 'app/utils/constants/constants.utils';
@@ -20,7 +20,7 @@ import {UploadFileService} from 'app/shared/components/upload-file/upload-file.s
 import {UtilitiesService} from 'app/utils/utilities/utilities';
 import {LocalStorageService} from 'app/core/services/local-storage/local-storage.service';
 import {Person} from 'app/utils/interfaces/interfaces';
-import {Subscription} from 'rxjs/Rx';
+import {Subscription} from 'rxjs';
 import {LoaderService} from '@app/core/components/loader/loader.service';
 
 @Component({
@@ -39,10 +39,11 @@ import {LoaderService} from '@app/core/components/loader/loader.service';
       ])
     ])
   ],
-  host: {'[@fadeInAnimation]': ''}
+  host: {'[@fadeInAnimation]': ''},
+  encapsulation: ViewEncapsulation.None
 })
 export class CollaboratorsListComponent implements OnInit, OnDestroy {
-  @ViewChild('phoneNumber') private _phoneNumberInput: ElementRef;
+  @ViewChild('phoneNumber', { static: false }) private _phoneNumberInput: ElementRef;
   public collaborators: any[];
   public register: boolean;
   public signature: any;

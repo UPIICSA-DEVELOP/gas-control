@@ -4,7 +4,7 @@
  * Proprietary and confidential
  */
 
-import {AfterViewInit, Component, ElementRef, Inject, OnInit, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, ElementRef, Inject, OnInit, ViewChild, ViewEncapsulation} from '@angular/core';
 import {DateAdapter, MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
 import {FormBuilder, FormGroup} from '@angular/forms';
 import {SnackBarService} from '@app/core/services/snackbar/snackbar.service';
@@ -14,11 +14,12 @@ import {DOCUMENT} from '@angular/common';
 @Component({
   selector: 'app-datepicker',
   templateUrl: './datepicker.component.html',
-  styleUrls: ['./datepicker.component.scss']
+  styleUrls: ['./datepicker.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class DatepickerComponent implements OnInit, AfterViewInit {
-  @ViewChild('pickerStart') private _pickerStart: any;
-  @ViewChild('pickerEnd') private _pickerEnd: any;
+  @ViewChild('pickerStart', { static: true }) private _pickerStart: any;
+  @ViewChild('pickerEnd', { static: true }) private _pickerEnd: any;
   public dateForm: FormGroup;
   public startDate: Date = new Date();
   public endDate: Date = new Date();

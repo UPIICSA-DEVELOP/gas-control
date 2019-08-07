@@ -4,7 +4,7 @@
  *  Proprietary and confidential
  */
 
-import {Component, Input, OnDestroy, OnInit} from '@angular/core';
+import {Component, Input, OnDestroy, OnInit, ViewEncapsulation} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {CompressorReport, HWGReport} from '@app/utils/interfaces/interfaces';
 import {ApiService} from '@app/core/services/api/api.service';
@@ -14,7 +14,7 @@ import {SnackBarService} from '@app/core/services/snackbar/snackbar.service';
 import {SharedService, SharedTypeNotification} from '@app/core/services/shared/shared.service';
 import {UploadFileService} from '@app/shared/components/upload-file/upload-file.service';
 import {SignaturePadService} from '@app/shared/components/signature-pad/signature-pad.service';
-import {Subscription} from 'rxjs/Rx';
+import {Subscription} from 'rxjs';
 import {Constants} from '@app/utils/constants/constants.utils';
 import {LocalStorageService} from '@app/core/services/local-storage/local-storage.service';
 import {UploadFileResponse} from '@app/shared/components/upload-file/upload-file.component';
@@ -24,7 +24,8 @@ import {LoaderService} from '@app/core/components/loader/loader.service';
 @Component({
   selector: 'app-compressor-report',
   templateUrl: './compressor-report.component.html',
-  styleUrls: ['./compressor-report.component.scss']
+  styleUrls: ['./compressor-report.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class CompressorReportComponent implements OnInit, OnDestroy {
   private _taskId: string;
@@ -93,7 +94,7 @@ export class CompressorReportComponent implements OnInit, OnDestroy {
     this._subscriptionShared = this._subscriptionShared = this._sharedService.getNotifications().subscribe(response=>{
       switch (response.type){
         case SharedTypeNotification.EditTask:
-          if(response.value = 2){
+          if(response.value === 2){
             this.startEditFormat();
           }
           break;

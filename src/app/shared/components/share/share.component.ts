@@ -5,7 +5,7 @@
  *
  */
 
-import {Component, Inject, OnInit, SecurityContext} from '@angular/core';
+import {Component, Inject, OnInit, SecurityContext, ViewEncapsulation} from '@angular/core';
 import {UtilitiesService} from '@app/utils/utilities/utilities';
 import {DeviceDetectorService} from '@app/core/services/device-detector/device-detector.service';
 import {ClipboardService} from '@app/core/services/clipboard/clipboard.service';
@@ -15,7 +15,8 @@ import {DomSanitizer} from '@angular/platform-browser';
 @Component({
   selector: 'app-share',
   templateUrl: './share.component.html',
-  styleUrls: ['./share.component.scss']
+  styleUrls: ['./share.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class ShareComponent implements OnInit {
 

@@ -4,7 +4,7 @@
  * Proprietary and confidential
  */
 
-import {Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {Component, ElementRef, OnDestroy, OnInit, ViewChild, ViewEncapsulation} from '@angular/core';
 import {animate, keyframes, query, stagger, style, transition, trigger} from '@angular/animations';
 import {ActivatedRoute, Router} from '@angular/router';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
@@ -14,7 +14,7 @@ import {SnackBarService} from 'app/core/services/snackbar/snackbar.service';
 import {DialogService} from 'app/shared/components/dialog/dialog.service';
 import {Constants} from 'app/utils/constants/constants.utils';
 import {LocalStorageService} from 'app/core/services/local-storage/local-storage.service';
-import {Subscription} from 'rxjs/Rx';
+import {Subscription} from 'rxjs';
 import {Dispensers, FuelTanks, GasStation, WorkShifts} from 'app/utils/interfaces/interfaces';
 import {LoaderService} from '@app/core/components/loader/loader.service';
 import {FormatTimePipe} from '@app/shared/pipes/format-time/format-time.pipe';
@@ -46,7 +46,8 @@ import {UtilitiesService} from '@app/utils/utilities/utilities';
       ])
     ])
   ],
-  host: {'[@fadeInAnimation]': ''}
+  host: {'[@fadeInAnimation]': ''},
+  encapsulation: ViewEncapsulation.None
 })
 export class StationProfileComponent implements OnInit, OnDestroy {
   @ViewChild('close') private _close: ElementRef;
@@ -118,16 +119,10 @@ export class StationProfileComponent implements OnInit, OnDestroy {
   }
 
   public openLocation():void{
-    let latLng: LocationOptions = {
-      lat: 19.432675,
-      lng: -99.133461
+    const latLng = {
+      lat: this._latLng ? this._latLng.latitude : 19.432675,
+      lng: this._latLng ? this._latLng.longitude : -99.133461
     };
-    if (this._latLng){
-      latLng = {
-        lat: this._latLng.latitude,
-        lng: this._latLng.longitude
-      }
-    }
     this._locationService.open(latLng).afterClosed().subscribe(response=>{
       switch (response.code) {
         case 1:
@@ -163,7 +158,6 @@ export class StationProfileComponent implements OnInit, OnDestroy {
       address:['',[Validators.required]],
       phoneNumber:['',[Validators.required, Validators.minLength(8), Validators.maxLength(13)]],
       email:['', [Validators.required, Validators.email]],
-      /*managerName:[{value:'', disabled: true},[]],*/
       vrs: [{value: false, disabled: true}, []],
       workers:['',[]],
       monitoringWells:['',[]],
@@ -227,10 +221,7 @@ export class StationProfileComponent implements OnInit, OnDestroy {
           this.workShifts.push({start: undefined, end: undefined});
         }
         if (this.station.location) {
-          this._latLng = {
-            latitude: this.station.location.latitude,
-            longitude: this.station.location.longitude
-          }
+          this._latLng = this.station.location
         }
         this.patchForm();
         break;

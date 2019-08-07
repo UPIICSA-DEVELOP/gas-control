@@ -4,7 +4,7 @@
  * Proprietary and confidential
  */
 
-import {Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {Component, ElementRef, OnDestroy, OnInit, ViewChild, ViewEncapsulation} from '@angular/core';
 import {SnackBarService} from '@app/core/services/snackbar/snackbar.service';
 import {DialogService} from '@app/shared/components/dialog/dialog.service';
 import {Constants} from '@app/utils/constants/constants.utils';
@@ -13,7 +13,7 @@ import {AuthService} from '@app/core/services/auth/auth.service';
 import {LocalStorageService} from '@app/core/services/local-storage/local-storage.service';
 import {Router} from '@angular/router';
 import {AbstractControl, FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {Subscription} from 'rxjs/Rx';
+import {Subscription} from 'rxjs';
 import {animate, keyframes, query, stagger, style, transition, trigger} from '@angular/animations';
 import {LoaderService} from '@app/core/components/loader/loader.service';
 
@@ -55,12 +55,13 @@ const md5 = require('md5');
       ])
     ])
   ],
-  host: {'[@fadeInAnimation]': ''}
+  host: {'[@fadeInAnimation]': ''},
+  encapsulation: ViewEncapsulation.None
 })
 export class ResetPassComponent implements OnInit, OnDestroy {
 
-  @ViewChild('inputPasswordOne') private _inputPassOne: ElementRef;
-  @ViewChild('inputPasswordTwo') private _inputPassTwo: ElementRef;
+  @ViewChild('inputPasswordOne', { static: true }) private _inputPassOne: ElementRef;
+  @ViewChild('inputPasswordTwo', { static: true }) private _inputPassTwo: ElementRef;
   public load: boolean;
   public hideOne: boolean;
   public hideTwo: boolean;

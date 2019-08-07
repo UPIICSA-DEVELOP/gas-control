@@ -4,7 +4,7 @@
  * Proprietary and confidential
  */
 
-import {Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {Component, ElementRef, OnDestroy, OnInit, ViewChild, ViewEncapsulation} from '@angular/core';
 import {ApiService} from 'app/core/services/api/api.service';
 import {Constants} from 'app/utils/constants/constants.utils';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
@@ -19,7 +19,7 @@ import {animate, keyframes, query, stagger, style, transition, trigger} from '@a
 import {UploadFileResponse} from 'app/shared/components/upload-file/upload-file.component';
 import {SignaturePadService} from 'app/shared/components/signature-pad/signature-pad.service';
 import {Consultancy, Person} from 'app/utils/interfaces/interfaces';
-import {Subscription} from 'rxjs/Rx';
+import {Subscription} from 'rxjs';
 import {ShareService} from 'app/shared/components/share/share.service';
 import {AuthService} from 'app/core/services/auth/auth.service';
 import {LoaderService} from '@app/core/components/loader/loader.service';
@@ -50,10 +50,11 @@ import {LoaderService} from '@app/core/components/loader/loader.service';
       ])
     ])
   ],
-  host: {'[@fadeInAnimation]': ''}
+  host: {'[@fadeInAnimation]': ''},
+  encapsulation: ViewEncapsulation.None
 })
 export class ProfileComponent implements OnInit, OnDestroy {
-  @ViewChild('phoneNumber') private _phoneNumberInput: ElementRef;
+  @ViewChild('phoneNumber', { static: false }) private _phoneNumberInput: ElementRef;
   private _formData: FormData;
   private _formSignature: FormData;
   public user: Person;

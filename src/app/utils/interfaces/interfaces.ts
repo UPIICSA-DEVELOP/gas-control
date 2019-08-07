@@ -139,7 +139,6 @@ export interface OMReport {
   industrialShoes: boolean;
   kneepads: boolean;
   maintenanceType: string;
-  managerName?: string;
   name: string;
   observations?: string;
   personnelNames: string[];
@@ -177,7 +176,6 @@ export interface HWGReport {
   area: string;
   corrosive: boolean;
   explosive: boolean;
-  fileCS?: any;
   flammable: boolean;
   quantity: number;
   reactive: boolean;
@@ -267,7 +265,6 @@ export interface FRReport {
   folio?: number;
   id?: number;
   magna: boolean;
-  managerName?: string;
   name: string;
   premium: boolean;
   receiveName: string;

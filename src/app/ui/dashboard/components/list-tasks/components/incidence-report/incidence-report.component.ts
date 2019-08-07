@@ -4,14 +4,14 @@
  *  Proprietary and confidential
  */
 
-import {Component, Input, OnDestroy, OnInit} from '@angular/core';
+import {Component, Input, OnDestroy, OnInit, ViewEncapsulation} from '@angular/core';
 import {IncidenceReport} from '@app/utils/interfaces/interfaces';
 import {UtilitiesService} from '@app/utils/utilities/utilities';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {ApiService} from '@app/core/services/api/api.service';
 import {ImageVisorService} from '@app/shared/components/image-visor/image-visor.service';
 import {SnackBarService} from '@app/core/services/snackbar/snackbar.service';
-import {Subscription} from 'rxjs/Rx';
+import {Subscription} from 'rxjs';
 import {UploadFileService} from '@app/shared/components/upload-file/upload-file.service';
 import {SignaturePadService} from '@app/shared/components/signature-pad/signature-pad.service';
 import {SharedService, SharedTypeNotification} from '@app/core/services/shared/shared.service';
@@ -25,7 +25,8 @@ import {LoaderService} from '@app/core/components/loader/loader.service';
 @Component({
   selector: 'app-incidence-report',
   templateUrl: './incidence-report.component.html',
-  styleUrls: ['./incidence-report.component.scss']
+  styleUrls: ['./incidence-report.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class IncidenceReportComponent implements OnInit, OnDestroy {
   private _taskId: string;

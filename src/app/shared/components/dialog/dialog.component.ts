@@ -5,7 +5,7 @@
  *
  */
 
-import {Component, ElementRef, Inject, OnInit, ViewChild} from '@angular/core';
+import {Component, ElementRef, Inject, OnInit, ViewChild, ViewEncapsulation} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 import {TypeDialog} from '@app/utils/enums/type-dialog';
 import {AbstractControl, FormBuilder, FormGroup, Validators} from '@angular/forms';
@@ -23,12 +23,13 @@ export function ValidatePasswords(ac: AbstractControl) {
 @Component({
   selector: 'app-dialog',
   templateUrl: './dialog.component.html',
-  styleUrls: ['./dialog.component.scss']
+  styleUrls: ['./dialog.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class DialogComponent implements OnInit {
 
-  @ViewChild('inputPasswordOne') private _inputPassOne: ElementRef;
-  @ViewChild('inputPasswordTwo') private _inputPassTwo: ElementRef;
+  @ViewChild('inputPasswordOne', { static: false }) private _inputPassOne: ElementRef;
+  @ViewChild('inputPasswordTwo', { static: false }) private _inputPassTwo: ElementRef;
   public info: any;
   public showInput: boolean;
   public showDoubleInput: boolean;

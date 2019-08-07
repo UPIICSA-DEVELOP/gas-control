@@ -4,7 +4,7 @@
  * Proprietary and confidential
  */
 
-import {Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {Component, ElementRef, OnDestroy, OnInit, ViewChild, ViewEncapsulation} from '@angular/core';
 import {animate, style, transition, trigger} from '@angular/animations';
 import {ApiService} from '@app/core/services/api/api.service';
 import {SnackBarService} from '@app/core/services/snackbar/snackbar.service';
@@ -15,7 +15,7 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Constants} from 'app/utils/constants/constants.utils';
 import {Person, PersonInformation} from 'app/utils/interfaces/interfaces';
-import {Subscription} from 'rxjs/Rx';
+import {Subscription} from 'rxjs';
 import {DialogService} from '@app/shared/components/dialog/dialog.service';
 import {LoaderService} from '@app/core/components/loader/loader.service';
 import {CountryCodeService} from '@app/shared/components/country-code/country-code.service';
@@ -23,7 +23,6 @@ import {UploadFileService} from '@app/shared/components/upload-file/upload-file.
 import {SignaturePadService} from '@app/shared/components/signature-pad/signature-pad.service';
 import {PdfVisorService} from '@app/shared/components/pdf-visor/pdf-visor.service';
 import {UploadFileResponse} from '@app/shared/components/upload-file/upload-file.component';
-
 
 @Component({
   selector: 'app-add-collaborator',
@@ -41,10 +40,11 @@ import {UploadFileResponse} from '@app/shared/components/upload-file/upload-file
       ])
     ])
   ],
-  host: {'[@fadeInAnimation]': ''}
+  host: {'[@fadeInAnimation]': ''},
+  encapsulation: ViewEncapsulation.None
 })
 export class AddCollaboratorComponent implements OnInit, OnDestroy {
-  @ViewChild('phoneNumber') private _phoneNumberInput: ElementRef;
+  @ViewChild('phoneNumber', { static: true }) private _phoneNumberInput: ElementRef;
   public signature: any;
   public profileImage: any;
   public file: any;

@@ -4,7 +4,7 @@
  * Proprietary and confidential
  */
 
-import {Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {Component, ElementRef, OnDestroy, OnInit, ViewChild, ViewEncapsulation} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Constants} from 'app/utils/constants/constants.utils';
 import {SignaturePadService} from 'app/shared/components/signature-pad/signature-pad.service';
@@ -16,17 +16,18 @@ import {ApiService} from 'app/core/services/api/api.service';
 import {UploadFileResponse} from 'app/shared/components/upload-file/upload-file.component';
 import {UploadFileService} from 'app/shared/components/upload-file/upload-file.service';
 import {Consultancy, Person} from '@app/utils/interfaces/interfaces';
-import {Subscription} from 'rxjs/Rx';
+import {Subscription} from 'rxjs';
 import {LoaderService} from '@app/core/components/loader/loader.service';
 
 @Component({
   selector: 'app-add-consultancy',
   templateUrl: './add-consultancy.component.html',
-  styleUrls: ['./add-consultancy.component.scss']
+  styleUrls: ['./add-consultancy.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class AddConsultancyComponent implements OnInit, OnDestroy {
-  @ViewChild('stepper') private _stepper: MatStepper;
-  @ViewChild('phoneNumber') private _phoneNumberInput: ElementRef;
+  @ViewChild('stepper', { static: true }) private _stepper: MatStepper;
+  @ViewChild('phoneNumber', { static: false }) private _phoneNumberInput: ElementRef;
   public load: boolean;
   public roles: any[];
   public protocols: any[];
@@ -82,9 +83,9 @@ export class AddConsultancyComponent implements OnInit, OnDestroy {
       lastName: ['', [Validators.required]],
       email: ['', [Validators.required, Validators.email]],
       country:  ['México', [Validators.required]],
-      countryCode:  ['+52', [Validators.required]],
+      countryCode:  ['52', [Validators.required]],
       phoneNumber: ['', [Validators.required, Validators.maxLength(13),Validators.minLength(8)]],
-      rol: [1, [Validators.required]],
+      rol: [{value: 1, disabled: true}, [Validators.required]],
       jobTitle: ['', [Validators.required]],
       protocol: ['http://',[]],
       website: ['', [Validators.pattern(Constants.REGEX_WEBSITE)]]

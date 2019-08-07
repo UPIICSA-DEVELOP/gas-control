@@ -41,6 +41,7 @@ import {
   MatToolbarModule,
   MatTooltipModule
 } from '@angular/material';
+import {NgxMaterialTimepickerModule} from 'ngx-material-timepicker';
 
 const MATERIAL_MODULES = [
   CommonModule,
@@ -75,7 +76,7 @@ const MATERIAL_MODULES = [
   MatDatepickerModule,
   MatNativeDateModule,
   MatStepperModule,
-  MatPaginatorModule
+  MatPaginatorModule, NgxMaterialTimepickerModule
 ];
 
 @NgModule({

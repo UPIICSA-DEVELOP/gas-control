@@ -13,7 +13,6 @@
         <ng-template #legalList>Listado de usuarios</ng-template>
         <ng-template #legalForm>Nuevo registro</ng-template>
       </div>
-      <div *ngSwitchCase="2">Nuevo registro</div>
       <div *ngSwitchCase="3">Programación de tareas</div>
     </div>
     <button mat-icon-button (click)="closeAddStation()" [disabled]="load_two">
@@ -93,15 +92,6 @@
                     Se requieren de 8 a 13 digitos
                   </mat-error>
                 </mat-form-field>
-                <!--div class="modal">
-                  <div class="mask" (click)="openPersonForm(true)"></div>
-                  <mat-form-field class="inputs">
-                    <input formControlName="manager" matInput placeholder="Encargado de estación" required type="text" (keyup)="openPersonForm(true)">
-                    <mat-error *ngIf="newStation.controls['manager'].hasError('required')">
-                      Este campo es obligatorio
-                    </mat-error>
-                  </mat-form-field>
-                </div-->
                 <mat-form-field class="inputs">
                   <input formControlName="workers" matInput placeholder="No. de trabajadores">
                 </mat-form-field>
@@ -321,31 +311,27 @@
                 <form [formGroup]="newLegalRep" (ngSubmit)="validateLegal(newLegalRep.value)">
                   <img src="../../../assets/image/background.png" class="head-image" alt="background gas station">
                   <div class="image">
-                    <app-upload-file [layoutTemplate]="icon" (onLoad)="onLoadImage($event, false)" (onRemove)="onRemoveImage(false)"
-                                     [type]="'image'">
+                    <app-upload-file [layoutTemplate]="icon" (onLoad)="onLoadImage($event, false)" (onRemove)="onRemoveImage(false)" [type]="'image'">
                       <ng-template #icon>
-                        <img *ngIf="profileImage" [src]="profileImage" class="profileImage" alt="User profile image">
-                        <mat-icon *ngIf="!profileImage" class="defaultProfileImage">add_photo_alternate</mat-icon>
+                        <img *ngIf="profileImage" [src]="profileImage" profile-image alt="User profile image">
+                        <mat-icon *ngIf="!profileImage" profile-image default-image>add_photo_alternate</mat-icon>
                       </ng-template>
                     </app-upload-file>
                   </div>
-                  <mat-form-field class="inputs">
-                    <input formControlName="name" matInput placeholder="Nombre(s)"
-                           required type="text" aria-label="User name">
+                  <mat-form-field inputs-person>
+                    <input formControlName="name" matInput placeholder="Nombre(s)" required type="text" aria-label="User name">
                     <mat-error *ngIf="newLegalRep.controls['name'].hasError('required')">
                       Este campo es obligatorio
                     </mat-error>
                   </mat-form-field>
-                  <mat-form-field class="inputs">
-                    <input formControlName="lastName" matInput placeholder="Apellido(s)"
-                           required type="text" aria-label="User last-name">
+                  <mat-form-field inputs-person>
+                    <input formControlName="lastName" matInput placeholder="Apellido(s)" required type="text" aria-label="User last-name">
                     <mat-error *ngIf="newLegalRep.controls['lastName'].hasError('required')">
                       Este campo es obligatorio
                     </mat-error>
                   </mat-form-field>
-                  <mat-form-field class="inputs">
-                    <input formControlName="email" matInput placeholder="Email comercial"
-                           type="email" aria-label="User email" required (blur)="validateEmailExist(false)">
+                  <mat-form-field inputs-person>
+                    <input formControlName="email" matInput placeholder="Email comercial" type="email" aria-label="User email" required (blur)="validateEmailExist(false)">
                     <mat-error *ngIf="newLegalRep.controls['email'].hasError('required')">
                       Este campo es obligatorio
                     </mat-error>
@@ -359,8 +345,7 @@
                   <div class="modal">
                     <div class="mask" (click)="openListCountry(1)"></div>
                     <mat-form-field class="inputs">
-                      <input (keyup)="openListCountry(1)" formControlName="country" matInput placeholder="País"
-                             type="text" required aria-label="User country">
+                      <input (keyup)="openListCountry(1)" formControlName="country" matInput placeholder="País" type="text" required aria-label="User country">
                       <mat-error *ngIf="newLegalRep.controls['country'].hasError('required')">
                         Este campo es obligatorio
                       </mat-error>
@@ -483,173 +468,6 @@
             </div>
           </div>
         </ng-template>
-      </div>
-      <div *ngSwitchCase="2">
-        <div class="form-person">
-          <div class="new-person">
-            <div class="new-person-content">
-              <form [formGroup]="newManager" (ngSubmit)="validateManager(newManager.value)">
-                <img src="../../../assets/image/background.png" class="head-image" alt="background gas station">
-                <div class="image">
-                  <app-upload-file [layoutTemplate]="icon" (onLoad)="onLoadImage($event, true)" (onRemove)="onRemoveImage(true)"
-                                   [type]="'image'">
-                    <ng-template #icon>
-                      <img *ngIf="profileImageTwo" [src]="profileImageTwo" class="profileImage" alt="User profile image">
-                      <mat-icon *ngIf="!profileImageTwo" class="defaultProfileImage">add_photo_alternate</mat-icon>
-                    </ng-template>
-                  </app-upload-file>
-                </div>
-                <mat-form-field class="inputs">
-                  <input formControlName="name" matInput placeholder="Nombre(s)"
-                         required type="text" aria-label="User name">
-                  <mat-error *ngIf="newManager.controls['name'].hasError('required')">
-                    Este campo es obligatorio
-                  </mat-error>
-                </mat-form-field>
-                <mat-form-field class="inputs">
-                  <input formControlName="lastName" matInput placeholder="Apellido(s)"
-                         required type="text" aria-label="User last-name">
-                  <mat-error *ngIf="newManager.controls['lastName'].hasError('required')">
-                    Este campo es obligatorio
-                  </mat-error>
-                </mat-form-field>
-                <mat-form-field class="inputs">
-                  <input formControlName="email" matInput placeholder="Email comercial"
-                         type="email" aria-label="User email" required (blur)="validateEmailExist(true)">
-                  <mat-error *ngIf="newManager.controls['email'].hasError('required')">
-                    Este campo es obligatorio
-                  </mat-error>
-                  <mat-error *ngIf="newManager.controls['email'].hasError('email')">
-                    La dirección email no es valida
-                  </mat-error>
-                  <mat-error *ngIf="newManager.controls['email'].hasError('emailUsed')">
-                    Este email ya tiene un usuario asociado
-                  </mat-error>
-                </mat-form-field>
-                <div class="modal">
-                  <div class="mask" (click)="openListCountry(2)"></div>
-                  <mat-form-field class="inputs">
-                    <input (keyup)="openListCountry(2)" formControlName="country" matInput placeholder="País"
-                           type="text" required aria-label="User country">
-                    <mat-error *ngIf="newManager.controls['country'].hasError('required')">
-                      Este campo es obligatorio
-                    </mat-error>
-                  </mat-form-field>
-                </div>
-                <div class="flex-box">
-                  <div class="modal">
-                    <div class="mask" (click)="openListCountry(2)"></div>
-                    <mat-form-field class="right-inputs">
-                      <input formControlName="code" matInput placeholder="Código"
-                             type="text" required aria-label="Phone code">
-                    </mat-form-field>
-                  </div>
-                  <mat-form-field class="inputs">
-                    <input formControlName="phoneNumber" matInput
-                           placeholder="Número celular" required type="tel" aria-label="User cellphone number"
-                           #phoneNumber>
-                    <mat-error *ngIf="newManager.controls['phoneNumber'].hasError('required')">
-                      Este campo es obligatorio
-                    </mat-error>
-                    <mat-error *ngIf="newManager.controls['phoneNumber'].hasError('minlength')">
-                      Se requieren de 8 a 13 dígitos
-                    </mat-error>
-                    <mat-error *ngIf="newManager.controls['phoneNumber'].hasError('maxlength')">
-                      Se requieren de 8 a 13 dígitos
-                    </mat-error>
-                  </mat-form-field>
-                </div>
-                <mat-form-field class="inputs">
-                  <input disabled placeholder="Rol" required aria-label="User role" value="Encargado de Estación" matInput>
-                </mat-form-field>
-                <mat-form-field class="inputs">
-                  <input formControlName="jobTitle" matInput placeholder="Cargo"
-                         required type="text" aria-label="User job-title">
-                  <mat-error *ngIf="newManager.controls['jobTitle'].hasError('required')">
-                    Este campo es obligatorio
-                  </mat-error>
-                </mat-form-field>
-                <div class="flex-box">
-                  <mat-form-field class="right-inputs">
-                    <mat-select placeholder="Protocolo" aria-label="User website protocol"
-                                [(value)]="protocolTwo">
-                      <mat-option value="http://">http://</mat-option>
-                      <mat-option value="https://">https://</mat-option>
-                    </mat-select>
-                  </mat-form-field>
-                  <mat-form-field class="inputs">
-                    <input placeholder="Website" formControlName="website" matInput
-                           type="url" aria-label="User website">
-                    <mat-error *ngIf="newManager.controls['website'].hasError('pattern')">
-                      Ingrese un sitio web válido
-                    </mat-error>
-                  </mat-form-field>
-                </div>
-                <div class="signature-input">
-                  <div class="formHead">Firma digital</div>
-                  <div class="signatureContainer">
-                    <div class="signature" (click)="changeSignature(true)" matTooltip="Cambiar firma">
-                      <span *ngIf="!signatureTwo" class="formText">Registre firma digital</span>
-                      <img *ngIf="signatureTwo" [src]="signatureTwo" class="imageSignature" alt="User signature image">
-                    </div>
-                  </div>
-                </div>
-                <div class="title">Información adicional</div>
-                <div>
-                  <mat-form-field class="inputs">
-                    <input formControlName="ssn" matInput
-                           placeholder="Número de Seguridad Social" type="text" aria-label="User social security ID">
-                  </mat-form-field>
-                  <mat-form-field class="inputs">
-                    <mat-select placeholder="Tipo de sangre" aria-label="User blood type"
-                                [(value)]="bloodTypeTwo">
-                      <mat-option>-Seleccione un tipo de sangre-</mat-option>
-                      <mat-option *ngFor="let blood of bloodGroup" [value]="blood">{{blood}}</mat-option>
-                    </mat-select>
-                  </mat-form-field>
-                  <div class="submit">
-                    <app-upload-file class="inputs" [layoutTemplate]="button" (onLoad)="onLoadFile($event, true)" [type]="'file'">
-                      <ng-template #button>
-                        <div class="study">
-                          <span type="button">Estudio de toxicidad (Benceno)</span>
-                          <mat-icon class="file-icon" *ngIf="!fileTwo" svgIcon="icons:upload"></mat-icon>
-                          <mat-icon class="file-icon" *ngIf="fileTwo">autorenew</mat-icon>
-                        </div>
-                      </ng-template>
-                    </app-upload-file>
-                    <button type="button" mat-icon-button matTooltip="Ver estudio" *ngIf="fileTwo" (click)="openStudy(true)">
-                      <mat-icon class="file-icon">visibility</mat-icon>
-                    </button>
-                  </div>
-                  <div>
-                    <div class="formHead">Contacto de emergencia</div>
-                    <div class="extra-data">
-                      <mat-form-field class="inputs">
-                        <input formControlName="contactName" matInput placeholder="Nombre" type="text" aria-label="User emergency contact name">
-                      </mat-form-field>
-                      <mat-form-field class="inputs">
-                        <input formControlName="contactPhoneNumber" matInput placeholder="Número celular" type="tel" aria-label="User emergency contact phone number">
-                        <mat-error *ngIf="newManager.controls['contactPhoneNumber'].hasError('minlength')">
-                          Se requieren de 8 a 13 dígitos
-                        </mat-error>
-                        <mat-error *ngIf="newManager.controls['contactPhoneNumber'].hasError('maxlength')">
-                          Se requieren de 8 a 13 dígitos
-                        </mat-error>
-                      </mat-form-field>
-                      <mat-form-field class="inputs">
-                        <input formControlName="contactKinship" matInput
-                               placeholder="Parentesco" type="text" aria-label="User emergency contact relationship">
-                      </mat-form-field>
-                    </div>
-                  </div>
-                </div>
-                <div class="form-button">
-                  <button mat-flat-button aria-label="LogIn" [disabled]="disableButton[1]" [color]="'primary'" mat-button>AGREGAR</button>
-                </div>
-              </form>
-            </div>
-          </div>
-        </div>
       </div>
       <div *ngSwitchCase="3">
         <div class="calendar">

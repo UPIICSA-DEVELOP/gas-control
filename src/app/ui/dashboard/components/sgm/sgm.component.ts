@@ -4,13 +4,13 @@
  *  Proprietary and confidential
  */
 
-import {Component, Inject, OnDestroy, OnInit} from '@angular/core';
+import {Component, Inject, OnDestroy, OnInit, ViewEncapsulation} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
 import {ApiService} from '@app/core/services/api/api.service';
 import {PdfVisorService} from '@app/shared/components/pdf-visor/pdf-visor.service';
 import {DialogService} from '@app/shared/components/dialog/dialog.service';
 import {SnackBarService} from '@app/core/services/snackbar/snackbar.service';
-import {Subscription} from 'rxjs/Rx';
+import {Subscription} from 'rxjs';
 import {HashService} from '@app/utils/utilities/hash.service';
 import {SgmSelection} from '@app/utils/interfaces/interfaces';
 import {UtilitiesService} from '@app/utils/utilities/utilities';
@@ -23,7 +23,8 @@ import {LoaderService} from '@app/core/components/loader/loader.service';
 @Component({
   selector: 'app-sgm',
   templateUrl: './sgm.component.html',
-  styleUrls: ['./sgm.component.scss']
+  styleUrls: ['./sgm.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class SgmComponent implements OnInit, OnDestroy {
   public station: any;

@@ -63,12 +63,6 @@
       mat-form-field{
         width: 100%;
       }
-      .error-login{
-        height: 12px;
-        width: 80%;
-        margin-top: -16px;
-        margin-left: calc(50% - 40%);
-      }
       .forgot-password{
         text-align: right;
         color: mat-color($primary);
@@ -79,7 +73,7 @@
         color:#707070;
         margin: 0 12px;
       }
-      .see-ocult-pass{
+      .see-hide-pass{
         color:#707070;
       }
       .login-actions{

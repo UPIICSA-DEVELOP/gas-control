@@ -4,7 +4,7 @@
  *  Proprietary and confidential
  */
 
-import {Component, Input, OnDestroy, OnInit} from '@angular/core';
+import {Component, Input, OnDestroy, OnInit, ViewEncapsulation} from '@angular/core';
 import {FRReport} from '@app/utils/interfaces/interfaces';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {ApiService} from '@app/core/services/api/api.service';
@@ -15,14 +15,15 @@ import {SnackBarService} from '@app/core/services/snackbar/snackbar.service';
 import {SharedService, SharedTypeNotification} from '@app/core/services/shared/shared.service';
 import {Constants} from '@app/utils/constants/constants.utils';
 import {LocalStorageService} from '@app/core/services/local-storage/local-storage.service';
-import {Subscription} from 'rxjs/Rx';
+import {Subscription} from 'rxjs';
 import {FormatTimePipe} from '@app/shared/pipes/format-time/format-time.pipe';
 import {LoaderService} from '@app/core/components/loader/loader.service';
 
 @Component({
   selector: 'app-fr-report',
   templateUrl: './fr-report.component.html',
-  styleUrls: ['./fr-report.component.scss']
+  styleUrls: ['./fr-report.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class FrReportComponent implements OnInit, OnDestroy {
   private _taskId: string;
@@ -123,7 +124,6 @@ export class FrReportComponent implements OnInit, OnDestroy {
       folio: task.folio || undefined,
       id: task.id || undefined,
       magna: task.magna || undefined,
-      managerName: task.managerName || undefined,
       name: task.name || undefined,
       premium: task.premium || undefined,
       receiveName: task.receiveName || undefined,

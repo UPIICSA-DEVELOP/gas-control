@@ -1,4 +1,4 @@
-import {Component, ElementRef, EventEmitter, Input, NgZone, OnInit, Output, ViewChild} from '@angular/core';
+import {Component, ElementRef, EventEmitter, Input, NgZone, OnInit, Output, ViewChild, ViewEncapsulation} from '@angular/core';
 import {FormControl} from '@angular/forms';
 import {MapsAPILoader} from '@agm/core';
 
@@ -22,11 +22,12 @@ export interface SearchBoxStyles{
   exportAs: 'app-search-box-core',
   selector: 'app-search-box-core',
   templateUrl: './search-box.component.html',
-  styleUrls: ['./search-box.component.scss']
+  styleUrls: ['./search-box.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class SearchBoxCoreComponent implements OnInit {
 
-  @ViewChild('searchBoxCore') searchBoxCore: ElementRef;
+  @ViewChild('searchBoxCore', { static: true }) searchBoxCore: ElementRef;
   @Output() onChange: EventEmitter<SearchBoxResult>;
   @Output() inputSearchBox: EventEmitter<ElementRef>;
   @Input() styles: SearchBoxStyles;

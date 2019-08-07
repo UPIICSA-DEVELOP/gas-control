@@ -1,11 +1,12 @@
-import {Component, Inject, OnInit} from '@angular/core';
+import {Component, Inject, OnInit, ViewEncapsulation} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
 import {UtilitiesService} from 'app/utils/utilities/utilities';
 
 @Component({
   selector: 'app-pdf-visor',
   templateUrl: './pdf-visor.component.html',
-  styleUrls: ['./pdf-visor.component.scss']
+  styleUrls: ['./pdf-visor.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class PdfVisorComponent implements OnInit {
 

@@ -4,13 +4,14 @@
  * Proprietary and confidential
  */
 
-import {Component, Inject, OnInit} from '@angular/core';
+import {Component, Inject, OnInit, ViewEncapsulation} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
 
 @Component({
   selector: 'app-modal-station',
   templateUrl: './modal-station.component.html',
-  styleUrls: ['./modal-station.component.scss']
+  styleUrls: ['./modal-station.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class ModalStationComponent implements OnInit {
   public icons: any;

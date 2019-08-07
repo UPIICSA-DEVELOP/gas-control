@@ -43,21 +43,20 @@
             </div>
             <mat-divider></mat-divider>
             <div class="buttons">
-              <button [color]="'primary'"  mat-button (click)="closeToggle()" [routerLink]="['/home/profile/gas-station', stationActive.id]">
-                <mat-icon>local_gas_station</mat-icon>
+              <button mat-button (click)="closeToggle()" [routerLink]="['/home/profile/gas-station', stationActive.id]">
+                <mat-icon [color]="'primary'">local_gas_station</mat-icon>
                 <span>Información de Estación</span>
               </button>
-              <button [color]="'primary'"  mat-button (click)="addCollaborator()" *ngIf="role!==6">
-                <mat-icon>person_add</mat-icon>
+              <button mat-button (click)="addCollaborator()" *ngIf="role!==6">
+                <mat-icon [color]="'primary'">person_add</mat-icon>
                 <span>Añadir Colaborador de Estación</span>
               </button>
-              <button [color]="'primary'"  mat-button (click)="openNotifications()">
-                <mat-icon *ngIf="newNotification" matBadge="&#8288;" matBadgeSize="small" matBadgeColor="warn">notifications</mat-icon>
-                <mat-icon *ngIf="!newNotification">notifications</mat-icon>
+              <button mat-button (click)="openNotifications()">
+                <mat-icon class="hide-text" [color]="'primary'" matBadge="0" matBadgeSize="small" matBadgeColor="warn" [matBadgeHidden]="!newNotification">notifications</mat-icon>
                 <span>Notificaciones</span>
               </button>
-              <button [color]="'primary'" mat-button (click)="closeToggle()" routerLink="/home/procedures">
-                <mat-icon>library_books</mat-icon>
+              <button mat-button (click)="closeToggle()" routerLink="/home/procedures">
+                <mat-icon [color]="'primary'">library_books</mat-icon>
                 <span>Procedimientos</span>
               </button>
               <button mat-button [disabled]="!stationActive.stationTaskId" (click)="openSasisopaModal()">
@@ -70,8 +69,8 @@
                 <img *ngIf="!stationActive.stationTaskId" class="sgm" src="../../../assets/image/sgm_disabled.png">
                 <span>Sistema de Gestión de Mediciones</span>
               </button>
-              <button [color]="'primary'" mat-button [disabled]="!stationActive.stationTaskId" (click)="openOtherTasks()">
-                <mat-icon>more_vert</mat-icon>
+              <button mat-button [disabled]="!stationActive.stationTaskId" (click)="openOtherTasks()">
+                <mat-icon [color]="'primary'">more_vert</mat-icon>
                 <span>Otros</span>
               </button>
             </div>

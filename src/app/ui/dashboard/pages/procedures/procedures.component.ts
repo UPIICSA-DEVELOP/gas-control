@@ -4,7 +4,7 @@
  * Proprietary and confidential
  */
 
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import {ApiService} from 'app/core/services/api/api.service';
 import {Router} from '@angular/router';
 import {animate, style, transition, trigger} from '@angular/animations';
@@ -29,7 +29,8 @@ import {HashService} from 'app/utils/utilities/hash.service';
       ])
     ])
   ],
-  host: {'[@fadeInAnimation]': ''}
+  host: {'[@fadeInAnimation]': ''},
+  encapsulation: ViewEncapsulation.None
 })
 export class ProceduresComponent implements OnInit {
   public procedures: any;
