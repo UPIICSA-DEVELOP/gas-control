@@ -15,9 +15,11 @@ import {environment} from 'environments/environment';
 export class FooterComponent implements OnInit {
 
   public version: string;
+  public url: string;
 
   constructor() {
     this.version = environment.VERSION;
+    this.url = environment.url
   }
 
   ngOnInit() {

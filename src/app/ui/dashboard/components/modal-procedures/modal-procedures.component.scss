@@ -22,7 +22,6 @@
         align-items: center;
         display: flex;
         color: #707070;
-        font-weight: 500;
         min-height: 32px;
         .icon{
           margin: 0 4px;
@@ -40,5 +39,8 @@
   a{
     color: #707070;
     text-decoration: none;
+  }
+  ::ng-deep .mat-card .last-child {
+    margin-bottom: 0;
   }
 }

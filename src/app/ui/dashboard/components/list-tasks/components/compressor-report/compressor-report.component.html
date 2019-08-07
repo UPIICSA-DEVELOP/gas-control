@@ -20,31 +20,51 @@
       <div class="columns">
         <div class="times">
           <mat-form-field class="clock">
-            <rb-timepicker #pickerOne [colorBtn]="'primary'" (getTime)="changeTime($event, 'startTime')"></rb-timepicker>
             <input matInput
                    formControlName="startTime"
                    placeholder="Hora de inicio"
                    required
-                   (click)="pickerOne.open()"
+                   [ngxTimepicker]="pickerOne"
                    readonly="readonly">
-            <button [disabled]="!editable" mat-icon-button matSuffix (click)="pickerOne.open()" type="button">
-              <mat-icon>access_time</mat-icon>
-            </button>
+            <button mat-icon-button [disabled]="!editable" matSuffix (click)="pickerOne.open()" type="button">
+                <mat-icon>access_time</mat-icon>
+              </button>
+            <ngx-material-timepicker #pickerOne
+                                     (timeSet)="changeTime($event, 'startTime')"
+                                     [confirmBtnTmpl]="confirmBtn"
+                                     [cancelBtnTmpl]="cancelBtn"
+                                     [preventOverlayClick]="true"></ngx-material-timepicker>
+            <ng-template #cancelBtn>
+              <button mat-button type="button">CANCELAR</button>
+            </ng-template>
+            <ng-template #confirmBtn>
+              <button mat-button type="button">ACEPTAR</button>
+            </ng-template>
             <mat-error *ngIf="compForm.controls['startTime'].hasError('required')">
               Este campo es obligatorio
             </mat-error>
           </mat-form-field>
           <mat-form-field class="clock">
-            <rb-timepicker #pickerTwo [colorBtn]="'primary'" (getTime)="changeTime($event, 'endTime')"></rb-timepicker>
             <input matInput
                    formControlName="endTime"
                    placeholder="Hora de término"
                    required
-                   (click)="pickerTwo.open()"
+                   [ngxTimepicker]="pickerTwo"
                    readonly="readonly">
-            <button [disabled]="!editable" mat-icon-button matSuffix (click)="pickerTwo.open()" type="button">
+            <button mat-icon-button [disabled]="!editable" matSuffix (click)="pickerTwo.open()" type="button">
               <mat-icon>access_time</mat-icon>
             </button>
+            <ngx-material-timepicker #pickerTwo
+                                     (timeSet)="changeTime($event, 'endTime')"
+                                     [confirmBtnTmpl]="confirmBtn"
+                                     [cancelBtnTmpl]="cancelBtn"
+                                     [preventOverlayClick]="true"></ngx-material-timepicker>
+            <ng-template #cancelBtn>
+              <button mat-button type="button">CANCELAR</button>
+            </ng-template>
+            <ng-template #confirmBtn>
+              <button mat-button type="button">ACEPTAR</button>
+            </ng-template>
             <mat-error *ngIf="compForm.controls['endTime'].hasError('required')">
               Este campo es obligatorio
             </mat-error>

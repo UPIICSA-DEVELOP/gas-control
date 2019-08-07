@@ -15,8 +15,8 @@
   <mat-dialog-content>
     <div style="width: 100%" *ngFor="let procedure of procedures; let i = index">
       <div  style="display: flex; width: 100%; justify-content: space-around; align-items: center">
-        <mat-card (click)="openFile(procedure.fileCS.thumbnail)">
-          <mat-card-content>
+        <mat-card matRipple (click)="openFile(procedure.fileCS.thumbnail)">
+          <mat-card-content class="last-child">
             <div class="icon">
               <mat-icon>insert_drive_file</mat-icon>
             </div>

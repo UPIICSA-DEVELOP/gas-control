@@ -125,32 +125,50 @@
                   <div *ngFor="let turn of workShifts; let i = index">
                     <div class="input-content">
                       <mat-form-field style="width: 45%">
-                        <rb-timepicker #pickerOne [colorBtn]="'primary'" (getTime)="changeDate($event,i,true)"></rb-timepicker>
                         <input matInput
                                placeholder="Inicio"
                                [disabled]="user.role === 6"
                                [ngModelOptions]="{standalone: true}"
-                               [ngModel]="turn.start | formatTime"
-                               (keydown)="pickerOne.open()"
-                               (click)="pickerOne.open()"
+                               [ngModel]="turn.start"
+                               [ngxTimepicker]="pickerOne"
                                readonly="readonly">
-                        <button mat-icon-button matSuffix (click)="pickerOne.open()" type="button">
+                        <button mat-icon-button [disabled]="user.role === 6" matSuffix (click)="pickerOne.open()" type="button">
                           <mat-icon>access_time</mat-icon>
                         </button>
+                        <ngx-material-timepicker #pickerOne
+                                                 (timeSet)="changeDate($event, i, true)"
+                                                 [confirmBtnTmpl]="confirmBtn"
+                                                 [cancelBtnTmpl]="cancelBtn"
+                                                 [preventOverlayClick]="true"></ngx-material-timepicker>
+                        <ng-template #cancelBtn>
+                          <button mat-button type="button">CANCELAR</button>
+                        </ng-template>
+                        <ng-template #confirmBtn>
+                          <button mat-button type="button">ACEPTAR</button>
+                        </ng-template>
                       </mat-form-field>
                       <mat-form-field style="width: 45%">
-                        <rb-timepicker #pickerTwo [colorBtn]="'primary'" (getTime)="changeDate($event,i,false)"></rb-timepicker>
                         <input matInput
                                placeholder="Término"
                                [disabled]="user.role===6"
                                [ngModelOptions]="{standalone: true}"
-                               [ngModel]="turn.end | formatTime"
-                               (keydown)="pickerTwo.open()"
-                               (click)="pickerTwo.open()"
+                               [ngModel]="turn.end"
+                               [ngxTimepicker]="pickerTwo"
                                readonly="readonly">
-                        <button mat-icon-button matSuffix (click)="pickerTwo.open()" type="button">
+                        <button mat-icon-button [disabled]="user.role === 6" matSuffix (click)="pickerTwo.open()" type="button">
                           <mat-icon>access_time</mat-icon>
                         </button>
+                        <ngx-material-timepicker #pickerTwo
+                                                 (timeSet)="changeDate($event, i, false)"
+                                                 [confirmBtnTmpl]="confirmBtn"
+                                                 [cancelBtnTmpl]="cancelBtn"
+                                                 [preventOverlayClick]="true"></ngx-material-timepicker>
+                        <ng-template #cancelBtn>
+                          <button mat-button type="button">CANCELAR</button>
+                        </ng-template>
+                        <ng-template #confirmBtn>
+                          <button mat-button type="button">ACEPTAR</button>
+                        </ng-template>
                       </mat-form-field>
                       <button type="button" *ngIf="workShifts.length>1" mat-icon-button (click)="addRemoveTurn(true,1, i)" class="remove" [disabled]=" user.role===6">
                         <mat-icon>remove</mat-icon>

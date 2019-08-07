@@ -232,9 +232,8 @@ export class CompressorReportComponent implements OnInit, OnDestroy {
   }
 
   public changeTime(ev: any, type: string): void {
-    const time = ev.mTime.replace(':','');
     this.compForm.patchValue({
-      [type]: this._formatTimePipe.transform(time)
+      [type]: ev
     });
   }
 

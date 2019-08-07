@@ -450,6 +450,13 @@ export class AddGasStationComponent implements OnInit, OnDestroy {
       return;
     }else{
       this.clearStationArray();
+      const workShifts = [];
+      this.workShifts.forEach(value => {
+        workShifts.push({
+          start: UtilitiesService.removeFormatTime(value.start).toString(),
+          end: UtilitiesService.removeFormatTime(value.end).toString()
+        })
+      });
       this.station = {
         location: (this.latLng?this.latLng:undefined),
         address: data.address,
@@ -462,7 +469,7 @@ export class AddGasStationComponent implements OnInit, OnDestroy {
         type: this.stationType.id,
         observationWells:(data.observationWells?data.observationWells:undefined),
         monitoringWells:(data.monitoringWells?data.monitoringWells:undefined),
-        workShifts: (this.workShifts.length>0? this.workShifts:undefined),
+        workShifts: workShifts,
         dispensers: (this.dispensers.length>0?this.dispensers:undefined),
         fuelTanks: (this.tanks.length>0?this.tanks:undefined),
         idConsultancy: LocalStorageService.getItem(Constants.UserInSession).refId,
@@ -1103,11 +1110,10 @@ export class AddGasStationComponent implements OnInit, OnDestroy {
   }
 
   public changeDate(ev: any, index: number, isStart: boolean):void{
-    const time = ev.mTime.replace(':','');
     if(isStart){
-      this.workShifts[index].start = time;
+      this.workShifts[index].start = ev;
     }else{
-      this.workShifts[index].end = time;
+      this.workShifts[index].end = ev;
     }
   }
 

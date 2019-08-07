@@ -210,9 +210,8 @@ export class IncidenceReportComponent implements OnInit, OnDestroy {
   }
 
   public changeTime(ev: any): void{
-    const time = ev.mTime.replace(':','');
     this.incidenceForm.patchValue({
-      time: this._formatTimePipe.transform(time)
+      time: ev
     });
   }
 

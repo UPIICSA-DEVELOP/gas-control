@@ -94,30 +94,54 @@
                 <div class="flex-box">
                   <div class="input-content">
                     <mat-form-field class="input-turns">
-                      <rb-timepicker #pickerOne [colorBtn]="'primary'" (getTime)="changeDate($event,i,true)"></rb-timepicker>
                       <input matInput
                              placeholder="Inicio"
                              [disabled]="user.role === 6"
                              [ngModelOptions]="{standalone: true}"
-                             [ngModel]="turn.start | formatTime"
-                             (click)="pickerOne.open()"
+                             [ngModel]="turn.start"
+                             [ngxTimepicker]="pickerOne"
                              readonly="readonly">
                       <button mat-icon-button [disabled]="user.role === 6" matSuffix (click)="pickerOne.open()" type="button">
                         <mat-icon>access_time</mat-icon>
                       </button>
+                      <ngx-material-timepicker #pickerOne
+                                               (timeSet)="changeDate($event, i, true)"
+                                               [confirmBtnTmpl]="confirmBtn"
+                                               [cancelBtnTmpl]="cancelBtn"
+                                               [preventOverlayClick]="true"
+                                               (opened)="openCloseClock($event, true)"
+                                               (closed)="openCloseClock($event, false)"></ngx-material-timepicker>
+                      <ng-template #cancelBtn>
+                        <button mat-button type="button">CANCELAR</button>
+                      </ng-template>
+                      <ng-template #confirmBtn>
+                        <button mat-button type="button">ACEPTAR</button>
+                      </ng-template>
                     </mat-form-field>
                     <mat-form-field class="input-turns">
-                      <rb-timepicker #pickerTwo [colorBtn]="'primary'" (getTime)="changeDate($event,i,false)"></rb-timepicker>
                       <input matInput
                              placeholder="Término"
                              [disabled]="user.role===6"
                              [ngModelOptions]="{standalone: true}"
-                             [ngModel]="turn.end | formatTime"
-                             (click)="pickerTwo.open()"
+                             [ngModel]="turn.end"
+                             [ngxTimepicker]="pickerTwo"
                              readonly="readonly">
                       <button mat-icon-button [disabled]="user.role === 6" matSuffix (click)="pickerTwo.open()" type="button">
                         <mat-icon>access_time</mat-icon>
                       </button>
+                      <ngx-material-timepicker #pickerTwo
+                                               (timeSet)="changeDate($event, i, false)"
+                                               [confirmBtnTmpl]="confirmBtn"
+                                               [cancelBtnTmpl]="cancelBtn"
+                                               [preventOverlayClick]="true"
+                                               (opened)="openCloseClock($event, true)"
+                                               (closed)="openCloseClock($event, false)"></ngx-material-timepicker>
+                      <ng-template #cancelBtn>
+                        <button mat-button type="button">CANCELAR</button>
+                      </ng-template>
+                      <ng-template #confirmBtn>
+                        <button mat-button type="button">ACEPTAR</button>
+                      </ng-template>
                     </mat-form-field>
                   </div>
                   <div class="button">
@@ -165,9 +189,9 @@
                       </mat-form-field>
                     </div>
                     <mat-radio-group class="fuel-selector" aria-label="Station tank fuel type" (change)="onArrayChange()" [(ngModel)]="tank.fuelType" [ngModelOptions]="{standalone: true}" [disabled]=" user.role===6">
-                      <mat-radio-button [value]="1" >Magna</mat-radio-button>
-                      <mat-radio-button [value]="2">Premium</mat-radio-button>
-                      <mat-radio-button [value]="3">Diesel</mat-radio-button>
+                      <mat-radio-button style="margin: 4px;" [value]="1" >Magna</mat-radio-button>
+                      <mat-radio-button style="margin: 4px;" [value]="2">Premium</mat-radio-button>
+                      <mat-radio-button style="margin: 4px;" [value]="3">Diesel</mat-radio-button>
                     </mat-radio-group>
                   </div>
                   <div class="button-container">
@@ -202,9 +226,9 @@
                     </mat-form-field>
                   </div>
                   <section class="hoses" aria-label="Station hoses fuel type">
-                    <mat-checkbox (change)="onArrayChange()" [(ngModel)]="dispenser.magna" [ngModelOptions]="{standalone: true}" [disabled]=" user.role===6">Magna</mat-checkbox>
-                    <mat-checkbox (change)="onArrayChange()" [(ngModel)]="dispenser.premium" [ngModelOptions]="{standalone: true}" [disabled]=" user.role===6">Premium</mat-checkbox>
-                    <mat-checkbox (change)="onArrayChange()" [(ngModel)]="dispenser.diesel" [ngModelOptions]="{standalone: true}" [disabled]=" user.role===6">Diesel</mat-checkbox>
+                    <mat-checkbox style="margin: 4px;" (change)="onArrayChange()" [(ngModel)]="dispenser.magna" [ngModelOptions]="{standalone: true}" [disabled]=" user.role===6">Magna</mat-checkbox>
+                    <mat-checkbox style="margin: 4px;" (change)="onArrayChange()" [(ngModel)]="dispenser.premium" [ngModelOptions]="{standalone: true}" [disabled]=" user.role===6">Premium</mat-checkbox>
+                    <mat-checkbox style="margin: 4px;" (change)="onArrayChange()" [(ngModel)]="dispenser.diesel" [ngModelOptions]="{standalone: true}" [disabled]=" user.role===6">Diesel</mat-checkbox>
                   </section>
                 </div>
                 <div class="button">
@@ -230,11 +254,11 @@
         </div>
         <div class="info-gas-station">
           <div class="image">
-            <img *ngIf="utils && station" [src]="utils.groupIcons[this.station.type-1].fileCS.thumbnail">
+            <img *ngIf="utils" [src]="utils.groupIcons[station.type-1].fileCS.thumbnail" alt="Gas Station Logo">
             <mat-icon *ngIf="!utils || !station">local_gas_station</mat-icon>
           </div>
           <div class="info">
-            <h2 *ngIf="utils && station">{{utils.groupIcons[this.station.type-1].name}}</h2>
+            <h2 *ngIf="utils">{{utils.groupIcons[station.type-1].name}}</h2>
             <p class="company">{{station.businessName}}</p>
             <p class="store">{{station.name}}</p>
           </div>
@@ -245,7 +269,7 @@
   <ng-template #loading>
     <mat-spinner></mat-spinner>
   </ng-template>
-  <div class="btn-close">
+  <div class="btn-close" #close>
     <button mat-icon-button matTooltip="Cerrar" aria-label="Close-button" (click)="closeProfile()">
       <mat-icon>close</mat-icon>
     </button>

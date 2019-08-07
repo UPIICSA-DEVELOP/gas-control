@@ -4,23 +4,27 @@
  * Proprietary and confidential
  */
 
-import {Component, Inject, OnInit} from '@angular/core';
+import {AfterViewInit, Component, ElementRef, Inject, OnInit, ViewChild} from '@angular/core';
 import {DateAdapter, MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
 import {FormBuilder, FormGroup} from '@angular/forms';
 import {SnackBarService} from '@app/core/services/snackbar/snackbar.service';
 import {MDate} from '@app/utils/class/MDate';
+import {DOCUMENT} from '@angular/common';
 
 @Component({
   selector: 'app-datepicker',
   templateUrl: './datepicker.component.html',
   styleUrls: ['./datepicker.component.scss']
 })
-export class DatepickerComponent implements OnInit {
+export class DatepickerComponent implements OnInit, AfterViewInit {
+  @ViewChild('pickerStart') private _pickerStart: any;
+  @ViewChild('pickerEnd') private _pickerEnd: any;
   public dateForm: FormGroup;
   public startDate: Date = new Date();
   public endDate: Date = new Date();
   constructor(
-  @Inject(MAT_DIALOG_DATA) public data: any,
+    @Inject(DOCUMENT) private _document: Document,
+    @Inject(MAT_DIALOG_DATA) public data: any,
     private _dialogRef: MatDialogRef<DatepickerComponent>,
     private _formBuilder: FormBuilder,
     private _snackBarService: SnackBarService,
@@ -38,6 +42,14 @@ export class DatepickerComponent implements OnInit {
       endDate: MDate.getPrimitiveDate(this.data.endDate)
     });
   }
+
+  ngAfterViewInit() {
+    if(this._document.body.clientWidth <= 1024){
+      this._pickerStart.touchUi = true;
+      this._pickerEnd.touchUi = true;
+    }
+  }
+
   public close():void{
     this._dialogRef.close({code: -1})
   }

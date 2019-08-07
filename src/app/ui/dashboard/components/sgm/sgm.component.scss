@@ -26,8 +26,6 @@
       flex-direction: column;
       align-items: center;
     }
-    .sgm-logo{
-    }
     .text{
       margin-top: 12px;
     }
@@ -89,23 +87,47 @@
     width: 100%;
     height: calc(100% - 64px);
     padding: 24px;
+    @media screen and (max-width: 600px){
+      display: block;
+      padding: 0;
+      height: calc(100% - 80px);
+      mat-divider{
+        display: none;
+      }
+    }
     .column-one{
       width: 40%;
       height: 100%;
+      @media screen and (max-width: 600px){
+        width: 100%;
+        height: 40%;
+      }
       .buttons-sgm{
         display: flex;
         justify-content: space-around;
         align-items: center;
         margin-top: 36px;
+        @media screen and (max-width: 600px){
+          margin-top: 0;
+          display: flex;
+          flex-wrap: wrap;
+        }
       }
       .action{
         height: 36px;
+        margin: 4px 0;
       }
       .selection{
         display: flex;
         flex-direction: column;
         margin-top: 8px;
-        padding: 0 24px;
+        padding: 0 20px;
+        @media screen and (max-width: 600px){
+          overflow: auto;
+          height: calc(100% - 44px);
+          padding: 0;
+          margin: 0;
+        }
       }
       .bold-text{
         font-weight: 600;
@@ -119,6 +141,11 @@
       height: 100%;
       padding: 0 12px;
       position: relative;
+      @media screen and (max-width: 600px){
+        width: 100%;
+        height: 60%;
+        padding: 0;
+      }
       .tab-zero{
         display: flex;
         align-items: center;
@@ -137,6 +164,9 @@
       .top-space{
         height: 100%;
         margin-top: 36px;
+        @media screen and (max-width: 600px){
+          margin: 0;
+        }
         .annexe-head{
           font-weight: 600;
           margin: 8px 0;
@@ -148,6 +178,10 @@
         margin-top: 36px;
         overflow: auto;
         height: calc(100% - 36px);
+        @media screen and (max-width: 600px){
+          margin: 0;
+          height: 100%;
+        }
         .item{
           display: flex;
           justify-content: space-around;
@@ -211,6 +245,9 @@
   .task-header{
     overflow: auto;
     height: calc(100% - 88px);
+    @media screen and (max-width: 600px){
+      height: calc(100% - 120px);
+    }
   }
   .item-list{
     width: 85%;
@@ -231,6 +268,15 @@
     background: url("https://www.googleapis.com/download/storage/v1/b/businesscardgcs/o/alex4%2F2019-02-05-205017759Web-Fondo-gas-poca-transparencia.png?generation=1549399820762438&alt=media") no-repeat bottom;
     background-size: cover;
     z-index: 0;
+    @media screen and (max-width: 600px){
+      width: 200px;
+      height: 100px;
+    }
+  }
+  .modal-mobile{
+    @media screen and (max-width: 600px){
+      overflow: auto;
+    }
   }
   .error{
     font-size: 11px;

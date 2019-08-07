@@ -18,8 +18,6 @@ import {TranslateLoader, TranslateModule} from '@ngx-translate/core';
 import {AngularFireMessagingModule} from '@angular/fire/messaging';
 import {AngularFireModule} from '@angular/fire';
 import {environment} from '@env/environment';
-import {CoreModule} from '@app/core/core.module';
-import {CommonsModule} from '@app/commons/commons.module';
 
 @NgModule({
   declarations: [
@@ -44,7 +42,7 @@ import {CommonsModule} from '@app/commons/commons.module';
         deps: [HttpClient]
       }
     }),
-
+    NgxMaterialTimepickerModule
   ],
   entryComponents: [],
   providers: [

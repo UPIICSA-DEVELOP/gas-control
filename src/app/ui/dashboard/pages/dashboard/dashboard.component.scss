@@ -45,13 +45,16 @@
   mat-drawer-container{
     height: 100%;
     background-color: #F2F2F2;
-
+    @media screen and (max-width: 1024px){
+      position: inherit;
+    }
     .menu{
       width: 20%;
       margin: 0 !important;
       overflow-x: hidden;
       @media screen and (max-width: 1024px){
-        width: 40%;
+        position: fixed;
+        width: 35%;
       }
       @media screen and (max-width: 600px){
         width: 100%;
@@ -66,6 +69,16 @@
         overflow-x: hidden;
         @media screen and (max-width: 600px){
           height: calc(100% - 56px);
+        }
+        .close{
+          display: none;
+          @media screen and (max-width: 1024px){
+            display: initial;
+            position: absolute;
+            top: 0;
+            right: 0;
+            margin: 16px;
+          }
         }
         .image{
           display: flex;

@@ -19,10 +19,10 @@
     </div>
     <div class="ssp-container">
       <div class="annexes-menu">
-        <div style="display: flex; justify-content: space-around">
-          <button style="height: 36px;" mat-flat-button (click)="generateSasisopa()" [color]="'primary'">GENERAR</button>
-          <button *ngIf="generate" style="height: 36px;" mat-flat-button [color]="'primary'" [disabled]="!isAvailable" (click)="seeSasisopa()">VER</button>
-          <button *ngIf="isDevelop && generate" style="height: 36px;" mat-flat-button [color]="'primary'" (click)="seeSasisopa()">VER TMP</button>
+        <div style="display: flex; justify-content: space-around; flex-wrap: wrap">
+          <button style="height: 36px; margin: 4px 0;" mat-flat-button (click)="generateSasisopa()" [color]="'primary'">GENERAR</button>
+          <button *ngIf="generate" style="height: 36px; margin: 4px 0;" mat-flat-button [color]="'primary'" [disabled]="!isAvailable" (click)="seeSasisopa()">VER</button>
+          <button *ngIf="isDevelop && generate" style="height: 36px; margin: 4px 0;" mat-flat-button [color]="'primary'" (click)="seeSasisopa()">VER TMP</button>
         </div>
         <div style="margin: 8px 0; color: #707070; font-size: 14px;" *ngIf="generate && !isAvailable && dateGeneration.length !== 0">Documento disponible hasta el {{dateGeneration[0]}} {{dateGeneration[1]}} {{dateGeneration[2]}}</div>
         <mat-card matRipple (click)="openSasisopaTemplate(false)" class="last-child" style="cursor: pointer; margin: 24px 0 12px;padding: 6px; height: 36px;">
