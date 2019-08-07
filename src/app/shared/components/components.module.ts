@@ -41,7 +41,6 @@ import {SharedPipesModule} from '@app/shared/pipes/shared.pipes.module';
 import {ModalStationComponent} from '@app/shared/components/modal-station/modal-station.component';
 import {ModalStationService} from '@app/shared/components/modal-station/modal-station.service';
 import {RouterModule} from '@angular/router';
-import {NgxMaterialTimepickerModule} from 'ngx-material-timepicker';
 
 
 const Components = [
@@ -96,7 +95,6 @@ const EntryComponents = [
 
 @NgModule({
   imports: [
-    NgxMaterialTimepickerModule,
     CommonModule,
     CommonsModule,
     RouterModule,

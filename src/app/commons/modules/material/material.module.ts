@@ -76,7 +76,8 @@ const MATERIAL_MODULES = [
   MatDatepickerModule,
   MatNativeDateModule,
   MatStepperModule,
-  MatPaginatorModule, NgxMaterialTimepickerModule
+  MatPaginatorModule,
+  NgxMaterialTimepickerModule
 ];
 
 @NgModule({
