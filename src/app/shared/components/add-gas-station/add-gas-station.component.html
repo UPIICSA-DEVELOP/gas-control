@@ -127,12 +127,11 @@
                       <mat-form-field style="width: 45%">
                         <input matInput
                                placeholder="Inicio"
-                               [disabled]="user.role === 6"
                                [ngModelOptions]="{standalone: true}"
                                [ngModel]="turn.start"
                                [ngxTimepicker]="pickerOne"
                                readonly="readonly">
-                        <button mat-icon-button [disabled]="user.role === 6" matSuffix (click)="pickerOne.open()" type="button">
+                        <button mat-icon-button matSuffix (click)="pickerOne.open()" type="button">
                           <mat-icon>access_time</mat-icon>
                         </button>
                         <ngx-material-timepicker #pickerOne
@@ -150,12 +149,11 @@
                       <mat-form-field style="width: 45%">
                         <input matInput
                                placeholder="Término"
-                               [disabled]="user.role===6"
                                [ngModelOptions]="{standalone: true}"
                                [ngModel]="turn.end"
                                [ngxTimepicker]="pickerTwo"
                                readonly="readonly">
-                        <button mat-icon-button [disabled]="user.role === 6" matSuffix (click)="pickerTwo.open()" type="button">
+                        <button mat-icon-button matSuffix (click)="pickerTwo.open()" type="button">
                           <mat-icon>access_time</mat-icon>
                         </button>
                         <ngx-material-timepicker #pickerTwo

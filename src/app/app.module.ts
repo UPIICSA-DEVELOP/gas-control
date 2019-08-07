@@ -18,6 +18,9 @@ import {TranslateLoader, TranslateModule} from '@ngx-translate/core';
 import {AngularFireMessagingModule} from '@angular/fire/messaging';
 import {AngularFireModule} from '@angular/fire';
 import {environment} from '@env/environment';
+import {NgxMaterialTimepickerModule} from 'ngx-material-timepicker';
+import {CommonsModule} from '@app/commons/commons.module';
+import {CoreModule} from '@app/core/core.module';
 
 @NgModule({
   declarations: [
@@ -32,6 +35,7 @@ import {environment} from '@env/environment';
     AngularFireModule.initializeApp(environment.firebase),
     RouterModule.forRoot(appRoutes, {useHash: true}),
     AngularFireMessagingModule,
+    NgxMaterialTimepickerModule,
     BrowserModule.withServerTransition({
       appId: 'com.maplander.inspector.front'
     }),
@@ -41,8 +45,7 @@ import {environment} from '@env/environment';
         useFactory: (createTranslateLoader),
         deps: [HttpClient]
       }
-    }),
-    NgxMaterialTimepickerModule
+    })
   ],
   entryComponents: [],
   providers: [
