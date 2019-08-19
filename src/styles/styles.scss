@@ -391,6 +391,10 @@ app-add-collaborator{
   margin-bottom: 0 !important;
 }
 
+.textLayer{
+  display: none;
+}
+
 .timepicker {
   z-index: 1000;
   .timepicker__header {

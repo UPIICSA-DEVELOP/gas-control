@@ -105,7 +105,7 @@ export class MetaService {
   private setTwitterMetas(title: string, description: string, urlImage: string): void {
     this._meta.updateTag({ name: 'twitter:card', content: 'summary_large_image' });
     if(title){
-      this._meta.updateTag({ name: 'twitter:title', content: title});
+      this._meta.updateTag({ name: 'twitter:titleBar', content: title});
     }
     if(description){
       this._meta.updateTag({ name: 'twitter:description', content: description });
@@ -120,7 +120,7 @@ export class MetaService {
       this._meta.updateTag({ property: 'og:url', content: url });
     }
      if(title){
-       this._meta.updateTag({ property: 'og:title', content: title});
+       this._meta.updateTag({ property: 'og:titleBar', content: title});
      }
     if(description){
       this._meta.updateTag({ property: 'og:description', content: description });

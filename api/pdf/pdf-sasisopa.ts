@@ -380,7 +380,7 @@ class PdfSASISOPA{
 
             case ReportType.Report_1: // OM Report
 
-              document.getElementById('sub-title').textContent = item.reportName;
+              document.getElementById('sub-titleBar').textContent = item.reportName;
 
               document.getElementById('li-date').textContent = newDate[0] + ' ' + newDate[1] + ' ' + newDate[2];
               document.getElementById('li-time-1').textContent = Commons.createTimeString(item.startTime.toString());
@@ -501,7 +501,7 @@ class PdfSASISOPA{
               if(item.evidence){
                 document.getElementById('evidence').src = item.fileCS.thumbnail;
               }else{
-                document.getElementById('title-evidence').style.display = 'none';
+                document.getElementById('titleBar-evidence').style.display = 'none';
                 document.getElementById('parent-evidence').style.display = 'none';
               }
 
@@ -523,7 +523,7 @@ class PdfSASISOPA{
               break;
             case ReportType.Report_2: // Compressor Report
 
-              document.getElementById('sub-title').textContent = item.reportName;
+              document.getElementById('sub-titleBar').textContent = item.reportName;
 
               document.getElementById('li-date').textContent = newDate[0] + ' ' + newDate[1] + ' ' + newDate[2];
               document.getElementById('li-time-1').textContent = Commons.createTimeString(item.startTime.toString());
@@ -545,7 +545,7 @@ class PdfSASISOPA{
               if(item.evidence){
                 document.getElementById('evidence').src = item.fileCS.thumbnail;
               }else{
-                document.getElementById('title-evidence').style.display = 'none';
+                document.getElementById('titleBar-evidence').style.display = 'none';
                 document.getElementById('parent-evidence').style.display = 'none';
               }
 
@@ -615,7 +615,7 @@ class PdfSASISOPA{
               break;
             case ReportType.Report_4: // VRS Report
 
-              document.getElementById('sub-title').textContent = item.reportName;
+              document.getElementById('sub-titleBar').textContent = item.reportName;
 
               document.getElementById('li-date').textContent = newDate[0] + ' ' + newDate[1] + ' ' + newDate[2];
               document.getElementById('li-folio').textContent = Commons.formatFolio(item.folio.toString());
@@ -656,7 +656,7 @@ class PdfSASISOPA{
                     document.getElementById('gas').textContent = 'Diesel';
                     break;
                 }
-                document.getElementById('title-tank').textContent = 'Tanque ' + (index + 1);
+                document.getElementById('titleBar-tank').textContent = 'Tanque ' + (index + 1);
                 document.getElementById('adapter-steam').textContent = tank.capAndSteamAdapter;
                 document.getElementById('adapter-fill').textContent = tank.capAndFillingAdapter;
                 document.getElementById('over-fill').textContent = tank.overfillValve;
@@ -675,7 +675,7 @@ class PdfSASISOPA{
               if(item.evidence){
                 document.getElementById('evidence').src = item.fileCS.thumbnail;
               }else{
-                document.getElementById('title-evidence').style.display = 'none';
+                document.getElementById('titleBar-evidence').style.display = 'none';
                 document.getElementById('parent-evidence').style.display = 'none';
               }
 

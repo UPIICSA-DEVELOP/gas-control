@@ -137,13 +137,13 @@ export class DialogService {
     );
   }
 
- /* public dialogList(title: string): MatDialogRef<DialogComponent>{
+ /* public dialogList(titleBar: string): MatDialogRef<DialogComponent>{
     return  this._dialog.open(DialogComponent,
       {
         data:
           {
             type:TypeDialog.list,
-            title: title,
+            titleBar: titleBar,
             message:''
           },
         disableClose: true

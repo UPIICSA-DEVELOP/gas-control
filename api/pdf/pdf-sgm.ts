@@ -212,7 +212,7 @@ export class PdfSGM{
               break;
             case ReportType.Report_1: // OM Report
 
-              document.getElementById('sub-title').textContent = item.reportName;
+              document.getElementById('sub-titleBar').textContent = item.reportName;
 
               document.getElementById('sheet').style.padding = '25mm !important';
 
@@ -333,7 +333,7 @@ export class PdfSGM{
               if(item.evidence){
                 document.getElementById('evidence').src = item.fileCS.thumbnail;
               }else{
-                document.getElementById('title-evidence').style.display = 'none';
+                document.getElementById('titleBar-evidence').style.display = 'none';
                 document.getElementById('parent-evidence').style.display = 'none';
               }
 

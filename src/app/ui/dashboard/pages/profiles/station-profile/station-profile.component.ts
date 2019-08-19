@@ -9,7 +9,7 @@ import {animate, keyframes, query, stagger, style, transition, trigger} from '@a
 import {ActivatedRoute, Router} from '@angular/router';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {ApiService} from 'app/core/services/api/api.service';
-import {LocationOptions, LocationService} from 'app/shared/components/location/location.service';
+import {LocationService} from 'app/shared/components/location/location.service';
 import {SnackBarService} from 'app/core/services/snackbar/snackbar.service';
 import {DialogService} from 'app/shared/components/dialog/dialog.service';
 import {Constants} from 'app/utils/constants/constants.utils';
@@ -50,16 +50,16 @@ import {UtilitiesService} from '@app/utils/utilities/utilities';
   encapsulation: ViewEncapsulation.None
 })
 export class StationProfileComponent implements OnInit, OnDestroy {
-  @ViewChild('close') private _close: ElementRef;
-  public workShifts:WorkShifts[];
-  public tanks:FuelTanks[];
-  public dispensers:Dispensers[];
+  @ViewChild('close', {static: false}) private _close: ElementRef;
+  public workShifts: Array<WorkShifts>;
+  public tanks: Array<FuelTanks>;
+  public dispensers: Array<Dispensers>;
   public stationForm: FormGroup;
   public station: GasStation;
   public load: boolean;
   public utils: any;
   public user: any;
-  public yearSelector: number[];
+  public yearSelector: Array<number>;
   private _latLng: any;
   private _change: boolean;
   private _subscriptionLoader: Subscription;

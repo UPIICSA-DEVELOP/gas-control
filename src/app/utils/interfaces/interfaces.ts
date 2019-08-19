@@ -37,12 +37,12 @@ export interface GasStation {
   businessName: string;
   complete?: boolean;
   crePermission?: string;
-  dispensers?: Dispensers[];
+  dispensers?: Array<Dispensers>;
   doneTasks?: number;
   email: string;
   endPaymentDate?: number;
   folio?: number;
-  fuelTanks?: FuelTanks[];
+  fuelTanks?: Array<FuelTanks>;
   id?: string;
   idConsultancy: string;
   idLegalRepresentative: string;
@@ -59,7 +59,7 @@ export interface GasStation {
   totalTasks?: number;
   type: number;
   vapourRecoverySystem: boolean;
-  workShifts?: WorkShifts[];
+  workShifts?: Array<WorkShifts>;
   workers?: number;
 }
 
