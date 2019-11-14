@@ -11,22 +11,25 @@ import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 import {NetworkService} from '@app/core/services/network/network.service';
 import {SnackBarService} from '@app/core/services/snackbar/snackbar.service';
 import {SessionStorageService} from '@app/core/services/session-storage/session-storage.service';
-import {Consultancy} from '@app/utils/interfaces/interfaces';
+import {Consultancy} from '@app/utils/interfaces/consultancy';
 import {environment} from '@env/environment';
 import {Constants} from '@app/utils/constants/constants.utils';
 import {map} from 'rxjs/internal/operators';
+import {Person} from '@app/utils/interfaces/person';
+import {Document} from '@app/utils/interfaces/document';
 
 
 @Injectable()
-export class ApiService implements OnDestroy{
+export class ApiService implements OnDestroy {
 
   private static API_URL = environment.backendUrl;
   private static API_PATH = '/_ah/api/';
   private static API_CHANNEL = 'communication/';
   private static API_VERSION = 'v1/';
   private static API_URL_COMPLETE = ApiService.API_URL + ApiService.API_PATH + ApiService.API_CHANNEL + ApiService.API_VERSION;
-  private _subscriptionNetwork: Subscription;
   private static PROXY_ENDPOINTS = environment.apiUrl;
+  private _subscriptionNetwork: Subscription;
+
   constructor(
     private _http: HttpClient,
     private _networkService: NetworkService,
@@ -35,7 +38,7 @@ export class ApiService implements OnDestroy{
     this.initNetwork();
   }
 
-  ngOnDestroy(): void{
+  ngOnDestroy(): void {
     this._subscriptionNetwork.unsubscribe();
   }
 
@@ -43,41 +46,41 @@ export class ApiService implements OnDestroy{
     const user = {
       email: options.email,
       password: options.password,
-      token: (options.token)?options.token:undefined,
+      token: (options.token) ? options.token : undefined,
       type: 3
     };
     return this._http.post(ApiService.API_URL_COMPLETE + 'signIn', user);
   }
 
-  public signOut(token: string): Observable<any>{
+  public signOut(token: string): Observable<any> {
     const options = {
       token: token
     };
     return this._http.post(ApiService.API_URL_COMPLETE + 'signOut', options);
   }
 
-   public  resetPassword(email: string): Observable<any> {
-     const options = {
-       email: email
-     };
+  public resetPassword(email: string): Observable<any> {
+    const options = {
+      email: email
+    };
     return this._http.post(ApiService.API_URL_COMPLETE + 'sendSignInLink', options);
-   }
+  }
 
-   public signInWithLink(id: string, token?: string): Observable<any> {
+  public signInWithLink(id: string, token?: string): Observable<any> {
     const options = {
       id: id,
-      token: token?token: undefined,
+      token: token ? token : undefined,
       type: 3
     };
     return this._http.post(ApiService.API_URL_COMPLETE + 'signInWithLink', options);
-   }
+  }
 
-   public buildTaskByStation(stationTaskId:string):Observable<any>{
+  public buildTaskByStation(stationTaskId: string): Observable<any> {
     const options = {
       stationTaskId: stationTaskId
     };
-    return this._http.post(ApiService.API_URL_COMPLETE+'buildTaskByStation', options);
-   }
+    return this._http.post(ApiService.API_URL_COMPLETE + 'buildTaskByStation', options);
+  }
 
   public ipApi(): Observable<any> {
     return this._http.get('https://ipapi.co/json/');
@@ -87,21 +90,21 @@ export class ApiService implements OnDestroy{
   public getPerson(id: string): Observable<any> {
     let params = new HttpParams();
     params = params.append('id', id);
-    return this._http.get(ApiService.API_URL_COMPLETE+ 'getPerson',{params: params});
+    return this._http.get(ApiService.API_URL_COMPLETE + 'getPerson', {params: params});
   }
 
   public getConsultancy(id: string): Observable<any> {
     let params = new HttpParams();
     params = params.append('id', id);
-    return this._http.get(ApiService.API_URL_COMPLETE+ 'getConsultancy',{params: params});
+    return this._http.get(ApiService.API_URL_COMPLETE + 'getConsultancy', {params: params});
   }
 
-  public updatePerson(person: any): Observable<any> {
-    return this._http.put( ApiService.API_URL_COMPLETE + 'updatePerson', person);
+  public updatePerson(person: Person): Observable<any> {
+    return this._http.put(ApiService.API_URL_COMPLETE + 'updatePerson', person);
   }
 
   public updateConsultancy(consultancy: any): Observable<any> {
-    return this._http.put(ApiService.API_URL_COMPLETE + 'updateConsultancy',consultancy);
+    return this._http.put(ApiService.API_URL_COMPLETE + 'updateConsultancy', consultancy);
   }
 
   public uploadFileToBlob(part: FormData): Observable<any> {
@@ -114,84 +117,84 @@ export class ApiService implements OnDestroy{
     return this._http.delete(ApiService.API_URL + '/upload', {params: params});
   }
 
-  public savePersonInformation(infoPerson: any): Observable<any>{
+  public savePersonInformation(infoPerson: any): Observable<any> {
     return this._http.post(ApiService.API_URL_COMPLETE + 'savePersonInformation', infoPerson);
   }
 
-  public getPersonInformation(id: string): Observable<any>{
+  public getPersonInformation(id: string): Observable<any> {
     let params = new HttpParams();
     params = params.append('id', id);
-    return this._http.get(ApiService.API_URL_COMPLETE + 'getPersonInformation', {params:params});
+    return this._http.get(ApiService.API_URL_COMPLETE + 'getPersonInformation', {params: params});
   }
 
-  public getConsultancyBasicData(personId: string, consultancyId: string): Observable<any>{
+  public getConsultancyBasicData(personId: string, consultancyId: string): Observable<any> {
     let params = new HttpParams();
     params = params.append('consultancyId', consultancyId);
     params = params.append('personId', personId);
-    return this._http.get(ApiService.API_URL_COMPLETE+ 'getConsultancyBasicData', {params:params});
+    return this._http.get(ApiService.API_URL_COMPLETE + 'getConsultancyBasicData', {params: params});
   }
 
-  public getUtils():Observable<any>{
+  public getUtils(): Observable<any> {
     return this._http.get(ApiService.API_URL_COMPLETE + 'getUtils');
   }
 
-  public  turnOnNotificationStation(personId: string, stationId: string):Observable<any>{
+  public turnOnNotificationStation(personId: string, stationId: string): Observable<any> {
     const options = {
       personId: personId,
       stationId: stationId
     };
-    return this._http.post(ApiService.API_URL_COMPLETE + 'turnOnNotificationStation',options);
+    return this._http.post(ApiService.API_URL_COMPLETE + 'turnOnNotificationStation', options);
   }
 
-  public  turnOffNotificationStation(personId: string, stationId: string):Observable<any>{
+  public turnOffNotificationStation(personId: string, stationId: string): Observable<any> {
     const options = {
       personId: personId,
       stationId: stationId
     };
-    return this._http.post(ApiService.API_URL_COMPLETE + 'turnOffNotificationStation',options);
+    return this._http.post(ApiService.API_URL_COMPLETE + 'turnOffNotificationStation', options);
   }
 
-  public getStation(id: string):Observable<any>{
+  public getStation(id: string): Observable<any> {
     let params = new HttpParams();
     params = params.append('id', id);
-    return this._http.get(ApiService.API_URL_COMPLETE + 'getStation',{params: params});
+    return this._http.get(ApiService.API_URL_COMPLETE + 'getStation', {params: params});
   }
 
-  public updateStation(station: any):Observable<any>{
+  public updateStation(station: any): Observable<any> {
     return this._http.put(ApiService.API_URL_COMPLETE + 'updateStation', station);
   }
 
-  public getLegalRepresentativeBasicData(consultancyId:string, legalRepresentativeId: string):Observable<any>{
+  public getLegalRepresentativeBasicData(consultancyId: string, legalRepresentativeId: string): Observable<any> {
     let params = new HttpParams();
     params = params.append('consultancyId', consultancyId);
     params = params.append('legalRepresentativeId', legalRepresentativeId);
-    return this._http.get(ApiService.API_URL_COMPLETE + 'getLegalRepresentativeBasicData',{params: params});
+    return this._http.get(ApiService.API_URL_COMPLETE + 'getLegalRepresentativeBasicData', {params: params});
   }
 
-  public getStationBasicData(personId: string): Observable<any>{
+  public getStationBasicData(personId: string): Observable<any> {
     let params = new HttpParams();
     params = params.append('personId', personId);
-    return this._http.get(ApiService.API_URL_COMPLETE + 'getStationBasicData',{params: params});
+    return this._http.get(ApiService.API_URL_COMPLETE + 'getStationBasicData', {params: params});
   }
 
-  public deletePerson(id: string): Observable<any>{
+  public deletePerson(id: string): Observable<any> {
     let params = new HttpParams();
-    params = params.append('id',id);
-    return this._http.delete(ApiService.API_URL_COMPLETE + 'deletePerson',{params:params})
+    params = params.append('id', id);
+    return this._http.delete(ApiService.API_URL_COMPLETE + 'deletePerson', {params: params});
   }
 
-  public listCollaborators(refId: string, isConsultancyBoolean:string): Observable<any>{
+  public listCollaborators(refId: string, isConsultancyBoolean: string): Observable<any> {
     let params = new HttpParams();
-    params = params.append('isConsultancy',isConsultancyBoolean);
-    params = params.append('refId',refId);
-    return this._http.get(ApiService.API_URL_COMPLETE + 'listCollaborators',{params: params});
+    params = params.append('isConsultancy', isConsultancyBoolean);
+    params = params.append('refId', refId);
+    return this._http.get(ApiService.API_URL_COMPLETE + 'listCollaborators', {params: params});
   }
 
-  public createReferencedPerson(person: any):Observable<any>{
+  public createReferencedPerson(person: Person): Observable<any> {
     return this._http.post(ApiService.API_URL_COMPLETE + 'createReferencedPerson', person);
   }
 
-  public updateRolePerson(personId: string, role: number):Observable<any>{
+  public updateRolePerson(personId: string, role: number): Observable<any> {
     const options = {
       personId: personId,
       role: role
@@ -199,94 +202,94 @@ export class ApiService implements OnDestroy{
     return this._http.put(ApiService.API_URL_COMPLETE + 'updateRolePerson', options);
   }
 
-  public listDocumentByStation(stationId: string, regulationType?: string): Observable<any>{
+  public listDocumentByStation(stationId: string, regulationType?: string): Observable<any> {
     let params = new HttpParams();
     params = params.append('idStation', stationId);
-    params = params.append('regulationType', (regulationType?regulationType:'1'));
+    params = params.append('regulationType', (regulationType ? regulationType : '1'));
     return this._http.get(ApiService.API_URL_COMPLETE + 'listDocumentByStation', {params: params});
   }
 
-  public createDocument(document: any):Observable<any>{
+  public createDocument(document: Document): Observable<any> {
     return this._http.post(ApiService.API_URL_COMPLETE + 'createDocument', document);
   }
 
-  public updateDocument(document: any):Observable<any>{
+  public updateDocument(document: Document): Observable<any> {
     return this._http.put(ApiService.API_URL_COMPLETE + 'updateDocument', document);
   }
 
-  public createStation(station:any):Observable<any>{
+  public createStation(station: any): Observable<any> {
     return this._http.post(ApiService.API_URL_COMPLETE + 'createStation', station);
   }
 
-  public listPersonStationByConsultancy(refId: string): Observable<any>{
+  public listPersonStationByConsultancy(refId: string): Observable<any> {
     let params = new HttpParams();
     params = params.append('consultancyCreationId', refId);
     return this._http.get(ApiService.API_URL_COMPLETE + 'listPersonStationByConsultancy', {params: params});
   }
 
-  public personExists(email: any): Observable<any>{
+  public personExists(email: any): Observable<any> {
     return this._http.post(ApiService.API_URL_COMPLETE + 'personExists', email);
   }
 
-  public updatePersonWithDifferentEmail(person: any):Observable<any>{
+  public updatePersonWithDifferentEmail(person: Person): Observable<any> {
     return this._http.put(ApiService.API_URL_COMPLETE + 'updatePersonWithDifferentEmail', person);
   }
 
-  public createStationTask(task:any):Observable<any>{
-    return this._http.post(ApiService.API_URL_COMPLETE + 'createStationTask',task);
+  public createStationTask(task: any): Observable<any> {
+    return this._http.post(ApiService.API_URL_COMPLETE + 'createStationTask', task);
   }
 
-  public getFile(url: string): Observable<any>{
+  public getFile(url: string): Observable<any> {
     let params = new HttpParams();
     params = params.append('url', encodeURIComponent(url));
-    return this._http.get(ApiService.PROXY_ENDPOINTS + 'download', { responseType: 'blob' as 'json', params: params});
+    return this._http.get(ApiService.PROXY_ENDPOINTS + 'download', {responseType: 'blob' as 'json', params: params});
   }
 
-  public createConsultancy(data: Consultancy): Observable<any>{
+  public createConsultancy(data: Consultancy): Observable<any> {
     return this._http.post(ApiService.API_URL_COMPLETE + 'createConsultancy', data);
   }
 
-  public listConsultancy(): Observable<any>{
-    return this._http.get(ApiService.API_URL_COMPLETE + 'listConsultancy',);
+  public listConsultancy(): Observable<any> {
+    return this._http.get(ApiService.API_URL_COMPLETE + 'listConsultancy');
   }
 
-  public listTask(filters: any): Observable<any>{
+  public listTask(filters: any): Observable<any> {
     let params = new HttpParams();
     params = params.append('stationTaskId', filters.stationTaskId);
-    if(!filters.firstOpen){
+    if (!filters.firstOpen) {
       params = params.append('fromDate', filters.startDate);
       params = params.append('untilDate', filters.endDate);
     }
-    if(filters.status !== '0'){
+    if (filters.status !== '0') {
       params = params.append('status', filters.status);
     }
-    if(filters.type!== '0'){
+    if (filters.type !== '0') {
       params = params.append('type', filters.type);
     }
-    if(filters.cursor){
+    if (filters.cursor) {
       params = params.append('cursor', filters.cursor);
     }
     return this._http.get(ApiService.API_URL_COMPLETE + 'listTask', {params: params});
   }
 
-  public listUTask(filters: any): Observable<any>{
+  public listUTask(filters: any): Observable<any> {
     let params = new HttpParams();
     params = params.append('stationTaskId', filters.stationTaskId);
-    params = params.append('type',filters.type);
-    if(!filters.firstOpen){
+    params = params.append('type', filters.type);
+    if (!filters.firstOpen) {
       params = params.append('fromDate', filters.startDate);
       params = params.append('untilDate', filters.endDate);
     }
-    return this._http.get(ApiService.API_URL_COMPLETE + 'listUTask',{params: params});
+    return this._http.get(ApiService.API_URL_COMPLETE + 'listUTask', {params: params});
   }
 
-  public getStationTask(stationTaskId: string):Observable<any>{
+  public getStationTask(stationTaskId: string): Observable<any> {
     let params = new HttpParams();
     params = params.append('id', stationTaskId);
     return this._http.get(ApiService.API_URL_COMPLETE + 'getStationTask', {params: params});
   }
 
-  public businessCardService(data: any): Observable<any>{
+  public businessCardService(data: any): Observable<any> {
     let params = new HttpParams();
     params = params.append('name', data.name || '');
     params = params.append('lastName', data.lastName || '');
@@ -299,7 +302,7 @@ export class ApiService implements OnDestroy{
     params = params.append('website', data.website || '');
     params = params.append('profileImage', data.profileImage || '');
     params = params.append('profileImageThumbnail', data.profileImageThumbnail || '');
-    if(data.bCardId){
+    if (data.bCardId) {
       params = params.append('bCardId', data.bCardId);
     }
     const headers = new HttpHeaders().set('Content-Type', 'text/plain; charset=utf-8');
@@ -317,37 +320,37 @@ export class ApiService implements OnDestroy{
    * @param {boolean} isSGM: identifier for file
    * @returns {Observable<any>} entityResponse
    */
-  public getFullPDF(stationId: string, isSGM: boolean): Observable<any>{
+  public getFullPDF(stationId: string, isSGM: boolean): Observable<any> {
     let params = new HttpParams();
     params = params.append('stationId', stationId);
-    params = params.append('isSGM', isSGM?'true':'false');
-    const url = environment.local ? 'https://inspector-develop.maplander.com/':environment.url;
+    params = params.append('isSGM', isSGM ? 'true' : 'false');
+    const url = environment.local ? 'https://inspector-develop.maplander.com/' : environment.url;
     return this._http.get(url + 'endpoints/v1/pdf', {params: params});
   }
 
-  public fullSasisopaRequest(stationId: string): Observable<any>{
+  public fullSasisopaRequest(stationId: string): Observable<any> {
     const options = {
       stationId: stationId
     };
     return this._http.post(ApiService.API_URL_COMPLETE + 'fullSasisopaRequest', options);
   }
 
-  public fullSgmRequest(stationId: string): Observable<any>{
+  public fullSgmRequest(stationId: string): Observable<any> {
     const options = {
       stationId: stationId
     };
     return this._http.post(ApiService.API_URL_COMPLETE + 'fullSgmRequest', options);
   }
 
-  public joinPDF(stationId: string, isSGM: boolean): Observable<any>{
+  public joinPDF(stationId: string, isSGM: boolean): Observable<any> {
     let params = new HttpParams();
     params = params.append('stationId', stationId);
-    params = params.append('isSGM', isSGM?'true':'false');
-    const url = environment.local ? 'https://inspector-develop.maplander.com/':environment.url;
+    params = params.append('isSGM', isSGM ? 'true' : 'false');
+    const url = environment.local ? 'https://inspector-develop.maplander.com/' : environment.url;
     return this._http.get(url + 'endpoints/v1/joinPDF', {responseType: 'blob' as 'json', params: params});
   }
 
-  public exportReport (taskId: string, typeReport: number, templateId: number):Observable<any>{
+  public exportReport(taskId: string, typeReport: number, templateId: number): Observable<any> {
     let params = new HttpParams();
     params = params.append('taskId', taskId);
     params = params.append('typeReport', typeReport.toString());
@@ -355,41 +358,42 @@ export class ApiService implements OnDestroy{
     return this._http.get(ApiService.PROXY_ENDPOINTS + 'exportReport', {responseType: 'blob' as 'json', params: params});
   }
 
-  public exportCalendarByTaskList(filters: any, uTask: boolean): Observable<any>{
+  public exportCalendarByTaskList(filters: any, uTask: boolean): Observable<any> {
     let params = new HttpParams();
     params = params.append('stationTaskId', filters.stationTaskId);
-    params = params.append('uTask', (uTask ? 'true':'false'));
-    if(!filters.firstOpen){
+    params = params.append('uTask', (uTask ? 'true' : 'false'));
+    if (!filters.firstOpen) {
       params = params.append('fromDate', filters.startDate);
       params = params.append('untilDate', filters.endDate);
     }
-    if(filters.status !== '0' && !uTask){
+    if (filters.status !== '0' && !uTask) {
       params = params.append('status', filters.status);
     }
-    if(filters.type!== '0'){
+    if (filters.type !== '0') {
       params = params.append('typeTask', filters.type);
     }
     return this._http.get(ApiService.PROXY_ENDPOINTS + 'exportCalendarByTaskList', {responseType: 'blob' as 'json', params: params});
   }
 
-  public getCompleteInfoDashboard(userId: string, refId: string, role: number, onlyOneStationId?: any): Observable<any>{
+  public getCompleteInfoDashboard(userId: string, refId: string, role: number, onlyOneStationId?: any): Observable<any> {
     let response1 = null;
-    let response2 = this.getUtils();
-    if(onlyOneStationId){
+    const response2 = this.getUtils();
+    if (onlyOneStationId) {
       response1 = this.getStation(onlyOneStationId);
-    }else{
-      if(role === 7){
-        let stationId = undefined;
+    } else {
+      if (role === 7) {
+        let stationId;
+        stationId = undefined;
         const stationsView = SessionStorageService.getItem(Constants.StationAdmin) || [];
-        if(stationsView){
-          stationsView.forEach(item=>{
-            if(item.lastView){
-              stationId = item.stationId
+        if (stationsView) {
+          stationsView.forEach(item => {
+            if (item.lastView) {
+              stationId = item.stationId;
             }
           });
           response1 = this.getStation(stationId);
         }
-      }else{
+      } else {
         switch (role) {
           case 1:
           case 2:
@@ -406,23 +410,25 @@ export class ApiService implements OnDestroy{
         }
       }
     }
-    return forkJoin(response1, response2).pipe(map((resp: any[]) => {return {station: resp[0], utils: resp[1]}}));
+    return forkJoin(response1, response2).pipe(map((resp: any[]) => {
+      return {station: resp[0], utils: resp[1]};
+    }));
   }
 
-  public uploadToBusinessCard(form: FormData): Observable<any>{
+  public uploadToBusinessCard(form: FormData): Observable<any> {
     return this._http.post('https://business-card-74ca5.appspot.com/upload', form);
   }
 
-  public listNotifications(personId: string, stationId: string): Observable<any>{
+  public listNotifications(personId: string, stationId: string): Observable<any> {
     let params = new HttpParams();
-    params = params.append('personId',personId);
-    params = params.append('stationId',stationId);
-    return this._http.get(ApiService.API_URL_COMPLETE + 'listNotifications',{params: params});
+    params = params.append('personId', personId);
+    params = params.append('stationId', stationId);
+    return this._http.get(ApiService.API_URL_COMPLETE + 'listNotifications', {params: params});
   }
 
-  public deleteNotification(id: string):Observable<any>{
+  public deleteNotification(id: string): Observable<any> {
     let params = new HttpParams();
-    params = params.append('id',id);
+    params = params.append('id', id);
     return this._http.delete(ApiService.API_URL_COMPLETE + 'deleteNotification', {params: params});
   }
 
@@ -430,11 +436,11 @@ export class ApiService implements OnDestroy{
    * Start: list reports by reportType
    */
 
-  public getTaskInformation(taskId: string, typeReport: number): Observable<any>{
+  public getTaskInformation(taskId: string, typeReport: number): Observable<any> {
     let response = null;
     let params = new HttpParams();
     params = params.append('taskId', taskId);
-    switch (typeReport){
+    switch (typeReport) {
       case 1:
         response = this.listOMReport(params);
         break;
@@ -468,8 +474,8 @@ export class ApiService implements OnDestroy{
    * @param {HttpParams} params
    * @return {Observable<any>}
    */
-  private  listOMReport(params: HttpParams): Observable<any>{
-    return this._http.get(ApiService.API_URL_COMPLETE + 'listOMReport',{params: params});
+  private listOMReport(params: HttpParams): Observable<any> {
+    return this._http.get(ApiService.API_URL_COMPLETE + 'listOMReport', {params: params});
   }
 
   /**
@@ -477,7 +483,7 @@ export class ApiService implements OnDestroy{
    * @param {HttpParams} params
    * @return {Observable<any>}
    */
-  private listCompressorReport(params: HttpParams): Observable<any>{
+  private listCompressorReport(params: HttpParams): Observable<any> {
     return this._http.get(ApiService.API_URL_COMPLETE + 'listCompressorReport', {params: params});
   }
 
@@ -486,7 +492,7 @@ export class ApiService implements OnDestroy{
    * @param {HttpParams} params
    * @return {Observable<any>}
    */
-  private listVRSReport(params: HttpParams): Observable<any>{
+  private listVRSReport(params: HttpParams): Observable<any> {
     return this._http.get(ApiService.API_URL_COMPLETE + 'listVRSReport', {params: params});
   }
 
@@ -495,8 +501,8 @@ export class ApiService implements OnDestroy{
    * @param {HttpParams} params
    * @return {Observable<any>}
    */
-  private listScannedReport(params: HttpParams): Observable<any>{
-    return this._http.get(ApiService.API_URL_COMPLETE + 'listScannedReport',{params: params});
+  private listScannedReport(params: HttpParams): Observable<any> {
+    return this._http.get(ApiService.API_URL_COMPLETE + 'listScannedReport', {params: params});
   }
 
   /**
@@ -504,7 +510,7 @@ export class ApiService implements OnDestroy{
    * @param {HttpParams} params
    * @return {Observable<any>}
    */
-  private listHWCReport(params: HttpParams): Observable<any>{
+  private listHWCReport(params: HttpParams): Observable<any> {
     return this._http.get(ApiService.API_URL_COMPLETE + 'listHWCReport', {params: params});
   }
 
@@ -513,7 +519,7 @@ export class ApiService implements OnDestroy{
    * @param {HttpParams} params
    * @return {Observable<any>}
    */
-  private listFRReport(params: HttpParams): Observable<any>{
+  private listFRReport(params: HttpParams): Observable<any> {
     return this._http.get(ApiService.API_URL_COMPLETE + 'listFRReport', {params: params});
   }
 
@@ -522,7 +528,7 @@ export class ApiService implements OnDestroy{
    * @param {HttpParams} params
    * @return {Observable<any>}
    */
-  private  listFEReport(params: HttpParams): Observable<any>{
+  private listFEReport(params: HttpParams): Observable<any> {
     return this._http.get(ApiService.API_URL_COMPLETE + 'listFEReport', {params: params});
   }
 
@@ -531,7 +537,7 @@ export class ApiService implements OnDestroy{
    * @param {HttpParams} params
    * @return {Observable<any>}
    */
-  private listIncidenceReport(params: HttpParams): Observable <any>{
+  private listIncidenceReport(params: HttpParams): Observable<any> {
     return this._http.get(ApiService.API_URL_COMPLETE + 'listIncidenceReport', {params: params});
   }
 
@@ -539,9 +545,9 @@ export class ApiService implements OnDestroy{
    * End: list reports by reportType
    */
 
-  public createTask(taskEntity: any, type: number): Observable<any>{
+  public createTask(taskEntity: any, type: number): Observable<any> {
     let response = null;
-    switch (type){
+    switch (type) {
       case 1:
         response = this.createOMReport(taskEntity);
         break;
@@ -574,74 +580,75 @@ export class ApiService implements OnDestroy{
    * Start: create reports by reportType
    */
 
-  private createOMReport(task: any): Observable<any>{
+  private createOMReport(task: any): Observable<any> {
     return this._http.post(ApiService.API_URL_COMPLETE + 'createOMReport', task);
   }
 
-  private createCompressorReport(task: any): Observable<any>{
+  private createCompressorReport(task: any): Observable<any> {
     return this._http.post(ApiService.API_URL_COMPLETE + 'createCompressorReport', task);
   }
 
-  private createVRSReport(task: any): Observable<any>{
+  private createVRSReport(task: any): Observable<any> {
     return this._http.post(ApiService.API_URL_COMPLETE + 'createVRSReport', task);
   }
 
-  private createScannedReport(task: any): Observable<any>{
+  private createScannedReport(task: any): Observable<any> {
     return this._http.post(ApiService.API_URL_COMPLETE + 'createScannedReport', task);
   }
 
-  private createFEReport(task: any): Observable<any>{
+  private createFEReport(task: any): Observable<any> {
     return this._http.post(ApiService.API_URL_COMPLETE + 'createFEReport', task);
   }
 
-  private createHWCReport(task: any): Observable<any>{
+  private createHWCReport(task: any): Observable<any> {
     return this._http.post(ApiService.API_URL_COMPLETE + 'createHWCReport', task);
   }
 
-  private createFRReport(task: any): Observable<any>{
+  private createFRReport(task: any): Observable<any> {
     return this._http.post(ApiService.API_URL_COMPLETE + 'createFRReport', task);
   }
 
-  private createIncidenceReport(task: any): Observable<any>{
+  private createIncidenceReport(task: any): Observable<any> {
     return this._http.post(ApiService.API_URL_COMPLETE + 'createIncidenceReport', task);
   }
+
   /**
    * End: create reports by reportType
    */
 
-  public createFRReportAndTask(task: any, stationId: string): Observable<any>{
-    return this._http.post(ApiService.API_URL_COMPLETE + 'createFRReportAndTask?stationId='+stationId+'&type=1', task);
+  public createFRReportAndTask(task: any, stationId: string): Observable<any> {
+    return this._http.post(ApiService.API_URL_COMPLETE + 'createFRReportAndTask?stationId=' + stationId + '&type=1', task);
   }
 
-  public createHWCReportAndTask(task: any, stationId: string): Observable<any>{
-    return this._http.post(ApiService.API_URL_COMPLETE + 'createHWCReportAndTask?stationId='+stationId+'&type=2', task);
+  public createHWCReportAndTask(task: any, stationId: string): Observable<any> {
+    return this._http.post(ApiService.API_URL_COMPLETE + 'createHWCReportAndTask?stationId=' + stationId + '&type=2', task);
   }
 
-  public createIncidenceReportAndTask(task: any, stationId: string): Observable<any>{
-    return this._http.post(ApiService.API_URL_COMPLETE + 'createIncidenceReportAndTask?stationId='+stationId+'&type=3', task);
+  public createIncidenceReportAndTask(task: any, stationId: string): Observable<any> {
+    return this._http.post(ApiService.API_URL_COMPLETE + 'createIncidenceReportAndTask?stationId=' + stationId + '&type=3', task);
   }
 
-  public listNotificationsAdmin(id: string): Observable<any>{
+  public listNotificationsAdmin(id: string): Observable<any> {
     let params = new HttpParams();
-    params = params.append('personId',id);
-    return this._http.get(ApiService.API_URL_COMPLETE + 'listNotificationsAdmin',{params: params});
+    params = params.append('personId', id);
+    return this._http.get(ApiService.API_URL_COMPLETE + 'listNotificationsAdmin', {params: params});
   }
 
-  public getSasisopa(stationId: string): Observable<any>{
+  public getSasisopa(stationId: string): Observable<any> {
     let params = new HttpParams();
     params = params.append('stationId', stationId);
     return this._http.get(ApiService.API_URL_COMPLETE + 'getSasisopa', {params: params});
   }
 
-  public saveSasisopaDocument(item: any): Observable<any>{
+  public saveSasisopaDocument(item: any): Observable<any> {
     return this._http.post(ApiService.API_URL_COMPLETE + 'saveSasisopaDocument', item);
   }
 
-  public saveBrigade(brigadeElems: any): Observable<any>{
+  public saveBrigade(brigadeElems: any): Observable<any> {
     return this._http.post(ApiService.API_URL_COMPLETE + 'saveBrigade', brigadeElems);
   }
 
-  public saveEvidenceDate(stationId: string, date: number): Observable<any>{
+  public saveEvidenceDate(stationId: string, date: number): Observable<any> {
     const options = {
       id: stationId,
       date: date
@@ -649,17 +656,17 @@ export class ApiService implements OnDestroy{
     return this._http.post(ApiService.API_URL_COMPLETE + 'saveEvidencesDate', options);
   }
 
-  public getSgm(stationId: string):Observable<any>{
+  public getSgm(stationId: string): Observable<any> {
     let params = new HttpParams();
     params = params.append('stationId', stationId);
     return this._http.get(ApiService.API_URL_COMPLETE + 'getSgm', {params: params});
   }
 
-  public saveSgmSelection(item: any): Observable<any>{
+  public saveSgmSelection(item: any): Observable<any> {
     return this._http.post(ApiService.API_URL_COMPLETE + 'saveSgmSelection', item);
   }
 
-  public enableStation(enable: boolean, stationId: string): Observable<any>{
+  public enableStation(enable: boolean, stationId: string): Observable<any> {
     const options = {
       enable: enable,
       id: stationId

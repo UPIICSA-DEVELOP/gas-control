@@ -11,13 +11,13 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {ApiService} from '@app/core/services/api/api.service';
 import {UploadFileResponse} from '@app/shared/components/upload-file/upload-file.component';
 import {SnackBarService} from '@app/core/services/snackbar/snackbar.service';
-import {Document} from '@app/utils/interfaces/interfaces'
 import {Subscription} from 'rxjs';
 import {PdfVisorService} from '@app/shared/components/pdf-visor/pdf-visor.service';
 import {LocalStorageService} from '@app/core/services/local-storage/local-storage.service';
 import {Constants} from '@app/utils/constants/constants.utils';
 import {HashService} from '@app/utils/utilities/hash.service';
 import {LoaderService} from '@app/core/components/loader/loader.service';
+import {Document} from '@app/utils/interfaces/document';
 
 @Component({
   selector: 'app-documentation',

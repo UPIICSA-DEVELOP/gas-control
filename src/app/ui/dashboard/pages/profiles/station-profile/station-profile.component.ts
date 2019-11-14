@@ -15,10 +15,13 @@ import {DialogService} from 'app/shared/components/dialog/dialog.service';
 import {Constants} from 'app/utils/constants/constants.utils';
 import {LocalStorageService} from 'app/core/services/local-storage/local-storage.service';
 import {Subscription} from 'rxjs';
-import {Dispensers, FuelTanks, GasStation, WorkShifts} from 'app/utils/interfaces/interfaces';
 import {LoaderService} from '@app/core/components/loader/loader.service';
 import {FormatTimePipe} from '@app/shared/pipes/format-time/format-time.pipe';
 import {UtilitiesService} from '@app/utils/utilities/utilities';
+import {WorkShift} from '@app/utils/interfaces/work-shift';
+import {FuelTank} from '@app/utils/interfaces/fuel-tank';
+import {Dispenser} from '@app/utils/interfaces/dispenser';
+import {Station} from '@app/utils/interfaces/station';
 
 @Component({
   selector: 'app-station-profile',
@@ -51,11 +54,11 @@ import {UtilitiesService} from '@app/utils/utilities/utilities';
 })
 export class StationProfileComponent implements OnInit, OnDestroy {
   @ViewChild('close', {static: false}) private _close: ElementRef;
-  public workShifts: Array<WorkShifts>;
-  public tanks: Array<FuelTanks>;
-  public dispensers: Array<Dispensers>;
+  public workShifts: WorkShift[];
+  public tanks: FuelTank[];
+  public dispensers: Dispenser[];
   public stationForm: FormGroup;
-  public station: GasStation;
+  public station: Station;
   public load: boolean;
   public utils: any;
   public user: any;

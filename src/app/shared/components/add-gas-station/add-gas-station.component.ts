@@ -20,36 +20,14 @@ import {DialogService} from '../dialog/dialog.service';
 import {PdfVisorOptions, PdfVisorService} from '../pdf-visor/pdf-visor.service';
 import {DateAdapter, MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
 import {UtilitiesService} from '../../../utils/utilities/utilities';
-import {Person, PersonInformation, Task} from '../../../utils/interfaces/interfaces';
+import {Task} from '../../../utils/interfaces/interfaces';
 import {SharedService, SharedTypeNotification} from '../../../core/services/shared/shared.service';
 import {Subscription} from 'rxjs';
 import {ModalStationService} from '../modal-station/modal-station.service';
 import {LoaderService} from '../../../core/components/loader/loader.service';
-interface Station {
-  id?: string;
-  businessName: string;
-  rfc: string;
-  crePermission?: string;
-  name: string;
-  email: string;
-  address: string;
-  location: any;
-  phoneNumber: string;
-  workers: string;
-  idConsultancy: string;
-  progress: number;
-  monitoringWells: number;
-  observationWells: number;
-  type: number;
-  idManager?: string;
-  idLegalRepresentative?: string;
-  managerName?: string;
-  legalRepresentativeName?: string;
-  workShifts?: any;
-  fuelTanks?: any;
-  dispensers?: any;
-  vapourRecoverySystem: boolean;
-}
+import {Person} from '@app/utils/interfaces/person';
+import {PersonInformation} from '@app/utils/interfaces/person-information';
+import {Station} from '@app/utils/interfaces/station';
 
 @Component({
   selector: 'app-add-gas-station',
@@ -69,7 +47,7 @@ export class AddGasStationComponent implements OnInit, OnDestroy {
   public legalRepresentative: Person;
   public legalRepresentativeInformation: PersonInformation;
   public station: Station;
-  public user: any;
+  public user: Person;
   public newManager: FormGroup;
   public newLegalRep: FormGroup;
   public newStation: FormGroup;

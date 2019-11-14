@@ -19,9 +19,9 @@ import {UploadFileResponse} from 'app/shared/components/upload-file/upload-file.
 import {UploadFileService} from 'app/shared/components/upload-file/upload-file.service';
 import {UtilitiesService} from 'app/utils/utilities/utilities';
 import {LocalStorageService} from 'app/core/services/local-storage/local-storage.service';
-import {Person} from 'app/utils/interfaces/interfaces';
 import {Subscription} from 'rxjs';
 import {LoaderService} from '@app/core/components/loader/loader.service';
+import {Person} from '@app/utils/interfaces/person';
 
 @Component({
   selector: 'app-collaborators-list',
@@ -54,7 +54,7 @@ export class CollaboratorsListComponent implements OnInit, OnDestroy {
   public profileImage: any;
   public addImage: boolean;
   public addSign: boolean;
-  public user: any;
+  public user: Person;
   public country: string;
   public load: boolean;
   public collaborator: any[];

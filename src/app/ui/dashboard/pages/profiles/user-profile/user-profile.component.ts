@@ -19,12 +19,13 @@ import {UploadFileResponse} from 'app/shared/components/upload-file/upload-file.
 import {SignaturePadService} from 'app/shared/components/signature-pad/signature-pad.service';
 import {LocalStorageService} from 'app/core/services/local-storage/local-storage.service';
 import {PdfVisorService} from 'app/shared/components/pdf-visor/pdf-visor.service';
-import {Person, PersonInformation} from 'app/utils/interfaces/interfaces';
 import {Subscription} from 'rxjs';
 import {ShareService} from 'app/shared/components/share/share.service';
 import {AuthService} from 'app/core/services/auth/auth.service';
 import {HashService} from 'app/utils/utilities/hash.service';
 import {LoaderService} from '@app/core/components/loader/loader.service';
+import {Person} from '@app/utils/interfaces/person';
+import {PersonInformation} from '@app/utils/interfaces/person-information';
 
 @Component({
   selector: 'app-user-profile',

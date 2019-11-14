@@ -14,7 +14,6 @@ import {LocalStorageService} from '@app/core/services/local-storage/local-storag
 import {ActivatedRoute, Router} from '@angular/router';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Constants} from 'app/utils/constants/constants.utils';
-import {Person, PersonInformation} from 'app/utils/interfaces/interfaces';
 import {Subscription} from 'rxjs';
 import {DialogService} from '@app/shared/components/dialog/dialog.service';
 import {LoaderService} from '@app/core/components/loader/loader.service';
@@ -23,6 +22,8 @@ import {UploadFileService} from '@app/shared/components/upload-file/upload-file.
 import {SignaturePadService} from '@app/shared/components/signature-pad/signature-pad.service';
 import {PdfVisorService} from '@app/shared/components/pdf-visor/pdf-visor.service';
 import {UploadFileResponse} from '@app/shared/components/upload-file/upload-file.component';
+import {Person} from '@app/utils/interfaces/person';
+import {PersonInformation} from '@app/utils/interfaces/person-information';
 
 @Component({
   selector: 'app-add-collaborator',
@@ -54,7 +55,7 @@ export class AddCollaboratorComponent implements OnInit, OnDestroy {
   public blobImageProfile: string;
   public addImage: boolean;
   public addSign: boolean;
-  public user: any;
+  public user: Person;
   public id: string;
   public country: string;
   public load: boolean;
@@ -297,7 +298,7 @@ export class AddCollaboratorComponent implements OnInit, OnDestroy {
     this.createBCard(person, personInformation);
   }
 
-  private createPerson(person: any, personInformation: any):void{
+  private createPerson(person: Person, personInformation: PersonInformation):void{
     this._api.createReferencedPerson(person).subscribe(response=>{
       switch (response.code){
         case 200:
@@ -311,8 +312,8 @@ export class AddCollaboratorComponent implements OnInit, OnDestroy {
     });
   }
 
-  private createInformationCollaborator(personInfo: PersonInformation, email:string): void{
-    this._api.savePersonInformation(personInfo).subscribe(response=>{
+  private createInformationCollaborator(personInformation: PersonInformation, email:string): void{
+    this._api.savePersonInformation(personInformation).subscribe(response=>{
       switch (response.code){
         case 200:
           this._router.navigate(['/home']).then(() => {
@@ -351,7 +352,7 @@ export class AddCollaboratorComponent implements OnInit, OnDestroy {
     this._pdfVisor.open({urlOrFile: this.file});
   }
 
-  private createBCard(person: any, personInformation: any):void{
+  private createBCard(person: Person, personInformation: PersonInformation):void{
     this._snackBarService.openSnackBar('Espere un momento...','',0);
     const data = {
       name: person.name || '',

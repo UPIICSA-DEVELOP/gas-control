@@ -15,9 +15,10 @@ import {SnackBarService} from 'app/core/services/snackbar/snackbar.service';
 import {ApiService} from 'app/core/services/api/api.service';
 import {UploadFileResponse} from 'app/shared/components/upload-file/upload-file.component';
 import {UploadFileService} from 'app/shared/components/upload-file/upload-file.service';
-import {Consultancy, Person} from '@app/utils/interfaces/interfaces';
 import {Subscription} from 'rxjs';
 import {LoaderService} from '@app/core/components/loader/loader.service';
+import {Person} from '@app/utils/interfaces/person';
+import {Consultancy} from '@app/utils/interfaces/consultancy';
 
 @Component({
   selector: 'app-add-consultancy',
