@@ -6,6 +6,5 @@ export enum HttpResponseCodes {
   NO_CONTENT = 204,
   NOT_EXISTS = 471,
   OK = 200,
-  REQUEST_TIMEOUT = 400,
   SERVICE_UNAVAILABLE = 503,
 }
