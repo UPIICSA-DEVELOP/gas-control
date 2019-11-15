@@ -15,6 +15,7 @@ import {Subscription} from 'rxjs';
 import {SessionStorageService} from '@app/core/services/session-storage/session-storage.service';
 import {SharedService, SharedTypeNotification} from '@app/core/services/shared/shared.service';
 import {LoaderService} from '@app/core/components/loader/loader.service';
+import {Person} from '@app/utils/interfaces/person';
 
 @Component({
   selector: 'app-nav-bar',
@@ -24,7 +25,7 @@ import {LoaderService} from '@app/core/components/loader/loader.service';
 })
 export class NavBarComponent implements OnInit, DoCheck, OnDestroy  {
 
-  public user: any = {};
+  public user: Person;
   public load: boolean;
   public imageExist: boolean = false;
   private _subscriptionLoader: Subscription;
@@ -84,7 +85,7 @@ export class NavBarComponent implements OnInit, DoCheck, OnDestroy  {
   private getUser(): void {
     this.user = LocalStorageService.getItem(Constants.UserInSession);
     if (this.user){
-      this.imageExist = this.user.profileImage && this.user.profileImage !== '';
+      this.imageExist = this.user.profileImage && this.user.profileImage.thumbnail !== '';
     }
   }
 

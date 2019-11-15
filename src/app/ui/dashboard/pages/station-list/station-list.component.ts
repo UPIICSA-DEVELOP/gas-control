@@ -15,6 +15,7 @@ import {LocalStorageService} from 'app/core/services/local-storage/local-storage
 import {UtilitiesService} from 'app/utils/utilities/utilities';
 import {SharedService, SharedTypeNotification} from 'app/core/services/shared/shared.service';
 import {AddStationService} from 'app/shared/components/add-gas-station/add-station.service';
+import {Person} from '@app/utils/interfaces/person';
 
 @Component({
   selector: 'app-station-list',
@@ -50,7 +51,7 @@ export class StationListComponent implements OnInit {
   public stationList: any[];
   public notificationActive: boolean[];
   public groupIcon: any;
-  public user: any;
+  public user: Person;
   public emptySearch: boolean;
   private _stations: any[];
   private _notifyCopy: boolean[];

@@ -14,6 +14,7 @@ import {CookieService} from '@app/core/services/cookie/cookie.service';
 import {LocalStorageService} from '@app/core/services/local-storage/local-storage.service';
 import {SharedNotification, SharedService, SharedTypeNotification} from '@app/core/services/shared/shared.service';
 import {Subscription} from 'rxjs';
+import {Person} from '@app/utils/interfaces/person';
 
 @Component({
   selector: 'app-directory-list',
@@ -34,7 +35,7 @@ export class DirectoryListComponent implements OnInit, OnDestroy {
   public roleType: string[];
   public collaborator: any[];
   public idSession: string;
-  public user: any;
+  public user: Person;
   public emptySearch: boolean;
   private _subscriptionShared: Subscription;
   constructor(
@@ -63,15 +64,15 @@ export class DirectoryListComponent implements OnInit, OnDestroy {
       switch (response.code) {
         case 200:
           const id = CookieService.getCookie(Constants.IdSession);
-          let user = null;
+          let member = null;
           this.collaborators = UtilitiesService.sortJSON(response.items,'name','asc');
           for (let i = 0; i< this.collaborators.length; i++){
             if(this.collaborators[i].id === id){
-              user = this.collaborators[i];
+              member = this.collaborators[i];
             }
           }
-          if (user){
-            const index = this.collaborators.indexOf(user);
+          if (this.user){
+            const index = this.collaborators.indexOf(member);
             this.collaborators.splice(index, 1);
           }
           this.collaborator = this.collaborators;
@@ -149,7 +150,7 @@ export class DirectoryListComponent implements OnInit, OnDestroy {
     })
   }
 
-  public changeRoleCollaborator(person: any):void{
+  public changeRoleCollaborator(person: Person):void{
     let newRole = 0;
     switch (person.role){
       case 5:

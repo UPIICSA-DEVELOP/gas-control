@@ -22,6 +22,7 @@ import {LocalStorageService} from 'app/core/services/local-storage/local-storage
 import {Subscription} from 'rxjs';
 import {LoaderService} from '@app/core/components/loader/loader.service';
 import {Person} from '@app/utils/interfaces/person';
+import {HttpResponseCodes} from '@app/utils/enums/http-response-codes';
 
 @Component({
   selector: 'app-collaborators-list',
@@ -168,7 +169,7 @@ export class CollaboratorsListComponent implements OnInit, OnDestroy {
     });
   }
 
-  public changeRoleCollaborator(person: any):void{
+  public changeRoleCollaborator(person: Person):void{
     let newRole = 0;
     switch (person.role){
       case 2:
@@ -314,6 +315,8 @@ export class CollaboratorsListComponent implements OnInit, OnDestroy {
   private saveUser(data:any):void{
     data.code = data.code.replace('+','');
     let newPerson: Person = {
+      active: false,
+      creationDate: null,
       name: data.name,
       lastName: data.lastName,
       email: data.email,
@@ -396,7 +399,7 @@ export class CollaboratorsListComponent implements OnInit, OnDestroy {
     })
   }
 
-  private createBCard(person: any):void{
+  private createBCard(person: Person):void{
     this._snackBarService.openSnackBar('Espere un momento...','',0);
     const data = {
       name: person.name || '',
@@ -426,23 +429,20 @@ export class CollaboratorsListComponent implements OnInit, OnDestroy {
     });
   }
 
-  private createPerson(newPerson: any):void{
-    this._api.createReferencedPerson(newPerson).subscribe(response=>{
-      switch (response.code) {
-        case 200:
-          this.blobImageProfile = undefined;
-          this.blobSignature = undefined;
-          this._dialogService.alertDialog(
-            'Información',
-            'Hemos enviado un email de validación de cuenta a: ' + newPerson.email,
-            'ACEPTAR');
-          this.getCollaborators();
-          this.register = false;
-          this.changes = false;
-          break;
-        default:
-          this._dialogService.alertDialog('No se pudo acceder', 'Se produjo un error de comunicación con el servidor', 'ACEPTAR');
-          break;
+  private createPerson(person: Person):void{
+    this._api.createReferencedPerson(person).subscribe(response=>{
+      if (response.code === HttpResponseCodes.OK) {
+        this.blobImageProfile = undefined;
+        this.blobSignature = undefined;
+        this._dialogService.alertDialog(
+          'Información',
+          'Hemos enviado un email de validación de cuenta a: ' + person.email,
+          'ACEPTAR');
+        this.getCollaborators();
+        this.register = false;
+        this.changes = false;
+      } else {
+        this._dialogService.alertDialog('No se pudo acceder', 'Se produjo un error de comunicación con el servidor', 'ACEPTAR');
       }
     });
   }

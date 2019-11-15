@@ -16,6 +16,7 @@ import {AbstractControl, FormBuilder, FormGroup, Validators} from '@angular/form
 import {Subscription} from 'rxjs';
 import {animate, keyframes, query, stagger, style, transition, trigger} from '@angular/animations';
 import {LoaderService} from '@app/core/components/loader/loader.service';
+import {Person} from '@app/utils/interfaces/person';
 
 export function ValidatePasswords(ac: AbstractControl) {
   let password = ac.get('newPassword').value;
@@ -67,7 +68,7 @@ export class ResetPassComponent implements OnInit, OnDestroy {
   public hideTwo: boolean;
   public newPassForm: FormGroup;
   private _subscriptionLoader: Subscription;
-  private _user: any;
+  private _user: Person
   constructor(
     private _dialogService: DialogService,
     private _api: ApiService,

@@ -12,6 +12,7 @@ import {SnackBarService} from 'app/core/services/snackbar/snackbar.service';
 import {AuthService} from 'app/core/services/auth/auth.service';
 import {Subscription} from 'rxjs';
 import {LoaderService} from '@app/core/components/loader/loader.service';
+import {Person} from '@app/utils/interfaces/person';
 const md5 = require('md5');
 
 @Component({
@@ -23,7 +24,7 @@ const md5 = require('md5');
 export class LoginComponent implements OnInit, OnDestroy {
 
   @ViewChild('inputPassword', { static: true }) private _inputPassword: ElementRef;
-  private _dataUser: any;
+  private _dataUser: Person;
   public load: boolean;
   public loginForm: FormGroup;
   public hide: boolean = false;
@@ -53,12 +54,7 @@ export class LoginComponent implements OnInit, OnDestroy {
     if (this.loginForm.invalid) {
       return;
     }
-    this._dataUser = {
-      email: data.email,
-      password: data.password,
-      remember: data.rememberPass
-    };
-    this.signInUser(this._dataUser.email, md5(this._dataUser.password), this._dataUser.remember);
+    this.signInUser(data.email, md5(data.password), (data.remember) ? true : false);
   }
 
   public resetPassword(): void {

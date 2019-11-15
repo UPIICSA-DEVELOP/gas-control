@@ -19,6 +19,7 @@ import {TaskFilterService} from '@app/ui/dashboard/components/task-filter/task-f
 import {AddStationService} from '@app/shared/components/add-gas-station/add-station.service';
 import {TaskFilterNameService} from '@app/ui/dashboard/components/task-filter-name/task-filter-name.service';
 import {LoaderService} from '@app/core/components/loader/loader.service';
+import {Person} from '@app/utils/interfaces/person';
 
 @Component({
   selector: 'app-list-tasks',
@@ -57,7 +58,7 @@ export class ListTasksComponent implements OnInit, OnDestroy{
   public typeFilter: string[];
   public filter: number;
   public load: boolean;
-  public user: any;
+  public user: Person;
   public notCalendar: boolean;
   public date: any[];
   public others: boolean;

@@ -17,6 +17,7 @@ import {Constants} from '@app/utils/constants/constants.utils';
 import {map} from 'rxjs/internal/operators';
 import {Person} from '@app/utils/interfaces/person';
 import {Document} from '@app/utils/interfaces/document';
+import {EntityResponse} from '@app/utils/class/entity-response';
 
 
 @Injectable()
@@ -42,14 +43,14 @@ export class ApiService implements OnDestroy {
     this._subscriptionNetwork.unsubscribe();
   }
 
-  public signIn(options: any): Observable<any> {
+  public signIn(options: any): Observable<EntityResponse<Person>> {
     const user = {
       email: options.email,
       password: options.password,
       token: (options.token) ? options.token : undefined,
       type: 3
     };
-    return this._http.post(ApiService.API_URL_COMPLETE + 'signIn', user);
+    return this._http.post<EntityResponse<Person>>(ApiService.API_URL_COMPLETE + 'signIn', user);
   }
 
   public signOut(token: string): Observable<any> {
@@ -66,13 +67,13 @@ export class ApiService implements OnDestroy {
     return this._http.post(ApiService.API_URL_COMPLETE + 'sendSignInLink', options);
   }
 
-  public signInWithLink(id: string, token?: string): Observable<any> {
+  public signInWithLink(id: string, token?: string): Observable<EntityResponse<Person>> {
     const options = {
       id: id,
       token: token ? token : undefined,
       type: 3
     };
-    return this._http.post(ApiService.API_URL_COMPLETE + 'signInWithLink', options);
+    return this._http.post<EntityResponse<Person>>(ApiService.API_URL_COMPLETE + 'signInWithLink', options);
   }
 
   public buildTaskByStation(stationTaskId: string): Observable<any> {
@@ -87,10 +88,10 @@ export class ApiService implements OnDestroy {
   }
 
 
-  public getPerson(id: string): Observable<any> {
+  public getPerson(id: string): Observable<EntityResponse<Person>> {
     let params = new HttpParams();
     params = params.append('id', id);
-    return this._http.get(ApiService.API_URL_COMPLETE + 'getPerson', {params: params});
+    return this._http.get<EntityResponse<Person>>(ApiService.API_URL_COMPLETE + 'getPerson', {params: params});
   }
 
   public getConsultancy(id: string): Observable<any> {
@@ -99,8 +100,8 @@ export class ApiService implements OnDestroy {
     return this._http.get(ApiService.API_URL_COMPLETE + 'getConsultancy', {params: params});
   }
 
-  public updatePerson(person: Person): Observable<any> {
-    return this._http.put(ApiService.API_URL_COMPLETE + 'updatePerson', person);
+  public updatePerson(person: Person): Observable<EntityResponse<Person>> {
+    return this._http.put<EntityResponse<Person>>(ApiService.API_URL_COMPLETE + 'updatePerson', person);
   }
 
   public updateConsultancy(consultancy: any): Observable<any> {
@@ -190,16 +191,16 @@ export class ApiService implements OnDestroy {
     return this._http.get(ApiService.API_URL_COMPLETE + 'listCollaborators', {params: params});
   }
 
-  public createReferencedPerson(person: Person): Observable<any> {
-    return this._http.post(ApiService.API_URL_COMPLETE + 'createReferencedPerson', person);
+  public createReferencedPerson(person: Person): Observable<EntityResponse<Person>> {
+    return this._http.post<EntityResponse<Person>>(ApiService.API_URL_COMPLETE + 'createReferencedPerson', person);
   }
 
-  public updateRolePerson(personId: string, role: number): Observable<any> {
+  public updateRolePerson(personId: string, role: number): Observable<EntityResponse<Person>> {
     const options = {
       personId: personId,
       role: role
     };
-    return this._http.put(ApiService.API_URL_COMPLETE + 'updateRolePerson', options);
+    return this._http.put<EntityResponse<Person>>(ApiService.API_URL_COMPLETE + 'updateRolePerson', options);
   }
 
   public listDocumentByStation(stationId: string, regulationType?: string): Observable<any> {
@@ -231,8 +232,8 @@ export class ApiService implements OnDestroy {
     return this._http.post(ApiService.API_URL_COMPLETE + 'personExists', email);
   }
 
-  public updatePersonWithDifferentEmail(person: Person): Observable<any> {
-    return this._http.put(ApiService.API_URL_COMPLETE + 'updatePersonWithDifferentEmail', person);
+  public updatePersonWithDifferentEmail(person: Person): Observable<EntityResponse<Person>> {
+    return this._http.put<EntityResponse<Person>>(ApiService.API_URL_COMPLETE + 'updatePersonWithDifferentEmail', person);
   }
 
   public createStationTask(task: any): Observable<any> {

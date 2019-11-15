@@ -22,6 +22,7 @@ import {WorkShift} from '@app/utils/interfaces/work-shift';
 import {FuelTank} from '@app/utils/interfaces/fuel-tank';
 import {Dispenser} from '@app/utils/interfaces/dispenser';
 import {Station} from '@app/utils/interfaces/station';
+import {Person} from '@app/utils/interfaces/person';
 
 @Component({
   selector: 'app-station-profile',
@@ -61,7 +62,7 @@ export class StationProfileComponent implements OnInit, OnDestroy {
   public station: Station;
   public load: boolean;
   public utils: any;
-  public user: any;
+  public user: Person;
   public yearSelector: Array<number>;
   private _latLng: any;
   private _change: boolean;

@@ -25,6 +25,7 @@ import {AddStationService} from '@app/shared/components/add-gas-station/add-stat
 import {SasisopaService} from '@app/ui/dashboard/components/sasisopa/sasisopa.service';
 import {SgmService} from '@app/ui/dashboard/components/sgm/sgm.service';
 import {LoaderService} from '@app/core/components/loader/loader.service';
+import {Person} from '@app/utils/interfaces/person';
 
 @Component({
   selector: 'app-screen',
@@ -396,7 +397,7 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy{
     });
   }
 
-  private updatePerson(person: any): void{
+  private updatePerson(person: Person): void{
     this._api.updatePerson(person).subscribe(response=>{
       switch (response.code){
         case 200:

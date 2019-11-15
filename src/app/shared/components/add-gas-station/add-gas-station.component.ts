@@ -464,9 +464,9 @@ export class AddGasStationComponent implements OnInit, OnDestroy {
     }
   }
 
-  public selectLegalRep(person: any){
+  public selectLegalRep(person: Person){
     this.legalId = person.id;
-    this.legalName = person.name+' '+ person.lastName;
+    this.legalName = `${person.name} ${person.lastName}`;
     this.newStation.patchValue({
       legalRepresentative: this.legalName
     });
@@ -580,6 +580,8 @@ export class AddGasStationComponent implements OnInit, OnDestroy {
     }else{
       data.code = data.code.replace('+','');
       this.legalRepresentative = {
+        active: data.active,
+        creationDate: 0,
         refId: LocalStorageService.getItem(Constants.UserInSession).refId,
         signature: (this.signature?this.signature:undefined),
         profileImage:(this.profileImage?this.profileImage:undefined),
@@ -592,8 +594,6 @@ export class AddGasStationComponent implements OnInit, OnDestroy {
         website: (data.website?this.protocol+data.website: undefined),
         jobTitle: data.jobTitle,
         role: 4,
-        bCard: undefined,
-        id: undefined
       };
       this.legalRepresentativeInformation = {
         id:'',
@@ -627,6 +627,8 @@ export class AddGasStationComponent implements OnInit, OnDestroy {
     }else{
       data.code = data.code.replace('+','');
       this.manger = {
+        active: data.active,
+        creationDate: data.creationDate,
         refId: undefined,
         signature: (this.signatureTwo?this.signatureTwo:undefined),
         profileImage:(this.profileImageTwo?this.profileImageTwo:undefined),

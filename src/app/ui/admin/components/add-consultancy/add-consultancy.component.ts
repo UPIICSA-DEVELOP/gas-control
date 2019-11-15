@@ -265,7 +265,7 @@ export class AddConsultancyComponent implements OnInit, OnDestroy {
     });
   }
 
-  private updatePerson(person: any): void{
+  private updatePerson(person: Person): void{
     this._api.updatePerson(person).subscribe(response => {
       switch (response.code){
         case 200:

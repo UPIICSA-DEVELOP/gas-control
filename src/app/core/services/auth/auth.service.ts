@@ -13,6 +13,7 @@ import {Observable} from 'rxjs';
 import {LocalStorageService} from 'app/core/services/local-storage/local-storage.service';
 import {ApiService} from '@app/core/services/api/api.service';
 import {SessionStorageService} from '@app/core/services/session-storage/session-storage.service';
+import {Person} from '@app/utils/interfaces/person';
 
 @Injectable()
 export class AuthService implements Resolve<any>{
@@ -34,7 +35,7 @@ export class AuthService implements Resolve<any>{
     }
   }
 
-  public updateUserInSession(user: any): void{
+  public updateUserInSession(user: Person): void{
    AuthService.saveInfoUser(user);
   }
 
@@ -54,7 +55,7 @@ export class AuthService implements Resolve<any>{
     return this._messaging.receiveMessage();
   }
 
-  public logIn(user: any, rememberUser: boolean, token?: string): void{
+  public logIn(user: Person, rememberUser: boolean, token?: string): void{
     let time: MaxAge;
     if (rememberUser) {
       time = MaxAge.MONTH;
@@ -133,9 +134,9 @@ export class AuthService implements Resolve<any>{
     });
   }
 
-  private static saveInfoUser(user: any){
+  private static saveInfoUser(user: Person){
     LocalStorageService.setItem(Constants.UserInSession, {
-      completeName: (user.role===7 && user.completeName)? user.completeName : user.name+' '+user.lastName,
+      completeName: user.name+' '+user.lastName,
       profileImage: (user.profileImage)?user.profileImage.thumbnail:null,
       role: user.role,
       refId: user.refId,

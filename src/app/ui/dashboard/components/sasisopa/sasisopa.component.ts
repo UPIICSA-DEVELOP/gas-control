@@ -22,6 +22,7 @@ import {environment} from '@env/environment';
 import {MDate} from '@app/utils/class/MDate';
 import {ModalProceduresService} from '@app/ui/dashboard/components/modal-procedures/modal-procedures.service';
 import {LoaderService} from '@app/core/components/loader/loader.service';
+import {Person} from '@app/utils/interfaces/person';
 
 @Component({
   selector: 'app-sasisopa',
@@ -32,7 +33,7 @@ import {LoaderService} from '@app/core/components/loader/loader.service';
 export class SasisopaComponent implements OnInit, OnDestroy {
   public elementInView: number;
   public listCollaborators: any[];
-  public listPerson: any[];
+  public listPerson: Person[];
   public load: boolean;
   public station: any;
   public brigade: BrigadeElems[];
