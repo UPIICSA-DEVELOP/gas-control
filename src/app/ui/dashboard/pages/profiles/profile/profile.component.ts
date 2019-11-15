@@ -24,6 +24,7 @@ import {AuthService} from 'app/core/services/auth/auth.service';
 import {LoaderService} from '@app/core/components/loader/loader.service';
 import {Person} from '@app/utils/interfaces/person';
 import {Consultancy} from '@app/utils/interfaces/consultancy';
+import {HttpResponseCodes} from '@app/utils/enums/http-response-codes';
 
 @Component({
   selector: 'app-profile',
@@ -509,22 +510,19 @@ export class ProfileComponent implements OnInit, OnDestroy {
 
   private saveConsultancyData():void{
     this._api.updateConsultancy(this.consultancy).subscribe(response=>{
-      switch (response.code){
-        case 200:
-          this._snackBarService.openSnackBar('Información actualizada','OK',3000);
-          if(this.user.role === 1){
-            this.profileForm.controls['email'].disable();
-          }
-          if(this.user.role === 3){
-            this.profileForm.controls['businessName'].disable();
-            this.profileForm.controls['address'].disable();
-            this.profileForm.controls['officePhone'].disable();
-          }
-          this.change = false;
-          break;
-        default:
-          this._dialogService.alertDialog('No se pudo acceder', 'Se produjo un error de comunicación con el servidor', 'ACEPTAR');
-          break;
+      if (response.code === HttpResponseCodes.OK) {
+        this._snackBarService.openSnackBar('Información actualizada','OK',3000);
+        if(this.user.role === 1){
+          this.profileForm.controls['email'].disable();
+        }
+        if(this.user.role === 3){
+          this.profileForm.controls['businessName'].disable();
+          this.profileForm.controls['address'].disable();
+          this.profileForm.controls['officePhone'].disable();
+        }
+        this.change = false;
+      } else {
+        this._dialogService.alertDialog('No se pudo acceder', 'Se produjo un error de comunicación con el servidor', 'ACEPTAR');
       }
     });
   }

@@ -4,8 +4,8 @@ export interface Consultancy {
   address: string;
   businessName: string;
   group: boolean;
-  id: string;
+  id?: string;
   location: GeoPt;
-  officePhone: string;
+  officePhone?: string;
   rfc: string;
 }

@@ -43,7 +43,7 @@ export class AddConsultancyComponent implements OnInit, OnDestroy {
   public country: string;
   private _location: any;
   private _ownerInfo: Person;
-  private _consultancyInfo: Consultancy;
+  private _consultancy: Consultancy;
   private _subscriptionLoader: Subscription;
   constructor(
     private _dialog: MatDialogRef<AddConsultancyComponent>,
@@ -155,7 +155,7 @@ export class AddConsultancyComponent implements OnInit, OnDestroy {
     if(this.consultancyForm.invalid){
       return;
     }
-    this._consultancyInfo = {
+    this._consultancy = {
       businessName: data.company,
       rfc: data.rfc,
       address: this._location.address,
@@ -226,11 +226,11 @@ export class AddConsultancyComponent implements OnInit, OnDestroy {
   }
 
   private createConsultancy(): void{
-    this._api.createConsultancy(this._consultancyInfo).subscribe(response => {
+    this._api.createConsultancy(this._consultancy).subscribe(response => {
       switch (response.code){
         case 200:
-          this._consultancyInfo = response.item;
-          this.createPerson(this._consultancyInfo.id);
+          this._consultancy = response.item;
+          this.createPerson(this._consultancy.id);
           break;
         case 470:
           this.progress = false;
@@ -285,8 +285,8 @@ export class AddConsultancyComponent implements OnInit, OnDestroy {
   private validateProfileImage(): void{
     if(this.userImage.blob){
       const form = new FormData();
-      form.append('path', this._consultancyInfo.rfc);
-      form.append('fileName', 'profileImage-'+this._consultancyInfo.id+'-'+new Date().getTime()+'.png');
+      form.append('path', this._consultancy.rfc);
+      form.append('fileName', 'profileImage-'+this._consultancy.id+'-'+new Date().getTime()+'.png');
       form.append('isImage', 'true');
       form.append('file', this.userImage.blob);
       this._uploadFile.upload(form).subscribe(response => {
@@ -311,8 +311,8 @@ export class AddConsultancyComponent implements OnInit, OnDestroy {
   private validateSignature(): void{
     if(this.signature.blob){
       const form = new FormData();
-      form.append('path', this._consultancyInfo.rfc);
-      form.append('fileName', 'signature-'+this._consultancyInfo.id+'-'+new Date().getTime()+'.png');
+      form.append('path', this._consultancy.rfc);
+      form.append('fileName', 'signature-'+this._consultancy.id+'-'+new Date().getTime()+'.png');
       form.append('isImage', 'true');
       form.append('file', this.signature.blob);
       this._uploadFile.upload(form).subscribe(response => {
@@ -361,7 +361,7 @@ export class AddConsultancyComponent implements OnInit, OnDestroy {
     const data = {
       name: this._ownerInfo.name || '',
       lastName: this._ownerInfo.lastName  || '',
-      company: this._consultancyInfo.businessName || '',
+      company: this._consultancy.businessName || '',
       phone: this._ownerInfo.phoneNumber || '',
       workPosition: this._ownerInfo.jobTitle || '',
       email: this._ownerInfo.email || '',

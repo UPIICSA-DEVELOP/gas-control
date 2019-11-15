@@ -10,6 +10,7 @@ import {ApiService} from 'app/core/services/api/api.service';
 import {LocalStorageService} from 'app/core/services/local-storage/local-storage.service';
 import {Constants} from 'app/utils/constants/constants.utils';
 import {Router} from '@angular/router';
+import {HttpResponseCodes} from '@app/utils/enums/http-response-codes';
 
 @Component({
   selector: 'app-terms',
@@ -123,13 +124,10 @@ export class TermsComponent implements OnInit {
       });
     }else{
       this._api.getConsultancy(consultancyId).subscribe(response=>{
-        switch (response.code){
-          case 200:
-            this.address = response.item.address;
-            break;
-          default:
-            this.address = '';
-            break;
+        if (response.code === HttpResponseCodes.OK) {
+          this.address = response.item.address;
+        } else {
+          this.address = '';
         }
       });
     }

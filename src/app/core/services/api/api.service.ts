@@ -18,6 +18,7 @@ import {map} from 'rxjs/internal/operators';
 import {Person} from '@app/utils/interfaces/person';
 import {Document} from '@app/utils/interfaces/document';
 import {EntityResponse} from '@app/utils/class/entity-response';
+import {EntityCollectionResponse} from '@app/utils/class/entity-collection-response';
 
 
 @Injectable()
@@ -94,18 +95,18 @@ export class ApiService implements OnDestroy {
     return this._http.get<EntityResponse<Person>>(ApiService.API_URL_COMPLETE + 'getPerson', {params: params});
   }
 
-  public getConsultancy(id: string): Observable<any> {
+  public getConsultancy(id: string): Observable<EntityResponse<Consultancy>> {
     let params = new HttpParams();
     params = params.append('id', id);
-    return this._http.get(ApiService.API_URL_COMPLETE + 'getConsultancy', {params: params});
+    return this._http.get<EntityResponse<Consultancy>>(ApiService.API_URL_COMPLETE + 'getConsultancy', {params: params});
   }
 
   public updatePerson(person: Person): Observable<EntityResponse<Person>> {
     return this._http.put<EntityResponse<Person>>(ApiService.API_URL_COMPLETE + 'updatePerson', person);
   }
 
-  public updateConsultancy(consultancy: any): Observable<any> {
-    return this._http.put(ApiService.API_URL_COMPLETE + 'updateConsultancy', consultancy);
+  public updateConsultancy(consultancy: Consultancy): Observable<EntityResponse<Consultancy>> {
+    return this._http.put<EntityResponse<Consultancy>>(ApiService.API_URL_COMPLETE + 'updateConsultancy', consultancy);
   }
 
   public uploadFileToBlob(part: FormData): Observable<any> {
@@ -246,12 +247,12 @@ export class ApiService implements OnDestroy {
     return this._http.get(ApiService.PROXY_ENDPOINTS + 'download', {responseType: 'blob' as 'json', params: params});
   }
 
-  public createConsultancy(data: Consultancy): Observable<any> {
-    return this._http.post(ApiService.API_URL_COMPLETE + 'createConsultancy', data);
+  public createConsultancy(consultancy: Consultancy): Observable<EntityResponse<Consultancy>> {
+    return this._http.post<EntityResponse<Consultancy>>(ApiService.API_URL_COMPLETE + 'createConsultancy', consultancy);
   }
 
-  public listConsultancy(): Observable<any> {
-    return this._http.get(ApiService.API_URL_COMPLETE + 'listConsultancy');
+  public listConsultancy(): Observable<EntityCollectionResponse<Consultancy>> {
+    return this._http.get<EntityCollectionResponse<Consultancy>>(ApiService.API_URL_COMPLETE + 'listConsultancy');
   }
 
   public listTask(filters: any): Observable<any> {
