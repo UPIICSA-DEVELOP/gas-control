@@ -23,6 +23,7 @@ import {ConsultancyBasicData} from '@app/utils/interfaces/consultancy-basic-data
 import {Station} from '@app/utils/interfaces/station';
 import {PersonInformation} from '@app/utils/interfaces/person-information';
 import {PersonLite} from '@app/utils/interfaces/person-lite';
+import {DefaultResponse} from '@app/utils/interfaces/default-response';
 
 
 @Injectable()
@@ -58,18 +59,18 @@ export class ApiService implements OnDestroy {
     return this._http.post<EntityResponse<Person>>(ApiService.API_URL_COMPLETE + 'signIn', user);
   }
 
-  public signOut(token: string): Observable<any> {
+  public signOut(token: string): Observable<DefaultResponse> {
     const options = {
       token: token
     };
-    return this._http.post(ApiService.API_URL_COMPLETE + 'signOut', options);
+    return this._http.post<DefaultResponse>(ApiService.API_URL_COMPLETE + 'signOut', options);
   }
 
-  public resetPassword(email: string): Observable<any> {
+  public resetPassword(email: string): Observable<DefaultResponse> {
     const options = {
       email: email
     };
-    return this._http.post(ApiService.API_URL_COMPLETE + 'sendSignInLink', options);
+    return this._http.post<DefaultResponse>(ApiService.API_URL_COMPLETE + 'sendSignInLink', options);
   }
 
   public signInWithLink(id: string, token?: string): Observable<EntityResponse<Person>> {
@@ -144,20 +145,20 @@ export class ApiService implements OnDestroy {
     return this._http.get(ApiService.API_URL_COMPLETE + 'getUtils');
   }
 
-  public turnOnNotificationStation(personId: string, stationId: string): Observable<any> {
+  public turnOnNotificationStation(personId: string, stationId: string): Observable<DefaultResponse> {
     const options = {
       personId: personId,
       stationId: stationId
     };
-    return this._http.post(ApiService.API_URL_COMPLETE + 'turnOnNotificationStation', options);
+    return this._http.post<DefaultResponse>(ApiService.API_URL_COMPLETE + 'turnOnNotificationStation', options);
   }
 
-  public turnOffNotificationStation(personId: string, stationId: string): Observable<any> {
+  public turnOffNotificationStation(personId: string, stationId: string): Observable<DefaultResponse> {
     const options = {
       personId: personId,
       stationId: stationId
     };
-    return this._http.post(ApiService.API_URL_COMPLETE + 'turnOffNotificationStation', options);
+    return this._http.post<DefaultResponse>(ApiService.API_URL_COMPLETE + 'turnOffNotificationStation', options);
   }
 
   public getStation(id: string): Observable<EntityResponse<Station>> {
@@ -183,10 +184,10 @@ export class ApiService implements OnDestroy {
     return this._http.get(ApiService.API_URL_COMPLETE + 'getStationBasicData', {params: params});
   }
 
-  public deletePerson(id: string): Observable<any> {
+  public deletePerson(id: string): Observable<DefaultResponse> {
     let params = new HttpParams();
     params = params.append('id', id);
-    return this._http.delete(ApiService.API_URL_COMPLETE + 'deletePerson', {params: params});
+    return this._http.delete<DefaultResponse>(ApiService.API_URL_COMPLETE + 'deletePerson', {params: params});
   }
 
   public listCollaborators(refId: string, isConsultancyBoolean: string): Observable<EntityCollectionResponse<PersonLite>> {
@@ -233,8 +234,8 @@ export class ApiService implements OnDestroy {
     return this._http.get<EntityCollectionResponse<PersonLite>>(ApiService.API_URL_COMPLETE + 'listPersonStationByConsultancy', {params: params});
   }
 
-  public personExists(email: any): Observable<any> {
-    return this._http.post(ApiService.API_URL_COMPLETE + 'personExists', email);
+  public personExists(email: any): Observable<DefaultResponse> {
+    return this._http.post<DefaultResponse>(ApiService.API_URL_COMPLETE + 'personExists', email);
   }
 
   public updatePersonWithDifferentEmail(person: Person): Observable<EntityResponse<Person>> {
