@@ -19,6 +19,7 @@ import {Person} from '@app/utils/interfaces/person';
 import {Document} from '@app/utils/interfaces/document';
 import {EntityResponse} from '@app/utils/class/entity-response';
 import {EntityCollectionResponse} from '@app/utils/class/entity-collection-response';
+import {ConsultancyBasicData} from '@app/utils/interfaces/consultancy-basic-data';
 
 
 @Injectable()
@@ -129,11 +130,11 @@ export class ApiService implements OnDestroy {
     return this._http.get(ApiService.API_URL_COMPLETE + 'getPersonInformation', {params: params});
   }
 
-  public getConsultancyBasicData(personId: string, consultancyId: string): Observable<any> {
+  public getConsultancyBasicData(personId: string, consultancyId: string): Observable<EntityResponse<ConsultancyBasicData>> {
     let params = new HttpParams();
     params = params.append('consultancyId', consultancyId);
     params = params.append('personId', personId);
-    return this._http.get(ApiService.API_URL_COMPLETE + 'getConsultancyBasicData', {params: params});
+    return this._http.get<EntityResponse<ConsultancyBasicData>>(ApiService.API_URL_COMPLETE + 'getConsultancyBasicData', {params: params});
   }
 
   public getUtils(): Observable<any> {
@@ -166,11 +167,11 @@ export class ApiService implements OnDestroy {
     return this._http.put(ApiService.API_URL_COMPLETE + 'updateStation', station);
   }
 
-  public getLegalRepresentativeBasicData(consultancyId: string, legalRepresentativeId: string): Observable<any> {
+  public getLegalRepresentativeBasicData(consultancyId: string, legalRepresentativeId: string): Observable<EntityResponse<ConsultancyBasicData>> {
     let params = new HttpParams();
     params = params.append('consultancyId', consultancyId);
     params = params.append('legalRepresentativeId', legalRepresentativeId);
-    return this._http.get(ApiService.API_URL_COMPLETE + 'getLegalRepresentativeBasicData', {params: params});
+    return this._http.get<EntityResponse<ConsultancyBasicData>>(ApiService.API_URL_COMPLETE + 'getLegalRepresentativeBasicData', {params: params});
   }
 
   public getStationBasicData(personId: string): Observable<any> {
