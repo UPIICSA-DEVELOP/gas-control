@@ -5,7 +5,6 @@
  */
 
 import {Component, Input, OnDestroy, OnInit, ViewEncapsulation} from '@angular/core';
-import {IncidenceReport} from '@app/utils/interfaces/interfaces';
 import {UtilitiesService} from '@app/utils/utilities/utilities';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {ApiService} from '@app/core/services/api/api.service';
@@ -21,6 +20,7 @@ import {UploadFileResponse} from '@app/shared/components/upload-file/upload-file
 import {FormatTimePipe} from '@app/shared/pipes/format-time/format-time.pipe';
 import {ModalProceduresService} from '@app/ui/dashboard/components/modal-procedures/modal-procedures.service';
 import {LoaderService} from '@app/core/components/loader/loader.service';
+import {IncidenceReport} from '@app/utils/interfaces/reports/incidence-report';
 
 @Component({
   selector: 'app-incidence-report',

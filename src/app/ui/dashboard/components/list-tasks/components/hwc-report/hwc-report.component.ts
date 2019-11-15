@@ -7,7 +7,6 @@
 import {Component, Input, OnDestroy, OnInit, ViewEncapsulation} from '@angular/core';
 import {ApiService} from '@app/core/services/api/api.service';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {HWCReport} from '@app/utils/interfaces/interfaces';
 import {UtilitiesService} from '@app/utils/utilities/utilities';
 import {UploadFileService} from '@app/shared/components/upload-file/upload-file.service';
 import {SignaturePadService} from '@app/shared/components/signature-pad/signature-pad.service';
@@ -20,6 +19,7 @@ import {UploadFileResponse} from '@app/shared/components/upload-file/upload-file
 import {PdfVisorService} from '@app/shared/components/pdf-visor/pdf-visor.service';
 import {HashService} from '@app/utils/utilities/hash.service';
 import {LoaderService} from '@app/core/components/loader/loader.service';
+import {HWCReport} from '@app/utils/interfaces/reports/hwc-report';
 
 @Component({
   selector: 'app-hwc-report',
@@ -122,7 +122,7 @@ export class HwcReportComponent implements OnInit, OnDestroy {
       fileCS: task.fileCS || undefined,
       folio: task.folio || undefined,
       id: task.id || undefined,
-      manifest: task.manifest || undefined,
+      // manifest: task.manifest || undefined,
       manifestNumber: task.manifestNumber || undefined,
       name: task.name || undefined,
       nextPhase: task.nextPhase || undefined,

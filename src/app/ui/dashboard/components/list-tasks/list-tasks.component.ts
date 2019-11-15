@@ -12,7 +12,6 @@ import {LocalStorageService} from '@app/core/services/local-storage/local-storag
 import {SharedNotification, SharedService, SharedTypeNotification} from '@app/core/services/shared/shared.service';
 import {Subscription} from 'rxjs';
 import {SnackBarService} from '@app/core/services/snackbar/snackbar.service';
-import {Report, TaskLists} from '@app/utils/interfaces/interfaces';
 import {OpenFileService} from '@app/shared/components/open-file/open-file.service';
 import {DatepickerService, DateRangeOptions} from '@app/ui/dashboard/components/datepicker/datepicker.service';
 import {TaskFilterService} from '@app/ui/dashboard/components/task-filter/task-filter.service';
@@ -20,6 +19,8 @@ import {AddStationService} from '@app/shared/components/add-gas-station/add-stat
 import {TaskFilterNameService} from '@app/ui/dashboard/components/task-filter-name/task-filter-name.service';
 import {LoaderService} from '@app/core/components/loader/loader.service';
 import {Person} from '@app/utils/interfaces/person';
+import {Report} from '@app/utils/interfaces/report';
+import {TaskLists} from '@app/utils/interfaces/task-lists';
 
 @Component({
   selector: 'app-list-tasks',

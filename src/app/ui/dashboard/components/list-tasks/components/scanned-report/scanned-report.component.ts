@@ -5,7 +5,6 @@
  */
 
 import {Component, Input, OnDestroy, OnInit, ViewEncapsulation} from '@angular/core';
-import {HWGReport, ScannedReport} from '@app/utils/interfaces/interfaces';
 import {ApiService} from '@app/core/services/api/api.service';
 import {UtilitiesService} from '@app/utils/utilities/utilities';
 import {UploadFileService} from '@app/shared/components/upload-file/upload-file.service';
@@ -19,6 +18,8 @@ import {LocalStorageService} from '@app/core/services/local-storage/local-storag
 import {PdfVisorService} from '@app/shared/components/pdf-visor/pdf-visor.service';
 import {HashService} from '@app/utils/utilities/hash.service';
 import {LoaderService} from '@app/core/components/loader/loader.service';
+import {ScannedReport} from '@app/utils/interfaces/reports/scanned-report';
+import {HWGReport} from '@app/utils/interfaces/reports/hwg-report';
 
 @Component({
   selector: 'app-scanned-report',

@@ -7,7 +7,6 @@
 import {Component, Input, OnDestroy, OnInit, ViewEncapsulation} from '@angular/core';
 import {ApiService} from '@app/core/services/api/api.service';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {VRSReport, VRSTank} from '@app/utils/interfaces/interfaces';
 import {ImageVisorService} from '@app/shared/components/image-visor/image-visor.service';
 import {SnackBarService} from '@app/core/services/snackbar/snackbar.service';
 import {UtilitiesService} from '@app/utils/utilities/utilities';
@@ -19,6 +18,8 @@ import {Constants} from '@app/utils/constants/constants.utils';
 import {LocalStorageService} from '@app/core/services/local-storage/local-storage.service';
 import {UploadFileResponse} from '@app/shared/components/upload-file/upload-file.component';
 import {LoaderService} from '@app/core/components/loader/loader.service';
+import {VRSReport} from '@app/utils/interfaces/reports/vrs-report';
+import {VRSTank} from '@app/utils/interfaces/vrs-tank';
 
 @Component({
   selector: 'app-vrs-report',

@@ -12,13 +12,13 @@ import {DialogService} from '@app/shared/components/dialog/dialog.service';
 import {SnackBarService} from '@app/core/services/snackbar/snackbar.service';
 import {Subscription} from 'rxjs';
 import {HashService} from '@app/utils/utilities/hash.service';
-import {SgmSelection} from '@app/utils/interfaces/interfaces';
 import {UtilitiesService} from '@app/utils/utilities/utilities';
 import {Constants} from '@app/utils/constants/constants.utils';
 import {LocalStorageService} from '@app/core/services/local-storage/local-storage.service';
 import {environment} from '@env/environment';
 import {MDate} from '@app/utils/class/MDate';
 import {LoaderService} from '@app/core/components/loader/loader.service';
+import {SgmSelection} from '@app/utils/interfaces/sgm-selection';
 
 @Component({
   selector: 'app-sgm',
@@ -126,7 +126,7 @@ export class SgmComponent implements OnInit, OnDestroy {
       id: this.station.id,
       magna: this.magna,
       premium: this.premium,
-      software: this.software.toString()
+      software: this.software
     };
     this._api.saveSgmSelection(selection).subscribe(response => {
       switch (response.code){

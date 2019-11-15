@@ -5,7 +5,6 @@
  */
 
 import {Component, Input, OnDestroy, OnInit, ViewEncapsulation} from '@angular/core';
-import {FRReport} from '@app/utils/interfaces/interfaces';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {ApiService} from '@app/core/services/api/api.service';
 import {UtilitiesService} from '@app/utils/utilities/utilities';
@@ -18,6 +17,7 @@ import {LocalStorageService} from '@app/core/services/local-storage/local-storag
 import {Subscription} from 'rxjs';
 import {FormatTimePipe} from '@app/shared/pipes/format-time/format-time.pipe';
 import {LoaderService} from '@app/core/components/loader/loader.service';
+import {FRReport} from '@app/utils/interfaces/reports/frr-report';
 
 @Component({
   selector: 'app-fr-report',

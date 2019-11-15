@@ -9,7 +9,6 @@ import {DateAdapter, MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
 import {ApiService} from '@app/core/services/api/api.service';
 import {Subscription} from 'rxjs';
 import {UtilitiesService} from '@app/utils/utilities/utilities';
-import {Brigade, BrigadeElems, SasisopaDocument} from '@app/utils/interfaces/interfaces';
 import {UploadFileService} from '@app/shared/components/upload-file/upload-file.service';
 import {PdfVisorService} from '@app/shared/components/pdf-visor/pdf-visor.service';
 import {Constants} from '@app/utils/constants/constants.utils';
@@ -24,6 +23,9 @@ import {ModalProceduresService} from '@app/ui/dashboard/components/modal-procedu
 import {LoaderService} from '@app/core/components/loader/loader.service';
 import {Person} from '@app/utils/interfaces/person';
 import {HttpResponseCodes} from '@app/utils/enums/http-response-codes';
+import {BrigadeElem} from '@app/utils/interfaces/brigade-element';
+import {SasisopaDocument} from '@app/utils/interfaces/sasisopa';
+import {BrigadeInterface} from '@app/utils/interfaces/brigade.interface';
 
 @Component({
   selector: 'app-sasisopa',
@@ -37,7 +39,7 @@ export class SasisopaComponent implements OnInit, OnDestroy {
   public listPerson: Person[];
   public load: boolean;
   public station: any;
-  public brigade: BrigadeElems[];
+  public brigade: BrigadeElem[];
   public date: Date;
   public maxDate: Date;
   public minDate: Date;
@@ -280,7 +282,7 @@ export class SasisopaComponent implements OnInit, OnDestroy {
   }
 
   private saveBrigade():void{
-    const options: Brigade ={
+    const options: BrigadeInterface ={
       id: this.station.id,
       brigadeElems: this.brigade
     };

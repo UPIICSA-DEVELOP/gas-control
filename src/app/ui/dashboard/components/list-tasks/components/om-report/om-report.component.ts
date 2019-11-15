@@ -7,7 +7,6 @@
 import {Component, Input, OnDestroy, OnInit, ViewEncapsulation} from '@angular/core';
 import {ApiService} from '@app/core/services/api/api.service';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {HWGReport, OMReport} from '@app/utils/interfaces/interfaces';
 import {UtilitiesService} from '@app/utils/utilities/utilities';
 import {ImageVisorService} from '@app/shared/components/image-visor/image-visor.service';
 import {SnackBarService} from '@app/core/services/snackbar/snackbar.service';
@@ -21,6 +20,8 @@ import {Subscription} from 'rxjs';
 import {FormatTimePipe} from '@app/shared/pipes/format-time/format-time.pipe';
 import {ModalProceduresService} from '@app/ui/dashboard/components/modal-procedures/modal-procedures.service';
 import {UploadFileResponse} from '@app/shared/components/upload-file/upload-file.component';
+import {OMReport} from '@app/utils/interfaces/reports/omr-report';
+import {HWGReport} from '@app/utils/interfaces/reports/hwg-report';
 
 
 @Component({

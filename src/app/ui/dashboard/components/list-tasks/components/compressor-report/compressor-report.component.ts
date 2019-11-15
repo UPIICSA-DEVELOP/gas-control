@@ -6,7 +6,6 @@
 
 import {Component, Input, OnDestroy, OnInit, ViewEncapsulation} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {CompressorReport, HWGReport} from '@app/utils/interfaces/interfaces';
 import {ApiService} from '@app/core/services/api/api.service';
 import {UtilitiesService} from '@app/utils/utilities/utilities';
 import {ImageVisorService} from '@app/shared/components/image-visor/image-visor.service';
@@ -20,6 +19,8 @@ import {LocalStorageService} from '@app/core/services/local-storage/local-storag
 import {UploadFileResponse} from '@app/shared/components/upload-file/upload-file.component';
 import {FormatTimePipe} from '@app/shared/pipes/format-time/format-time.pipe';
 import {LoaderService} from '@app/core/components/loader/loader.service';
+import {CompressorReport} from '@app/utils/interfaces/reports/compressor-report';
+import {HWGReport} from '@app/utils/interfaces/reports/hwg-report';
 
 @Component({
   selector: 'app-compressor-report',

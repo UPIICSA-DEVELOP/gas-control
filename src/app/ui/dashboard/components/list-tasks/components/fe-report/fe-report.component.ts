@@ -5,7 +5,6 @@
  */
 
 import {Component, Input, OnDestroy, OnInit, ViewEncapsulation} from '@angular/core';
-import {FEReport, FireExtinguisher} from '@app/utils/interfaces/interfaces';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {ApiService} from '@app/core/services/api/api.service';
 import {UtilitiesService} from '@app/utils/utilities/utilities';
@@ -18,6 +17,8 @@ import {Constants} from '@app/utils/constants/constants.utils';
 import {LocalStorageService} from '@app/core/services/local-storage/local-storage.service';
 import {FormatTimePipe} from '@app/shared/pipes/format-time/format-time.pipe';
 import {LoaderService} from '@app/core/components/loader/loader.service';
+import {FEReport} from '@app/utils/interfaces/reports/fe-report';
+import {FireExtinguisher} from '@app/utils/interfaces/fire-extinguisher';
 
 @Component({
   selector: 'app-fe-report',

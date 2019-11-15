@@ -6,10 +6,10 @@
 
 import {Component, EventEmitter, Inject, Input, OnDestroy, OnInit, Output, ViewEncapsulation} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {HWGReport} from '@app/utils/interfaces/interfaces';
 import {Subscription} from 'rxjs';
 import {SharedService, SharedTypeNotification} from '@app/core/services/shared/shared.service';
 import {DOCUMENT} from '@angular/common';
+import {HWGReport} from '@app/utils/interfaces/reports/hwg-report';
 
 @Component({
   selector: 'app-hwg-report',
