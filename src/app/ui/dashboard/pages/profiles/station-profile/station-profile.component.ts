@@ -23,6 +23,7 @@ import {FuelTank} from '@app/utils/interfaces/fuel-tank';
 import {Dispenser} from '@app/utils/interfaces/dispenser';
 import {Station} from '@app/utils/interfaces/station';
 import {Person} from '@app/utils/interfaces/person';
+import {HttpResponseCodes} from '@app/utils/enums/http-response-codes';
 
 @Component({
   selector: 'app-station-profile',
@@ -170,69 +171,67 @@ export class StationProfileComponent implements OnInit, OnDestroy {
   }
 
   private getStation(response: any):void{
-    switch (response.code) {
-      case 200:
-        this.station = {
-          address: response.item.address,
-          businessName: response.item.businessName,
-          complete: response.item.complete,
-          crePermission: response.item.crePermission,
-          dispensers: response.item.dispensers,
-          doneTasks: response.item.doneTasks,
-          email: response.item.email,
-          endPaymentDate: response.item.endPaymentDate,
-          folio: response.item.folio,
-          fuelTanks: response.item.fuelTanks,
-          id: response.item.id,
-          idConsultancy: response.item.idConsultancy,
-          idLegalRepresentative: response.item.idLegalRepresentative,
-          legalRepresentativeName: response.item.legalRepresentativeName,
-          location: response.item.location,
-          monitoringWells: response.item.monitoringWells,
-          name: response.item.name,
-          observationWells: response.item.observationWells,
-          paymentDate: response.item.paymentDate,
-          phoneNumber: response.item.phoneNumber,
-          progress: response.item.progress,
-          rfc: response.item.rfc,
-          stationTaskId: response.item.stationTaskId,
-          totalTasks: response.item.totalTasks,
-          type: response.item.type,
-          vapourRecoverySystem: response.item.vapourRecoverySystem,
-          workShifts: response.item.workShifts,
-          workers: response.item.workers
-        };
-        if (this.station.dispensers) {
-          this.dispensers = Object.assign([], this.station.dispensers);
-        }else{
-          this.dispensers.push({hoses: undefined, identifier: undefined, magna: false, premium: false, diesel: false});
-        }
-        if (this.station.fuelTanks){
-          this.tanks = Object.assign([], this.station.fuelTanks);
-        }else{
-          this.tanks.push({capacity: undefined, fuelType: undefined, year: undefined});
-        }
-        if (this.station.workShifts){
-          const arr = [];
-          this.station.workShifts.forEach(value => {
-            arr.push({
-              start: this._formatTime.transform(value.start),
-              end: this._formatTime.transform(value.end)
-            })
-          });
-          this.workShifts = Object.assign([],arr);
-        }else{
-          this.workShifts.push({start: undefined, end: undefined});
-        }
-        if (this.station.location) {
-          this._latLng = this.station.location
-        }
-        this.patchForm();
-        break;
-      default:
-        this._snackBarService.openSnackBar('No se ha podido acceder, intente más tarde','OK',3000);
-        this._router.navigate(['/home']).then();
-        break;
+    if (response.code === HttpResponseCodes.OK) {
+      this.station = {
+        paymentStatus: response.item.paymentStatus,
+        address: response.item.address,
+        businessName: response.item.businessName,
+        complete: response.item.complete,
+        crePermission: response.item.crePermission,
+        dispensers: response.item.dispensers,
+        doneTasks: response.item.doneTasks,
+        email: response.item.email,
+        endPaymentDate: response.item.endPaymentDate,
+        folio: response.item.folio,
+        fuelTanks: response.item.fuelTanks,
+        id: response.item.id,
+        idConsultancy: response.item.idConsultancy,
+        idLegalRepresentative: response.item.idLegalRepresentative,
+        legalRepresentativeName: response.item.legalRepresentativeName,
+        location: response.item.location,
+        monitoringWells: response.item.monitoringWells,
+        name: response.item.name,
+        observationWells: response.item.observationWells,
+        paymentDate: response.item.paymentDate,
+        phoneNumber: response.item.phoneNumber,
+        progress: response.item.progress,
+        rfc: response.item.rfc,
+        stationTaskId: response.item.stationTaskId,
+        totalTasks: response.item.totalTasks,
+        type: response.item.type,
+        vapourRecoverySystem: response.item.vapourRecoverySystem,
+        workShifts: response.item.workShifts,
+        workers: response.item.workers
+      };
+      if (this.station.dispensers) {
+        this.dispensers = Object.assign([], this.station.dispensers);
+      }else{
+        this.dispensers.push({hoses: undefined, identifier: undefined, magna: false, premium: false, diesel: false});
+      }
+      if (this.station.fuelTanks){
+        this.tanks = Object.assign([], this.station.fuelTanks);
+      }else{
+        this.tanks.push({capacity: undefined, fuelType: undefined, year: undefined});
+      }
+      if (this.station.workShifts){
+        const arr = [];
+        this.station.workShifts.forEach(value => {
+          arr.push({
+            start: this._formatTime.transform(value.start),
+            end: this._formatTime.transform(value.end)
+          })
+        });
+        this.workShifts = Object.assign([],arr);
+      }else{
+        this.workShifts.push({start: undefined, end: undefined});
+      }
+      if (this.station.location) {
+        this._latLng = this.station.location
+      }
+      this.patchForm();
+    } else {
+      this._snackBarService.openSnackBar('No se ha podido acceder, intente más tarde','OK',3000);
+      this._router.navigate(['/home']).then();
     }
   }
 
@@ -288,14 +287,11 @@ export class StationProfileComponent implements OnInit, OnDestroy {
     this.station.fuelTanks = this.tanks.filter(function (item) {return item !== undefined;});
     this.station.dispensers = this.dispensers.filter(function (item) {return item !== undefined;});
    this._api.updateStation(this.station).subscribe(response => {
-      switch (response.code) {
-        case 200:
-          this._change = false;
-          this._snackBarService.openSnackBar('Información actualizada','OK',3000);
-          break;
-        default:
-          this._dialogService.alertDialog('No se pudo acceder', 'Se produjo un error de comunicación con el servidor', 'ACEPTAR');
-          break;
+      if (response.code === HttpResponseCodes.OK) {
+        this._change = false;
+        this._snackBarService.openSnackBar('Información actualizada','OK',3000);
+      } else {
+        this._dialogService.alertDialog('No se pudo acceder', 'Se produjo un error de comunicación con el servidor', 'ACEPTAR');
       }
     })
   }

@@ -28,6 +28,7 @@ import {LoaderService} from '../../../core/components/loader/loader.service';
 import {Person} from '@app/utils/interfaces/person';
 import {PersonInformation} from '@app/utils/interfaces/person-information';
 import {Station} from '@app/utils/interfaces/station';
+import {HttpResponseCodes} from '@app/utils/enums/http-response-codes';
 
 @Component({
   selector: 'app-add-gas-station',
@@ -437,6 +438,7 @@ export class AddGasStationComponent implements OnInit, OnDestroy {
         })
       });
       this.station = {
+        paymentStatus: undefined,
         location: (this.latLng?this.latLng:undefined),
         address: data.address,
         businessName: data.businessName,
@@ -456,8 +458,6 @@ export class AddGasStationComponent implements OnInit, OnDestroy {
         progress: 0,
         idLegalRepresentative: this.legalId,
         legalRepresentativeName: this.legalName,
-        idManager: this.managerId,
-        managerName: this.managerName,
         vapourRecoverySystem: data.vrs
       };
       this.createStation();
@@ -857,13 +857,13 @@ export class AddGasStationComponent implements OnInit, OnDestroy {
   private createStation():void{
     this._api.createStation(this.station).subscribe(response=>{
       switch (response.code){
-        case 200:
+        case HttpResponseCodes.OK:
           this._snackBarService.openSnackBar('Estación creada con exito', 'OK', 3000);
           this.station.id = response.item.id;
           this._modalScroll.nativeElement.scrollTop = '0';
           this.step = 3;
           break;
-        case 470:
+        case HttpResponseCodes.ALREADY_EXISTS:
           this._snackBarService.openSnackBar('Ya existe una estación con esta información', 'OK',3000);
           break;
         default:

@@ -20,6 +20,7 @@ import {Document} from '@app/utils/interfaces/document';
 import {EntityResponse} from '@app/utils/class/entity-response';
 import {EntityCollectionResponse} from '@app/utils/class/entity-collection-response';
 import {ConsultancyBasicData} from '@app/utils/interfaces/consultancy-basic-data';
+import {Station} from '@app/utils/interfaces/station';
 
 
 @Injectable()
@@ -157,14 +158,14 @@ export class ApiService implements OnDestroy {
     return this._http.post(ApiService.API_URL_COMPLETE + 'turnOffNotificationStation', options);
   }
 
-  public getStation(id: string): Observable<any> {
+  public getStation(id: string): Observable<EntityResponse<Station>> {
     let params = new HttpParams();
     params = params.append('id', id);
-    return this._http.get(ApiService.API_URL_COMPLETE + 'getStation', {params: params});
+    return this._http.get<EntityResponse<Station>>(ApiService.API_URL_COMPLETE + 'getStation', {params: params});
   }
 
-  public updateStation(station: any): Observable<any> {
-    return this._http.put(ApiService.API_URL_COMPLETE + 'updateStation', station);
+  public updateStation(station: Station): Observable<EntityResponse<Station>> {
+    return this._http.put<EntityResponse<Station>>(ApiService.API_URL_COMPLETE + 'updateStation', station);
   }
 
   public getLegalRepresentativeBasicData(consultancyId: string, legalRepresentativeId: string): Observable<EntityResponse<ConsultancyBasicData>> {
@@ -220,8 +221,8 @@ export class ApiService implements OnDestroy {
     return this._http.put<EntityResponse<Document>>(ApiService.API_URL_COMPLETE + 'updateDocument', document);
   }
 
-  public createStation(station: any): Observable<any> {
-    return this._http.post(ApiService.API_URL_COMPLETE + 'createStation', station);
+  public createStation(station: Station): Observable<EntityResponse<Station>> {
+    return this._http.post<EntityResponse<Station>>(ApiService.API_URL_COMPLETE + 'createStation', station);
   }
 
   public listPersonStationByConsultancy(refId: string): Observable<any> {
@@ -669,12 +670,12 @@ export class ApiService implements OnDestroy {
     return this._http.post(ApiService.API_URL_COMPLETE + 'saveSgmSelection', item);
   }
 
-  public enableStation(enable: boolean, stationId: string): Observable<any> {
+  public enableStation(enable: boolean, stationId: string): Observable<EntityResponse<Station>> {
     const options = {
       enable: enable,
       id: stationId
     };
-    return this._http.post(ApiService.API_URL_COMPLETE + 'enableStation', options);
+    return this._http.post<EntityResponse<Station>>(ApiService.API_URL_COMPLETE + 'enableStation', options);
   }
 
   private initNetwork(): void {
