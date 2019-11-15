@@ -22,6 +22,7 @@ import {EntityCollectionResponse} from '@app/utils/class/entity-collection-respo
 import {ConsultancyBasicData} from '@app/utils/interfaces/consultancy-basic-data';
 import {Station} from '@app/utils/interfaces/station';
 import {PersonInformation} from '@app/utils/interfaces/person-information';
+import {PersonLite} from '@app/utils/interfaces/person-lite';
 
 
 @Injectable()
@@ -188,11 +189,11 @@ export class ApiService implements OnDestroy {
     return this._http.delete(ApiService.API_URL_COMPLETE + 'deletePerson', {params: params});
   }
 
-  public listCollaborators(refId: string, isConsultancyBoolean: string): Observable<any> {
+  public listCollaborators(refId: string, isConsultancyBoolean: string): Observable<EntityCollectionResponse<PersonLite>> {
     let params = new HttpParams();
     params = params.append('isConsultancy', isConsultancyBoolean);
     params = params.append('refId', refId);
-    return this._http.get(ApiService.API_URL_COMPLETE + 'listCollaborators', {params: params});
+    return this._http.get<EntityCollectionResponse<PersonLite>>(ApiService.API_URL_COMPLETE + 'listCollaborators', {params: params});
   }
 
   public createReferencedPerson(person: Person): Observable<EntityResponse<Person>> {
@@ -226,10 +227,10 @@ export class ApiService implements OnDestroy {
     return this._http.post<EntityResponse<Station>>(ApiService.API_URL_COMPLETE + 'createStation', station);
   }
 
-  public listPersonStationByConsultancy(refId: string): Observable<any> {
+  public listPersonStationByConsultancy(refId: string): Observable<EntityCollectionResponse<PersonLite>> {
     let params = new HttpParams();
     params = params.append('consultancyCreationId', refId);
-    return this._http.get(ApiService.API_URL_COMPLETE + 'listPersonStationByConsultancy', {params: params});
+    return this._http.get<EntityCollectionResponse<PersonLite>>(ApiService.API_URL_COMPLETE + 'listPersonStationByConsultancy', {params: params});
   }
 
   public personExists(email: any): Observable<any> {

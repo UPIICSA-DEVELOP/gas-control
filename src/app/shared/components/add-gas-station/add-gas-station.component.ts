@@ -406,15 +406,13 @@ export class AddGasStationComponent implements OnInit, OnDestroy {
 
   public getListRepresentative():void{
     this._api.listPersonStationByConsultancy(LocalStorageService.getItem(Constants.UserInSession).refId).subscribe(response=>{
-      switch (response.code){
-        case 200:
-          this.listExist = true;
-          if (response.items){
-            this.listRepresentative = response.items;
-          }else{
-            this.listRepresentative = [];
-          }
-          break;
+      if (response.code === HttpResponseCodes.OK) {
+        this.listExist = true;
+        if (response.items){
+          this.listRepresentative = response.items;
+        }else{
+          this.listRepresentative = [];
+        }
       }
     })
   }

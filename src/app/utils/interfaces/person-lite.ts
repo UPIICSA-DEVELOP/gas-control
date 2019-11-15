@@ -4,7 +4,7 @@ export interface PersonLite {
   active: boolean;
   countryCode: string;
   email: string;
-  id: string;
+  id?: string;
   jobTitle: string;
   lastName: string;
   name: string;

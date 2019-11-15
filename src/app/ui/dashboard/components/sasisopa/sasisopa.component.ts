@@ -23,6 +23,7 @@ import {MDate} from '@app/utils/class/MDate';
 import {ModalProceduresService} from '@app/ui/dashboard/components/modal-procedures/modal-procedures.service';
 import {LoaderService} from '@app/core/components/loader/loader.service';
 import {Person} from '@app/utils/interfaces/person';
+import {HttpResponseCodes} from '@app/utils/enums/http-response-codes';
 
 @Component({
   selector: 'app-sasisopa',
@@ -438,26 +439,23 @@ export class SasisopaComponent implements OnInit, OnDestroy {
 
   private getStationCollaborators():void{
     this._api.listCollaborators(this._data.stationId,'false').subscribe(response=>{
-      switch (response.code){
-        case 200:
-          const list = UtilitiesService.sortJSON(response.items, 'role', 'asc');
-          this.listPerson = list;
-          let rolesList =[undefined, undefined, undefined];
-          for(let i = 0; i < list.length; i++){
-            if(list[i].role === 4 && !rolesList[0]){
-              rolesList[0] = list[i];
-            }
-            if(list[i].role === 5 && !rolesList[1]){
-              rolesList[1] = list[i];
-            }
-            if(list[i].role === 6 && !rolesList[2]){
-              rolesList[2] = list[i];
-            }
+      if (response.code === HttpResponseCodes.OK) {
+        const list = UtilitiesService.sortJSON(response.items, 'role', 'asc');
+        this.listPerson = list;
+        let rolesList =[undefined, undefined, undefined];
+        for(let i = 0; i < list.length; i++){
+          if(list[i].role === 4 && !rolesList[0]){
+            rolesList[0] = list[i];
           }
-          this.listCollaborators = rolesList.filter(function (item) {return item !== undefined;});
-          break;
-        default:
-          break;
+          if(list[i].role === 5 && !rolesList[1]){
+            rolesList[1] = list[i];
+          }
+          if(list[i].role === 6 && !rolesList[2]){
+            rolesList[2] = list[i];
+          }
+        }
+        this.listCollaborators = rolesList.filter(function (item) {return item !== undefined;});
+      } else {
       }
     });
   }

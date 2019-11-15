@@ -15,6 +15,7 @@ import {LocalStorageService} from '@app/core/services/local-storage/local-storag
 import {SharedNotification, SharedService, SharedTypeNotification} from '@app/core/services/shared/shared.service';
 import {Subscription} from 'rxjs';
 import {Person} from '@app/utils/interfaces/person';
+import {HttpResponseCodes} from '@app/utils/enums/http-response-codes';
 
 @Component({
   selector: 'app-directory-list',
@@ -61,24 +62,21 @@ export class DirectoryListComponent implements OnInit, OnDestroy {
 
   private getCollaborators():void{
     this._api.listCollaborators(this.gasStation.id, 'false').subscribe( response=>{
-      switch (response.code) {
-        case 200:
-          const id = CookieService.getCookie(Constants.IdSession);
-          let member = null;
-          this.collaborators = UtilitiesService.sortJSON(response.items,'name','asc');
-          for (let i = 0; i< this.collaborators.length; i++){
-            if(this.collaborators[i].id === id){
-              member = this.collaborators[i];
-            }
+      if (response.code === HttpResponseCodes.OK) {
+        const id = CookieService.getCookie(Constants.IdSession);
+        let member = null;
+        this.collaborators = UtilitiesService.sortJSON(response.items,'name','asc');
+        for (let i = 0; i< this.collaborators.length; i++){
+          if(this.collaborators[i].id === id){
+            member = this.collaborators[i];
           }
-          if (this.user){
-            const index = this.collaborators.indexOf(member);
-            this.collaborators.splice(index, 1);
-          }
-          this.collaborator = this.collaborators;
-          break;
-        default:
-          break;
+        }
+        if (this.user){
+          const index = this.collaborators.indexOf(member);
+          this.collaborators.splice(index, 1);
+        }
+        this.collaborator = this.collaborators;
+      } else {
       }
     });
   }
