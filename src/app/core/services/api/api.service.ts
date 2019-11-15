@@ -21,6 +21,7 @@ import {EntityResponse} from '@app/utils/class/entity-response';
 import {EntityCollectionResponse} from '@app/utils/class/entity-collection-response';
 import {ConsultancyBasicData} from '@app/utils/interfaces/consultancy-basic-data';
 import {Station} from '@app/utils/interfaces/station';
+import {PersonInformation} from '@app/utils/interfaces/person-information';
 
 
 @Injectable()
@@ -121,14 +122,14 @@ export class ApiService implements OnDestroy {
     return this._http.delete(ApiService.API_URL + '/upload', {params: params});
   }
 
-  public savePersonInformation(infoPerson: any): Observable<any> {
-    return this._http.post(ApiService.API_URL_COMPLETE + 'savePersonInformation', infoPerson);
+  public savePersonInformation(infoPerson: any): Observable<EntityResponse<PersonInformation>> {
+    return this._http.post<EntityResponse<PersonInformation>>(ApiService.API_URL_COMPLETE + 'savePersonInformation', infoPerson);
   }
 
-  public getPersonInformation(id: string): Observable<any> {
+  public getPersonInformation(id: string): Observable<EntityResponse<PersonInformation>> {
     let params = new HttpParams();
     params = params.append('id', id);
-    return this._http.get(ApiService.API_URL_COMPLETE + 'getPersonInformation', {params: params});
+    return this._http.get<EntityResponse<PersonInformation>>(ApiService.API_URL_COMPLETE + 'getPersonInformation', {params: params});
   }
 
   public getConsultancyBasicData(personId: string, consultancyId: string): Observable<EntityResponse<ConsultancyBasicData>> {

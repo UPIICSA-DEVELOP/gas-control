@@ -26,6 +26,7 @@ import {HashService} from 'app/utils/utilities/hash.service';
 import {LoaderService} from '@app/core/components/loader/loader.service';
 import {Person} from '@app/utils/interfaces/person';
 import {PersonInformation} from '@app/utils/interfaces/person-information';
+import {HttpResponseCodes} from '@app/utils/enums/http-response-codes';
 
 @Component({
   selector: 'app-user-profile',
@@ -346,48 +347,45 @@ export class UserProfileComponent implements OnInit, OnDestroy {
   }
 
   private getUserInformation(response: any):void{
-    switch (response.code){
-      case 200:
-        this.userInformation = {
-          id: response.item.id,
-          ssn: response.item.ssn || undefined,
-          bloodType: response.item.bloodType || undefined,
-          concatcPhone: response.item.concatcPhone || undefined,
-          contactName: response.item.contactName || undefined,
-          contactKinship: response.item.contactKinship || undefined,
-          benzene:(response.item.benzene?{
-            blobName: (response.item.benzene.blobName?response.item.benzene.blobName: undefined),
-            thumbnail: (response.item.benzene.thumbnail?response.item.benzene.thumbnail: undefined)
-          }: undefined)
-        };
-        if (this.userInformation.benzene){
-          this.file = this.userInformation.benzene.thumbnail
-        }
-        if(this.userInformation.bloodType){
-          for (let bd in this.bloodGroup){
-            if (this.bloodGroup[bd] === this.userInformation.bloodType){
-              this.bloodType = this.bloodGroup[bd];
-              break;
-            }else {
-              this.bloodType = '';
-            }
+    if (response.code === HttpResponseCodes.OK) {
+      this.userInformation = {
+        id: response.item.id,
+        ssn: response.item.ssn || undefined,
+        bloodType: response.item.bloodType || undefined,
+        concatcPhone: response.item.concatcPhone || undefined,
+        contactName: response.item.contactName || undefined,
+        contactKinship: response.item.contactKinship || undefined,
+        benzene:(response.item.benzene?{
+          blobName: (response.item.benzene.blobName?response.item.benzene.blobName: undefined),
+          thumbnail: (response.item.benzene.thumbnail?response.item.benzene.thumbnail: undefined)
+        }: undefined)
+      };
+      if (this.userInformation.benzene){
+        this.file = this.userInformation.benzene.thumbnail
+      }
+      if(this.userInformation.bloodType){
+        for (let bd in this.bloodGroup){
+          if (this.bloodGroup[bd] === this.userInformation.bloodType){
+            this.bloodType = this.bloodGroup[bd];
+            break;
+          }else {
+            this.bloodType = '';
           }
         }
-        this.patchForm();
-        break;
-      default:
-        this.bloodType = '';
-        this.userInformation = {
-          bloodType:undefined,
-          concatcPhone:undefined,
-          contactKinship:undefined,
-          contactName:undefined,
-          ssn:undefined,
-          id:this.user.id,
-          benzene: undefined
-        };
-        this.patchForm();
-        break;
+      }
+      this.patchForm();
+    } else {
+      this.bloodType = '';
+      this.userInformation = {
+        bloodType:undefined,
+        concatcPhone:undefined,
+        contactKinship:undefined,
+        contactName:undefined,
+        ssn:undefined,
+        id:this.user.id,
+        benzene: undefined
+      };
+      this.patchForm();
     }
   }
 
@@ -564,14 +562,11 @@ export class UserProfileComponent implements OnInit, OnDestroy {
 
   private saveInformation():void{
     this._api.savePersonInformation(this.userInformation).subscribe(response=>{
-      switch (response.code){
-        case 200:
-          this.change = false;
-          this._snackBarService.openSnackBar('Información actualizada','OK',3000);
-          break;
-        default:
-          this._dialogService.alertDialog('No se pudo acceder', 'Se produjo un error de comunicación con el servidor', 'ACEPTAR');
-          break;
+      if (response.code === HttpResponseCodes.OK) {
+        this.change = false;
+        this._snackBarService.openSnackBar('Información actualizada','OK',3000);
+      } else {
+        this._dialogService.alertDialog('No se pudo acceder', 'Se produjo un error de comunicación con el servidor', 'ACEPTAR');
       }
     })
   }
