@@ -4,7 +4,8 @@
  *  Proprietary and confidential
  */
 
-import {MDateResponse} from 'app/utils/interfaces/interfaces';
+
+import {MDateResponse} from '@app/utils/interfaces/m-date';
 
 /**
  * @summary generic class to control dates formats
