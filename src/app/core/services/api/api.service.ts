@@ -205,19 +205,19 @@ export class ApiService implements OnDestroy {
     return this._http.put<EntityResponse<Person>>(ApiService.API_URL_COMPLETE + 'updateRolePerson', options);
   }
 
-  public listDocumentByStation(stationId: string, regulationType?: string): Observable<any> {
+  public listDocumentByStation(stationId: string, regulationType?: string): Observable<EntityCollectionResponse<Document>> {
     let params = new HttpParams();
     params = params.append('idStation', stationId);
     params = params.append('regulationType', (regulationType ? regulationType : '1'));
-    return this._http.get(ApiService.API_URL_COMPLETE + 'listDocumentByStation', {params: params});
+    return this._http.get<EntityCollectionResponse<Document>>(ApiService.API_URL_COMPLETE + 'listDocumentByStation', {params: params});
   }
 
-  public createDocument(document: Document): Observable<any> {
-    return this._http.post(ApiService.API_URL_COMPLETE + 'createDocument', document);
+  public createDocument(document: Document): Observable<EntityResponse<Document>> {
+    return this._http.post<EntityResponse<Document>>(ApiService.API_URL_COMPLETE + 'createDocument', document);
   }
 
-  public updateDocument(document: Document): Observable<any> {
-    return this._http.put(ApiService.API_URL_COMPLETE + 'updateDocument', document);
+  public updateDocument(document: Document): Observable<EntityResponse<Document>> {
+    return this._http.put<EntityResponse<Document>>(ApiService.API_URL_COMPLETE + 'updateDocument', document);
   }
 
   public createStation(station: any): Observable<any> {

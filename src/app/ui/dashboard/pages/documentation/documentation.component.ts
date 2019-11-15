@@ -18,6 +18,7 @@ import {Constants} from '@app/utils/constants/constants.utils';
 import {HashService} from '@app/utils/utilities/hash.service';
 import {LoaderService} from '@app/core/components/loader/loader.service';
 import {Document} from '@app/utils/interfaces/document';
+import {HttpResponseCodes} from '@app/utils/enums/http-response-codes';
 
 @Component({
   selector: 'app-documentation',
@@ -182,21 +183,18 @@ export class DocumentationComponent implements OnInit, OnDestroy {
       file: document.file
     };
     this._api.createDocument(doc).subscribe(response=>{
-      switch (response.code){
-        case 200:
-          this._snackBarService.openSnackBar('Documento actualizado', 'OK', 3000);
-          switch (doc.regulationType){
-            case 1:
-              this.docsAsea[index] = doc;
-              break;
-            case 2:
-              this.docsCre[index] = doc;
-              break;
-          }
-          break;
-        default:
-          this._snackBarService.openSnackBar('Error al actualizar el documento', 'OK', 3000);
-          break;
+      if (response.code === HttpResponseCodes.OK) {
+        this._snackBarService.openSnackBar('Documento actualizado', 'OK', 3000);
+        switch (doc.regulationType){
+          case 1:
+            this.docsAsea[index] = doc;
+            break;
+          case 2:
+            this.docsCre[index] = doc;
+            break;
+        }
+      } else {
+        this._snackBarService.openSnackBar('Error al actualizar el documento', 'OK', 3000);
       }
     })
   }
@@ -210,21 +208,18 @@ export class DocumentationComponent implements OnInit, OnDestroy {
       file: document.file
     };
     this._api.updateDocument(doc).subscribe(response=>{
-      switch (response.code){
-        case 200:
-          this._snackBarService.openSnackBar('Documento cargado', 'OK', 3000);
-          switch (doc.regulationType){
-            case 1:
-              this.docsAsea[index] = doc;
-              break;
-            case 2:
-              this.docsCre[index] = doc;
-              break;
-          }
-          break;
-        default:
-          this._snackBarService.openSnackBar('Error al cargar el documento', 'OK', 3000);
-          break;
+      if (response.code === HttpResponseCodes.OK) {
+        this._snackBarService.openSnackBar('Documento cargado', 'OK', 3000);
+        switch (doc.regulationType){
+          case 1:
+            this.docsAsea[index] = doc;
+            break;
+          case 2:
+            this.docsCre[index] = doc;
+            break;
+        }
+      } else {
+        this._snackBarService.openSnackBar('Error al cargar el documento', 'OK', 3000);
       }
     })
   }
