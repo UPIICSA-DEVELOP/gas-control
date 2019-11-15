@@ -136,6 +136,7 @@ export class AddConsultancyComponent implements OnInit, OnDestroy {
       return;
     }
     this._ownerInfo = {
+      active: false,
       refId: null,
       name: data.name,
       lastName: data.lastName,

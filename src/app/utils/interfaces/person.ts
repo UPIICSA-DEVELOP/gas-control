@@ -6,7 +6,7 @@ export interface Person {
   bCard?: BCard;
   country: string;
   countryCode: string;
-  creationDate: number;
+  creationDate?: number;
   email: string;
   id?: string;
   jobTitle: string;

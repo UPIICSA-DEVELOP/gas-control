@@ -313,7 +313,6 @@ export class CollaboratorsListComponent implements OnInit, OnDestroy {
     data.code = data.code.replace('+','');
     let newPerson: Person = {
       active: false,
-      creationDate: null,
       name: data.name,
       lastName: data.lastName,
       email: data.email,

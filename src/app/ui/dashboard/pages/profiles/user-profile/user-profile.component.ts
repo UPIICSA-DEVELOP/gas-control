@@ -300,49 +300,48 @@ export class UserProfileComponent implements OnInit, OnDestroy {
   }
 
   private getUser(response: any): void{
-    switch (response.code) {
-      case 200:
-        this.user = {
-          id: response.item.id,
-          refId: response.item.refId || undefined,
-          name: response.item.name,
-          lastName: response.item.lastName,
-          email: response.item.email,
-          countryCode: response.item.countryCode || '',
-          country: (response.item.country?response.item.country:''),
-          phoneNumber: response.item.phoneNumber,
-          password: response.item.password,
-          role: response.item.role,
-          jobTitle: response.item.jobTitle,
-          profileImage: (response.item.profileImage?{
-            blobName: (response.item.profileImage.blobName? response.item.profileImage.blobName : undefined),
-            thumbnail: (response.item.profileImage.thumbnail? response.item.profileImage.thumbnail : undefined)
-          }:undefined),
-          signature: (response.item.signature?{
-            blobName: (response.item.signature?response.item.signature.blobName : undefined),
-            thumbnail: (response.item.signature?response.item.signature.thumbnail : undefined),
-          }:undefined),
-          website: response.item.website,
-          bCard: (response.item.bCard?response.item.bCard:undefined)
-        };
-        if (this.user.profileImage){
-          this.profileImage = this.user.profileImage.thumbnail;
-          this.blobName = this.user.profileImage.blobName;
+    if (response.code === HttpResponseCodes.OK) {
+      this.user = {
+        active: response.item.active,
+        id: response.item.id,
+        refId: response.item.refId || undefined,
+        name: response.item.name,
+        lastName: response.item.lastName,
+        email: response.item.email,
+        countryCode: response.item.countryCode || '',
+        country: (response.item.country?response.item.country:''),
+        phoneNumber: response.item.phoneNumber,
+        password: response.item.password,
+        role: response.item.role,
+        jobTitle: response.item.jobTitle,
+        profileImage: (response.item.profileImage?{
+          blobName: (response.item.profileImage.blobName? response.item.profileImage.blobName : undefined),
+          thumbnail: (response.item.profileImage.thumbnail? response.item.profileImage.thumbnail : undefined)
+        }:undefined),
+        signature: (response.item.signature?{
+          blobName: (response.item.signature?response.item.signature.blobName : undefined),
+          thumbnail: (response.item.signature?response.item.signature.thumbnail : undefined),
+        }:undefined),
+        website: response.item.website,
+        bCard: (response.item.bCard?response.item.bCard:undefined)
+      };
+      if (this.user.profileImage){
+        this.profileImage = this.user.profileImage.thumbnail;
+        this.blobName = this.user.profileImage.blobName;
+      }
+      if(this.user.signature){
+        this.signature = this.user.signature.thumbnail
+      }
+      if (this.user.website){
+        if (this.user.website.includes('http://')){
+          this.user.website = this.user.website.replace('http://','');
+          this.protocol = 'http://';
+        } else {
+          this.user.website = this.user.website.replace('https://','');
+          this.protocol = 'https://';
         }
-        if(this.user.signature){
-          this.signature = this.user.signature.thumbnail
-        }
-        if (this.user.website){
-          if (this.user.website.includes('http://')){
-            this.user.website = this.user.website.replace('http://','');
-            this.protocol = 'http://';
-          } else {
-            this.user.website = this.user.website.replace('https://','');
-            this.protocol = 'https://';
-          }
-        }
-        this.userRole = this.role[this.user.role-1];
-        break;
+      }
+      this.userRole = this.role[this.user.role-1];
     }
   }
 

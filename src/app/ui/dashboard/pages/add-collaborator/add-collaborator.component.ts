@@ -272,6 +272,7 @@ export class AddCollaboratorComponent implements OnInit, OnDestroy {
   private createCollaborator(data:any):void{
     data.code = data.code.replace('+','');
     let person: Person ={
+      active: false,
       name: data.name,
       lastName: data.lastName,
       email: data.email,
