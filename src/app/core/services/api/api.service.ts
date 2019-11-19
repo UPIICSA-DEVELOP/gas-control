@@ -96,11 +96,11 @@ export class ApiService implements OnDestroy {
     return this._http.post<EntityResponse<Person>>(ApiService.API_URL_COMPLETE + 'signInWithLink', options);
   }
 
-  public buildTaskByStation(stationTaskId: string): Observable<any> {
+  public buildTaskByStation(stationTaskId: string): Observable<EntityResponse<StationTask>> {
     const options = {
       stationTaskId: stationTaskId
     };
-    return this._http.post(ApiService.API_URL_COMPLETE + 'buildTaskByStation', options);
+    return this._http.post<EntityResponse<StationTask>>(ApiService.API_URL_COMPLETE + 'buildTaskByStation', options);
   }
 
   public ipApi(): Observable<any> {
@@ -155,8 +155,8 @@ export class ApiService implements OnDestroy {
     return this._http.get<EntityResponse<ConsultancyBasicData>>(ApiService.API_URL_COMPLETE + 'getConsultancyBasicData', {params: params});
   }
 
-  public getUtils(): Observable<any> {
-    return this._http.get(ApiService.API_URL_COMPLETE + 'getUtils');
+  public getUtils(): Observable<EntityResponse<AppUtil>> {
+    return this._http.get<EntityResponse<AppUtil>>(ApiService.API_URL_COMPLETE + 'getUtils');
   }
 
   public turnOnNotificationStation(personId: string, stationId: string): Observable<DefaultResponse> {
@@ -192,10 +192,10 @@ export class ApiService implements OnDestroy {
     return this._http.get<EntityResponse<ConsultancyBasicData>>(ApiService.API_URL_COMPLETE + 'getLegalRepresentativeBasicData', {params: params});
   }
 
-  public getStationBasicData(personId: string): Observable<any> {
+  public getStationBasicData(personId: string): Observable<EntityResponse<StationBasicData>> {
     let params = new HttpParams();
     params = params.append('personId', personId);
-    return this._http.get(ApiService.API_URL_COMPLETE + 'getStationBasicData', {params: params});
+    return this._http.get<EntityResponse<StationBasicData>>(ApiService.API_URL_COMPLETE + 'getStationBasicData', {params: params});
   }
 
   public deletePerson(id: string): Observable<DefaultResponse> {
@@ -256,8 +256,8 @@ export class ApiService implements OnDestroy {
     return this._http.put<EntityResponse<Person>>(ApiService.API_URL_COMPLETE + 'updatePersonWithDifferentEmail', person);
   }
 
-  public createStationTask(task: any): Observable<any> {
-    return this._http.post(ApiService.API_URL_COMPLETE + 'createStationTask', task);
+  public createStationTask(stationTask: StationTask): Observable<EntityResponse<StationTask>> {
+    return this._http.post<EntityResponse<StationTask>>(ApiService.API_URL_COMPLETE + 'createStationTask', stationTask);
   }
 
   public getFile(url: string): Observable<any> {
@@ -274,7 +274,7 @@ export class ApiService implements OnDestroy {
     return this._http.get<EntityCollectionResponse<Consultancy>>(ApiService.API_URL_COMPLETE + 'listConsultancy');
   }
 
-  public listTask(filters: any): Observable<any> {
+  public listTask(filters: any): Observable<EntityCollectionResponse<Task>> {
     let params = new HttpParams();
     params = params.append('stationTaskId', filters.stationTaskId);
     if (!filters.firstOpen) {
@@ -290,10 +290,10 @@ export class ApiService implements OnDestroy {
     if (filters.cursor) {
       params = params.append('cursor', filters.cursor);
     }
-    return this._http.get(ApiService.API_URL_COMPLETE + 'listTask', {params: params});
+    return this._http.get<EntityCollectionResponse<Task>>(ApiService.API_URL_COMPLETE + 'listTask', {params: params});
   }
 
-  public listUTask(filters: any): Observable<any> {
+  public listUTask(filters: any): Observable<EntityCollectionResponse<UTask>> {
     let params = new HttpParams();
     params = params.append('stationTaskId', filters.stationTaskId);
     params = params.append('type', filters.type);
@@ -301,13 +301,13 @@ export class ApiService implements OnDestroy {
       params = params.append('fromDate', filters.startDate);
       params = params.append('untilDate', filters.endDate);
     }
-    return this._http.get(ApiService.API_URL_COMPLETE + 'listUTask', {params: params});
+    return this._http.get<EntityCollectionResponse<UTask>>(ApiService.API_URL_COMPLETE + 'listUTask', {params: params});
   }
 
-  public getStationTask(stationTaskId: string): Observable<any> {
+  public getStationTask(stationTaskId: string): Observable<EntityResponse<StationTask>> {
     let params = new HttpParams();
     params = params.append('id', stationTaskId);
-    return this._http.get(ApiService.API_URL_COMPLETE + 'getStationTask', {params: params});
+    return this._http.get<EntityResponse<StationTask>>(ApiService.API_URL_COMPLETE + 'getStationTask', {params: params});
   }
 
   public businessCardService(data: any): Observable<any> {
