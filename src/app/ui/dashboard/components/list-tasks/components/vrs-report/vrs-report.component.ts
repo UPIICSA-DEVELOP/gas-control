@@ -20,6 +20,7 @@ import {UploadFileResponse} from '@app/shared/components/upload-file/upload-file
 import {LoaderService} from '@app/core/components/loader/loader.service';
 import {VRSReport} from '@app/utils/interfaces/reports/vrs-report';
 import {VRSTank} from '@app/utils/interfaces/vrs-tank';
+import {Task} from '@app/utils/interfaces/task';
 
 @Component({
   selector: 'app-vrs-report',
@@ -29,7 +30,7 @@ import {VRSTank} from '@app/utils/interfaces/vrs-tank';
 })
 export class VrsReportComponent implements OnInit, OnDestroy {
   private _taskId: string;
-  public task: any;
+  public task: Task;
   @Input() set taskVrsInfo(taskObj: any){
     if(taskObj){
       this._taskId = taskObj.id;
@@ -121,25 +122,25 @@ export class VrsReportComponent implements OnInit, OnDestroy {
     this.vrsForm.reset();
     this.vrsForm.disable();
     const user = LocalStorageService.getItem(Constants.UserInSession);
-    if(this.task.original.status !== 4 && user.role ===7){
+    if(this.task.status !== 4 && user.role ===7){
       this.startEditReport(true);
     }
   }
 
   private patchForm(task: any):void{
     this.vrsReport = {
-      date: task.date || undefined,
-      emergencyStop: task.emergencyStop || undefined,
-      fileCS: task.fileCS || undefined,
-      folio: task.folio || undefined,
-      id: task.id || undefined,
-      name: task.name || undefined,
-      observations: task.observations || undefined,
-      signature: task.signature || undefined,
-      taskId: task.taskId || undefined,
-      vrsAlarm: task.vrsAlarm || undefined,
-      vrsDispensary: task.vrsDispensary || undefined,
-      vrsTanks: task.vrsTanks || undefined
+      date: task.date || null,
+      emergencyStop: task.emergencyStop || null,
+      fileCS: task.fileCS || null,
+      folio: task.folio || null,
+      id: task.id || null,
+      name: task.name || null,
+      observations: task.observations || null,
+      signature: task.signature || null,
+      taskId: task.taskId || null,
+      vrsAlarm: task.vrsAlarm || null,
+      vrsDispensary: task.vrsDispensary || null,
+      vrsTanks: task.vrsTanks || null
     };
     this.vrsForm.patchValue({
       magna: this.vrsReport.vrsDispensary.magna,
@@ -180,7 +181,7 @@ export class VrsReportComponent implements OnInit, OnDestroy {
   }
 
   public seeEvidence():void{
-    if(this.task.original.status !== 4){
+    if(this.task.status !== 4){
       return;
     }
     if(this.taskItems[this._indexTask].fileCS){
