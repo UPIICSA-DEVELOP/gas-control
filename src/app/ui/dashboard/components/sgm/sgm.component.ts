@@ -19,6 +19,8 @@ import {environment} from '@env/environment';
 import {MDate} from '@app/utils/class/MDate';
 import {LoaderService} from '@app/core/components/loader/loader.service';
 import {SgmSelection} from '@app/utils/interfaces/sgm-selection';
+import {Station} from '@app/utils/interfaces/station';
+import {Task} from '@app/utils/interfaces/task';
 
 @Component({
   selector: 'app-sgm',
@@ -27,7 +29,7 @@ import {SgmSelection} from '@app/utils/interfaces/sgm-selection';
   encapsulation: ViewEncapsulation.None
 })
 export class SgmComponent implements OnInit, OnDestroy {
-  public station: any;
+  public station: Station;
   public sgmDocument: any[];
   public templates: any[];
   public load: boolean;
@@ -36,8 +38,8 @@ export class SgmComponent implements OnInit, OnDestroy {
   public premium: boolean;
   public diesel: boolean;
   public elementOnView: number;
-  public listTasksOne: any[];
-  public listTasksTwo: any[];
+  public listTasksOne: Task[];
+  public listTasksTwo: Task[];
   public generate: boolean;
   public isAvailable: boolean;
   public dateGeneration: string[];
