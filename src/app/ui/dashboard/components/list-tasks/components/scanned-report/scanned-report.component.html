@@ -6,7 +6,7 @@
 
 <div id="scanned-report">
   <div class="head">
-    <div *ngIf="task" class="task-name">{{task.original.name}}</div>
+    <div *ngIf="task" class="task-name">{{task.name}}</div>
   </div>
   <div class="task-header">
     <div class="head-bold">Limpieza ecológica</div>
@@ -50,12 +50,12 @@
         Es necesario escanear el manifiesto
       </mat-error>
     </ng-template>
-    <div class="divider" *ngIf="task.original.hwg"></div>
-    <div *ngIf="task.original.hwg" class="hwg">
-      <div *ngIf="task.original.hwg && scannedReport">
+    <div class="divider" *ngIf="task.hwg"></div>
+    <div *ngIf="task.hwg" class="hwg">
+      <div *ngIf="task.hwg && scannedReport">
         <app-hwg-report [taskHwgInfo]="hwgData || undefined" (formInformation)="getHWGReportInformation($event)" [validate]="startValidate"></app-hwg-report>
       </div>
-      <div *ngIf="task.original.hwg && !scannedReport">
+      <div *ngIf="task.hwg && !scannedReport">
         <app-hwg-report [taskHwgInfo]="undefined" (formInformation)="getHWGReportInformation($event)" [validate]="startValidate"></app-hwg-report>
       </div>
     </div>
@@ -91,7 +91,7 @@
     <mat-paginator [pageSize]="1" [length]="taskItems.length" [hidePageSize]="true" (page)="changeTask($event)"></mat-paginator>
   </div>
   <div *ngIf="editable" class="finish-button">
-    <button mat-flat-button type="submit" (click)="task.original.hwg? startValidateForm() : validateElements()" [color]="'primary'" [disabled]="load">
+    <button mat-flat-button type="submit" (click)="task.hwg? startValidateForm() : validateElements()" [color]="'primary'" [disabled]="load">
       FINALIZAR
     </button>
   </div>

@@ -20,6 +20,7 @@ import {HashService} from '@app/utils/utilities/hash.service';
 import {LoaderService} from '@app/core/components/loader/loader.service';
 import {ScannedReport} from '@app/utils/interfaces/reports/scanned-report';
 import {HWGReport} from '@app/utils/interfaces/reports/hwg-report';
+import {Task} from '@app/utils/interfaces/task';
 
 @Component({
   selector: 'app-scanned-report',
@@ -29,7 +30,7 @@ import {HWGReport} from '@app/utils/interfaces/reports/hwg-report';
 })
 export class ScannedReportComponent implements OnInit, OnDestroy {
   private _taskId: string;
-  public task: any;
+  public task: Task;
   @Input() set taskScannedInfo(taskObj: any){
     if (taskObj){
       this._taskId = taskObj.id;
@@ -126,14 +127,14 @@ export class ScannedReportComponent implements OnInit, OnDestroy {
 
   private patchForm(task: any): void {
     this.scannedReport = {
-      date: task.date || undefined,
-      fileCS: task.fileCS || undefined,
-      folio: task.folio || undefined,
-      hwgReport: task.hwgReport || undefined,
-      id: task.id || undefined,
-      name: task.name || undefined,
-      signature: task.signature || undefined,
-      taskId: task.taskId || undefined
+      date: task.date || null,
+      fileCS: task.fileCS || null,
+      folio: task.folio || null,
+      hwgReport: task.hwgReport || null,
+      id: task.id || null,
+      name: task.name || null,
+      signature: task.signature || null,
+      taskId: task.taskId || null
     };
     if(this.scannedReport.hwgReport){
       this.hwgData = this.scannedReport.hwgReport;
@@ -165,7 +166,7 @@ export class ScannedReportComponent implements OnInit, OnDestroy {
   private resetElements(): void{
     this.scannedReport = undefined;
     const user = LocalStorageService.getItem(Constants.UserInSession);
-    if(this.task.original.status !== 4 && user.role ===7){
+    if(this.task.status !== 4 && user.role ===7){
       this.startEditFormat(true);
     }
   }
@@ -204,7 +205,7 @@ export class ScannedReportComponent implements OnInit, OnDestroy {
 
   public validateElements():void{
     let error = false;
-    if(this.task.original.hwg){
+    if(this.task.hwg){
       if(!this._hwgElement.area ||
         !this._hwgElement.waste ||
         !this._hwgElement.quantity ||
@@ -249,7 +250,7 @@ export class ScannedReportComponent implements OnInit, OnDestroy {
     if(this._copyTasks){
       this.scannedReport.id = this._copyTasks.id;
     }
-    if(this.task.original.hwg){
+    if(this.task.hwg){
       this.scannedReport.hwgReport = this._hwgElement;
     }
     this._api.createTask(this.scannedReport, 5).subscribe(response=>{
