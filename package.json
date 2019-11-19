@@ -28,7 +28,8 @@
     "release:major": "standard-version --release-as major",
     "deploy:setup": "gulp zip --file hooks/bash && node hooks/scp --filePath hooks/bash/bundle.zip --destination /var/www/html/app.inspector.com/deploy/bash && node hooks/remotely --setup",
     "test": "ng test",
-    "lint": "ng lint",
+    "lint": "ng lint && npm run lint:styles",
+    "lint:styles": "stylelint \"**/*.scss\" && stylelint \"libs/**/*.scss\" --fix",
     "e2e": "ng e2e"
   },
   "dependencies": {
@@ -81,6 +82,10 @@
     "rxjs": "6.5.2",
     "saturn-datepicker": "^7.2.0",
     "signature_pad": "^3.0.0-beta.3",
+    "stylelint": "^12.0.0",
+    "stylelint-config-angular-material": "^1.0.0",
+    "stylelint-config-recommended": "^3.0.0",
+    "stylelint-config-standard": "^19.0.0",
     "swagger-ui-express": "^4.0.2",
     "tslib": "^1.9.0",
     "webshot": "^0.18.0",
