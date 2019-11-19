@@ -19,6 +19,7 @@ import {FormatTimePipe} from '@app/shared/pipes/format-time/format-time.pipe';
 import {LoaderService} from '@app/core/components/loader/loader.service';
 import {FEReport} from '@app/utils/interfaces/reports/fe-report';
 import {FireExtinguisher} from '@app/utils/interfaces/fire-extinguisher';
+import {Task} from '@app/utils/interfaces/task';
 
 @Component({
   selector: 'app-fe-report',
@@ -28,7 +29,7 @@ import {FireExtinguisher} from '@app/utils/interfaces/fire-extinguisher';
 })
 export class FeReportComponent implements OnInit, OnDestroy {
   private _taskId: string;
-  public task: any;
+  public task: Task;
   @Input() set taskFeInfo(taskObj: any){
     if(taskObj){
       this._taskId = taskObj.id;
@@ -120,22 +121,22 @@ export class FeReportComponent implements OnInit, OnDestroy {
     this.feForm.reset();
     this.feForm.disable();
     const user = LocalStorageService.getItem(Constants.UserInSession);
-    if(this.task.original.status !== 4 && user.role ===7){
+    if(this.task.status !== 4 && user.role ===7){
       this.startEditReport(true);
     }
   }
 
-  private patchForm(task: any): void {
+  private patchForm(report: FEReport): void {
     this.feReport = {
-      date: task.date || undefined,
-      endTime: task.endTime,
-      fireExtinguishers: task.fireExtinguishers || undefined,
-      folio: task.folio || undefined,
-      id: task.id || undefined,
-      name: task.name || undefined,
-      signature: task.signature || undefined,
-      startTime: task.startTime,
-      taskId: task.taskId || undefined
+      date: report.date || null,
+      endTime: report.endTime,
+      fireExtinguishers: report.fireExtinguishers || null,
+      folio: report.folio || null,
+      id: report.id || null,
+      name: report.name || null,
+      signature: report.signature || null,
+      startTime: report.startTime,
+      taskId: report.taskId || null
     };
     this.feForm.patchValue({
       startTime: this._formatTimePipe.transform(this.feReport.startTime),
