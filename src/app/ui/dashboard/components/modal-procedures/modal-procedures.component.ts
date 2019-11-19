@@ -10,6 +10,7 @@ import {HashService} from '@app/utils/utilities/hash.service';
 import {Constants} from '@app/utils/constants/constants.utils';
 import {LocalStorageService} from '@app/core/services/local-storage/local-storage.service';
 import {PdfVisorService} from '@app/shared/components/pdf-visor/pdf-visor.service';
+import {Procedure} from '@app/utils/interfaces/procedure';
 
 @Component({
   selector: 'app-modal-procedures',
@@ -18,7 +19,7 @@ import {PdfVisorService} from '@app/shared/components/pdf-visor/pdf-visor.servic
   encapsulation: ViewEncapsulation.None
 })
 export class ModalProceduresComponent implements OnInit {
-  public procedures: any[];
+  public procedures: Procedure[];
   public selected: boolean[];
   public seeCheckbox: boolean;
   constructor(
