@@ -12,6 +12,7 @@ import {isPlatformBrowser} from '@angular/common';
 import { Chart } from 'chart.js';
 import {SharedService, SharedTypeNotification} from '@app/core/services/shared/shared.service';
 import {Subscription} from 'rxjs';
+import {Station} from '@app/utils/interfaces/station';
 
 
 @Component({
@@ -21,8 +22,8 @@ import {Subscription} from 'rxjs';
   encapsulation: ViewEncapsulation.None
 })
 export class StationStatusComponent implements OnInit, AfterViewInit, OnDestroy{
-  private _station: any;
-  @Input() set station(stationObj: any){
+  private _station: Station;
+  @Input() set station(stationObj: Station){
     if(stationObj){
       this._station = stationObj;
       if(this._canvas){
