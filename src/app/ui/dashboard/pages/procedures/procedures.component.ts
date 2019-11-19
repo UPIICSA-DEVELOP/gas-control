@@ -12,6 +12,7 @@ import {PdfVisorService} from 'app/shared/components/pdf-visor/pdf-visor.service
 import {Constants} from 'app/utils/constants/constants.utils';
 import {LocalStorageService} from 'app/core/services/local-storage/local-storage.service';
 import {HashService} from 'app/utils/utilities/hash.service';
+import {Procedure} from '@app/utils/interfaces/procedure';
 
 @Component({
   selector: 'app-procedures',
@@ -33,7 +34,7 @@ import {HashService} from 'app/utils/utilities/hash.service';
   encapsulation: ViewEncapsulation.None
 })
 export class ProceduresComponent implements OnInit {
-  public procedures: any;
+  public procedures: Procedure[];
   constructor(
     private _api: ApiService,
     private _route: Router,
