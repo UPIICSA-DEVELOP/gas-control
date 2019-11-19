@@ -6,7 +6,7 @@
 
 <div id="compressor-report">
   <div class="head">
-    <div *ngIf="task" class="task-name">{{task.original.name}}</div>
+    <div *ngIf="task" class="task-name">{{task.name}}</div>
   </div>
   <div class="task-header">
     <div class="head-bold">Compresor de aire</div>
@@ -15,7 +15,7 @@
       <div *ngIf="compressorReport && compressorReport.folio">Folio: {{compressorReport.folio | formatFolio}}</div>
     </div>
   </div>
-  <form [formGroup]="compForm" (ngSubmit)="task.original.hwg ? startValidateForm() : validateForm(compForm.value)">
+  <form [formGroup]="compForm" (ngSubmit)="task.hwg ? startValidateForm() : validateForm(compForm.value)">
     <div class="flex-box">
       <div class="columns">
         <div class="times">
@@ -142,10 +142,10 @@
             </ng-template>
           </app-upload-file>
         </ng-template>
-        <div *ngIf="!task.original.hwg" class="text-sign">
+        <div *ngIf="!task.hwg" class="text-sign">
           Nombre y firma del responsable
         </div>
-        <div *ngIf="!task.original.hwg" class="inputs">
+        <div *ngIf="!task.hwg" class="inputs">
           <div *ngIf="!editable; then showSign else loadSign"></div>
           <ng-template #showSign>
             <div class="signature-element">
@@ -171,17 +171,17 @@
         </div>
       </div>
     </div>
-    <div class="divider" *ngIf="task.original.hwg"></div>
-    <div *ngIf="task.original.hwg && compressorReport">
+    <div class="divider" *ngIf="task.hwg"></div>
+    <div *ngIf="task.hwg && compressorReport">
       <app-hwg-report [taskHwgInfo]="hwgData || undefined" [validate]="startValidate" (formInformation)="getHWGReportInformation($event)"></app-hwg-report>
     </div>
-    <div *ngIf="task.original.hwg && !compressorReport">
+    <div *ngIf="task.hwg && !compressorReport">
       <app-hwg-report [taskHwgInfo]="undefined" [validate]="startValidate" (formInformation)="getHWGReportInformation($event)"></app-hwg-report>
     </div>
-    <div *ngIf="task.original.hwg" class="text-sign">
+    <div *ngIf="task.hwg" class="text-sign">
       Nombre y firma del responsable
     </div>
-    <div *ngIf="task.original.hwg" class="hwg-sign">
+    <div *ngIf="task.hwg" class="hwg-sign">
       <div *ngIf="!editable; then showSign else loadSign"></div>
       <ng-template #showSign>
         <div class="signature-element">

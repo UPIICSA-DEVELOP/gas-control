@@ -21,6 +21,7 @@ import {FormatTimePipe} from '@app/shared/pipes/format-time/format-time.pipe';
 import {LoaderService} from '@app/core/components/loader/loader.service';
 import {CompressorReport} from '@app/utils/interfaces/reports/compressor-report';
 import {HWGReport} from '@app/utils/interfaces/reports/hwg-report';
+import {Task} from '@app/utils/interfaces/task';
 
 @Component({
   selector: 'app-compressor-report',
@@ -30,9 +31,10 @@ import {HWGReport} from '@app/utils/interfaces/reports/hwg-report';
 })
 export class CompressorReportComponent implements OnInit, OnDestroy {
   private _taskId: string;
-  public task: any;
-  @Input() set taskCompInfo(taskObj: any){
+  public task: Task;
+  @Input() set taskCompInfo(taskObj: Task){
     if (taskObj){
+      debugger;
       this._taskId = taskObj.id;
       this.task = taskObj;
       this.getCompReport();
@@ -125,31 +127,31 @@ export class CompressorReportComponent implements OnInit, OnDestroy {
     this.compForm.reset();
     this.compForm.disable();
     const user = LocalStorageService.getItem(Constants.UserInSession);
-    if(this.task.original.status !== 4 && user.role ===7){
+    if(this.task.status !== 4 && user.role ===7){
       this.startEditFormat(true);
     }
   }
 
-  private patchForm(task: any):void{
+  private patchForm(report: CompressorReport):void{
     this.compressorReport = {
-      brand: task.brand || undefined,
-      controlNumber: task.controlNumber || undefined,
-      date: task.date || undefined,
-      endTime: task.endTime,
-      fileCS: task.fileCS || undefined,
-      folio: task.folio || undefined,
-      hwgReport: task.hwgReport || undefined,
-      id: task.id || undefined,
-      model: task.model || undefined,
-      modifications: task.modifications || undefined,
-      name: task.name || undefined,
-      observations: task.observations || undefined,
-      pressure: task.pressure || undefined,
-      purge: task.purge || undefined,
-      securityValve: task.securityValve || undefined,
-      signature: task.signature || undefined,
-      startTime: task.startTime,
-      taskId: task.taskId || undefined
+      brand: report.brand || null,
+      controlNumber: report.controlNumber || null,
+      date: report.date || null,
+      endTime: report.endTime,
+      fileCS: report.fileCS || null,
+      folio: report.folio || null,
+      hwgReport: report.hwgReport || null,
+      id: report.id || null,
+      model: report.model || null,
+      modifications: report.modifications || null,
+      name: report.name || null,
+      observations: report.observations || null,
+      pressure: report.pressure || null,
+      purge: report.purge || null,
+      securityValve: report.securityValve || null,
+      signature: report.signature || null,
+      startTime: report.startTime,
+      taskId: report.taskId || null
     };
     this.compForm.patchValue({
       startTime: this._formatTimePipe.transform(this.compressorReport.startTime),
@@ -192,7 +194,7 @@ export class CompressorReportComponent implements OnInit, OnDestroy {
   }
 
   public seeEvidence():void{
-    if(this.task.original.status !== 4){
+    if(this.task.status !== 4){
       return;
     }
     if(this.taskItems[this._indexTask].fileCS){
@@ -275,10 +277,10 @@ export class CompressorReportComponent implements OnInit, OnDestroy {
 
   public validateForm(value: any): void {
     let error = false;
-    if (this.task.original.evidence && (!this._evidence && !this.compressorReport.fileCS)) {
+    if (this.task.evidence && (!this._evidence && !this.compressorReport.fileCS)) {
       this.error = true;
     }
-    if(this.task.original.hwg){
+    if(this.task.hwg){
       if(!this._hwgElement.area ||
         !this._hwgElement.waste ||
         !this._hwgElement.quantity ||
@@ -361,7 +363,7 @@ export class CompressorReportComponent implements OnInit, OnDestroy {
     if (this._copyTask){
       this.compressorReport.id = this._copyTask.id
     }
-    if(this.task.original.hwg){
+    if(this.task.hwg){
       this.compressorReport.hwgReport = this._hwgElement
     }
     this._api.createTask(this.compressorReport, 2).subscribe(response=>{
