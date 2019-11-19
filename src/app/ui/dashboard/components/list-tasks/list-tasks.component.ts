@@ -21,6 +21,8 @@ import {LoaderService} from '@app/core/components/loader/loader.service';
 import {Person} from '@app/utils/interfaces/person';
 import {Report} from '@app/utils/interfaces/report';
 import {TaskLists} from '@app/utils/interfaces/task-lists';
+import {Station} from '@app/utils/interfaces/station';
+import {Task} from '@app/utils/interfaces/task';
 
 @Component({
   selector: 'app-list-tasks',
@@ -30,7 +32,7 @@ import {TaskLists} from '@app/utils/interfaces/task-lists';
 })
 export class ListTasksComponent implements OnInit, OnDestroy{
   @ViewChild('modalScroll', { static: false }) private _modalScroll: ElementRef;
-  public station: any;
+  public station: Station;
   @Input() set stationInfo(stationObj: any) {
     if (stationObj) {
       this.finishCreateTasks = false;
@@ -424,24 +426,24 @@ export class ListTasksComponent implements OnInit, OnDestroy{
     }
   }
 
-  private compareNotCalendarTasks(tasks: any, type: number):void{
+  private compareNotCalendarTasks(tasks: Task[], type: number):void{
     tasks.forEach(task => {this.notCalendarTasks.push({id: task.id, date: UtilitiesService.convertDate(task.date), type: type});});
     this._firstGet = false;
   }
 
-  public goTaskInfo(task: any, type?:number): void{
+  public goTaskInfo(task: Task, type?:number): void{
     const today = UtilitiesService.createPersonalTimeStamp(new Date());
     if(!this.others){
-      if(task.original.status === 3 && this.user.role !== 7){
+      if(task.status === 3 && this.user.role !== 7){
         this._snackBarService.openSnackBar('No es posible visualizar tareas vencidas','OK',3000);
         return;
       }
-      if(task.original.originalDate>today.timeStamp && this.user.role !== 7){
+      if(task.date>today.timeStamp && this.user.role !== 7){
         this._snackBarService.openSnackBar('No es posible visualizar tareas programadas','OK',3000);
         return;
       }
       this._modalScroll.nativeElement.scrollTop = '0';
-      this.reportConfig = {reportView: true, taskElement: task, typeReportView: task.original.typeReport, status: task.original.status};
+      this.reportConfig = {reportView: true, taskElement: task, typeReportView: task.typeReport, status: task.status};
     }else{
       this._modalScroll.nativeElement.scrollTop = '0';
       this.reportConfig = {reportView: true, taskElement: task, typeReportView: type, status: 4};
@@ -498,7 +500,6 @@ export class ListTasksComponent implements OnInit, OnDestroy{
   public editFormat(): void{
     this._sharedService.setNotification({type: SharedTypeNotification.EditTask, value: this.reportConfig.typeReportView});
   }
-
   public exportFormat():void{
     if(this.others){
       this._api.exportReport(
