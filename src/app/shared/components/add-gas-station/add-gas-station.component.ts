@@ -20,7 +20,6 @@ import {DialogService} from '../dialog/dialog.service';
 import {PdfVisorOptions, PdfVisorService} from '../pdf-visor/pdf-visor.service';
 import {DateAdapter, MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
 import {UtilitiesService} from '../../../utils/utilities/utilities';
-import {Task} from '../../../utils/interfaces/interfaces';
 import {SharedService, SharedTypeNotification} from '../../../core/services/shared/shared.service';
 import {Subscription} from 'rxjs';
 import {ModalStationService} from '../modal-station/modal-station.service';
@@ -29,6 +28,11 @@ import {Person} from '@app/utils/interfaces/person';
 import {PersonInformation} from '@app/utils/interfaces/person-information';
 import {Station} from '@app/utils/interfaces/station';
 import {HttpResponseCodes} from '@app/utils/enums/http-response-codes';
+import {FuelTank} from '@app/utils/interfaces/fuel-tank';
+import {WorkShift} from '@app/utils/interfaces/work-shift';
+import {Dispenser} from '@app/utils/interfaces/dispenser';
+import {TaskTemplate} from '@app/utils/interfaces/task-template';
+import {StationTask} from '@app/utils/interfaces/station-task';
 
 @Component({
   selector: 'app-add-gas-station',
@@ -42,7 +46,7 @@ export class AddGasStationComponent implements OnInit, OnDestroy {
   public step: number;
   public disableClose: boolean;
   public utils: any[];
-  public tasks: any[];
+  public taskTemplates: TaskTemplate[];
   public manger: Person;
   public mangerInformation: PersonInformation;
   public legalRepresentative: Person;
@@ -63,10 +67,10 @@ export class AddGasStationComponent implements OnInit, OnDestroy {
   public addSignTwo: boolean;
   public newFileTwo: boolean;
   public bloodGroup: string[];
-  public workShifts:any[];
-  public tanks:any[];
-  public dispensers:any[];
-  public calendar:any[];
+  public workShifts: WorkShift[];
+  public tanks: FuelTank[];
+  public dispensers: Dispenser[];
+  public calendar: any[];
   public latLng: any;
   public stationType: any;
   public signature: any;
@@ -174,8 +178,8 @@ export class AddGasStationComponent implements OnInit, OnDestroy {
     this._api.getUtils().subscribe(response => {
       if (response){
         this.utils = response.item.groupIcons;
-        this.tasks = response.item.taskTemplates;
-        this.tasks = this.tasks.filter(task => {
+        this.taskTemplates = response.item.taskTemplates;
+        this.taskTemplates = this.taskTemplates.filter(task => {
           if(task.editable){
             return task;
           }
@@ -978,9 +982,9 @@ export class AddGasStationComponent implements OnInit, OnDestroy {
     let copyCalendar: any[] = Object.assign([], this.calendar);
     for (let d=0;d<copyCalendar.length; d++){
       copyCalendar[d] = UtilitiesService.createPersonalTimeStamp(copyCalendar[d]).timeStamp;
-      editedTasks.push({startDate: copyCalendar[d], differenceOfDays:(copyCalendar[d]-today), type: this.tasks[d].id});
+      editedTasks.push({startDate: copyCalendar[d], differenceOfDays:(copyCalendar[d]-today), type: this.taskTemplates[d].id});
     }
-    let task: Task = {
+    let stationTask: StationTask = {
       creationDate: today,
       stationId: stationId,
       progress: 0,
@@ -988,16 +992,13 @@ export class AddGasStationComponent implements OnInit, OnDestroy {
       editedTasks: editedTasks,
       startDate: today
     };
-    this._api.createStationTask(task).subscribe(response=>{
-      switch (response.code){
-        case 200:
-          this._sharedService.setNotification({type: SharedTypeNotification.ChangeStation, value: {id: stationId, newNotification: false}});
-          this._dialogRef.close();
-          break;
-        default:
-          this._snackBarService.openSnackBar('Ha ocurrido un error, por favor, intente de nuevo', 'OK', 3000);
-          this.taskNotCalendar = false;
-          break;
+    this._api.createStationTask(stationTask).subscribe(response=>{
+      if (response.code === HttpResponseCodes.OK) {
+        this._sharedService.setNotification({type: SharedTypeNotification.ChangeStation, value: {id: stationId, newNotification: false}});
+        this._dialogRef.close();
+      } else {
+        this._snackBarService.openSnackBar('Ha ocurrido un error, por favor, intente de nuevo', 'OK', 3000);
+        this.taskNotCalendar = false;
       }
     });
   }
