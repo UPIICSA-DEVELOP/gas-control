@@ -24,6 +24,20 @@ import {Station} from '@app/utils/interfaces/station';
 import {PersonInformation} from '@app/utils/interfaces/person-information';
 import {PersonLite} from '@app/utils/interfaces/person-lite';
 import {DefaultResponse} from '@app/utils/interfaces/default-response';
+import {StationTask} from '@app/utils/interfaces/station-task';
+import {Task} from '@app/utils/interfaces/task';
+import {UTask} from '@app/utils/interfaces/u-task';
+import {StationBasicData} from '@app/utils/interfaces/station-basic-data';
+import {AppUtil} from '@app/utils/interfaces/app-util';
+import {ReportComplete} from '@app/utils/class/report-complete';
+import {CompressorReport} from '@app/utils/interfaces/reports/compressor-report';
+import {OMReport} from '@app/utils/interfaces/reports/omr-report';
+import {VRSReport} from '@app/utils/interfaces/reports/vrs-report';
+import {ScannedReport} from '@app/utils/interfaces/reports/scanned-report';
+import {FEReport} from '@app/utils/interfaces/reports/fe-report';
+import {HWCReport} from '@app/utils/interfaces/reports/hwc-report';
+import {FRReport} from '@app/utils/interfaces/reports/frr-report';
+import {IncidenceReport} from '@app/utils/interfaces/reports/incidence-report';
 
 
 @Injectable()
@@ -552,32 +566,32 @@ export class ApiService implements OnDestroy {
    * End: list reports by reportType
    */
 
-  public createTask(taskEntity: any, type: number): Observable<any> {
+  public createTask(report: any, type: number): Observable<any> {
     let response = null;
     switch (type) {
       case 1:
-        response = this.createOMReport(taskEntity);
+        response = this.createOMReport(report);
         break;
       case 2:
-        response = this.createCompressorReport(taskEntity);
+        response = this.createCompressorReport(report);
         break;
       case 4:
-        response = this.createVRSReport(taskEntity);
+        response = this.createVRSReport(report);
         break;
       case 5:
-        response = this.createScannedReport(taskEntity);
+        response = this.createScannedReport(report);
         break;
       case 6:
-        response = this.createHWCReport(taskEntity);
+        response = this.createHWCReport(report);
         break;
       case 7:
-        response = this.createFRReport(taskEntity);
+        response = this.createFRReport(report);
         break;
       case 8:
-        response = this.createFEReport(taskEntity);
+        response = this.createFEReport(report);
         break;
       case 9:
-        response = this.createIncidenceReport(taskEntity);
+        response = this.createIncidenceReport(report);
         break;
     }
     return response;
@@ -587,36 +601,36 @@ export class ApiService implements OnDestroy {
    * Start: create reports by reportType
    */
 
-  private createOMReport(task: any): Observable<any> {
-    return this._http.post(ApiService.API_URL_COMPLETE + 'createOMReport', task);
+  private createOMReport(report: OMReport): Observable<EntityResponse<ReportComplete<Task,OMReport>>> {
+    return this._http.post<EntityResponse<ReportComplete<Task,OMReport>>>(ApiService.API_URL_COMPLETE + 'createOMReport', report);
   }
 
-  private createCompressorReport(task: any): Observable<any> {
-    return this._http.post(ApiService.API_URL_COMPLETE + 'createCompressorReport', task);
+  private createCompressorReport(report: CompressorReport): Observable<EntityResponse<ReportComplete<Task,CompressorReport>>> {
+    return this._http.post<EntityResponse<ReportComplete<Task,CompressorReport>>>(ApiService.API_URL_COMPLETE + 'createCompressorReport', report);
   }
 
-  private createVRSReport(task: any): Observable<any> {
-    return this._http.post(ApiService.API_URL_COMPLETE + 'createVRSReport', task);
+  private createVRSReport(report: VRSReport): Observable<EntityResponse<ReportComplete<Task,VRSReport>>> {
+    return this._http.post<EntityResponse<ReportComplete<Task,VRSReport>>>(ApiService.API_URL_COMPLETE + 'createVRSReport', report);
   }
 
-  private createScannedReport(task: any): Observable<any> {
-    return this._http.post(ApiService.API_URL_COMPLETE + 'createScannedReport', task);
+  private createScannedReport(report: ScannedReport): Observable<EntityResponse<ReportComplete<Task,ScannedReport>>> {
+    return this._http.post<EntityResponse<ReportComplete<Task,ScannedReport>>>(ApiService.API_URL_COMPLETE + 'createScannedReport', report);
   }
 
-  private createFEReport(task: any): Observable<any> {
-    return this._http.post(ApiService.API_URL_COMPLETE + 'createFEReport', task);
+  private createFEReport(report: FEReport): Observable<EntityResponse<ReportComplete<Task,FEReport>>> {
+    return this._http.post<EntityResponse<ReportComplete<Task,FEReport>>>(ApiService.API_URL_COMPLETE + 'createFEReport', report);
   }
 
-  private createHWCReport(task: any): Observable<any> {
-    return this._http.post(ApiService.API_URL_COMPLETE + 'createHWCReport', task);
+  private createHWCReport(report: HWCReport): Observable<EntityResponse<ReportComplete<Task,HWCReport>>> {
+    return this._http.post<EntityResponse<ReportComplete<Task,HWCReport>>>(ApiService.API_URL_COMPLETE + 'createHWCReport', report);
   }
 
-  private createFRReport(task: any): Observable<any> {
-    return this._http.post(ApiService.API_URL_COMPLETE + 'createFRReport', task);
+  private createFRReport(report: FRReport): Observable<EntityResponse<ReportComplete<Task,FRReport>>> {
+    return this._http.post<EntityResponse<ReportComplete<Task,FRReport>>>(ApiService.API_URL_COMPLETE + 'createFRReport', report);
   }
 
-  private createIncidenceReport(task: any): Observable<any> {
-    return this._http.post(ApiService.API_URL_COMPLETE + 'createIncidenceReport', task);
+  private createIncidenceReport(report: IncidenceReport): Observable<EntityResponse<ReportComplete<Task,IncidenceReport>>> {
+    return this._http.post<EntityResponse<ReportComplete<Task,IncidenceReport>>>(ApiService.API_URL_COMPLETE + 'createIncidenceReport', report);
   }
 
   /**
