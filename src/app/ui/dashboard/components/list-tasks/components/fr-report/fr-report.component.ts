@@ -18,6 +18,7 @@ import {Subscription} from 'rxjs';
 import {FormatTimePipe} from '@app/shared/pipes/format-time/format-time.pipe';
 import {LoaderService} from '@app/core/components/loader/loader.service';
 import {FRReport} from '@app/utils/interfaces/reports/frr-report';
+import {Task} from '@app/utils/interfaces/task';
 
 @Component({
   selector: 'app-fr-report',
@@ -28,7 +29,7 @@ import {FRReport} from '@app/utils/interfaces/reports/frr-report';
 export class FrReportComponent implements OnInit, OnDestroy {
   private _taskId: string;
   private _stationId: string;
-  public task: any;
+  public task: Task;
   @Input() set taskFrInfo(taskObj: any){
     if(taskObj){
       this._taskId = taskObj.id;
@@ -115,24 +116,24 @@ export class FrReportComponent implements OnInit, OnDestroy {
   }
 
 
-  private patchForm(task: any):void {
+  private patchForm(report: FRReport):void {
     this.frReport = {
-      date: task.date || undefined,
-      diesel: task.diesel || undefined,
-      endTime: task.endTime,
-      fileCS: task.fileCS || undefined,
-      folio: task.folio || undefined,
-      id: task.id || undefined,
-      magna: task.magna || undefined,
-      name: task.name || undefined,
-      premium: task.premium || undefined,
-      receiveName: task.receiveName || undefined,
-      remission: task.remission || undefined,
-      remissionNumber: task.remissionNumber,
-      signature: task.signature || undefined,
-      startTime: task.startTime,
-      taskId: task.taskId || undefined,
-      volumetric: task.volumetric || undefined
+      date: report.date || null,
+      diesel: report.diesel || null,
+      endTime: report.endTime,
+      fileCS: report.fileCS || null,
+      folio: report.folio || null,
+      id: report.id || null,
+      magna: report.magna || null,
+      name: report.name || null,
+      premium: report.premium || null,
+      receiveName: report.receiveName || null,
+      remission: report.remission || null,
+      remissionNumber: report.remissionNumber,
+      signature: report.signature || null,
+      startTime: report.startTime,
+      taskId: report.taskId || null,
+      volumetric: report.volumetric || null
     };
     this.frForm.patchValue({
       startTime: this._formatTimePipe.transform(this.frReport.startTime),
