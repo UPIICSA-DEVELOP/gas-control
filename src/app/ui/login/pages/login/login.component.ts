@@ -24,7 +24,6 @@ const md5 = require('md5');
 export class LoginComponent implements OnInit, OnDestroy {
 
   @ViewChild('inputPassword', { static: true }) private _inputPassword: ElementRef;
-  private _dataUser: Person;
   public load: boolean;
   public loginForm: FormGroup;
   public hide: boolean = false;

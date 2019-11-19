@@ -12,6 +12,7 @@ import {Subscription} from 'rxjs';
 import {ListStationsService} from '@app/ui/admin/components/list-stations/list-stations.service';
 import {AddConsultancyService} from '@app/ui/admin/components/add-consultancy/add-consultancy.service';
 import {LoaderService} from '@app/core/components/loader/loader.service';
+import {Consultancy} from '@app/utils/interfaces/consultancy';
 
 @Component({
   selector: 'app-admin',
@@ -22,8 +23,8 @@ import {LoaderService} from '@app/core/components/loader/loader.service';
 export class AdminComponent implements OnInit, OnDestroy {
 
   public load: boolean;
-  public consultancyList: any[];
-  public consultancyListCopy: any[];
+  public consultancyList: Consultancy[];
+  public consultancyListCopy: Consultancy[];
   public notResults: boolean;
   private _subscriptionLoader: Subscription;
   constructor(
