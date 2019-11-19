@@ -18,11 +18,11 @@ import {HWGReport} from '@app/utils/interfaces/reports/hwg-report';
   encapsulation: ViewEncapsulation.None
 })
 export class HwgReportComponent implements OnInit, OnDestroy {
-  public task: any;
-  @Input() set taskHwgInfo(taskObj: any){
-    if(taskObj){
+  public report: HWGReport;
+  @Input() set taskHwgInfo(reportObj: HWGReport){
+    if(reportObj){
       this.initHwgForm();
-      this.task = taskObj;
+      this.report = reportObj;
       this.getHWGReport();
     }else{
       this.initHwgForm();
@@ -91,18 +91,18 @@ export class HwgReportComponent implements OnInit, OnDestroy {
     this.hwgForm.disable();
   }
 
-  private patchForm(task: any):void{
+  private patchForm(report: HWGReport):void{
     this.hwgReport = {
-      area: task.area || undefined,
-      corrosive: task.corrosive || undefined,
-      explosive: task.explosive || undefined,
-      flammable: task.flammable || undefined,
-      quantity: task.quantity || undefined,
-      reactive: task.reactive || undefined,
-      temporaryStorage: task.temporaryStorage || undefined,
-      toxic: task.toxic || undefined,
-      unity: task.unity || undefined,
-      waste: task.waste || undefined
+      area: report.area || null,
+      corrosive: report.corrosive || null,
+      explosive: report.explosive || null,
+      flammable: report.flammable || null,
+      quantity: report.quantity || null,
+      reactive: report.reactive || null,
+      temporaryStorage: report.temporaryStorage || null,
+      toxic: report.toxic || null,
+      unity: report.unity || null,
+      waste: report.waste || null
     };
     this.hwgForm.patchValue({
       area: this.hwgReport.area,
@@ -120,8 +120,8 @@ export class HwgReportComponent implements OnInit, OnDestroy {
   }
 
   private getHWGReport():void{
-    if(this.task){
-      this.patchForm(this.task);
+    if(this.report){
+      this.patchForm(this.report);
     }else{
       this.resetElements();
     }
