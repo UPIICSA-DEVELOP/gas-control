@@ -431,7 +431,7 @@ export class ListTasksComponent implements OnInit, OnDestroy{
     this._firstGet = false;
   }
 
-  public goTaskInfo(task: Task, type?:number): void{
+  public goTaskInfo(task: any, type?:number): void{
     const today = UtilitiesService.createPersonalTimeStamp(new Date());
     if(!this.others){
       if(task.status === 3 && this.user.role !== 7){
@@ -443,7 +443,7 @@ export class ListTasksComponent implements OnInit, OnDestroy{
         return;
       }
       this._modalScroll.nativeElement.scrollTop = '0';
-      this.reportConfig = {reportView: true, taskElement: task, typeReportView: task.typeReport, status: task.status};
+      this.reportConfig = {reportView: true, taskElement: task, typeReportView: task.original.typeReport, status: task.status};
     }else{
       this._modalScroll.nativeElement.scrollTop = '0';
       this.reportConfig = {reportView: true, taskElement: task, typeReportView: type, status: 4};
