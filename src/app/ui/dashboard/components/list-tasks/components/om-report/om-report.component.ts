@@ -22,6 +22,7 @@ import {ModalProceduresService} from '@app/ui/dashboard/components/modal-procedu
 import {UploadFileResponse} from '@app/shared/components/upload-file/upload-file.component';
 import {OMReport} from '@app/utils/interfaces/reports/omr-report';
 import {HWGReport} from '@app/utils/interfaces/reports/hwg-report';
+import {Task} from '@app/utils/interfaces/task';
 
 
 @Component({
@@ -32,7 +33,7 @@ import {HWGReport} from '@app/utils/interfaces/reports/hwg-report';
 })
 export class OmReportComponent implements OnInit, OnDestroy {
   private _taskId: string;
-  public task: any;
+  public task: Task;
   public utils: any;
 
   @Input() set taskOMInfo(taskObj: any) {
@@ -143,34 +144,34 @@ export class OmReportComponent implements OnInit, OnDestroy {
     });
   }
 
-  private patchForm(task: any): void {
+  private patchForm(report: OMReport): void {
     this.omReport = {
-      activityType: task.activityType || undefined,
-      cottonClothes: task.cottonClothes || undefined,
-      date: task.date || undefined,
-      description: task.description || undefined,
-      endTime: task.endTime,
-      faceMask: task.faceMask || undefined,
-      fileCS: task.fileCS || undefined,
-      folio: task.folio || undefined,
-      gloves: task.gloves || undefined,
-      goggles: task.goggles || undefined,
-      helmet: task.helmet || undefined,
-      hwgReport: task.hwgReport || undefined,
-      id: task.id || undefined,
-      industrialShoes: task.industrialShoes || undefined,
-      kneepads: task.kneepads || undefined,
-      maintenanceType: task.maintenanceType || undefined,
-      name: task.name || undefined,
-      observations: task.observations || undefined,
-      personnelNames: task.personnelNames || undefined,
-      personnelType: task.personnelType || undefined,
-      procedures: task.procedures || undefined,
-      protectiveGoggles: task.protectiveGoggles || undefined,
-      signature: task.signature || undefined,
-      startTime: task.startTime,
-      taskId: task.taskId || undefined,
-      toolsAndMaterials: task.toolsAndMaterials || undefined
+      activityType: report.activityType || null,
+      cottonClothes: report.cottonClothes || null,
+      date: report.date || null,
+      description: report.description || null,
+      endTime: report.endTime,
+      faceMask: report.faceMask || null,
+      fileCS: report.fileCS || null,
+      folio: report.folio || null,
+      gloves: report.gloves || null,
+      goggles: report.goggles || null,
+      helmet: report.helmet || null,
+      hwgReport: report.hwgReport || null,
+      id: report.id || null,
+      industrialShoes: report.industrialShoes || null,
+      kneepads: report.kneepads || null,
+      maintenanceType: report.maintenanceType || null,
+      name: report.name || null,
+      observations: report.observations || null,
+      personnelNames: report.personnelNames || null,
+      personnelType: report.personnelType || null,
+      procedures: report.procedures || null,
+      protectiveGoggles: report.protectiveGoggles || null,
+      signature: report.signature || null,
+      startTime: report.startTime,
+      taskId: report.taskId || null,
+      toolsAndMaterials: report.toolsAndMaterials || null
     };
     this.omForm.patchValue({
       startTime: this._formatTimePipe.transform(this.omReport.startTime),
@@ -204,7 +205,7 @@ export class OmReportComponent implements OnInit, OnDestroy {
     this.omForm.reset();
     this.omForm.disable();
     const user = LocalStorageService.getItem(Constants.UserInSession);
-    if(this.task.original.status !== 4 && user.role ===7){
+    if(this.task.status !== 4 && user.role ===7){
       this.startEditFormat(true);
     }
   }
@@ -229,7 +230,7 @@ export class OmReportComponent implements OnInit, OnDestroy {
   }
 
   public seeEvidence(): void {
-    if (this.task.original.status !== 4) {
+    if (this.task.status !== 4) {
       return;
     }
     if (this.taskItems[this._indexTask].fileCS) {
@@ -270,7 +271,7 @@ export class OmReportComponent implements OnInit, OnDestroy {
     this.omForm.enable();
   }
 
-  public addRemoveArrayItem(type: number, isAdd: boolean, index: number): void {
+  public addRemoveArrayItem(type: number, isAdd: boolean, index?: number): void {
     switch (type) {
       case 1:
         if (isAdd) {
@@ -357,10 +358,10 @@ export class OmReportComponent implements OnInit, OnDestroy {
       !value.protectiveGoggles){
       this.errors[1] = true;
     }
-    if (this.task.original.evidence && !this.evidenceThumbnail) {
+    if (this.task.evidence && !this.evidenceThumbnail) {
       this.errors[2] = true;
     }
-    if(this.task.original.hwg){
+    if(this.task.hwg){
       if(!this._hwgElement.area ||
         !this._hwgElement.waste ||
         !this._hwgElement.quantity ||
@@ -420,7 +421,7 @@ export class OmReportComponent implements OnInit, OnDestroy {
     if(this._copyLastTask){
       this.omReport.id = this._copyLastTask.id;
     }
-    if (this.task.original.hwg){
+    if (this.task.hwg){
       this.omReport.hwgReport = this._hwgElement;
     }
     this._api.createTask(this.omReport, 1).subscribe(response=>{
