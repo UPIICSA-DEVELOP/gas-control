@@ -21,6 +21,7 @@ import {FormatTimePipe} from '@app/shared/pipes/format-time/format-time.pipe';
 import {ModalProceduresService} from '@app/ui/dashboard/components/modal-procedures/modal-procedures.service';
 import {LoaderService} from '@app/core/components/loader/loader.service';
 import {IncidenceReport} from '@app/utils/interfaces/reports/incidence-report';
+import {Task} from '@app/utils/interfaces/task';
 
 @Component({
   selector: 'app-incidence-report',
@@ -31,7 +32,7 @@ import {IncidenceReport} from '@app/utils/interfaces/reports/incidence-report';
 export class IncidenceReportComponent implements OnInit, OnDestroy {
   private _taskId: string;
   private _stationId: string;
-  public task: any;
+  public task: Task;
   public utils: any;
   @Input() set taskIncidenceInfo(taskObj: any){
     if(taskObj){
@@ -124,19 +125,19 @@ export class IncidenceReportComponent implements OnInit, OnDestroy {
     });
   }
 
-  private patchForm(task: any):void {
+  private patchForm(report: IncidenceReport):void {
     this.incidenceReport = {
-      area: task.area || undefined,
-      date: task.date || undefined,
-      description: task.description || undefined,
-      fileCS: task.fileCS || undefined,
-      folio: task.folio || undefined,
-      id: task.id || undefined,
-      name: task.name || undefined,
-      procedures: task.procedures || [''],
-      signature: task.signature || undefined,
-      taskId: task.taskId || undefined,
-      time: task.time
+      area: report.area || undefined,
+      date: report.date || undefined,
+      description: report.description || undefined,
+      fileCS: report.fileCS || undefined,
+      folio: report.folio || undefined,
+      id: report.id || undefined,
+      name: report.name || undefined,
+      procedures: report.procedures || [],
+      signature: report.signature || undefined,
+      taskId: report.taskId || undefined,
+      time: report.time
     };
     this.incidenceForm.patchValue({
       time: this._formatTimePipe.transform(this.incidenceReport.time),
