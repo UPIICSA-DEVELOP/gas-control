@@ -1,4 +1,15 @@
-export interface Task {
+import {TaskTemplate} from '@app/utils/interfaces/task-template';
+
+export class Task implements TaskTemplate {
+  active: boolean;
+  editable: boolean;
+  evidence: boolean;
+  frequency: number;
+  hwg: boolean;
+  level: number;
+  name: string;
+  typeReport: number;
+  zone: number;
   asea: boolean;
   cre: boolean;
   date: number;

@@ -1,4 +1,6 @@
-export interface TaskTemplate {
+import {HWGReport} from '@app/utils/interfaces/reports/hwg-report';
+
+export interface TaskTemplate{
   active: boolean;
   asea: boolean;
   cre: boolean;
@@ -6,7 +8,7 @@ export interface TaskTemplate {
   evidence: boolean;
   frequency: number;
   hwg: boolean;
-  id: string;
+  id?: string;
   level: number;
   name: string;
   norm005: boolean;
