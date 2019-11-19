@@ -20,6 +20,7 @@ import {PdfVisorService} from '@app/shared/components/pdf-visor/pdf-visor.servic
 import {HashService} from '@app/utils/utilities/hash.service';
 import {LoaderService} from '@app/core/components/loader/loader.service';
 import {HWCReport} from '@app/utils/interfaces/reports/hwc-report';
+import {Task} from '@app/utils/interfaces/task';
 
 @Component({
   selector: 'app-hwc-report',
@@ -29,7 +30,7 @@ import {HWCReport} from '@app/utils/interfaces/reports/hwc-report';
 })
 export class HwcReportComponent implements OnInit, OnDestroy {
   private _taskId: string;
-  public task: any;
+  public task: Task;
   private _stationId: string;
   @Input() set taskHwcInfo(taskObj: any){
     if (taskObj){
@@ -114,23 +115,23 @@ export class HwcReportComponent implements OnInit, OnDestroy {
     });
   }
 
-  private patchForm(task: any): void{
+  private patchForm(report: HWCReport): void{
     this.hwcReport = {
-      carrierCompany: task.carrierCompany || undefined,
-      date: task.date || undefined,
-      finalDestination: task.finalDestination || undefined,
-      fileCS: task.fileCS || undefined,
-      folio: task.folio || undefined,
-      id: task.id || undefined,
-      // manifest: task.manifest || undefined,
-      manifestNumber: task.manifestNumber || undefined,
-      name: task.name || undefined,
-      nextPhase: task.nextPhase || undefined,
-      quantity: task.quantity || undefined,
-      signature: task.signature || undefined,
-      taskId: task.taskId || undefined,
-      unity: task.unity || undefined,
-      waste: task.waste || undefined
+      carrierCompany: report.carrierCompany || null,
+      date: report.date || null,
+      finalDestination: report.finalDestination || null,
+      fileCS: report.fileCS || null,
+      folio: report.folio || null,
+      id: report.id || null,
+      // manifest: task.manifest || null,
+      manifestNumber: report.manifestNumber || null,
+      name: report.name || null,
+      nextPhase: report.nextPhase || null,
+      quantity: report.quantity || null,
+      signature: report.signature || null,
+      taskId: report.taskId || null,
+      unity: report.unity || null,
+      waste: report.waste || null
     };
     this.hwcForm.patchValue({
       waste: this.hwcReport.waste,
