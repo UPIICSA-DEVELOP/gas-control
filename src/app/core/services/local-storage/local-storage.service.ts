@@ -5,7 +5,7 @@
  *
  */
 
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {UtilitiesService} from 'app/utils/utilities/utilities';
 
 declare var window: any;
@@ -13,10 +13,11 @@ declare var window: any;
 @Injectable()
 export class LocalStorageService {
 
-  constructor() { }
+  constructor() {
+  }
 
-  static setItem(key: string, value: any): void{
-    if(LocalStorageService.validate()){
+  static setItem(key: string, value: any): void {
+    if (LocalStorageService.validate()) {
       if (typeof value === 'object') {
         window.localStorage.setItem(key, JSON.stringify(value));
       } else {
@@ -25,8 +26,8 @@ export class LocalStorageService {
     }
   }
 
-  static getItem(key: string): any{
-    if(LocalStorageService.validate()){
+  static getItem(key: string): any {
+    if (LocalStorageService.validate()) {
       if (UtilitiesService.isValidJson(window.localStorage.getItem(key))) {
         return JSON.parse(window.localStorage.getItem(key));
       } else {
@@ -36,13 +37,13 @@ export class LocalStorageService {
     return null;
   }
 
-  static removeItem(key: string): any{
-    if(LocalStorageService.validate()){
+  static removeItem(key: string): any {
+    if (LocalStorageService.validate()) {
       window.localStorage.removeItem(key);
     }
   }
 
-  private static validate(): boolean{
+  private static validate(): boolean {
     return window.localStorage;
   }
 }
