@@ -5,8 +5,8 @@
  *
  */
 
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import {NgModule} from '@angular/core';
+import {CommonModule} from '@angular/common';
 import {ComponentsModule} from '@app/shared/components/components.module';
 import {SharedPipesModule} from '@app/shared/pipes/shared.pipes.module';
 
@@ -19,4 +19,5 @@ import {SharedPipesModule} from '@app/shared/pipes/shared.pipes.module';
     SharedPipesModule
   ]
 })
-export class SharedModule { }
+export class SharedModule {
+}
