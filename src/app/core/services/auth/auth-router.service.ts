@@ -1,5 +1,5 @@
-import { Injectable } from '@angular/core';
-import { ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot, UrlTree} from '@angular/router';
+import {Injectable} from '@angular/core';
+import {ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot, UrlTree} from '@angular/router';
 import {Observable} from 'rxjs';
 import {LocalStorageService} from '@app/core/services/local-storage/local-storage.service';
 import {CookieService} from '@app/core/services/cookie/cookie.service';
@@ -10,34 +10,36 @@ export class AuthRouterService implements CanActivate {
 
   constructor(
     private _router: Router
-  ) { }
+  ) {
+  }
 
-  canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-    if(state.url === '/login'){
-      if(AuthRouterService.validateUserInSession()){
-        if(LocalStorageService.getItem(Constants.UserInSession).role === 7){
+  private static validateUserInSession(): boolean {
+    return CookieService.getCookie(Constants.IdSession) !== null;
+  }
+
+  canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot)
+    : Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
+    if (state.url === '/login') {
+      if (AuthRouterService.validateUserInSession()) {
+        if (LocalStorageService.getItem(Constants.UserInSession).role === 7) {
           return this._router.createUrlTree(['/admin']);
-        }else{
+        } else {
           return this._router.createUrlTree(['/home']);
         }
-      }else{
+      } else {
         return true;
       }
-    }else if (
+    } else if (
       state.url.includes('/admin') &&
       AuthRouterService.validateUserInSession() &&
-      LocalStorageService.getItem(Constants.UserInSession).role !==7 ){
-     return this._router.createUrlTree(['/home']);
-    }else{
-      if(AuthRouterService.validateUserInSession()){
+      LocalStorageService.getItem(Constants.UserInSession).role !== 7) {
+      return this._router.createUrlTree(['/home']);
+    } else {
+      if (AuthRouterService.validateUserInSession()) {
         return true;
-      }else{
+      } else {
         return this._router.createUrlTree(['/login']);
       }
     }
-  }
-
-  private static validateUserInSession(): boolean{
-    return CookieService.getCookie(Constants.IdSession) !== null;
   }
 }
