@@ -26,7 +26,8 @@ export class CropImageComponent implements OnInit {
     public _dialogRef: MatDialogRef<CropImageComponent>,
     @Inject(MAT_DIALOG_DATA) private _data: any,
     private _snackBarService: SnackBarService
-  ) { }
+  ) {
+  }
 
   ngOnInit() {
     this.imageChangedEvent = this._data.event;
@@ -37,18 +38,20 @@ export class CropImageComponent implements OnInit {
     this._blobImage = event.file;
     this._base64Image = event.base64;
   }
+
   public imageLoaded() {
     this.showCropper = true;
   }
+
   public loadImageFailed() {
     this._snackBarService.openSnackBar('Ocurrio un error al cargar la imagen, por favor, intente de nuevo.', 'OK', 2000);
   }
 
-  public finishCrop(): void{
+  public finishCrop(): void {
     this._dialogRef.close({blob: this._blobImage, base64: this._base64Image});
   }
 
-  public cancelCrop(): void{
+  public cancelCrop(): void {
     this._dialogRef.close({imageFile: null});
   }
 
