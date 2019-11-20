@@ -3,7 +3,7 @@ import {Observable} from 'rxjs/internal/Observable';
 import {Subject} from 'rxjs/internal/Subject';
 
 export interface SharedNotification {
-  value: any,
+  value: any;
   type: SharedTypeNotification;
 }
 
