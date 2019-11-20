@@ -26,11 +26,12 @@
         <div class="form-station">
           <div class="station">
             <div class="station-content">
-              <form [formGroup]="newStation" (ngSubmit)="validateStation(newStation.value)" aria-label="new station form">
-                <img src="../../../assets/image/background.png" class="head-image" alt="background gas station">
+              <form [formGroup]="newStation" (ngSubmit)="validateStation(newStation.value)"
+                    aria-label="new station form">
+                <img src="../../../../assets/image/background.png" class="head-image" alt="background gas station">
                 <div class="station-image" (click)="openModal()" matTooltip="Seleccione grupo gasolinero">
-                  <mat-icon *ngIf="!stationType" class="defaultProfileImage">add_photo_alternate</mat-icon>
-                  <img *ngIf="stationType" [src]="stationType.fileCS.thumbnail" class="profileImage">
+                  <mat-icon *ngIf="!iconStation" class="defaultProfileImage">add_photo_alternate</mat-icon>
+                  <img *ngIf="iconStation" [src]="iconStation.fileCS.thumbnail" class="profileImage" alt="">
                 </div>
                 <mat-form-field class="inputs">
                   <input formControlName="businessName" matInput placeholder="Razón social" required>
@@ -48,7 +49,8 @@
                   <input formControlName="crePermission" matInput placeholder="Número de permiso de la CRE">
                 </mat-form-field>
                 <mat-form-field class="inputs">
-                  <input formControlName="name" matInput placeholder="Nombre de la sucursal" required type="text" aria-label="Station name">
+                  <input formControlName="name" matInput placeholder="Nombre de la sucursal" required type="text"
+                         aria-label="Station name">
                   <mat-error *ngIf="newStation.controls['name'].hasError('required')">
                     Este campo es obligatorio
                   </mat-error>
@@ -56,7 +58,8 @@
                 <div class="modal">
                   <div class="mask" (click)="openPersonForm(false)"></div>
                   <mat-form-field class="inputs">
-                    <input formControlName="legalRepresentative" matInput placeholder="Representante Legal" required type="text" (keyup)="openPersonForm(false)">
+                    <input formControlName="legalRepresentative" matInput placeholder="Representante Legal" required
+                           type="text" (keyup)="openPersonForm(false)">
                     <mat-error *ngIf="newStation.controls['legalRepresentative'].hasError('required')">
                       Este campo es obligatorio
                     </mat-error>
@@ -72,7 +75,8 @@
                   </mat-error>
                 </mat-form-field>
                 <mat-form-field class="inputs">
-                  <textarea formControlName="address" cdkTextareaAutosize matInput placeholder="Dirección" required></textarea>
+                  <textarea formControlName="address" cdkTextareaAutosize matInput placeholder="Dirección"
+                            required></textarea>
                   <button matSuffix matTooltip="Ubicación" type="button" mat-icon-button (click)="openLocation()">
                     <mat-icon class="map">map</mat-icon>
                   </button>
@@ -158,7 +162,8 @@
                           <button mat-button type="button">ACEPTAR</button>
                         </ng-template>
                       </mat-form-field>
-                      <button type="button" *ngIf="workShifts.length>1" mat-icon-button (click)="addRemoveTurn(true,1, i)" class="remove" [disabled]=" user.role===6">
+                      <button type="button" *ngIf="workShifts.length>1" mat-icon-button
+                              (click)="addRemoveTurn(true,1, i)" class="remove" [disabled]=" user.role===6">
                         <mat-icon>remove</mat-icon>
                       </button>
                     </div>
@@ -171,10 +176,12 @@
                   </div>
                   <div class="fuel-selector">
                     <mat-form-field class="width-form">
-                      <input formControlName="monitoringWells" matInput placeholder="De monitoreo" type="text" aria-label="Station monitoring wells">
+                      <input formControlName="monitoringWells" matInput placeholder="De monitoreo" type="text"
+                             aria-label="Station monitoring wells">
                     </mat-form-field>
                     <mat-form-field class="width-form">
-                      <input formControlName="observationWells" matInput placeholder="De observación" type="text" aria-label="Station observable wells">
+                      <input formControlName="observationWells" matInput placeholder="De observación" type="text"
+                             aria-label="Station observable wells">
                     </mat-form-field>
                   </div>
                 </div>
@@ -191,22 +198,27 @@
                       <div class="fuel">
                         <div class="fuel-selector">
                           <mat-form-field class="width-form">
-                            <input matInput placeholder="Capacidad (lts)" type="number" aria-label="Station tank fuel capacity" [(ngModel)]="tank.capacity" [ngModelOptions]="{standalone: true}">
+                            <input matInput placeholder="Capacidad (lts)" type="number"
+                                   aria-label="Station tank fuel capacity" [(ngModel)]="tank.capacity"
+                                   [ngModelOptions]="{standalone: true}">
                           </mat-form-field>
                           <mat-form-field class="width-form">
-                            <mat-select placeholder="Año de instalación" [(ngModel)]="tank.year" [ngModelOptions]="{standalone: true}">
+                            <mat-select placeholder="Año de instalación" [(ngModel)]="tank.year"
+                                        [ngModelOptions]="{standalone: true}">
                               <mat-option *ngFor="let year of yearSelector" [value]="year">{{year}}</mat-option>
                             </mat-select>
                           </mat-form-field>
                         </div>
-                        <mat-radio-group class="fuel-selector" aria-label="Station tank fuel type" [(ngModel)]="tank.fuelType" [ngModelOptions]="{standalone: true}">
+                        <mat-radio-group class="fuel-selector" aria-label="Station tank fuel type"
+                                         [(ngModel)]="tank.fuelType" [ngModelOptions]="{standalone: true}">
                           <mat-radio-button [value]="1">Magna</mat-radio-button>
                           <mat-radio-button [value]="2">Premium</mat-radio-button>
                           <mat-radio-button [value]="3">Diesel</mat-radio-button>
                         </mat-radio-group>
                       </div>
                       <div class="button-container">
-                        <button *ngIf="tanks.length>1" type="button" mat-icon-button (click)="addRemoveTurn(true,2, i)" class="remove">
+                        <button *ngIf="tanks.length>1" type="button" mat-icon-button (click)="addRemoveTurn(true,2, i)"
+                                class="remove">
                           <mat-icon>remove</mat-icon>
                         </button>
                       </div>
@@ -227,13 +239,15 @@
                 <div *ngFor="let dispenser of dispensers; let i = index">
                   <div class="dispensers">
                     <div class="inputs">
-                      <div class="head">Dispensario {{i+1}}</div>
+                      <div class="head">Dispensario {{i + 1}}</div>
                       <div class="hoses">
                         <mat-form-field class="field">
-                          <input matInput placeholder="No. de Mangueras" type="number" aria-label="Station hoses number" [(ngModel)]="dispenser.hoses" [ngModelOptions]="{standalone: true}">
+                          <input matInput placeholder="No. de Mangueras" type="number" aria-label="Station hoses number"
+                                 [(ngModel)]="dispenser.hoses" [ngModelOptions]="{standalone: true}">
                         </mat-form-field>
                         <mat-form-field class="field">
-                          <input matInput placeholder="No. de serie" type="text" aria-label="Station hoses cre id" [(ngModel)]="dispenser.identifier" [ngModelOptions]="{standalone: true}">
+                          <input matInput placeholder="No. de serie" type="text" aria-label="Station hoses cre id"
+                                 [(ngModel)]="dispenser.identifier" [ngModelOptions]="{standalone: true}">
                         </mat-form-field>
                       </div>
                       <section class="hoses" style="flex-wrap: wrap" aria-label="Station hoses fuel type">
@@ -249,14 +263,16 @@
                       </section>
                     </div>
                     <div class="button">
-                      <button type="button" *ngIf="dispensers.length>1" mat-icon-button (click)="addRemoveTurn(true,3, i)" class="remove">
+                      <button type="button" *ngIf="dispensers.length>1" mat-icon-button
+                              (click)="addRemoveTurn(true,3, i)" class="remove">
                         <mat-icon>remove</mat-icon>
                       </button>
                     </div>
                   </div>
                 </div>
                 <div class="form-button">
-                  <button mat-flat-button aria-label="LogIn" [disabled]="load" [color]="'primary'" mat-button>AÑADIR</button>
+                  <button mat-flat-button aria-label="LogIn" [disabled]="load" [color]="'primary'">AÑADIR
+                  </button>
                 </div>
               </form>
             </div>
@@ -278,8 +294,13 @@
                       </div>
                       <mat-card-content>
                         <div class="image-list">
-                          <img class="image-collaborator" *ngIf="representative.profileImage && representative.profileImage.thumbnail" [src]="representative.profileImage.thumbnail" alt="profile image">
-                          <mat-icon class="image-collaborator" *ngIf="!representative.profileImage || !representative.profileImage.thumbnail">add_photo_alternate</mat-icon>
+                          <img class="image-collaborator"
+                               *ngIf="representative.profileImage && representative.profileImage.thumbnail"
+                               [src]="representative.profileImage.thumbnail" alt="profile image">
+                          <mat-icon class="image-collaborator"
+                                    *ngIf="!representative.profileImage || !representative.profileImage.thumbnail">
+                            add_photo_alternate
+                          </mat-icon>
                         </div>
                         <div class="information">
                           <div class="info-head"> {{representative.name}} {{representative.lastName}}</div>
@@ -309,9 +330,10 @@
             <div class="new-person">
               <div class="new-person-content">
                 <form [formGroup]="newLegalRep" (ngSubmit)="validateLegal(newLegalRep.value)">
-                  <img src="../../../assets/image/background.png" class="head-image" alt="background gas station">
+                  <img src="../../../../assets/image/background.png" class="head-image" alt="background gas station">
                   <div class="image">
-                    <app-upload-file [layoutTemplate]="icon" (onLoad)="onLoadImage($event, false)" (onRemove)="onRemoveImage(false)" [type]="'image'">
+                    <app-upload-file [layoutTemplate]="icon" (onLoad)="onLoadImage($event, false)"
+                                     (onRemove)="onRemoveImage(false)" [type]="'image'">
                       <ng-template #icon>
                         <img *ngIf="profileImage" [src]="profileImage" profile-image alt="User profile image">
                         <mat-icon *ngIf="!profileImage" profile-image default-image>add_photo_alternate</mat-icon>
@@ -319,19 +341,22 @@
                     </app-upload-file>
                   </div>
                   <mat-form-field inputs-person>
-                    <input formControlName="name" matInput placeholder="Nombre(s)" required type="text" aria-label="User name">
+                    <input formControlName="name" matInput placeholder="Nombre(s)" required type="text"
+                           aria-label="User name">
                     <mat-error *ngIf="newLegalRep.controls['name'].hasError('required')">
                       Este campo es obligatorio
                     </mat-error>
                   </mat-form-field>
                   <mat-form-field inputs-person>
-                    <input formControlName="lastName" matInput placeholder="Apellido(s)" required type="text" aria-label="User last-name">
+                    <input formControlName="lastName" matInput placeholder="Apellido(s)" required type="text"
+                           aria-label="User last-name">
                     <mat-error *ngIf="newLegalRep.controls['lastName'].hasError('required')">
                       Este campo es obligatorio
                     </mat-error>
                   </mat-form-field>
                   <mat-form-field inputs-person>
-                    <input formControlName="email" matInput placeholder="Email comercial" type="email" aria-label="User email" required (blur)="validateEmailExist(false)">
+                    <input formControlName="email" matInput placeholder="Email comercial" type="email"
+                           aria-label="User email" required (blur)="validateEmailExist(false)">
                     <mat-error *ngIf="newLegalRep.controls['email'].hasError('required')">
                       Este campo es obligatorio
                     </mat-error>
@@ -345,7 +370,8 @@
                   <div class="modal">
                     <div class="mask" (click)="openListCountry(1)"></div>
                     <mat-form-field class="inputs">
-                      <input (keyup)="openListCountry(1)" formControlName="country" matInput placeholder="País" type="text" required aria-label="User country">
+                      <input (keyup)="openListCountry(1)" formControlName="country" matInput placeholder="País"
+                             type="text" required aria-label="User country">
                       <mat-error *ngIf="newLegalRep.controls['country'].hasError('required')">
                         Este campo es obligatorio
                       </mat-error>
@@ -375,7 +401,8 @@
                     </mat-form-field>
                   </div>
                   <mat-form-field class="inputs">
-                    <input disabled placeholder="Rol" required aria-label="User role" value="Representante Legal" matInput>
+                    <input disabled placeholder="Rol" required aria-label="User role" value="Representante Legal"
+                           matInput>
                   </mat-form-field>
                   <mat-form-field class="inputs">
                     <input formControlName="jobTitle" matInput placeholder="Cargo"
@@ -423,16 +450,18 @@
                       </mat-select>
                     </mat-form-field>
                     <div class="submit">
-                      <app-upload-file class="inputs" [layoutTemplate]="button" (onLoad)="onLoadFile($event, false)" [type]="'file'">
+                      <app-upload-file class="inputs" [layoutTemplate]="button" (onLoad)="onLoadFile($event, false)"
+                                       [type]="'file'">
                         <ng-template #button>
                           <div class="study">
-                            <span type="button">Estudio de toxicidad (Benceno)</span>
+                            <span>Estudio de toxicidad (Benceno)</span>
                             <mat-icon class="file-icon" *ngIf="!file" svgIcon="icons:upload"></mat-icon>
                             <mat-icon class="file-icon" *ngIf="file">autorenew</mat-icon>
                           </div>
                         </ng-template>
                       </app-upload-file>
-                      <button type="button" mat-icon-button matTooltip="Ver estudio" *ngIf="file" (click)="openStudy(false)">
+                      <button type="button" mat-icon-button matTooltip="Ver estudio" *ngIf="file"
+                              (click)="openStudy(false)">
                         <mat-icon class="file-icon">visibility</mat-icon>
                       </button>
                     </div>
@@ -445,7 +474,8 @@
                         </mat-form-field>
                         <mat-form-field class="inputs">
                           <input formControlName="contactPhoneNumber" matInput
-                                 placeholder="Número celular" type="tel" aria-label="User emergency contact phone number">
+                                 placeholder="Número celular" type="tel"
+                                 aria-label="User emergency contact phone number">
                           <mat-error *ngIf="newLegalRep.controls['contactPhoneNumber'].hasError('minlength')">
                             Se requieren de 8 a 13 dígitos
                           </mat-error>
@@ -461,7 +491,9 @@
                     </div>
                   </div>
                   <div class="form-button">
-                    <button mat-flat-button aria-label="LogIn" [disabled]="disableButton[0]" [color]="'primary'" mat-button>AGREGAR</button>
+                    <button mat-flat-button aria-label="LogIn" [disabled]="disableButton[0]" [color]="'primary'"
+                            mat-button>AGREGAR
+                    </button>
                   </div>
                 </form>
               </div>
@@ -471,14 +503,15 @@
       </div>
       <div *ngSwitchCase="3">
         <div class="calendar">
-          <div *ngFor="let task of tasks; let i = index" class="inputs">
+          <div *ngFor="let task of taskTemplates; let i = index" class="inputs">
             <mat-card style="margin: 8px 0;">
               <div class="priority" *ngIf="task.level===3" style="background-color:#E00000"></div>
               <div class="priority" *ngIf="task.level===2" style="background-color:#FFD800"></div>
               <div class="priority" *ngIf="task.level===1" style="background-color:#257602"></div>
               <mat-card-content style="display: flex; align-items: center;">
                 <div class="calendar-task">
-                  <input [min]="tomorrow" [max]="year" [matDatepicker]="picker" style="width: 0;border: 0;" [(ngModel)]="calendar[i]" (ngModelChange)="blockEnd($event)">
+                  <input [min]="tomorrow" [max]="year" [matDatepicker]="picker" style="width: 0;border: 0;"
+                         [(ngModel)]="calendar[i]" (ngModelChange)="blockEnd()">
                   <button mat-icon-button *ngIf="!calendar[i]" (click)="picker.open()">
                     <mat-icon>update</mat-icon>
                   </button>
@@ -491,17 +524,19 @@
                 </div>
                 <div style="display: flex; flex-direction: column; width: 100%;">
                   <span class="task-title">{{task.name}}</span>
-                  <span class="text-task" *ngIf="task.zone">{{zone[task.zone-1]}}</span>
+                  <span class="text-task" *ngIf="task.zone">{{zone[task.zone - 1]}}</span>
                   <div class="last-task">
-                    <span *ngIf="task.level">{{priority[task.level-1]}}</span>
-                    <span *ngIf="task.frequency"> {{frequency[task.frequency-1]}}</span>
+                    <span *ngIf="task.level">{{priority[task.level - 1]}}</span>
+                    <span *ngIf="task.frequency"> {{frequency[task.frequency - 1]}}</span>
                   </div>
                 </div>
               </mat-card-content>
             </mat-card>
           </div>
           <div class="form-button">
-            <button mat-flat-button aria-label="LogIn" [color]="'primary'" [disabled]="taskNotCalendar" (click)="validateCompleteCalendar()" mat-button>FINALIZAR</button>
+            <button mat-flat-button aria-label="LogIn" [color]="'primary'" [disabled]="taskNotCalendar"
+                    (click)="validateCompleteCalendar()" mat-button>FINALIZAR
+            </button>
           </div>
         </div>
       </div>

@@ -5,80 +5,96 @@
  */
 @import "../../../../styles/colors";
 @import "../../../../styles/profiles";
-#create-station{
+
+#create-station {
+  display: flex;
   position: relative;
+  flex-direction: column;
   width: 100%;
   height: 100%;
-  background-color: #FFFFFF;
-  display: flex;
-  flex-direction: column;
-  mat-toolbar{
+  background-color: #fff;
+
+  mat-toolbar {
     display: flex;
     justify-content: space-between;
   }
-  #forms-and-lists{
+
+  #forms-and-lists {
     width: 100%;
     height: 100%;
     overflow: auto;
-    .form-station{
+
+    .form-station {
       display: flex;
+      flex-direction: column;
       align-items: center;
       margin: 24px;
-      flex-direction: column;
-      .station{
+
+      .station {
         width: 100%;
         height: auto;
-        .station-content{
+
+        .station-content {
           text-align: center;
           padding: 0 28px;
-          @media screen and (max-width: 600px){
+          @media screen and (max-width: 600px) {
             padding: 0;
           }
         }
       }
     }
-    .form-person{
+
+    .form-person {
       display: flex;
       align-items: center;
       margin: 24px;
       flex-direction: column;
-      .new-person{
+
+      .new-person {
         height: auto;
-        .new-person-content{
+
+        .new-person-content {
           text-align: center;
           padding: 0 28px;
         }
       }
     }
-    .list-person{
+
+    .list-person {
       display: flex;
       align-items: center;
       margin: 24px;
       flex-direction: column;
       height: 95%;
       position: relative;
-      .list{
+
+      .list {
         width: 90%;
         height: 100%;
-        .card{
+
+        .card {
           position: relative;
           margin: 8px 0;
-          mat-card-content{
+
+          mat-card-content {
             display: flex;
           }
         }
       }
     }
-    .calendar{
+
+    .calendar {
       display: flex;
       align-items: center;
       margin: 24px;
       flex-direction: column;
     }
   }
-  .modal{
+
+  .modal {
     position: relative;
-    .mask{
+
+    .mask {
       position: absolute;
       top: 0;
       left: 0;
@@ -88,77 +104,95 @@
       cursor: pointer;
     }
   }
-  .inputs{
+
+  .inputs {
     width: 100%;
   }
-  .head-image{
+
+  .head-image {
     width: 50%;
   }
-  .input-content{
+
+  .input-content {
     display: flex;
     justify-content: space-around;
     align-items: center;
   }
-  .width-form{
+
+  .width-form {
     width: 40%;
   }
-  .text{
+
+  .text {
     margin: 16px 0;
     color: #707070;
     text-align: left;
   }
-  .button-container{
+
+  .button-container {
     display: flex;
     align-items: center;
   }
-  .fuel-selector{
+
+  .fuel-selector {
     display: flex;
     justify-content: space-around;
     flex-wrap: wrap;
   }
-  .fuel{
+
+  .fuel {
     width: 90%;
     margin: 12px 0;
   }
-  .dispensers{
+
+  .dispensers {
     display: flex;
     margin: 12px 0;
   }
-  .head{
+
+  .head {
     color: #707070;
     padding-left: 16px;
     text-align: left;
   }
-  .hoses{
+
+  .hoses {
     display: flex;
     justify-content: space-around;
     color: #707070;
-    .field{
+
+    .field {
       width: 40%;
     }
   }
-  .header-two{
+
+  .header-two {
     display: flex;
     align-items: center;
     justify-content: space-between;
     color: #707070;
   }
-  .button{
+
+  .button {
     display: flex;
     align-items: center;
   }
-  .flex-box{
+
+  .flex-box {
     display: flex;
   }
-  .remove{
+
+  .remove {
     color: #707070;
   }
-  .double-inputs{
+
+  .double-inputs {
     color: #707070;
     justify-content: space-between;
     display: flex;
     align-items: center;
   }
+
   .right-inputs {
     width: 72px;
     margin-right: 24px;
@@ -172,6 +206,7 @@
     box-shadow: 0 2px 1px -1px rgba(0, 0, 0, 0.2), 0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12);
     cursor: pointer;
   }
+
   .defaultProfileImage {
     display: flex;
     justify-content: center;
@@ -186,9 +221,10 @@
     box-shadow: 0 2px 1px -1px rgba(0, 0, 0, 0.2), 0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12);
   }
 
-  .signature-input{
+  .signature-input {
     margin-bottom: 16px;
   }
+
   .signatureContainer {
     display: flex;
     justify-content: center;
@@ -210,10 +246,12 @@
       }
     }
   }
-  .image{
+
+  .image {
     margin-top: -40px;
   }
-  .empty{
+
+  .empty {
     height: 100%;
     display: flex;
     justify-content: center;
@@ -221,25 +259,28 @@
     flex-direction: column;
     padding: 0 16px;
 
-    .text{
+    .text {
       font-size: 24px;
       font-weight: 600;
       color: #707070;
       margin: 24px 0;
       text-align: center;
     }
-    .button{
+
+    .button {
       background-color: #FFAA00;
       color: #FFFFFF;
       border-radius: 36px;
     }
   }
+
   .form-button {
     display: flex;
     justify-content: center;
     margin: 24px 0;
   }
-  .submit{
+
+  .submit {
     color: #707070;
     display: flex;
     align-items: center;
@@ -247,11 +288,13 @@
     border-bottom: 1px solid gray;
     margin: 8px 0 16px 0;
   }
+
   .image-list {
     display: flex;
     justify-content: center;
     align-items: center;
     padding: 0 10px;
+
     .image-collaborator {
       width: 50px;
       height: 50px;
@@ -261,14 +304,17 @@
       align-items: center;
       justify-content: center;
     }
-    mat-icon{
+
+    mat-icon {
       color: #707070;
       font-size: 40px;
     }
   }
+
   .information {
     padding: 0 10px;
     width: 75%;
+
     .info {
       color: #707070;
       font-weight: 500;
@@ -280,19 +326,21 @@
     }
   }
 
-  .add-legal{
+  .add-legal {
     position: absolute;
     right: 0;
     bottom: 0;
     margin: 24px;
     z-index: 4;
-    button{
+
+    button {
       width: 56px;
       height: 56px;
       background-color: #FFAA00;
       color: #FFFFFF;
     }
   }
+
   .title {
     font-weight: 500;
     font-size: 24px;
@@ -301,7 +349,7 @@
     margin: 24px 0 8px 0;
   }
 
-  .station-image{
+  .station-image {
     display: flex;
     justify-content: center;
     height: 100px;
@@ -309,13 +357,14 @@
     background-color: #FFFFFF;
     border-radius: 50%
   }
+
   .progress {
     position: absolute;
     top: 56px;
     z-index: 4;
   }
 
-  .priority{
+  .priority {
     width: 1%;
     height: 100%;
     position: absolute;
@@ -324,7 +373,7 @@
     border-radius: 4px 0 0 4px;
   }
 
-  .date{
+  .date {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -333,36 +382,42 @@
     padding: 0 12px;
     cursor: pointer;
   }
-  .task-title{
+
+  .task-title {
     margin: 4px 0;
     font-weight: 600;
     font-size: 16px;
     color: #707070;
   }
-  .text-task{
+
+  .text-task {
     margin: 4px 0;
     color: #707070;
     font-size: 16px;
   }
-  .last-task{
+
+  .last-task {
     margin: 4px 0;
     color: #707070;
     font-size: 16px;
     justify-content: space-between;
     display: flex;
   }
-  .study{
+
+  .study {
     display: flex;
     align-items: center;
     width: 100%;
   }
-  .formHead{
+
+  .formHead {
     margin: 8px 0 4px 0;
     font-weight: 500;
     color: #707070;
     text-align: left;
   }
-  .calendar-task{
+
+  .calendar-task {
     padding: 0 12px;
     display: flex;
     flex-direction: column;
@@ -370,7 +425,8 @@
     color: #707070;
     margin-top: -28px;
   }
-  .notValidate{
+
+  .notValidate {
     color: #FFFFFF;
     background-color: mat-color($primary);
     opacity: 0.8;
@@ -381,7 +437,8 @@
     bottom: 0;
     display: flex;
     border-radius: 4px;
-    .text-validate{
+
+    .text-validate {
       font-weight: 600;
       margin: 16px;
       width: 100%;
@@ -389,14 +446,15 @@
     }
   }
 
-  .pointer{
+  .pointer {
     cursor: pointer;
   }
 
-  .content-modal{
+  .content-modal {
     height: 100%;
   }
-  .extra-data{
+
+  .extra-data {
     margin-left: 24px;
   }
 }
