@@ -5,18 +5,18 @@
  *
  */
 
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {MatDialog} from '@angular/material/dialog';
 import {DialogComponent} from './dialog.component';
-import {TypeDialog} from '../../../utils/enums/type-dialog';
+import {TypeDialog} from '@app/utils/enums/type-dialog';
 import {MatDialogRef} from '@angular/material/dialog/typings/dialog-ref';
 
 export interface ConfigDialog {
-  type: TypeDialog;
+  type?: TypeDialog;
   title: string;
   message: string;
   inputPlaceholder?: string;
-  inputPlaceholderTwo?: string
+  inputPlaceholderTwo?: string;
   accept?: boolean;
   cancel?: boolean;
   text?: string;
@@ -28,7 +28,8 @@ export class DialogService {
 
   constructor(
     private _dialog: MatDialog
-  ) { }
+  ) {
+  }
 
   /**
    * Dialog for confirm action
@@ -41,21 +42,21 @@ export class DialogService {
    * @return {@link MatDialogRef<DialogComponent>}
    *
    * */
-  public confirmDialog(title: string, message: string, accept?: string, cancel?: string): MatDialogRef<DialogComponent>{
-   return this._dialog.open(DialogComponent,
-     {
-      data:
-         {
+  public confirmDialog(title: string, message: string, accept?: string, cancel?: string): MatDialogRef<DialogComponent> {
+    return this._dialog.open(DialogComponent,
+      {
+        data:
+          {
             type: TypeDialog.Confirm,
             title: title,
             message: message,
-            accept: (accept)?accept:'ACEPTAR',
-            cancel: (cancel)?cancel:'CANCELAR'
-         },
-       disableClose: true,
-       panelClass: 'dialog-panel'
+            accept: (accept) ? accept : 'ACEPTAR',
+            cancel: (cancel) ? cancel : 'CANCELAR'
+          },
+        disableClose: true,
+        panelClass: 'dialog-panel'
       }
-   );
+    );
   }
 
 
@@ -68,7 +69,7 @@ export class DialogService {
    * @return {@link MatDialogRef<DialogComponent>}
    *
    * */
-  public alertDialog(title: string, message: string, accept?: string): MatDialogRef<DialogComponent>{
+  public alertDialog(title: string, message: string, accept?: string): MatDialogRef<DialogComponent> {
     return this._dialog.open(DialogComponent,
       {
         data:
@@ -76,7 +77,7 @@ export class DialogService {
             type: TypeDialog.Alert,
             title: title,
             message: message,
-            accept: (accept)?accept:'ACEPTAR',
+            accept: (accept) ? accept : 'ACEPTAR',
             cancel: ''
           },
         disableClose: true,
@@ -99,7 +100,8 @@ export class DialogService {
    * @return {@link MatDialogRef<DialogComponent>}
    *
    * */
-  public alertWithInput(title: string, message: string, inputPlaceholder: string, accept?: string, cancel?: string, text?: string): MatDialogRef<DialogComponent>{
+  public alertWithInput(title: string, message: string, inputPlaceholder: string, accept?: string, cancel?: string,
+                        text?: string): MatDialogRef<DialogComponent> {
     return this._dialog.open(DialogComponent,
       {
         data:
@@ -108,8 +110,8 @@ export class DialogService {
             title: title,
             message: message,
             inputPlaceholder: inputPlaceholder,
-            accept: (accept)?accept:'ACEPTAR',
-            cancel: (cancel)?cancel:'CANCELAR',
+            accept: (accept) ? accept : 'ACEPTAR',
+            cancel: (cancel) ? cancel : 'CANCELAR',
             text: text
           },
         disableClose: true,
@@ -117,7 +119,9 @@ export class DialogService {
       }
     );
   }
-  public alertWithDoubleInput(title: string, message: string, inputPlaceholder: string, inputPlaceholderTwo?:string, accept?: string, text?: string, secondText?: string): MatDialogRef<DialogComponent>{
+
+  public alertWithDoubleInput(title: string, message: string, inputPlaceholder: string, inputPlaceholderTwo?: string
+                              , accept?: string, text?: string, secondText?: string): MatDialogRef<DialogComponent> {
     return this._dialog.open(DialogComponent,
       {
         data:
@@ -127,7 +131,7 @@ export class DialogService {
             message: message,
             inputPlaceholder: inputPlaceholder,
             inputPlaceholderTwo: inputPlaceholderTwo,
-            accept: (accept)?accept:'ACEPTAR',
+            accept: (accept) ? accept : 'ACEPTAR',
             text: text,
             secondText: secondText
           },
@@ -137,18 +141,18 @@ export class DialogService {
     );
   }
 
- /* public dialogList(titleBar: string): MatDialogRef<DialogComponent>{
-    return  this._dialog.open(DialogComponent,
-      {
-        data:
-          {
-            type:TypeDialog.list,
-            titleBar: titleBar,
-            message:''
-          },
-        disableClose: true
-      }
-      );
-  }*/
+  /* public dialogList(titleBar: string): MatDialogRef<DialogComponent>{
+     return  this._dialog.open(DialogComponent,
+       {
+         data:
+           {
+             type:TypeDialog.list,
+             titleBar: titleBar,
+             message:''
+           },
+         disableClose: true
+       }
+       );
+   }*/
 
 }

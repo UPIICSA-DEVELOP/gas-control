@@ -11,9 +11,11 @@
   <ng-template #input>
     <mat-dialog-content *ngIf="!showDoubleInput">
       {{info.message}}
-      <form [formGroup]="simpleForm" (ngSubmit)="onSubmitForm(simpleForm.value)" aria-label="Form for user" style="display: grid;">
+      <form [formGroup]="simpleForm" (ngSubmit)="onSubmitForm(simpleForm.value)" aria-label="Form for user"
+            style="display: grid;">
         <mat-form-field>
-          <input formControlName="text" matInput [placeholder]="info.inputPlaceholder" type="text" required aria-label="User input text">
+          <input formControlName="text" matInput [placeholder]="info.inputPlaceholder" type="text" required
+                 aria-label="User input text">
           <mat-error *ngIf="simpleForm.controls['text'].hasError('required')">
             Este campo es obligatorio
           </mat-error>
@@ -21,10 +23,10 @@
             La dirección de Email no es válida
           </mat-error>
         </mat-form-field>
-       <div style="display: flex; justify-content: flex-end">
-         <button mat-button type="button" (click)="cancel()" *ngIf="info.cancel">{{info.cancel}}</button>
-         <button mat-button  *ngIf="info.accept">{{info.accept}}</button>
-       </div>
+        <div style="display: flex; justify-content: flex-end">
+          <button mat-button type="button" (click)="cancel()" *ngIf="info.cancel">{{info.cancel}}</button>
+          <button mat-button *ngIf="info.accept">{{info.accept}}</button>
+        </div>
       </form>
     </mat-dialog-content>
     <mat-dialog-content *ngIf="showDoubleInput">
@@ -77,7 +79,7 @@
     <mat-dialog-content>
       {{info.message}}
     </mat-dialog-content>
-    <mat-dialog-actions align="end">
+    <mat-dialog-actions>
       <button mat-button (click)="cancel()" *ngIf="info.cancel">{{info.cancel}}</button>
       <button mat-button (click)="accept()" *ngIf="info.accept">{{info.accept}}</button>
     </mat-dialog-actions>

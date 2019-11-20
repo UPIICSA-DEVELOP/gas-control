@@ -5,12 +5,17 @@
  *
  */
 
-#core-dialog{
+#core-dialog {
   margin-bottom: 24px;
-  mat-dialog-content{
+
+  mat-dialog-content {
     max-width: 30vw;
-    @media screen and (max-width: 600px){
+    @media screen and (max-width: 600px) {
       max-width: 100vw;
     }
+  }
+
+  mat-dialog-actions {
+    justify-content: flex-end;
   }
 }

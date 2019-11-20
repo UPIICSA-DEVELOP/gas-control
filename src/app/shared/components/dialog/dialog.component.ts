@@ -12,14 +12,15 @@ import {AbstractControl, FormBuilder, FormGroup, Validators} from '@angular/form
 import {ConfigDialog} from 'app/shared/components/dialog/dialog.service';
 
 export function ValidatePasswords(ac: AbstractControl) {
-  let password = ac.get('password').value;
-  let repeatPassword = ac.get('confirmPassword').value;
-  if(password !== repeatPassword){
+  const password = ac.get('password').value;
+  const repeatPassword = ac.get('confirmPassword').value;
+  if (password !== repeatPassword) {
     ac.get('confirmPassword').setErrors({differentPasswords: true});
-  }else{
+  } else {
     return null;
   }
 }
+
 @Component({
   selector: 'app-dialog',
   templateUrl: './dialog.component.html',
@@ -28,30 +29,32 @@ export function ValidatePasswords(ac: AbstractControl) {
 })
 export class DialogComponent implements OnInit {
 
-  @ViewChild('inputPasswordOne', { static: false }) private _inputPassOne: ElementRef;
-  @ViewChild('inputPasswordTwo', { static: false }) private _inputPassTwo: ElementRef;
-  public info: any;
+  @ViewChild('inputPasswordOne', {static: false}) private _inputPassOne: ElementRef;
+  @ViewChild('inputPasswordTwo', {static: false}) private _inputPassTwo: ElementRef;
+  public info: ConfigDialog;
   public showInput: boolean;
   public showDoubleInput: boolean;
   public showList: boolean;
   public hideOne: boolean;
   public hideTwo: boolean;
   public simpleForm: FormGroup;
+
   constructor(
     public dialogRef: MatDialogRef<DialogComponent>,
     @Inject(MAT_DIALOG_DATA) private _data: ConfigDialog,
     private _formBuilder: FormBuilder
-  ) { }
+  ) {
+  }
 
   ngOnInit() {
-    switch (this._data.type){
+    switch (this._data.type) {
       case TypeDialog.Confirm:
       case TypeDialog.Alert:
         this.showList = false;
         this.info = {
           title: this._data.title || '',
           message: this._data.message || '',
-          accept: this._data.accept || '',
+          accept: this._data.accept,
           cancel: this._data.cancel
         };
         break;
@@ -61,9 +64,9 @@ export class DialogComponent implements OnInit {
         this.info = {
           title: this._data.title || '',
           message: this._data.message || '',
-          inputPlaceholder:  this._data.inputPlaceholder || '',
-          accept: this._data.accept || '',
-          cancel: this._data.cancel || ''
+          inputPlaceholder: this._data.inputPlaceholder || '',
+          accept: this._data.accept,
+          cancel: this._data.cancel
         };
         this.simpleForm = this._formBuilder.group({
           text: [this._data.text || '', [Validators.required, Validators.email]]
@@ -82,7 +85,7 @@ export class DialogComponent implements OnInit {
         };
         this.simpleForm = this._formBuilder.group({
           password: [this._data.text || '', [Validators.required]],
-          confirmPassword: [this._data.secondText|| '', [Validators.required]]
+          confirmPassword: [this._data.secondText || '', [Validators.required]]
         });
         this.simpleForm.setValidators(ValidatePasswords);
         break;
@@ -91,24 +94,24 @@ export class DialogComponent implements OnInit {
 
   public showPasswordOne(): void {
     this.hideOne = !this.hideOne;
-    this._inputPassOne.nativeElement.type = (this.hideOne)?'text':'password';
+    this._inputPassOne.nativeElement.type = (this.hideOne) ? 'text' : 'password';
   }
 
   public showPasswordTwo(): void {
     this.hideTwo = !this.hideTwo;
-    this._inputPassTwo.nativeElement.type = (this.hideTwo)?'text':'password';
+    this._inputPassTwo.nativeElement.type = (this.hideTwo) ? 'text' : 'password';
   }
 
-  public accept(): void{
+  public accept(): void {
     this.dialogRef.close({code: 1});
   }
 
-  public cancel(): void{
+  public cancel(): void {
     this.dialogRef.close({code: -1});
   }
 
-  public onSubmitForm(data): void{
-    if(!this.showList) {
+  public onSubmitForm(data): void {
+    if (!this.showList) {
       if (this.simpleForm.invalid) {
         return;
       }
