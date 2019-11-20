@@ -4,7 +4,7 @@
  * Proprietary and confidential
  */
 
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import {Component, OnInit, ViewEncapsulation} from '@angular/core';
 import {environment} from 'environments/environment';
 
 @Component({
@@ -20,7 +20,7 @@ export class FooterComponent implements OnInit {
 
   constructor() {
     this.version = environment.VERSION;
-    this.url = environment.url
+    this.url = environment.url;
   }
 
   ngOnInit() {

@@ -4,18 +4,20 @@
  * Proprietary and confidential
  */
 
-#footer{
-  .align{
+#footer {
+  .align {
     padding: 0 16px;
-    @media screen and (max-width: 1200px){
+    @media screen and (max-width: 1200px) {
       padding: 0;
     }
   }
-  .line{
+
+  .line {
     text-align: left;
     margin: 4px 0;
     display: flex;
-    .item{
+
+    .item {
       outline: none;
       cursor: pointer;
       font-weight: 500;
@@ -23,7 +25,8 @@
       color: #707070;
       text-decoration: none;
     }
-    .copyright, .version{
+
+    .copyright, .version {
       font-weight: 500;
       font-size: 14px;
       color: #707070;
