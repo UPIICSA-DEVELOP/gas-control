@@ -9,7 +9,10 @@
     <div class="container-search-box">
       <mat-card>
         <div class="search-box">
-          <app-search-box-core [title]="'Barra de Búsqueda'" [placeHolder]="'Buscar calle, colonia, ciudad'" [styles]="{width: 'calc(100% - 16px)', padding: '8px'}" (inputSearchBox)="onInputSearchBox($event)" (onChange)="onPlaceChanged($event)"></app-search-box-core>
+          <app-search-box-core [title]="'Barra de Búsqueda'" [placeHolder]="'Buscar calle, colonia, ciudad'"
+                               [styles]="{width: 'calc(100% - 16px)', padding: '8px'}"
+                               (inputSearchBox)="onInputSearchBox($event)"
+                               (onChange)="onPlaceChanged($event)"></app-search-box-core>
         </div>
         <button mat-icon-button="" (click)="clearInput()" *ngIf="clear">
           <mat-icon>close</mat-icon>
