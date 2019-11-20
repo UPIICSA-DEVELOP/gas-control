@@ -12,10 +12,10 @@
     </button>
   </mat-toolbar>
   <mat-dialog-content>
-    <div *ngFor="let station of icons">
-      <div (click)="selectStationType(station)">
+    <div *ngFor="let icon of icons">
+      <div (click)="selectStationIcon(icon)">
         <mat-card class="image">
-          <img [src]="station.fileCS.thumbnail">
+          <img [src]="icon.fileCS.thumbnail" alt="">
         </mat-card>
       </div>
     </div>

@@ -4,7 +4,7 @@
  * Proprietary and confidential
  */
 
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {MatDialog, MatDialogRef} from '@angular/material';
 import {ModalStationComponent} from '@app/shared/components/modal-station/modal-station.component';
 
@@ -13,9 +13,10 @@ export class ModalStationService {
 
   constructor(
     private _dialog: MatDialog
-  ) { }
+  ) {
+  }
 
-  public open(utils:any):MatDialogRef<ModalStationComponent>{
-    return this._dialog.open(ModalStationComponent,{panelClass:'modal-panel', disableClose: true, data:utils});
+  public open(utils: any): MatDialogRef<ModalStationComponent> {
+    return this._dialog.open(ModalStationComponent, {panelClass: 'modal-panel', disableClose: true, data: utils});
   }
 }
