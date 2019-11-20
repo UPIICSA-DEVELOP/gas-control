@@ -20,7 +20,7 @@ import {IconsService} from '@app/core/services/icons/icons.service';
 })
 export class IconsModule {
 
-  public static forRoot(): ModuleWithProviders{
+  public static forRoot(): ModuleWithProviders {
     return {
       ngModule: IconsModule,
       providers: [
@@ -32,12 +32,12 @@ export class IconsModule {
           deps: [IconsService]
         }
       ]
-    }
+    };
   }
 }
 
-export function init(service: IconsService): () => Promise<any>{
+export function init(service: IconsService): () => Promise<any> {
   return (): Promise<any> => {
     return service.init();
-  }
+  };
 }
