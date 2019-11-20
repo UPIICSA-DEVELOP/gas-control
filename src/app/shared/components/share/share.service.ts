@@ -16,26 +16,27 @@ export class ShareService {
   constructor(
     @Inject(PLATFORM_ID) private _platformId,
     private _bottomSheet: MatBottomSheet
-  ) { }
+  ) {
+  }
 
-  public open(url: string): void{
+  public open(url: string): void {
     this._bottomSheet.open(ShareComponent, {
       panelClass: 'share-panel',
       data: url
-    })
+    });
   }
 
-  private getHost(): string{
+  private getHost(): string {
     let host = '';
-    if(isPlatformBrowser(this._platformId)){
+    if (isPlatformBrowser(this._platformId)) {
       host = window.location.host;
     }
     return host;
   }
 
-  private getProtocol(): string{
+  private getProtocol(): string {
     let protocol = '';
-    if(isPlatformBrowser(this._platformId)){
+    if (isPlatformBrowser(this._platformId)) {
       protocol = window.location.protocol + '//';
     }
     return protocol;

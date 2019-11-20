@@ -7,8 +7,18 @@
 
 <div id="share-bottom-sheet">
   <h2>Compartir por:</h2>
-  <button mat-icon-button (click)="shareWithFacebook()" aria-label="Share with Facebook"><mat-icon svgIcon="icons:facebook"></mat-icon></button>
-  <button mat-icon-button (click)="shareWithTwitter()" aria-label="Share with Twitter"><mat-icon svgIcon="icons:twitter"></mat-icon></button>
-  <a href="{{urlShareWhatsApp}}" rel="noopener" target="_blank"><button mat-icon-button><mat-icon svgIcon="icons:whatsapp"></mat-icon></button></a>
-  <button mat-icon-button (click)="copyLink()" aria-label="Copy link"><mat-icon>link</mat-icon></button>
+  <button mat-icon-button (click)="shareWithFacebook()" aria-label="Share with Facebook">
+    <mat-icon svgIcon="icons:facebook"></mat-icon>
+  </button>
+  <button mat-icon-button (click)="shareWithTwitter()" aria-label="Share with Twitter">
+    <mat-icon svgIcon="icons:twitter"></mat-icon>
+  </button>
+  <a href="{{urlShareWhatsApp}}" rel="noopener" target="_blank">
+    <button mat-icon-button>
+      <mat-icon svgIcon="icons:whatsapp"></mat-icon>
+    </button>
+  </a>
+  <button mat-icon-button (click)="copyLink()" aria-label="Copy link">
+    <mat-icon>link</mat-icon>
+  </button>
 </div>
