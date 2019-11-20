@@ -1,15 +1,18 @@
-#pdf-visor{
+#pdf-visor {
   height: 90vh;
   overflow: hidden;
   position: relative;
-  mat-toolbar{
+
+  mat-toolbar {
     position: relative;
-    .buttons{
+
+    .buttons {
       position: absolute;
       right: 16px;
     }
   }
-  .container{
+
+  .container {
     max-width: 100%;
     height: calc(100% - 64px);
     padding: 32px 0;

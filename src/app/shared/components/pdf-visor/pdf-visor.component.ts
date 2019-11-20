@@ -17,18 +17,19 @@ export class PdfVisorComponent implements OnInit {
   constructor(
     @Inject(MAT_DIALOG_DATA) private _data: any,
     private _dialogRef: MatDialogRef<PdfVisorComponent>
-  ) { }
+  ) {
+  }
 
   ngOnInit() {
     this.pdfSrc = this._data.url;
     this.hideDownload = this._data.hideDownload || false;
   }
 
-  public downloadFile(): void{
-    UtilitiesService.downloadFileByBlob(this.pdfSrc, 'document.pdf')
+  public downloadFile(): void {
+    UtilitiesService.downloadFileByBlob(this.pdfSrc, 'document.pdf');
   }
 
-  public close(): void{
+  public close(): void {
     this._dialogRef.close();
   }
 

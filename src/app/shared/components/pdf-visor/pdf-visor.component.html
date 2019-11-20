@@ -1,8 +1,12 @@
 <div id="pdf-visor">
   <mat-toolbar>
     <div class="buttons">
-      <button *ngIf="!hideDownload" (click)="downloadFile()" matTooltip="Descargar" mat-icon-button><mat-icon>vertical_align_bottom</mat-icon></button>
-      <button (click)="close()" matTooltip="Cerrar" mat-icon-button><mat-icon>close</mat-icon></button>
+      <button *ngIf="!hideDownload" (click)="downloadFile()" matTooltip="Descargar" mat-icon-button>
+        <mat-icon>vertical_align_bottom</mat-icon>
+      </button>
+      <button (click)="close()" matTooltip="Cerrar" mat-icon-button>
+        <mat-icon>close</mat-icon>
+      </button>
     </div>
   </mat-toolbar>
   <div class="container">
