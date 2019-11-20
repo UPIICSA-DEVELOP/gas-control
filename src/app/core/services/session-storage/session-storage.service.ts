@@ -5,15 +5,17 @@
  *
  */
 
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {UtilitiesService} from 'app/utils/utilities/utilities';
+
 @Injectable()
 export class SessionStorageService {
 
-  constructor() { }
+  constructor() {
+  }
 
-  static setItem(key: string, value: any): void{
-    if(SessionStorageService.validate()){
+  static setItem(key: string, value: any): void {
+    if (SessionStorageService.validate()) {
       if (typeof value === 'object') {
         window.sessionStorage.setItem(key, JSON.stringify(value));
       } else {
@@ -22,8 +24,8 @@ export class SessionStorageService {
     }
   }
 
-  static getItem(key: string): any{
-    if(SessionStorageService.validate()){
+  static getItem(key: string): any {
+    if (SessionStorageService.validate()) {
       if (UtilitiesService.isValidJson(window.sessionStorage.getItem(key))) {
         return JSON.parse(window.sessionStorage.getItem(key));
       } else {
@@ -33,13 +35,13 @@ export class SessionStorageService {
     return null;
   }
 
-  static removeItem(key: string): any{
-    if(SessionStorageService.validate()){
+  static removeItem(key: string): any {
+    if (SessionStorageService.validate()) {
       window.sessionStorage.removeItem(key);
     }
   }
 
-  private static validate(): boolean{
-    return window.sessionStorage!==null;
+  private static validate(): boolean {
+    return window.sessionStorage !== null;
   }
 }
