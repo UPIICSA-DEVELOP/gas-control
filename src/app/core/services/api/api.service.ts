@@ -38,6 +38,7 @@ import {FEReport} from '@app/utils/interfaces/reports/fe-report';
 import {HWCReport} from '@app/utils/interfaces/reports/hwc-report';
 import {FRReport} from '@app/utils/interfaces/reports/frr-report';
 import {IncidenceReport} from '@app/utils/interfaces/reports/incidence-report';
+import {Notification} from '@app/utils/interfaces/notification';
 
 
 @Injectable()
@@ -47,7 +48,8 @@ export class ApiService implements OnDestroy {
   private static API_PATH = '/_ah/api/';
   private static API_CHANNEL = 'communication/';
   private static API_VERSION = 'v1/';
-  private static API_URL_COMPLETE = ApiService.API_URL + ApiService.API_PATH + ApiService.API_CHANNEL + ApiService.API_VERSION;
+  private static API_URL_COMPLETE = ApiService.API_URL.concat(ApiService.API_PATH).concat(ApiService.API_CHANNEL)
+    .concat(ApiService.API_VERSION);
   private static PROXY_ENDPOINTS = environment.apiUrl;
   private _subscriptionNetwork: Subscription;
 
@@ -77,14 +79,14 @@ export class ApiService implements OnDestroy {
     const options = {
       token: token
     };
-    return this._http.post<DefaultResponse>(ApiService.API_URL_COMPLETE + 'signOut', options);
+    return this._http.post<DefaultResponse>(ApiService.API_URL_COMPLETE.concat('signOut'), options);
   }
 
   public resetPassword(email: string): Observable<DefaultResponse> {
     const options = {
       email: email
     };
-    return this._http.post<DefaultResponse>(ApiService.API_URL_COMPLETE + 'sendSignInLink', options);
+    return this._http.post<DefaultResponse>(ApiService.API_URL_COMPLETE.concat('sendSignInLink'), options);
   }
 
   public signInWithLink(id: string, token?: string): Observable<EntityResponse<Person>> {
@@ -185,11 +187,13 @@ export class ApiService implements OnDestroy {
     return this._http.put<EntityResponse<Station>>(ApiService.API_URL_COMPLETE + 'updateStation', station);
   }
 
-  public getLegalRepresentativeBasicData(consultancyId: string, legalRepresentativeId: string): Observable<EntityResponse<ConsultancyBasicData>> {
+  public getLegalRepresentativeBasicData(consultancyId: string, legalRepresentativeId: string)
+    : Observable<EntityResponse<ConsultancyBasicData>> {
     let params = new HttpParams();
     params = params.append('consultancyId', consultancyId);
     params = params.append('legalRepresentativeId', legalRepresentativeId);
-    return this._http.get<EntityResponse<ConsultancyBasicData>>(ApiService.API_URL_COMPLETE + 'getLegalRepresentativeBasicData', {params: params});
+    return this._http.get<EntityResponse<ConsultancyBasicData>>
+    (`${ApiService.API_URL_COMPLETE}getLegalRepresentativeBasicData`, {params: params});
   }
 
   public getStationBasicData(personId: string): Observable<EntityResponse<StationBasicData>> {
@@ -245,7 +249,8 @@ export class ApiService implements OnDestroy {
   public listPersonStationByConsultancy(refId: string): Observable<EntityCollectionResponse<PersonLite>> {
     let params = new HttpParams();
     params = params.append('consultancyCreationId', refId);
-    return this._http.get<EntityCollectionResponse<PersonLite>>(ApiService.API_URL_COMPLETE + 'listPersonStationByConsultancy', {params: params});
+    return this._http.get<EntityCollectionResponse<PersonLite>>
+    (ApiService.API_URL_COMPLETE + 'listPersonStationByConsultancy', {params: params});
   }
 
   public personExists(email: any): Observable<DefaultResponse> {
@@ -431,7 +436,7 @@ export class ApiService implements OnDestroy {
         }
       }
     }
-    return forkJoin(response1, response2).pipe(map((resp: any[]) => {
+    return forkJoin([response1, response2]).pipe(map((resp: any[]) => {
       return {station: resp[0], utils: resp[1]};
     }));
   }
@@ -488,7 +493,7 @@ export class ApiService implements OnDestroy {
         break;
     }
     return response;
-  };
+  }
 
   /**
    * TypeReport = 1 | Operación y mantenimiento
@@ -601,36 +606,39 @@ export class ApiService implements OnDestroy {
    * Start: create reports by reportType
    */
 
-  private createOMReport(report: OMReport): Observable<EntityResponse<ReportComplete<Task,OMReport>>> {
-    return this._http.post<EntityResponse<ReportComplete<Task,OMReport>>>(ApiService.API_URL_COMPLETE + 'createOMReport', report);
+  private createOMReport(report: OMReport): Observable<EntityResponse<ReportComplete<Task, OMReport>>> {
+    return this._http.post<EntityResponse<ReportComplete<Task, OMReport>>>(ApiService.API_URL_COMPLETE + 'createOMReport', report);
   }
 
-  private createCompressorReport(report: CompressorReport): Observable<EntityResponse<ReportComplete<Task,CompressorReport>>> {
-    return this._http.post<EntityResponse<ReportComplete<Task,CompressorReport>>>(ApiService.API_URL_COMPLETE + 'createCompressorReport', report);
+  private createCompressorReport(report: CompressorReport): Observable<EntityResponse<ReportComplete<Task, CompressorReport>>> {
+    return this._http.post<EntityResponse<ReportComplete<Task, CompressorReport>>>
+    (ApiService.API_URL_COMPLETE + 'createCompressorReport', report);
   }
 
-  private createVRSReport(report: VRSReport): Observable<EntityResponse<ReportComplete<Task,VRSReport>>> {
-    return this._http.post<EntityResponse<ReportComplete<Task,VRSReport>>>(ApiService.API_URL_COMPLETE + 'createVRSReport', report);
+  private createVRSReport(report: VRSReport): Observable<EntityResponse<ReportComplete<Task, VRSReport>>> {
+    return this._http.post<EntityResponse<ReportComplete<Task, VRSReport>>>(ApiService.API_URL_COMPLETE + 'createVRSReport', report);
   }
 
-  private createScannedReport(report: ScannedReport): Observable<EntityResponse<ReportComplete<Task,ScannedReport>>> {
-    return this._http.post<EntityResponse<ReportComplete<Task,ScannedReport>>>(ApiService.API_URL_COMPLETE + 'createScannedReport', report);
+  private createScannedReport(report: ScannedReport): Observable<EntityResponse<ReportComplete<Task, ScannedReport>>> {
+    return this._http.post<EntityResponse<ReportComplete<Task, ScannedReport>>>
+    (ApiService.API_URL_COMPLETE + 'createScannedReport', report);
   }
 
-  private createFEReport(report: FEReport): Observable<EntityResponse<ReportComplete<Task,FEReport>>> {
-    return this._http.post<EntityResponse<ReportComplete<Task,FEReport>>>(ApiService.API_URL_COMPLETE + 'createFEReport', report);
+  private createFEReport(report: FEReport): Observable<EntityResponse<ReportComplete<Task, FEReport>>> {
+    return this._http.post<EntityResponse<ReportComplete<Task, FEReport>>>(ApiService.API_URL_COMPLETE + 'createFEReport', report);
   }
 
-  private createHWCReport(report: HWCReport): Observable<EntityResponse<ReportComplete<Task,HWCReport>>> {
-    return this._http.post<EntityResponse<ReportComplete<Task,HWCReport>>>(ApiService.API_URL_COMPLETE + 'createHWCReport', report);
+  private createHWCReport(report: HWCReport): Observable<EntityResponse<ReportComplete<Task, HWCReport>>> {
+    return this._http.post<EntityResponse<ReportComplete<Task, HWCReport>>>(ApiService.API_URL_COMPLETE + 'createHWCReport', report);
   }
 
-  private createFRReport(report: FRReport): Observable<EntityResponse<ReportComplete<Task,FRReport>>> {
-    return this._http.post<EntityResponse<ReportComplete<Task,FRReport>>>(ApiService.API_URL_COMPLETE + 'createFRReport', report);
+  private createFRReport(report: FRReport): Observable<EntityResponse<ReportComplete<Task, FRReport>>> {
+    return this._http.post<EntityResponse<ReportComplete<Task, FRReport>>>(ApiService.API_URL_COMPLETE + 'createFRReport', report);
   }
 
-  private createIncidenceReport(report: IncidenceReport): Observable<EntityResponse<ReportComplete<Task,IncidenceReport>>> {
-    return this._http.post<EntityResponse<ReportComplete<Task,IncidenceReport>>>(ApiService.API_URL_COMPLETE + 'createIncidenceReport', report);
+  private createIncidenceReport(report: IncidenceReport): Observable<EntityResponse<ReportComplete<Task, IncidenceReport>>> {
+    return this._http.post<EntityResponse<ReportComplete<Task, IncidenceReport>>>
+    (ApiService.API_URL_COMPLETE + 'createIncidenceReport', report);
   }
 
   /**
@@ -649,10 +657,10 @@ export class ApiService implements OnDestroy {
     return this._http.post(ApiService.API_URL_COMPLETE + 'createIncidenceReportAndTask?stationId=' + stationId + '&type=3', task);
   }
 
-  public listNotificationsAdmin(id: string): Observable<any> {
+  public listNotificationsAdmin(id: string): Observable<EntityCollectionResponse<Notification>> {
     let params = new HttpParams();
     params = params.append('personId', id);
-    return this._http.get(ApiService.API_URL_COMPLETE + 'listNotificationsAdmin', {params: params});
+    return this._http.get<EntityCollectionResponse<Notification>>(ApiService.API_URL_COMPLETE + 'listNotificationsAdmin', {params: params});
   }
 
   public getSasisopa(stationId: string): Observable<any> {
