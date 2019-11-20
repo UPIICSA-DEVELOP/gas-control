@@ -5,7 +5,7 @@
  *
  */
 
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {Platform} from '@angular/cdk/platform';
 
 @Injectable()
@@ -13,17 +13,18 @@ export class DeviceDetectorService {
 
   constructor(
     private _platform: Platform
-  ) { }
+  ) {
+  }
 
-  public isMobileDevice(): boolean{
+  public isMobileDevice(): boolean {
     return this._platform.ANDROID || this._platform.IOS;
   }
 
-  public isAndroidDevice(): boolean{
+  public isAndroidDevice(): boolean {
     return this._platform.ANDROID;
   }
 
-  public isIosDevice(): boolean{
+  public isIosDevice(): boolean {
     return this._platform.IOS;
   }
 }
