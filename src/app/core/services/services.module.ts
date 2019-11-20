@@ -6,11 +6,11 @@
  */
 
 import {ModuleWithProviders, NgModule} from '@angular/core';
-import { CommonModule } from '@angular/common';
+import {CommonModule} from '@angular/common';
 import {MetaService} from './meta/meta.service';
 import {SnackBarService} from './snackbar/snackbar.service';
 import {ClipboardService} from './clipboard/clipboard.service';
-import {ApiService } from './api/api.service';
+import {ApiService} from './api/api.service';
 import {DeviceDetectorService} from './device-detector/device-detector.service';
 import {LocalStorageService} from './local-storage/local-storage.service';
 import {CookieService} from './cookie/cookie.service';
@@ -44,7 +44,7 @@ export class ServicesModule {
     this._meta.init();
   }
 
-  static forRoot(): ModuleWithProviders{
+  static forRoot(): ModuleWithProviders {
     return {
       ngModule: ServicesModule,
       providers: [
@@ -63,7 +63,7 @@ export class ServicesModule {
         UserProfileService,
         SharedService
       ]
-    }
+    };
   }
 
 }
