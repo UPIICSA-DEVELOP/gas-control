@@ -4,7 +4,7 @@
  *  Proprietary and confidential
  */
 
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {MatDialog, MatDialogRef} from '@angular/material';
 import {ImageVisorComponent} from 'app/shared/components/image-visor/image-visor.component';
 
@@ -13,9 +13,10 @@ export class ImageVisorService {
 
   constructor(
     private _dialogRef: MatDialog
-  ) { }
+  ) {
+  }
 
-  public open(imagesArray: any[]):MatDialogRef<ImageVisorComponent>{
-    return this._dialogRef.open(ImageVisorComponent,{disableClose: true, panelClass:'modal-image-visor', data: imagesArray || null});
+  public open(imagesArray: any[]): MatDialogRef<ImageVisorComponent> {
+    return this._dialogRef.open(ImageVisorComponent, {disableClose: true, panelClass: 'modal-image-visor', data: imagesArray || null});
   }
 }
