@@ -5,8 +5,8 @@
  *
  */
 
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import {NgModule} from '@angular/core';
+import {CommonModule} from '@angular/common';
 import {HTTP_INTERCEPTORS} from '@angular/common/http';
 import {BrowserStateInterceptor} from '@app/core/interceptors/browser/app.browser.interceptor';
 import {HandlerErrorInterceptor} from '@app/core/interceptors/browser/app.handler-error.interceptor';
@@ -34,4 +34,5 @@ import {LoaderInterceptor} from '@app/core/interceptors/browser/app.loader.inter
     }
   ]
 })
-export class InterceptorsBrowserModule { }
+export class InterceptorsBrowserModule {
+}
