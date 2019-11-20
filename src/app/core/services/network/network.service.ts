@@ -20,22 +20,22 @@ export class NetworkService {
     this._notifyNetworkChanges = new Subject<boolean>();
   }
 
-  public getNetworkChanges(): Observable<boolean>{
+  public getNetworkChanges(): Observable<boolean> {
     return this._notifyNetworkChanges.asObservable();
   }
 
-  public init(): Promise<void>{
-   return new Promise<void>(resolve => {
-     if(isPlatformBrowser(this._platformId)){
-       window.addEventListener('online', () => {
-         this._notifyNetworkChanges.next(navigator.onLine);
-       });
-       window.addEventListener('offline', () => {
-         this._notifyNetworkChanges.next(navigator.onLine);
-       });
-     }
-     resolve();
-   });
+  public init(): Promise<void> {
+    return new Promise<void>(resolve => {
+      if (isPlatformBrowser(this._platformId)) {
+        window.addEventListener('online', () => {
+          this._notifyNetworkChanges.next(navigator.onLine);
+        });
+        window.addEventListener('offline', () => {
+          this._notifyNetworkChanges.next(navigator.onLine);
+        });
+      }
+      resolve();
+    });
   }
 }
 

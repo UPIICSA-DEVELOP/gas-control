@@ -20,7 +20,7 @@ import {NetworkService} from '@app/core/services/network/network.service';
 })
 export class NetworkModule {
 
-  public static forRoot(): ModuleWithProviders{
+  public static forRoot(): ModuleWithProviders {
     return {
       ngModule: NetworkModule,
       providers: [
@@ -32,13 +32,13 @@ export class NetworkModule {
           deps: [NetworkService]
         }
       ]
-    }
+    };
   }
 }
 
-export function init(service: NetworkService): () => Promise<any>{
+export function init(service: NetworkService): () => Promise<any> {
   return (): Promise<any> => {
     return service.init();
-  }
+  };
 }
 
