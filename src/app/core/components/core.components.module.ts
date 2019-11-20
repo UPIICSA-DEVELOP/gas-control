@@ -5,8 +5,8 @@
  *
  */
 
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import {NgModule} from '@angular/core';
+import {CommonModule} from '@angular/common';
 import {SplashComponent} from '@app/core/components/splash/splash.component';
 import {CommonsModule} from '@app/commons/commons.module';
 import {LoaderComponent} from '@app/core/components/loader/loader.component';
@@ -29,4 +29,5 @@ import {LoaderService} from '@app/core/components/loader/loader.service';
     LoaderService
   ]
 })
-export class CoreComponentsModule { }
+export class CoreComponentsModule {
+}
