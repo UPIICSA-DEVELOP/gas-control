@@ -5,8 +5,8 @@
  *
  */
 
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import {NgModule} from '@angular/core';
+import {CommonModule} from '@angular/common';
 import {CountryCodeComponent} from '@app/shared/components/country-code/country-code.component';
 import {CountryCodeService} from '@app/shared/components/country-code/country-code.service';
 import {CropImageComponent} from '@app/shared/components/crop-image/crop-image.component';
@@ -104,9 +104,9 @@ const EntryComponents = [
     AgmCoreModule.forRoot({
       apiKey: Constants.GoogleApiKey,
       libraries: [
-        "places","geometry","drawing"
+        'places', 'geometry', 'drawing'
       ],
-      language: "es"
+      language: 'es'
     })
   ],
   declarations: [
@@ -123,4 +123,5 @@ const EntryComponents = [
     Providers
   ]
 })
-export class ComponentsModule { }
+export class ComponentsModule {
+}
