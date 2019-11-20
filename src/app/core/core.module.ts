@@ -25,7 +25,7 @@ import {CoreDirectivesModule} from '@app/core/directives/core.directives.module'
 })
 export class CoreModule {
 
-  constructor (
+  constructor(
     @Optional() @SkipSelf() parentModule: CoreModule
   ) {
     if (parentModule) {
