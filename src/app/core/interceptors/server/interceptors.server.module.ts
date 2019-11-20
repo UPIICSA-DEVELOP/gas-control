@@ -5,8 +5,8 @@
  *
  */
 
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import {NgModule} from '@angular/core';
+import {CommonModule} from '@angular/common';
 import {HTTP_INTERCEPTORS} from '@angular/common/http';
 import {ServerStateInterceptor} from '@app/core/interceptors/server/app.server.interceptor';
 import {TranslateInterceptor} from '@app/core/interceptors/server/app.translate.interceptor';
@@ -28,4 +28,5 @@ import {TranslateInterceptor} from '@app/core/interceptors/server/app.translate.
     }
   ]
 })
-export class InterceptorsServerModule { }
+export class InterceptorsServerModule {
+}
