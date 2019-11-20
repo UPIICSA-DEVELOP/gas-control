@@ -16,11 +16,11 @@ import {DOCUMENT, isPlatformBrowser} from '@angular/common';
 import {UtilitiesService} from 'app/utils/utilities/utilities';
 
 export interface UploadFileResponse {
-  isImage: boolean,
-  blob: Blob,
-  file: File,
-  url: string,
-  fileName: string
+  isImage: boolean;
+  blob: Blob;
+  file: File;
+  url: string;
+  fileName: string;
 }
 
 export enum UploadFileType {
@@ -46,28 +46,30 @@ export class UploadFileComponent implements OnInit {
   public id: string;
   public isImage: boolean;
   public acceptType: string;
+
   constructor(
     @Inject(DOCUMENT) private _document: Document,
     @Inject(PLATFORM_ID) private _platformId: any,
     private _snackBarService: SnackBarService,
     private _dialog: MatDialog
-  ) { }
+  ) {
+  }
 
   ngOnInit() {
     this.id = UtilitiesService.makeRandomHash();
     this.show = isPlatformBrowser(this._platformId);
-    if(this.validateTypeExist()){
+    if (this.validateTypeExist()) {
       this.validateType(this.type);
     }
   }
 
-  public onChangeFile(event): void{
+  public onChangeFile(event): void {
     const file = event.target.value;
     const fileName = event.target.files[0].name;
-    if(this.validateTypeExist()){
-      switch (this.type){
+    if (this.validateTypeExist()) {
+      switch (this.type) {
         case UploadFileType.image:
-          if(this.validateImage(file)) {
+          if (this.validateImage(file)) {
             this._dialog.open(CropImageComponent,
               {
                 data:
@@ -82,7 +84,7 @@ export class UploadFileComponent implements OnInit {
           }
           break;
         case UploadFileType.file:
-          if(this.validateFile(file)){
+          if (this.validateFile(file)) {
             this.onLoad.emit({url: null, blob: null, isImage: false, file: event.target.files[0], fileName: fileName});
           }
           break;
@@ -90,16 +92,16 @@ export class UploadFileComponent implements OnInit {
     }
   }
 
-  public update(): void{
+  public update(): void {
     this._document.getElementById(this.id).click();
   }
 
-  public remove(): void{
+  public remove(): void {
     this.onRemove.emit(true);
   }
 
-  private validateType(type: UploadFileType): void{
-    switch (type){
+  private validateType(type: UploadFileType): void {
+    switch (type) {
       case UploadFileType.file:
         this.acceptType = 'application/pdf';
         this.isImage = false;
@@ -114,28 +116,28 @@ export class UploadFileComponent implements OnInit {
     }
   }
 
-  private validateImage(file: any): boolean{
-    if(!(/(\.jpg|\.jpeg|\.png)$/i).exec(file)){
+  private validateImage(file: any): boolean {
+    if (!(/(\.jpg|\.jpeg|\.png)$/i).exec(file)) {
       this._snackBarService.openSnackBar('Suba un archivo que tenga las extensiones .jpeg / .jpg / .png solamente.', 'OK', 2000);
       return false;
-    }else{
+    } else {
       return true;
     }
   }
 
-  private validateFile(file: any): boolean{
-    if(!(/(\.pdf)$/i).exec(file)){
+  private validateFile(file: any): boolean {
+    if (!(/(\.pdf)$/i).exec(file)) {
       this._snackBarService.openSnackBar('Suba un archivo que tenga las extensiones .pdf solamente.', 'OK', 2000);
       return false;
-    }else{
+    } else {
       return true;
     }
   }
 
-  private validateTypeExist(): boolean{
-    if(this.type!==undefined || this.type!==null){
+  private validateTypeExist(): boolean {
+    if (this.type !== undefined || true) {
       return true;
-    }else{
+    } else {
       console.error(new Error('Type is required'));
       return false;
     }

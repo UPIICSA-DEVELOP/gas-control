@@ -5,14 +5,16 @@
  *
  */
 
-#upload-file-component{
+#upload-file-component {
   position: relative;
   display: flex;
   justify-content: center;
-  .inputHiddenForFileInComponent{
+
+  .inputHiddenForFileInComponent {
     display: none;
   }
-  #mask{
+
+  #mask {
     position: absolute;
     width: 100%;
     height: 100%;
@@ -25,7 +27,8 @@
     border-radius: 50%;
     background-color: transparent;
   }
-  input:focus{
+
+  input:focus {
     outline: none !important;
   }
 }

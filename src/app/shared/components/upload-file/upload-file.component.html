@@ -7,7 +7,8 @@
 
 <div id="upload-file-component">
   <ng-container [ngTemplateOutlet]="layoutTemplate">
-    <input class="inputHiddenForFileInComponent" type="file" [accept]="acceptType" (change)="onChangeFile($event)" [id]="id"/>
+    <input class="inputHiddenForFileInComponent" type="file" [accept]="acceptType" (change)="onChangeFile($event)"
+           [id]="id"/>
     <div *ngIf="show">
       <div id="mask" [matMenuTriggerFor]="menu"></div>
       <mat-menu class="upload-image-menu-panel" #menu="matMenu">
