@@ -5,7 +5,7 @@
  *
  */
 
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {NavigationEnd, Router} from '@angular/router';
 import {filter} from 'rxjs/internal/operators';
 
@@ -13,9 +13,11 @@ import {filter} from 'rxjs/internal/operators';
 export class RouterStateService {
 
   private _history = [];
+
   constructor(
     private router: Router
-  ) { }
+  ) {
+  }
 
   public loadRouting(): void {
     this.router.events
