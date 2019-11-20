@@ -5,7 +5,7 @@
  *
  */
 
-import { NgModule} from '@angular/core';
+import {NgModule} from '@angular/core';
 import {ConvertTimeAndCapacityPipe} from '@app/shared/pipes/convert-time-and-capacity/convert-time-and-capacity.pipe';
 import {FormatDatePipe} from '@app/shared/pipes/format-date/format-date.pipe';
 import {FormatTimePipe} from '@app/shared/pipes/format-time/format-time.pipe';
@@ -26,4 +26,5 @@ const Pipes = [
   providers: Pipes
 })
 
-export class SharedPipesModule {}
+export class SharedPipesModule {
+}
