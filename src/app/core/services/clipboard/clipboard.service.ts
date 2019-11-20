@@ -11,7 +11,8 @@ import {SnackBarService} from '../snackbar/snackbar.service';
 @Injectable()
 export class ClipboardService {
 
-  constructor(private snack: SnackBarService) { }
+  constructor(private snack: SnackBarService) {
+  }
 
   public copy(text: string): void {
     try {
