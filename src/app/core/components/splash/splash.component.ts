@@ -8,24 +8,26 @@ import {isPlatformBrowser} from '@angular/common';
   encapsulation: ViewEncapsulation.None
 })
 export class SplashComponent implements OnInit {
-  private _seconds: number = 0;
+  private _seconds = 0;
   public visible: boolean;
+
   constructor(
     @Inject(PLATFORM_ID) private _platformId
-  ) { }
+  ) {
+  }
 
   ngOnInit() {
     this.visible = true;
-    if(isPlatformBrowser(this._platformId)){
+    if (isPlatformBrowser(this._platformId)) {
       setInterval(() => {
         this.increaseNumber();
       }, 1000);
     }
   }
 
-  private increaseNumber(): void{
+  private increaseNumber(): void {
     this._seconds += 1;
-    if(this._seconds===2){
+    if (this._seconds === 2) {
       this.visible = false;
     }
   }
