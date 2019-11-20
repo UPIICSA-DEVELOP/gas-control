@@ -19,7 +19,7 @@ import {ConsoleService} from '@app/core/services/console/console.service';
 })
 export class ConsoleModule {
 
-  public static forRoot(): ModuleWithProviders{
+  public static forRoot(): ModuleWithProviders {
     return {
       ngModule: ConsoleModule,
       providers: [
@@ -31,12 +31,12 @@ export class ConsoleModule {
           deps: [ConsoleService]
         }
       ]
-    }
+    };
   }
 }
 
-export function init(service: ConsoleService): () => Promise<any>{
+export function init(service: ConsoleService): () => Promise<any> {
   return (): Promise<any> => {
     return service.init();
-  }
+  };
 }
