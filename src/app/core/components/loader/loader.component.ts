@@ -8,7 +8,7 @@ import {Component, OnInit, ViewEncapsulation} from '@angular/core';
 import {LoaderService} from '@app/core/components/loader/loader.service';
 
 @Component({
-  selector: 'loader',
+  selector: 'app-loader',
   templateUrl: './loader.component.html',
   styleUrls: ['./loader.component.scss'],
   encapsulation: ViewEncapsulation.None
@@ -24,9 +24,9 @@ export class LoaderComponent implements OnInit {
   }
 
   ngOnInit() {
-   this._loader.getProgress().subscribe(value => {
-     this.show = value;
-   });
+    this._loader.getProgress().subscribe(value => {
+      this.show = value;
+    });
   }
 
 }

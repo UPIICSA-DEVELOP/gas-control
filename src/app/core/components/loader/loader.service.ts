@@ -5,8 +5,8 @@
  *
  */
 
-import { Injectable } from '@angular/core';
-import {Observable, Subject} from 'rxjs/index';
+import {Injectable} from '@angular/core';
+import {Observable, Subject} from 'rxjs';
 
 @Injectable()
 export class LoaderService {
@@ -17,11 +17,11 @@ export class LoaderService {
     this._observer = new Subject<boolean>();
   }
 
-  public setProgress(load: boolean): void{
+  public setProgress(load: boolean): void {
     this._observer.next(load);
   }
 
-  public getProgress(): Observable<boolean>{
+  public getProgress(): Observable<boolean> {
     return this._observer.asObservable();
   }
 }

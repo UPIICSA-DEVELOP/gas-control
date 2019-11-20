@@ -1,24 +1,26 @@
-.container-loader{
+.container-loader {
   position: absolute;
   right: 24px;
   bottom: 24px;
   z-index: 10000;
-  mat-card{
-    padding: 14px 16px;
+
+  mat-card {
     display: flex;
-    background-color: #323232;
     justify-content: space-between;
-    p{
+    padding: 14px 16px;
+    background-color: #323232;
+
+    p {
       margin: 0 8px;
       color: white;
     }
   }
-  @media screen and (max-width: 600px){
+
+  @media screen and (max-width: 600px) {
     left: 24px;
   }
 }
 
-.hidden{
+.hidden {
   display: none !important;
 }
-
