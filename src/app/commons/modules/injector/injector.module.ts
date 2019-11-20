@@ -1,5 +1,5 @@
 import {Injector, NgModule} from '@angular/core';
-import { CommonModule } from '@angular/common';
+import {CommonModule} from '@angular/common';
 
 export let InjectorInstance: Injector;
 
@@ -12,7 +12,7 @@ export let InjectorInstance: Injector;
 export class InjectorModule {
   constructor(
     private injector: Injector
-  ){
+  ) {
     InjectorInstance = this.injector;
   }
 }
