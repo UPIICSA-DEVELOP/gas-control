@@ -4,7 +4,7 @@
  * Proprietary and confidential
  */
 
-import { Pipe, PipeTransform } from '@angular/core';
+import {Pipe, PipeTransform} from '@angular/core';
 
 @Pipe({
   name: 'formatTime'
@@ -12,14 +12,14 @@ import { Pipe, PipeTransform } from '@angular/core';
 export class FormatTimePipe implements PipeTransform {
 
   transform(value: any): string {
-    if(value === '' || value === undefined || value === null){
+    if (value === '' || value === undefined || value === null) {
       return '';
     }
-    if(typeof value !== 'string'){
+    if (typeof value !== 'string') {
       value = value.toString();
     }
-    if(value.length < 4){
-      switch (value.length){
+    if (value.length < 4) {
+      switch (value.length) {
         case 1:
           value = '000' + value;
           break;
@@ -34,21 +34,21 @@ export class FormatTimePipe implements PipeTransform {
     let time;
     let hr;
     let min;
-    try{
+    try {
       time = Number(value);
-      hr = value.slice(0,2);
+      hr = value.slice(0, 2);
       min = value.slice(2);
-      if(hr>12){
-        hr = hr-12
+      if (hr > 12) {
+        hr = hr - 12;
       }
       hr = hr.toString();
-      if(hr === '00'){
-        hr='12';
+      if (hr === '00') {
+        hr = '12';
       }
-      hr = hr.length===2?hr:'0'+hr;
+      hr = hr.length === 2 ? hr : '0' + hr;
       value = hr + ':' + min;
-      value += (time >= 0 && time < 1200)? ' am':' pm';
-    }catch (e){
+      value += (time >= 0 && time < 1200) ? ' am' : ' pm';
+    } catch (e) {
       console.error(e);
       return null;
     }
