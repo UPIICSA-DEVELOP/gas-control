@@ -1,19 +1,23 @@
-#country-code{
-  .search{
+#country-code {
+  .search {
     text-align: center;
-    mat-form-field{
+
+    mat-form-field {
       width: 80%;
     }
   }
-  mat-dialog-content{
+
+  mat-dialog-content {
     margin: 24px 8px;
     position: relative;
     height: 200px;
-    .container{
 
-      .country{
+    .container {
+
+      .country {
         width: 100%;
-        button{
+
+        button {
           width: 100%;
           text-align: left;
         }

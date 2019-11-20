@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import {Component, OnInit, ViewEncapsulation} from '@angular/core';
 import {Constants} from 'app/utils/constants/constants.utils';
 import {UtilitiesService} from 'app/utils/utilities/utilities';
 import {MatDialogRef} from '@angular/material/dialog';
@@ -12,38 +12,42 @@ import {MatDialogRef} from '@angular/material/dialog';
 export class CountryCodeComponent implements OnInit {
 
   public counties: any[];
+
   constructor(
     public _dialogRef: MatDialogRef<CountryCodeComponent>
-  ) { }
+  ) {
+  }
 
   ngOnInit() {
     this.counties = Constants.countries;
   }
 
-  public search(event: any): void{
+  public search(event: any): void {
     const newArray = [];
-    const text = (event.srcElement.value).toLowerCase();
-    if(text === ''){
+    const text = (event.target.value).toLowerCase();
+    if (text === '') {
       this.counties = Constants.countries;
-    }else{
-      for(let x=0; x < this.counties.length; x++){
-        if(UtilitiesService.removeDiacritics(this.counties[x].name).toLowerCase().includes(text) || this.counties[x].code.replace('+', '').toLowerCase().includes(text) || this.counties[x].iso.toLowerCase().includes(text)){
+    } else {
+      for (let x = 0; x < this.counties.length; x++) {
+        if (UtilitiesService.removeDiacritics(this.counties[x].name).toLowerCase().includes(text) ||
+          this.counties[x].code.replace('+', '').toLowerCase().includes(text) ||
+          this.counties[x].iso.toLowerCase().includes(text)) {
           newArray.push(this.counties[x]);
         }
       }
-      if(newArray.length > 0){
+      if (newArray.length > 0) {
         this.counties = newArray;
-      }else{
+      } else {
         this.counties = Constants.countries;
       }
     }
   }
 
-  public selectCountry(country: any): void{
+  public selectCountry(country: any): void {
     this._dialogRef.close(country);
   }
 
-  public close():void{
+  public close(): void {
     this._dialogRef.close();
   }
 
