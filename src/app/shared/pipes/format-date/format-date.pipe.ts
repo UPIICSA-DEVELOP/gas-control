@@ -4,60 +4,60 @@
  * Proprietary and confidential
  */
 
-import { Pipe, PipeTransform } from '@angular/core';
+import {Pipe, PipeTransform} from '@angular/core';
 
 @Pipe({
   name: 'formatDate'
 })
 export class FormatDatePipe implements PipeTransform {
 
-  transform(value: Date, isDay: boolean): string{
+  transform(value: Date, isDay: boolean): string {
     let date: string;
-    try{
-      if(!isDay){
+    try {
+      if (!isDay) {
         const month = value.getMonth();
-        switch (month){
+        switch (month) {
           case 0:
-            date ='Ene';
+            date = 'Ene';
             break;
           case 1:
-            date ='Feb';
+            date = 'Feb';
             break;
           case 2:
-            date ='Mar';
+            date = 'Mar';
             break;
           case 3:
-            date ='Abr';
+            date = 'Abr';
             break;
           case 4:
-            date ='May';
+            date = 'May';
             break;
           case 5:
-            date ='Jun';
+            date = 'Jun';
             break;
           case 6:
-            date ='Jul';
+            date = 'Jul';
             break;
           case 7:
-            date ='Ago';
+            date = 'Ago';
             break;
           case 8:
-            date ='Sep';
+            date = 'Sep';
             break;
           case 9:
-            date ='Oct';
+            date = 'Oct';
             break;
           case 10:
-            date ='Nov';
+            date = 'Nov';
             break;
           case 11:
-            date ='Dic';
+            date = 'Dic';
             break;
         }
       } else {
         date = value.getDate().toString();
       }
-    }catch(e){
+    } catch (e) {
       console.error(e);
       return null;
     }
