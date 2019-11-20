@@ -4,9 +4,8 @@
  *  Proprietary and confidential
  */
 
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {MatBottomSheet} from '@angular/material/bottom-sheet';
-import {ShareComponent} from 'app/shared/components/share/share.component';
 import {OpenFileComponent} from 'app/shared/components/open-file/open-file.component';
 
 @Injectable()
@@ -14,9 +13,10 @@ export class OpenFileService {
 
   constructor(
     private _bottomSheet: MatBottomSheet
-  ) { }
+  ) {
+  }
 
-  public open(file: string): void{
+  public open(file: string): void {
     this._bottomSheet.open(OpenFileComponent, {
       panelClass: 'share-panel',
       data: file,

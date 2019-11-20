@@ -21,17 +21,18 @@ export class OpenFileComponent implements OnInit {
     @Inject(MAT_BOTTOM_SHEET_DATA) private _data: any,
     private _pdf: PdfVisorService,
     private _bottomSheet: MatBottomSheetRef
-  ) { }
+  ) {
+  }
 
   ngOnInit() {
   }
 
-  public download():void{
-    this._pdf.open({urlOrFile:this._data});
+  public download(): void {
+    this._pdf.open({urlOrFile: this._data});
     this._bottomSheet.dismiss();
   }
 
-  public cancel():void{
+  public cancel(): void {
     this._bottomSheet.dismiss();
   }
 }
