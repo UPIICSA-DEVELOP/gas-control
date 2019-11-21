@@ -4,11 +4,11 @@
  *  Proprietary and confidential
  */
 
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {MatDialog, MatDialogRef} from '@angular/material';
 import {SgmComponent} from '@app/ui/dashboard/components/sgm/sgm.component';
 
-export interface SgmConfig{
+export interface SgmConfig {
   stationId: string;
   utils: any;
 }
@@ -18,9 +18,10 @@ export class SgmService {
 
   constructor(
     private _matDialog: MatDialog
-  ) { }
+  ) {
+  }
 
-  public open(config?: SgmConfig):MatDialogRef<SgmComponent>{
-    return this._matDialog.open(SgmComponent,{panelClass: 'sgm-panel', disableClose: true, data: config || null});
+  public open(config?: SgmConfig): MatDialogRef<SgmComponent> {
+    return this._matDialog.open(SgmComponent, {panelClass: 'sgm-panel', disableClose: true, data: config || null});
   }
 }

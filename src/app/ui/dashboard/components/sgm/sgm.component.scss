@@ -4,194 +4,224 @@
  *  Proprietary and confidential
  */
 
-#sgm{
+#sgm {
   height: 100%;
-  mat-dialog-content{
+
+  mat-dialog-content {
     height: 95vh;
     max-height: none;
     margin: 0;
     overflow: hidden;
     padding: 16px;
     position: relative;
-    .close{
+
+    .close {
       position: absolute;
       top: 0;
       right: 0;
       margin: 16px;
     }
-    .header{
+
+    .header {
       width: 100%;
       min-height: 72px;
       display: flex;
       flex-direction: column;
       align-items: center;
     }
-    .text{
+
+    .text {
       margin-top: 12px;
     }
-    .divide{
+
+    .divide {
       margin: 32px 0;
       height: 1px;
       background-color: #707070;
     }
-    .features{
+
+    .features {
       flex-direction: column;
       display: flex;
       text-align: center;
       margin-top: 32px;
-      @media screen and (max-width: 600px){
+      @media screen and (max-width: 600px) {
         margin-top: 16px;
       }
-      .text-one{
+
+      .text-one {
         font-size: 24px;
         font-weight: 600;
         color: #707070
       }
-      .text-two{
+
+      .text-two {
         font-size: 20px;
         font-weight: 600;
         color: #707070
       }
-      .clock{
+
+      .clock {
         width: 25%;
         margin: 36px auto;
       }
     }
   }
-  .divider{
+
+  .divider {
     min-height: 24px;
     padding: 0 8px;
     border-left: 1px solid #707070;
     display: flex;
     align-items: center;
   }
+
   .progress {
     position: absolute;
     top: 0;
     left: 0;
     z-index: 4;
   }
-  .date-available{
+
+  .date-available {
     margin: 8px 24px;
     color: #707070;
     font-size: 14px;
   }
-  .save{
+
+  .save {
     width: 100%;
     display: flex;
     justify-content: center;
     margin: 16px 0;
   }
-  .content-sgm{
+
+  .content-sgm {
     display: flex;
     width: 100%;
     height: calc(100% - 64px);
     padding: 24px;
-    @media screen and (max-width: 600px){
+    @media screen and (max-width: 600px) {
       display: block;
       padding: 0;
       height: calc(100% - 80px);
-      mat-divider{
+      mat-divider {
         display: none;
       }
     }
-    .column-one{
+
+    .column-one {
       width: 40%;
       height: 100%;
-      @media screen and (max-width: 600px){
+      @media screen and (max-width: 600px) {
         width: 100%;
         height: 40%;
       }
-      .buttons-sgm{
+
+      .buttons-sgm {
         display: flex;
         justify-content: space-around;
         align-items: center;
         margin-top: 36px;
-        @media screen and (max-width: 600px){
+        @media screen and (max-width: 600px) {
           margin-top: 0;
           display: flex;
           flex-wrap: wrap;
         }
       }
-      .action{
+
+      .action {
         height: 36px;
         margin: 4px 0;
       }
-      .selection{
+
+      .selection {
         display: flex;
         flex-direction: column;
         margin-top: 8px;
         padding: 0 20px;
-        @media screen and (max-width: 600px){
+        @media screen and (max-width: 600px) {
           overflow: auto;
           height: calc(100% - 44px);
           padding: 0;
           margin: 0;
         }
       }
-      .bold-text{
+
+      .bold-text {
         font-weight: 600;
       }
-      .template{
+
+      .template {
         color: #707070;
       }
     }
-    .column-two{
+
+    .column-two {
       width: 60%;
       height: 100%;
       padding: 0 12px;
       position: relative;
-      @media screen and (max-width: 600px){
+      @media screen and (max-width: 600px) {
         width: 100%;
         height: 60%;
         padding: 0;
       }
-      .tab-zero{
+
+      .tab-zero {
         display: flex;
         align-items: center;
         height: 100%;
       }
-      .first-view{
+
+      .first-view {
         display: flex;
         align-items: center;
         flex-direction: column;
         margin: auto;
         color: #707070;
-        .desc{
+
+        .desc {
           text-align: center;
         }
       }
-      .top-space{
+
+      .top-space {
         height: 100%;
         margin-top: 36px;
-        @media screen and (max-width: 600px){
+        @media screen and (max-width: 600px) {
           margin: 0;
         }
-        .annexe-head{
+
+        .annexe-head {
           font-weight: 600;
           margin: 8px 0;
           width: 100%;
           text-align: center;
         }
       }
-      .measurement-equipment{
+
+      .measurement-equipment {
         margin-top: 36px;
         overflow: auto;
         height: calc(100% - 36px);
-        @media screen and (max-width: 600px){
+        @media screen and (max-width: 600px) {
           margin: 0;
           height: 100%;
         }
-        .item{
+
+        .item {
           display: flex;
           justify-content: space-around;
           align-items: center;
-          mat-card{
+
+          mat-card {
             cursor: pointer;
             margin: 8px 0;
             width: 85%;
           }
-          mat-card-content{
+
+          mat-card-content {
             display: flex;
             align-items: center;
           }
@@ -200,33 +230,39 @@
     }
   }
 
-  .fuel-type{
+  .fuel-type {
     display: flex;
     justify-content: space-around;
     align-items: center;
-    .fuel{
+
+    .fuel {
       width: 80%;
       margin: 12px 0;
       cursor: pointer;
-      mat-card-content{
+
+      mat-card-content {
         display: flex;
         align-items: center;
       }
     }
   }
-  .gray{
+
+  .gray {
     color: #707070;
   }
-  .list-and-template{
+
+  .list-and-template {
     width: 100%;
     margin: 8px 0;
     cursor: pointer;
-    mat-card-content{
+
+    mat-card-content {
       display: flex;
       align-items: center;
     }
   }
-  .software-type{
+
+  .software-type {
     width: 100%;
     text-align: justify;
     font-size: 12px;
@@ -234,7 +270,8 @@
     margin: 12px 0;
     padding: 0 8px;
   }
-  .fuel-type-text{
+
+  .fuel-type-text {
     color: #707070;
     margin: 12px 0;
     width: 100%;
@@ -242,24 +279,28 @@
     font-size: 12px;
     padding: 0 8px;
   }
-  .task-header{
+
+  .task-header {
     overflow: auto;
     height: calc(100% - 88px);
-    @media screen and (max-width: 600px){
+    @media screen and (max-width: 600px) {
       height: calc(100% - 120px);
     }
   }
-  .item-list{
+
+  .item-list {
     width: 85%;
     margin: auto;
   }
-  .empty-list-task{
-    display:flex;
+
+  .empty-list-task {
+    display: flex;
     justify-content: center;
     align-items: center;
     margin-top: 16px;
   }
-  .background{
+
+  .background {
     width: 400px;
     height: 200px;
     position: absolute;
@@ -268,17 +309,19 @@
     background: url("https://www.googleapis.com/download/storage/v1/b/businesscardgcs/o/alex4%2F2019-02-05-205017759Web-Fondo-gas-poca-transparencia.png?generation=1549399820762438&alt=media") no-repeat bottom;
     background-size: cover;
     z-index: 0;
-    @media screen and (max-width: 600px){
+    @media screen and (max-width: 600px) {
       width: 200px;
       height: 100px;
     }
   }
-  .modal-mobile{
-    @media screen and (max-width: 600px){
+
+  .modal-mobile {
+    @media screen and (max-width: 600px) {
       overflow: auto;
     }
   }
-  .error{
+
+  .error {
     font-size: 11px;
   }
 }

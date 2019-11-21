@@ -13,15 +13,19 @@
       </button>
     </div>
     <div class="header">
-      <img class="sgm-logo" src="../../../../assets/image/sgm_gray.png">
+      <img class="sgm-logo" src="../../../../../assets/image/sgm_gray.png" alt="">
       <div class="text">Sistema de Gestión de Mediciones</div>
     </div>
     <div class="content-sgm">
       <div class="column-one">
         <div class="buttons-sgm">
           <button class="action" mat-flat-button (click)="generateSgm()" [color]="'primary'">GENERAR</button>
-          <button *ngIf="generate" class="action" mat-flat-button [color]="'primary'" [disabled]="!isAvailable" (click)="seeSGM()">VER</button>
-          <button *ngIf="isDevelop && generate" class="action" mat-flat-button [color]="'primary'" (click)="seeSGM()">VER TMP</button>
+          <button *ngIf="generate" class="action" mat-flat-button [color]="'primary'" [disabled]="!isAvailable"
+                  (click)="seeSGM()">VER
+          </button>
+          <button *ngIf="isDevelop && generate" class="action" mat-flat-button [color]="'primary'" (click)="seeSGM()">
+            VER TMP
+          </button>
         </div>
         <div class="date-available" *ngIf="generate && !isAvailable && dateGeneration.length !== 0">Documento disponible hasta el {{dateGeneration[0]}} {{dateGeneration[1]}} {{dateGeneration[2]}}</div>
         <div class="selection">
@@ -74,14 +78,18 @@
         <ng-container [ngSwitch]="elementOnView">
           <div class="tab-zero" *ngSwitchCase="0">
             <div class="first-view">
-              <div class="desc">De acuerdo a las disposiciones administrativas de carácter general en materia de medición aplicables a la actividad de almacenamiento de
-                petróleo, petrolíferos y petroquímicos.</div>
+              <div class="desc">De acuerdo a las disposiciones administrativas de carácter general en materia de
+                medición aplicables a la actividad de almacenamiento de
+                petróleo, petrolíferos y petroquímicos.
+              </div>
               <div class="desc">Sistema de Gestión de Medición (SGM).</div>
             </div>
             <div class="background"></div>
           </div>
           <div class="top-space" *ngSwitchCase="1">
-            <div class="annexe-head">Evidencia de la Prueba de funcionamiento de sensores (motobomba, espacio anular y pozos de observación)</div>
+            <div class="annexe-head">Evidencia de la Prueba de funcionamiento de sensores (motobomba, espacio anular y
+              pozos de observación)
+            </div>
             <div *ngIf="listTasksTwo.length !== 0; then completeList else emptyListTasks"></div>
             <ng-template #completeList>
               <div class="task-header">
@@ -114,7 +122,9 @@
           </div>
           <div class="top-space modal-mobile" *ngSwitchCase="3">
             <div *ngIf="station" class="software-type">
-              <div>6.2.2 Software</div> <br> {{station.name}} mantiene el control de los datos de medición de volumen mediante el siguiente software:
+              <div>6.2.2 Software</div>
+              <br> {{station.name}} mantiene el control de los datos de medición de volumen mediante el siguiente
+              software:
             </div>
             <div class="fuel-type-text">Consulte la hoja de seguridad correspondiente a su tipo de combustible</div>
             <div class="fuel-type">
@@ -147,10 +157,13 @@
           </div>
           <div class="measurement-equipment" *ngSwitchCase="4">
             <div *ngIf="station" class="software-type">
-              <div>6.2.3 Registros</div> <br> {{station.name}} mantiene el registro de las mediciones del volumen en tanques de almacenamiento utilizando el software:
+              <div>6.2.3 Registros</div>
+              <br> {{station.name}} mantiene el registro de las mediciones del volumen en tanques de almacenamiento
+              utilizando el software:
             </div>
             <div *ngIf="station" class="software-type">
-              <div>6.3.1 Equipos de medición</div> <br> {{station.name}} cuenta con los siguentes equipos en su sistema de medición:
+              <div>6.3.1 Equipos de medición</div>
+              <br> {{station.name}} cuenta con los siguentes equipos en su sistema de medición:
             </div>
             <div class="fuel-type-text">
               Defina el software y el equipo de telemedición que utiliza

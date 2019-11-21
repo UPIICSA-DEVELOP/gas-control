@@ -21,6 +21,8 @@ import {LoaderService} from '@app/core/components/loader/loader.service';
 import {SgmSelection} from '@app/utils/interfaces/sgm-selection';
 import {Station} from '@app/utils/interfaces/station';
 import {Task} from '@app/utils/interfaces/task';
+import {HttpResponseCodes} from '@app/utils/enums/http-response-codes';
+import {SgmDocument} from '@app/utils/interfaces/sgm-document';
 
 @Component({
   selector: 'app-sgm',
@@ -30,8 +32,8 @@ import {Task} from '@app/utils/interfaces/task';
 })
 export class SgmComponent implements OnInit, OnDestroy {
   public station: Station;
-  public sgmDocument: any[];
-  public templates: any[];
+  public sgmDocument: SgmDocument[];
+  public templates: SgmDocument[];
   public load: boolean;
   public software: number;
   public magna: boolean;
@@ -49,6 +51,7 @@ export class SgmComponent implements OnInit, OnDestroy {
   private _subscriptionLoader: Subscription;
   private _token: string;
   private _tokenTwo: string;
+
   constructor(
     @Inject(MAT_DIALOG_DATA) private _data,
     private _matDialogRef: MatDialogRef<SgmComponent>,
@@ -60,7 +63,6 @@ export class SgmComponent implements OnInit, OnDestroy {
   ) {
     this.errors = [false, false, false, false];
     this.isDevelop = environment.develop;
-    this.dateGeneration = [];
     this.isAvailable = false;
     this.generate = false;
     this.sgmDocument = [];
@@ -77,7 +79,9 @@ export class SgmComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this._subscriptionLoader = this._apiLoader.getProgress().subscribe(load => {this.load = load});
+    this._subscriptionLoader = this._apiLoader.getProgress().subscribe(load => {
+      this.load = load;
+    });
     this.getStation();
     this.getSgm();
     this.sortSgmArray();
@@ -87,42 +91,40 @@ export class SgmComponent implements OnInit, OnDestroy {
     this._subscriptionLoader.unsubscribe();
   }
 
-  public close():void{
-    if(this._change){
+  public close(): void {
+    if (this._change) {
       this._dialogService.confirmDialog(
         '¿Desea salir sin guardar cambios?',
         '',
         'ACEPTAR',
-        'CANCELAR').afterClosed().subscribe(response=>{
-        switch (response.code){
-          case 1:
-            this._matDialogRef.close();
-            break;
+        'CANCELAR').afterClosed().subscribe(response => {
+        if (response.code === 1) {
+          this._matDialogRef.close();
         }
       });
-    }else{
+    } else {
       this._matDialogRef.close();
     }
   }
 
-  public seeFile(url: any):void{
+  public seeFile(url: any): void {
     const user = LocalStorageService.getItem(Constants.UserInSession);
-    switch (user.role){
+    switch (user.role) {
       case 1:
       case 2:
       case 7:
-        this._pdf.open({urlOrFile: HashService.set("123456$#@$^@1ERF", url)});
+        this._pdf.open({urlOrFile: HashService.set('123456$#@$^@1ERF', url)});
         break;
       case 3:
       case 4:
       case 5:
       case 6:
-        this._pdf.open({urlOrFile: HashService.set("123456$#@$^@1ERF", url), hideDownload: true});
+        this._pdf.open({urlOrFile: HashService.set('123456$#@$^@1ERF', url), hideDownload: true});
         break;
     }
   }
 
-  public saveSgmSelection():void{
+  public saveSgmSelection(): void {
     const selection: SgmSelection = {
       diesel: this.diesel,
       id: this.station.id,
@@ -131,42 +133,37 @@ export class SgmComponent implements OnInit, OnDestroy {
       software: this.software
     };
     this._api.saveSgmSelection(selection).subscribe(response => {
-      switch (response.code){
-        case 200:
-          this.getSgm();
-          this._change = false;
-          this._snackBarService.openSnackBar('Información actualizada', 'OK', 3000);
-          break;
-          default:
-            this._snackBarService.openSnackBar('Ha ocurrido un error, por favor intente más tarde', 'OK', 3000);
-          break;
+      if (response.code === HttpResponseCodes.OK) {
+        this.getSgm();
+        this._change = false;
+        this._snackBarService.openSnackBar('Información actualizada', 'OK', 3000);
+      } else {
+        this._snackBarService.openSnackBar('Ha ocurrido un error, por favor intente más tarde', 'OK', 3000);
       }
-    })
+    });
   }
 
-  public generateSgm():void{
-    if(this.generate && this.dateGeneration.length !== 0){
+  public generateSgm(): void {
+    if (this.generate && this.dateGeneration.length !== 0) {
       this._dialogService.confirmDialog(
         'Esta operación reiniciará la fecha para la generación del documento',
         '¿Desea continuar?',
         'ACEPTAR',
         'CANCELAR'
       ).afterClosed().subscribe(response => {
-        switch (response.code){
-          case 1:
-            this.validateSgm();
-            break;
+        if (response.code === 1) {
+          this.validateSgm();
         }
       });
-    }else{
+    } else {
       this.validateSgm();
     }
   }
 
-  public seeSGM(): void{
+  public seeSGM(): void {
     this._api.joinPDF(this.station.id, true).subscribe(response => {
       const user = LocalStorageService.getItem(Constants.UserInSession);
-      switch (user.role){
+      switch (user.role) {
         case 1:
         case 2:
         case 7:
@@ -176,121 +173,112 @@ export class SgmComponent implements OnInit, OnDestroy {
         case 4:
         case 5:
         case 6:
-          this._pdf.open({urlOrFile: response, hideDownload: true });
+          this._pdf.open({urlOrFile: response, hideDownload: true});
           break;
       }
     });
   }
 
-  public changeOptions(newView: number): void{
-    if(newView === this.elementOnView){
+  public changeOptions(newView: number): void {
+    if (newView === this.elementOnView) {
       return;
     }
     this.resetErrors();
     this.elementOnView = newView;
   }
 
-  public detectChanges():void{
+  public detectChanges(): void {
     this._change = true;
   }
 
-  private getSgm(): void{
+  private getSgm(): void {
     this._api.getSgm(this._data.stationId).subscribe(response => {
-      switch(response.code){
-        case 200:
-          if(response.item.sgmSelection){
-            this.software = Number(response.item.sgmSelection.software);
-            this.magna = response.item.sgmSelection.magna;
-            this.premium = response.item.sgmSelection.premium;
-            this.diesel = response.item.sgmSelection.diesel;
+      if (response.code === HttpResponseCodes.OK) {
+        if (response.item.sgmSelection) {
+          this.software = Number(response.item.sgmSelection.software);
+          this.magna = response.item.sgmSelection.magna;
+          this.premium = response.item.sgmSelection.premium;
+          this.diesel = response.item.sgmSelection.diesel;
+        }
+        if (response.item.fullSgm) {
+          this.generate = true;
+          this.dateGeneration = MDate.getDateArray(response.item.fullSgm.date);
+          if (response.item.fullSgm.date <= MDate.getTimeStamp(new Date())) {
+            this.isAvailable = true;
           }
-          if(response.item.fullSgm){
-            this.generate = true;
-            this.dateGeneration = MDate.getDateArray(response.item.fullSgm.date);
-            if(response.item.fullSgm.date <= MDate.getTimeStamp(new Date())){
-              this.isAvailable = true;
-            }
-          }
-          break;
-        default:
-          break;
+        }
+      } else {
       }
-    })
+    });
   }
 
-  private validateSgm():void{
+  private validateSgm(): void {
     let error = false;
-    if(this.listTasksOne.length === 0){
+    if (this.listTasksOne.length === 0) {
       this.errors[0] = true;
       error = true;
     }
-    if(this.listTasksTwo.length === 0){
+    if (this.listTasksTwo.length === 0) {
       this.errors[1] = true;
       error = true;
     }
-    if(!this.magna && !this.premium && !this.diesel){
+    if (!this.magna && !this.premium && !this.diesel) {
       this.errors[2] = true;
-      error = true
+      error = true;
     }
-    if(!this.software){
+    if (!this.software) {
       this.errors[3] = true;
       error = true;
     }
-    if(error){
+    if (error) {
       return;
-    }else{
-      this._api.fullSgmRequest(this.station.id).subscribe(response =>{
-        switch(response.code){
-          case 200:
-            this.generate = true;
-            this.dateGeneration = MDate.getDateArray(response.item.date);
-            if(response.item.date <= MDate.getTimeStamp(new Date())){
-              this.isAvailable = true;
-            }
-            break;
-          default:
-            this._snackBarService.openSnackBar('Ha ocurrido un error, por favor intente más tarde', 'OK', 3000);
-            break;
+    } else {
+      this._api.fullSgmRequest(this.station.id).subscribe(response => {
+        if (response.code === HttpResponseCodes.OK) {
+          this.generate = true;
+          this.dateGeneration = MDate.getDateArray(response.item.date);
+          if (response.item.date <= MDate.getTimeStamp(new Date())) {
+            this.isAvailable = true;
+          }
+        } else {
+          this._snackBarService.openSnackBar('Ha ocurrido un error, por favor intente más tarde', 'OK', 3000);
         }
       });
     }
   }
 
-  private getStation(): void{
+  private getStation(): void {
     this._api.getStation(this._data.stationId).subscribe(response => {
-      switch (response.code){
-        case 200:
-          this.station = response.item;
-          if(this.station.stationTaskId){
-            this.getStationTasksAnnexeOne();
-            this.getStationTasksAnnexeTwo();
-          }
-          break;
-        default:
-          this.station = null;
-          break;
+      if (response.code === HttpResponseCodes.OK) {
+        this.station = response.item;
+        if (this.station.stationTaskId) {
+          this.getStationTasksAnnexeOne();
+          this.getStationTasksAnnexeTwo();
+        }
+      } else {
+        this.station = null;
       }
     });
   }
 
-  private sortSgmArray():void{
+  private sortSgmArray(): void {
     this._data.utils.sgmDocuments.forEach(item => {
-      if(Number(item.id) <= 10){
+      if (Number(item.id) <= 10) {
         this.sgmDocument.push(item);
-      }else{
+      } else {
         this.templates.push(item);
       }
     });
   }
 
-  private buildListTasks(listTask: any): any[]{
-    let newList = [];
-    if(!listTask){
+  private buildListTasks(listTask: any): any[] {
+    const newList = [];
+    if (!listTask) {
       return newList;
     }
-    listTask.forEach(item =>{
+    listTask.forEach(item => {
       this._data.utils.taskTemplates.forEach(origin => {
-        if(item.type == origin.id){
+        if (item.type === origin.id) {
           newList.push({
             original: {
               id: item.id,
@@ -313,13 +301,13 @@ export class SgmComponent implements OnInit, OnDestroy {
     return newList;
   }
 
-  private resetErrors(): void{
-    for(let i = 0; i < 4; i++){
+  private resetErrors(): void {
+    for (let i = 0; i < 4; i++) {
       this.errors[i] = false;
     }
   }
 
-  private getStationTasksAnnexeOne():void{
+  private getStationTasksAnnexeOne(): void {
     this._token = null;
     this._api.listTask({
       stationTaskId: this.station.stationTaskId,
@@ -330,23 +318,20 @@ export class SgmComponent implements OnInit, OnDestroy {
       type: '31',
       cursor: this._token
     }).subscribe(response => {
-      switch (response.code){
-        case 200:
-          if(this._token === response.nextPageToken){
-            this._token = null;
-          }else{
-            this._token = response.nextPageToken;
-          }
-          this.listTasksOne = this.buildListTasks(response.items);
-          break;
-        default:
-          this.listTasksOne = [];
-          break;
+      if (response.code === HttpResponseCodes.OK) {
+        if (this._token === response.nextPageToken) {
+          this._token = null;
+        } else {
+          this._token = response.nextPageToken;
+        }
+        this.listTasksOne = this.buildListTasks(response.items);
+      } else {
+        this.listTasksOne = [];
       }
     });
   }
 
-  private getStationTasksAnnexeTwo():void{
+  private getStationTasksAnnexeTwo(): void {
     this._tokenTwo = null;
     this._api.listTask({
       stationTaskId: this.station.stationTaskId,
@@ -357,18 +342,15 @@ export class SgmComponent implements OnInit, OnDestroy {
       type: '41',
       cursor: this._tokenTwo
     }).subscribe(response => {
-      switch (response.code){
-        case 200:
-          if(this._tokenTwo === response.nextPageToken){
-            this._tokenTwo = null;
-          }else{
-            this._tokenTwo = response.nextPageToken;
-          }
-          this.listTasksTwo = this.buildListTasks(response.items);
-          break;
-        default:
-          this.listTasksTwo = [];
-          break;
+      if (response.code === HttpResponseCodes.OK) {
+        if (this._tokenTwo === response.nextPageToken) {
+          this._tokenTwo = null;
+        } else {
+          this._tokenTwo = response.nextPageToken;
+        }
+        this.listTasksTwo = this.buildListTasks(response.items);
+      } else {
+        this.listTasksTwo = [];
       }
     });
   }
