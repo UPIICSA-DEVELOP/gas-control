@@ -17,7 +17,8 @@
           </mat-card-header>
           <mat-card-content class="content">
             <mat-form-field inputs-gas-station>
-              <input formControlName="businessName" matInput placeholder="Razón social" required type="text" aria-label="Station business name">
+              <input formControlName="businessName" matInput placeholder="Razón social" required type="text"
+                     aria-label="Station business name">
               <mat-error *ngIf="stationForm.controls['businessName'].hasError('required')">
                 Este campo es obligatorio
               </mat-error>
@@ -29,19 +30,23 @@
               </mat-error>
             </mat-form-field>
             <mat-form-field inputs-gas-station>
-              <input formControlName="crePermission" matInput placeholder="Número de permiso de la CRE" type="text" aria-label="Station cre permission">
+              <input formControlName="crePermission" matInput placeholder="Número de permiso de la CRE" type="text"
+                     aria-label="Station cre permission">
             </mat-form-field>
             <mat-form-field inputs-gas-station>
-              <input formControlName="name" matInput placeholder="Nombre de la sucursal" required type="text" aria-label="Station name">
+              <input formControlName="name" matInput placeholder="Nombre de la sucursal" required type="text"
+                     aria-label="Station name">
               <mat-error *ngIf="stationForm.controls['name'].hasError('required')">
                 Este campo es obligatorio
               </mat-error>
             </mat-form-field>
             <mat-form-field inputs-gas-station>
-              <input formControlName="legalRepresentative" matInput placeholder="Representante legal" type="text" aria-label="Station owner">
+              <input formControlName="legalRepresentative" matInput placeholder="Representante legal" type="text"
+                     aria-label="Station owner">
             </mat-form-field>
             <mat-form-field inputs-gas-station>
-              <input formControlName="email" matInput placeholder="Email comercial" required type="email" aria-label="Station email">
+              <input formControlName="email" matInput placeholder="Email comercial" required type="email"
+                     aria-label="Station email">
               <mat-error *ngIf="stationForm.controls['email'].hasError('required')">
                 Este campo es obligatorio
               </mat-error>
@@ -50,8 +55,10 @@
               </mat-error>
             </mat-form-field>
             <mat-form-field inputs-gas-station>
-              <textarea formControlName="address" cdkTextareaAutosize matInput placeholder="Dirección" required type="text" aria-label="Station address"></textarea>
-              <button matSuffix matTooltip="Ubicación" type="button" mat-icon-button (click)="openLocation()" [disabled]="user.role === 6">
+              <textarea formControlName="address" cdkTextareaAutosize matInput placeholder="Dirección" required
+                        type="text" aria-label="Station address"></textarea>
+              <button matSuffix matTooltip="Ubicación" type="button" mat-icon-button (click)="openLocation()"
+                      [disabled]="user.role === 6">
                 <mat-icon class="map">map</mat-icon>
               </button>
               <mat-error *ngIf="stationForm.controls['address'].hasError('required')">
@@ -59,7 +66,8 @@
               </mat-error>
             </mat-form-field>
             <mat-form-field inputs-gas-station>
-              <input formControlName="phoneNumber" matInput placeholder="Teléfono" required type="text" aria-label="Station phone number">
+              <input formControlName="phoneNumber" matInput placeholder="Teléfono" required type="text"
+                     aria-label="Station phone number">
               <mat-error *ngIf="stationForm.controls['phoneNumber'].hasError('required')">
                 Este campo es obligatorio
               </mat-error>
@@ -77,7 +85,8 @@
               </mat-select>
             </mat-form-field>
             <mat-form-field inputs-gas-station>
-              <input formControlName="workers" matInput placeholder="No. de trabajadores" type="number" aria-label="Station workers">
+              <input formControlName="workers" matInput placeholder="No. de trabajadores" type="number"
+                     aria-label="Station workers">
             </mat-form-field>
             <mat-divider></mat-divider>
             <div>
@@ -98,7 +107,8 @@
                              [ngModel]="turn.start"
                              [ngxTimepicker]="pickerOne"
                              readonly="readonly">
-                      <button mat-icon-button [disabled]="user.role === 6" matSuffix (click)="pickerOne.open()" type="button">
+                      <button mat-icon-button [disabled]="user.role === 6" matSuffix (click)="pickerOne.open()"
+                              type="button">
                         <mat-icon>access_time</mat-icon>
                       </button>
                       <ngx-material-timepicker #pickerOne
@@ -123,7 +133,8 @@
                              [ngModel]="turn.end"
                              [ngxTimepicker]="pickerTwo"
                              readonly="readonly">
-                      <button mat-icon-button [disabled]="user.role === 6" matSuffix (click)="pickerTwo.open()" type="button">
+                      <button mat-icon-button [disabled]="user.role === 6" matSuffix (click)="pickerTwo.open()"
+                              type="button">
                         <mat-icon>access_time</mat-icon>
                       </button>
                       <ngx-material-timepicker #pickerTwo
@@ -142,7 +153,8 @@
                     </mat-form-field>
                   </div>
                   <div class="button">
-                    <button type="button" *ngIf="workShifts.length>1" mat-icon-button (click)="addRemoveTurn(true,1, i)" class="remove" [disabled]=" user.role===6">
+                    <button type="button" *ngIf="workShifts.length>1" mat-icon-button (click)="addRemoveTurn(true,1, i)"
+                            class="remove" [disabled]=" user.role===6">
                       <mat-icon>remove</mat-icon>
                     </button>
                   </div>
@@ -155,10 +167,12 @@
             </div>
             <div doble-input-station>
               <mat-form-field>
-                <input formControlName="monitoringWells" matInput placeholder="De monitoreo" type="text" aria-label="Station monitoring wells">
+                <input formControlName="monitoringWells" matInput placeholder="De monitoreo" type="text"
+                       aria-label="Station monitoring wells">
               </mat-form-field>
               <mat-form-field>
-                <input formControlName="observationWells" matInput placeholder="De observación" type="text" aria-label="Station observable wells">
+                <input formControlName="observationWells" matInput placeholder="De observación" type="text"
+                       aria-label="Station observable wells">
               </mat-form-field>
             </div>
             <mat-divider></mat-divider>
@@ -170,24 +184,31 @@
             </div>
             <div element *ngFor="let tank of tanks; let i = index">
               <div>
-                <span>Tanque {{i+1}}</span>
+                <span>Tanque {{i + 1}}</span>
                 <div inputs-array>
                   <mat-form-field>
-                    <input matInput placeholder="Capacidad (lts)" type="number" aria-label="Station tank fuel capacity" (change)="onArrayChange()" [(ngModel)]="tank.capacity" [ngModelOptions]="{standalone: true}" [disabled]="user.role===6">
+                    <input matInput placeholder="Capacidad (lts)" type="number" aria-label="Station tank fuel capacity"
+                           (change)="onArrayChange()" [(ngModel)]="tank.capacity" [ngModelOptions]="{standalone: true}"
+                           [disabled]="user.role===6">
                   </mat-form-field>
                   <mat-form-field>
-                    <mat-select placeholder="Año de instalación" (selectionChange)="onArrayChange()" [(ngModel)]="tank.year" [ngModelOptions]="{standalone: true}" [disabled]="user.role===6">
+                    <mat-select placeholder="Año de instalación" (selectionChange)="onArrayChange()"
+                                [(ngModel)]="tank.year" [ngModelOptions]="{standalone: true}"
+                                [disabled]="user.role===6">
                       <mat-option *ngFor="let year of yearSelector" [value]="year">{{year}}</mat-option>
                     </mat-select>
                   </mat-form-field>
                 </div>
-                <mat-radio-group aria-label="Station tank fuel type" (change)="onArrayChange()" [(ngModel)]="tank.fuelType" [ngModelOptions]="{standalone: true}" [disabled]="user.role===6">
-                  <mat-radio-button [value]="1" >Magna</mat-radio-button>
+                <mat-radio-group aria-label="Station tank fuel type" (change)="onArrayChange()"
+                                 [(ngModel)]="tank.fuelType" [ngModelOptions]="{standalone: true}"
+                                 [disabled]="user.role===6">
+                  <mat-radio-button [value]="1">Magna</mat-radio-button>
                   <mat-radio-button [value]="2">Premium</mat-radio-button>
                   <mat-radio-button [value]="3">Diesel</mat-radio-button>
                 </mat-radio-group>
               </div>
-              <button *ngIf="tanks.length>1" type="button" mat-icon-button (click)="addRemoveTurn(true,2, i)" [disabled]=" user.role===6">
+              <button *ngIf="tanks.length>1" type="button" mat-icon-button (click)="addRemoveTurn(true,2, i)"
+                      [disabled]=" user.role===6">
                 <mat-icon>remove</mat-icon>
               </button>
             </div>
@@ -198,24 +219,36 @@
                 <mat-icon>add</mat-icon>
               </button>
             </div>
-            <div inputs-gas-station style="display: flex; align-items: center;" *ngFor="let dispenser of dispensers; let i = index">
+            <div inputs-gas-station style="display: flex; align-items: center;"
+                 *ngFor="let dispenser of dispensers; let i = index">
               <div>
-                <div class="head">Dispensario {{i+1}}</div>
+                <div class="head">Dispensario {{i + 1}}</div>
                 <div array-item>
                   <mat-form-field>
-                    <input matInput placeholder="No. de mangueras" type="number" aria-label="Station hoses number" (change)="onArrayChange()" [(ngModel)]="dispenser.hoses" [ngModelOptions]="{standalone: true}" [disabled]=" user.role===6">
+                    <input matInput placeholder="No. de mangueras" type="number" aria-label="Station hoses number"
+                           (change)="onArrayChange()" [(ngModel)]="dispenser.hoses"
+                           [ngModelOptions]="{standalone: true}" [disabled]=" user.role===6">
                   </mat-form-field>
                   <mat-form-field>
-                    <input matInput placeholder="No. de serie" type="text" aria-label="Station hoses cre id" (change)="onArrayChange()" [(ngModel)]="dispenser.identifier" [ngModelOptions]="{standalone: true}" [disabled]=" user.role===6">
+                    <input matInput placeholder="No. de serie" type="text" aria-label="Station hoses cre id"
+                           (change)="onArrayChange()" [(ngModel)]="dispenser.identifier"
+                           [ngModelOptions]="{standalone: true}" [disabled]=" user.role===6">
                   </mat-form-field>
                 </div>
                 <section array-item aria-label="Station hoses fuel type">
-                  <mat-checkbox (change)="onArrayChange()" [(ngModel)]="dispenser.magna" [ngModelOptions]="{standalone: true}" [disabled]=" user.role===6">Magna</mat-checkbox>
-                  <mat-checkbox (change)="onArrayChange()" [(ngModel)]="dispenser.premium" [ngModelOptions]="{standalone: true}" [disabled]=" user.role===6">Premium</mat-checkbox>
-                  <mat-checkbox (change)="onArrayChange()" [(ngModel)]="dispenser.diesel" [ngModelOptions]="{standalone: true}" [disabled]=" user.role===6">Diesel</mat-checkbox>
+                  <mat-checkbox (change)="onArrayChange()" [(ngModel)]="dispenser.magna"
+                                [ngModelOptions]="{standalone: true}" [disabled]=" user.role===6">Magna
+                  </mat-checkbox>
+                  <mat-checkbox (change)="onArrayChange()" [(ngModel)]="dispenser.premium"
+                                [ngModelOptions]="{standalone: true}" [disabled]=" user.role===6">Premium
+                  </mat-checkbox>
+                  <mat-checkbox (change)="onArrayChange()" [(ngModel)]="dispenser.diesel"
+                                [ngModelOptions]="{standalone: true}" [disabled]=" user.role===6">Diesel
+                  </mat-checkbox>
                 </section>
               </div>
-              <button type="button" *ngIf="dispensers.length>1" mat-icon-button (click)="addRemoveTurn(true,3, i)" class="remove" [disabled]=" user.role===6">
+              <button type="button" *ngIf="dispensers.length>1" mat-icon-button (click)="addRemoveTurn(true,3, i)"
+                      class="remove" [disabled]=" user.role===6">
                 <mat-icon>remove</mat-icon>
               </button>
             </div>
@@ -230,7 +263,8 @@
       <div class="basic-data">
         <div class="documentation">
           <button mat-button [color]="'primary'" type="button" (click)="goToDocumentation()">
-            Documentación <mat-icon>keyboard_backspace</mat-icon>
+            Documentación
+            <mat-icon>keyboard_backspace</mat-icon>
           </button>
         </div>
         <div class="info-gas-station">
@@ -239,7 +273,7 @@
             <mat-icon *ngIf="!utils || !station">local_gas_station</mat-icon>
           </div>
           <div class="info">
-            <h2 *ngIf="utils">{{utils.groupIcons[station.type-1].name}}</h2>
+            <h2 *ngIf="utils">{{utils.groupIcons[station.type - 1].name}}</h2>
             <p class="company">{{station.businessName}}</p>
             <p class="store">{{station.name}}</p>
           </div>

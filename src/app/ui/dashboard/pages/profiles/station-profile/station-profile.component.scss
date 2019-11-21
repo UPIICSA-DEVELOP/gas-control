@@ -3,10 +3,10 @@
  * Unauthorized copying of this file, via any medium is strictly prohibited
  * Proprietary and confidential
  */
-
 @import "../../../../../../styles/colors";
 @import "../../../../../../styles/station";
-#station-profile{
+
+#station-profile {
   top: 0;
   width: 100vw;
   height: 100vh;
@@ -15,10 +15,11 @@
   align-items: center;
   z-index: 10;
   background-color: #FFFFFF;
-  @media screen and (max-width: 800px){
+  @media screen and (max-width: 800px) {
     overflow: auto;
   }
-  .station-form{
+
+  .station-form {
     width: 90%;
     height: 90%;
     display: flex;
@@ -27,97 +28,118 @@
     @media screen and (max-width: 800px) {
       flex-direction: column;
     }
-    .inputs{
+
+    .inputs {
       width: 100%;
     }
-    .flex-box{
+
+    .flex-box {
       display: flex;
     }
-    .remove{
+
+    .remove {
       color: #707070;
     }
-    .basic-information{
+
+    .basic-information {
       width: 40%;
       margin: 24px;
-      .body{
+
+      .body {
         width: 100%;
         height: 100%;
         overflow-y: auto;
-        mat-card-header{
+
+        mat-card-header {
           color: mat-color($primary);
         }
       }
+
       @media screen and (max-width: 800px) {
         order: 1;
         width: 100%;
         height: auto;
         margin: 0 0 24px 0;
       }
-      .double-inputs{
+
+      .double-inputs {
         color: #707070;
         justify-content: space-between;
         display: flex;
         align-items: center;
         margin-bottom: 12px;
       }
-      .input-content{
+
+      .input-content {
         width: 95%;
         display: flex;
         justify-content: space-between;
       }
-      .text{
+
+      .text {
         margin: 16px 0;
         color: #707070
       }
-      .button-container{
+
+      .button-container {
         display: flex;
         align-items: center;
       }
-      .fuel-selector{
+
+      .fuel-selector {
         display: flex;
         justify-content: space-around;
       }
-      .fuel{
+
+      .fuel {
         width: 90%;
         margin: 8px 0;
       }
-      .dispensers{
+
+      .dispensers {
         display: flex;
         margin: 12px 0;
       }
-      .content{
+
+      .content {
         margin: 0 40px;
-        @media screen and(max-width: 900px){
+        @media screen and(max-width: 900px) {
           margin: 0 20px;
         }
-        @media screen and(max-width: 600px){
+        @media screen and(max-width: 600px) {
           margin: 0 5px;
         }
-        .head{
+
+        .head {
           color: #707070;
           margin: 0 0 8px 16px;
         }
-        .hoses{
+
+        .hoses {
           display: flex;
           justify-content: space-around;
           color: #707070;
-          .field{
+
+          .field {
             width: 40%;
           }
         }
       }
-      .header-two{
+
+      .header-two {
         display: flex;
         align-items: center;
         justify-content: space-between;
         color: #707070;
       }
-      .button{
+
+      .button {
         display: flex;
         align-items: center;
       }
     }
-    .basic-data{
+
+    .basic-data {
       width: 50%;
       margin: 24px;
       @media screen and (max-width: 800px) {
@@ -126,11 +148,13 @@
         margin: 24px 0 0;
         display: block;
       }
-      .header{
+
+      .header {
         display: flex;
         align-items: center;
         width: 100%;
         margin-top: 80px;
+
         .profileImage {
           height: 112px;
           width: 112px;
@@ -138,6 +162,7 @@
           background-color: #FFFFFF;
           box-shadow: 0 2px 1px -1px rgba(0, 0, 0, 0.2), 0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12);
         }
+
         .defaultImage {
           display: flex;
           justify-content: center;
@@ -148,41 +173,48 @@
           background-color: #707070;
           box-shadow: 0 2px 1px -1px rgba(0, 0, 0, 0.2), 0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12);
         }
+
         mat-icon {
           font-size: 80px;
           color: #FFFFFF;
         }
-        .text{
+
+        .text {
           font-weight: 700;
           font-size: 48px;
           color: mat-color($primary);
-          @media screen and (max-width: 1024px){
+          @media screen and (max-width: 1024px) {
             font-size: 24px;
           }
         }
       }
-      .businessName{
+
+      .businessName {
         margin: 4px 0;
         font-size: 32px;
         color: mat-color($primary);
       }
-      .documentation{
+
+      .documentation {
         margin-top: 48px;
         display: flex;
         justify-content: flex-end;
-        @media screen and (max-width: 800px){
+        @media screen and (max-width: 800px) {
           margin-top: 20px;
         }
-        button{
+
+        button {
           font-size: 18px;
-          mat-icon{
+
+          mat-icon {
             transform: rotate(180deg);
           }
         }
       }
     }
   }
-  .background{
+
+  .background {
     width: 600px;
     height: 300px;
     position: absolute;
@@ -196,11 +228,13 @@
       height: 150px;
     }
   }
+
   .progress {
     position: absolute;
     top: 0;
     z-index: 1;
   }
+
   .btn-close {
     position: absolute;
     top: 0;
@@ -210,36 +244,41 @@
     justify-content: center;
     align-items: center;
     z-index: 5;
-    button{
+
+    button {
       background-color: #707070;
     }
-    mat-icon{
+
+    mat-icon {
       color: #FFFFFF;
     }
   }
 
-  .info-gas-station{
+  .info-gas-station {
     display: flex;
     margin-top: 50px;
     width: 100%;
     padding: 0 30px;
-    @media screen and(max-width: 800px){
+    @media screen and(max-width: 800px) {
       display: block;
       margin-top: 20px;
     }
-    .image{
+
+    .image {
       margin-right: 18px;
-      @media screen and (max-width: 800px){
+      @media screen and (max-width: 800px) {
         display: flex;
         justify-content: center;
         margin: 0;
       }
-      mat-icon{
+
+      mat-icon {
         width: 100px;
         height: 100px;
         font-size: 100px;
       }
-      img{
+
+      img {
         width: 100px;
         height: 100px;
         border-radius: 50%;
@@ -248,31 +287,34 @@
       }
     }
 
-    .info{
+    .info {
       display: flex;
       flex-direction: column;
       justify-content: space-around;
       width: calc(100% - 100px);
       padding: 0 8px;
-      @media screen and (max-width: 800px){
+      @media screen and (max-width: 800px) {
         align-items: center;
         width: 100%;
         padding: 16px 0;
         text-align: center;
       }
-      h2{
+
+      h2 {
         font-size: 32px;
         font-weight: bold;
         margin: 0;
         color: mat-color($primary);
       }
-      p{
+
+      p {
         white-space: normal;
         color: mat-color($primary);
         font-size: 22px;
         margin: 0;
       }
-      .company{
+
+      .company {
         font-weight: 500;
       }
     }

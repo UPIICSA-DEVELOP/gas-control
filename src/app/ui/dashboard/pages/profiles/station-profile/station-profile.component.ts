@@ -4,8 +4,7 @@
  * Proprietary and confidential
  */
 
-import {Component, ElementRef, OnDestroy, OnInit, ViewChild, ViewEncapsulation} from '@angular/core';
-import {animate, keyframes, query, stagger, style, transition, trigger} from '@angular/animations';
+import {Component, ElementRef, HostBinding, OnDestroy, OnInit, ViewChild, ViewEncapsulation} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {ApiService} from 'app/core/services/api/api.service';
@@ -24,37 +23,19 @@ import {Dispenser} from '@app/utils/interfaces/dispenser';
 import {Station} from '@app/utils/interfaces/station';
 import {Person} from '@app/utils/interfaces/person';
 import {HttpResponseCodes} from '@app/utils/enums/http-response-codes';
+import {ANIMATION} from '@app/ui/dashboard/pages/profiles/station-profile/animation';
+import {AppUtil} from '@app/utils/interfaces/app-util';
 
 @Component({
   selector: 'app-station-profile',
   templateUrl: './station-profile.component.html',
   styleUrls: ['./station-profile.component.scss'],
-  animations: [
-    trigger('fadeInAnimation', [
-      transition(':enter', [
-        query('#station-profile', style({ opacity: 0, background: 'transparent' }), {optional: true}),
-        query('#station-profile', stagger('10ms', [
-          animate('.2s ease-out', keyframes([
-            style({opacity: 0, background: 'transparent', offset: 0}),
-            style({opacity: .5, background: 'rgba(255, 255, 255, .5)', offset: 0.5}),
-            style({opacity: 1, background: 'rgba(255, 255, 255, 1)',  offset: 1.0}),
-          ]))]), {optional: true})
-      ]),
-      transition(':leave', [
-        query('#station-profile', style({ opacity: 1, background: 'rgba(255, 255, 255, 1)' }), {optional: true}),
-        query('#station-profile', stagger('10ms', [
-          animate('.2s ease-in', keyframes([
-            style({opacity: 1, background: 'rgba(255, 255, 255, 1)', offset: 0}),
-            style({opacity: .5, background: 'rgba(255, 255, 255, .5)',  offset: 0.5}),
-            style({opacity: 0, background: 'transparent',     offset: 1.0}),
-          ]))]), {optional: true})
-      ])
-    ])
-  ],
-  host: {'[@fadeInAnimation]': ''},
+  animations: [ANIMATION],
   encapsulation: ViewEncapsulation.None
 })
 export class StationProfileComponent implements OnInit, OnDestroy {
+  @HostBinding('@fadeInAnimation')
+
   @ViewChild('close', {static: false}) private _close: ElementRef;
   public workShifts: WorkShift[];
   public tanks: FuelTank[];
@@ -62,12 +43,13 @@ export class StationProfileComponent implements OnInit, OnDestroy {
   public stationForm: FormGroup;
   public station: Station;
   public load: boolean;
-  public utils: any;
+  public utils: AppUtil;
   public user: Person;
   public yearSelector: Array<number>;
   private _latLng: any;
   private _change: boolean;
   private _subscriptionLoader: Subscription;
+
   constructor(
     private _router: Router,
     private _formBuilder: FormBuilder,
@@ -91,86 +73,81 @@ export class StationProfileComponent implements OnInit, OnDestroy {
     this.initForm();
     this.getStation(this._activatedRouter.snapshot.data.data.station);
     this.getUtils(this._activatedRouter.snapshot.data.data.utils);
-    this._subscriptionLoader = this._apiLoader.getProgress().subscribe(load => {this.load = load;});
+    this._subscriptionLoader = this._apiLoader.getProgress().subscribe(load => {
+      this.load = load;
+    });
   }
 
-  ngOnDestroy(): void{
+  ngOnDestroy(): void {
     this._subscriptionLoader.unsubscribe();
   }
 
-  public detectChanges(): void{
+  public detectChanges(): void {
     this.stationForm.valueChanges.subscribe(() => {
       this._change = true;
-    })
+    });
   }
 
-  public closeProfile():void{
-    if (this._change){
+  public closeProfile(): void {
+    if (this._change) {
       this._dialogService.confirmDialog(
         '¿Desea salir sin guardar cambios?',
         '',
         'ACEPTAR',
         'CANCELAR'
-      ).afterClosed().subscribe(response=>{
-        switch (response.code) {
-          case 1:
-            this._router.navigate(['/home']).then();
-            break;
+      ).afterClosed().subscribe(response => {
+        if (response.code === 1) {
+          this._router.navigate(['/home']).then();
         }
       });
-    }else{
+    } else {
       this._router.navigate(['/home']).then();
     }
   }
 
-  public openLocation():void{
+  public openLocation(): void {
     const latLng = {
       lat: this._latLng ? this._latLng.latitude : 19.432675,
       lng: this._latLng ? this._latLng.longitude : -99.133461
     };
-    this._locationService.open(latLng).afterClosed().subscribe(response=>{
-      switch (response.code) {
-        case 1:
-          this._latLng ={
-            latitude: response.location.lat,
-            longitude: response.location.lng
-          };
-          this.stationForm.patchValue({
-            address: response.location.address
-          });
-          break;
-        default:
-          break;
+    this._locationService.open(latLng).afterClosed().subscribe(response => {
+      if (response.code === 1) {
+        this._latLng = {
+          latitude: response.location.lat,
+          longitude: response.location.lng
+        };
+        this.stationForm.patchValue({
+          address: response.location.address
+        });
+      } else {
       }
     });
   }
 
-  public getUtils(response: any): void{
-    switch (response.code) {
-      case 200:
-        this.utils = response.item;
-        break;
+  public getUtils(response: any): void {
+    if (response.code === HttpResponseCodes.OK) {
+      this.utils = response.item;
     }
   }
 
-  private initForm():void{
+  private initForm(): void {
     this.stationForm = this._formBuilder.group({
-      name:['',[Validators.required]],
-      businessName:['',[Validators.required]],
-      legalRepresentative:[{value:'', disabled: true},[]],
-      rfc: [{value: '', disabled: true},[Validators.required]],
-      crePermission:['',[]],
-      address:['',[Validators.required]],
-      phoneNumber:['',[Validators.required, Validators.minLength(8), Validators.maxLength(13)]],
-      email:['', [Validators.required, Validators.email]],
+      name: ['', [Validators.required]],
+      businessName: ['', [Validators.required]],
+      legalRepresentative: [{value: '', disabled: true}, []],
+      rfc: [{value: '', disabled: true}, [Validators.required]],
+      crePermission: ['', []],
+      address: ['', [Validators.required]],
+      phoneNumber: ['', [Validators.required, Validators.minLength(8), Validators.maxLength(13)]],
+      email: ['', [Validators.required, Validators.email]],
       vrs: [{value: false, disabled: true}, []],
-      workers:['',[]],
-      monitoringWells:['',[]],
-      observationWells:['',[]]
+      workers: ['', []],
+      monitoringWells: ['', []],
+      observationWells: ['', []]
     });
   }
 
-  private getStation(response: any):void{
+  private getStation(response: any): void {
     if (response.code === HttpResponseCodes.OK) {
       this.station = {
         paymentStatus: response.item.paymentStatus,
@@ -205,65 +182,65 @@ export class StationProfileComponent implements OnInit, OnDestroy {
       };
       if (this.station.dispensers) {
         this.dispensers = Object.assign([], this.station.dispensers);
-      }else{
+      } else {
         this.dispensers.push({hoses: undefined, identifier: undefined, magna: false, premium: false, diesel: false});
       }
-      if (this.station.fuelTanks){
+      if (this.station.fuelTanks) {
         this.tanks = Object.assign([], this.station.fuelTanks);
-      }else{
+      } else {
         this.tanks.push({capacity: undefined, fuelType: undefined, year: undefined});
       }
-      if (this.station.workShifts){
+      if (this.station.workShifts) {
         const arr = [];
         this.station.workShifts.forEach(value => {
           arr.push({
             start: this._formatTime.transform(value.start),
             end: this._formatTime.transform(value.end)
-          })
+          });
         });
-        this.workShifts = Object.assign([],arr);
-      }else{
+        this.workShifts = Object.assign([], arr);
+      } else {
         this.workShifts.push({start: undefined, end: undefined});
       }
       if (this.station.location) {
-        this._latLng = this.station.location
+        this._latLng = this.station.location;
       }
       this.patchForm();
     } else {
-      this._snackBarService.openSnackBar('No se ha podido acceder, intente más tarde','OK',3000);
+      this._snackBarService.openSnackBar('No se ha podido acceder, intente más tarde', 'OK', 3000);
       this._router.navigate(['/home']).then();
     }
   }
 
-  private patchForm():void{
+  private patchForm(): void {
     this.stationForm.patchValue({
-      name:this.station.name,
-      businessName:this.station.businessName,
+      name: this.station.name,
+      businessName: this.station.businessName,
       rfc: this.station.rfc,
-      crePermission:this.station.crePermission,
-      address:this.station.address,
-      phoneNumber:this.station.phoneNumber,
-      email:this.station.email,
+      crePermission: this.station.crePermission,
+      address: this.station.address,
+      phoneNumber: this.station.phoneNumber,
+      email: this.station.email,
       vrs: this.station.vapourRecoverySystem,
-      workers:this.station.workers,
-      monitoringWells:this.station.monitoringWells,
+      workers: this.station.workers,
+      monitoringWells: this.station.monitoringWells,
       observationWells: this.station.observationWells,
       legalRepresentative: this.station.legalRepresentativeName
     });
-    if (this.user.role===6){
+    if (this.user.role === 6) {
       this.stationForm.disable();
     }
     this.detectChanges();
   }
 
-  public saveStationInformation(data: any): void{
+  public saveStationInformation(data: any): void {
     if (this.stationForm.invalid) {
       return;
     }
-    if(!this.validateStationArrays()){
+    if (!this.validateStationArrays()) {
       return;
     }
-    this.station.crePermission = (data.crePermission ? data.crePermission: undefined);
+    this.station.crePermission = (data.crePermission ? data.crePermission : undefined);
     this.station.name = data.name;
     this.station.businessName = data.businessName;
     this.station.address = data.address;
@@ -273,32 +250,38 @@ export class StationProfileComponent implements OnInit, OnDestroy {
     this.station.observationWells = data.observationWells;
     this.station.monitoringWells = data.monitoringWells;
     if (this._latLng) {
-      this.station.location.latitude = (this._latLng.latitude?this._latLng.latitude:19.432675);
-      this.station.location.longitude = (this._latLng.longitude? this._latLng.longitude: -99.133461);
+      this.station.location.latitude = (this._latLng.latitude ? this._latLng.latitude : 19.432675);
+      this.station.location.longitude = (this._latLng.longitude ? this._latLng.longitude : -99.133461);
     }
     const workShifts = [];
     this.workShifts.forEach(value => {
       workShifts.push({
         start: UtilitiesService.removeFormatTime(value.start).toString(),
         end: UtilitiesService.removeFormatTime(value.end).toString()
-      })
+      });
     });
-    this.station.workShifts = workShifts.filter(function (item) {return item !== undefined;});
-    this.station.fuelTanks = this.tanks.filter(function (item) {return item !== undefined;});
-    this.station.dispensers = this.dispensers.filter(function (item) {return item !== undefined;});
-   this._api.updateStation(this.station).subscribe(response => {
+    this.station.workShifts = workShifts.filter(function (item) {
+      return item !== undefined;
+    });
+    this.station.fuelTanks = this.tanks.filter(function (item) {
+      return item !== undefined;
+    });
+    this.station.dispensers = this.dispensers.filter(function (item) {
+      return item !== undefined;
+    });
+    this._api.updateStation(this.station).subscribe(response => {
       if (response.code === HttpResponseCodes.OK) {
         this._change = false;
-        this._snackBarService.openSnackBar('Información actualizada','OK',3000);
+        this._snackBarService.openSnackBar('Información actualizada', 'OK', 3000);
       } else {
         this._dialogService.alertDialog('No se pudo acceder', 'Se produjo un error de comunicación con el servidor', 'ACEPTAR');
       }
-    })
+    });
   }
 
-  public addRemoveTurn(remove: boolean, type: number, index?: number): void{
+  public addRemoveTurn(remove: boolean, type: number, index?: number): void {
     this._change = true;
-    if(!remove){
+    if (!remove) {
       switch (type) {
         case 1:
           this.workShifts.push({start: undefined, end: undefined});
@@ -310,7 +293,7 @@ export class StationProfileComponent implements OnInit, OnDestroy {
           this.dispensers.push({hoses: undefined, identifier: undefined, magna: false, premium: false, diesel: false});
           break;
       }
-    }else {
+    } else {
       switch (type) {
         case 1:
           this.workShifts.splice(index, 1);
@@ -325,62 +308,64 @@ export class StationProfileComponent implements OnInit, OnDestroy {
     }
   }
 
-  private validateStationArrays():boolean{
-    for (let i = 0; i<this.workShifts.length; i++){
-      if((this.workShifts[i].start && !this.workShifts[i].end) || (!this.workShifts[i].start && this.workShifts[i].end)){
-        this._snackBarService.openSnackBar('Complete los campos para el turno ' + (i+1),'OK',3000);
+  private validateStationArrays(): boolean {
+    for (let i = 0; i < this.workShifts.length; i++) {
+      if ((this.workShifts[i].start && !this.workShifts[i].end) || (!this.workShifts[i].start && this.workShifts[i].end)) {
+        this._snackBarService.openSnackBar('Complete los campos para el turno ' + (i + 1), 'OK', 3000);
         return false;
       }
     }
-    for(let j = 0; j<this.tanks.length; j++){
-      if((!this.tanks[j].capacity && this.tanks[j].fuelType) || (this.tanks[j].capacity && !this.tanks[j].fuelType)){
-        this._snackBarService.openSnackBar('Complete los campos para el tanque ' + (j+1),'OK',3000);
+    for (let j = 0; j < this.tanks.length; j++) {
+      if ((!this.tanks[j].capacity && this.tanks[j].fuelType) || (this.tanks[j].capacity && !this.tanks[j].fuelType)) {
+        this._snackBarService.openSnackBar('Complete los campos para el tanque ' + (j + 1), 'OK', 3000);
         return false;
       }
     }
-    for (let k = 0; k<this.dispensers.length; k++){
-      if((this.dispensers[k].hoses)&&(this.dispensers[k].magna === false && this.dispensers[k].premium === false && this.dispensers[k].diesel === false)){
-        this._snackBarService.openSnackBar('Complete los campos para el dispensario ' + (k+1),'OK',3000);
+    for (let k = 0; k < this.dispensers.length; k++) {
+      if ((this.dispensers[k].hoses) && (this.dispensers[k].magna === false && this.dispensers[k].premium === false &&
+        this.dispensers[k].diesel === false)) {
+        this._snackBarService.openSnackBar('Complete los campos para el dispensario ' + (k + 1), 'OK', 3000);
         return false;
-      }else if((!this.dispensers[k].hoses)&&(this.dispensers[k].magna === true || this.dispensers[k].premium === true || this.dispensers[k].diesel === true)){
-        this._snackBarService.openSnackBar('Complete los campos para el dispensario ' + (k+1),'OK',3000);
+      } else if ((!this.dispensers[k].hoses) && (this.dispensers[k].magna === true || this.dispensers[k].premium === true ||
+        this.dispensers[k].diesel === true)) {
+        this._snackBarService.openSnackBar('Complete los campos para el dispensario ' + (k + 1), 'OK', 3000);
         return false;
       }
     }
     return true;
   }
 
-  public onArrayChange():void{
+  public onArrayChange(): void {
     this._change = true;
   }
 
 
-  public changeDate(ev: any, index: number, isStart: boolean):void{
+  public changeDate(ev: any, index: number, isStart: boolean): void {
 
-    if (isStart){
+    if (isStart) {
       this.workShifts[index].start = ev;
-    }else {
+    } else {
       this.workShifts[index].end = ev;
     }
     this._change = true;
   }
 
-  private initYears():void{
+  private initYears(): void {
     const year = new Date();
-    for(let x = 1969; x<=year.getFullYear(); x++){
+    for (let x = 1969; x <= year.getFullYear(); x++) {
       this.yearSelector.push(x);
     }
   }
 
-  public openCloseClock(ev: any, isOpen: boolean): void{
+  public openCloseClock(ev: any, isOpen: boolean): void {
     this._close.nativeElement.style.zIndex = isOpen ? 0 : 5;
   }
 
-  public goToDocumentation(): void{
-    if(this.user.role !== 6){
+  public goToDocumentation(): void {
+    if (this.user.role !== 6) {
       this._router.navigate(['/home/documents', this.station.id]).then();
-    }else{
-      this._snackBarService.openSnackBar('Usted no tiene permiso para visualizar este módulo','OK',3000);
+    } else {
+      this._snackBarService.openSnackBar('Usted no tiene permiso para visualizar este módulo', 'OK', 3000);
     }
   }
 }
