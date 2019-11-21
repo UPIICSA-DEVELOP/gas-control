@@ -4,13 +4,15 @@
  * Proprietary and confidential
  */
 
-#datepicker{
-  mat-dialog-content{
+#datepicker {
+  mat-dialog-content {
     margin: 0;
-    .container{
+
+    .container {
       text-align: center;
       padding: 8px 0;
-      .buttons{
+
+      .buttons {
         display: flex;
         justify-content: flex-end;
         padding: 16px;
