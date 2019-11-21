@@ -4,53 +4,34 @@
  * Proprietary and confidential
  */
 
-import {Component, OnInit, ViewEncapsulation} from '@angular/core';
-import {animate, keyframes, query, stagger, style, transition, trigger} from '@angular/animations';
+import {Component, HostBinding, OnInit, ViewEncapsulation} from '@angular/core';
 import {Router} from '@angular/router';
 import {LocalStorageService} from 'app/core/services/local-storage/local-storage.service';
 import {Constants} from 'app/utils/constants/constants.utils';
+import {ANIMATION} from '@app/ui/privacy/pages/privacy/animation';
 
 @Component({
   selector: 'app-privacy',
   templateUrl: './privacy.component.html',
   styleUrls: ['./privacy.component.scss'],
-  animations: [
-    trigger('fadeInAnimation', [
-      transition(':enter', [
-        query('#privacy', style({ opacity: 0, background: 'transparent' }), {optional: true}),
-        query('#privacy', stagger('10ms', [
-          animate('.2s ease-out', keyframes([
-            style({opacity: 0, background: 'transparent', offset: 0}),
-            style({opacity: .5, background: 'rgba(255, 255, 255, .5)', offset: 0.5}),
-            style({opacity: 1, background: 'rgba(255, 255, 255, 1)',  offset: 1.0}),
-          ]))]), {optional: true})
-      ]),
-      transition(':leave', [
-        query('#privacy', style({ opacity: 1, background: 'rgba(255, 255, 255, 1)' }), {optional: true}),
-        query('#privacy', stagger('10ms', [
-          animate('.2s ease-in', keyframes([
-            style({opacity: 1, background: 'rgba(255, 255, 255, 1)', offset: 0}),
-            style({opacity: .5, background: 'rgba(255, 255, 255, .5)',  offset: 0.5}),
-            style({opacity: 0, background: 'transparent',     offset: 1.0}),
-          ]))]), {optional: true})
-      ])
-    ])
-  ],
-  host: {'[@fadeInAnimation]': ''},
+  animations: [ANIMATION],
   encapsulation: ViewEncapsulation.None
 })
 export class PrivacyComponent implements OnInit {
 
   constructor(
-    private _router: Router) { }
+    private _router: Router) {
+  }
+
+  @HostBinding('@fadeInAnimation')
 
   ngOnInit() {
   }
 
-  public redirectTo():void{
+  public redirectTo(): void {
     const user = LocalStorageService.getItem(Constants.UserInSession);
-    if(user){
-      switch(user.role){
+    if (user) {
+      switch (user.role) {
         case 1:
         case 2:
         case 3:
@@ -64,9 +45,9 @@ export class PrivacyComponent implements OnInit {
           break;
         default:
           this._router.navigate(['/login']).then();
-          break
+          break;
       }
-    }else{
+    } else {
       this._router.navigate(['/login']).then();
     }
   }
