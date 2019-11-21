@@ -1,6 +1,6 @@
 import {UTaskTemplate} from '@app/utils/interfaces/u-task-template';
 
-export class UTask implements UTaskTemplate{
+export class UTask implements UTaskTemplate {
   active: boolean;
   editable: boolean;
   evidence: boolean;
