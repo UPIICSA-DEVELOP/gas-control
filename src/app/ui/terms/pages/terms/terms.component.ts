@@ -4,53 +4,37 @@
  * Proprietary and confidential
  */
 
-import {Component, OnInit, ViewEncapsulation} from '@angular/core';
-import {animate, keyframes, query, stagger, style, transition, trigger} from '@angular/animations';
+import {Component, HostBinding, OnInit, ViewEncapsulation} from '@angular/core';
 import {ApiService} from 'app/core/services/api/api.service';
 import {LocalStorageService} from 'app/core/services/local-storage/local-storage.service';
 import {Constants} from 'app/utils/constants/constants.utils';
 import {Router} from '@angular/router';
 import {HttpResponseCodes} from '@app/utils/enums/http-response-codes';
+import {ANIMATION} from '@app/ui/terms/pages/terms/animation';
+import {EntityResponse} from '@app/utils/class/entity-response';
+import {Station} from '@app/utils/interfaces/station';
+import {Person} from '@app/utils/interfaces/person';
 
 @Component({
   selector: 'app-terms',
   templateUrl: './terms.component.html',
   styleUrls: ['./terms.component.scss'],
-  animations: [
-    trigger('fadeInAnimation', [
-      transition(':enter', [
-        query('#terms', style({ opacity: 0, background: 'transparent' }), {optional: true}),
-        query('#terms', stagger('10ms', [
-          animate('.2s ease-out', keyframes([
-            style({opacity: 0, background: 'transparent', offset: 0}),
-            style({opacity: .5, background: 'rgba(255, 255, 255, .5)', offset: 0.5}),
-            style({opacity: 1, background: 'rgba(255, 255, 255, 1)',  offset: 1.0}),
-          ]))]), {optional: true})
-      ]),
-      transition(':leave', [
-        query('#terms', style({ opacity: 1, background: 'rgba(255, 255, 255, 1)' }), {optional: true}),
-        query('#terms', stagger('10ms', [
-          animate('.2s ease-in', keyframes([
-            style({opacity: 1, background: 'rgba(255, 255, 255, 1)', offset: 0}),
-            style({opacity: .5, background: 'rgba(255, 255, 255, .5)',  offset: 0.5}),
-            style({opacity: 0, background: 'transparent',     offset: 1.0}),
-          ]))]), {optional: true})
-      ])
-    ])
-  ],
-  host: {'[@fadeInAnimation]': ''},
+  animations: [ANIMATION],
   encapsulation: ViewEncapsulation.None
 })
 export class TermsComponent implements OnInit {
-  public user: string;
+  @HostBinding('@fadeInAnimation')
+
+  public user: Person;
   public company: string;
   public address: string;
   public role: number;
+
   constructor(
     private _api: ApiService,
     private _router: Router
   ) {
-    this.user = '';
+    this.user = null;
     this.company = '';
     this.address = '';
   }
@@ -59,10 +43,10 @@ export class TermsComponent implements OnInit {
     this.getCompanyName();
   }
 
-  public redirectTo():void{
+  public redirectTo(): void {
     const user = LocalStorageService.getItem(Constants.UserInSession);
-    if(user){
-      switch(user.role){
+    if (user) {
+      switch (user.role) {
         case 1:
         case 2:
         case 3:
@@ -76,17 +60,16 @@ export class TermsComponent implements OnInit {
           break;
         default:
           this._router.navigate(['/login']).then();
-          break
+          break;
       }
-    }else{
+    } else {
       this._router.navigate(['/login']).then();
     }
   }
 
-  private getCompanyName():void{
-    this.user = LocalStorageService.getItem(Constants.UserInSession).completeName;
+  private getCompanyName(): void {
     this.role = LocalStorageService.getItem(Constants.UserInSession).role;
-    switch (this.role){
+    switch (this.role) {
       case 1:
       case 2:
       case 3:
@@ -108,22 +91,19 @@ export class TermsComponent implements OnInit {
     }
   }
 
-  private getCompanyAddress(isStation: boolean):void{
+  private getCompanyAddress(isStation: boolean): void {
     const stationId = LocalStorageService.getItem(Constants.StationInDashboard).id || '';
     const consultancyId = LocalStorageService.getItem(Constants.ConsultancyInSession).id || '';
-    if(isStation){
-      this._api.getStation(stationId).subscribe(response=>{
-        switch (response.code){
-          case 200:
-            this.address = response.item.address;
-            break;
-          default:
-            this.address = '';
-            break;
+    if (isStation) {
+      this._api.getStation(stationId).subscribe((response: EntityResponse<Station>) => {
+        if (response.code === HttpResponseCodes.OK) {
+          this.address = response.item.address;
+        } else {
+          this.address = '';
         }
       });
-    }else{
-      this._api.getConsultancy(consultancyId).subscribe(response=>{
+    } else {
+      this._api.getConsultancy(consultancyId).subscribe(response => {
         if (response.code === HttpResponseCodes.OK) {
           this.address = response.item.address;
         } else {

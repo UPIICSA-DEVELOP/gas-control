@@ -1,22 +1,24 @@
-/*!
+/*
  * Copyright (C) MapLander S de R.L de C.V - All Rights Reserved
  * Unauthorized copying of this file, via any medium is strictly prohibited
  * Proprietary and confidential
  */
-
 @import "../../../../../styles/colors";
-#terms{
+
+#terms {
   width: 100vw;
   height: 100%;
   background-color: #F2F2F2;
-  mat-toolbar{
+
+  mat-toolbar {
     width: 100%;
     height: 48px;
     padding: 0;
     background-color: mat-color($primary);
     top: 0;
     position: relative;
-    .image-logo{
+
+    .image-logo {
       margin: 0 auto;
       position: absolute;
       top: 0;
@@ -24,7 +26,8 @@
       left: 0;
       justify-content: center;
       display: flex;
-      img{
+
+      img {
         height: 40px;
         margin: 4px;
         outline: none;
@@ -32,31 +35,37 @@
       }
     }
   }
-  .inspector-privacy{
+
+  .inspector-privacy {
     overflow: auto;
     height: calc(100% - 48px);
     width: 100%;
-    .content{
+
+    .content {
       width: 40%;
       margin: 0 30%;
-      @media screen and (max-width: 900px){
+      @media screen and (max-width: 900px) {
         width: 70%;
         margin: 0 15%;
       }
-      @media screen and (max-width: 600px){
+      @media screen and (max-width: 600px) {
         width: 90%;
         margin: 0 5%;
       }
-      .head{
+
+      .head {
         margin-top: 28px;
       }
-      h1{
+
+      h1 {
         font-size: 24px;
       }
-      h2{
+
+      h2 {
         font-size: 16px;
       }
-      p{
+
+      p {
         text-align: justify;
       }
     }
