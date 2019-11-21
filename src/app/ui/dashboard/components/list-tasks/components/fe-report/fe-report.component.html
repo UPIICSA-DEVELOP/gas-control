@@ -72,15 +72,20 @@
         </div>
         <div class="inputs" *ngFor="let item of extinguisher; let  i = index">
           <div class="list-element">
-            <div>Extintor {{i+1}}</div>
-            <button type="button" mat-icon-button (click)="addRemoveExtinguisher(true)" *ngIf="editable && i === 0 "><mat-icon class="add">add</mat-icon></button>
-            <button type="button" mat-icon-button (click)="addRemoveExtinguisher(false, i)" *ngIf="editable && i !== 0"><mat-icon class="delete">remove</mat-icon></button>
+            <div>Extintor {{i + 1}}</div>
+            <button type="button" mat-icon-button (click)="addRemoveExtinguisher(true)" *ngIf="editable && i === 0 ">
+              <mat-icon class="add">add</mat-icon>
+            </button>
+            <button type="button" mat-icon-button (click)="addRemoveExtinguisher(false, i)" *ngIf="editable && i !== 0">
+              <mat-icon class="delete">remove</mat-icon>
+            </button>
           </div>
           <mat-error *ngIf="extinguisherErrors[i] && editable" class="error-text">
             Complete los campos del extintor
           </mat-error>
           <mat-form-field class="inputs">
-            <mat-select [(ngModel)]="item.area" [ngModelOptions]="{standalone: true}" required [disabled]="!editable" placeholder="Área" (selectionChange)="changeExInfo($event, i)">
+            <mat-select [(ngModel)]="item.area" [ngModelOptions]="{standalone: true}" required [disabled]="!editable"
+                        placeholder="Área" (selectionChange)="changeExInfo($event, i)">
               <mat-option value="Zona de despacho">Zona de despacho</mat-option>
               <mat-option value="Zona de tanques">Zona de tanques</mat-option>
               <mat-option value="Oficina">Oficina</mat-option>
@@ -94,14 +99,17 @@
             </mat-error>
           </mat-form-field>
           <mat-form-field class="inputs">
-            <input matInput placeholder="Capacidad" type="number" [(ngModel)]="item.capacity" [ngModelOptions]="{standalone: true}" required [disabled]="!editable" (change)="changeExInfo($event, i)">
+            <input matInput placeholder="Capacidad" type="number" [(ngModel)]="item.capacity"
+                   [ngModelOptions]="{standalone: true}" required [disabled]="!editable"
+                   (change)="changeExInfo($event, i)">
             <mat-error *ngIf="!extinguisher[i].capacity && editable">
               Este campo es obligatorio
             </mat-error>
           </mat-form-field>
           <div class="times">
             <mat-form-field class="clock">
-              <mat-select placeholder="Vencimiento" [(ngModel)]="item.expiration" [ngModelOptions]="{standalone: true}" required [disabled]="!editable" (selectionChange)="changeExInfo($event, i)">
+              <mat-select placeholder="Vencimiento" [(ngModel)]="item.expiration" [ngModelOptions]="{standalone: true}"
+                          required [disabled]="!editable" (selectionChange)="changeExInfo($event, i)">
                 <mat-option value="Vigente">Vigente</mat-option>
                 <mat-option value="Caduco">Caduco</mat-option>
               </mat-select>
@@ -110,7 +118,8 @@
               </mat-error>
             </mat-form-field>
             <mat-form-field class="clock">
-              <mat-select placeholder="Manómetro" [(ngModel)]="item.manometer" [ngModelOptions]="{standalone: true}" required [disabled]="!editable" (selectionChange)="changeExInfo($event, i)">
+              <mat-select placeholder="Manómetro" [(ngModel)]="item.manometer" [ngModelOptions]="{standalone: true}"
+                          required [disabled]="!editable" (selectionChange)="changeExInfo($event, i)">
                 <mat-option value="Descargado">Descargado</mat-option>
                 <mat-option value="Óptimo">Óptimo</mat-option>
                 <mat-option value="Sobrecargado">Sobrecargado</mat-option>
@@ -122,7 +131,8 @@
           </div>
           <div class="times">
             <mat-form-field class="clock">
-              <mat-select placeholder="Manguera" [(ngModel)]="item.hose" [ngModelOptions]="{standalone: true}" required [disabled]="!editable" (selectionChange)="changeExInfo($event, i)">
+              <mat-select placeholder="Manguera" [(ngModel)]="item.hose" [ngModelOptions]="{standalone: true}" required
+                          [disabled]="!editable" (selectionChange)="changeExInfo($event, i)">
                 <mat-option value="Satisfactorio">Satisfactorio</mat-option>
                 <mat-option value="No satisfactorio">No satisfactorio</mat-option>
               </mat-select>
@@ -131,7 +141,8 @@
               </mat-error>
             </mat-form-field>
             <mat-form-field class="clock">
-              <mat-select placeholder="Cincho" [(ngModel)]="item.belt" [ngModelOptions]="{standalone: true}" required [disabled]="!editable" (selectionChange)="changeExInfo($event, i)">
+              <mat-select placeholder="Cincho" [(ngModel)]="item.belt" [ngModelOptions]="{standalone: true}" required
+                          [disabled]="!editable" (selectionChange)="changeExInfo($event, i)">
                 <mat-option value="Satisfactorio">Satisfactorio</mat-option>
                 <mat-option value="No satisfactorio">No satisfactorio</mat-option>
               </mat-select>
@@ -142,7 +153,8 @@
           </div>
           <div class="times">
             <mat-form-field class="clock">
-              <mat-select placeholder="Collarín" [(ngModel)]="item.collar" [ngModelOptions]="{standalone: true}" required [disabled]="!editable" (selectionChange)="changeExInfo($event, i)">
+              <mat-select placeholder="Collarín" [(ngModel)]="item.collar" [ngModelOptions]="{standalone: true}"
+                          required [disabled]="!editable" (selectionChange)="changeExInfo($event, i)">
                 <mat-option value="Satisfactorio">Satisfactorio</mat-option>
                 <mat-option value="No satisfactorio">No satisfactorio</mat-option>
               </mat-select>
@@ -151,7 +163,8 @@
               </mat-error>
             </mat-form-field>
             <mat-form-field class="clock">
-              <mat-select placeholder="Seguro" [(ngModel)]="item.safe" [ngModelOptions]="{standalone: true}" required [disabled]="!editable" (selectionChange)="changeExInfo($event, i)">
+              <mat-select placeholder="Seguro" [(ngModel)]="item.safe" [ngModelOptions]="{standalone: true}" required
+                          [disabled]="!editable" (selectionChange)="changeExInfo($event, i)">
                 <mat-option value="Satisfactorio">Satisfactorio</mat-option>
                 <mat-option value="No satisfactorio">No satisfactorio</mat-option>
               </mat-select>
@@ -170,14 +183,14 @@
           <div *ngIf="!editable; then showSign else loadSign"></div>
           <ng-template #showSign>
             <div class="signature-element">
-              <img *ngIf="feReport && feReport.signature" [src]="feReport.signature.thumbnail">
+              <img *ngIf="feReport && feReport.signature" [src]="feReport.signature.thumbnail" alt="">
               <div class="empty-signature" *ngIf="!feReport || !feReport.signature"></div>
             </div>
           </ng-template>
           <ng-template #loadSign>
             <div class="signature-element" (click)="loadSignature()" matTooltip="Cargar Firma">
-              <img *ngIf="signatureThumbnail" [src]="signatureThumbnail">
-              <div class="empty-signature" *ngIf="!signatureThumbnail" ></div>
+              <img *ngIf="signatureThumbnail" [src]="signatureThumbnail" alt="">
+              <div class="empty-signature" *ngIf="!signatureThumbnail"></div>
             </div>
           </ng-template>
           <div class="divider"></div>
@@ -193,7 +206,8 @@
       </div>
     </div>
     <div *ngIf="taskItems && taskItems.length !== 0 && !editable">
-      <mat-paginator [pageSize]="1" [length]="taskItems.length" [hidePageSize]="true" (page)="changeTask($event)" ></mat-paginator>
+      <mat-paginator [pageSize]="1" [length]="taskItems.length" [hidePageSize]="true"
+                     (page)="changeTask($event)"></mat-paginator>
     </div>
     <div *ngIf="editable" class="finish-button">
       <button mat-flat-button type="submit" [color]="'primary'" [disabled]="load">
