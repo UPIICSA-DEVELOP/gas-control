@@ -4,39 +4,31 @@
  *  Proprietary and confidential
  */
 
-import {Component, OnInit, ViewEncapsulation} from '@angular/core';
+import {Component, HostBinding, OnInit, ViewEncapsulation} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
-import {animate, style, transition, trigger} from '@angular/animations';
 import {ApiService} from 'app/core/services/api/api.service';
 import {DialogService} from 'app/shared/components/dialog/dialog.service';
 import {CookieService} from 'app/core/services/cookie/cookie.service';
 import {Constants} from 'app/utils/constants/constants.utils';
 import {UtilitiesService} from 'app/utils/utilities/utilities';
+import {HttpResponseCodes} from '@app/utils/enums/http-response-codes';
+import {ANIMATION} from '@app/ui/dashboard/pages/notifications/animation';
 
 @Component({
   selector: 'app-notifications',
   templateUrl: './notifications.component.html',
   styleUrls: ['./notifications.component.scss'],
-  animations: [
-    trigger('fadeInAnimation', [
-      transition(':enter', [
-        style({ right: '-100%' }),
-        animate('.40s ease-out', style({ right: '0'  }))
-      ]),
-      transition(':leave', [
-        style({ right: '0'}),
-        animate('.40s ease-in', style({ right: '-100%' }))
-      ])
-    ])
-  ],
-  host: {'[@fadeInAnimation]': ''},
+  animations: [ANIMATION],
   encapsulation: ViewEncapsulation.None
 })
-export class NotificationsComponent implements OnInit{
+export class NotificationsComponent implements OnInit {
+  @HostBinding('@fadeInAnimation')
+
   public notifications: any[];
   private _station: string;
   private _idLegal: string;
   public isAdmin: boolean;
+
   constructor(
     private _route: Router,
     private _activateRouter: ActivatedRoute,
@@ -48,7 +40,7 @@ export class NotificationsComponent implements OnInit{
   }
 
   ngOnInit() {
-    if(this._activateRouter.snapshot.queryParams.admin) {
+    if (this._activateRouter.snapshot.queryParams.admin) {
       this._idLegal = this._activateRouter.snapshot.queryParams.admin;
       this.isAdmin = true;
     }
@@ -58,45 +50,42 @@ export class NotificationsComponent implements OnInit{
     }
   }
 
-  private getNotifications():void{
+  private getNotifications(): void {
     let personId;
-    if(!this._idLegal){personId = CookieService.getCookie(Constants.IdSession);}else{personId = this._idLegal;}
-    this._api.listNotifications(personId, this._station).subscribe(response=>{
-      switch (response.code){
-        case 200:
-          if(response.items){
-            this.notifications = response.items;
-            for(let i = 0; i<this.notifications.length;i++){
-              this.notifications[i].date = UtilitiesService.convertDate(this.notifications[i].date)
-            }
-          }else{
-            this.notifications = [];
+    if (!this._idLegal) {
+      personId = CookieService.getCookie(Constants.IdSession);
+    } else {
+      personId = this._idLegal;
+    }
+    this._api.listNotifications(personId, this._station).subscribe(response => {
+      if (response.code === HttpResponseCodes.OK) {
+        if (response.items) {
+          this.notifications = response.items;
+          for (let i = 0; i < this.notifications.length; i++) {
+            this.notifications[i].date = UtilitiesService.convertDate(this.notifications[i].date);
           }
-          break;
-        default:
+        } else {
           this.notifications = [];
-          break;
+        }
+      } else {
+        this.notifications = [];
       }
-    })
+    });
   }
 
-  public deleteNotification(id: string, index: number):void{
+  public deleteNotification(id: string, index: number): void {
     this._dialogService.confirmDialog(
       '¿Desea eliminar esta notificación?',
       '',
       'ACEPTAR',
       'CANCELAR'
-    ).afterClosed().subscribe(response=>{
-      switch (response.code){
-        case 1:
-          this._api.deleteNotification(id).subscribe(response=>{
-            switch (response.code){
-              case 200:
-                this.notifications.splice(index, 1);
-                break;
-            }
-          });
-          break;
+    ).afterClosed().subscribe(response => {
+      if (response.code === 1) {
+        this._api.deleteNotification(id).subscribe(deleteNotification => {
+          if (deleteNotification.code === HttpResponseCodes.OK) {
+            this.notifications.splice(index, 1);
+          }
+        });
       }
     });
   }
