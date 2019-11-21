@@ -4,7 +4,7 @@
  * Proprietary and confidential
  */
 
-#procedures{
+#procedures {
   position: absolute;
   top: 0;
   bottom: 0;
@@ -13,7 +13,8 @@
   z-index: 3;
   overflow: hidden;
   display: flex;
-  .tap{
+
+  .tap {
     margin-top: 72px;
     background-color: #FFFFFF;
     display: flex;
@@ -23,51 +24,60 @@
     width: 40px;
     border-radius: 4px 0 0 4px;
     box-shadow: 0 2px 1px -1px rgba(0, 0, 0, 0.2), 0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12);
-    @media screen and (max-width: 600px){
+    @media screen and (max-width: 600px) {
       display: none;
     }
   }
-  .content{
+
+  .content {
     height: 100%;
     overflow: hidden;
     width: 100%;
     background: #F2F2F2;
     box-shadow: 0 2px 1px -1px rgba(0, 0, 0, 0.2), 0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12);
   }
-  .head{
+
+  .head {
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 16px;
-    span{
+
+    span {
       font-weight: 700;
       font-size: 16px;
       color: #707070;
     }
-    button{
+
+    button {
       display: none;
-      @media screen and (max-width: 600px){
+      @media screen and (max-width: 600px) {
         display: block;
       }
     }
   }
-  .container{
+
+  .container {
     padding: 0 16px;
     height: calc(100% - 72px);
     overflow: auto;
-    mat-card{
+
+    mat-card {
       margin: 8px 0;
       cursor: pointer;
-      mat-card-content{
+
+      mat-card-content {
         align-items: center;
         display: flex;
         color: #707070;
         font-weight: 500;
         min-height: 32px;
-        .icon{
+
+        .icon {
           margin: 0 4px;
         }
-        .divider{
+
+        .divider {
           display: flex;
           align-items: center;
           min-height: 32px;
@@ -77,10 +87,12 @@
       }
     }
   }
-  .file{
+
+  .file {
     cursor: pointer;
   }
-  a{
+
+  a {
     text-decoration: none;
   }
 }
