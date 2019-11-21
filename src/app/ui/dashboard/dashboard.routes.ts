@@ -23,6 +23,7 @@ import {UserProfileComponent} from '@app/ui/dashboard/pages/profiles/user-profil
 import {UserProfileService} from '@app/ui/dashboard/pages/profiles/user-profile/user-profile.service';
 import {StationProfileComponent} from '@app/ui/dashboard/pages/profiles/station-profile/station-profile.component';
 import {StationProfileService} from '@app/ui/dashboard/pages/profiles/station-profile/station-profile.service';
+
 const URL_BASE = environment.url;
 
 export const dashboardRoutes: Routes = [
@@ -33,14 +34,14 @@ export const dashboardRoutes: Routes = [
     resolve: {data: AuthService},
     data: {
       url: URL_BASE + 'home',
-      title:'Dashboard'
+      title: 'Dashboard'
     },
     children: [
       {
-        path:'documents/:station',
+        path: 'documents/:station',
         component: DocumentationComponent,
         resolve: {data: DocumentationService},
-        data:{
+        data: {
           title: 'Documentación',
           url: URL_BASE + 'home/documents'
         }
@@ -48,23 +49,23 @@ export const dashboardRoutes: Routes = [
       {
         path: 'notifications',
         component: NotificationsComponent,
-        data:{
+        data: {
           title: 'Notificaciones',
           url: URL_BASE + 'home/notifications'
         }
       },
       {
-        path:'collaborators',
+        path: 'collaborators',
         component: CollaboratorsListComponent,
-        data:{
+        data: {
           title: 'Colaboradores',
           url: URL_BASE + 'home/collaborators'
         }
       },
       {
-        path:'station-list',
+        path: 'station-list',
         component: StationListComponent,
-        data:{
+        data: {
           title: 'Lista de estaciones',
           url: URL_BASE + 'home/station-list'
         }
@@ -72,7 +73,7 @@ export const dashboardRoutes: Routes = [
       {
         path: 'add-collaborator',
         component: AddCollaboratorComponent,
-        data:{
+        data: {
           url: URL_BASE + 'home/add-collaborator',
           title: 'Añadir colaborador'
         }
@@ -80,22 +81,22 @@ export const dashboardRoutes: Routes = [
       {
         path: 'procedures',
         component: ProceduresComponent,
-        data:{
+        data: {
           title: 'Procedimientos',
           url: URL_BASE + 'home/procedures'
         }
       },
       {
         path: 'profile',
-        data:{
+        data: {
           url: URL_BASE + 'home/profile',
           title: 'Perfil'
         },
-        children:[
+        children: [
           {
             path: 'consultancy',
             component: ProfileComponent,
-            data:{
+            data: {
               title: 'Perfil',
               url: URL_BASE + 'home/profile/consultancy'
             },
@@ -105,7 +106,7 @@ export const dashboardRoutes: Routes = [
             path: 'user',
             component: UserProfileComponent,
             resolve: {data: UserProfileService},
-            data:{
+            data: {
               title: 'Perfil',
               url: URL_BASE + 'home/profile/user'
             }
@@ -114,7 +115,7 @@ export const dashboardRoutes: Routes = [
             path: 'gas-station/:id',
             component: StationProfileComponent,
             resolve: {data: StationProfileService},
-            data:{
+            data: {
               title: 'Estación de servicio',
               url: URL_BASE + 'home/profile/gas-station'
             }

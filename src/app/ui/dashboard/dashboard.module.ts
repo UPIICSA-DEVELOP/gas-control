@@ -5,8 +5,8 @@
  *
  */
 
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import {NgModule} from '@angular/core';
+import {CommonModule} from '@angular/common';
 import {SharedModule} from '@app/shared/shared.module';
 import {RouterModule} from '@angular/router';
 import {dashboardRoutes} from '@app/ui/dashboard/dashboard.routes';
@@ -138,4 +138,5 @@ const EntryComponents = [
     EntryComponents
   ]
 })
-export class DashboardModule { }
+export class DashboardModule {
+}
