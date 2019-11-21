@@ -27,8 +27,8 @@
                    [ngxTimepicker]="pickerOne"
                    readonly="readonly">
             <button mat-icon-button [disabled]="!editable" matSuffix (click)="pickerOne.open()" type="button">
-                <mat-icon>access_time</mat-icon>
-              </button>
+              <mat-icon>access_time</mat-icon>
+            </button>
             <ngx-material-timepicker #pickerOne
                                      (timeSet)="changeTime($event, 'startTime')"
                                      [confirmBtnTmpl]="confirmBtn"
@@ -123,17 +123,19 @@
         </div>
         <div *ngIf="!editable; then showEv else modify"></div>
         <ng-template #showEv>
-          <div *ngIf="!compressorReport || !compressorReport.fileCS" class="image-container" >
+          <div *ngIf="!compressorReport || !compressorReport.fileCS" class="image-container">
             <mat-icon class="default-image">image</mat-icon>
           </div>
-          <div *ngIf="compressorReport && compressorReport.fileCS " class="image-container-real" (click)="seeEvidence()">
+          <div *ngIf="compressorReport && compressorReport.fileCS " class="image-container-real"
+               (click)="seeEvidence()">
             <img class="evidence" [src]="compressorReport.fileCS.thumbnail" alt="Evidence capture">
           </div>
         </ng-template>
         <ng-template #modify>
-          <app-upload-file class="inputs" (onLoad)="loadEvidence($event)" (onRemove)="deleteEvidence()" [layoutTemplate]="imageEvidence" [type]="'image'">
+          <app-upload-file class="inputs" (onLoad)="loadEvidence($event)" (onRemove)="deleteEvidence()"
+                           [layoutTemplate]="imageEvidence" [type]="'image'">
             <ng-template #imageEvidence>
-              <div *ngIf="!evidenceThumbnail" class="image-container" >
+              <div *ngIf="!evidenceThumbnail" class="image-container">
                 <mat-icon class="default-image">image</mat-icon>
               </div>
               <div *ngIf="evidenceThumbnail" class="image-container-real">
@@ -149,13 +151,13 @@
           <div *ngIf="!editable; then showSign else loadSign"></div>
           <ng-template #showSign>
             <div class="signature-element">
-              <img *ngIf="compressorReport && compressorReport.signature" [src]="compressorReport.signature.thumbnail">
+              <img *ngIf="compressorReport && compressorReport.signature" [src]="compressorReport.signature.thumbnail" alt="">
               <div class="empty-signature" *ngIf="!compressorReport || !compressorReport.signature"></div>
             </div>
           </ng-template>
           <ng-template #loadSign>
             <div class="signature-element" (click)="loadSignature()" style="cursor: pointer" matTooltip="Cargar Firma">
-              <img *ngIf="signatureThumbnail" [src]="signatureThumbnail">
+              <img *ngIf="signatureThumbnail" [src]="signatureThumbnail" alt="">
               <div class="empty-signature" *ngIf="!signatureThumbnail"></div>
             </div>
           </ng-template>
@@ -173,10 +175,12 @@
     </div>
     <div class="divider" *ngIf="task.hwg"></div>
     <div *ngIf="task.hwg && compressorReport">
-      <app-hwg-report [taskHwgInfo]="hwgData || undefined" [validate]="startValidate" (formInformation)="getHWGReportInformation($event)"></app-hwg-report>
+      <app-hwg-report [taskHwgInfo]="hwgData || undefined" [validate]="startValidate"
+                      (formInformation)="getHWGReportInformation($event)"></app-hwg-report>
     </div>
     <div *ngIf="task.hwg && !compressorReport">
-      <app-hwg-report [taskHwgInfo]="undefined" [validate]="startValidate" (formInformation)="getHWGReportInformation($event)"></app-hwg-report>
+      <app-hwg-report [taskHwgInfo]="undefined" [validate]="startValidate"
+                      (formInformation)="getHWGReportInformation($event)"></app-hwg-report>
     </div>
     <div *ngIf="task.hwg" class="text-sign">
       Nombre y firma del responsable
@@ -185,13 +189,13 @@
       <div *ngIf="!editable; then showSign else loadSign"></div>
       <ng-template #showSign>
         <div class="signature-element">
-          <img *ngIf="compressorReport && compressorReport.signature" [src]="compressorReport.signature.thumbnail">
+          <img *ngIf="compressorReport && compressorReport.signature" [src]="compressorReport.signature.thumbnail" alt="">
           <div class="empty-signature" *ngIf="!compressorReport || !compressorReport.signature"></div>
         </div>
       </ng-template>
       <ng-template #loadSign>
         <div class="signature-element" (click)="loadSignature()" style="cursor: pointer" matTooltip="Cargar Firma">
-          <img *ngIf="signatureThumbnail" [src]="signatureThumbnail">
+          <img *ngIf="signatureThumbnail" [src]="signatureThumbnail" alt="">
           <div class="empty-signature" *ngIf="!signatureThumbnail"></div>
         </div>
       </ng-template>
@@ -206,7 +210,8 @@
       </ng-template>
     </div>
     <div *ngIf="taskItems && taskItems.length !== 0 && !editable">
-      <mat-paginator [pageSize]="1" [length]="taskItems.length" [hidePageSize]="true" (page)="changeTask($event)" ></mat-paginator>
+      <mat-paginator [pageSize]="1" [length]="taskItems.length" [hidePageSize]="true"
+                     (page)="changeTask($event)"></mat-paginator>
     </div>
     <div *ngIf="editable" class="finish-button">
       <button mat-flat-button type="submit" [color]="'primary'" [disabled]="load">

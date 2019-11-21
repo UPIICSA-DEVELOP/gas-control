@@ -22,6 +22,7 @@ import {LoaderService} from '@app/core/components/loader/loader.service';
 import {CompressorReport} from '@app/utils/interfaces/reports/compressor-report';
 import {HWGReport} from '@app/utils/interfaces/reports/hwg-report';
 import {Task} from '@app/utils/interfaces/task';
+import {HttpResponseCodes} from '@app/utils/enums/http-response-codes';
 
 @Component({
   selector: 'app-compressor-report',
@@ -32,14 +33,15 @@ import {Task} from '@app/utils/interfaces/task';
 export class CompressorReportComponent implements OnInit, OnDestroy {
   private _taskId: string;
   public task: Task;
-  @Input() set taskCompInfo(taskObj: Task){
-    if (taskObj){
-      debugger;
+
+  @Input() set taskCompInfo(taskObj: Task) {
+    if (taskObj) {
       this._taskId = taskObj.id;
       this.task = taskObj;
       this.getCompReport();
     }
   }
+
   public load: boolean;
   public compressorReport: CompressorReport;
   public compForm: FormGroup;
@@ -55,13 +57,14 @@ export class CompressorReportComponent implements OnInit, OnDestroy {
   private _indexTask: number;
   private _signature: FormData;
   private _evidence: FormData;
-  private _loads: boolean[];
+  private readonly _loads: boolean[];
   private _subscriptionShared: Subscription;
   private _subscriptionLoader: Subscription;
   private _evidenceElement: any;
   private _signatureElement: any;
   private _copyTask: CompressorReport;
   private _hwgElement: HWGReport;
+
   constructor(
     private _api: ApiService,
     private _apiLoader: LoaderService,
@@ -83,31 +86,30 @@ export class CompressorReportComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this._subscriptionLoader = this._apiLoader.getProgress().subscribe(load=>{this.load = load});
+    this._subscriptionLoader = this._apiLoader.getProgress().subscribe(load => {
+      this.load = load;
+    });
     this.initCompForm();
     this.getNotifications();
   }
 
-  ngOnDestroy():void{
+  ngOnDestroy(): void {
     this._subscriptionLoader.unsubscribe();
     this._subscriptionShared.unsubscribe();
   }
 
-  private getNotifications(): void{
-    this._subscriptionShared = this._subscriptionShared = this._sharedService.getNotifications().subscribe(response=>{
-      switch (response.type){
-        case SharedTypeNotification.EditTask:
-          if(response.value === 2){
-            this.startEditFormat();
-          }
-          break;
-        default:
-          break;
+  private getNotifications(): void {
+    this._subscriptionShared = this._subscriptionShared = this._sharedService.getNotifications().subscribe(response => {
+      if (response.type === SharedTypeNotification.EditTask) {
+        if (response.value === 2) {
+          this.startEditFormat();
+        }
+      } else {
       }
-    })
+    });
   }
 
-  private initCompForm():void{
+  private initCompForm(): void {
     this.compForm = this._formBuilder.group({
       startTime: ['', [Validators.required]],
       endTime: ['', [Validators.required]],
@@ -127,12 +129,12 @@ export class CompressorReportComponent implements OnInit, OnDestroy {
     this.compForm.reset();
     this.compForm.disable();
     const user = LocalStorageService.getItem(Constants.UserInSession);
-    if(this.task.status !== 4 && user.role ===7){
+    if (this.task.status !== 4 && user.role === 7) {
       this.startEditFormat(true);
     }
   }
 
-  private patchForm(report: CompressorReport):void{
+  private patchForm(report: CompressorReport): void {
     this.compressorReport = {
       brand: report.brand || null,
       controlNumber: report.controlNumber || null,
@@ -165,52 +167,49 @@ export class CompressorReportComponent implements OnInit, OnDestroy {
       modifications: this.compressorReport.modifications,
       observations: this.compressorReport.observations
     });
-    if(this.compressorReport.hwgReport){
-     this.hwgData = this.compressorReport.hwgReport;
-    }else{
-      this.hwgData = undefined
+    if (this.compressorReport.hwgReport) {
+      this.hwgData = this.compressorReport.hwgReport;
+    } else {
+      this.hwgData = undefined;
     }
     this.date = UtilitiesService.convertDate(this.compressorReport.date);
     this.compForm.disable();
   }
 
-  private getCompReport(): void{
-    this._api.getTaskInformation(this._taskId, 2).subscribe(response=>{
-      switch (response.code){
-        case 200:
-          if(response.items){
-            this.taskItems = UtilitiesService.sortJSON(response.items,'folio','desc');
-            this._indexTask = 0;
-            this.patchForm(this.taskItems[0]);
-          }else{
-            this.resetElements();
-          }
-          break;
-        default:
+  private getCompReport(): void {
+    this._api.getTaskInformation(this._taskId, 2).subscribe(response => {
+      if (response.code === HttpResponseCodes.OK) {
+        if (response.items) {
+          this.taskItems = UtilitiesService.sortJSON(response.items, 'folio', 'desc');
+          this._indexTask = 0;
+          this.patchForm(this.taskItems[0]);
+        } else {
           this.resetElements();
-          break;
+        }
+      } else {
+        this.resetElements();
       }
     });
   }
 
-  public seeEvidence():void{
-    if(this.task.status !== 4){
+  public seeEvidence(): void {
+    if (this.task.status !== 4) {
       return;
     }
-    if(this.taskItems[this._indexTask].fileCS){
+    if (this.taskItems[this._indexTask].fileCS) {
       this._imageVisor.open(this.taskItems[this._indexTask].fileCS);
-    }else{
-      this._snackBarService.openSnackBar('Esta tarea no cuenta con evidencia', 'OK',3000);
+    } else {
+      this._snackBarService.openSnackBar('Esta tarea no cuenta con evidencia', 'OK', 3000);
     }
   }
 
-  public changeTask(ev: any){
+  public changeTask(ev: any) {
     this._indexTask = ev.pageIndex;
     this.patchForm(this.taskItems[this._indexTask]);
   }
 
 
-  private startEditFormat(prepare?: boolean): void{
+  private startEditFormat(prepare?: boolean): void {
     let today: any = new Date();
     const user = LocalStorageService.getItem(Constants.UserInSession);
     today = UtilitiesService.createPersonalTimeStamp(today);
@@ -218,14 +217,14 @@ export class CompressorReportComponent implements OnInit, OnDestroy {
     this.editable = true;
     this.name = user.completeName;
     this._sharedService.setNotification({type: SharedTypeNotification.HwgActive, value: prepare ? prepare : false});
-    if(!prepare){
+    if (!prepare) {
       this._copyTask = this.compressorReport;
       this.compressorReport.signature = undefined;
-      if(this.compressorReport.fileCS){
+      if (this.compressorReport.fileCS) {
         this.evidenceThumbnail = this.compressorReport.fileCS.thumbnail;
         this._evidenceElement = this.compressorReport.fileCS;
       }
-      if(this.compressorReport.hwgReport){
+      if (this.compressorReport.hwgReport) {
         this.hwgData = this.compressorReport.hwgReport;
       }
       this.compressorReport.signature = undefined;
@@ -243,15 +242,13 @@ export class CompressorReportComponent implements OnInit, OnDestroy {
 
   public loadSignature(): void {
     this._signatureService.open().afterClosed().subscribe(response => {
-      switch (response.code) {
-        case 1:
-          this.signatureThumbnail = response.base64;
-          this._loads[1] = true;
-          this._signature = new FormData();
-          this._signature.append('fileName', 'signature-' + new Date().getTime() + '.png');
-          this._signature.append('isImage', 'true');
-          this._signature.append('file', response.blob);
-          break;
+      if (response.code === 1) {
+        this.signatureThumbnail = response.base64;
+        this._loads[1] = true;
+        this._signature = new FormData();
+        this._signature.append('fileName', 'signature-' + new Date().getTime() + '.png');
+        this._signature.append('isImage', 'true');
+        this._signature.append('file', response.blob);
       }
     });
   }
@@ -280,39 +277,39 @@ export class CompressorReportComponent implements OnInit, OnDestroy {
     if (this.task.evidence && (!this._evidence && !this.compressorReport.fileCS)) {
       this.error = true;
     }
-    if(this.task.hwg){
-      if(!this._hwgElement.area ||
+    if (this.task.hwg) {
+      if (!this._hwgElement.area ||
         !this._hwgElement.waste ||
         !this._hwgElement.quantity ||
         !this._hwgElement.unity ||
-        !this._hwgElement.temporaryStorage){
+        !this._hwgElement.temporaryStorage) {
         error = true;
       }
     }
     if (this.compForm.invalid || this.error || error) {
-      this._snackBarService.openSnackBar('Por favor, complete los campos','OK',3000);
+      this._snackBarService.openSnackBar('Por favor, complete los campos', 'OK', 3000);
       return;
     }
-    if(!this._signature){
-      this._snackBarService.openSnackBar('Por favor, registre su firma','OK',3000);
+    if (!this._signature) {
+      this._snackBarService.openSnackBar('Por favor, registre su firma', 'OK', 3000);
       return;
     }
-    if(this._loads[0]) {
+    if (this._loads[0]) {
       this.uploadFile(1);
       return;
     }
-    if(this._loads[1]){
+    if (this._loads[1]) {
       this.uploadFile(2);
       return;
     }
     this.saveReport(value);
   }
 
-  private uploadFile(type: number):void{
-    switch (type){
+  private uploadFile(type: number): void {
+    switch (type) {
       case 1:
-        this._uploadFile.upload(this._evidence).subscribe(response=>{
-          if (response){
+        this._uploadFile.upload(this._evidence).subscribe(response => {
+          if (response) {
             this._evidenceElement = {
               blobName: response.item.blobName,
               thumbnail: response.item.thumbnail
@@ -323,8 +320,8 @@ export class CompressorReportComponent implements OnInit, OnDestroy {
         });
         break;
       case 2:
-        this._uploadFile.upload(this._signature).subscribe(response=>{
-          if (response){
+        this._uploadFile.upload(this._signature).subscribe(response => {
+          if (response) {
             this._signatureElement = {
               blobName: response.item.blobName,
               thumbnail: response.item.thumbnail
@@ -339,7 +336,7 @@ export class CompressorReportComponent implements OnInit, OnDestroy {
     }
   }
 
-  private saveReport(value):any{
+  private saveReport(value): any {
     let date: any = new Date();
     date = UtilitiesService.createPersonalTimeStamp(date);
     this.compressorReport = {
@@ -348,7 +345,7 @@ export class CompressorReportComponent implements OnInit, OnDestroy {
       date: date.timeStamp,
       endTime: UtilitiesService.removeFormatTime(value.endTime),
       fileCS: this._evidenceElement,
-      hwgReport : undefined,
+      hwgReport: undefined,
       modifications: value.modifications,
       model: value.model,
       name: this.name,
@@ -360,26 +357,23 @@ export class CompressorReportComponent implements OnInit, OnDestroy {
       startTime: UtilitiesService.removeFormatTime(value.startTime),
       taskId: this._taskId,
     };
-    if (this._copyTask){
-      this.compressorReport.id = this._copyTask.id
+    if (this._copyTask) {
+      this.compressorReport.id = this._copyTask.id;
     }
-    if(this.task.hwg){
-      this.compressorReport.hwgReport = this._hwgElement
+    if (this.task.hwg) {
+      this.compressorReport.hwgReport = this._hwgElement;
     }
-    this._api.createTask(this.compressorReport, 2).subscribe(response=>{
-      switch (response.code){
-        case 200:
-          this._sharedService.setNotification({type: SharedTypeNotification.FinishEditTask, value: response.item.station});
-          break;
-        default:
-          console.error(response);
-          break;
+    this._api.createTask(this.compressorReport, 2).subscribe(response => {
+      if (response.code === HttpResponseCodes.OK) {
+        this._sharedService.setNotification({type: SharedTypeNotification.FinishEditTask, value: response.item.station});
+      } else {
+        console.error(response);
       }
     });
   }
 
   public getHWGReportInformation(ev: any): void {
-    if(ev.valid){
+    if (ev.valid) {
       this._hwgElement = {
         area: ev.value.area,
         corrosive: ev.value.corrosive,
@@ -392,7 +386,7 @@ export class CompressorReportComponent implements OnInit, OnDestroy {
         unity: ev.value.unity,
         waste: ev.value.waste
       };
-    }else{
+    } else {
       this._hwgElement = {
         area: undefined,
         corrosive: false,
@@ -410,7 +404,7 @@ export class CompressorReportComponent implements OnInit, OnDestroy {
     this.validateForm(this.compForm.value);
   }
 
-  public startValidateForm():void{
+  public startValidateForm(): void {
     this.startValidate = true;
   }
 
