@@ -14,24 +14,26 @@ import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
   encapsulation: ViewEncapsulation.None
 })
 export class TaskFilterComponent implements OnInit {
-  public option: number = 0;
+  public option = 0;
+
   constructor(
     @Inject(MAT_DIALOG_DATA) private _data: any,
     private _dialogRef: MatDialogRef<TaskFilterComponent>
-  ) { }
+  ) {
+  }
 
   ngOnInit() {
     if (this._data) {
-      this.option=this._data;
+      this.option = this._data;
     }
   }
 
-  public close():void{
-    this._dialogRef.close({code:-1});
+  public close(): void {
+    this._dialogRef.close({code: -1});
   }
 
-  public applyFilters():void{
-    this._dialogRef.close({code:1,filter:this.option});
+  public applyFilters(): void {
+    this._dialogRef.close({code: 1, filter: this.option});
   }
 
 }

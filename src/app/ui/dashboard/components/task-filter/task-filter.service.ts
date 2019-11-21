@@ -4,7 +4,7 @@
  * Proprietary and confidential
  */
 
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {MatDialog, MatDialogRef} from '@angular/material';
 import {TaskFilterComponent} from '@app/ui/dashboard/components/task-filter/task-filter.component';
 
@@ -14,9 +14,10 @@ export class TaskFilterService {
 
   constructor(
     private _dialog: MatDialog
-  ) { }
+  ) {
+  }
 
-  public open(filter?:number):MatDialogRef<TaskFilterComponent>{
-    return this._dialog.open(TaskFilterComponent,{panelClass:'filter-panel', disableClose: true, data:filter || 0});
+  public open(filter?: number): MatDialogRef<TaskFilterComponent> {
+    return this._dialog.open(TaskFilterComponent, {panelClass: 'filter-panel', disableClose: true, data: filter || 0});
   }
 }
