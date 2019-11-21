@@ -27,7 +27,7 @@ export class UtilitiesService {
     }
   }
 
-  static shareFacebook(url: string, mobile?: boolean): void{
+  static shareFacebook(url: string, mobile?: boolean): void {
     FB.ui({
       method: 'share',
       mobile_iframe: mobile,
@@ -39,28 +39,28 @@ export class UtilitiesService {
     const baseUrl = 'https://twitter.com/intent/tweet?url=' + url;
     window.open(baseUrl, 'sharer', 'resizable=no,top=' + ((window.innerWidth / 2) - (window.innerWidth)) + ',left='
       + (window.innerHeight / 2 - (window.innerHeight)) + ',toolbar=0,status=0,width=' +
-      (window.innerWidth / 2)  + ',height=' + (window.innerHeight / 2));
+      (window.innerWidth / 2) + ',height=' + (window.innerHeight / 2));
   }
 
-  static createTimeString(date: string): string{
-    let newDate: string[], suffix:string, hours, minutes;
-    try{
+  static createTimeString(date: string): string {
+    let newDate: string[], suffix: string, hours, minutes;
+    try {
       newDate = date.split(':');
       suffix = null;
       hours = newDate[0];
       minutes = newDate[1];
-      if(Number(hours) > 12){
-        hours = UtilitiesService.round(Number(hours)-12, 0).toString();
-        hours = hours.length === 1 ? '0'+hours: hours;
+      if (Number(hours) > 12) {
+        hours = UtilitiesService.round(Number(hours) - 12, 0).toString();
+        hours = hours.length === 1 ? '0' + hours : hours;
         suffix = ' p.m.';
-      }else{
-        suffix = ' a.m.'
+      } else {
+        suffix = ' a.m.';
       }
-    }catch (e){
+    } catch (e) {
       console.error(e);
       return null;
     }
-    return hours+':'+minutes+suffix;
+    return hours + ':' + minutes + suffix;
   }
 
   static removeItemOfArray(array: Array<any>, toRemove: any): any {
@@ -74,20 +74,20 @@ export class UtilitiesService {
     }
   }
 
-  static compareArray(array1, array2): boolean{
-    const objMap={};
+  static compareArray(array1, array2): boolean {
+    const objMap = {};
     array1.forEach((e1) => array2.forEach((e2) => {
         if (e1 === e2) {
           objMap[e1] = objMap[e1] + 1 || 1;
         }
       }
     ));
-    return Object.keys(objMap).map(e=>Number(e)).length>0;
+    return Object.keys(objMap).map(e => Number(e)).length > 0;
   }
 
-  static sortJSON(data: any, key: string, order:string) {
+  static sortJSON(data: any, key: string, order: string) {
     return data.sort(function (a, b) {
-      let x = a[key],
+      const x = a[key],
         y = b[key];
       if (order === 'asc') {
         return ((x < y) ? -1 : ((x > y) ? 1 : 0));
@@ -98,21 +98,20 @@ export class UtilitiesService {
     });
   }
 
-  static compareJSON(object1: any, object2:any): boolean{
+  static compareJSON(object1: any, object2: any): boolean {
     let flag = false;
-    try{
-      if(Object.keys(object1).length===Object.keys(object2).length){
-        for(let key in object1) {
-          if(object1[key] !== object2[key]) {
+    try {
+      if (Object.keys(object1).length === Object.keys(object2).length) {
+        for (const key in object1) {
+          if (object1[key] !== object2[key]) {
             flag = true;
             break;
           }
         }
-      }
-      else {
+      } else {
         flag = true;
       }
-    }catch (e){
+    } catch (e) {
       console.error(e);
       return null;
     }
@@ -120,26 +119,12 @@ export class UtilitiesService {
   }
 
   static makeRandomHash(): string {
-    let text = "";
-    const possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-    for (let i = 0; i < 15; i++)
+    let text = '';
+    const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    for (let i = 0; i < 15; i++) {
       text += possible.charAt(Math.floor(Math.random() * possible.length));
+    }
     return text;
-  }
-
-  static hashString(string: string): string{
-    let hash = 0;
-    let i;
-    let chr;
-    if (string.length === 0){
-      return hash.toString();
-    }
-    for (i = 0; i < string.length; i++) {
-      chr   = string.charCodeAt(i);
-      hash  = ((hash << 5) - hash) + chr;
-      hash |= 0; // Convert to 32bit integer
-    }
-    return hash.toString();
   }
 
   static isValidJson(json): boolean {
@@ -151,27 +136,27 @@ export class UtilitiesService {
     }
   }
 
-  static generateArrayDate(date: number, nextYear: boolean, addDay: boolean): Date | null{
+  static generateArrayDate(date: number, nextYear: boolean, addDay: boolean): Date | null {
     const originalDate = date.toString();
     let value: Date;
-    let day: any = undefined;
-    let month: any = undefined;
-    let year: any = undefined;
-    try{
-      if(!originalDate){
+    let day: any;
+    let month: any;
+    let year: any;
+    try {
+      if (!originalDate) {
         return null;
       }
-      year = originalDate.slice(0,4);
-      month = originalDate.slice(4,6);
-      day = originalDate.slice(6,8);
-      if(nextYear){
+      year = originalDate.slice(0, 4);
+      month = originalDate.slice(4, 6);
+      day = originalDate.slice(6, 8);
+      if (nextYear) {
         year = Number(year);
         year = (year + 1).toString();
       }
-      value = new Date(Number(year), Number(month-1), Number(day));
-      value = new Date(value.getTime() + (addDay?(24 * 60 * 60 * 1000): 0));
-      return value
-    }catch (e){
+      value = new Date(Number(year), Number(month - 1), Number(day));
+      value = new Date(value.getTime() + (addDay ? (24 * 60 * 60 * 1000) : 0));
+      return value;
+    } catch (e) {
       console.error(e.message);
       return null;
     }
@@ -189,19 +174,20 @@ export class UtilitiesService {
       styles: [{
         featureType: 'poi',
         stylers: [
-          { visibility: 'off' }
-        ]}]
-    }
+          {visibility: 'off'}
+        ]
+      }]
+    };
   }
 
-  static createPersonalTimeStamp(date: Date): any{
-    let formatDate:any = {};
+  static createPersonalTimeStamp(date: Date): any {
+    let formatDate: any = {};
     try {
-      const day:string = date.getDate().toString();
-      const month:string = (date.getMonth()+1).toString();
-      const year:string = date.getFullYear().toString();
-      let monthText:string = '';
-      switch (month){
+      const day: string = date.getDate().toString();
+      const month: string = (date.getMonth() + 1).toString();
+      const year: string = date.getFullYear().toString();
+      let monthText = '';
+      switch (month) {
         case '1':
           monthText = 'Ene';
           break;
@@ -240,17 +226,17 @@ export class UtilitiesService {
           break;
       }
       formatDate = {
-        timeStamp: Number(year+''+(month.length<2?'0'+month:month)+''+(day.length<2?'0'+day:day)),
-        textDate: (day.length<2?'0'+day:day)+'/'+monthText+'/'+year
+        timeStamp: Number(year + '' + (month.length < 2 ? '0' + month : month) + '' + (day.length < 2 ? '0' + day : day)),
+        textDate: (day.length < 2 ? '0' + day : day) + '/' + monthText + '/' + year
       };
       return formatDate;
-    }catch (e){
+    } catch (e) {
       console.error(e);
       return null;
     }
   }
 
-  static convertDate(date: number): string[]{
+  static convertDate(date: number): string[] {
     /**
      *
      * @return string[]
@@ -259,7 +245,7 @@ export class UtilitiesService {
      * Position 1: Month
      * Position 2: Year
      * */
-    let result = [];
+    const result = [];
     try {
       const dateForSplit = date.toString();
       const year = dateForSplit.slice(0, 4);
@@ -314,80 +300,80 @@ export class UtilitiesService {
 
   }
 
-  static round(value: number, precision: number): number{
+  static round(value: number, precision: number): number {
     const multiplier = Math.pow(10, precision || 0);
     return Math.round(value * multiplier) / multiplier;
   }
 
-  static base64ToBlob(base: string): Blob{
+  static base64ToBlob(base: string): Blob {
     try {
-      let byteCharacters = atob(base.replace(/^data:image\/(png|jpeg|jpg);base64,/, ''));
-      let byteNumbers = new Array(byteCharacters.length);
+      const byteCharacters = atob(base.replace(/^data:image\/(png|jpeg|jpg);base64,/, ''));
+      const byteNumbers = new Array(byteCharacters.length);
       for (let i = 0; i < byteCharacters.length; i++) {
         byteNumbers[i] = byteCharacters.charCodeAt(i);
       }
-      let byteArray = new Uint8Array(byteNumbers);
+      const byteArray = new Uint8Array(byteNumbers);
       return new Blob([byteArray], {type: 'image/png'});
-    }catch(e) {
+    } catch (e) {
       console.error(e);
       return null;
     }
   }
 
-  static addSubtractDaysFromDate(date: Date, days: number, isAdd: boolean): Date{
-    try{
-      if(isAdd){
+  static addSubtractDaysFromDate(date: Date, days: number, isAdd: boolean): Date {
+    try {
+      if (isAdd) {
         date.setDate(date.getDate() + days);
-      }else{
+      } else {
         date.setDate(date.getDate() - days);
       }
       return date;
-    }catch(e){
+    } catch (e) {
       console.error(e.message);
       return null;
     }
   }
 
-  static downloadFileByBlob(file: Blob | string, fileName: string): void{
-    try{
-      const a = document.createElement("a");
+  static downloadFileByBlob(file: Blob | string, fileName: string): void {
+    try {
+      const a = document.createElement('a');
       document.body.appendChild(a);
-      a.style.display = "none";
-      if(file instanceof Blob){
+      a.style.display = 'none';
+      if (file instanceof Blob) {
         file = window.URL.createObjectURL(file);
       }
       a.href = file;
       a.download = fileName;
       a.click();
       window.URL.revokeObjectURL(file);
-    }catch (e){
+    } catch (e) {
       throw e;
     }
   }
 
-  static removeFormatTime(value: any): number{
-    if(value === '' || value === undefined || value === null){
+  static removeFormatTime(value: any): number {
+    if (value === '' || value === undefined || value === null) {
       return 0;
     }
     let time: boolean;
     try {
       time = value.includes(' am');
-      value = value.replace(':','');
-      value = value.replace(time ? ' am':' pm','');
+      value = value.replace(':', '');
+      value = value.replace(time ? ' am' : ' pm', '');
       value = Number(value);
-      if(time && (value >= 1200 && value <= 1259)){
+      if (time && (value >= 1200 && value <= 1259)) {
         value = value - 1200;
-      }else if (!time && value<=1159) {
-        value = value + 1200
+      } else if (!time && value <= 1159) {
+        value = value + 1200;
       }
-    }catch (e){
+    } catch (e) {
       console.error(e);
       return null;
     }
     return value;
   }
 
-  static removeDiacritics (str): string {
+  static removeDiacritics(str): string {
     const diacriticsMap = {
       A: /[\u0041\u24B6\uFF21\u00C0\u00C1\u00C2\u1EA6\u1EA4\u1EAA\u1EA8\u00C3\u0100\u0102\u1EB0\u1EAE\u1EB4\u1EB2\u0226\u01E0\u00C4\u01DE\u1EA2\u00C5\u01FA\u01CD\u0200\u0202\u1EA0\u1EAC\u1EB6\u1E00\u0104\u023A\u2C6F]/g,
       AA: /[\uA732]/g,
@@ -475,9 +461,11 @@ export class UtilitiesService {
       y: /[\u0079\u24E8\uFF59\u1EF3\u00FD\u0177\u1EF9\u0233\u1E8F\u00FF\u1EF7\u1E99\u1EF5\u01B4\u024F\u1EFF]/g,
       z: /[\u007A\u24E9\uFF5A\u017A\u1E91\u017C\u017E\u1E93\u1E95\u01B6\u0225\u0240\u2C6C\uA763]/g
     };
-    for (let x in diacriticsMap) {
-      // Iterate through each keys in the above object and perform a replace
-      str = str.replace(diacriticsMap[x], x);
+    for (const x in diacriticsMap) {
+      if (diacriticsMap.hasOwnProperty(x)) {
+        // Iterate through each keys in the above object and perform a replace
+        str = str.replace(diacriticsMap[x], x);
+      }
     }
     return str;
   }
