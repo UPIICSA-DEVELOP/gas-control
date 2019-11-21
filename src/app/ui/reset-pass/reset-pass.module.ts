@@ -5,8 +5,8 @@
  *
  */
 
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import {NgModule} from '@angular/core';
+import {CommonModule} from '@angular/common';
 import {SharedModule} from '@app/shared/shared.module';
 import {RouterModule} from '@angular/router';
 import {ResetPassComponent} from '@app/ui/reset-pass/pages/reset-pass/reset-pass.component';
@@ -37,4 +37,5 @@ const Providers = [];
     Providers
   ]
 })
-export class ResetPassModule { }
+export class ResetPassModule {
+}

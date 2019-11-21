@@ -9,6 +9,7 @@ import {Routes} from '@angular/router';
 import {environment} from '@env/environment';
 import {ResetPassRouterService} from '@app/ui/reset-pass/pages/reset-pass/reset-pass-router.service';
 import {ResetPassComponent} from '@app/ui/reset-pass/pages/reset-pass/reset-pass.component';
+
 const URL_BASE = environment.url;
 
 export const resetPassRoutes: Routes = [
@@ -16,7 +17,7 @@ export const resetPassRoutes: Routes = [
     path: '',
     canActivate: [ResetPassRouterService],
     component: ResetPassComponent,
-    data:{
+    data: {
       title: 'Recuperar Contraseña',
       url: URL_BASE + 'signin'
     }
