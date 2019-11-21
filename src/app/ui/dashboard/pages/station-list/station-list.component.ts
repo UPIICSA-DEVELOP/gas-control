@@ -4,57 +4,42 @@
  * Proprietary and confidential
  */
 
-import {Component, OnInit, ViewEncapsulation} from '@angular/core';
+import {Component, HostBinding, OnInit, ViewEncapsulation} from '@angular/core';
 import {ApiService} from 'app/core/services/api/api.service';
 import {DialogService} from 'app/shared/components/dialog/dialog.service';
 import {CookieService} from 'app/core/services/cookie/cookie.service';
 import {Constants} from 'app/utils/constants/constants.utils';
 import {Router} from '@angular/router';
-import {animate, state, style, transition, trigger} from '@angular/animations';
 import {LocalStorageService} from 'app/core/services/local-storage/local-storage.service';
 import {UtilitiesService} from 'app/utils/utilities/utilities';
 import {SharedService, SharedTypeNotification} from 'app/core/services/shared/shared.service';
 import {AddStationService} from 'app/shared/components/add-gas-station/add-station.service';
 import {Person} from '@app/utils/interfaces/person';
+import {HttpResponseCodes} from '@app/utils/enums/http-response-codes';
+import {EntityResponse} from '@app/utils/class/entity-response';
+import {Station} from '@app/utils/interfaces/station';
+import {ANIMATION} from '@app/ui/dashboard/pages/station-list/animation';
+import {StationLite} from '@app/utils/interfaces/station-lite';
+import {AppUtil} from '@app/utils/interfaces/app-util';
 
 @Component({
   selector: 'app-station-list',
   templateUrl: './station-list.component.html',
   styleUrls: ['./station-list.component.scss'],
-  animations: [
-    trigger('fadeInAnimation', [
-      transition(':enter', [
-        style({ right: '-100%' }),
-        animate('.40s ease-in-out', style({ right: '0'}))
-      ]),
-      transition(':leave', [
-        style({ right: '0' }),
-        animate('.40s ease-in-out', style({ right: '-100%' }))
-      ])
-    ]),
-    trigger('selected', [
-      state('selected',
-        style({
-          backgroundColor: 'rgba(0, 0, 0, 0.288)',
-        })
-      ),
-      transition('selected <=> *', [
-        animate('10ms ease-in')
-      ])
-    ])
-  ],
-  host: {'[@fadeInAnimation]': ''},
+  animations: [ANIMATION],
   encapsulation: ViewEncapsulation.None
 })
 export class StationListComponent implements OnInit {
+  @HostBinding('@fadeInAnimation')
 
-  public stationList: any[];
+  public stationList: StationLite[];
   public notificationActive: boolean[];
-  public groupIcon: any;
+  public utils: AppUtil;
   public user: Person;
   public emptySearch: boolean;
-  private _stations: any[];
+  private _stations: StationLite[];
   private _notifyCopy: boolean[];
+
   constructor(
     private _api: ApiService,
     private _dialogService: DialogService,
@@ -71,118 +56,97 @@ export class StationListComponent implements OnInit {
     this.getUtilities();
   }
 
-  private getUtilities():void{
-    this._api.getUtils().subscribe(response=>{
-      this.groupIcon = response.item;
-    })
+  private getUtilities(): void {
+    this._api.getUtils().subscribe((response: EntityResponse<AppUtil>) => {
+      this.utils = response.item;
+    });
   }
 
-  public changeStationEnabled(ev: any, stationId: string, index: number): void{
-    if(ev.checked){
-      this._api.enableStation(true, stationId).subscribe(response=>{
-        switch(response.code){
-          case 200:
-            this.stationList[index].enabled = true;
-            this._stations[index].enabled = true;
-            break;
-          default:
-            break;
+  public changeStationEnabled(ev: any, stationId: string, index: number): void {
+    if (ev.checked) {
+      this._api.enableStation(true, stationId).subscribe((response: EntityResponse<Station>) => {
+        if (response.code === HttpResponseCodes.OK) {
+          this.stationList[index].enabled = true;
+          this._stations[index].enabled = true;
+        } else {
         }
       });
-    }else{
+    } else {
       this._dialogService.confirmDialog(
         'Atención',
         'Esta acción inhabilitará el acceso de los miembros de esta estación, a la funcionalidad de inSpéctor. \n ¿Desea continuar?',
         'ACEPTAR',
         'CANCELAR'
-      ).afterClosed().subscribe(response=>{
-        switch(response.code){
-          case 1:
-            this._api.enableStation(false, stationId).subscribe(response=>{
-              switch(response.code){
-                case 200:
-                  this.stationList[index].enabled = false;
-                  this._stations[index].enabled = false;
-                  break;
-                default:
-                  break;
-              }
-            });
-            break;
-          default:
-            this.getStationList();
-            break;
+      ).afterClosed().subscribe(response => {
+        if (response.code === 1) {
+          this._api.enableStation(false, stationId).subscribe((enableStation: EntityResponse<Station>) => {
+            if (enableStation.code === HttpResponseCodes.OK) {
+              this.stationList[index].enabled = false;
+              this._stations[index].enabled = false;
+            } else {
+            }
+          });
+        } else {
+          this.getStationList();
         }
-      })
+      });
     }
   }
 
-  public changeNotificationsStatus(id: string, status: boolean, index:number): void{
+  public changeNotificationsStatus(id: string, status: boolean, index: number): void {
     if (status) {
       this._dialogService.confirmDialog(
         'Información',
         'Esta acción evitará recibir notificaciones ¿Desea continuar?',
         'ACEPTAR',
         'CANCELAR'
-      ).afterClosed().subscribe(response =>{
-        switch (response.code) {
-          case 1:
-            this._api.turnOffNotificationStation(CookieService.getCookie(Constants.IdSession), id).subscribe(response=>{
-              switch (response.code) {
-                case 200:
-                  this.notificationActive[index] = false;
-                  this._notifyCopy[index] = false;
-                  break;
-              }
-            });
-            break
+      ).afterClosed().subscribe(response => {
+        if (response.code === 1) {
+          this._api.turnOffNotificationStation(CookieService.getCookie(Constants.IdSession), id).subscribe(turnOffResponse => {
+            if (turnOffResponse.code === HttpResponseCodes.OK) {
+              this.notificationActive[index] = false;
+              this._notifyCopy[index] = false;
+            }
+          });
         }
       });
-    } else{
-      this._api.turnOnNotificationStation(CookieService.getCookie(Constants.IdSession), id).subscribe( response =>{
-        switch (response.code) {
-          case 200:
-            this.notificationActive[index] = true;
-            this._notifyCopy[index] = true;
-            break;
+    } else {
+      this._api.turnOnNotificationStation(CookieService.getCookie(Constants.IdSession), id).subscribe(response => {
+        if (response.code === HttpResponseCodes.OK) {
+          this.notificationActive[index] = true;
+          this._notifyCopy[index] = true;
         }
-      })
+      });
     }
   }
 
-  public onCloseList():void{
+  public onCloseList(): void {
     this._router.navigate(['/home']).then();
   }
 
-  private getStationList():void{
-    this.user=LocalStorageService.getItem(Constants.UserInSession);
+  private getStationList(): void {
+    this.user = LocalStorageService.getItem(Constants.UserInSession);
     switch (this.user.role) {
       case 1:
       case 2:
       case 3:
       case 7:
-        this._api.getConsultancyBasicData(CookieService.getCookie(Constants.IdSession),this.user.refId).subscribe(response=>{
-          switch (response.code) {
-            case 200:
-              this.stationList = UtilitiesService.sortJSON(response.item.stationLites,'progress','asc');
-              this._stations = this.stationList;
-              this.getNotificationsByStation();
-              break;
-            default:
-              break;
+        this._api.getConsultancyBasicData(CookieService.getCookie(Constants.IdSession), this.user.refId).subscribe(response => {
+          if (response.code === HttpResponseCodes.OK) {
+            this.stationList = UtilitiesService.sortJSON(response.item.stationLites, 'progress', 'asc');
+            this._stations = this.stationList;
+            this.getNotificationsByStation();
+          } else {
           }
         });
         break;
       case 4:
-        this._api.getLegalRepresentativeBasicData(this.user.refId, CookieService.getCookie(Constants.IdSession)).subscribe(response=>{
-          switch (response.code) {
-            case 200:
-              this.stationList = UtilitiesService.sortJSON(response.item.stationLites,'progress','asc');
-              this._stations = this.stationList;
-              this.getNotificationsByStation();
-              break;
-            default:
-              break;
+        this._api.getLegalRepresentativeBasicData(this.user.refId, CookieService.getCookie(Constants.IdSession)).subscribe(response => {
+          if (response.code === HttpResponseCodes.OK) {
+            this.stationList = UtilitiesService.sortJSON(response.item.stationLites, 'progress', 'asc');
+            this._stations = this.stationList;
+            this.getNotificationsByStation();
+          } else {
           }
         });
         break;
@@ -191,63 +155,68 @@ export class StationListComponent implements OnInit {
     }
   }
 
-  private getNotificationsByStation():void{
-    for (let i = 0; i < this.stationList.length; i++){
+  private getNotificationsByStation(): void {
+    for (let i = 0; i < this.stationList.length; i++) {
       this.notificationActive.push(this.stationList[i].activeNotification);
     }
   }
 
-  public addStation():void{
+  public addStation(): void {
     this._router.navigate(['/home']).then(() => {
       this._addStation.open();
     });
   }
 
-  public search(event: any): void{
+  public search(event: any): void {
     const newArray = [];
     const arrayNotify = [];
-    const text = (event.srcElement.value).toLowerCase();
-    if(text === ''){
+    const text = (event.target.value).toLowerCase();
+    if (text === '') {
       this.stationList = this._stations;
       this._notifyCopy = this.notificationActive;
-    }else{
-      for(let x=0; x < this._stations.length; x++){
-        if(this._stations[x].email.toLowerCase().includes(text) || this._stations[x].phoneNumber.includes(text) || UtilitiesService.removeDiacritics(this._stations[x].name).toLowerCase().includes(text)){
+    } else {
+      for (let x = 0; x < this._stations.length; x++) {
+        if (this._stations[x].email.toLowerCase().includes(text) || this._stations[x].phoneNumber.includes(text) ||
+          UtilitiesService.removeDiacritics(this._stations[x].name).toLowerCase().includes(text)) {
           newArray.push(this._stations[x]);
           arrayNotify.push(this._stations[x].activeNotification);
-        }else {
-          for (let i= 0; i<this.groupIcon.groupIcons.length; i++){
-            if(UtilitiesService.removeDiacritics(this.groupIcon.groupIcons[i].name).toLowerCase().includes(text) && this._stations[x].type === i+1){
+        } else {
+          for (let i = 0; i < this.utils.groupIcons.length; i++) {
+            if (UtilitiesService.removeDiacritics(this.utils.groupIcons[i].name).toLowerCase().includes(text) &&
+              this._stations[x].type === i + 1) {
               newArray.push(this._stations[x]);
               arrayNotify.push(this._stations[x].activeNotification);
             }
           }
         }
-        if(this._stations[x].crePermission){
-          if(UtilitiesService.removeDiacritics(this._stations[x].crePermission).toLowerCase().includes(text)){
+        if (this._stations[x].crePermission) {
+          if (UtilitiesService.removeDiacritics(this._stations[x].crePermission).toLowerCase().includes(text)) {
             newArray.push(this._stations[x]);
             arrayNotify.push(this._stations[x].activeNotification);
           }
         }
       }
-      if(newArray.length > 0){
+      if (newArray.length > 0) {
         this.stationList = newArray;
         this.notificationActive = arrayNotify;
-      }else{
+      } else {
         this.stationList = newArray;
         this.notificationActive = arrayNotify;
-        this.emptySearch = (newArray.length===0);
+        this.emptySearch = (newArray.length === 0);
       }
     }
   }
 
-  public changeStation(id: string, newNotification: boolean, enabled: boolean):void{
-    if(enabled){
-      this._router.navigate(['/home']).then(()=>{
-        this._sharedService.setNotification({type: SharedTypeNotification.ChangeStation, value: {id: id, newNotification: newNotification}});
+  public changeStation(id: string, newNotification: boolean, enabled: boolean): void {
+    if (enabled) {
+      this._router.navigate(['/home']).then(() => {
+        this._sharedService.setNotification({
+          type: SharedTypeNotification.ChangeStation,
+          value: {id: id, newNotification: newNotification}
+        });
       });
-    }else{
-      switch (this.user.role){
+    } else {
+      switch (this.user.role) {
         case 1:
         case 2:
         case 3:
