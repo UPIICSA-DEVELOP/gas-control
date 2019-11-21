@@ -4,7 +4,7 @@
  * Proprietary and confidential
  */
 
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {MatDialog} from '@angular/material';
 import {ListStationsComponent} from '@app/ui/admin/components/list-stations/list-stations.component';
 
@@ -13,9 +13,10 @@ export class ListStationsService {
 
   constructor(
     private _dialog: MatDialog
-  ) { }
+  ) {
+  }
 
-  public open(id: string, name: string): void{
+  public open(id: string, name: string): void {
     this._dialog.open(ListStationsComponent,
       {disableClose: true, panelClass: 'list-stations-panel', data: {id: id, name: name}});
   }

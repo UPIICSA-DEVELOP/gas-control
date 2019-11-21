@@ -11,14 +11,16 @@
         <h3 class="title">{{title}}</h3>
       </div>
       <div class="buttons">
-        <button *ngIf="stationList.length!==0" mat-icon-button matTooltip="Añadir Estación de Servicio" (click)="addStation()" class="add-station-btn">
-          <img src="../../../../../assets/image/add_station_48px.png">
+        <button *ngIf="stationList.length!==0" mat-icon-button matTooltip="Añadir Estación de Servicio"
+                (click)="addStation()" class="add-station-btn">
+          <img src="../../../../../assets/image/add_station_48px.png" alt="">
         </button>
-        <button mat-icon-button matTooltip="Cerrar" (click)="close()"><mat-icon>close</mat-icon></button>
+        <button mat-icon-button matTooltip="Cerrar" (click)="close()">
+          <mat-icon>close</mat-icon>
+        </button>
       </div>
     </div>
   </mat-toolbar>
-
 
 
   <div class="list">
@@ -46,29 +48,30 @@
 
 
     <div class="container-list" *ngIf="stationList.length > 0 && utils">
-      <mat-card class="item" *ngFor="let item of stationList; let i = index">
+      <mat-card class="item" *ngFor="let station of stationList; let i = index">
         <div class="image">
-          <img  *ngIf="utils" [src]="utils[item.type-1].fileCS.thumbnail" alt="station logo">
+          <img *ngIf="utils" [src]="utils[station.type-1].fileCS.thumbnail" alt="station logo">
         </div>
         <div class="info" *ngIf="utils">
-          <p class="bold-text">{{utils[item.type-1].name}} - {{item.name}}</p>
+          <p class="bold-text">{{utils[station.type - 1].name}} - {{station.name}}</p>
           <p class="plugin">
-            {{item.crePermission}}
+            {{station.crePermission}}
           </p>
           <p class="sub-title">
-            <a [href]="'mailto:'+item.email"><span>{{item.email}}</span></a>
+            <a [href]="'mailto:'+station.email"><span>{{station.email}}</span></a>
           </p>
           <p class="sub-title">
-            <a [href]="'tel:'+item.phoneNumber"><span>{{item.phoneNumber}}</span></a>
+            <a [href]="'tel:'+station.phoneNumber"><span>{{station.phoneNumber}}</span></a>
           </p>
           <div class="on-off-station">
             <span class="off">Apagado</span>
-            <mat-slide-toggle [checked]="item.enabled" (change)="changeStationEnabled($event, item.id, i)"></mat-slide-toggle>
+            <mat-slide-toggle [checked]="station.enabled"
+                              (change)="changeStationEnabled($event, station.id, i)"></mat-slide-toggle>
             <span class="on">Encendido</span>
           </div>
         </div>
         <div class="actions">
-          <button mat-button [color]="'primary'" (click)="goToDashboard(item)">VER ESTACIÓN</button>
+          <button mat-button [color]="'primary'" (click)="goToDashboard(station)">VER ESTACIÓN</button>
         </div>
       </mat-card>
     </div>

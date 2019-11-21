@@ -3,33 +3,36 @@
  * Unauthorized copying of this file, via any medium is strictly prohibited
  * Proprietary and confidential
  */
-
 @import "../../../../../styles/colors";
-#list-collaborators{
+
+#list-collaborators {
   overflow: hidden;
   height: 100%;
   position: relative;
 
-  mat-toolbar{
-    .header-list, .header-collaborator{
+  mat-toolbar {
+    .header-list, .header-collaborator {
       width: 100%;
       height: 100%;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      .title{
+
+      .title {
         font-size: 30px;
-        @media screen and (max-width: 600px){
+        @media screen and (max-width: 600px) {
           font-size: 16px;
         }
       }
-      .buttons{
-        .add-station-btn{
+
+      .buttons {
+        .add-station-btn {
           display: flex;
           justify-content: center;
           align-items: center;
           background-color: #FFAA00;
-          img{
+
+          img {
             left: 0;
             top: 0;
             width: 40px;
@@ -37,9 +40,11 @@
             position: absolute;
           }
         }
+
         display: flex;
         align-items: center;
-        button{
+
+        button {
           margin: 0 8px;
         }
       }
@@ -47,29 +52,30 @@
 
   }
 
-  .add-collaborator-button{
+  .add-collaborator-button {
     position: absolute;
     bottom: 0;
     margin: 0 0 16px calc(50% - 72.5px);
-    button{
+
+    button {
       background-color: #FFAA00;
       color: white;
       border-radius: 16px;
     }
   }
 
-  .list{
+  .list {
     height: calc(100% - 64px);
     padding: 0 16px;
     overflow-y: auto;
     z-index: 2;
     background-color: #F2F2F2;
 
-    h4{
+    h4 {
       color: rgba(0, 0, 0, 0.54);
     }
 
-    .empty-list{
+    .empty-list {
       position: absolute;
       width: 100%;
       height: inherit;
@@ -79,21 +85,24 @@
       flex-direction: column;
     }
 
-    .header-list{
+    .header-list {
       display: flex;
       justify-content: space-between;
       padding: 0 8px;
-      .search-box{
+
+      .search-box {
         width: 45%;
         height: 30px;
         display: flex;
         margin: auto 0;
         border-radius: 8px;
         background-color: white;
-        mat-icon{
+
+        mat-icon {
           margin: auto 8px;
         }
-        input{
+
+        input {
           width: 100%;
           border-radius: 8px;
           border: none;
@@ -104,25 +113,25 @@
       }
     }
 
-    .container-list{
+    .container-list {
       display: flex;
       flex-wrap: wrap;
-      @media screen and (max-width: 900px){
+      @media screen and (max-width: 900px) {
         flex-direction: column;
       }
     }
 
-    .item{
+    .item {
       position: relative;
       width: calc((100% / 3) - 16px);
       margin: 8px;
 
-      @media screen and (max-width: 900px){
+      @media screen and (max-width: 900px) {
         width: calc(100% - 8px);
       }
 
 
-      .image, img, .icon{
+      .image, img, .icon {
         width: 80px;
         height: 80px;
         margin: auto;
@@ -130,29 +139,34 @@
         color: rgba(0, 0, 0, 0.54);
         @include mat-elevation(2);
       }
-      .info{
+
+      .info {
         margin: 8px 0 52px 0;
         text-align: center;
       }
-      .on-off-station{
+
+      .on-off-station {
         display: flex;
         align-items: center;
         justify-content: center;
         margin-top: 4px;
-        .off{
+
+        .off {
           margin-right: 4px;
           font-size: 12px;
           color: #707070;
           font-weight: 500;
         }
-        .on{
+
+        .on {
           margin-left: 4px;
           font-size: 12px;
           color: #707070;
           font-weight: 500;
         }
       }
-      .actions{
+
+      .actions {
         position: absolute;
         bottom: 16px;
         left: calc(50% - (132.2px / 2));
@@ -160,76 +174,88 @@
         justify-content: space-around;
         align-items: center;
         color: rgba(0, 0, 0, 0.54);
-        a{
+
+        a {
           text-decoration: none;
           color: mat-color($primary);
         }
       }
-      p{
+
+      p {
         margin: 0;
       }
-      a{
+
+      a {
         text-decoration: none;
         color: rgba(0, 0, 0, 0.54);
       }
-      .sub-title{
+
+      .sub-title {
         font-size: 12px;
       }
-      .plugin{
+
+      .plugin {
         font-size: 14px;
       }
-      .bold-text{
+
+      .bold-text {
         font-weight: 600;
       }
-      .bold-text-plugin{
+
+      .bold-text-plugin {
         font-size: 14px;
       }
     }
 
   }
 
-  #add-collaborator{
+  #add-collaborator {
     height: calc(100% - 64px);
     overflow-y: auto;
-    form, mat-card-content{
+
+    form, mat-card-content {
       width: 100%;
     }
 
-    mat-card{
+    mat-card {
       width: 50%;
       margin: 16px auto;
-      @media screen and (max-width: 900px){
+      @media screen and (max-width: 900px) {
         width: 90%;
       }
     }
 
-    form{
+    form {
       padding: 16px 16px 0 16px;
     }
-    mat-form-field{
+
+    mat-form-field {
       width: 100%;
     }
 
-    mat-card-actions{
+    mat-card-actions {
       margin: 0;
     }
 
-    .phone-number, .website{
+    .phone-number, .website {
       width: 100%;
       display: flex;
       justify-content: space-between;
-      .country-code, .protocol{
+
+      .country-code, .protocol {
         width: 20%;
       }
-      .number, .web{
+
+      .number, .web {
         width: 75%;
       }
     }
 
-    .header{
+    .header {
       padding: 16px;
       position: relative;
-      .mask{
+
+      .mask {
         width: 80%;
         height: 100px;
         margin-left: 5%;
@@ -239,7 +265,7 @@
         background-size: contain;
       }
 
-      mat-card, img, .default{
+      mat-card, img, .default {
         margin: auto;
         width: 80px;
         height: 80px;
@@ -249,19 +275,21 @@
       }
     }
 
-    .footer{
+    .footer {
       width: 100%;
       display: flex;
       justify-content: center;
       align-items: center;
     }
 
-    .signature{
+    .signature {
       width: 100%;
-      p{
+
+      p {
         color: rgba(0, 0, 0, 0.54);
       }
-      .panel{
+
+      .panel {
         width: 100%;
         height: 150px;
         cursor: pointer;
@@ -270,24 +298,28 @@
         align-items: center;
         position: relative;
         border: 1px solid rgba(0, 0, 0, 0.54);
-        img{
+
+        img {
           position: absolute;
           top: 0;
           width: 100%;
           height: 100%;
         }
-        p{
+
+        p {
           margin: 0;
         }
       }
     }
   }
-  .add-station{
+
+  .add-station {
     background-color: #FFAA00;
     color: #FFFFFF;
     border-radius: 36px;
   }
-  .title-box{
+
+  .title-box {
     width: 80%;
     white-space: normal;
   }
