@@ -3,9 +3,9 @@
  * Unauthorized copying of this file, via any medium is strictly prohibited
  * Proprietary and confidential
  */
-
 @import "../../../../../styles/colors";
-#directory-list{
+
+#directory-list {
   position: absolute;
   top: 0;
   bottom: 0;
@@ -15,26 +15,30 @@
   overflow: hidden;
   display: flex;
   box-shadow: 0 3px 1px 1px rgba(0, 0, 0, 0.1), 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, .10);
-  .card{
+
+  .card {
     width: 100%;
     padding: 0;
   }
+
   .head {
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 0 12px;
-    h3{
+
+    h3 {
       font-weight: 700;
       font-size: 16px;
       color: #707070;
     }
   }
 
-  mat-card-content{
+  mat-card-content {
     height: calc(100% - 136px);
     overflow-y: auto;
     overflow-x: hidden;
+
     .notValidate {
       color: #FFFFFF;
       background-color: #000000;
@@ -47,6 +51,7 @@
       z-index: 2;
       display: flex;
       border-radius: 4px;
+
       .text-validate {
         font-weight: 600;
         margin: 0 4px 4px 0;
@@ -58,23 +63,27 @@
         font-size: 12px;
       }
     }
+
     .collaborator {
       position: relative;
       min-height: 164px;
       width: 95%;
       margin: 8px;
       padding: 0;
-      mat-card-content{
+
+      mat-card-content {
         display: flex;
         width: 100%;
         height: 100%;
         padding: 16px 0;
         margin: 0;
+
         .image {
           display: flex;
           justify-content: center;
           align-items: center;
           padding: 0 10px;
+
           .image-collaborator {
             width: 50px;
             height: 50px;
@@ -84,14 +93,17 @@
             align-items: center;
             justify-content: center;
           }
-          mat-icon{
+
+          mat-icon {
             color: #707070;
             font-size: 40px;
           }
         }
+
         .information {
           padding: 0 10px;
           width: 75%;
+
           .info {
             color: #707070;
             font-weight: 500;
@@ -103,29 +115,34 @@
           }
         }
       }
-      .action-buttons{
+
+      .action-buttons {
         padding: 4px;
         height: 100%;
         width: 100%;
         display: flex;
         justify-content: space-evenly;
         color: #707070;
-        .link{
+
+        .link {
           color: #707070;
         }
       }
-      .button{
+
+      .button {
         width: 64px;
         height: 32px;
         margin: 4px 0;
       }
     }
   }
-  .search{
+
+  .search {
     width: 100%;
     padding: 0 24px;
-    .icons{
-      color:#707070;
+
+    .icons {
+      color: #707070;
       margin: 0 12px;
     }
   }

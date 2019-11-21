@@ -14,7 +14,7 @@
       <input matInput placeholder="Buscar" aria-label="Search input" (input)="search($event)">
       <mat-icon matSuffix class="icons">search</mat-icon>
     </mat-form-field>
-    <div *ngIf="gasStation; then list else load"></div>
+    <div *ngIf="station; then list else load"></div>
     <ng-template #list>
       <div *ngIf="collaborators; then card else empty"></div>
       <ng-template #card>
@@ -28,13 +28,20 @@
                 </div>
                 <mat-card-content>
                   <div class="image">
-                    <img class="image-collaborator" *ngIf="collaborator.profileImage && collaborator.profileImage.thumbnail" [src]="collaborator.profileImage.thumbnail" alt="profile image">
-                    <img class="image-collaborator" *ngIf="(!collaborator.profileImage || !collaborator.profileImage.thumbnail) && utils" [src]="utils.groupIcons[gasStation.type-1].fileCS.thumbnail" alt="profile image">
-                    <mat-icon class="image-collaborator" *ngIf="(!collaborator.profileImage || !collaborator.profileImage.thumbnail) && !utils">add_photo_alternate</mat-icon>
+                    <img class="image-collaborator"
+                         *ngIf="collaborator.profileImage && collaborator.profileImage.thumbnail"
+                         [src]="collaborator.profileImage.thumbnail" alt="profile image">
+                    <img class="image-collaborator"
+                         *ngIf="(!collaborator.profileImage || !collaborator.profileImage.thumbnail) && utils"
+                         [src]="utils.groupIcons[station.type-1].fileCS.thumbnail" alt="profile image">
+                    <mat-icon class="image-collaborator"
+                              *ngIf="(!collaborator.profileImage || !collaborator.profileImage.thumbnail) && !utils">
+                      add_photo_alternate
+                    </mat-icon>
                   </div>
                   <div class="information">
                     <div class="info"> {{collaborator.name}} {{collaborator.lastName}}</div>
-                    <div class="info"> {{roleType[collaborator.role-1]}}</div>
+                    <div class="info"> {{roleType[collaborator.role - 1]}}</div>
                     <div class="info"> {{collaborator.email}}</div>
                     <div class="info"> {{collaborator.phoneNumber}}</div>
                   </div>
@@ -42,24 +49,28 @@
                 <mat-divider></mat-divider>
                 <div class="action-buttons">
                   <div class="button">
-                    <button mat-button *ngIf="collaborator.role!==4 && user.role !==6" matTooltip="Eliminar" (click)="deleteCollaborator(collaborator.id, i, collaborator.role)">
+                    <button mat-button *ngIf="collaborator.role!==4 && user.role !==6" matTooltip="Eliminar"
+                            (click)="deleteCollaborator(collaborator.id, i, collaborator.role)">
                       <mat-icon>delete</mat-icon>
                     </button>
                   </div>
                   <div class="button">
-                    <button mat-button *ngIf="(user.role!==6 || user.role===7) && collaborator.role!==4" matTooltip="Cambiar rol" (click)="changeRoleCollaborator(collaborator)">
+                    <button mat-button *ngIf="(user.role!==6 || user.role===7) && collaborator.role!==4"
+                            matTooltip="Cambiar rol" (click)="changeRoleCollaborator(collaborator)">
                       <mat-icon svgIcon="icons:change_role"></mat-icon>
                     </button>
                   </div>
                   <div class="button">
-                    <a href="https://wa.me/{{collaborator.countryCode || '52'}}{{collaborator.phoneNumber}}" class="link" target="_blank">
+                    <a href="https://wa.me/{{collaborator.countryCode || '52'}}{{collaborator.phoneNumber}}"
+                       class="link" target="_blank">
                       <button mat-button matTooltip="Enviar WhatsApp">
                         <mat-icon svgIcon="icons:whatsapp"></mat-icon>
                       </button>
                     </a>
                   </div>
                   <div class="button">
-                    <a href="https://mail.google.com/mail/?view=cm&fs=1&to={{collaborator.email}}" target="_blank" class="link">
+                    <a href="https://mail.google.com/mail/?view=cm&fs=1&to={{collaborator.email}}" target="_blank"
+                       class="link">
                       <button mat-button matTooltip="Enviar email">
                         <mat-icon>email</mat-icon>
                       </button>

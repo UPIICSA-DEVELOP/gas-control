@@ -16,6 +16,8 @@ import {SharedNotification, SharedService, SharedTypeNotification} from '@app/co
 import {Subscription} from 'rxjs';
 import {Person} from '@app/utils/interfaces/person';
 import {HttpResponseCodes} from '@app/utils/enums/http-response-codes';
+import {AppUtil} from '@app/utils/interfaces/app-util';
+import {Station} from '@app/utils/interfaces/station';
 
 @Component({
   selector: 'app-directory-list',
@@ -24,25 +26,28 @@ import {HttpResponseCodes} from '@app/utils/enums/http-response-codes';
   encapsulation: ViewEncapsulation.None
 })
 export class DirectoryListComponent implements OnInit, OnDestroy {
-  public gasStation: any;
-  @Input() set collaboratorsInfo(stationObj: any){
-    if(stationObj){
-      this.gasStation = stationObj;
+  public station: Station;
+
+  @Input() set collaboratorsInfo(stationObj: Station) {
+    if (stationObj) {
+      this.station = stationObj;
       this.getCollaborators();
     }
   }
-  @Input() public utils: any;
-  public collaborators: any[];
+
+  @Input() public utils: AppUtil;
+  public collaborators: Person[];
   public roleType: string[];
-  public collaborator: any[];
+  public collaborator: Person[];
   public idSession: string;
   public user: Person;
   public emptySearch: boolean;
   private _subscriptionShared: Subscription;
+
   constructor(
-    private _api:ApiService,
+    private _api: ApiService,
     private _snackBarService: SnackBarService,
-    private _dialogService:DialogService,
+    private _dialogService: DialogService,
     private _sharedService: SharedService
   ) {
     this.user = LocalStorageService.getItem(Constants.UserInSession);
@@ -56,22 +61,22 @@ export class DirectoryListComponent implements OnInit, OnDestroy {
     this.onChangesComponents();
   }
 
-  ngOnDestroy(): void{
+  ngOnDestroy(): void {
     this._subscriptionShared.unsubscribe();
   }
 
-  private getCollaborators():void{
-    this._api.listCollaborators(this.gasStation.id, 'false').subscribe( response=>{
+  private getCollaborators(): void {
+    this._api.listCollaborators(this.station.id, 'false').subscribe(response => {
       if (response.code === HttpResponseCodes.OK) {
         const id = CookieService.getCookie(Constants.IdSession);
         let member = null;
-        this.collaborators = UtilitiesService.sortJSON(response.items,'name','asc');
-        for (let i = 0; i< this.collaborators.length; i++){
-          if(this.collaborators[i].id === id){
+        this.collaborators = UtilitiesService.sortJSON(response.items, 'name', 'asc');
+        for (let i = 0; i < this.collaborators.length; i++) {
+          if (this.collaborators[i].id === id) {
             member = this.collaborators[i];
           }
         }
-        if (this.user){
+        if (this.user) {
           const index = this.collaborators.indexOf(member);
           this.collaborators.splice(index, 1);
         }
@@ -81,8 +86,8 @@ export class DirectoryListComponent implements OnInit, OnDestroy {
     });
   }
 
-  public deleteCollaborator(id: string, index: number, role: number){
-    if (role<=4){
+  public deleteCollaborator(id: string, index: number, role: number) {
+    if (role <= 4) {
       this._dialogService.alertDialog(
         'Información',
         'No es posible eliminar este usuario',
@@ -93,64 +98,58 @@ export class DirectoryListComponent implements OnInit, OnDestroy {
     this._dialogService.confirmDialog('¿Desea eliminar este registro?',
       '',
       'ACEPTAR',
-      'CANCELAR').afterClosed().subscribe(response=>{
-        switch (response.code) {
-          case 1:
-            this._api.deletePerson(id).subscribe(response=>{
-              switch (response.code) {
-                case 200:
-                  this.collaborators.splice(index, 1);
-                  break;
-                default:
-                  break;
-              }
-            });
-            break;
-          default:
-            break;
-        }
-    })
+      'CANCELAR').afterClosed().subscribe(response => {
+      if (response.code === 1) {
+        this._api.deletePerson(id).subscribe(deletePerson => {
+          if (deletePerson.code === HttpResponseCodes.OK) {
+            this.collaborators.splice(index, 1);
+          } else {
+          }
+        });
+      } else {
+      }
+    });
   }
 
-  public search(event: any): void{
+  public search(event: any): void {
     const newArray = [];
-    const text = (event.srcElement.value).toLowerCase();
-    if(text === ''){
+    const text = (event.target.value).toLowerCase();
+    if (text === '') {
       this.collaborators = this.collaborator;
-    }else{
-      for(let x=0; x < this.collaborator.length; x++){
-        if(UtilitiesService.removeDiacritics(this.collaborator[x].name).toLowerCase().includes(text) || this.collaborator[x].email.toLowerCase().includes(text) || this.collaborator[x].phoneNumber.includes(text) || UtilitiesService.removeDiacritics(this.collaborator[x].lastName).toLowerCase().includes(text) ){
+    } else {
+      for (let x = 0; x < this.collaborator.length; x++) {
+        if (UtilitiesService.removeDiacritics(this.collaborator[x].name).toLowerCase().includes(text) ||
+          this.collaborator[x].email.toLowerCase().includes(text) || this.collaborator[x].phoneNumber.includes(text) ||
+          UtilitiesService.removeDiacritics(this.collaborator[x].lastName).toLowerCase().includes(text)) {
           newArray.push(this.collaborator[x]);
-        }else {
-          for (let y = 0; y < this.roleType.length; y++){
-            if (UtilitiesService.removeDiacritics(this.roleType[y]).toLowerCase().includes(text) && this.collaborator[x].role === y+1){
+        } else {
+          for (let y = 0; y < this.roleType.length; y++) {
+            if (UtilitiesService.removeDiacritics(this.roleType[y]).toLowerCase().includes(text) && this.collaborator[x].role === y + 1) {
               newArray.push(this.collaborator[x]);
             }
           }
         }
       }
-      if(newArray.length > 0){
+      if (newArray.length > 0) {
         this.collaborators = newArray;
-      }else{
+      } else {
         this.collaborators = newArray;
         this.emptySearch = (newArray.length === 0);
       }
     }
   }
 
-  private onChangesComponents(): void{
-    this._subscriptionShared = this._sharedService.getNotifications().subscribe((response: SharedNotification)=>{
-      switch (response.type){
-        case SharedTypeNotification.Directory:
-          this.getCollaborators();
-          break;
+  private onChangesComponents(): void {
+    this._subscriptionShared = this._sharedService.getNotifications().subscribe((response: SharedNotification) => {
+      if (response.type === SharedTypeNotification.Directory) {
+        this.getCollaborators();
       }
-    })
+    });
   }
 
-  public changeRoleCollaborator(person: Person):void{
+  public changeRoleCollaborator(person: Person): void {
     let newRole = 0;
-    switch (person.role){
+    switch (person.role) {
       case 5:
         newRole = 6;
         break;
@@ -158,23 +157,18 @@ export class DirectoryListComponent implements OnInit, OnDestroy {
         newRole = 5;
         break;
     }
-    const message = '¿Desea cambiar el rol de '+person.name+' '+person.lastName+' a '+this.roleType[newRole-1]+'?';
-    this._dialogService.confirmDialog(message,'','ACEPTAR','CANCELAR').afterClosed().subscribe(response=>{
-      switch (response.code){
-        case 1:
-          this._api.updateRolePerson(person.id, newRole).subscribe(response=>{
-            switch (response.code) {
-              case 200:
-                this._snackBarService.openSnackBar('Rol actualizado', 'OK', 2000);
-                this.getCollaborators();
-                break;
-              default:
-                this._snackBarService.openSnackBar('No se ha podido actualizar el rol', 'OK', 2000);
-                this.getCollaborators();
-                break;
-            }
-          });
-          break;
+    const message = '¿Desea cambiar el rol de ' + person.name + ' ' + person.lastName + ' a ' + this.roleType[newRole - 1] + '?';
+    this._dialogService.confirmDialog(message, '', 'ACEPTAR', 'CANCELAR').afterClosed().subscribe(response => {
+      if (response.code === 1) {
+        this._api.updateRolePerson(person.id, newRole).subscribe(updatePerson => {
+          if (updatePerson.code === HttpResponseCodes.OK) {
+            this._snackBarService.openSnackBar('Rol actualizado', 'OK', 2000);
+            this.getCollaborators();
+          } else {
+            this._snackBarService.openSnackBar('No se ha podido actualizar el rol', 'OK', 2000);
+            this.getCollaborators();
+          }
+        });
       }
     });
   }
