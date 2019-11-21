@@ -126,14 +126,15 @@
             <div *ngIf="!editable; then showSign else loadSign"></div>
             <ng-template #showSign>
               <div class="signature-element">
-                <img *ngIf="frReport && frReport.signature" [src]="frReport.signature.thumbnail">
+                <img *ngIf="frReport && frReport.signature" [src]="frReport.signature.thumbnail" alt="">
                 <div class="empty-signature" *ngIf="!frReport || !frReport.signature"></div>
               </div>
             </ng-template>
             <ng-template #loadSign>
-              <div class="signature-element" (click)="loadSignature()" style="cursor: pointer" matTooltip="Cargar Firma">
-                <img *ngIf="signatureThumbnail" [src]="signatureThumbnail">
-                <div class="empty-signature" *ngIf="!signatureThumbnail" ></div>
+              <div class="signature-element" (click)="loadSignature()" style="cursor: pointer"
+                   matTooltip="Cargar Firma">
+                <img *ngIf="signatureThumbnail" [src]="signatureThumbnail" alt="">
+                <div class="empty-signature" *ngIf="!signatureThumbnail"></div>
               </div>
             </ng-template>
             <div class="divider"></div>
@@ -156,6 +157,7 @@
     </div>
   </form>
   <div *ngIf="taskItems && taskItems.length !== 0 && !editable">
-    <mat-paginator [pageSize]="1" [length]="taskItems.length" [hidePageSize]="true" (page)="changeTask($event)" ></mat-paginator>
+    <mat-paginator [pageSize]="1" [length]="taskItems.length" [hidePageSize]="true"
+                   (page)="changeTask($event)"></mat-paginator>
   </div>
 </div>

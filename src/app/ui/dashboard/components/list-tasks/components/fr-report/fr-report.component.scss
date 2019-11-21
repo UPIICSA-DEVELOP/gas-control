@@ -4,110 +4,127 @@
  *  Proprietary and confidential
  */
 
-#fr-report{
+#fr-report {
   width: 100%;
   height: 100%;
-  .flex-box{
+
+  .flex-box {
     display: flex;
-    @media screen and (max-width: 600px){
+    @media screen and (max-width: 600px) {
       display: block;
     }
   }
-  .inputs{
+
+  .inputs {
     width: 90%;
   }
-  .divider{
+
+  .divider {
     width: 100%;
     height: 1px;
     background-color: #707070;
   }
-  .columns{
+
+  .columns {
     position: relative;
     display: flex;
     flex-direction: column;
     align-items: center;
     width: 50%;
     margin: 12px;
-    @media screen and (max-width: 600px){
+    @media screen and (max-width: 600px) {
       width: 100%;
       margin: 0;
     }
   }
-  .times{
+
+  .times {
     display: flex;
     justify-content: space-between;
     width: 90%;
-    .clock{
+
+    .clock {
       width: 45%;
     }
   }
-  .task-header{
+
+  .task-header {
     display: flex;
     justify-content: space-around;
     margin-top: 18px;
   }
-  .head-bold{
+
+  .head-bold {
     font-weight: 600;
     width: 50%;
     display: flex;
     align-items: flex-end;
   }
-  .control-data{
+
+  .control-data {
     width: 40%;
     display: flex;
     justify-content: space-between;
   }
-  .text-divider{
+
+  .text-divider {
     margin: 8px 0;
     color: #707070;
     width: 90%;
   }
 
-  .space-box{
+  .space-box {
     display: flex;
     justify-content: space-between;
     margin: 16px 0;
     align-items: center;
   }
-  .checks-row{
+
+  .checks-row {
     width: 45%;
     margin: 0 8px;
   }
-  .text-sign{
+
+  .text-sign {
     color: #707070;
     margin: 24px 0 8px 0;
     text-align: center;
   }
-  .signature-element{
+
+  .signature-element {
     display: flex;
     justify-content: center;
-    img{
+
+    img {
       width: 60%;
       height: 60px;
     }
-    .empty-signature{
+
+    .empty-signature {
       width: 60%;
       height: 60px;
     }
   }
-  .name{
+
+  .name {
     display: flex;
     justify-content: center;
   }
-  .finish-button{
+
+  .finish-button {
     width: 100%;
     display: flex;
     justify-content: center;
   }
 
-  .end-report{
+  .end-report {
     width: 90%;
     display: flex;
     flex-direction: column;
     justify-content: center;
   }
 
-  .error-text{
+  .error-text {
     width: 90%;
     font-size: 11px;
   }

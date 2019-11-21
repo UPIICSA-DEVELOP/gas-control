@@ -19,6 +19,7 @@ import {FormatTimePipe} from '@app/shared/pipes/format-time/format-time.pipe';
 import {LoaderService} from '@app/core/components/loader/loader.service';
 import {FRReport} from '@app/utils/interfaces/reports/frr-report';
 import {Task} from '@app/utils/interfaces/task';
+import {HttpResponseCodes} from '@app/utils/enums/http-response-codes';
 
 @Component({
   selector: 'app-fr-report',
@@ -30,18 +31,21 @@ export class FrReportComponent implements OnInit, OnDestroy {
   private _taskId: string;
   private _stationId: string;
   public task: Task;
-  @Input() set taskFrInfo(taskObj: any){
-    if(taskObj){
+
+  @Input() set taskFrInfo(taskObj: any) {
+    if (taskObj) {
       this._taskId = taskObj.id;
       this.task = taskObj;
       this.getFRReport();
     }
   }
-  @Input() set station(station: any){
-    if(station){
+
+  @Input() set station(station: any) {
+    if (station) {
       this._stationId = station.id;
     }
   }
+
   public load: boolean;
   public frForm: FormGroup;
   public frReport: FRReport;
@@ -58,8 +62,9 @@ export class FrReportComponent implements OnInit, OnDestroy {
   private _subscriptionLoader: Subscription;
   private _subscriptionShared: Subscription;
   private _load: boolean;
+
   constructor(
-    private _api:ApiService,
+    private _api: ApiService,
     private _apiLoader: LoaderService,
     private _formBuilder: FormBuilder,
     private _signatureService: SignaturePadService,
@@ -77,46 +82,45 @@ export class FrReportComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this._subscriptionLoader = this._apiLoader.getProgress().subscribe(load=>{this.load = load});
+    this._subscriptionLoader = this._apiLoader.getProgress().subscribe(load => {
+      this.load = load;
+    });
     this.initFrReport();
     this.getNotifications();
   }
 
-  ngOnDestroy(): void{
+  ngOnDestroy(): void {
     this._subscriptionShared.unsubscribe();
     this._subscriptionLoader.unsubscribe();
   }
 
-  private getNotifications():void{
-    this._subscriptionShared = this._sharedService.getNotifications().subscribe(response=>{
-      switch (response.type){
-        case SharedTypeNotification.EditTask:
-          if(response.value === 7){
-            this.startEditTask();
-          }
-          break;
-        default:
-          break;
+  private getNotifications(): void {
+    this._subscriptionShared = this._sharedService.getNotifications().subscribe(response => {
+      if (response.type === SharedTypeNotification.EditTask) {
+        if (response.value === 7) {
+          this.startEditTask();
+        }
+      } else {
       }
     });
   }
 
   private initFrReport(): void {
     this.frForm = this._formBuilder.group({
-      startTime: ['',[Validators.required]],
-      endTime: ['',[Validators.required]],
-      remissionNumber: ['',[Validators.required]],
-      remission: ['',[Validators.required]],
-      volumetric: ['',[Validators.required]],
-      magna:[false,[]],
-      premium: [false,[]],
-      diesel: [false,[]],
-      receiveName: ['',[Validators.required]]
+      startTime: ['', [Validators.required]],
+      endTime: ['', [Validators.required]],
+      remissionNumber: ['', [Validators.required]],
+      remission: ['', [Validators.required]],
+      volumetric: ['', [Validators.required]],
+      magna: [false, []],
+      premium: [false, []],
+      diesel: [false, []],
+      receiveName: ['', [Validators.required]]
     });
   }
 
 
-  private patchForm(report: FRReport):void {
+  private patchForm(report: FRReport): void {
     this.frReport = {
       date: report.date || null,
       diesel: report.diesel || null,
@@ -150,21 +154,18 @@ export class FrReportComponent implements OnInit, OnDestroy {
     this.frForm.disable();
   }
 
-  private getFRReport(): void{
-    this._api.getTaskInformation(this._taskId, 7).subscribe(response=>{
-      switch (response.code){
-        case 200:
-          if(response.items){
-            this.taskItems = UtilitiesService.sortJSON(response.items,'folio','desc');
-            this._indexTask = 0;
-            this.patchForm(this.taskItems[0]);
-          }else{
-            this.resetElements();
-          }
-          break;
-        default:
+  private getFRReport(): void {
+    this._api.getTaskInformation(this._taskId, 7).subscribe(response => {
+      if (response.code === HttpResponseCodes.OK) {
+        if (response.items) {
+          this.taskItems = UtilitiesService.sortJSON(response.items, 'folio', 'desc');
+          this._indexTask = 0;
+          this.patchForm(this.taskItems[0]);
+        } else {
           this.resetElements();
-          break;
+        }
+      } else {
+        this.resetElements();
       }
     });
   }
@@ -174,12 +175,12 @@ export class FrReportComponent implements OnInit, OnDestroy {
     this.frForm.reset();
     this.frForm.disable();
     const user = LocalStorageService.getItem(Constants.UserInSession);
-    if(this.task.status !== 4 && user.role ===7){
+    if (this.task.status !== 4 && user.role === 7) {
       this.startEditTask(true);
     }
   }
 
-  public changeTask(ev: any){
+  public changeTask(ev: any) {
     this._indexTask = ev.pageIndex;
     this.patchForm(this.taskItems[this._indexTask]);
   }
@@ -191,7 +192,7 @@ export class FrReportComponent implements OnInit, OnDestroy {
     this.date = UtilitiesService.convertDate(today.timeStamp);
     this.editable = true;
     this.name = user.completeName;
-    if(!isNewLoad){
+    if (!isNewLoad) {
       this._copyLastTask = this.frReport;
       this.frReport.date = undefined;
       this.frReport.signature = undefined;
@@ -200,51 +201,49 @@ export class FrReportComponent implements OnInit, OnDestroy {
     this.frForm.enable();
   }
 
-  public changeTime(ev: any, type: string): void{
+  public changeTime(ev: any, type: string): void {
     this.frForm.patchValue({
       [type]: ev
     });
   }
 
-  public changeFuelType(ev: any){
+  public changeFuelType(ev: any) {
     this.error = false;
   }
 
   public loadSignature(): void {
     this._signatureService.open().afterClosed().subscribe(response => {
-      switch (response.code) {
-        case 1:
-          this.signatureThumbnail = response.base64;
-          this._load = true;
-          this._signature = new FormData();
-          this._signature.append('fileName', 'signature-' + new Date().getTime() + '.png');
-          this._signature.append('isImage', 'true');
-          this._signature.append('file', response.blob);
-          break;
+      if (response.code === 1) {
+        this.signatureThumbnail = response.base64;
+        this._load = true;
+        this._signature = new FormData();
+        this._signature.append('fileName', 'signature-' + new Date().getTime() + '.png');
+        this._signature.append('isImage', 'true');
+        this._signature.append('file', response.blob);
       }
     });
   }
 
-  public validateForm(value: any):void{
-    if(!value.magna && !value.premium && !value.diesel){
+  public validateForm(value: any): void {
+    if (!value.magna && !value.premium && !value.diesel) {
       this.error = true;
     }
-    if(this.frForm.invalid || this.error){
-      this._snackBarService.openSnackBar('Por favor, complete los campos','OK',3000);
+    if (this.frForm.invalid || this.error) {
+      this._snackBarService.openSnackBar('Por favor, complete los campos', 'OK', 3000);
       return;
     }
-    if(!this._signature){
-      this._snackBarService.openSnackBar('Por favor, registre su firma','OK',3000);
+    if (!this._signature) {
+      this._snackBarService.openSnackBar('Por favor, registre su firma', 'OK', 3000);
       return;
     }
-    if(this._load){
+    if (this._load) {
       this.uploadSignature();
       return;
     }
     this.saveReport(value);
   }
 
-  private saveReport(value: any):void{
+  private saveReport(value: any): void {
     let date: any = new Date();
     date = UtilitiesService.createPersonalTimeStamp(date);
     this.frReport = {
@@ -262,35 +261,29 @@ export class FrReportComponent implements OnInit, OnDestroy {
       taskId: this._taskId,
       volumetric: value.volumetric
     };
-    if (this._copyLastTask){
+    if (this._copyLastTask) {
       this.frReport.id = this._copyLastTask.id;
-      this._api.createTask(this.frReport, 7).subscribe(response=>{
-        switch (response.code){
-          case 200:
-            this._sharedService.setNotification({type: SharedTypeNotification.FinishEditTask, value: response.item.station});
-            break;
-          default:
-            console.error(response);
-            break;
+      this._api.createTask(this.frReport, 7).subscribe(response => {
+        if (response.code === HttpResponseCodes.OK) {
+          this._sharedService.setNotification({type: SharedTypeNotification.FinishEditTask, value: response.item.station});
+        } else {
+          console.error(response);
         }
-      })
-    }else{
-      this._api.createFRReportAndTask(this.frReport,this._stationId).subscribe(response=>{
-        switch (response.code){
-          case 200:
-            this._sharedService.setNotification({type: SharedTypeNotification.FinishEditTask, value: response.item.station});
-            break;
-          default:
-            console.error(response);
-            break;
+      });
+    } else {
+      this._api.createFRReportAndTask(this.frReport, this._stationId).subscribe(response => {
+        if (response.code === HttpResponseCodes.OK) {
+          this._sharedService.setNotification({type: SharedTypeNotification.FinishEditTask, value: response.item.station});
+        } else {
+          console.error(response);
         }
-      })
+      });
     }
   }
 
-  private uploadSignature():void{
-    this._uploadFileService.upload(this._signature).subscribe(response=>{
-      if(response){
+  private uploadSignature(): void {
+    this._uploadFileService.upload(this._signature).subscribe(response => {
+      if (response) {
         this._signatureElement = {
           blobName: response.item.blobName,
           thumbnail: response.item.thumbnail
@@ -298,6 +291,6 @@ export class FrReportComponent implements OnInit, OnDestroy {
         this._load = false;
         this.validateForm(this.frForm.value);
       }
-    })
+    });
   }
 }
