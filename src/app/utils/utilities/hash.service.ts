@@ -9,8 +9,8 @@ import * as CryptoJS from 'crypto-js';
 
 export class HashService {
 
-  static set(keys: any, value: any): string{
-    try{
+  static set(keys: any, value: any): string {
+    try {
       const key = CryptoJS.enc.Utf8.parse(keys);
       const iv = CryptoJS.enc.Utf8.parse(keys);
       const encrypted = CryptoJS.AES.encrypt(CryptoJS.enc.Utf8.parse(value.toString()), key,
@@ -21,14 +21,14 @@ export class HashService {
           padding: CryptoJS.pad.Pkcs7
         });
       return encrypted.toString();
-    }catch (e){
+    } catch (e) {
       console.error(e);
       return null;
     }
   }
 
-  static get(keys: any, value: any): string{
-    try{
+  static get(keys: any, value: any): string {
+    try {
       const key = CryptoJS.enc.Utf8.parse(keys);
       const iv = CryptoJS.enc.Utf8.parse(keys);
       const decrypted = CryptoJS.AES.decrypt(value, key, {
@@ -38,7 +38,7 @@ export class HashService {
         padding: CryptoJS.pad.Pkcs7
       });
       return decrypted.toString(CryptoJS.enc.Utf8);
-    }catch (e){
+    } catch (e) {
       console.error(e);
       return null;
     }
