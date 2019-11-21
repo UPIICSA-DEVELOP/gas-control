@@ -26,6 +26,11 @@ import {SasisopaService} from '@app/ui/dashboard/components/sasisopa/sasisopa.se
 import {SgmService} from '@app/ui/dashboard/components/sgm/sgm.service';
 import {LoaderService} from '@app/core/components/loader/loader.service';
 import {Person} from '@app/utils/interfaces/person';
+import {HttpResponseCodes} from '@app/utils/enums/http-response-codes';
+import {AppUtil} from '@app/utils/interfaces/app-util';
+import {Station} from '@app/utils/interfaces/station';
+import {EntityResponse} from '@app/utils/class/entity-response';
+import {StationBasicData} from '@app/utils/interfaces/station-basic-data';
 
 @Component({
   selector: 'app-screen',
@@ -33,20 +38,21 @@ import {Person} from '@app/utils/interfaces/person';
   styleUrls: ['./dashboard.component.scss'],
   encapsulation: ViewEncapsulation.None
 })
-export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy{
+export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy {
 
-  public stationActive: any;
+  public stationActive: Station;
   public role: number;
   public opened: boolean;
   public disabledClose: boolean;
   public mode: string;
-  public utils: any;
+  public utils: AppUtil;
   public load: boolean;
   public newNotification: boolean;
   private _stationId: any;
   private _subscriptionShared: Subscription;
   private _subscriptionLoader: Subscription;
-  @ViewChild('drawer', { static: false }) private _drawer: any;
+  @ViewChild('drawer', {static: false}) private _drawer: any;
+
   constructor(
     @Inject(DOCUMENT) private _document: Document,
     private _api: ApiService,
@@ -71,60 +77,62 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy{
   }
 
   ngOnInit() {
-    this._subscriptionLoader = this._apiLoader.getProgress().subscribe(load=>{this.load = load});
-    if(this._activateRoute.snapshot.queryParams['station']){
+    this._subscriptionLoader = this._apiLoader.getProgress().subscribe(load => {
+      this.load = load;
+    });
+    if (this._activateRoute.snapshot.queryParams['station']) {
       this._stationId = this._activateRoute.snapshot.queryParams['station'];
     }
   }
 
-  ngAfterViewInit(): void{
-    if(this._document.body.clientWidth <= 1024){
+  ngAfterViewInit(): void {
+    if (this._document.body.clientWidth <= 1024) {
       this.opened = false;
       this.disabledClose = false;
-      this.mode = 'over'
+      this.mode = 'over';
     }
     this.validateSignatureUser();
     this.initNotifications();
     this.checkChanges();
   }
 
-  ngOnDestroy():void{
-   //this._subscriptionShared.unsubscribe();
+  ngOnDestroy(): void {
+    // this._subscriptionShared.unsubscribe();
   }
 
- private checkChanges():void{
-   this._subscriptionShared = this._sharedService.getNotifications().subscribe((response: SharedNotification)=>{
-     switch (response.type){
-       case SharedTypeNotification.ChangeStation:
-         this._stationId = response.value.id;
-         this.newNotification = response.value.newNotification;
-         this.getDashboardInformation(this._stationId);
-         break;
-       case SharedTypeNotification.FinishEditTask:
-         this.stationActive.doneTasks = response.value.doneTasks;
-         this.stationActive.progress = response.value.progress;
-         break;
-       case SharedTypeNotification.OpenCloseMenu:
-         this._drawer.toggle();
-         break;
-     }
-   });
- }
+  private checkChanges(): void {
+    this._subscriptionShared = this._sharedService.getNotifications().subscribe((response: SharedNotification) => {
+      switch (response.type) {
+        case SharedTypeNotification.ChangeStation:
+          this._stationId = response.value.id;
+          this.newNotification = response.value.newNotification;
+          this.getDashboardInformation(this._stationId);
+          break;
+        case SharedTypeNotification.FinishEditTask:
+          this.stationActive.doneTasks = response.value.doneTasks;
+          this.stationActive.progress = response.value.progress;
+          break;
+        case SharedTypeNotification.OpenCloseMenu:
+          this._drawer.toggle();
+          break;
+      }
+    });
+  }
 
-  public addCollaborator():void{
-    if(this.mode === 'over'){
+  public addCollaborator(): void {
+    if (this.mode === 'over') {
       this._drawer.toggle();
     }
-    this._router.navigate(['/home/add-collaborator'], {queryParams:{stationId: this.stationActive.id}}).then();
+    this._router.navigate(['/home/add-collaborator'], {queryParams: {stationId: this.stationActive.id}}).then();
   }
 
-  private initNotifications(): void{
-    this._auth.onNotificationsReceived().subscribe(response=>{
-      if(response.data['gcm.notification.stationId'] === this.stationActive.id){
+  private initNotifications(): void {
+    this._auth.onNotificationsReceived().subscribe(response => {
+      if (response.data['gcm.notification.stationId'] === this.stationActive.id) {
         this.newNotification = true;
       }
       const notification = new Notification(response.notification.title, {
-        icon: environment.url+'favicon.png',
+        icon: environment.url + 'favicon.png',
         body: response.notification.body,
       });
       notification.onclick = function () {
@@ -133,31 +141,31 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy{
     });
   }
 
-  private validateSignatureUser(): void{
-    if(LocalStorageService.getItem(Constants.NotSignature)){
+  private validateSignatureUser(): void {
+    if (LocalStorageService.getItem(Constants.NotSignature)) {
       const user = LocalStorageService.getItem(Constants.UserInSession);
       this.role = user.role;
       this._dialogService.alertDialog(
         'Información',
         'Para continuar es necesario registrar su firma digital',
-        'REGISTRAR').afterClosed().subscribe(() =>{
+        'REGISTRAR').afterClosed().subscribe(() => {
         LocalStorageService.setItem(Constants.NotSignature, true);
         this.drawSignature();
       });
-    }else{
+    } else {
       this.getDashboardInformation(this._stationId);
     }
   }
 
-  private getDashboardInformation(onlyOneStationId?: any): void{
+  private getDashboardInformation(onlyOneStationId?: any): void {
     const userId = CookieService.getCookie(Constants.IdSession);
     const user = LocalStorageService.getItem(Constants.UserInSession);
-    if(user && userId){
+    if (user && userId) {
       this.role = user.role;
-      this._api.getCompleteInfoDashboard(userId,user.refId,this.role,onlyOneStationId).subscribe(response=>{
-        if (response){
+      this._api.getCompleteInfoDashboard(userId, user.refId, this.role, onlyOneStationId).subscribe(response => {
+        if (response) {
           this.utils = response.utils.item;
-          switch (this.role){
+          switch (this.role) {
             case 1:
             case 2:
             case 3:
@@ -171,248 +179,234 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy{
             case 7:
               this.stationActive = response.station.item;
               LocalStorageService.setItem(Constants.StationInDashboard, {id: this.stationActive.id, name: this.stationActive.businessName});
-              if(!this.stationActive.stationTaskId){
+              if (!this.stationActive.stationTaskId) {
                 this.openTaskCalendar();
               }
               break;
           }
         }
-        if(this.stationActive){
+        if (this.stationActive) {
           this.setStationMetas(this.stationActive);
         }
       });
     }
   }
 
-  public closeToggle(): void{
-    if(this.mode === 'over'){
+  public closeToggle(): void {
+    if (this.mode === 'over') {
       this._drawer.toggle();
     }
   }
 
-  private openTaskCalendar():void{
-    if(this.role===6){
+  private openTaskCalendar(): void {
+    if (this.role === 6) {
       this._dialogService.alertDialog(
         'Información',
         'No se han calendarizado las tareas de esta Estación. Por favor notifíquelo a su superior',
         'ACEPTAR'
-      ).afterClosed().subscribe(response=>{
-        switch (response.code){
-          case 1:
-            this._auth.logOut();
-            break;
+      ).afterClosed().subscribe(response => {
+        if (response.code === 1) {
+          this._auth.logOut();
         }
       });
     }
   }
 
-  private setStationMetas(station: any){
+  private setStationMetas(station: any) {
     this._metaService.setAllMetas({
-      title: 'Dashboard | ' + this.utils.groupIcons[station.type-1].name + ' - ' + station.name,
+      title: 'Dashboard | ' + this.utils.groupIcons[station.type - 1].name + ' - ' + station.name,
       description: null,
       url: this._router.url
-    })
+    });
   }
 
-  public addStation():void{
+  public addStation(): void {
     this._addStationService.open();
   }
 
-  public openOtherTasks():void{
-    if(this.mode === 'over'){
+  public openOtherTasks(): void {
+    if (this.mode === 'over') {
       this._drawer.toggle();
     }
     this._sharedService.setNotification({type: SharedTypeNotification.NotCalendarTask, value: true});
   }
 
-  public openSasisopaModal():void{
-    if(this.role !== 6){
+  public openSasisopaModal(): void {
+    if (this.role !== 6) {
       this._sasisopaService.open({utils: this.utils, stationId: this.stationActive.id});
-      if(this.mode === 'over'){
+      if (this.mode === 'over') {
         this._drawer.toggle();
       }
-    }else{
-      this._snackBarService.openSnackBar('Usted no tiene permiso para visualizar este módulo','OK',3000);
+    } else {
+      this._snackBarService.openSnackBar('Usted no tiene permiso para visualizar este módulo', 'OK', 3000);
     }
   }
 
-  public openSGMModal():void{
-    if(this.role !== 6){
-      this._sgmService.open({utils:this.utils, stationId: this.stationActive.id});
-      if(this.mode === 'over'){
+  public openSGMModal(): void {
+    if (this.role !== 6) {
+      this._sgmService.open({utils: this.utils, stationId: this.stationActive.id});
+      if (this.mode === 'over') {
         this._drawer.toggle();
       }
-    }else{
-      this._snackBarService.openSnackBar('Usted no tiene permiso para visualizar este módulo','OK',3000);
+    } else {
+      this._snackBarService.openSnackBar('Usted no tiene permiso para visualizar este módulo', 'OK', 3000);
     }
   }
 
-  public openNotifications():void{
+  public openNotifications(): void {
     this.newNotification = false;
-    if(this.role !== 7){
-      this._router.navigate(['/home/notifications'], {queryParams:{id: this.stationActive.id}}).then();
-    }else{
-      this._router.navigate(['/home/notifications'], {queryParams:{id: this.stationActive.id, admin: this.stationActive.idLegalRepresentative}}).then();
+    if (this.role !== 7) {
+      this._router.navigate(['/home/notifications'], {queryParams: {id: this.stationActive.id}}).then();
+    } else {
+      this._router.navigate(['/home/notifications'], {
+        queryParams: {
+          id: this.stationActive.id,
+          admin: this.stationActive.idLegalRepresentative
+        }
+      }).then();
     }
-    if(this.mode === 'over'){
+    if (this.mode === 'over') {
       this._drawer.toggle();
     }
   }
 
-  private prepareDashboardToConsultancy(response: any, onlyOneStation?: any):void{
-    if(onlyOneStation){
-      switch (response.code){
-        case 200:
-          this.stationActive = response.item;
+  private prepareDashboardToConsultancy(response: any, onlyOneStation?: any): void {
+    if (onlyOneStation) {
+      if (response.code === HttpResponseCodes.OK) {
+        this.stationActive = response.item.station;
+        LocalStorageService.setItem(Constants.StationInDashboard, {id: this.stationActive.id, name: this.stationActive.businessName});
+        if (this.stationActive.paymentStatus !== 1 && this.role === 4) {
+          this.stationBlock();
+        }
+        if (!this.stationActive.stationTaskId) {
+          this.openTaskCalendar();
+        }
+      } else {
+        this.getDashboardInformation(null);
+      }
+    } else {
+      if (response.code === HttpResponseCodes.OK) {
+        LocalStorageService.setItem(Constants.ConsultancyInSession, {
+          id: response.item.consultancy.id,
+          name: response.item.consultancy.businessName
+        });
+        if (response.item.stationLites) {
+          const list = UtilitiesService.sortJSON(response.item.stationLites, 'enabled', 'desc');
+          this.stationActive = list[0];
           LocalStorageService.setItem(Constants.StationInDashboard, {id: this.stationActive.id, name: this.stationActive.businessName});
-          if(this.stationActive.paymentStatus !== 1 && this.role === 4){
+          if (this.role === 4 && !response.item.stationLites.enabled) {
             this.stationBlock();
           }
-          if(!this.stationActive.stationTaskId){
+          if (response.item.stationLites.newNotification) {
+            this.newNotification = true;
+          }
+          if (!this.stationActive.stationTaskId) {
             this.openTaskCalendar();
           }
-          break;
-        default:
-          this.getDashboardInformation(null);
-          break;
-      }
-    }else{
-      switch (response.code){
-        case 200:
-          LocalStorageService.setItem(Constants.ConsultancyInSession, {id:response.item.consultancy.id, name: response.item.consultancy.businessName});
-          if(response.item.stationLites){
-            const list = UtilitiesService.sortJSON(response.item.stationLites, 'enabled', 'desc');
-            this.stationActive = list[0];
-            LocalStorageService.setItem(Constants.StationInDashboard, {id: this.stationActive.id, name: this.stationActive.businessName});
-            if(this.role === 4 && !this.stationActive.enabled){
-              this.stationBlock();
-            }
-            if(this.stationActive.newNotification){
-              this.newNotification = true;
-            }
-            if(!this.stationActive.stationTaskId){
-              this.openTaskCalendar();
-            }
-          }else{
-            this.stationActive = undefined
-          }
-          break;
-        default:
-          this.stationActive = undefined;
-          break;
+        } else {
+          this.stationActive = null;
+        }
+      } else {
+        this.stationActive = null;
       }
     }
   }
 
-  private prepareDashboardToStationWorkers(response: any, onlyOneStation?: any): void{
-    if(onlyOneStation){
-      switch (response.code){
-        case 200:
-          this.stationActive = response.item;
+  private prepareDashboardToStationWorkers(response: EntityResponse<StationBasicData>, onlyOneStation?: any): void {
+    if (onlyOneStation) {
+      if (response.code === HttpResponseCodes.OK) {
+        this.stationActive = response.item.station;
+        LocalStorageService.setItem(Constants.StationInDashboard, {id: this.stationActive.id, name: this.stationActive.businessName});
+        if (!this.stationActive.stationTaskId) {
+          this.openTaskCalendar();
+        }
+      } else {
+        this.getDashboardInformation(null);
+      }
+    } else {
+      if (response.code === HttpResponseCodes.OK) {
+        if (response.item.station) {
+          this.stationActive = response.item.station;
           LocalStorageService.setItem(Constants.StationInDashboard, {id: this.stationActive.id, name: this.stationActive.businessName});
-          if(!this.stationActive.stationTaskId){
+          if (response.item.newNotification) {
+            this.newNotification = true;
+          }
+          if (!this.stationActive.stationTaskId) {
             this.openTaskCalendar();
           }
-          break;
-        default:
-          this.getDashboardInformation(null);
-          break;
-      }
-    }else{
-      switch (response.code){
-        case 200:
-          if(response.item.station){
-            this.stationActive = response.item.station;
-            LocalStorageService.setItem(Constants.StationInDashboard, {id: this.stationActive.id, name: this.stationActive.businessName});
-            if(response.item.newNotification){
-              this.newNotification = true;
-            }
-            if(!this.stationActive.stationTaskId){
-              this.openTaskCalendar();
-            }
-          }else{
-            this.stationActive = undefined;
-          }
-          break;
-        default:
-          break;
+        } else {
+          this.stationActive = undefined;
+        }
+      } else {
       }
     }
-    if(this.stationActive.paymentStatus !== 1){
+    if (this.stationActive.paymentStatus !== 1) {
       this.stationBlock();
     }
   }
 
-  private stationBlock():void{
+  private stationBlock(): void {
     this._dialogService.alertDialog(
       'Verificar Estado de suscripción',
       'Esta estación se encuentra suspendida por un problema con el último pago',
       'CERRAR SESIÓN'
-    ).afterClosed().subscribe(()=>{
-      this._auth.logOut()
-    })
+    ).afterClosed().subscribe(() => {
+      this._auth.logOut();
+    });
   }
 
-  private drawSignature():void{
-    this._signatureService.open().afterClosed().subscribe(response=>{
-      switch (response.code){
-        case 1:
-          let formSignature = new FormData();
-          formSignature.append('path','');
-          formSignature.append('fileName','signature-'+CookieService.getCookie(Constants.IdSession)+'-'+ new Date().getTime()+'.png');
-          formSignature.append('isImage','true');
-          formSignature.append('file',response.blob);
-          this.loadSignature(formSignature);
-          break;
+  private drawSignature(): void {
+    this._signatureService.open().afterClosed().subscribe(response => {
+      if (response.code === 1) {
+        const formSignature = new FormData();
+        formSignature.append('path', '');
+        formSignature.append('fileName', 'signature-' + CookieService.getCookie(Constants.IdSession) + '-' + new Date().getTime() + '.png');
+        formSignature.append('isImage', 'true');
+        formSignature.append('file', response.blob);
+        this.loadSignature(formSignature);
       }
     });
   }
 
-  private loadSignature(file: FormData): void{
-    this._uploadFile.upload(file).subscribe(response=>{
-      if(response){
+  private loadSignature(file: FormData): void {
+    this._uploadFile.upload(file).subscribe(response => {
+      if (response) {
         const signature = {
           blobName: response.item.blobName,
           thumbnail: response.item.thumbnail
         };
         this.getUser(signature);
-      }else{
+      } else {
         this.onErrorOccur();
-      }
-    })
-  }
-
-  private getUser(newSignatureElement: any): void{
-    this._api.getPerson(CookieService.getCookie(Constants.IdSession)).subscribe(response=>{
-      switch (response.code){
-        case 200:
-          let person = response.item;
-          person.signature = newSignatureElement;
-          this.updatePerson(person);
-          break;
-        default:
-          this.onErrorOccur();
-          break;
       }
     });
   }
 
-  private updatePerson(person: Person): void{
-    this._api.updatePerson(person).subscribe(response=>{
-      switch (response.code){
-        case 200:
-          this._snackBarService.openSnackBar('Firma actualizada', 'OK', 3000);
-          LocalStorageService.removeItem(Constants.NotSignature);
-          this.getDashboardInformation(this._stationId);
-          break;
-        default:
-          this.onErrorOccur();
-          break;
+  private getUser(newSignatureElement: any): void {
+    this._api.getPerson(CookieService.getCookie(Constants.IdSession)).subscribe(response => {
+      if (response.code === HttpResponseCodes.OK) {
+        const person = response.item;
+        person.signature = newSignatureElement;
+        this.updatePerson(person);
+      } else {
+        this.onErrorOccur();
       }
-    })
+    });
   }
 
-  private onErrorOccur():void{
+  private updatePerson(person: Person): void {
+    this._api.updatePerson(person).subscribe(response => {
+      if (response.code === HttpResponseCodes.OK) {
+        this._snackBarService.openSnackBar('Firma actualizada', 'OK', 3000);
+        LocalStorageService.removeItem(Constants.NotSignature);
+        this.getDashboardInformation(this._stationId);
+      } else {
+        this.onErrorOccur();
+      }
+    });
+  }
+
+  private onErrorOccur(): void {
     this._snackBarService.openSnackBar('Ha ocurrido un error, por favor intente después', 'OK', 3000);
   }
 }

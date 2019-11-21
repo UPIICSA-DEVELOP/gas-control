@@ -4,11 +4,13 @@
  *  Proprietary and confidential
  */
 @import "../../../../../styles/colors";
+
 #home {
   width: 100vw;
   height: calc(100vh - 48px);
   margin-top: 48px;
-  .background{
+
+  .background {
     width: 600px;
     height: 300px;
     position: absolute;
@@ -21,7 +23,8 @@
       height: 150px;
     }
   }
-  .empty{
+
+  .empty {
     height: 100%;
     display: flex;
     justify-content: center;
@@ -30,36 +33,40 @@
     padding: 0 35%;
     text-align: center;
 
-    .text{
+    .text {
       font-size: 24px;
       font-weight: 600;
       color: #707070;
     }
-    .button{
+
+    .button {
       background-color: #FFAA00;
       color: #FFFFFF;
       border-radius: 36px;
       margin-top: 92px;
     }
   }
-  mat-drawer-container{
+
+  mat-drawer-container {
     height: 100%;
     background-color: #F2F2F2;
-    @media screen and (max-width: 1024px){
+    @media screen and (max-width: 1024px) {
       position: inherit;
     }
-    .menu{
+
+    .menu {
       width: 20%;
       margin: 0 !important;
       overflow-x: hidden;
-      @media screen and (max-width: 1024px){
+      @media screen and (max-width: 1024px) {
         position: fixed;
         width: 35%;
       }
-      @media screen and (max-width: 600px){
+      @media screen and (max-width: 600px) {
         width: 100%;
       }
-      .station-information{
+
+      .station-information {
         width: 100%;
         height: 100%;
         padding: 8px;
@@ -67,12 +74,13 @@
         align-items: center;
         position: relative;
         overflow-x: hidden;
-        @media screen and (max-width: 600px){
+        @media screen and (max-width: 600px) {
           height: calc(100% - 56px);
         }
-        .close{
+
+        .close {
           display: none;
-          @media screen and (max-width: 1024px){
+          @media screen and (max-width: 1024px) {
             display: initial;
             position: absolute;
             top: 0;
@@ -80,30 +88,36 @@
             margin: 16px;
           }
         }
-        .image{
+
+        .image {
           display: flex;
           justify-content: center;
-          .container{
+
+          .container {
             width: 80px;
             height: 80px;
             background-color: #FFFFFF;
             margin: 8px 0;
             border-radius: 50%;
             box-shadow: 0 3px 1px 1px rgba(0, 0, 0, 0.1), 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, .10);
-            img{
+
+            img {
               width: 80px;
               height: 80px;
             }
-            mat-icon{
+
+            mat-icon {
               color: #707070;
               font-size: 80px;
             }
           }
         }
-        .contact{
+
+        .contact {
           margin: 16px 0;
           text-align: center;
-          .info{
+
+          .info {
             margin: 8px 0;
             font-weight: 500;
             color: #707070;
@@ -112,9 +126,11 @@
             overflow: hidden;
           }
         }
-        .buttons{
+
+        .buttons {
           margin: 24px 0;
-          button{
+
+          button {
             padding: 0 4px;
             width: 100%;
             text-align: start;
@@ -123,35 +139,42 @@
             overflow: hidden;
             text-overflow: ellipsis;
             white-space: nowrap;
-            mat-icon{
+
+            mat-icon {
               margin-right: 4px;
             }
-            span{
+
+            span {
               color: #707070;
             }
-            .sass-icon{
+
+            .sass-icon {
               width: 24px;
               height: 24px;
               margin-right: 4px;
             }
-            .sgm{
+
+            .sgm {
               width: 24px;
               margin-right: 4px;
             }
           }
         }
-        .change-station{
+
+        .change-station {
           display: flex;
           position: absolute;
           bottom: 16px;
           width: 100%;
           padding-right: 16px;
-          button{
+
+          button {
             background-color: #FFAA00;
             color: #FFFFFF;
             text-align: center;
             width: 100%;
-            mat-icon{
+
+            mat-icon {
               margin-right: 8px;
             }
           }
@@ -159,56 +182,62 @@
       }
     }
 
-    .main{
+    .main {
       display: flex;
       margin: 0 !important;
       width: 80%;
       float: right;
-      @media screen and (max-width: 1024px){
+      @media screen and (max-width: 1024px) {
         width: 100%;
       }
-      .col-1{
+
+      .col-1 {
         width: 70%;
         height: 100%;
         padding: 16px;
         display: flex;
         flex-direction: column;
-        @media screen and (max-width: 900px){
+        @media screen and (max-width: 900px) {
           width: 100%;
           height: calc(100% - 48px);
         }
-        .title{
+
+        .title {
           margin: 8px 0;
-          h2, p{
+
+          h2, p {
             margin: 2px 0;
           }
-          h1{
+
+          h1 {
             margin: -2px 0;
           }
         }
 
-        .tasks{
+        .tasks {
           width: 100%;
           height: 100%;
           position: relative;
         }
       }
 
-      .col-2{
+      .col-2 {
         width: 30%;
         height: 100%;
         padding: 8px;
         overflow-y: auto;
-        @media screen and (max-width: 900px){
+        @media screen and (max-width: 900px) {
           display: none;
         }
-        .directory{
+
+        .directory {
           margin-top: 16px;
           width: 100%;
           height: calc(75% - 16px);
           position: relative;
         }
-        .footer{
+
+        .footer {
           position: relative;
           margin-top: 12px;
         }

@@ -14,7 +14,9 @@
   <div *ngIf="!stationActive; then emptyDash else dashboard"></div>
   <ng-template #emptyDash>
     <div class="empty" *ngIf="!load">
-      <div class="text" *ngIf="role && (role <= 3 || role === 7)">Aún no existen Estaciones de Servicio a cargo de la Consultora</div>
+      <div class="text" *ngIf="role && (role <= 3 || role === 7)">Aún no existen Estaciones de Servicio a cargo de la
+        Consultora
+      </div>
       <button mat-button class="button" (click)="addStation()" *ngIf="role && (role <= 3 || role === 7)">
         <mat-icon>add</mat-icon>
         <span>AGREGAR ESTACIÓN</span>
@@ -33,7 +35,7 @@
           <div style="margin: auto; width: 90%;">
             <div class="image">
               <div class="container">
-                <img *ngIf="utils" [src]="utils.groupIcons[stationActive.type-1].fileCS.thumbnail">
+                <img *ngIf="utils" [src]="utils.groupIcons[stationActive.type-1].fileCS.thumbnail" alt="">
                 <mat-icon *ngIf="!utils">local_gas_station</mat-icon>
               </div>
             </div>
@@ -52,7 +54,9 @@
                 <span>Añadir Colaborador de Estación</span>
               </button>
               <button mat-button (click)="openNotifications()">
-                <mat-icon class="hide-text" [color]="'primary'" matBadge="0" matBadgeSize="small" matBadgeColor="warn" [matBadgeHidden]="!newNotification">notifications</mat-icon>
+                <mat-icon class="hide-text" [color]="'primary'" matBadge="0" matBadgeSize="small" matBadgeColor="warn"
+                          [matBadgeHidden]="!newNotification">notifications
+                </mat-icon>
                 <span>Notificaciones</span>
               </button>
               <button mat-button (click)="closeToggle()" routerLink="/home/procedures">
@@ -60,13 +64,14 @@
                 <span>Procedimientos</span>
               </button>
               <button mat-button [disabled]="!stationActive.stationTaskId" (click)="openSasisopaModal()">
-                <img *ngIf="stationActive.stationTaskId" class="sass-icon" src="../../../assets/image/ssp_blue.png">
-                <img *ngIf="!stationActive.stationTaskId" style="margin-right: 4px" src="../../../assets/image/ssp_disabled.png">
+                <img *ngIf="stationActive.stationTaskId" class="sass-icon" src="../../../../../assets/image/ssp_blue.png" alt="">
+                <img *ngIf="!stationActive.stationTaskId" style="margin-right: 4px"
+                     src="../../../../../assets/image/ssp_disabled.png" alt="">
                 <span>SASISOPA</span>
               </button>
               <button mat-button [disabled]="!stationActive.stationTaskId" (click)="openSGMModal()">
-                <img *ngIf="stationActive.stationTaskId" class="sgm" src="../../../assets/image/sgm.png">
-                <img *ngIf="!stationActive.stationTaskId" class="sgm" src="../../../assets/image/sgm_disabled.png">
+                <img *ngIf="stationActive.stationTaskId" class="sgm" src="../../../../../assets/image/sgm.png" alt="">
+                <img *ngIf="!stationActive.stationTaskId" class="sgm" src="../../../../../assets/image/sgm_disabled.png" alt="">
                 <span>Sistema de Gestión de Mediciones</span>
               </button>
               <button mat-button [disabled]="!stationActive.stationTaskId" (click)="openOtherTasks()">
@@ -86,7 +91,7 @@
       <mat-drawer-content class="main">
         <div class="col-1">
           <div class="title" *ngIf="stationActive && utils">
-            <h1>{{utils.groupIcons[stationActive.type-1].name}}</h1>
+            <h1>{{utils.groupIcons[stationActive.type - 1].name}}</h1>
             <h2>{{stationActive.name}}</h2>
             <p>{{stationActive.doneTasks}}/{{stationActive.totalTasks}} actividades</p>
           </div>
