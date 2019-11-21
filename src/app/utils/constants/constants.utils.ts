@@ -62,28 +62,28 @@ export class Constants {
     {name: 'https://', value: 'https://'}
   ];
 
-  public static  rolesConsutancy = [
-    {name:'Gerente', value: 2},
-    {name:'Asistente', value: 3}
+  public static rolesConsutancy = [
+    {name: 'Gerente', value: 2},
+    {name: 'Asistente', value: 3}
   ];
 
-  public static  roles2 = [
-    {name:'Director', value: 1},
-    {name:'Gerente', value: 2},
-    {name:'Asistente', value: 3},
-    {name:'Representante Legal', value: 4},
-    {name:'Encargado de Estación', value: 5},
-    {name:'Coordinador de Estación', value: 6}
+  public static roles2 = [
+    {name: 'Director', value: 1},
+    {name: 'Gerente', value: 2},
+    {name: 'Asistente', value: 3},
+    {name: 'Representante Legal', value: 4},
+    {name: 'Encargado de Estación', value: 5},
+    {name: 'Coordinador de Estación', value: 6}
   ];
 
-  public static  roles = [
-      'Director',
-      'Gerente',
-      'Asistente',
-      'Representante Legal',
-      'Encargado de Estación',
-      'Coordinador de Estación',
-      'Coordinador de Estación',
+  public static roles = [
+    'Director',
+    'Gerente',
+    'Asistente',
+    'Representante Legal',
+    'Encargado de Estación',
+    'Coordinador de Estación',
+    'Coordinador de Estación',
   ];
 
   public static bloodGroup = [
