@@ -46,7 +46,7 @@ import {EntityCollectionResponse} from '@app/utils/class/entity-collection-respo
   encapsulation: ViewEncapsulation.None
 })
 export class AddGasStationComponent implements OnInit, OnDestroy {
-  @ViewChild('phoneNumber', {static: false}) private _phoneNumberInput: ElementRef;
+  @ViewChild('phoneNumber', {static: true}) private _phoneNumberInput: ElementRef;
   @ViewChild('modalScroll', {static: true}) private _modalScroll: ElementRef;
   public step: number;
   public disableClose: boolean;

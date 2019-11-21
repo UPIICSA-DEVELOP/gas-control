@@ -35,7 +35,7 @@ import {ANIMATION} from '@app/ui/dashboard/pages/collaborators-list/animation';
 export class CollaboratorsListComponent implements OnInit, OnDestroy {
   @HostBinding('@fadeInAnimation')
 
-  @ViewChild('phoneNumber', {static: false}) private _phoneNumberInput: ElementRef;
+  @ViewChild('phoneNumber', {static: true}) private _phoneNumberInput: ElementRef;
   public collaborators: Person[];
   public register: boolean;
   public signature: any;

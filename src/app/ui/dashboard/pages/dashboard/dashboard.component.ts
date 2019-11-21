@@ -51,7 +51,7 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy {
   private _stationId: any;
   private _subscriptionShared: Subscription;
   private _subscriptionLoader: Subscription;
-  @ViewChild('drawer', {static: false}) private _drawer: any;
+  @ViewChild('drawer', {static: true}) private _drawer: any;
 
   constructor(
     @Inject(DOCUMENT) private _document: Document,

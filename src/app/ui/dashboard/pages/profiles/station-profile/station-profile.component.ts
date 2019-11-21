@@ -36,7 +36,7 @@ import {AppUtil} from '@app/utils/interfaces/app-util';
 export class StationProfileComponent implements OnInit, OnDestroy {
   @HostBinding('@fadeInAnimation')
 
-  @ViewChild('close', {static: false}) private _close: ElementRef;
+  @ViewChild('close', {static: true}) private _close: ElementRef;
   public workShifts: WorkShift[];
   public tanks: FuelTank[];
   public dispensers: Dispenser[];

@@ -11,39 +11,39 @@ export const appRoutes: Routes = [
   {
     path: '',
     pathMatch: 'full',
-    redirectTo:'/login'
+    redirectTo: '/login'
   },
   {
     path: 'login',
-    loadChildren: 'app/ui/login/login.module#LoginModule'
+    loadChildren: () => import('app/ui/login/login.module').then(m => m.LoginModule)
   },
   {
     path: 'home',
-    loadChildren: 'app/ui/dashboard/dashboard.module#DashboardModule'
+    loadChildren: () => import('app/ui/dashboard/dashboard.module').then(m => m.DashboardModule)
   },
   {
     path: 'admin',
-    loadChildren: 'app/ui/admin/admin.module#AdminModule'
+    loadChildren: () => import('app/ui/admin/admin.module').then(m => m.AdminModule)
   },
   {
     path: 'signin',
-    loadChildren: 'app/ui/reset-pass/reset-pass.module#ResetPassModule'
+    loadChildren: () => import('app/ui/reset-pass/reset-pass.module').then(m => m.ResetPassModule)
   },
   {
     path: 'privacidad',
-    loadChildren: 'app/ui/privacy/privacy.module#PrivacyModule'
+    loadChildren: () => import('app/ui/privacy/privacy.module').then(m => m.PrivacyModule)
   },
   {
     path: 'terminos',
-    loadChildren: 'app/ui/terms/terms.module#TermsModule'
+    loadChildren: () => import('app/ui/terms/terms.module').then(m => m.TermsModule)
   },
   {
     path: 'cookies',
-    loadChildren: 'app/ui/cookies/cookies.module#CookiesModule'
+    loadChildren: () => import('app/ui/cookies/cookies.module').then(m => m.CookiesModule)
   },
   {
     path: '**',
-    redirectTo:'/login'
+    redirectTo: '/login'
   }
 ];
 

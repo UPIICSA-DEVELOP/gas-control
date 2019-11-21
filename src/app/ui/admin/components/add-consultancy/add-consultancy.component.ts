@@ -30,7 +30,7 @@ import {UserMedia} from '@app/utils/interfaces/user-media';
 })
 export class AddConsultancyComponent implements OnInit, OnDestroy {
   @ViewChild('stepper', {static: true}) private _stepper: MatStepper;
-  @ViewChild('phoneNumber', {static: false}) private _phoneNumberInput: ElementRef;
+  @ViewChild('phoneNumber', {static: true}) private _phoneNumberInput: ElementRef;
   public load: boolean;
   public roles: any[];
   public protocols: any[];

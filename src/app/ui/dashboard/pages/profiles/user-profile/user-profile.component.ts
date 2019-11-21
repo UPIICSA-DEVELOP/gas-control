@@ -38,7 +38,7 @@ import {ANIMATION} from '@app/ui/dashboard/pages/profiles/user-profile/animation
 export class UserProfileComponent implements OnInit, OnDestroy {
   @HostBinding('@fadeInAnimation')
 
-  @ViewChild('phoneNumber', {static: false}) private _phoneNumberInput: ElementRef;
+  @ViewChild('phoneNumber', {static: true}) private _phoneNumberInput: ElementRef;
   private _formData: FormData;
   private _formDeleteData: FormData;
   private _formFile: FormData;
