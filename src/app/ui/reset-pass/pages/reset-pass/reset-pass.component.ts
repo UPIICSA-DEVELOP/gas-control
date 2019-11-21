@@ -4,7 +4,7 @@
  * Proprietary and confidential
  */
 
-import {Component, ElementRef, OnDestroy, OnInit, ViewChild, ViewEncapsulation} from '@angular/core';
+import {Component, ElementRef, HostBinding, OnDestroy, OnInit, ViewChild, ViewEncapsulation} from '@angular/core';
 import {SnackBarService} from '@app/core/services/snackbar/snackbar.service';
 import {DialogService} from '@app/shared/components/dialog/dialog.service';
 import {Constants} from '@app/utils/constants/constants.utils';
@@ -14,16 +14,17 @@ import {LocalStorageService} from '@app/core/services/local-storage/local-storag
 import {Router} from '@angular/router';
 import {AbstractControl, FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Subscription} from 'rxjs';
-import {animate, keyframes, query, stagger, style, transition, trigger} from '@angular/animations';
 import {LoaderService} from '@app/core/components/loader/loader.service';
 import {Person} from '@app/utils/interfaces/person';
+import {HttpResponseCodes} from '@app/utils/enums/http-response-codes';
+import {ANIMATION} from '@app/ui/reset-pass/pages/reset-pass/animation';
 
 export function ValidatePasswords(ac: AbstractControl) {
-  let password = ac.get('newPassword').value;
-  let repeatPassword = ac.get('confirmNewPassword').value;
-  if(password !== repeatPassword){
+  const password = ac.get('newPassword').value;
+  const repeatPassword = ac.get('confirmNewPassword').value;
+  if (password !== repeatPassword) {
     ac.get('confirmNewPassword').setErrors({differentPasswords: true});
-  }else{
+  } else {
     return null;
   }
 }
@@ -34,41 +35,21 @@ const md5 = require('md5');
   selector: 'app-reset-pass',
   templateUrl: './reset-pass.component.html',
   styleUrls: ['./reset-pass.component.scss'],
-  animations: [
-    trigger('fadeInAnimation', [
-      transition(':enter', [
-        query('#reset-password', style({ opacity: 0, background: 'transparent' }), {optional: true}),
-        query('#reset-password', stagger('10ms', [
-          animate('.2s ease-out', keyframes([
-            style({opacity: 0, background: 'transparent', offset: 0}),
-            style({opacity: .5, background: 'rgba(255, 255, 255, .5)', offset: 0.5}),
-            style({opacity: 1, background: 'rgba(255, 255, 255, 1)',  offset: 1.0}),
-          ]))]), {optional: true})
-      ]),
-      transition(':leave', [
-        query('#reset-password', style({ opacity: 1, background: 'rgba(255, 255, 255, 1)' }), {optional: true}),
-        query('#reset-password', stagger('10ms', [
-          animate('.2s ease-in', keyframes([
-            style({opacity: 1, background: 'rgba(255, 255, 255, 1)', offset: 0}),
-            style({opacity: .5, background: 'rgba(255, 255, 255, .5)',  offset: 0.5}),
-            style({opacity: 0, background: 'transparent',     offset: 1.0}),
-          ]))]), {optional: true})
-      ])
-    ])
-  ],
-  host: {'[@fadeInAnimation]': ''},
+  animations: [ANIMATION],
   encapsulation: ViewEncapsulation.None
 })
 export class ResetPassComponent implements OnInit, OnDestroy {
+  @HostBinding('@fadeInAnimation')
 
-  @ViewChild('inputPasswordOne', { static: true }) private _inputPassOne: ElementRef;
-  @ViewChild('inputPasswordTwo', { static: true }) private _inputPassTwo: ElementRef;
+  @ViewChild('inputPasswordOne', {static: true}) private _inputPassOne: ElementRef;
+  @ViewChild('inputPasswordTwo', {static: true}) private _inputPassTwo: ElementRef;
   public load: boolean;
   public hideOne: boolean;
   public hideTwo: boolean;
   public newPassForm: FormGroup;
   private _subscriptionLoader: Subscription;
-  private _user: Person
+  private _user: Person;
+
   constructor(
     private _dialogService: DialogService,
     private _api: ApiService,
@@ -77,71 +58,68 @@ export class ResetPassComponent implements OnInit, OnDestroy {
     private _auth: AuthService,
     private _router: Router,
     private _formBuilder: FormBuilder
-  ) { }
+  ) {
+  }
 
   ngOnInit() {
-    this._subscriptionLoader = this._apiLoader.getProgress().subscribe(load=>{this.load = load});
+    this._subscriptionLoader = this._apiLoader.getProgress().subscribe(load => {
+      this.load = load;
+    });
     this.initForm();
   }
 
-  ngOnDestroy(): void{
+  ngOnDestroy(): void {
     this._subscriptionLoader.unsubscribe();
   }
 
   public initForm(): void {
     this.newPassForm = this._formBuilder.group({
       newPassword: ['', [Validators.required]],
-      confirmNewPassword: ['',[Validators.required]]
+      confirmNewPassword: ['', [Validators.required]]
     });
     this.newPassForm.setValidators(ValidatePasswords);
   }
 
-  public seeHidePassword(type: boolean): void{
-    if(type){
+  public seeHidePassword(type: boolean): void {
+    if (type) {
       this.hideOne = !this.hideOne;
-      this._inputPassOne.nativeElement.type = (this.hideOne)?'text':'password';
-    }else{
+      this._inputPassOne.nativeElement.type = (this.hideOne) ? 'text' : 'password';
+    } else {
       this.hideTwo = !this.hideTwo;
-      this._inputPassTwo.nativeElement.type = (this.hideTwo)?'text':'password';
+      this._inputPassTwo.nativeElement.type = (this.hideTwo) ? 'text' : 'password';
     }
   }
 
-  public updatePassword(value: any): void{
-   if(this.newPassForm.invalid){
+  public updatePassword(value: any): void {
+    if (this.newPassForm.invalid) {
       return;
-   }
-   this.signInWidthIdLink(value);
+    }
+    this.signInWidthIdLink(value);
   }
 
   private signInWidthIdLink(value: any): void {
-    this._auth.requestPermissionNotifications().subscribe((token: string | null)=>{
-      this._api.signInWithLink(LocalStorageService.getItem(Constants.UpdatePassword), token).subscribe(response=>{
-        switch (response.code){
-          case 200:
-            this._user = response.item;
-            this.updatePersonPassword(value,token);
-            break;
-          default:
-            break;
+    this._auth.requestPermissionNotifications().subscribe((token: string | null) => {
+      this._api.signInWithLink(LocalStorageService.getItem(Constants.UpdatePassword), token).subscribe(response => {
+        if (response.code === HttpResponseCodes.OK) {
+          this._user = response.item;
+          this.updatePersonPassword(value, token);
+        } else {
         }
       });
     });
   }
 
-  private updatePersonPassword(value: any, token: string): void{
+  private updatePersonPassword(value: any, token: string): void {
     this._user.password = md5(value.newPassword);
-    this._api.updatePerson(this._user).subscribe(response=>{
-      switch (response.code){
-        case 200:
-          this._auth.logIn(response.item,true, token);
-          LocalStorageService.removeItem(Constants.UpdatePassword);
-          this._snackBarService.openSnackBar('Contraseña actualizada', 'OK', 3000);
-          break;
-        default:
-          this._snackBarService.openSnackBar('No se a podido actualizar la contraseña', 'OK', 3000);
-          this._router.navigate(['/login']).then();
-          break;
+    this._api.updatePerson(this._user).subscribe(response => {
+      if (response.code === HttpResponseCodes.OK) {
+        this._auth.logIn(response.item, true, token);
+        LocalStorageService.removeItem(Constants.UpdatePassword);
+        this._snackBarService.openSnackBar('Contraseña actualizada', 'OK', 3000);
+      } else {
+        this._snackBarService.openSnackBar('No se a podido actualizar la contraseña', 'OK', 3000);
+        this._router.navigate(['/login']).then();
       }
-    })
+    });
   }
 }

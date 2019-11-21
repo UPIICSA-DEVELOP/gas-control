@@ -18,7 +18,8 @@
       <div class="color">Proporcione esta información para ayudarle a recuperar su cuenta</div>
       <form [formGroup]="newPassForm" (ngSubmit)="updatePassword(newPassForm.value)" class="form">
         <mat-form-field>
-          <input matInput formControlName="newPassword" [disabled]="load" required placeholder="Nueva contraseña" type="password" #inputPasswordOne>
+          <input matInput formControlName="newPassword" [disabled]="load" required placeholder="Nueva contraseña"
+                 type="password" #inputPasswordOne>
           <button matSuffix type="button" mat-icon-button (click)="seeHidePassword(true)">
             <div *ngIf="hideOne; then passwordVisible else notVisible"></div>
             <ng-template #notVisible>
@@ -33,7 +34,8 @@
           </mat-error>
         </mat-form-field>
         <mat-form-field>
-          <input matInput formControlName="confirmNewPassword" [disabled]="load" required placeholder="Confirmar nueva contraseña" type="password" #inputPasswordTwo>
+          <input matInput formControlName="confirmNewPassword" [disabled]="load" required
+                 placeholder="Confirmar nueva contraseña" type="password" #inputPasswordTwo>
           <button matSuffix type="button" mat-icon-button (click)="seeHidePassword(false)">
             <div *ngIf="hideTwo; then passwordVisible else notVisible"></div>
             <ng-template #notVisible>

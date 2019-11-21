@@ -3,13 +3,14 @@
  * Unauthorized copying of this file, via any medium is strictly prohibited
  * Proprietary and confidential
  */
-
 @import "../../../../../styles/colors";
-#reset-password{
+
+#reset-password {
   width: 100vw;
   height: 100vh;
   background-color: #F2F2F2;
-  .body{
+
+  .body {
     width: 100%;
     height: 100%;
     display: flex;
@@ -17,7 +18,8 @@
     align-items: center;
     overflow: auto;
   }
-  mat-toolbar{
+
+  mat-toolbar {
     position: fixed;
     width: 100%;
     height: 48px;
@@ -25,7 +27,8 @@
     background-color: mat-color($primary);
     z-index: 4;
     top: 0;
-    .image-logo{
+
+    .image-logo {
       margin: 0 auto;
       position: absolute;
       top: 0;
@@ -33,14 +36,16 @@
       left: 0;
       justify-content: center;
       display: flex;
-      img{
+
+      img {
         height: 40px;
         margin: 4px;
         outline: none;
       }
     }
   }
-  mat-card{
+
+  mat-card {
     width: 25vw;
     position: relative;
     @media screen and(max-width: 1100px) {
@@ -57,21 +62,25 @@
       margin-top: 48px;
     }
   }
+
   .progress {
     position: absolute;
     bottom: 0;
     left: 0;
     z-index: 1;
   }
-  .form{
+
+  .form {
     display: flex;
     flex-direction: column;
     margin: 16px 0;
   }
-  .color{
+
+  .color {
     color: #707070;
   }
-  .action{
+
+  .action {
     margin: 16px 0;
     display: flex;
     justify-content: flex-end;

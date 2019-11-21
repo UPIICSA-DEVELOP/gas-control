@@ -4,28 +4,30 @@
  *  Proprietary and confidential
  */
 
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot, UrlTree} from '@angular/router';
 import {Observable} from 'rxjs';
 import {LocalStorageService} from 'app/core/services/local-storage/local-storage.service';
 import {Constants} from 'app/utils/constants/constants.utils';
 
 @Injectable()
-export class ResetPassRouterService implements CanActivate{
+export class ResetPassRouterService implements CanActivate {
 
   constructor(
     private _router: Router
-  ) { }
+  ) {
+  }
 
-  canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-    if(LocalStorageService.getItem(Constants.UpdatePassword)){
+  canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot)
+    : Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
+    if (LocalStorageService.getItem(Constants.UpdatePassword)) {
       return true;
-    }else{
+    } else {
       const id = route.queryParams['link'];
-      if(id){
+      if (id) {
         LocalStorageService.setItem(Constants.UpdatePassword, id);
         return true;
-      }else{
+      } else {
         return this._router.createUrlTree(['/login']);
       }
     }
