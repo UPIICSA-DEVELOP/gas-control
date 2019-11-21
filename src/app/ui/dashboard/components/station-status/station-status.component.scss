@@ -6,20 +6,22 @@
 @import "../../../../../styles/colors";
 
 #station-status {
-  .header{
-    h4{
+  .header {
+    h4 {
       color: #707070;
       margin: 0;
     }
   }
 
-  mat-card-content{
+  mat-card-content {
     display: flex;
     justify-content: space-around;
     align-items: center;
   }
+
   .graphic {
     position: relative;
+
     canvas {
       width: 120px !important;
       height: 120px !important;
