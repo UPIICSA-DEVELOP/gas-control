@@ -22,17 +22,17 @@
       <ng-template #notificationsList>
         <div *ngIf="notifications.length > 0; then cards else emptyList"></div>
         <ng-template #cards>
-          <mat-card *ngFor="let item of notifications; let i = index">
+          <mat-card *ngFor="let notification of notifications; let i = index">
             <mat-card-content>
-              <div class="message-notify" (click)="navigateToDashboard(item.stationId, item.consultancyId)">
-                <div class="title">{{item.title}}</div>
-                <div class="body">{{item.body}}</div>
+              <div class="message-notify" (click)="navigateToDashboard(notification.stationId, notification.consultancyId)">
+                <div class="title">{{notification.title}}</div>
+                <div class="body">{{notification.body}}</div>
               </div>
               <div class="priority">
-                <button mat-icon-button matTooltip="Eliminar" (click)="deleteNotification(item.id, i)" [disabled]="isAdmin">
+                <button mat-icon-button matTooltip="Eliminar" (click)="deleteNotification(notification.id, i)">
                   <mat-icon>delete</mat-icon>
                 </button>
-                <div class="date">{{item.date[0]}} {{item.date[1]}} {{item.date[2]}}</div>
+                <div class="date">{{notification.date[0]}} {{notification.date[1]}} {{notification.date[2]}}</div>
               </div>
             </mat-card-content>
           </mat-card>

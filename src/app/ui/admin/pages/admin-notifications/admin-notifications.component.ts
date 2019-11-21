@@ -4,8 +4,7 @@
  *  Proprietary and confidential
  */
 
-import {Component, OnDestroy, OnInit, ViewEncapsulation} from '@angular/core';
-import {animate, style, transition, trigger} from '@angular/animations';
+import {Component, HostBinding, OnDestroy, OnInit, ViewEncapsulation} from '@angular/core';
 import {ApiService} from 'app/core/services/api/api.service';
 import {DialogService} from 'app/shared/components/dialog/dialog.service';
 import {Router} from '@angular/router';
@@ -15,42 +14,38 @@ import {Subscription} from 'rxjs';
 import {UtilitiesService} from 'app/utils/utilities/utilities';
 import {SessionStorageService} from 'app/core/services/session-storage/session-storage.service';
 import {LoaderService} from '@app/core/components/loader/loader.service';
+import {HttpResponseCodes} from '@app/utils/enums/http-response-codes';
+import {ANIMATION} from '@app/ui/admin/pages/admin-notifications/animation';
+import {EntityCollectionResponse} from '@app/utils/class/entity-collection-response';
+import {Notification} from '@app/utils/interfaces/notification';
 
 @Component({
   selector: 'app-admin-notifications',
   templateUrl: './admin-notifications.component.html',
   styleUrls: ['./admin-notifications.component.scss'],
-  animations: [
-    trigger('fadeInAnimation', [
-      transition(':enter', [
-        style({ right: '-100%' }),
-        animate('.40s ease-out', style({ right: '0'  }))
-      ]),
-      transition(':leave', [
-        style({ right: '0'}),
-        animate('.40s ease-in', style({ right: '-100%' }))
-      ])
-    ])
-  ],
-  host: {'[@fadeInAnimation]': ''},
+  animations: [ANIMATION],
   encapsulation: ViewEncapsulation.None
 })
 export class AdminNotificationsComponent implements OnInit, OnDestroy {
+  @HostBinding('@fadeInAnimation')
 
-  public notifications: any[];
+  public notifications: Notification[];
   public load: boolean;
   private _subscriptionLoader: Subscription;
+
   constructor(
     private _api: ApiService,
     private _apiLoader: LoaderService,
     private _router: Router,
     private _dialogService: DialogService
   ) {
-
+    this.notifications = [];
   }
 
   ngOnInit() {
-    this._subscriptionLoader = this._apiLoader.getProgress().subscribe(load=>{this.load = load});
+    this._subscriptionLoader = this._apiLoader.getProgress().subscribe(load => {
+      this.load = load;
+    });
     this.getListNotifications();
   }
 
@@ -58,55 +53,50 @@ export class AdminNotificationsComponent implements OnInit, OnDestroy {
     this._subscriptionLoader.unsubscribe();
   }
 
-  private getListNotifications():void{
-    this._api.listNotificationsAdmin(CookieService.getCookie(Constants.IdSession)).subscribe(response=>{
-      switch (response.code){
-        case 200:
-          if(response.items){
-            this.notifications = response.items;
-            for(let i = 0; i<this.notifications.length;i++){
-              this.notifications[i].date = UtilitiesService.convertDate(this.notifications[i].date)
-            }
-          }else{
-            this.notifications = [];
-          }
-          break;
-        default:
+  private getListNotifications(): void {
+    this._api.listNotificationsAdmin(CookieService.getCookie(Constants.IdSession))
+      .subscribe((response: EntityCollectionResponse<Notification>) => {
+      if (response.code === HttpResponseCodes.OK) {
+        if (response.items) {
+          this.notifications = response.items;
+          this.notifications.forEach(notification => {
+            const date = UtilitiesService.convertDate(notification.date);
+            notification.date = Number(date[2] + '' + date[1] + '' + date[0]);
+          });
+        } else {
           this.notifications = [];
-          break;
+        }
+      } else {
+        this.notifications = [];
       }
     });
   }
 
-  public navigateToDashboard(stationId: string, consultancyId: string): void{
-    let stationsView = SessionStorageService.getItem(Constants.StationAdmin) || [];
-    if(stationsView){
+  public navigateToDashboard(stationId: string, consultancyId: string): void {
+    const stationsView = SessionStorageService.getItem(Constants.StationAdmin) || [];
+    if (stationsView) {
       stationsView.forEach(item => {
         item.lastView = false;
       });
     }
     stationsView.push({stationId: stationId, consultancyId: consultancyId, lastView: true});
     SessionStorageService.setItem(Constants.StationAdmin, stationsView);
-    window.open('/#/home?station='+stationId,'_blank');
+    window.open('/#/home?station=' + stationId, '_blank');
   }
 
-  public deleteNotification(id: string, index: number):void{
+  public deleteNotification(id: string, index: number): void {
     this._dialogService.confirmDialog(
       '¿Desea eliminar esta notificación?',
       '',
       'ACEPTAR',
       'CANCELAR'
-    ).afterClosed().subscribe(response=>{
-      switch (response.code){
-        case 1:
-          this._api.deleteNotification(id).subscribe(response=>{
-            switch (response.code){
-              case 200:
-                this.notifications.splice(index, 1);
-                break;
-            }
-          });
-          break;
+    ).afterClosed().subscribe(response => {
+      if (response.code === 1) {
+        this._api.deleteNotification(id).subscribe(deleteNotification => {
+          if (deleteNotification.code === HttpResponseCodes.OK) {
+            this.notifications.splice(index, 1);
+          }
+        });
       }
     });
   }
