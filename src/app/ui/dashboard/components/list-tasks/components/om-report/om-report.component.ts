@@ -23,6 +23,8 @@ import {UploadFileResponse} from '@app/shared/components/upload-file/upload-file
 import {OMReport} from '@app/utils/interfaces/reports/omr-report';
 import {HWGReport} from '@app/utils/interfaces/reports/hwg-report';
 import {Task} from '@app/utils/interfaces/task';
+import {HttpResponseCodes} from '@app/utils/enums/http-response-codes';
+import {AppUtil} from '@app/utils/interfaces/app-util';
 
 
 @Component({
@@ -34,7 +36,7 @@ import {Task} from '@app/utils/interfaces/task';
 export class OmReportComponent implements OnInit, OnDestroy {
   private _taskId: string;
   public task: Task;
-  public utils: any;
+  public utils: AppUtil;
 
   @Input() set taskOMInfo(taskObj: any) {
     if (taskObj) {
@@ -49,7 +51,8 @@ export class OmReportComponent implements OnInit, OnDestroy {
       this.utils = utils;
     }
   }
-  private _loads: boolean[];
+
+  private readonly _loads: boolean[];
   public errors: boolean[];
   public omForm: FormGroup;
   public omReport: OMReport;
@@ -74,6 +77,7 @@ export class OmReportComponent implements OnInit, OnDestroy {
   private _subscriptionShared: Subscription;
   private _subscriptionLoader: Subscription;
   private _hwgElement: HWGReport;
+
   constructor(
     private _api: ApiService,
     private _apiLoader: LoaderService,
@@ -87,7 +91,7 @@ export class OmReportComponent implements OnInit, OnDestroy {
     private _formatTimePipe: FormatTimePipe
   ) {
     this.startValidate = false;
-    this._loads = [false,false];
+    this._loads = [false, false];
     this.errors = [false, false, false];
     this.date = [];
     this.taskItems = [];
@@ -100,7 +104,9 @@ export class OmReportComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.initOmForm();
     this.detectNotifications();
-    this._subscriptionLoader = this._apiLoader.getProgress().subscribe(load=>{this.load = load});
+    this._subscriptionLoader = this._apiLoader.getProgress().subscribe(load => {
+      this.load = load;
+    });
   }
 
   ngOnDestroy() {
@@ -111,14 +117,11 @@ export class OmReportComponent implements OnInit, OnDestroy {
 
   private detectNotifications(): void {
     this._subscriptionShared = this._sharedService.getNotifications().subscribe(response => {
-      switch (response.type) {
-        case SharedTypeNotification.EditTask:
-          if (response.value === 1) {
-            this.startEditFormat();
-          }
-          break;
-        default:
-          break;
+      if (response.type === SharedTypeNotification.EditTask) {
+        if (response.value === 1) {
+          this.startEditFormat();
+        }
+      } else {
       }
     });
   }
@@ -191,10 +194,10 @@ export class OmReportComponent implements OnInit, OnDestroy {
       description: this.omReport.description,
       observations: this.omReport.observations
     });
-    if(this.omReport.hwgReport){
+    if (this.omReport.hwgReport) {
       this.hwgData = this.omReport.hwgReport;
-    }else{
-      this.hwgData = undefined
+    } else {
+      this.hwgData = undefined;
     }
     this.date = UtilitiesService.convertDate(this.omReport.date);
     this.omForm.disable();
@@ -205,26 +208,23 @@ export class OmReportComponent implements OnInit, OnDestroy {
     this.omForm.reset();
     this.omForm.disable();
     const user = LocalStorageService.getItem(Constants.UserInSession);
-    if(this.task.status !== 4 && user.role ===7){
+    if (this.task.status !== 4 && user.role === 7) {
       this.startEditFormat(true);
     }
   }
 
   private getOMReport(): void {
     this._api.getTaskInformation(this._taskId, 1).subscribe(response => {
-      switch (response.code) {
-        case 200:
-          if (response.items) {
-            this.taskItems = UtilitiesService.sortJSON(response.items, 'folio', 'desc');
-            this._indexTask = 0;
-            this.patchForm(this.taskItems[0]);
-          } else {
-            this.resetElements();
-          }
-          break;
-        default:
+      if (response.code === HttpResponseCodes.OK) {
+        if (response.items) {
+          this.taskItems = UtilitiesService.sortJSON(response.items, 'folio', 'desc');
+          this._indexTask = 0;
+          this.patchForm(this.taskItems[0]);
+        } else {
           this.resetElements();
-          break;
+        }
+      } else {
+        this.resetElements();
       }
     });
   }
@@ -253,15 +253,15 @@ export class OmReportComponent implements OnInit, OnDestroy {
     this.editable = true;
     this.name = user.completeName;
     this._sharedService.setNotification({type: SharedTypeNotification.HwgActive, value: isNewLoad ? isNewLoad : false});
-    if(!isNewLoad){
+    if (!isNewLoad) {
       this._copyLastTask = this.omReport;
       this.procedures = this.omReport.procedures || [];
       this.personnelNames = this.omReport.personnelNames || [];
-      if (this.omReport.fileCS){
+      if (this.omReport.fileCS) {
         this._evidenceElement = this.omReport.fileCS;
         this.evidenceThumbnail = this.omReport.fileCS.thumbnail;
       }
-      if(this.omReport.hwgReport){
+      if (this.omReport.hwgReport) {
         this.hwgData = this.omReport.hwgReport;
       }
       this.omReport.date = undefined;
@@ -288,12 +288,10 @@ export class OmReportComponent implements OnInit, OnDestroy {
       case 2:
         if (isAdd) {
           this._proceduresService.open(
-            {utils: this.utils.procedures, proceduresSelected: this.procedures, notVisibleChecks:false}
+            {utils: this.utils.procedures, proceduresSelected: this.procedures, notVisibleChecks: false}
           ).afterClosed().subscribe(response => {
-            switch (response.code) {
-              case 1:
-                this.procedures = response.data;
-                break;
+            if (response.code === 1) {
+              this.procedures = response.data;
             }
           });
         } else {
@@ -311,15 +309,13 @@ export class OmReportComponent implements OnInit, OnDestroy {
 
   public loadSignature(): void {
     this._signatureService.open().afterClosed().subscribe(response => {
-      switch (response.code) {
-        case 1:
-          this.signatureThumbnail = response.base64;
-          this._loads[1] = true;
-          this._signature = new FormData();
-          this._signature.append('fileName', 'signature-' + new Date().getTime() + '.png');
-          this._signature.append('isImage', 'true');
-          this._signature.append('file', response.blob);
-          break;
+      if (response.code === 1) {
+        this.signatureThumbnail = response.base64;
+        this._loads[1] = true;
+        this._signature = new FormData();
+        this._signature.append('fileName', 'signature-' + new Date().getTime() + '.png');
+        this._signature.append('isImage', 'true');
+        this._signature.append('file', response.blob);
       }
     });
   }
@@ -328,8 +324,8 @@ export class OmReportComponent implements OnInit, OnDestroy {
     this.evidenceThumbnail = ev.url;
     this._loads[0] = true;
     this._evidence = new FormData();
-    this._evidence.append('path', 'Task'+this._taskId);
-    this._evidence.append('fileName', 'evidence-'+this._taskId + new Date().getTime() + '.png');
+    this._evidence.append('path', 'Task' + this._taskId);
+    this._evidence.append('fileName', 'evidence-' + this._taskId + new Date().getTime() + '.png');
     this._evidence.append('isImage', 'true');
     this._evidence.append('file', ev.blob);
     this.errors[2] = false;
@@ -348,48 +344,48 @@ export class OmReportComponent implements OnInit, OnDestroy {
     if (this.personnelNames.length === 0) {
       this.errors[0] = true;
     }
-    if(!value.cottonClothes &&
+    if (!value.cottonClothes &&
       !value.faceMask &&
       !value.gloves &&
       !value.goggles &&
       !value.helmet &&
       !value.industrialShoes &&
       !value.kneepads &&
-      !value.protectiveGoggles){
+      !value.protectiveGoggles) {
       this.errors[1] = true;
     }
     if (this.task.evidence && !this.evidenceThumbnail) {
       this.errors[2] = true;
     }
-    if(this.task.hwg){
-      if(!this._hwgElement.area ||
+    if (this.task.hwg) {
+      if (!this._hwgElement.area ||
         !this._hwgElement.waste ||
         !this._hwgElement.quantity ||
         !this._hwgElement.unity ||
-        !this._hwgElement.temporaryStorage){
+        !this._hwgElement.temporaryStorage) {
         error = true;
       }
     }
-    if(this.errors[0] || this.errors[1] || this.errors[2] || this.omForm.invalid || error){
-      this._snackBarService.openSnackBar('Por favor, complete los campos','OK',3000);
+    if (this.errors[0] || this.errors[1] || this.errors[2] || this.omForm.invalid || error) {
+      this._snackBarService.openSnackBar('Por favor, complete los campos', 'OK', 3000);
       return;
     }
-    if(!this._signature){
-      this._snackBarService.openSnackBar('Por favor, registre su firma','OK',3000);
+    if (!this._signature) {
+      this._snackBarService.openSnackBar('Por favor, registre su firma', 'OK', 3000);
       return;
     }
-    if(this._loads[0]) {
+    if (this._loads[0]) {
       this.uploadFile(1);
       return;
     }
-    if(this._loads[1]){
+    if (this._loads[1]) {
       this.uploadFile(2);
       return;
     }
     this.saveReport(value);
   }
 
-  private saveReport(value: any): void{
+  private saveReport(value: any): void {
     let date: any = new Date();
     date = UtilitiesService.createPersonalTimeStamp(date);
     this.omReport = {
@@ -418,29 +414,26 @@ export class OmReportComponent implements OnInit, OnDestroy {
       taskId: this._taskId,
       toolsAndMaterials: value.toolsAndMaterials || undefined
     };
-    if(this._copyLastTask){
+    if (this._copyLastTask) {
       this.omReport.id = this._copyLastTask.id;
     }
-    if (this.task.hwg){
+    if (this.task.hwg) {
       this.omReport.hwgReport = this._hwgElement;
     }
-    this._api.createTask(this.omReport, 1).subscribe(response=>{
-      switch (response.code){
-        case 200:
-          this._sharedService.setNotification({type: SharedTypeNotification.FinishEditTask, value: response.item.station});
-          break;
-        default:
-          console.error(response);
-          break;
+    this._api.createTask(this.omReport, 1).subscribe(response => {
+      if (response.code === HttpResponseCodes.OK) {
+        this._sharedService.setNotification({type: SharedTypeNotification.FinishEditTask, value: response.item.station});
+      } else {
+        console.error(response);
       }
     });
   }
 
-  private uploadFile(type: number):void{
-    switch (type){
+  private uploadFile(type: number): void {
+    switch (type) {
       case 1:
-        this._uploadFile.upload(this._evidence).subscribe(response=>{
-          if (response){
+        this._uploadFile.upload(this._evidence).subscribe(response => {
+          if (response) {
             this._evidenceElement = {
               blobName: response.item.blobName,
               thumbnail: response.item.thumbnail
@@ -451,8 +444,8 @@ export class OmReportComponent implements OnInit, OnDestroy {
         });
         break;
       case 2:
-        this._uploadFile.upload(this._signature).subscribe(response=>{
-          if (response){
+        this._uploadFile.upload(this._signature).subscribe(response => {
+          if (response) {
             this._signatureElement = {
               blobName: response.item.blobName,
               thumbnail: response.item.thumbnail
@@ -467,12 +460,12 @@ export class OmReportComponent implements OnInit, OnDestroy {
     }
   }
 
-  public changeEquipment(ev: any){
+  public changeEquipment() {
     this.errors[1] = false;
   }
 
   public getHWGReportInformation(ev: any): void {
-    if(ev.valid){
+    if (ev.valid) {
       this._hwgElement = {
         area: ev.value.area,
         corrosive: ev.value.corrosive,
@@ -485,7 +478,7 @@ export class OmReportComponent implements OnInit, OnDestroy {
         unity: ev.value.unity,
         waste: ev.value.waste
       };
-    }else{
+    } else {
       this._hwgElement = {
         area: undefined,
         corrosive: false,
@@ -503,7 +496,7 @@ export class OmReportComponent implements OnInit, OnDestroy {
     this.validateForm(this.omForm.value);
   }
 
-  public startValidateForm():void{
+  public startValidateForm(): void {
     this.startValidate = true;
   }
 

@@ -81,7 +81,8 @@
         </mat-form-field>
         <mat-form-field class="inputs">
           <mat-select formControlName="activityType" placeholder="Actividad a realizar" required>
-            <mat-option value="Monitoreo de pozos y detección de fugas">Monitoreo de pozos y detección de fugas</mat-option>
+            <mat-option value="Monitoreo de pozos y detección de fugas">Monitoreo de pozos y detección de fugas
+            </mat-option>
             <mat-option value="Mantenimiento de la Estación">Mantenimiento de la Estación</mat-option>
             <mat-option value="Albañilería, herrería, etc">Albañilería, herreria, etc</mat-option>
             <mat-option value="Pruebas de eficiencia">Pruebas de eficiencia</mat-option>
@@ -110,7 +111,8 @@
         <ng-template #inputPersonnel>
           <div class="personnel-input">
             <mat-form-field class="input-two">
-              <input matInput placeholder="Personal Involucrado" type="text" [(ngModel)]="newPersonnel" [ngModelOptions]="{standalone: true}">
+              <input matInput placeholder="Personal Involucrado" type="text" [(ngModel)]="newPersonnel"
+                     [ngModelOptions]="{standalone: true}">
             </mat-form-field>
             <button mat-icon-button type="button" (click)="addRemoveArrayItem(1, true)">
               <mat-icon class="add">add</mat-icon>
@@ -127,12 +129,12 @@
         </mat-error>
         <div class="inputs" *ngIf="omReport && omReport.personnelNames && !editable">
           <div class="procedures-list" *ngFor="let item of omReport.personnelNames; let i = index">
-            <div class="procedure">{{i+1}}.- {{item}}</div>
+            <div class="procedure">{{i + 1}}.- {{item}}</div>
           </div>
         </div>
         <div *ngIf="editable" class="inputs">
           <div class="name-list" *ngFor="let item of personnelNames; let i = index">
-            <div class="procedure">{{i+1}}.- {{item}}</div>
+            <div class="procedure">{{i + 1}}.- {{item}}</div>
             <button mat-icon-button type="button" (click)="addRemoveArrayItem(1, false, i)">
               <mat-icon class="delete">remove</mat-icon>
             </button>
@@ -147,41 +149,46 @@
         <div class="inputs">
           <div class="space-box">
             <div class="checks-row">
-              <mat-checkbox (change)="changeEquipment($event)" formControlName="cottonClothes">Ropa de algodón</mat-checkbox>
+              <mat-checkbox (change)="changeEquipment()" formControlName="cottonClothes">Ropa de algodón
+              </mat-checkbox>
             </div>
             <div class="checks-row">
-              <mat-checkbox (change)="changeEquipment($event)" formControlName="goggles">Goggles</mat-checkbox>
-            </div>
-          </div>
-          <div class="space-box">
-            <div class="checks-row">
-              <mat-checkbox (change)="changeEquipment($event)" formControlName="industrialShoes">Zapato industrial</mat-checkbox>
-            </div>
-            <div class="checks-row">
-              <mat-checkbox (change)="changeEquipment($event)" formControlName="protectiveGoggles">Lentes de protección</mat-checkbox>
+              <mat-checkbox (change)="changeEquipment()" formControlName="goggles">Goggles</mat-checkbox>
             </div>
           </div>
           <div class="space-box">
             <div class="checks-row">
-              <mat-checkbox (change)="changeEquipment($event)" formControlName="gloves">Guantes</mat-checkbox>
+              <mat-checkbox (change)="changeEquipment()" formControlName="industrialShoes">Zapato industrial
+              </mat-checkbox>
             </div>
             <div class="checks-row">
-              <mat-checkbox (change)="changeEquipment($event)" formControlName="kneepads">Rodilleras</mat-checkbox>
+              <mat-checkbox (change)="changeEquipment()" formControlName="protectiveGoggles">Lentes de
+                protección
+              </mat-checkbox>
             </div>
           </div>
           <div class="space-box">
             <div class="checks-row">
-              <mat-checkbox (change)="changeEquipment($event)" formControlName="faceMask">Cubrebocas</mat-checkbox>
+              <mat-checkbox (change)="changeEquipment()" formControlName="gloves">Guantes</mat-checkbox>
             </div>
             <div class="checks-row">
-              <mat-checkbox (change)="changeEquipment($event)" formControlName="helmet">Cascos</mat-checkbox>
+              <mat-checkbox (change)="changeEquipment()" formControlName="kneepads">Rodilleras</mat-checkbox>
+            </div>
+          </div>
+          <div class="space-box">
+            <div class="checks-row">
+              <mat-checkbox (change)="changeEquipment()" formControlName="faceMask">Cubrebocas</mat-checkbox>
+            </div>
+            <div class="checks-row">
+              <mat-checkbox (change)="changeEquipment()" formControlName="helmet">Cascos</mat-checkbox>
             </div>
           </div>
         </div>
       </div>
       <div class="columns">
         <mat-form-field class="inputs">
-          <input formControlName="toolsAndMaterials" type="text" matInput placeholder="Herramientas y material utilizado">
+          <input formControlName="toolsAndMaterials" type="text" matInput
+                 placeholder="Herramientas y material utilizado">
         </mat-form-field>
         <div class="procedures-head">
           <div>Procedimientos utilizados</div>
@@ -191,76 +198,100 @@
         </div>
         <div class="inputs" *ngIf="omReport && omReport.procedures && !editable">
           <div class="procedures-list" *ngFor="let procedure of omReport.procedures; let i = index;">
-            <div class="procedure" *ngIf="procedure === 1">{{i+1}}.-{{utils.procedures[procedure-1].name}}</div>
-            <div class="procedure" *ngIf="procedure === 2">{{i+1}}.-{{utils.procedures[procedure-1].name}}</div>
-            <div class="procedure" *ngIf="procedure === 3">{{i+1}}.-{{utils.procedures[procedure-1].name}}</div>
-            <div class="procedure" *ngIf="procedure === 4">{{i+1}}.-{{utils.procedures[procedure-1].name}}</div>
-            <div class="procedure" *ngIf="procedure === 5">{{i+1}}.-{{utils.procedures[procedure-1].name}}</div>
-            <div class="procedure" *ngIf="procedure === 6">{{i+1}}.-{{utils.procedures[procedure-1].name}}</div>
-            <div class="procedure" *ngIf="procedure === 7">{{i+1}}.-{{utils.procedures[procedure-1].name}}</div>
-            <div class="procedure" *ngIf="procedure === 8">{{i+1}}.-{{utils.procedures[procedure-1].name}}</div>
-            <div class="procedure" *ngIf="procedure === 9">{{i+1}}.-{{utils.procedures[procedure-1].name}}</div>
-            <div class="procedure" *ngIf="procedure === 10">{{i+1}}.-{{utils.procedures[procedure-1].name}}</div>
-            <div class="procedure" *ngIf="procedure === 11">{{i+1}}.-{{utils.procedures[procedure-1].name}}</div>
-            <div class="procedure" *ngIf="procedure === 12">{{i+1}}.-{{utils.procedures[procedure-1].name}}</div>
+            <div class="procedure" *ngIf="procedure === 1">{{i + 1}}.-{{utils.procedures[procedure - 1].name}}</div>
+            <div class="procedure" *ngIf="procedure === 2">{{i + 1}}.-{{utils.procedures[procedure - 1].name}}</div>
+            <div class="procedure" *ngIf="procedure === 3">{{i + 1}}.-{{utils.procedures[procedure - 1].name}}</div>
+            <div class="procedure" *ngIf="procedure === 4">{{i + 1}}.-{{utils.procedures[procedure - 1].name}}</div>
+            <div class="procedure" *ngIf="procedure === 5">{{i + 1}}.-{{utils.procedures[procedure - 1].name}}</div>
+            <div class="procedure" *ngIf="procedure === 6">{{i + 1}}.-{{utils.procedures[procedure - 1].name}}</div>
+            <div class="procedure" *ngIf="procedure === 7">{{i + 1}}.-{{utils.procedures[procedure - 1].name}}</div>
+            <div class="procedure" *ngIf="procedure === 8">{{i + 1}}.-{{utils.procedures[procedure - 1].name}}</div>
+            <div class="procedure" *ngIf="procedure === 9">{{i + 1}}.-{{utils.procedures[procedure - 1].name}}</div>
+            <div class="procedure" *ngIf="procedure === 10">{{i + 1}}.-{{utils.procedures[procedure - 1].name}}</div>
+            <div class="procedure" *ngIf="procedure === 11">{{i + 1}}.-{{utils.procedures[procedure - 1].name}}</div>
+            <div class="procedure" *ngIf="procedure === 12">{{i + 1}}.-{{utils.procedures[procedure - 1].name}}</div>
           </div>
         </div>
         <div class="inputs" *ngIf="editable">
           <div *ngFor="let procedure of procedures; let i = index;">
             <div class="list-element" *ngIf="procedure === 1">
-              <div>{{i+1}}.-{{utils.procedures[procedure-1].name}}</div>
-              <button mat-icon-button type="button" (click)="addRemoveArrayItem(2, false, i)"><mat-icon class="delete">remove</mat-icon></button>
+              <div>{{i + 1}}.-{{utils.procedures[procedure - 1].name}}</div>
+              <button mat-icon-button type="button" (click)="addRemoveArrayItem(2, false, i)">
+                <mat-icon class="delete">remove</mat-icon>
+              </button>
             </div>
             <div class="list-element" *ngIf="procedure === 2">
-              <div>{{i+1}}.-{{utils.procedures[procedure-1].name}}</div>
-              <button mat-icon-button type="button" (click)="addRemoveArrayItem(2, false, i)"><mat-icon class="delete">remove</mat-icon></button>
+              <div>{{i + 1}}.-{{utils.procedures[procedure - 1].name}}</div>
+              <button mat-icon-button type="button" (click)="addRemoveArrayItem(2, false, i)">
+                <mat-icon class="delete">remove</mat-icon>
+              </button>
             </div>
             <div class="list-element" *ngIf="procedure === 3">
-              <div>{{i+1}}.-{{utils.procedures[procedure-1].name}}</div>
-              <button mat-icon-button type="button" (click)="addRemoveArrayItem(2, false, i)"><mat-icon class="delete">remove</mat-icon></button>
+              <div>{{i + 1}}.-{{utils.procedures[procedure - 1].name}}</div>
+              <button mat-icon-button type="button" (click)="addRemoveArrayItem(2, false, i)">
+                <mat-icon class="delete">remove</mat-icon>
+              </button>
             </div>
             <div class="list-element" *ngIf="procedure === 4">
-              <div>{{i+1}}.-{{utils.procedures[procedure-1].name}}</div>
-              <button mat-icon-button type="button" (click)="addRemoveArrayItem(2, false, i)"><mat-icon class="delete">remove</mat-icon></button>
+              <div>{{i + 1}}.-{{utils.procedures[procedure - 1].name}}</div>
+              <button mat-icon-button type="button" (click)="addRemoveArrayItem(2, false, i)">
+                <mat-icon class="delete">remove</mat-icon>
+              </button>
             </div>
             <div class="list-element" *ngIf="procedure === 5">
-              <div>{{i+1}}.-{{utils.procedures[procedure-1].name}}</div>
-              <button mat-icon-button type="button" (click)="addRemoveArrayItem(2, false, i)"><mat-icon class="delete">remove</mat-icon></button>
+              <div>{{i + 1}}.-{{utils.procedures[procedure - 1].name}}</div>
+              <button mat-icon-button type="button" (click)="addRemoveArrayItem(2, false, i)">
+                <mat-icon class="delete">remove</mat-icon>
+              </button>
             </div>
             <div class="list-element" *ngIf="procedure === 6">
-              <div>{{i+1}}.-{{utils.procedures[procedure-1].name}}</div>
-              <button mat-icon-button type="button" (click)="addRemoveArrayItem(2, false, i)"><mat-icon class="delete">remove</mat-icon></button>
+              <div>{{i + 1}}.-{{utils.procedures[procedure - 1].name}}</div>
+              <button mat-icon-button type="button" (click)="addRemoveArrayItem(2, false, i)">
+                <mat-icon class="delete">remove</mat-icon>
+              </button>
             </div>
             <div class="list-element" *ngIf="procedure === 7">
-              <div>{{i+1}}.-{{utils.procedures[procedure-1].name}}</div>
-              <button mat-icon-button type="button" (click)="addRemoveArrayItem(2, false, i)"><mat-icon class="delete">remove</mat-icon></button>
+              <div>{{i + 1}}.-{{utils.procedures[procedure - 1].name}}</div>
+              <button mat-icon-button type="button" (click)="addRemoveArrayItem(2, false, i)">
+                <mat-icon class="delete">remove</mat-icon>
+              </button>
             </div>
             <div class="list-element" *ngIf="procedure === 8">
-              <div>{{i+1}}.-{{utils.procedures[procedure-1].name}}</div>
-              <button mat-icon-button type="button" (click)="addRemoveArrayItem(2, false, i)"><mat-icon class="delete">remove</mat-icon></button>
+              <div>{{i + 1}}.-{{utils.procedures[procedure - 1].name}}</div>
+              <button mat-icon-button type="button" (click)="addRemoveArrayItem(2, false, i)">
+                <mat-icon class="delete">remove</mat-icon>
+              </button>
             </div>
             <div class="list-element" *ngIf="procedure === 9">
-              <div>{{i+1}}.-{{utils.procedures[procedure-1].name}}</div>
-              <button mat-icon-button type="button" (click)="addRemoveArrayItem(2, false, i)"><mat-icon class="delete">remove</mat-icon></button>
+              <div>{{i + 1}}.-{{utils.procedures[procedure - 1].name}}</div>
+              <button mat-icon-button type="button" (click)="addRemoveArrayItem(2, false, i)">
+                <mat-icon class="delete">remove</mat-icon>
+              </button>
             </div>
             <div class="list-element" *ngIf="procedure === 10">
-              <div>{{i+1}}.-{{utils.procedures[procedure-1].name}}</div>
-              <button mat-icon-button type="button" (click)="addRemoveArrayItem(2, false, i)"><mat-icon class="delete">remove</mat-icon></button>
+              <div>{{i + 1}}.-{{utils.procedures[procedure - 1].name}}</div>
+              <button mat-icon-button type="button" (click)="addRemoveArrayItem(2, false, i)">
+                <mat-icon class="delete">remove</mat-icon>
+              </button>
             </div>
             <div class="list-element" *ngIf="procedure === 11">
-              <div>{{i+1}}.-{{utils.procedures[procedure-1].name}}</div>
-              <button mat-icon-button type="button" (click)="addRemoveArrayItem(2, false, i)"><mat-icon class="delete">remove</mat-icon></button>
+              <div>{{i + 1}}.-{{utils.procedures[procedure - 1].name}}</div>
+              <button mat-icon-button type="button" (click)="addRemoveArrayItem(2, false, i)">
+                <mat-icon class="delete">remove</mat-icon>
+              </button>
             </div>
             <div class="list-element" *ngIf="procedure === 12">
-              <div>{{i+1}}.-{{utils.procedures[procedure-1].name}}</div>
-              <button mat-icon-button type="button" (click)="addRemoveArrayItem(2, false, i)"><mat-icon class="delete">remove</mat-icon></button>
+              <div>{{i + 1}}.-{{utils.procedures[procedure - 1].name}}</div>
+              <button mat-icon-button type="button" (click)="addRemoveArrayItem(2, false, i)">
+                <mat-icon class="delete">remove</mat-icon>
+              </button>
             </div>
           </div>
         </div>
         <div class="importance">
           Si la actividad es crítica, requiere autorización del gerente
         </div>
-        <mat-form-field class="description" >
+        <mat-form-field class="description">
           <textarea formControlName="description" matInput placeholder="Descripción" cdkTextareaAutosize></textarea>
         </mat-form-field>
         <mat-form-field class="inputs">
@@ -274,7 +305,7 @@
         </mat-error>
         <div *ngIf="!editable; then showEv else modify"></div>
         <ng-template #showEv>
-          <div *ngIf="!omReport || !omReport.fileCS" class="image-container" >
+          <div *ngIf="!omReport || !omReport.fileCS" class="image-container">
             <mat-icon class="default-image">image</mat-icon>
           </div>
           <div *ngIf="omReport && omReport.fileCS " class="image-container-real" (click)="seeEvidence()">
@@ -282,9 +313,10 @@
           </div>
         </ng-template>
         <ng-template #modify>
-          <app-upload-file class="inputs" (onLoad)="loadEvidence($event)" (onRemove)="deleteEvidence()" [layoutTemplate]="imageEvidence" [type]="'image'">
+          <app-upload-file class="inputs" (onLoad)="loadEvidence($event)" (onRemove)="deleteEvidence()"
+                           [layoutTemplate]="imageEvidence" [type]="'image'">
             <ng-template #imageEvidence>
-              <div *ngIf="!evidenceThumbnail" class="image-container" >
+              <div *ngIf="!evidenceThumbnail" class="image-container">
                 <mat-icon class="default-image">image</mat-icon>
               </div>
               <div *ngIf="evidenceThumbnail" class="image-container-real">
@@ -300,14 +332,14 @@
           <div *ngIf="!editable; then showSign else loadSign"></div>
           <ng-template #showSign>
             <div class="signature-element">
-              <img *ngIf="omReport && omReport.signature" [src]="omReport.signature.thumbnail">
+              <img *ngIf="omReport && omReport.signature" [src]="omReport.signature.thumbnail" alt="">
               <div class="empty-signature" *ngIf="!omReport || !omReport.signature"></div>
             </div>
           </ng-template>
           <ng-template #loadSign>
             <div class="signature-element" (click)="loadSignature()" style="cursor: pointer" matTooltip="Cargar Firma">
-              <img *ngIf="signatureThumbnail" [src]="signatureThumbnail">
-              <div class="empty-signature" *ngIf="!signatureThumbnail" ></div>
+              <img *ngIf="signatureThumbnail" [src]="signatureThumbnail" alt="">
+              <div class="empty-signature" *ngIf="!signatureThumbnail"></div>
             </div>
           </ng-template>
           <div class="divider"></div>
@@ -324,10 +356,12 @@
     </div>
     <div class="divider" *ngIf="task.hwg"></div>
     <div *ngIf="task.hwg && omReport">
-      <app-hwg-report [taskHwgInfo]="hwgData || undefined" [validate]="startValidate" (formInformation)="getHWGReportInformation($event)"></app-hwg-report>
+      <app-hwg-report [taskHwgInfo]="hwgData || undefined" [validate]="startValidate"
+                      (formInformation)="getHWGReportInformation($event)"></app-hwg-report>
     </div>
     <div *ngIf="task.hwg && !omReport">
-      <app-hwg-report [taskHwgInfo]="undefined" [validate]="startValidate" (formInformation)="getHWGReportInformation($event)"></app-hwg-report>
+      <app-hwg-report [taskHwgInfo]="undefined" [validate]="startValidate"
+                      (formInformation)="getHWGReportInformation($event)"></app-hwg-report>
     </div>
     <div *ngIf="task.hwg" class="text-sign">
       Nombre y firma del responsable
@@ -336,13 +370,13 @@
       <div *ngIf="!editable; then showSign else loadSign"></div>
       <ng-template #showSign>
         <div class="signature-element">
-          <img *ngIf="omReport && omReport.signature" [src]="omReport.signature.thumbnail">
+          <img *ngIf="omReport && omReport.signature" [src]="omReport.signature.thumbnail" alt="">
           <div *ngIf="!omReport || !omReport.signature" class="empty-signature"></div>
         </div>
       </ng-template>
       <ng-template #loadSign>
         <div class="signature-element" (click)="loadSignature()" style="cursor: pointer" matTooltip="Cargar Firma">
-          <img *ngIf="signatureThumbnail" [src]="signatureThumbnail">
+          <img *ngIf="signatureThumbnail" [src]="signatureThumbnail" alt="">
           <div *ngIf="!signatureThumbnail" class="empty-signature"></div>
         </div>
       </ng-template>
@@ -357,7 +391,8 @@
       </ng-template>
     </div>
     <div *ngIf="taskItems && taskItems.length !== 0 && !editable">
-      <mat-paginator [pageSize]="1" [length]="taskItems.length" [hidePageSize]="true" (page)="changeTask($event)" ></mat-paginator>
+      <mat-paginator [pageSize]="1" [length]="taskItems.length" [hidePageSize]="true"
+                     (page)="changeTask($event)"></mat-paginator>
     </div>
     <div *ngIf="editable" class="finish-button">
       <button mat-flat-button type="submit" [color]="'primary'" [disabled]="load">
