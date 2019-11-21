@@ -4,9 +4,8 @@
  * Proprietary and confidential
  */
 
-import {Component, ElementRef, OnDestroy, OnInit, ViewChild, ViewEncapsulation} from '@angular/core';
+import {Component, ElementRef, HostBinding, OnDestroy, OnInit, ViewChild, ViewEncapsulation} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
-import {animate, keyframes, query, stagger, style, transition, trigger} from '@angular/animations';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {ApiService} from 'app/core/services/api/api.service';
 import {UpdatePasswordService} from 'app/shared/components/update-password/update-password.service';
@@ -27,38 +26,19 @@ import {LoaderService} from '@app/core/components/loader/loader.service';
 import {Person} from '@app/utils/interfaces/person';
 import {PersonInformation} from '@app/utils/interfaces/person-information';
 import {HttpResponseCodes} from '@app/utils/enums/http-response-codes';
+import {ANIMATION} from '@app/ui/dashboard/pages/profiles/user-profile/animation';
 
 @Component({
   selector: 'app-user-profile',
   templateUrl: './user-profile.component.html',
   styleUrls: ['./user-profile.component.scss'],
-  animations: [
-    trigger('fadeInAnimation', [
-      transition(':enter', [
-        query('#user-profile', style({ opacity: 0, background: 'transparent' }), {optional: true}),
-        query('#user-profile', stagger('10ms', [
-          animate('.2s ease-out', keyframes([
-            style({opacity: 0, background: 'transparent', offset: 0}),
-            style({opacity: .5, background: 'rgba(255, 255, 255, .5)', offset: 0.5}),
-            style({opacity: 1, background: 'rgba(255, 255, 255, 1)',  offset: 1.0}),
-          ]))]), {optional: true})
-      ]),
-      transition(':leave', [
-        query('#user-profile', style({ opacity: 1, background: 'rgba(255, 255, 255, 1)' }), {optional: true}),
-        query('#user-profile', stagger('10ms', [
-          animate('.2s ease-in', keyframes([
-            style({opacity: 1, background: 'rgba(255, 255, 255, 1)', offset: 0}),
-            style({opacity: .5, background: 'rgba(255, 255, 255, .5)',  offset: 0.5}),
-            style({opacity: 0, background: 'transparent',     offset: 1.0}),
-          ]))]), {optional: true})
-      ])
-    ])
-  ],
-  host: {'[@fadeInAnimation]': ''},
+  animations: [ANIMATION],
   encapsulation: ViewEncapsulation.None
 })
 export class UserProfileComponent implements OnInit, OnDestroy {
-  @ViewChild('phoneNumber', { static: false }) private _phoneNumberInput: ElementRef;
+  @HostBinding('@fadeInAnimation')
+
+  @ViewChild('phoneNumber', {static: false}) private _phoneNumberInput: ElementRef;
   private _formData: FormData;
   private _formDeleteData: FormData;
   private _formFile: FormData;
@@ -87,6 +67,7 @@ export class UserProfileComponent implements OnInit, OnDestroy {
   public newSignature: boolean;
   public newSig: any;
   private _subscriptionLoader: Subscription;
+
   constructor(
     private _router: Router,
     private _api: ApiService,
@@ -117,89 +98,87 @@ export class UserProfileComponent implements OnInit, OnDestroy {
     this.initUserInfo();
     this.getUser(this._params.snapshot.data.data.user);
     this.getUserInformation(this._params.snapshot.data.data.userInfo);
-    this._subscriptionLoader = this._apiLoaderService.getProgress().subscribe(load => {this.load = load; });
+    this._subscriptionLoader = this._apiLoaderService.getProgress().subscribe(load => {
+      this.load = load;
+    });
   }
 
-  ngOnDestroy(): void{
+  ngOnDestroy(): void {
     this._subscriptionLoader.unsubscribe();
   }
 
-  public closeProfile():void{
-    if (this.change){
+  public closeProfile(): void {
+    if (this.change) {
       this.saveChangeBeforeExit();
       return;
     }
     if (!this.signature) {
-      this._snackBarService.openSnackBar('Por favor, registre su firma','OK', 3000);
+      this._snackBarService.openSnackBar('Por favor, registre su firma', 'OK', 3000);
       return;
     }
     this._router.navigate(['/home']).then();
   }
 
-  public saveChangeBeforeExit(): void{
+  public saveChangeBeforeExit(): void {
     this._dialogService.confirmDialog(
       '¿Desea salir sin guardar cambios?',
       '',
       'ACEPTAR',
       'CANCELAR'
-    ).afterClosed().subscribe(response=>{
-      switch (response.code) {
-        case 1:
-          this.change = false;
-          this._router.navigate(['/home']).then();
-          break;
+    ).afterClosed().subscribe(response => {
+      if (response.code === 1) {
+        this.change = false;
+        this._router.navigate(['/home']).then();
       }
-    })
+    });
   }
 
-  public detectChange(): void{
-    this.profileForm.valueChanges.subscribe( value => {
+  public detectChange(): void {
+    this.profileForm.valueChanges.subscribe(() => {
       this.change = true;
-    })
+    });
   }
 
-  public onLoadImage(event: UploadFileResponse): void{
+  public onLoadImage(event: UploadFileResponse): void {
     this.newImage = true;
     this.change = true;
     this.deleteImage = false;
     this.profileImage = event.url;
     this._formData = new FormData();
     this._formData.append('path', '');
-    this._formData.append('fileName', 'profile-'+this.user.id+'-'+new Date().getTime()+'.png');
+    this._formData.append('fileName', 'profile-' + this.user.id + '-' + new Date().getTime() + '.png');
     this._formData.append('isImage', 'true');
     this._formData.append('file', event.blob);
   }
 
-  public onLoadFile(event: UploadFileResponse): void{
+  public onLoadFile(event: UploadFileResponse): void {
     this.newFile = true;
     this.change = true;
     this.file = event.file;
     this._formFile = new FormData();
     this._formFile.append('path', '');
-    this._formFile.append('fileName', 'benzene-'+this.user.id+'-'+new Date().getTime()+'.pdf');
+    this._formFile.append('fileName', 'benzene-' + this.user.id + '-' + new Date().getTime() + '.pdf');
     this._formFile.append('file', event.file);
   }
 
-  public changeSignature():void{
-    this._signaturePad.open().afterClosed().subscribe(response=>{
-      switch (response.code) {
-        case 1:
-          this.change= true;
-          this.newSignature = true;
-          this.signature = response.base64;
-          this._formSignature = new FormData();
-          this._formSignature.append('path', '');
-          this._formSignature.append('fileName', 'signature-'+this.user.id+'-'+new Date().getTime()+'.png');
-          this._formSignature.append('isImage', 'true');
-          this._formSignature.append('file', response.blob);
-          break;
+  public changeSignature(): void {
+    this._signaturePad.open().afterClosed().subscribe(response => {
+      if (response.code === 1) {
+        this.change = true;
+        this.newSignature = true;
+        this.signature = response.base64;
+        this._formSignature = new FormData();
+        this._formSignature.append('path', '');
+        this._formSignature.append('fileName', 'signature-' + this.user.id + '-' + new Date().getTime() + '.png');
+        this._formSignature.append('isImage', 'true');
+        this._formSignature.append('file', response.blob);
       }
-    })
+    });
   }
 
-  public uploadSignature():void{
+  public uploadSignature(): void {
     this._uploadFile.upload(this._formSignature).subscribe(response => {
-      if (response){
+      if (response) {
         this.newSig = {
           thumbnail: response.item.thumbnail || '',
           blob: response.item.blobName || ''
@@ -214,7 +193,7 @@ export class UserProfileComponent implements OnInit, OnDestroy {
     this.change = true;
     this.deleteImage = true;
     this.newImage = false;
-    this.profileImage=undefined;
+    this.profileImage = undefined;
     this._formDeleteData = new FormData();
     this._formDeleteData.append('blobName', this.blobName);
   }
@@ -233,7 +212,7 @@ export class UserProfileComponent implements OnInit, OnDestroy {
     });
   }
 
-  public changePassword(){
+  public changePassword() {
     this._updatePassword.updatePassword(
       this.user.password,
       'Actualice su contraseña',
@@ -243,21 +222,18 @@ export class UserProfileComponent implements OnInit, OnDestroy {
       'Confirmar nueva contraseña',
       'ACEPTAR',
       'CANCELAR'
-    ).afterClosed().subscribe(response =>{
-      switch (response.code) {
-        case 1:
-          this.user.password = response.data;
-          this.saveUser(true);
-          break;
-        default:
-          break;
+    ).afterClosed().subscribe(response => {
+      if (response.code === 1) {
+        this.user.password = response.data;
+        this.saveUser(true);
+      } else {
       }
-    })
+    });
   }
 
-  public uploadImage(): void{
+  public uploadImage(): void {
     this._uploadFile.upload(this._formData).subscribe(response => {
-      if (response){
+      if (response) {
         this.newImageProfile = {
           thumbnail: response.item.thumbnail || '',
           blob: response.item.blobName || ''
@@ -268,9 +244,9 @@ export class UserProfileComponent implements OnInit, OnDestroy {
     });
   }
 
-  private uploadFile(): void{
+  private uploadFile(): void {
     this._uploadFile.upload(this._formFile).subscribe(response => {
-      if (response){
+      if (response) {
         this.newFileSub = {
           thumbnail: response.item.thumbnail || '',
           blob: response.item.blobName || ''
@@ -291,15 +267,15 @@ export class UserProfileComponent implements OnInit, OnDestroy {
       phoneNumber: ['', [Validators.required, Validators.minLength(8), Validators.maxLength(13)]],
       jobTitle: ['', [Validators.required]],
       website: ['', [Validators.pattern('[a-z0-9]+([\\-\\.]{1}[a-z0-9]+)*\\.[a-z]{2,5}(:[0-9]{1,5})?(\\/.*)?$')]],
-      contactPhone:['',[Validators.minLength(8), Validators.maxLength(13)]],
-      contactKinship:['',[]],
-      contactName:['',[]],
-      ssn:['',[]]
+      contactPhone: ['', [Validators.minLength(8), Validators.maxLength(13)]],
+      contactKinship: ['', []],
+      contactName: ['', []],
+      ssn: ['', []]
     });
-    //this.getUser();
+    // this.getUser();
   }
 
-  private getUser(response: any): void{
+  private getUser(response: any): void {
     if (response.code === HttpResponseCodes.OK) {
       this.user = {
         active: response.item.active,
@@ -309,43 +285,43 @@ export class UserProfileComponent implements OnInit, OnDestroy {
         lastName: response.item.lastName,
         email: response.item.email,
         countryCode: response.item.countryCode || '',
-        country: (response.item.country?response.item.country:''),
+        country: (response.item.country ? response.item.country : ''),
         phoneNumber: response.item.phoneNumber,
         password: response.item.password,
         role: response.item.role,
         jobTitle: response.item.jobTitle,
-        profileImage: (response.item.profileImage?{
-          blobName: (response.item.profileImage.blobName? response.item.profileImage.blobName : undefined),
-          thumbnail: (response.item.profileImage.thumbnail? response.item.profileImage.thumbnail : undefined)
-        }:undefined),
-        signature: (response.item.signature?{
-          blobName: (response.item.signature?response.item.signature.blobName : undefined),
-          thumbnail: (response.item.signature?response.item.signature.thumbnail : undefined),
-        }:undefined),
+        profileImage: (response.item.profileImage ? {
+          blobName: (response.item.profileImage.blobName ? response.item.profileImage.blobName : undefined),
+          thumbnail: (response.item.profileImage.thumbnail ? response.item.profileImage.thumbnail : undefined)
+        } : undefined),
+        signature: (response.item.signature ? {
+          blobName: (response.item.signature ? response.item.signature.blobName : undefined),
+          thumbnail: (response.item.signature ? response.item.signature.thumbnail : undefined),
+        } : undefined),
         website: response.item.website,
-        bCard: (response.item.bCard?response.item.bCard:undefined)
+        bCard: (response.item.bCard ? response.item.bCard : undefined)
       };
-      if (this.user.profileImage){
+      if (this.user.profileImage) {
         this.profileImage = this.user.profileImage.thumbnail;
         this.blobName = this.user.profileImage.blobName;
       }
-      if(this.user.signature){
-        this.signature = this.user.signature.thumbnail
+      if (this.user.signature) {
+        this.signature = this.user.signature.thumbnail;
       }
-      if (this.user.website){
-        if (this.user.website.includes('http://')){
-          this.user.website = this.user.website.replace('http://','');
+      if (this.user.website) {
+        if (this.user.website.includes('http://')) {
+          this.user.website = this.user.website.replace('http://', '');
           this.protocol = 'http://';
         } else {
-          this.user.website = this.user.website.replace('https://','');
+          this.user.website = this.user.website.replace('https://', '');
           this.protocol = 'https://';
         }
       }
-      this.userRole = this.role[this.user.role-1];
+      this.userRole = this.role[this.user.role - 1];
     }
   }
 
-  private getUserInformation(response: any):void{
+  private getUserInformation(response: any): void {
     if (response.code === HttpResponseCodes.OK) {
       this.userInformation = {
         id: response.item.id,
@@ -354,20 +330,20 @@ export class UserProfileComponent implements OnInit, OnDestroy {
         concatcPhone: response.item.concatcPhone || undefined,
         contactName: response.item.contactName || undefined,
         contactKinship: response.item.contactKinship || undefined,
-        benzene:(response.item.benzene?{
-          blobName: (response.item.benzene.blobName?response.item.benzene.blobName: undefined),
-          thumbnail: (response.item.benzene.thumbnail?response.item.benzene.thumbnail: undefined)
-        }: undefined)
+        benzene: (response.item.benzene ? {
+          blobName: (response.item.benzene.blobName ? response.item.benzene.blobName : undefined),
+          thumbnail: (response.item.benzene.thumbnail ? response.item.benzene.thumbnail : undefined)
+        } : undefined)
       };
-      if (this.userInformation.benzene){
-        this.file = this.userInformation.benzene.thumbnail
+      if (this.userInformation.benzene) {
+        this.file = this.userInformation.benzene.thumbnail;
       }
-      if(this.userInformation.bloodType){
-        for (let bd in this.bloodGroup){
-          if (this.bloodGroup[bd] === this.userInformation.bloodType){
+      if (this.userInformation.bloodType) {
+        for (const bd in this.bloodGroup) {
+          if (this.bloodGroup[bd] === this.userInformation.bloodType) {
             this.bloodType = this.bloodGroup[bd];
             break;
-          }else {
+          } else {
             this.bloodType = '';
           }
         }
@@ -376,25 +352,25 @@ export class UserProfileComponent implements OnInit, OnDestroy {
     } else {
       this.bloodType = '';
       this.userInformation = {
-        bloodType:undefined,
-        concatcPhone:undefined,
-        contactKinship:undefined,
-        contactName:undefined,
-        ssn:undefined,
-        id:this.user.id,
+        bloodType: undefined,
+        concatcPhone: undefined,
+        contactKinship: undefined,
+        contactName: undefined,
+        ssn: undefined,
+        id: this.user.id,
         benzene: undefined
       };
       this.patchForm();
     }
   }
 
-  private patchForm():void{
+  private patchForm(): void {
     let formCountry: string;
     if (this.user.country) {
-      for (let country of Constants.countries){
-        if (country.iso === this.user.country){
+      for (const country of Constants.countries) {
+        if (country.iso === this.user.country) {
           this.country = country.iso;
-          formCountry=country.name;
+          formCountry = country.name;
         }
       }
     }
@@ -415,37 +391,37 @@ export class UserProfileComponent implements OnInit, OnDestroy {
     this.detectChange();
   }
 
-  public updateProfile(data: any):void{
-    if (this.profileForm.invalid){
+  public updateProfile(data: any): void {
+    if (this.profileForm.invalid) {
       return;
     }
-    if(!this.signature){
-      this._snackBarService.openSnackBar('Por favor, registre su firma','OK', 3000);
+    if (!this.signature) {
+      this._snackBarService.openSnackBar('Por favor, registre su firma', 'OK', 3000);
       return;
     }
-    if (this.newImage){
+    if (this.newImage) {
       this.uploadImage();
       return;
     }
-    if(this.deleteImage){
+    if (this.deleteImage) {
       this.newImageProfile = undefined;
-      this.deleteImage=false;
+      this.deleteImage = false;
       this.updateProfile(data);
     }
-    if (this.newFile){
+    if (this.newFile) {
       this.uploadFile();
       return;
     }
-    if(this.newSignature){
+    if (this.newSignature) {
       this.uploadSignature();
       return;
     }
     this.saveProfileInformation(data);
   }
 
-  private saveProfileInformation(data: any): void{
+  private saveProfileInformation(data: any): void {
     const emailUpdate = this.user.email !== data.email;
-    data.code = data.code.replace('+','');
+    data.code = data.code.replace('+', '');
     this.user.name = data.name;
     this.user.lastName = data.lastName;
     this.user.email = data.email;
@@ -461,14 +437,14 @@ export class UserProfileComponent implements OnInit, OnDestroy {
     if (this.password) {
       this.user.password = this.password;
     }
-    this.user.website = (data.website? this.protocol+data.website : '');
-    if (this.newImageProfile){
+    this.user.website = (data.website ? this.protocol + data.website : '');
+    if (this.newImageProfile) {
       this.user.profileImage = {
         blobName: this.newImageProfile.blob,
         thumbnail: this.newImageProfile.thumbnail
       };
       this._auth.updateUserInSession(this.user);
-    }else if(!this.profileImage){
+    } else if (!this.profileImage) {
       this.user.profileImage = null;
       this._auth.updateUserInSession(this.user);
     }
@@ -476,126 +452,114 @@ export class UserProfileComponent implements OnInit, OnDestroy {
       this.userInformation.benzene = {
         thumbnail: this.newFileSub.thumbnail,
         blobName: this.newFileSub.blob
-      }
+      };
     }
     if (this.newSig) {
       this.user.signature = {
         blobName: this.newSig.blob,
         thumbnail: this.newSig.thumbnail
-      }
+      };
     }
     this.updateBusiness(emailUpdate);
   }
 
 
-  private updateBusiness(isNewEmail: boolean):void{
-    this._snackBarService.openSnackBar('Espere un momento...','',0);
+  private updateBusiness(isNewEmail: boolean): void {
+    this._snackBarService.openSnackBar('Espere un momento...', '', 0);
     let company;
-    if(LocalStorageService.getItem(Constants.StationInDashboard)){
-      company = LocalStorageService.getItem(Constants.StationInDashboard).name
-    }else{
+    if (LocalStorageService.getItem(Constants.StationInDashboard)) {
+      company = LocalStorageService.getItem(Constants.StationInDashboard).name;
+    } else {
       company = '';
     }
     const data = {
       name: this.user.name || '',
-      lastName: this.user.lastName  || '',
+      lastName: this.user.lastName || '',
       company: this.user.role === 4 ? '' : (company || ''),
       phone: this.user.phoneNumber || '',
       workPosition: this.user.jobTitle || '',
       email: this.user.email || '',
-      countryCode : this.user.countryCode || '',
+      countryCode: this.user.countryCode || '',
       industryCode: '1',
       website: this.user.website || '',
       profileImage: this.user.profileImage ? this.user.profileImage.blobName : null,
-      profileImageThumbnail: this.user.profileImage ? this.user.profileImage.thumbnail + '=s1200': null,
+      profileImageThumbnail: this.user.profileImage ? this.user.profileImage.thumbnail + '=s1200' : null,
       bCardId: this.user.bCard ? this.user.bCard.id : null
     };
     this._api.businessCardService(data).subscribe(response => {
-      switch (response.code){
-        case 200:
-          this._snackBarService.closeSnackBar();
-          this.user.bCard = response.item;
-          if (isNewEmail){
-            this.updateProfileDataWithNewEmail()
-          }else{
-            this.saveUser();
-          }
-          break;
-        default:
-          this._snackBarService.closeSnackBar();
-          this._snackBarService.openSnackBar('Ha ocurrido un error, por favor, intente de nuevo', 'OK', 3000);
-          break;
-      }
-    });
-  };
-
-  private saveUser(redirect?:boolean):void{
-    this._api.updatePerson(this.user).subscribe(response=>{
-      switch (response.code){
-        case 200:
-          if(!redirect){
-            this.saveInformation();
-          }else{
-            this._snackBarService.openSnackBar('Contraseña Actualizada','OK',3000);
-          }
-          break;
-        default:
-          this._dialogService.alertDialog('No se pudo acceder', 'Se produjo un error de comunicación con el servidor', 'ACEPTAR');
-          break;
-      }
-    })
-  }
-
-  private updateProfileDataWithNewEmail():void{
-    this._api.updatePersonWithDifferentEmail(this.user).subscribe(response=>{
-      switch (response.code){
-        case 200:
-          this.saveInformation();
-          break;
-        default:
-          this._dialogService.alertDialog('No se pudo acceder', 'Se produjo un error de comunicación con el servidor', 'ACEPTAR');
-          break;
-      }
-    });
-  }
-
-  private saveInformation():void{
-    this._api.savePersonInformation(this.userInformation).subscribe(response=>{
       if (response.code === HttpResponseCodes.OK) {
-        this.change = false;
-        this._snackBarService.openSnackBar('Información actualizada','OK',3000);
+        this._snackBarService.closeSnackBar();
+        this.user.bCard = response.item;
+        if (isNewEmail) {
+          this.updateProfileDataWithNewEmail();
+        } else {
+          this.saveUser();
+        }
+      } else {
+        this._snackBarService.closeSnackBar();
+        this._snackBarService.openSnackBar('Ha ocurrido un error, por favor, intente de nuevo', 'OK', 3000);
+      }
+    });
+  }
+
+  private saveUser(redirect?: boolean): void {
+    this._api.updatePerson(this.user).subscribe(response => {
+      if (response.code === HttpResponseCodes.OK) {
+        if (!redirect) {
+          this.saveInformation();
+        } else {
+          this._snackBarService.openSnackBar('Contraseña Actualizada', 'OK', 3000);
+        }
       } else {
         this._dialogService.alertDialog('No se pudo acceder', 'Se produjo un error de comunicación con el servidor', 'ACEPTAR');
       }
-    })
+    });
   }
 
-  public openStudy():void{
-    this._pdfVisor.open({urlOrFile: this.newFile ? this.file: HashService.set("123456$#@$^@1ERF", this.file), hideDownload: false});
-  }
-
-  public validateEmailExist():void{
-    let email: any = {
-      email: this.profileForm.controls['email'].value
-    };
-    this._api.personExists(email).subscribe(response=>{
-      switch (response.code){
-        case 200:
-          if(this.user.email !== email.email){
-            this._dialogService.alertDialog('Información',
-              'El Email que está tratando de usar ya ha sido asociado a un usuario',
-              'ACEPTAR');
-            this.profileForm.controls['email'].setErrors({emailUsed: true});
-          }
-          break;
-        default:
-          break;
+  private updateProfileDataWithNewEmail(): void {
+    this._api.updatePersonWithDifferentEmail(this.user).subscribe(response => {
+      if (response.code === HttpResponseCodes.OK) {
+        this.saveInformation();
+      } else {
+        this._dialogService.alertDialog('No se pudo acceder', 'Se produjo un error de comunicación con el servidor', 'ACEPTAR');
       }
     });
   }
 
-  public share(): void{
-    if(this.user.bCard && this.user.bCard.dynamicLink){
+  private saveInformation(): void {
+    this._api.savePersonInformation(this.userInformation).subscribe(response => {
+      if (response.code === HttpResponseCodes.OK) {
+        this.change = false;
+        this._snackBarService.openSnackBar('Información actualizada', 'OK', 3000);
+      } else {
+        this._dialogService.alertDialog('No se pudo acceder', 'Se produjo un error de comunicación con el servidor', 'ACEPTAR');
+      }
+    });
+  }
+
+  public openStudy(): void {
+    this._pdfVisor.open({urlOrFile: this.newFile ? this.file : HashService.set('123456$#@$^@1ERF', this.file), hideDownload: false});
+  }
+
+  public validateEmailExist(): void {
+    const email: any = {
+      email: this.profileForm.controls['email'].value
+    };
+    this._api.personExists(email).subscribe(response => {
+      if (response.code === HttpResponseCodes.OK) {
+        if (this.user.email !== email.email) {
+          this._dialogService.alertDialog('Información',
+            'El Email que está tratando de usar ya ha sido asociado a un usuario',
+            'ACEPTAR');
+          this.profileForm.controls['email'].setErrors({emailUsed: true});
+        }
+      } else {
+      }
+    });
+  }
+
+  public share(): void {
+    if (this.user.bCard && this.user.bCard.dynamicLink) {
       this._shareService.open(this.user.bCard.dynamicLink);
     }
   }

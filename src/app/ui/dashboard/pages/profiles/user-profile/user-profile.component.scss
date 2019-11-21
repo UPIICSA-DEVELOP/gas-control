@@ -5,7 +5,8 @@
  */
 @import "../../../../../../styles/colors";
 @import "../../../../../../styles/profiles";
-#user-profile{
+
+#user-profile {
   top: 0;
   width: 100vw;
   height: 100vh;
@@ -18,7 +19,8 @@
   @media screen and (max-width: 800px) {
     overflow: auto;
   }
-  .background{
+
+  .background {
     width: 600px;
     height: 300px;
     position: absolute;
@@ -31,11 +33,13 @@
       height: 150px;
     }
   }
+
   .progress {
     position: absolute;
     top: 0;
     z-index: 1;
   }
+
   .btn-close {
     position: absolute;
     top: 0;
@@ -45,13 +49,16 @@
     justify-content: center;
     align-items: center;
     z-index: 5;
-    button{
+
+    button {
       background-color: #707070;
     }
-    mat-icon{
+
+    mat-icon {
       color: #FFFFFF;
     }
   }
+
   .container {
     width: 75%;
     height: 90%;
@@ -62,7 +69,8 @@
       width: 100%;
       flex-direction: column;
     }
-    .information{
+
+    .information {
       width: 50%;
       margin: 24px;
       @media screen and (max-width: 800px) {
@@ -71,21 +79,25 @@
         margin: 24px 0;
       }
     }
-    .business-card{
+
+    .business-card {
       width: 50%;
       margin: 24px;
+
       mat-card {
         width: 80%;
         padding: 0;
         margin: auto;
-        mat-card-content{
+
+        mat-card-content {
           width: 100%;
           margin: 0;
           padding-bottom: calc(100% / 9 * 5);
           background: url('https://lh3.googleusercontent.com/e3Y9EZ04JWp0L2h6uQuCguoWFI1bem0o77Dw149rQ3riTBK8HV4vkK9BQ2sm89qEaZD25jGRuQXpCE6JZXVG2_E4rtYoa5GiWwE=s1600') no-repeat center;
           background-size: 100%;
         }
-        mat-card-actions{
+
+        mat-card-actions {
           padding: 0;
           margin: 0;
         }
@@ -99,15 +111,17 @@
         display: block;
       }
     }
+
     .user-form {
       margin: 0 40px;
-      @media screen and(max-width: 900px){
+      @media screen and(max-width: 900px) {
         margin: 0 20px;
       }
-      @media screen and(max-width: 600px){
+      @media screen and(max-width: 600px) {
         margin: 0 5px;
       }
     }
+
     .formHead {
       font-weight: 500;
       font-size: 14px;
@@ -115,19 +129,22 @@
       margin-bottom: 12px;
     }
   }
+
   .content {
     width: 100%;
     height: 100%;
     overflow-y: auto;
   }
-  .head{
+
+  .head {
     margin: auto;
     border-radius: 50%;
     width: 100px;
     height: 100px;
     padding: 0;
   }
-  .extra-data{
+
+  .extra-data {
     margin-top: 8px;
     padding: 0 8px;
   }
