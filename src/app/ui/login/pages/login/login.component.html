@@ -8,13 +8,13 @@
   <div class="background"></div>
   <mat-toolbar>
     <div class="image-logo">
-      <img alt="app-logo" src="../../../assets/image/logo.png">
+      <img alt="app-logo" src="../../../../../assets/image/logo.png">
     </div>
   </mat-toolbar>
   <mat-card>
     <mat-card-content>
       <div class="head">
-        <img src="../../../assets/image/logo-inspector.png" alt="app-logo">
+        <img src="../../../../../assets/image/logo-inspector.png" alt="app-logo">
       </div>
       <div class="body">
         <form [formGroup]="loginForm" (ngSubmit)="loginUser(loginForm.value)"
@@ -33,7 +33,8 @@
             </mat-error>
           </mat-form-field>
           <mat-form-field>
-            <input formControlName="password" matInput placeholder="Contraseña" #inputPassword type="password" required aria-label="User password">
+            <input formControlName="password" matInput placeholder="Contraseña" #inputPassword type="password" required
+                   aria-label="User password">
             <mat-icon matPrefix class="icons"> lock</mat-icon>
             <button matSuffix aria-label="show password" type="button" mat-icon-button (click)="showPassword()">
               <ng-container *ngIf="hide; then passwordVisible else passwordInvisible"></ng-container>

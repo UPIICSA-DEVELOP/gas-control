@@ -3,11 +3,10 @@
  *  Unauthorized copying of this file, via any medium is strictly prohibited
  *  Proprietary and confidential
  */
-
 @import "../../../../../styles/colors";
 
 #login {
-  mat-toolbar{
+  mat-toolbar {
     position: fixed;
     width: 100%;
     height: 48px;
@@ -15,7 +14,8 @@
     background-color: mat-color($primary);
     z-index: 4;
     top: 0;
-    .image-logo{
+
+    .image-logo {
       margin: 0 auto;
       position: absolute;
       top: 0;
@@ -23,90 +23,109 @@
       left: 0;
       justify-content: center;
       display: flex;
-      img{
+
+      img {
         height: 40px;
         margin: 4px;
         outline: none;
       }
     }
   }
+
   width: 100vw;
   height: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
   background-color: #F2F2F2;
+
   mat-card {
     position: relative;
     width: 30%;
     height: 400px;
-    mat-card-content{
+
+    mat-card-content {
       position: relative;
       height: 100%;
       width: 100%;
       overflow: auto;
     }
+
     @media screen and (max-width: 900px) {
       width: 90%;
       height: 450px;
     }
+
     .head {
       display: flex;
       justify-content: center;
       align-items: center;
+
       img {
         height: 120px;
       }
     }
-    .body{
+
+    .body {
       margin: 24px;
-      mat-form-field{
+
+      mat-form-field {
         width: 100%;
       }
-      .forgot-password{
+
+      .forgot-password {
         text-align: right;
         color: mat-color($primary);
         margin-top: -10px;
         margin-bottom: 24px;
       }
-      .icons{
-        color:#707070;
+
+      .icons {
+        color: #707070;
         margin: 0 12px;
       }
-      .see-hide-pass{
-        color:#707070;
+
+      .see-hide-pass {
+        color: #707070;
       }
-      .login-actions{
-        display:flex;
+
+      .login-actions {
+        display: flex;
         justify-content: space-between;
-        .remember-password{
+
+        .remember-password {
           color: mat-color($primary);
           width: 50%;
-          @media screen and (max-width: 900px){
+          @media screen and (max-width: 900px) {
             width: 100%;
             display: flex;
             justify-content: center;
           }
         }
-        .btn-login-email{
+
+        .btn-login-email {
           display: flex;
-          button{
+
+          button {
             background-color: #FFAA00;
             color: #FFFFFF;
           }
-          @media screen and (max-width: 900px){
+
+          @media screen and (max-width: 900px) {
             margin-top: 24px;
             width: 100%;
             justify-content: center;
           }
         }
-        @media screen and (max-width: 900px){
+
+        @media screen and (max-width: 900px) {
           display: block;
         }
       }
     }
   }
-  .background{
+
+  .background {
     width: 500px;
     height: 250px;
     position: absolute;
@@ -120,6 +139,7 @@
       height: 150px;
     }
   }
+
   .progress {
     position: absolute;
     bottom: 0;

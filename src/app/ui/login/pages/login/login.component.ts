@@ -12,7 +12,8 @@ import {SnackBarService} from 'app/core/services/snackbar/snackbar.service';
 import {AuthService} from 'app/core/services/auth/auth.service';
 import {Subscription} from 'rxjs';
 import {LoaderService} from '@app/core/components/loader/loader.service';
-import {Person} from '@app/utils/interfaces/person';
+import {HttpResponseCodes} from '@app/utils/enums/http-response-codes';
+
 const md5 = require('md5');
 
 @Component({
@@ -23,11 +24,12 @@ const md5 = require('md5');
 })
 export class LoginComponent implements OnInit, OnDestroy {
 
-  @ViewChild('inputPassword', { static: true }) private _inputPassword: ElementRef;
+  @ViewChild('inputPassword', {static: true}) private _inputPassword: ElementRef;
   public load: boolean;
   public loginForm: FormGroup;
-  public hide: boolean = false;
+  public hide = false;
   private _subscriptionLoader: Subscription;
+
   constructor(
     private _formBuilder: FormBuilder,
     private _apiService: ApiService,
@@ -35,17 +37,21 @@ export class LoginComponent implements OnInit, OnDestroy {
     private _dialogService: DialogService,
     private _snackService: SnackBarService,
     private _auth: AuthService
-  ) { }
+  ) {
+  }
+
   ngOnInit(): void {
     this.loginForm = this._formBuilder.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required]],
       rememberPass: [false, []]
     });
-    this._subscriptionLoader = this._apiLoader.getProgress().subscribe(load => {this.load = load; });
+    this._subscriptionLoader = this._apiLoader.getProgress().subscribe(load => {
+      this.load = load;
+    });
   }
 
-  ngOnDestroy(): void{
+  ngOnDestroy(): void {
     this._subscriptionLoader.unsubscribe();
   }
 
@@ -64,63 +70,64 @@ export class LoginComponent implements OnInit, OnDestroy {
       'ACEPTAR',
       'CANCELAR',
       this.loginForm.controls['email'].value).afterClosed().subscribe(response => {
-      switch (response.code) {
-        case 1:
-          const email: string = response.data.text;
-          this._apiService.resetPassword(response.data.text).subscribe( (response: any) =>{
-            switch (response.code) {
-              case 200:
-                  this._dialogService.alertDialog('Información','Hemos enviado un link de recuperación de contraseña al correo: '+ email,'ACEPTAR');
-                break;
-              case 471:
-                  this._snackService.openSnackBar('Este usuario no está registrado','OK', 5000);
-                break;
-              default:
-                this.connectionLost();
-                break;
-            }
-          });
-          break;
+      if (response.code === 1) {
+        const email: string = response.data.text;
+        this._apiService.resetPassword(response.data.text).subscribe((resetResponse: any) => {
+          switch (resetResponse.code) {
+            case HttpResponseCodes.OK:
+              this._dialogService.alertDialog('Información', 'Hemos enviado un link de recuperación de contraseña al correo: ' + email, 'ACEPTAR');
+              break;
+            case HttpResponseCodes.NOT_EXISTS:
+              this._snackService.openSnackBar('Este usuario no está registrado', 'OK', 5000);
+              break;
+            default:
+              this.connectionLost();
+              break;
+          }
+        });
       }
     });
     document.title = '';
   }
+
   public connectionLost(): void {
     this._dialogService.alertDialog('No se pudo acceder', 'Se produjo un error de comunicación con el servidor', 'ACEPTAR');
   }
+
   public showPassword(): void {
     this.hide = !this.hide;
-    this._inputPassword.nativeElement.type = (this.hide)?'text':'password';
+    this._inputPassword.nativeElement.type = (this.hide) ? 'text' : 'password';
   }
+
   private signInUser(email: string, password: string, remember: boolean) {
     this._auth.requestPermissionNotifications().subscribe((token: string) => {
       const opt = {
-      email: email,
-      password: password,
-      token: token || null
-    };
-    this._apiService.signIn(opt).subscribe((response: any) => {
-      switch (response.code) {
-        case 200:
-          this._auth.logIn(response.item, remember, token);
-          break;
-        case 471:
-          this.loginForm.controls['email'].setErrors({notExist: true});
-          this._snackService.openSnackBar('Este usuario no está registrado','OK', 2000);
-          break;
-        case 472:
-          this.loginForm.controls['password'].setErrors({incorrect: true});
-          this._snackService.openSnackBar('Usuario o contraseña inválidos','OK', 2000);
-          break;
-        case 500:
-          this.connectionLost();
-          break;
-        default:
-          this.connectionLost();
-          break;
-      }
+        email: email,
+        password: password,
+        token: token || null
+      };
+      this._apiService.signIn(opt).subscribe((response: any) => {
+        switch (response.code) {
+          case 200:
+            this._auth.logIn(response.item, remember, token);
+            break;
+          case 471:
+            this.loginForm.controls['email'].setErrors({notExist: true});
+            this._snackService.openSnackBar('Este usuario no está registrado', 'OK', 2000);
+            break;
+          case 472:
+            this.loginForm.controls['password'].setErrors({incorrect: true});
+            this._snackService.openSnackBar('Usuario o contraseña inválidos', 'OK', 2000);
+            break;
+          case 500:
+            this.connectionLost();
+            break;
+          default:
+            this.connectionLost();
+            break;
+        }
+      });
     });
-    })
   }
 
 }
