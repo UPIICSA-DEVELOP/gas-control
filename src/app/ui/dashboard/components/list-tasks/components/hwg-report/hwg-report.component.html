@@ -39,23 +39,23 @@
       <div class="inputs">
         <div class="space-box">
           <div class="checks-row">
-            <mat-checkbox formControlName="corrosive" (change)="changeFeatures($event)">Corrosivo</mat-checkbox>
+            <mat-checkbox formControlName="corrosive" (change)="changeFeatures()">Corrosivo</mat-checkbox>
           </div>
           <div class="checks-row">
-            <mat-checkbox formControlName="reactive" (change)="changeFeatures($event)">Reactivo</mat-checkbox>
-          </div>
-        </div>
-        <div class="space-box">
-          <div class="checks-row">
-            <mat-checkbox formControlName="explosive" (change)="changeFeatures($event)">Explosivo</mat-checkbox>
-          </div>
-          <div class="checks-row">
-            <mat-checkbox formControlName="toxic" (change)="changeFeatures($event)">Tóxico</mat-checkbox>
+            <mat-checkbox formControlName="reactive" (change)="changeFeatures()">Reactivo</mat-checkbox>
           </div>
         </div>
         <div class="space-box">
           <div class="checks-row">
-            <mat-checkbox formControlName="flammable" (change)="changeFeatures($event)">Inflamable</mat-checkbox>
+            <mat-checkbox formControlName="explosive" (change)="changeFeatures()">Explosivo</mat-checkbox>
+          </div>
+          <div class="checks-row">
+            <mat-checkbox formControlName="toxic" (change)="changeFeatures()">Tóxico</mat-checkbox>
+          </div>
+        </div>
+        <div class="space-box">
+          <div class="checks-row">
+            <mat-checkbox formControlName="flammable" (change)="changeFeatures()">Inflamable</mat-checkbox>
           </div>
           <div class="checks-row"></div>
         </div>
