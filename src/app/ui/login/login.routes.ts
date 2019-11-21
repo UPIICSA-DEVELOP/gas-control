@@ -9,6 +9,7 @@ import {Routes} from '@angular/router';
 import {environment} from '@env/environment';
 import {AuthRouterService} from '@app/core/services/auth/auth-router.service';
 import {LoginComponent} from '@app/ui/login/pages/login/login.component';
+
 const URL_BASE = environment.url;
 
 export const loginRoutes: Routes = [
@@ -17,7 +18,7 @@ export const loginRoutes: Routes = [
     component: LoginComponent,
     canActivate: [AuthRouterService],
     data: {
-      title:'inSpéctor - Iniciar sesión',
+      title: 'inSpéctor - Iniciar sesión',
       url: URL_BASE,
     }
   }
