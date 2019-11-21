@@ -4,29 +4,32 @@
  * Proprietary and confidential
  */
 
-#documentation{
+#documentation {
   top: 0;
   height: 100%;
   background-color: #FFFFFF;
   z-index: 15;
   position: relative;
-  .content{
+
+  .content {
     width: 100%;
     height: 100%;
     padding: 2.5% 5%;
     display: flex;
-    @media screen and(max-width: 900px){
+    @media screen and(max-width: 900px) {
       display: block;
       overflow: auto;
     }
   }
-  .progress{
+
+  .progress {
     position: absolute;
     top: 0;
     left: 0;
     z-index: 1;
   }
-  .background{
+
+  .background {
     width: 600px;
     height: 300px;
     position: absolute;
@@ -40,52 +43,60 @@
       height: 150px;
     }
   }
-  .column-one{
+
+  .column-one {
     z-index: 1;
     width: 40%;
     height: 100%;
-    @media screen and (max-width: 900px){
+    @media screen and (max-width: 900px) {
       width: 100%;
       height: initial;
     }
-    .buttons{
+
+    .buttons {
       width: 100%;
       height: 40%;
       display: flex;
       flex-direction: column;
       justify-content: center;
       padding: 0 36px;
-      .documents{
+
+      .documents {
         font-weight: 600;
         font-size: 28px;
         margin: 8px 0;
       }
-      .add{
+
+      .add {
         font-weight: 600;
         font-size: 18px;
         margin: 8px 0;
       }
-      .buttons-container{
+
+      .buttons-container {
         display: flex;
         flex-direction: column;
         width: 25%;
         padding: 0 24px;
-        @media screen and (max-width: 800px){
+        @media screen and (max-width: 800px) {
           flex-direction: row;
           width: 100%;
           justify-content: space-around;
         }
-        button{
+
+        button {
           font-weight: 600;
           margin: 12px 0;
           box-shadow: 0 3px 1px 1px rgba(0, 0, 0, 0.1), 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, .10);
         }
       }
-      p{
+
+      p {
         font-weight: 600;
       }
     }
-    .description{
+
+    .description {
       width: 100%;
       height: 60%;
       color: #707070;
@@ -93,19 +104,22 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      .paragraph{
+
+      .paragraph {
         text-align: justify;
         margin: 0 36px;
-        @media screen and(max-width: 600px){
+        @media screen and(max-width: 600px) {
           margin: 0 16px;
         }
-        .content{
+
+        .content {
           font-weight: 600;
         }
       }
     }
   }
-  .column-two{
+
+  .column-two {
     z-index: 1;
     width: 60%;
     height: 100%;
@@ -114,48 +128,57 @@
     align-items: center;
     flex-direction: column;
     overflow: auto;
-    @media screen and (max-width: 900px){
+    @media screen and (max-width: 900px) {
       width: 100%;
       overflow: hidden;
       height: auto;
     }
-    .container{
+
+    .container {
       height: auto;
       width: 85%;
-      @media screen and(max-width: 600px){
+      @media screen and(max-width: 600px) {
         width: 100%;
       }
-      .file{
+
+      .file {
         display: flex;
         justify-content: space-between;
         margin: 16px 0;
-        .text{
+
+        .text {
           display: flex;
           align-items: center;
-          width: 75%;cursor: pointer;
+          width: 75%;
+          cursor: pointer;
         }
-        .button-icon{
+
+        .button-icon {
           color: #707070;
         }
       }
-      .others{
+
+      .others {
         margin: 16px 0;
         padding-left: 24px;
         font-weight: 600;
         font-size: 18px;
       }
-      .divider{
+
+      .divider {
         height: 1px;
         background-color: #707070;
         width: 100%;
         margin: 16px 0;
       }
     }
-    .save{
+
+    .save {
       margin: 24px 0;
     }
   }
-  .btn-close{
+
+  .btn-close {
     position: absolute;
     top: 0;
     right: 0;
@@ -164,10 +187,12 @@
     justify-content: center;
     align-items: center;
     z-index: 5;
-    button{
+
+    button {
       background-color: #707070;
     }
-    mat-icon{
+
+    mat-icon {
       color: #FFFFFF;
     }
   }

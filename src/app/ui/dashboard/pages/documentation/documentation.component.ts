@@ -4,9 +4,8 @@
  * Proprietary and confidential
  */
 
-import {Component, OnDestroy, OnInit, ViewEncapsulation} from '@angular/core';
+import {Component, HostBinding, OnDestroy, OnInit, ViewEncapsulation} from '@angular/core';
 import {UploadFileService} from '@app/shared/components/upload-file/upload-file.service';
-import {animate, keyframes, query, stagger, style, transition, trigger} from '@angular/animations';
 import {ActivatedRoute, Router} from '@angular/router';
 import {ApiService} from '@app/core/services/api/api.service';
 import {UploadFileResponse} from '@app/shared/components/upload-file/upload-file.component';
@@ -19,38 +18,19 @@ import {HashService} from '@app/utils/utilities/hash.service';
 import {LoaderService} from '@app/core/components/loader/loader.service';
 import {Document} from '@app/utils/interfaces/document';
 import {HttpResponseCodes} from '@app/utils/enums/http-response-codes';
+import {ANIMATION} from '@app/ui/dashboard/pages/documentation/animation';
 
 @Component({
   selector: 'app-documentation',
   templateUrl: './documentation.component.html',
   styleUrls: ['./documentation.component.scss'],
-  animations: [
-    trigger('fadeInAnimation', [
-      transition(':enter', [
-        query('#documentation', style({ opacity: 0, background: 'transparent' }), {optional: true}),
-        query('#documentation', stagger('10ms', [
-          animate('.2s ease-out', keyframes([
-            style({opacity: 0, background: 'transparent', offset: 0}),
-            style({opacity: .5, background: 'rgba(255, 255, 255, .5)', offset: 0.5}),
-            style({opacity: 1, background: 'rgba(255, 255, 255, 1)',  offset: 1.0}),
-          ]))]), {optional: true})
-      ]),
-      transition(':leave', [
-        query('#documentation', style({ opacity: 1, background: 'rgba(255, 255, 255, 1)' }), {optional: true}),
-        query('#documentation', stagger('10ms', [
-          animate('.2s ease-in', keyframes([
-            style({opacity: 1, background: 'rgba(255, 255, 255, 1)', offset: 0}),
-            style({opacity: .5, background: 'rgba(255, 255, 255, .5)',  offset: 0.5}),
-            style({opacity: 0, background: 'transparent',     offset: 1.0}),
-          ]))]), {optional: true})
-      ])
-    ])
-  ],
-  host: {'[@fadeInAnimation]': ''},
+  animations: [ANIMATION],
   encapsulation: ViewEncapsulation.None
 })
 
 export class DocumentationComponent implements OnInit, OnDestroy {
+  @HostBinding('@fadeInAnimation')
+
   public isASEA: boolean;
   public stationId: string;
   public docsAsea: any[];
@@ -58,6 +38,7 @@ export class DocumentationComponent implements OnInit, OnDestroy {
   public load: boolean;
   private _documentData: FormData;
   private _subscriptionLoader: Subscription;
+
   constructor(
     private _uploadFile: UploadFileService,
     private _router: Router,
@@ -68,67 +49,63 @@ export class DocumentationComponent implements OnInit, OnDestroy {
     private _pdf: PdfVisorService
   ) {
     this.isASEA = true;
-    this.docsAsea=[undefined,undefined,undefined,undefined,undefined,undefined,undefined,undefined,undefined,undefined,undefined,undefined,undefined,undefined,undefined,undefined,undefined];
-    this.docsCre=[undefined,undefined];
+    this.docsAsea = [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null];
+    this.docsCre = [null, null];
   }
 
   ngOnInit() {
-    this.stationId = this._activateRoute.params["_value"].station;
+    this.stationId = this._activateRoute.params['_value'].station;
     this.listAseaDocs(this._activateRoute.snapshot.data.data.asea);
     this.listCreDocs(this._activateRoute.snapshot.data.data.cre);
-    this._subscriptionLoader = this._apiLoader.getProgress().subscribe(load => {this.load = load; });
+    this._subscriptionLoader = this._apiLoader.getProgress().subscribe(load => {
+      this.load = load;
+    });
   }
 
-  ngOnDestroy(): void{
+  ngOnDestroy(): void {
     this._subscriptionLoader.unsubscribe();
   }
 
-  private listAseaDocs(response: any):void{
-    switch (response.code){
-      case 200:
-        if (response.items){
-          for(let i=0; i<response.items.length;i++){
-            const newType = (response.items[i].type!==19)? response.items[i].type-1 : response.items[i].type-3;
-            this.docsAsea[newType]=response.items[i];
-          }
-        } else {
-          this.docsAsea = [];
+  private listAseaDocs(response: any): void {
+    if (response.code === HttpResponseCodes.OK) {
+      if (response.items) {
+        for (let i = 0; i < response.items.length; i++) {
+          const newType = (response.items[i].type !== 19) ? response.items[i].type - 1 : response.items[i].type - 3;
+          this.docsAsea[newType] = response.items[i];
         }
-        break;
-      default:
-        this._snackBarService.openSnackBar('No se ha podido acceder, intente más tarde','OK',3000);
-        this._router.navigate(['/home']).then();
-        break;
+      } else {
+        this.docsAsea = [];
+      }
+    } else {
+      this._snackBarService.openSnackBar('No se ha podido acceder, intente más tarde', 'OK', 3000);
+      this._router.navigate(['/home']).then();
     }
   }
 
-  private listCreDocs(response: any):void{
-    switch (response.code){
-      case 200:
-        if (response.items){
-          for(let i=0; i<response.items.length;i++){
-            this.docsCre[response.items[i].type-17]=response.items[i];
-          }
-        } else {
-          this.docsCre = [];
+  private listCreDocs(response: any): void {
+    if (response.code === HttpResponseCodes.OK) {
+      if (response.items) {
+        for (let i = 0; i < response.items.length; i++) {
+          this.docsCre[response.items[i].type - 17] = response.items[i];
         }
-        break;
-      default:
-        this._snackBarService.openSnackBar('No se ha podido acceder, intente más tarde','OK',3000);
-        this._router.navigate(['/home']).then();
-        break;
+      } else {
+        this.docsCre = [];
+      }
+    } else {
+      this._snackBarService.openSnackBar('No se ha podido acceder, intente más tarde', 'OK', 3000);
+      this._router.navigate(['/home']).then();
     }
   }
 
-  public uploadFile(event: UploadFileResponse, index: number, regulationType: number, type: number){
+  public uploadFile(event: UploadFileResponse, index: number, regulationType: number, type: number) {
     this._documentData = new FormData();
-    this._documentData.append('path',this.stationId);
-    this._documentData.append('fileName',(regulationType===1?'ASEA-':'CRE-')+ new Date().getTime()+'.pdf');
+    this._documentData.append('path', this.stationId);
+    this._documentData.append('fileName', (regulationType === 1 ? 'ASEA-' : 'CRE-') + new Date().getTime() + '.pdf');
     this._documentData.append('file', event.file);
-    let id = undefined;
-    if(regulationType === 1 && this.docsAsea[index]){
+    let id = null;
+    if (regulationType === 1 && this.docsAsea[index]) {
       id = this.docsAsea[index].id;
-    }else if(regulationType === 2 && this.docsCre[index]){
+    } else if (regulationType === 2 && this.docsCre[index]) {
       id = this.docsCre[index].id;
     }
     this.chargeFile({
@@ -140,52 +117,52 @@ export class DocumentationComponent implements OnInit, OnDestroy {
     });
   }
 
-  private chargeFile(file: any){
-    let newFile: Document = {
-      id: file.id?file.id:undefined,
+  private chargeFile(file: any) {
+    const newFile: Document = {
+      id: file.id ? file.id : null,
       regulationType: file.regulationType,
       idStation: this.stationId,
-      file: undefined,
+      file: null,
       type: file.type
     };
-    this._uploadFile.upload(file.formData).subscribe(response=>{
-      if(response){
+    this._uploadFile.upload(file.formData).subscribe(response => {
+      if (response) {
         newFile.file = {
           blobName: response.item.blobName,
           thumbnail: response.item.thumbnail
         };
-        switch(file.regulationType){
+        switch (file.regulationType) {
           case 1:
-            if(this.docsAsea[file.index]){
+            if (this.docsAsea[file.index]) {
               this.updateStationDocument(newFile, file.index);
-            }else{
+            } else {
               this.createStationDocument(newFile, file.index);
             }
             break;
           case 2:
-            if(this.docsCre[file.index]){
+            if (this.docsCre[file.index]) {
               this.updateStationDocument(newFile, file.index);
-            }else{
+            } else {
               this.createStationDocument(newFile, file.index);
             }
-             break;
+            break;
         }
       }
-    })
+    });
   }
 
-  private createStationDocument(document: Document, index: number):void{
-    let doc: Document = {
+  private createStationDocument(document: Document, index: number): void {
+    const doc: Document = {
       id: document.id,
       type: document.type,
       regulationType: document.regulationType,
       idStation: document.idStation,
       file: document.file
     };
-    this._api.createDocument(doc).subscribe(response=>{
+    this._api.createDocument(doc).subscribe(response => {
       if (response.code === HttpResponseCodes.OK) {
         this._snackBarService.openSnackBar('Documento actualizado', 'OK', 3000);
-        switch (doc.regulationType){
+        switch (doc.regulationType) {
           case 1:
             this.docsAsea[index] = doc;
             break;
@@ -196,21 +173,21 @@ export class DocumentationComponent implements OnInit, OnDestroy {
       } else {
         this._snackBarService.openSnackBar('Error al actualizar el documento', 'OK', 3000);
       }
-    })
+    });
   }
 
-  private updateStationDocument(document: Document, index: number):void{
-    let doc: Document = {
+  private updateStationDocument(document: Document, index: number): void {
+    const doc: Document = {
       id: document.id,
       type: document.type,
       regulationType: document.regulationType,
       idStation: document.idStation,
       file: document.file
     };
-    this._api.updateDocument(doc).subscribe(response=>{
+    this._api.updateDocument(doc).subscribe(response => {
       if (response.code === HttpResponseCodes.OK) {
         this._snackBarService.openSnackBar('Documento cargado', 'OK', 3000);
-        switch (doc.regulationType){
+        switch (doc.regulationType) {
           case 1:
             this.docsAsea[index] = doc;
             break;
@@ -221,27 +198,27 @@ export class DocumentationComponent implements OnInit, OnDestroy {
       } else {
         this._snackBarService.openSnackBar('Error al cargar el documento', 'OK', 3000);
       }
-    })
+    });
   }
 
-  public closeDocumentation():void{
-    this._router.navigate(['/home/profile/gas-station',this.stationId]).then();
+  public closeDocumentation(): void {
+    this._router.navigate(['/home/profile/gas-station', this.stationId]).then();
   }
 
-  public openPdf(index: number, isAsea: boolean): void{
+  public openPdf(index: number, isAsea: boolean): void {
     const user = LocalStorageService.getItem(Constants.UserInSession);
     const url = isAsea ? this.docsAsea[index].file.thumbnail : this.docsCre[index].file.thumbnail;
-    switch (user.role){
+    switch (user.role) {
       case 1:
       case 2:
       case 4:
       case 7:
-        this._pdf.open({urlOrFile:  HashService.set("123456$#@$^@1ERF", url)});
+        this._pdf.open({urlOrFile: HashService.set('123456$#@$^@1ERF', url)});
         break;
       case 3:
       case 5:
       case 6:
-        this._pdf.open({urlOrFile: HashService.set("123456$#@$^@1ERF", url), hideDownload: true});
+        this._pdf.open({urlOrFile: HashService.set('123456$#@$^@1ERF', url), hideDownload: true});
         break;
     }
   }
