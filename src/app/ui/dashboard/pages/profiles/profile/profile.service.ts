@@ -4,7 +4,7 @@
  *  Proprietary and confidential
  */
 
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {ActivatedRouteSnapshot, Resolve, RouterStateSnapshot} from '@angular/router';
 import {ApiService} from 'app/core/services/api/api.service';
 import {CookieService} from 'app/core/services/cookie/cookie.service';
@@ -14,7 +14,7 @@ import {forkJoin} from 'rxjs';
 import {map} from 'rxjs/internal/operators';
 
 @Injectable()
-export class ProfileService implements Resolve<any>{
+export class ProfileService implements Resolve<any> {
 
   constructor(
     private _api: ApiService
@@ -26,6 +26,8 @@ export class ProfileService implements Resolve<any>{
     const observer1 = this._api.getPerson(CookieService.getCookie(Constants.IdSession));
     const user = LocalStorageService.getItem(Constants.UserInSession);
     const observer2 = this._api.getConsultancy(user.refId);
-    return forkJoin(observer1, observer2).pipe(map((resp: any[]) => {return {user: resp[0], consultancy: resp[1]}}));
+    return forkJoin([observer1, observer2]).pipe(map((resp: any[]) => {
+      return {user: resp[0], consultancy: resp[1]};
+    }));
   }
 }

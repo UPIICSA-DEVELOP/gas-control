@@ -5,6 +5,7 @@
  */
 @import "../../../../../../styles/colors";
 @import "../../../../../../styles/profiles";
+
 #profile {
   top: 0;
   width: 100vw;
@@ -18,7 +19,7 @@
     overflow: auto;
   }
 
-  .background{
+  .background {
     width: 600px;
     height: 300px;
     position: absolute;
@@ -66,18 +67,21 @@
     .business-card {
       width: 50%;
       margin: 24px;
+
       mat-card {
         width: 80%;
         padding: 0;
         margin: auto;
-        mat-card-content{
+
+        mat-card-content {
           width: 100%;
           margin: 0;
           padding-bottom: calc(100% / 9 * 5);
           background: url('https://lh3.googleusercontent.com/e3Y9EZ04JWp0L2h6uQuCguoWFI1bem0o77Dw149rQ3riTBK8HV4vkK9BQ2sm89qEaZD25jGRuQXpCE6JZXVG2_E4rtYoa5GiWwE=s1600') no-repeat center;
           background-size: 100%;
         }
-        mat-card-actions{
+
+        mat-card-actions {
           padding: 0;
           margin: 0;
         }
@@ -100,10 +104,10 @@
 
     .user-form {
       margin: 0 40px;
-      @media screen and(max-width: 900px){
+      @media screen and(max-width: 900px) {
         margin: 0 20px;
       }
-      @media screen and(max-width: 600px){
+      @media screen and(max-width: 600px) {
         margin: 0 5px;
       }
     }
@@ -125,14 +129,17 @@
     justify-content: center;
     align-items: center;
     z-index: 5;
-    button{
+
+    button {
       background-color: #707070;
     }
-    mat-icon{
+
+    mat-icon {
       color: #FFFFFF;
     }
   }
-  .head{
+
+  .head {
     margin: auto;
     border-radius: 50%;
     width: 100px;
