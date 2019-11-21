@@ -4,29 +4,34 @@
  *  Proprietary and confidential
  */
 @import "../../../../../styles/colors";
-#task-card{
+
+#task-card {
   width: 100%;
-  .item{
+
+  .item {
     padding: 0;
     display: flex;
     margin-bottom: 12px;
     min-height: 92px;
-    mat-card-content{
+
+    mat-card-content {
       display: flex;
       width: 100%;
       position: relative;
       padding: 12px;
     }
-    .date{
+
+    .date {
       text-align: center;
       display: flex;
       justify-content: center;
       align-items: center;
       margin: 12px;
-      @media screen and (max-width: 600px){
+      @media screen and (max-width: 600px) {
         margin: 5px;
       }
-      .text-bold{
+
+      .text-bold {
         color: #707070;
         font-weight: 500;
         font-size: 16px;
@@ -35,18 +40,21 @@
         text-overflow: ellipsis;
       }
     }
-    .content{
+
+    .content {
       width: 80%;
       height: 100%;
-      @media screen and (max-width: 800px){
+      @media screen and (max-width: 800px) {
         width: 70%;
       }
-      .head{
+
+      .head {
         color: #000000;
         font-weight: 700;
         font-size: 13px;
       }
-      .text{
+
+      .text {
         color: #707070;
         font-weight: 400;
         font-size: 12px;
@@ -56,30 +64,35 @@
         text-overflow: ellipsis;
       }
     }
-    .frequency{
+
+    .frequency {
       position: absolute;
       bottom: 0;
       right: 0;
       margin: 16px;
     }
-    .status{
+
+    .status {
       position: absolute;
       top: 0;
       right: 0;
       margin: 16px;
-      .done{
+
+      .done {
         color: $basic;
         font-size: 16px;
         width: 16px;
         height: 16px;
       }
-      .pending{
+
+      .pending {
         color: $gray;
         font-size: 16px;
         width: 16px;
         height: 16px;
       }
-      .latest{
+
+      .latest {
         color: $critical;
         font-size: 16px;
         width: 16px;
@@ -87,16 +100,20 @@
       }
     }
   }
-  .basic{
+
+  .basic {
     background-color: $basic;
   }
-  .medium{
+
+  .medium {
     background-color: $medium;
   }
-  .critical{
+
+  .critical {
     background-color: $critical;
   }
-  .priority{
+
+  .priority {
     width: 1%;
     height: 100%;
     position: absolute;

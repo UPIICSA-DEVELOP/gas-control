@@ -6,6 +6,8 @@
 
 import {Component, Input, OnInit, ViewEncapsulation} from '@angular/core';
 import {Constants} from 'app/utils/constants/constants.utils';
+import {Task} from '@app/utils/interfaces/task';
+import {TaskTemplate} from '@app/utils/interfaces/task-template';
 
 @Component({
   selector: 'app-task-card',
@@ -14,23 +16,27 @@ import {Constants} from 'app/utils/constants/constants.utils';
   encapsulation: ViewEncapsulation.None
 })
 export class TaskCardComponent implements OnInit {
-  public information: any;
+  public task: Task;
   public typeCard: number;
+
   @Input() set taskInfo(info: any) {
-    if(info){
-      this.information = info;
+    if (info) {
+      this.task = info.original;
     }
   }
-  @Input() set implementation(type: number){
-    if(type){
+
+  @Input() set implementation(type: number) {
+    if (type) {
       this.changeCardInView(type);
     }
   }
+
   public zones: string[];
   public priority: string[];
   public frequency: string[];
   public disabledRipple: boolean;
-  constructor(  ) {
+
+  constructor() {
     this.zones = Constants.Zones;
     this.priority = Constants.Level;
     this.frequency = Constants.Frequency;
@@ -41,9 +47,9 @@ export class TaskCardComponent implements OnInit {
   ngOnInit() {
   }
 
-  private changeCardInView(type: number):void{
+  private changeCardInView(type: number): void {
     this.disabledRipple = (type !== 1);
-    switch (type){
+    switch (type) {
       case 1:
       case 2:
       case 3:
