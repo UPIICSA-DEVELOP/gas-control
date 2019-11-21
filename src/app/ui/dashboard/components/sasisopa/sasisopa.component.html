@@ -15,24 +15,36 @@
     <div class="header">
       <mat-icon class="sasisopa-logo" svgIcon="icons:sasisopa"></mat-icon>
       <div class="head-text">SASISOPA</div>
-      <div class="text">(Sistema de Administración de Seguridad Industrial, Seguridad Operativa y Protección al Medio Ambiente)</div>
+      <div class="text">(Sistema de Administración de Seguridad Industrial, Seguridad Operativa y Protección al Medio
+        Ambiente)
+      </div>
     </div>
     <div class="ssp-container">
       <div class="annexes-menu">
         <div style="display: flex; justify-content: space-around; flex-wrap: wrap">
-          <button style="height: 36px; margin: 4px 0;" mat-flat-button (click)="generateSasisopa()" [color]="'primary'">GENERAR</button>
-          <button *ngIf="generate" style="height: 36px; margin: 4px 0;" mat-flat-button [color]="'primary'" [disabled]="!isAvailable" (click)="seeSasisopa()">VER</button>
-          <button *ngIf="isDevelop && generate" style="height: 36px; margin: 4px 0;" mat-flat-button [color]="'primary'" (click)="seeSasisopa()">VER TMP</button>
+          <button style="height: 36px; margin: 4px 0;" mat-flat-button (click)="generateSasisopa()" [color]="'primary'">
+            GENERAR
+          </button>
+          <button *ngIf="generate" style="height: 36px; margin: 4px 0;" mat-flat-button [color]="'primary'"
+                  [disabled]="!isAvailable" (click)="seeSasisopa()">VER
+          </button>
+          <button *ngIf="isDevelop && generate" style="height: 36px; margin: 4px 0;" mat-flat-button [color]="'primary'"
+                  (click)="seeSasisopa()">VER TMP
+          </button>
         </div>
-        <div style="margin: 8px 0; color: #707070; font-size: 14px;" *ngIf="generate && !isAvailable && dateGeneration.length !== 0">Documento disponible hasta el {{dateGeneration[0]}} {{dateGeneration[1]}} {{dateGeneration[2]}}</div>
-        <mat-card matRipple (click)="openSasisopaTemplate(false)" class="last-child" style="cursor: pointer; margin: 24px 0 12px;padding: 6px; height: 36px;">
+        <div style="margin: 8px 0; color: #707070; font-size: 14px;"
+             *ngIf="generate && !isAvailable && dateGeneration.length !== 0">Documento disponible hasta
+          el {{dateGeneration[0]}} {{dateGeneration[1]}} {{dateGeneration[2]}}</div>
+        <mat-card matRipple (click)="openSasisopaTemplate(false)" class="last-child"
+                  style="cursor: pointer; margin: 24px 0 12px;padding: 6px; height: 36px;">
           <mat-card-content style="color: #707070" class="content-item">
             <mat-icon class="icon">insert_drive_file</mat-icon>
             <div class="divider" style="font-weight: 600">VER PLANTILLA</div>
           </mat-card-content>
         </mat-card>
         <mat-divider></mat-divider>
-        <div (click)="changeElementOnView(1)" class="content-item" style="cursor:pointer;margin: 12px 0; padding: 0 6px;">
+        <div (click)="changeElementOnView(1)" class="content-item"
+             style="cursor:pointer;margin: 12px 0; padding: 0 6px;">
           <div [ngStyle]="{'color':elementInView === 1 ? '#0d47a1' : '#707070'}" style="display: flex;width: 50%;">
             <mat-icon class="icon">insert_drive_file</mat-icon>
             <div style="font-weight: 600" class="divider">Anexo 1</div>
@@ -42,7 +54,8 @@
           </mat-error>
         </div>
         <mat-divider></mat-divider>
-        <div (click)="changeElementOnView(2)" class="content-item" style="cursor:pointer;margin: 12px 0; padding: 0 6px;">
+        <div (click)="changeElementOnView(2)" class="content-item"
+             style="cursor:pointer;margin: 12px 0; padding: 0 6px;">
           <div [ngStyle]="{'color':elementInView === 2 ? '#0d47a1' : '#707070'}" style="display: flex;width: 50%;">
             <mat-icon class="icon">insert_drive_file</mat-icon>
             <div style="font-weight: 600" class="divider">Anexo 2</div>
@@ -55,7 +68,8 @@
           </mat-error>
         </div>
         <mat-divider></mat-divider>
-        <div (click)="changeElementOnView(3)" class="content-item" style="cursor:pointer;margin: 12px 0; padding: 0 6px;">
+        <div (click)="changeElementOnView(3)" class="content-item"
+             style="cursor:pointer;margin: 12px 0; padding: 0 6px;">
           <div [ngStyle]="{'color':elementInView === 3 ? '#0d47a1' : '#707070'}" style="display: flex;width: 50%;">
             <mat-icon class="icon">insert_drive_file</mat-icon>
             <div style="font-weight: 600" class="divider">Anexo 3</div>
@@ -68,7 +82,8 @@
           </mat-error>
         </div>
         <mat-divider></mat-divider>
-        <div (click)="changeElementOnView(4)" class="content-item" style="cursor:pointer;margin: 12px 0; padding: 0 6px;">
+        <div (click)="changeElementOnView(4)" class="content-item"
+             style="cursor:pointer;margin: 12px 0; padding: 0 6px;">
           <div [ngStyle]="{'color':elementInView === 4 ? '#0d47a1' : '#707070'}" style="display: flex;width: 50%;">
             <mat-icon class="icon">insert_drive_file</mat-icon>
             <div style="font-weight: 600" class="divider">Anexo 4</div>
@@ -78,7 +93,8 @@
           </mat-error>
         </div>
         <mat-divider></mat-divider>
-        <div (click)="changeElementOnView(5)" class="content-item" style="cursor:pointer;margin: 12px 0; padding: 0 6px;">
+        <div (click)="changeElementOnView(5)" class="content-item"
+             style="cursor:pointer;margin: 12px 0; padding: 0 6px;">
           <div [ngStyle]="{'color':elementInView === 5 ? '#0d47a1' : '#707070'}" style="display: flex;width: 50%;">
             <mat-icon class="icon">insert_drive_file</mat-icon>
             <div style="font-weight: 600" class="divider">Anexo 5</div>
@@ -91,7 +107,8 @@
           </mat-error>
         </div>
         <mat-divider></mat-divider>
-        <div (click)="changeElementOnView(6)" class="content-item" style="cursor:pointer;margin: 12px 0; padding: 0 6px;">
+        <div (click)="changeElementOnView(6)" class="content-item"
+             style="cursor:pointer;margin: 12px 0; padding: 0 6px;">
           <div [ngStyle]="{'color':elementInView === 6 ? '#0d47a1' : '#707070'}" style="display: flex;width: 50%;">
             <mat-icon class="icon">insert_drive_file</mat-icon>
             <div style="font-weight: 600" class="divider">Anexo 6</div>
@@ -101,7 +118,8 @@
           </mat-error>
         </div>
         <mat-divider></mat-divider>
-        <div (click)="changeElementOnView(7)" class="content-item" style="cursor:pointer;margin: 12px 0; padding: 0 6px;">
+        <div (click)="changeElementOnView(7)" class="content-item"
+             style="cursor:pointer;margin: 12px 0; padding: 0 6px;">
           <div [ngStyle]="{'color':elementInView === 7 ? '#0d47a1' : '#707070'}" style="display: flex;width: 50%;">
             <mat-icon class="icon">insert_drive_file</mat-icon>
             <div style="font-weight: 600" class="divider">Anexo 7</div>
@@ -111,14 +129,16 @@
           </mat-error>
         </div>
         <mat-divider></mat-divider>
-        <div (click)="changeElementOnView(8)" class="content-item" style="cursor:pointer;margin: 12px 0; padding: 0 6px;">
+        <div (click)="changeElementOnView(8)" class="content-item"
+             style="cursor:pointer;margin: 12px 0; padding: 0 6px;">
           <div [ngStyle]="{'color':elementInView === 8 ? '#0d47a1' : '#707070'}" style="display: flex;width: 50%;">
             <mat-icon class="icon">insert_drive_file</mat-icon>
             <div style="font-weight: 600" class="divider">Anexo 8</div>
           </div>
         </div>
         <mat-divider></mat-divider>
-        <div (click)="changeElementOnView(9)" class="content-item" style="cursor:pointer;margin: 12px 0; padding: 0 6px;">
+        <div (click)="changeElementOnView(9)" class="content-item"
+             style="cursor:pointer;margin: 12px 0; padding: 0 6px;">
           <div [ngStyle]="{'color':elementInView === 9 ? '#0d47a1' : '#707070'}" style="display: flex;width: 50%;">
             <mat-icon class="icon">insert_drive_file</mat-icon>
             <div style="font-weight: 600" class="divider">Anexo 9</div>
@@ -128,7 +148,8 @@
           </mat-error>
         </div>
         <mat-divider></mat-divider>
-        <div (click)="changeElementOnView(10)" class="content-item" style="cursor:pointer;margin: 12px 0; padding: 0 6px;">
+        <div (click)="changeElementOnView(10)" class="content-item"
+             style="cursor:pointer;margin: 12px 0; padding: 0 6px;">
           <div [ngStyle]="{'color':elementInView === 10 ? '#0d47a1' : '#707070'}" style="display: flex;width: 50%;">
             <mat-icon class="icon">insert_drive_file</mat-icon>
             <div style="font-weight: 600" class="divider">Firmas</div>
@@ -138,7 +159,9 @@
       <div class="annexe-view">
         <ng-container [ngSwitch]="elementInView">
           <div style="display: flex; justify-content: center; align-items: center; height: 100%;" *ngSwitchCase="0">
-            <p style="color: #707070;text-align: justify;padding: 24px;">Conformación, implementación y seguimiento del Sistema de Administración de Seguridad Industrial, Seguridad Operativa y Protección al ambiente (SASISOPA)</p>
+            <p style="color: #707070;text-align: justify;padding: 24px;">Conformación, implementación y seguimiento del
+              Sistema de Administración de Seguridad Industrial, Seguridad Operativa y Protección al ambiente
+              (SASISOPA)</p>
             <div class="background"></div>
           </div>
           <div class="annexe" *ngSwitchCase="1">
@@ -146,7 +169,8 @@
             <div class="divider-head">
               <mat-divider></mat-divider>
             </div>
-            <p class="point">Punto 2. La evaluación de la integridad física y operativa de las instalaciones mediante procedimientos, instrumentos y metodologías reconocidos en el sector hidrocarburo</p>
+            <p class="point">Punto 2. La evaluación de la integridad física y operativa de las instalaciones mediante
+              procedimientos, instrumentos y metodologías reconocidos en el sector hidrocarburo</p>
             <mat-card class="procedures" style="cursor: pointer" (click)="openModalProcedures()">
               <mat-card-content>
                 <mat-icon class="color">insert_drive_file</mat-icon>
@@ -159,7 +183,8 @@
             <div class="signatures">
               <div class="item-sign" *ngFor="let collaborator of listPerson;">
                 <div class="head">Nombre y firma del responsable</div>
-                <img *ngIf="collaborator.signature && collaborator.signature.thumbnail" [src]="collaborator.signature.thumbnail" class="img-space">
+                <img *ngIf="collaborator.signature && collaborator.signature.thumbnail"
+                     [src]="collaborator.signature.thumbnail" class="img-space" alt="">
                 <div *ngIf="!collaborator.signature || !collaborator.signature.thumbnail" class="img-space"></div>
                 <div class="divide"></div>
                 <div class="name">{{collaborator.name}} {{collaborator.lastName}}</div>
@@ -176,8 +201,12 @@
             <div class="divider-head">
               <mat-divider></mat-divider>
             </div>
-            <p class="point">Punto 3. La identificación de riesgos, análisis, evaluación, medidas de prevención, monitoreo, mitigación y evaluación de incidentes, accidentes, pérdidas esperadas en los distintos escenarios de riesgo,
-              así como las consecuencias que los riesgos presentan a la población, medio ambiente, a las instalaciones y edificaciones comprendidas dentro del perímetro de las instalaciones industriales y en las inmediaciones</p>
+            <p class="point">Punto 3. La identificación de riesgos, análisis, evaluación, medidas de prevención,
+              monitoreo, mitigación y evaluación de incidentes, accidentes, pérdidas esperadas en los distintos
+              escenarios de riesgo,
+              así como las consecuencias que los riesgos presentan a la población, medio ambiente, a las instalaciones y
+              edificaciones comprendidas dentro del perímetro de las instalaciones industriales y en las
+              inmediaciones</p>
             <mat-card class="procedures">
               <mat-card-content>
                 <app-upload-file (onLoad)="loadFile($event, 2, 1)" [layoutTemplate]="button" [type]="'file'">
@@ -215,7 +244,9 @@
                 </tr>
                 <tr>
                   <th style="width: 50%; text-align: left">Características de almacenamiento o distribución:</th>
-                  <th style="width: 50%; text-align: left">La sustancia química se encuentra almacenada en un tanque enterrado, posteriormente es transferido al despachador para su venta</th>
+                  <th style="width: 50%; text-align: left">La sustancia química se encuentra almacenada en un tanque
+                    enterrado, posteriormente es transferido al despachador para su venta
+                  </th>
                 </tr>
               </table>
               <div style="margin: 8px 0">
@@ -231,7 +262,7 @@
                   <th>Combustible</th>
                 </tr>
                 <tr *ngFor="let item of station.fuelTanks; let i = index" style="text-align: center">
-                  <th>{{i+1}}</th>
+                  <th>{{i + 1}}</th>
                   <th>{{item.capacity}} lts</th>
                   <th>
                     <ng-container [ngSwitch]="item.fuelType">
@@ -252,7 +283,8 @@
             <div class="divider-head">
               <mat-divider></mat-divider>
             </div>
-            <p class="point">Punto 6. La asignación de funciones y responsabilidades para implementar, administrar y mejorar el propio sistema de administración</p>
+            <p class="point">Punto 6. La asignación de funciones y responsabilidades para implementar, administrar y
+              mejorar el propio sistema de administración</p>
             <mat-card class="procedures">
               <mat-card-content>
                 <app-upload-file (onLoad)="loadFile($event, 3, 3)" [layoutTemplate]="button" [type]="'file'">
@@ -285,23 +317,28 @@
               </div>
               <ng-container *ngFor="let element of brigade; let i=index">
                 <div style="display: flex; justify-content: space-between; align-items: center">
-                  <div style="color: #707070">Brigadista {{i+1}}</div>
-                  <button mat-icon-button (click)="addRemoveBrigadeElem(false, i)"><mat-icon class="remove">remove</mat-icon></button>
+                  <div style="color: #707070">Brigadista {{i + 1}}</div>
+                  <button mat-icon-button (click)="addRemoveBrigadeElem(false, i)">
+                    <mat-icon class="remove">remove</mat-icon>
+                  </button>
                 </div>
                 <mat-form-field style="width: 100%">
-                  <input matInput placeholder="Nombre(s)" [(ngModel)]="element.name" [ngModelOptions]="{standalone: true}" (change)="changeInput($event)">
+                  <input matInput placeholder="Nombre(s)" [(ngModel)]="element.name"
+                         [ngModelOptions]="{standalone: true}" (change)="changeInput()">
                   <mat-error *ngIf="!element.name">
                     Este campo es obligatorio
                   </mat-error>
                 </mat-form-field>
                 <mat-form-field style="width: 100%">
-                  <input matInput placeholder="Apellido(s)" [(ngModel)]="element.lastName" [ngModelOptions]="{standalone: true}" (change)="changeInput($event)">
+                  <input matInput placeholder="Apellido(s)" [(ngModel)]="element.lastName"
+                         [ngModelOptions]="{standalone: true}" (change)="changeInput()">
                   <mat-error *ngIf="!element.lastName">
                     Este campo es obligatorio
                   </mat-error>
                 </mat-form-field>
                 <mat-form-field style="width: 100%">
-                  <input matInput placeholder="Cargo en la brigada" [(ngModel)]="element.position" [ngModelOptions]="{standalone: true}" (change)="changeInput($event)">
+                  <input matInput placeholder="Cargo en la brigada" [(ngModel)]="element.position"
+                         [ngModelOptions]="{standalone: true}" (change)="changeInput()">
                   <mat-error *ngIf="!element.position">
                     Este campo es obligatorio
                   </mat-error>
@@ -317,7 +354,8 @@
             <div class="divider-head">
               <mat-divider></mat-divider>
             </div>
-            <p class="point">Punto 7. El plan general de capacitación y entrenamiento en seguridad industrial, seguridad operativa y protección al medio ambiente</p>
+            <p class="point">Punto 7. El plan general de capacitación y entrenamiento en seguridad industrial, seguridad
+              operativa y protección al medio ambiente</p>
             <mat-card class="procedures">
               <mat-card-content>
                 <app-upload-file (onLoad)="loadFile($event, 4, 5)" [layoutTemplate]="button" [type]="'file'">
@@ -346,7 +384,8 @@
               </mat-card-content>
             </mat-card>
             <mat-card class="procedures">
-              <input [matDatepicker]="picker" [max]="maxDate" [min]="minDate" class="calendar" [(ngModel)]="date" (click)="picker.open()" (ngModelChange)="getStationTasks()">
+              <input [matDatepicker]="picker" [max]="maxDate" [min]="minDate" class="calendar" [(ngModel)]="date"
+                     (click)="picker.open()" (ngModelChange)="getStationTasks()">
               <mat-datepicker touchUi #picker></mat-datepicker>
               <mat-card-content>
                 <mat-icon class="color">assignment</mat-icon>
@@ -382,7 +421,8 @@
             <div class="divider-head">
               <mat-divider></mat-divider>
             </div>
-            <p class="point">Punto 11. Las disposiciones para los contratistas en materia de seguridad industrial, seguridad operativa y protección al medio ambiente</p>
+            <p class="point">Punto 11. Las disposiciones para los contratistas en materia de seguridad industrial,
+              seguridad operativa y protección al medio ambiente</p>
             <mat-card class="procedures">
               <mat-card-content>
                 <app-upload-file (onLoad)="loadFile($event, 6, 6)" [layoutTemplate]="button" [type]="'file'">
@@ -403,7 +443,8 @@
             <div class="divider-head">
               <mat-divider></mat-divider>
             </div>
-            <p class="point">Punto 14. Los mecanismos para el monitoreo, verificación y evaluación de la implementación y desempeño del propio sistema de administración</p>
+            <p class="point">Punto 14. Los mecanismos para el monitoreo, verificación y evaluación de la implementación
+              y desempeño del propio sistema de administración</p>
             <mat-card class="procedures">
               <mat-card-content>
                 <app-upload-file (onLoad)="loadFile($event, 9, 7)" [layoutTemplate]="button" [type]="'file'">
@@ -478,7 +519,8 @@
             <div class="divider-head">
               <mat-divider></mat-divider>
             </div>
-            <p class="point">Punto 18. El informe periódico del desempeño en materia de seguridad industrial, seguridad operativa y protección al medio ambiente</p>
+            <p class="point">Punto 18. El informe periódico del desempeño en materia de seguridad industrial, seguridad
+              operativa y protección al medio ambiente</p>
             <mat-card class="procedures">
               <mat-card-content>
                 <app-upload-file (onLoad)="loadFile($event, 11, 12)" [layoutTemplate]="button" [type]="'file'">
@@ -507,7 +549,8 @@
                   <div *ngSwitchCase="5" class="head">Nombre y firma. Testigo 1</div>
                   <div *ngSwitchCase="6" class="head">Nombre y firma. Testigo 2</div>
                 </ng-container>
-                <img *ngIf="collaborator.signature && collaborator.signature.thumbnail" [src]="collaborator.signature.thumbnail" class="img-space">
+                <img *ngIf="collaborator.signature && collaborator.signature.thumbnail"
+                     [src]="collaborator.signature.thumbnail" class="img-space" alt="">
                 <div *ngIf="!collaborator.signature || !collaborator.signature.thumbnail" class="img-space"></div>
                 <div class="divide"></div>
                 <div class="name">{{collaborator.name}} {{collaborator.lastName}}</div>

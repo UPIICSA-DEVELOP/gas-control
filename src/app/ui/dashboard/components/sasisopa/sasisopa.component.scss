@@ -4,140 +4,165 @@
  * Proprietary and confidential
  */
 
-#sasisopa{
+#sasisopa {
   height: 100%;
-  mat-dialog-content{
+
+  mat-dialog-content {
     height: 95vh;
     max-height: none;
     margin: 0;
     overflow: hidden;
     padding: 16px;
     position: relative;
-    .close{
+
+    .close {
       position: absolute;
       top: 0;
       right: 0;
       margin: 16px;
     }
-    .header{
+
+    .header {
       width: 100%;
       min-height: 72px;
       display: flex;
       flex-direction: column;
       align-items: center;
       text-align: center;
-      .sasisopa-logo{
+
+      .sasisopa-logo {
         width: 64px;
         height: 64px;
         color: #707070;
       }
-      .head-text{
+
+      .head-text {
         font-weight: 600;
         font-size: 20px;
       }
-      .text{
+
+      .text {
         margin-top: 8px;
       }
     }
-    .ssp-container{
+
+    .ssp-container {
       width: 100%;
       height: calc(100% - 96px);
       padding: 32px 16px 16px 16px;
       display: flex;
-      @media screen and (max-width: 800px){
+      @media screen and (max-width: 800px) {
         display: block;
         height: calc(100% - 172px);
       }
-      .annexes-menu{
+
+      .annexes-menu {
         width: 40%;
         height: 100%;
         overflow-y: auto;
         padding: 0 4px;
-        @media screen and (max-width: 800px){
+        @media screen and (max-width: 800px) {
           width: 100%;
           height: 50%;
         }
       }
-      .annexe-view{
+
+      .annexe-view {
         width: 60%;
         height: 100%;
         overflow-y: auto;
         padding: 0 4px;
-        @media screen and (max-width: 800px){
+        @media screen and (max-width: 800px) {
           width: 100%;
           height: 50%;
         }
       }
     }
-    mat-divider{
+
+    mat-divider {
       width: 95%;
       margin: auto;
     }
-    .features{
+
+    .features {
       flex-direction: column;
       display: flex;
       text-align: center;
       margin-top: 32px;
-      @media screen and (max-width: 600px){
+      @media screen and (max-width: 600px) {
         margin-top: 16px;
       }
-      .text-one{
+
+      .text-one {
         font-size: 24px;
         font-weight: 600;
         color: #707070
       }
-      .text-two{
+
+      .text-two {
         font-size: 20px;
         font-weight: 600;
         color: #707070
       }
-      .clock{
+
+      .clock {
         width: 25%;
         margin: 36px auto;
       }
     }
-    .divider{
+
+    .divider {
       min-height: 24px;
       padding: 0 8px;
       border-left: 1px solid #707070;
       display: flex;
       align-items: center;
     }
-    .content-item{
+
+    .content-item {
       display: flex;
       align-items: center;
-      .icon{
+
+      .icon {
         margin: 0 4px;
       }
     }
-    .annexe{
+
+    .annexe {
       margin: 16px;
-      .head{
+
+      .head {
         color: #707070;
         font-weight: 600;
         margin-right: 12px;
       }
-      .divider.head{
+
+      .divider.head {
         width: 100%;
         height: 24px;
         display: flex;
         justify-content: center;
       }
-      .color{
+
+      .color {
         color: #707070;
         margin-right: 8px;
       }
-      .point{
+
+      .point {
         color: #707070;
         text-align: justify;
       }
-      .procedures{
+
+      .procedures {
         width: 100%;
         margin: 8px auto;
-        mat-card-content{
+
+        mat-card-content {
           display: flex;
           align-items: center;
-          .vertical-divider{
+
+          .vertical-divider {
             display: flex;
             align-items: center;
             min-height: 32px;
@@ -148,42 +173,50 @@
           }
         }
       }
-      .signature-section{
+
+      .signature-section {
         margin: 16px auto;
         width: 90%;
         font-size: 16px;
       }
-      .signatures{
+
+      .signatures {
         display: flex;
         flex-wrap: wrap;
         margin: 18px auto;
         justify-content: center;
         padding: 8px 0;
-        .item-sign{
+
+        .item-sign {
           width: 45%;
           display: flex;
           flex-direction: column;
           align-items: center;
           text-align: center;
-          .head{
+
+          .head {
             font-size: 11px;
             color: #707070;
             padding: 8px 0;
           }
-          .img-space{
-            width:65%;
+
+          .img-space {
+            width: 65%;
             height: 60px;
           }
-          .divide{
+
+          .divide {
             height: 1px;
             background-color: #707070;
             width: 80%;
           }
-          .name{
+
+          .name {
             color: #707070;
             font-size: 11px;
           }
-          .jobTitle{
+
+          .jobTitle {
             padding-top: 3px;
             color: #707070;
             font-size: 14px;
@@ -191,27 +224,33 @@
         }
       }
     }
-    .save{
+
+    .save {
       display: flex;
       justify-content: center;
       margin: 16px 0;
     }
+
     td, th {
       border: 1px solid #dddddd;
       text-align: center;
       padding: 8px;
       font-weight: normal;
     }
+
     tr:nth-child(even) {
       background-color: #dddddd;
     }
-    .add{
+
+    .add {
       color: #257602;
     }
-    .remove{
+
+    .remove {
       color: #E00000;
     }
-    .calendar{
+
+    .calendar {
       width: 100%;
       height: 100%;
       left: 0;
@@ -221,17 +260,20 @@
       z-index: 2;
       cursor: pointer;
     }
+
     .progress {
       position: absolute;
       top: 0;
       left: 0;
       z-index: 4;
     }
-    .error{
+
+    .error {
       font-size: 11px;
       width: 50%;
     }
-    .background{
+
+    .background {
       width: 400px;
       height: 200px;
       position: absolute;
@@ -240,7 +282,7 @@
       background: url("https://www.googleapis.com/download/storage/v1/b/businesscardgcs/o/alex4%2F2019-02-05-205017759Web-Fondo-gas-poca-transparencia.png?generation=1549399820762438&alt=media") no-repeat bottom;
       background-size: cover;
       z-index: 0;
-      @media screen and (max-width: 600px){
+      @media screen and (max-width: 600px) {
         width: 200px;
         height: 100px;
       }
