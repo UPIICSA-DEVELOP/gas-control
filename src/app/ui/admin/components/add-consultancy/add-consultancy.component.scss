@@ -4,69 +4,69 @@
  * Proprietary and confidential
  */
 
-#add-consultancy{
+#add-consultancy {
   width: 100%;
   height: 100%;
   position: relative;
   background-color: #F2F2F2;
 
 
-  .container{
+  .container {
     width: 100%;
     height: 100%;
     display: flex;
-    @media screen and (max-width: 900px){
+    @media screen and (max-width: 900px) {
       width: 100%;
       display: block;
       overflow-y: auto;
     }
 
-    .back{
+    .back {
       position: absolute;
       top: 5%;
       left: 5%;
     }
 
-    .stepper{
+    .stepper {
       width: 40%;
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
-      @media screen and (max-width: 900px){
+      @media screen and (max-width: 900px) {
         width: 40%;
       }
-      @media screen and (max-width: 900px){
+      @media screen and (max-width: 900px) {
         width: 100%;
       }
 
-      .container-stepper{
+      .container-stepper {
         width: 80%;
         text-align: center;
-        mat-vertical-stepper{
+
+        mat-vertical-stepper {
           background-color: #F2F2F2;
         }
       }
     }
 
 
-
-    .forms{
+    .forms {
       width: 60%;
       height: 100%;
       padding: 0 5%;
       overflow-y: auto;
       position: relative;
-      @media screen and (max-width: 1024px){
+      @media screen and (max-width: 1024px) {
         width: 60%;
       }
-      @media screen and (max-width: 900px){
+      @media screen and (max-width: 900px) {
         width: 100%;
         height: auto;
         overflow: hidden;
       }
 
-      .container-forms{
+      .container-forms {
         width: 100%;
         height: inherit;
         display: flex;
@@ -78,86 +78,96 @@
         box-sizing: content-box;
       }
 
-      .progress{
+      .progress {
         position: fixed;
         right: 0;
         bottom: 0;
         margin: 16px;
       }
 
-      form{
+      form {
         overflow: hidden;
       }
 
-      mat-card{
+      mat-card {
         width: 100%;
         overflow: hidden;
         padding: 0;
         margin: 16px 0;
       }
 
-      mat-card-content{
+      mat-card-content {
         margin: 0 24px;
         display: flex;
         flex-direction: column;
         align-items: center;
-        mat-form-field{
+
+        mat-form-field {
           width: 90%;
         }
       }
 
-      mat-card-actions{
+      mat-card-actions {
         padding: 0;
         margin: 24px 0 24px 0;
         text-align: center;
       }
 
-      .header-image{
+      .header-image {
         display: flex;
         justify-content: center;
         margin: 0 24px;
-        mat-card{
+
+        mat-card {
           width: 100px;
           height: 100px;
           border-radius: 50%;
-          mat-icon{
+
+          mat-icon {
             width: 100%;
             height: 100%;
             font-size: 100px;
             color: #707070;
           }
-          img{
+
+          img {
             width: 100px;
             height: 100px;
           }
         }
       }
 
-      .owner-info{
+      .owner-info {
         height: 100%;
-        .phone-number, .website{
+
+        .phone-number, .website {
           width: 90%;
           display: flex;
           justify-content: space-between;
-          .country-code, .protocol{
+
+          .country-code, .protocol {
             width: 20%;
           }
-          .number, .web{
+
+          .number, .web {
             width: 75%;
           }
         }
 
-        .signature{
+        .signature {
           width: 90%;
-          p{
+
+          p {
             color: rgba(0, 0, 0, 0.54);
           }
-          .error-signature{
-            p{
+
+          .error-signature {
+            p {
               color: #f44336 !important;
             }
           }
-          .panel{
+
+          .panel {
             width: 100%;
             height: 150px;
             cursor: pointer;
@@ -166,13 +176,15 @@
             align-items: center;
             position: relative;
             border: 1px solid rgba(0, 0, 0, 0.54);
-            img{
+
+            img {
               position: absolute;
               top: 0;
               width: 100%;
               height: 100%;
             }
-            p{
+
+            p {
               margin: 0;
             }
           }
@@ -182,9 +194,11 @@
       }
     }
   }
-  .modal{
+
+  .modal {
     position: relative;
-    .mask{
+
+    .mask {
       position: absolute;
       top: 0;
       left: 0;
@@ -194,11 +208,13 @@
       cursor: pointer;
     }
   }
-  .modal-two{
+
+  .modal-two {
     position: relative;
     width: 100%;
     margin-left: 32px;
-    .mask{
+
+    .mask {
       position: absolute;
       top: 0;
       left: 0;
@@ -208,7 +224,8 @@
       cursor: pointer;
     }
   }
-  mat-radio-group{
+
+  mat-radio-group {
     display: flex;
     justify-content: space-between;
     width: 90%;

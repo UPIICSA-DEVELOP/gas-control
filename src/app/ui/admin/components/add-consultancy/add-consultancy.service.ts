@@ -4,7 +4,7 @@
  * Proprietary and confidential
  */
 
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {MatDialog, MatDialogRef} from '@angular/material';
 import {AddConsultancyComponent} from '@app/ui/admin/components/add-consultancy/add-consultancy.component';
 
@@ -13,9 +13,10 @@ export class AddConsultancyService {
 
   constructor(
     private _dialog: MatDialog
-  ) { }
+  ) {
+  }
 
-  public open(): MatDialogRef<AddConsultancyComponent>{
+  public open(): MatDialogRef<AddConsultancyComponent> {
     return this._dialog.open(AddConsultancyComponent, {panelClass: 'add-consultancy-panel', disableClose: true});
   }
 }
