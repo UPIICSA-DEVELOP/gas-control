@@ -23,6 +23,9 @@ import {Report} from '@app/utils/interfaces/report';
 import {TaskLists} from '@app/utils/interfaces/task-lists';
 import {Station} from '@app/utils/interfaces/station';
 import {Task} from '@app/utils/interfaces/task';
+import {HttpResponseCodes} from '@app/utils/enums/http-response-codes';
+import {EntityResponse} from '@app/utils/class/entity-response';
+import {StationTask} from '@app/utils/interfaces/station-task';
 
 @Component({
   selector: 'app-list-tasks',
@@ -30,9 +33,10 @@ import {Task} from '@app/utils/interfaces/task';
   styleUrls: ['./list-tasks.component.scss'],
   encapsulation: ViewEncapsulation.None
 })
-export class ListTasksComponent implements OnInit, OnDestroy{
-  @ViewChild('modalScroll', { static: false }) private _modalScroll: ElementRef;
+export class ListTasksComponent implements OnInit, OnDestroy {
+  @ViewChild('modalScroll', {static: false}) private _modalScroll: ElementRef;
   public station: Station;
+
   @Input() set stationInfo(stationObj: any) {
     if (stationObj) {
       this.finishCreateTasks = false;
@@ -42,10 +46,10 @@ export class ListTasksComponent implements OnInit, OnDestroy{
       this.goBackList();
       this.resetFilters(true);
       this.station = stationObj;
-      if(this.station.stationTaskId){
+      if (this.station.stationTaskId) {
         this.notCalendar = false;
         this.getStatusTask();
-      }else{
+      } else {
         this.notCalendar = true;
       }
     }
@@ -55,8 +59,14 @@ export class ListTasksComponent implements OnInit, OnDestroy{
   public startDate: Date;
   public endDate: Date;
   public filters: any;
-  public start: any;
-  public end: any;
+  public start: {
+    timeStamp: number,
+    textDate: string,
+  };
+  public end: {
+    timeStamp: number,
+    textDate: string,
+  };
   public today: boolean;
   public typeFilter: string[];
   public filter: number;
@@ -65,7 +75,11 @@ export class ListTasksComponent implements OnInit, OnDestroy{
   public notCalendar: boolean;
   public date: any[];
   public others: boolean;
-  public notCalendarTasks: any[];
+  public notCalendarTasks: {
+    id: string,
+    date: string [],
+    type: any,
+  }[];
   public listTask: TaskLists;
   public emptyLisTasks: boolean;
   public finishCreateTasks: boolean;
@@ -79,6 +93,7 @@ export class ListTasksComponent implements OnInit, OnDestroy{
   private _subscriptionShared: Subscription;
   private _subscriptionLoader: Subscription;
   private _firstGet: boolean;
+
   constructor(
     private _dateService: DatepickerService,
     private _filterService: TaskFilterService,
@@ -120,30 +135,28 @@ export class ListTasksComponent implements OnInit, OnDestroy{
     this.end = UtilitiesService.createPersonalTimeStamp(this.endDate);
   }
 
-  ngOnDestroy(): void{
+  ngOnDestroy(): void {
     this._subscriptionShared.unsubscribe();
     this._subscriptionLoader.unsubscribe();
   }
 
-  private getStatusTask(): void{
-    this._api.getStationTask(this.station.stationTaskId).subscribe(response=>{
-      switch (response.code){
-        case 200:
-          if(response.item.status === 3){
-            this.getStationTask();
-          }else{
-            this.createTasks(this.station.stationTaskId);
-          }
-          break;
+  private getStatusTask(): void {
+    this._api.getStationTask(this.station.stationTaskId).subscribe(response => {
+      if (response.code === HttpResponseCodes.OK) {
+        if (response.item.status === 3) {
+          this.getStationTask();
+        } else {
+          this.createTasks(this.station.stationTaskId);
+        }
       }
-    })
+    });
   }
 
-  private checkChanges():void{
-    this._subscriptionShared = this._sharedService.getNotifications().subscribe((response: SharedNotification)=>{
-      switch (response.type){
+  private checkChanges(): void {
+    this._subscriptionShared = this._sharedService.getNotifications().subscribe((response: SharedNotification) => {
+      switch (response.type) {
         case SharedTypeNotification.NotCalendarTask:
-          if(!this.others){
+          if (!this.others) {
             this.resetFilters(true);
             this.others = true;
             this.notCalendarTasks = [];
@@ -154,11 +167,11 @@ export class ListTasksComponent implements OnInit, OnDestroy{
         case SharedTypeNotification.FinishEditTask:
           this.goBackList();
           this._firstGet = true;
-          if(this.others){
+          if (this.others) {
             this.notCalendarTasks = [];
             this._tokenTwo = null;
             this.getNotCalendarTask();
-          }else{
+          } else {
             this.listTask = {todayTasks: [], previousTasks: [], historyTasks: [], scheduleTasks: []};
             this._token = null;
             this.getStationTask();
@@ -169,7 +182,7 @@ export class ListTasksComponent implements OnInit, OnDestroy{
           this.createTasks(response.value.id);
           break;
       }
-    })
+    });
   }
 
   private getStationTask(): void {
@@ -185,26 +198,26 @@ export class ListTasksComponent implements OnInit, OnDestroy{
     this.emptyLisTasks = true;
     this.finishCreateTasks = false;
     this._api.listTask(this.filters).subscribe(response => {
-      switch (response.code) {
-        case 200:
-          if(this._token === response.nextPageToken){
-            this._token = null;
-          }else{
-            this._token = response.nextPageToken;
+      if (response.code === HttpResponseCodes.OK) {
+        if (this._token === response.nextPageToken) {
+          this._token = null;
+        } else {
+          this._token = response.nextPageToken;
+        }
+        if (response.items) {
+          this.emptyLisTasks = false;
+          this.tasksCompare(response.items);
+        } else {
+          if (this._firstOpen && this._taskType === '0' && this.filter === 0 &&
+            (this.listTask.historyTasks.length === 0 && this.listTask.previousTasks.length === 0 &&
+              this.listTask.todayTasks.length === 0 && this.listTask.scheduleTasks.length === 0)) {
+            this.finishCreateTasks = true;
+          } else {
+            this.emptyLisTasks = (this.listTask.historyTasks.length === 0 && this.listTask.previousTasks.length === 0 &&
+              this.listTask.todayTasks.length === 0 && this.listTask.scheduleTasks.length === 0);
           }
-          if (response.items) {
-            this.emptyLisTasks = false;
-            this.tasksCompare(response.items);
-          }else{
-            if(this._firstOpen && this._taskType === '0' && this.filter === 0 && (this.listTask.historyTasks.length === 0 && this.listTask.previousTasks.length === 0 && this.listTask.todayTasks.length === 0 && this.listTask.scheduleTasks.length === 0)){
-              this.finishCreateTasks = true;
-            }else{
-              this.emptyLisTasks = (this.listTask.historyTasks.length === 0 && this.listTask.previousTasks.length === 0 && this.listTask.todayTasks.length === 0 && this.listTask.scheduleTasks.length === 0);
-            }
-          }
-          break;
-        default:
-          break;
+        }
+      } else {
       }
     });
   }
@@ -231,32 +244,32 @@ export class ListTasksComponent implements OnInit, OnDestroy{
         }
       });
     });
-    mergeTasks = UtilitiesService.sortJSON(mergeTasks, 'originalDate','desc');
+    mergeTasks = UtilitiesService.sortJSON(mergeTasks, 'originalDate', 'desc');
     this.sortTaskArrayByStatus(mergeTasks);
   }
 
   public sortTaskArrayByStatus(tasksList: any): void {
     const today = UtilitiesService.createPersonalTimeStamp(new Date());
-    tasksList.forEach( task => {
-      if(task.status === 1){
-        if(today.timeStamp < task.originalDate){
-          if(this.listTask.scheduleTasks.length === 0){
+    tasksList.forEach(task => {
+      if (task.status === 1) {
+        if (today.timeStamp < task.originalDate) {
+          if (this.listTask.scheduleTasks.length === 0) {
             this.listTask.scheduleTasks.push({type: 1, title: 'Programadas', original: null, id: ''});
           }
           this.listTask.scheduleTasks.push({type: 2, title: '', original: task, id: task.id});
-        }else{
-          if(this.listTask.todayTasks.length === 0){
+        } else {
+          if (this.listTask.todayTasks.length === 0) {
             this.listTask.todayTasks.push({type: 1, title: 'Hoy', original: null, id: ''});
           }
           this.listTask.todayTasks.push({type: 2, title: '', original: task, id: task.id});
         }
-      }else if(task.status === 2){
-        if(this.listTask.previousTasks.length === 0){
+      } else if (task.status === 2) {
+        if (this.listTask.previousTasks.length === 0) {
           this.listTask.previousTasks.push({type: 1, title: 'Atrasadas', original: null, id: ''});
         }
         this.listTask.previousTasks.push({type: 2, title: '', original: task, id: task.id});
-      }else if(task.status === 3 || task.status === 4){
-        if(this.listTask.historyTasks.length === 0 ){
+      } else if (task.status === 3 || task.status === 4) {
+        if (this.listTask.historyTasks.length === 0) {
           this.listTask.historyTasks.push({type: 1, title: 'Historial', original: null, id: ''});
         }
         this.listTask.historyTasks.push({type: 2, title: '', original: task, id: task.id});
@@ -266,59 +279,55 @@ export class ListTasksComponent implements OnInit, OnDestroy{
   }
 
   public dateFilter(): void {
-    if(this.station.stationTaskId && !this.notCalendar){
-      this._api.getStationTask(this.station.stationTaskId).subscribe(response => {
-        switch (response.code) {
-          case 200:
-            this._creationDate = response.item.creationDate;
-            const config: DateRangeOptions = {
-              minDate: UtilitiesService.generateArrayDate(this._creationDate,false, true),
-              maxDate: UtilitiesService.generateArrayDate(this._creationDate, true, true),
-              startDate: this.start.timeStamp,
-              endDate: this.end.timeStamp
-            };
-            this._dateService.open(config).afterClosed().subscribe(response => {
-              switch (response.code) {
-                case 1:
-                  this.today = (response.startDate === response.endDate);
-                  this.startDate = response.startDate;
-                  this.endDate = response.endDate;
-                  if (this.startDate.toLocaleDateString() === this.endDate.toLocaleDateString()) {this.today = true;}
-                  this._firstOpen = false;
-                  this.start = UtilitiesService.createPersonalTimeStamp(this.startDate);
-                  this.end = UtilitiesService.createPersonalTimeStamp(this.endDate);
-                  if(this.others){
-                    this._tokenTwo = undefined;
-                    this.notCalendarTasks = [];
-                    this.getNotCalendarTask();
-                  }else{
-                    this._token = undefined;
-                    this.listTask = {historyTasks: [], previousTasks: [], todayTasks: [], scheduleTasks: []};
-                    this.getStationTask();
-                  }
-                  break;
+    if (this.station.stationTaskId && !this.notCalendar) {
+      this._api.getStationTask(this.station.stationTaskId).subscribe((stationResponse: EntityResponse<StationTask>) => {
+        if (stationResponse.code === HttpResponseCodes.OK) {
+          this._creationDate = stationResponse.item.creationDate;
+          const config: DateRangeOptions = {
+            minDate: UtilitiesService.generateArrayDate(this._creationDate, false, true),
+            maxDate: UtilitiesService.generateArrayDate(this._creationDate, true, true),
+            startDate: this.start.timeStamp,
+            endDate: this.end.timeStamp
+          };
+          this._dateService.open(config).afterClosed().subscribe(response => {
+            if (response.code === 1) {
+              this.today = (response.startDate === response.endDate);
+              this.startDate = response.startDate;
+              this.endDate = response.endDate;
+              if (this.startDate.toLocaleDateString() === this.endDate.toLocaleDateString()) {
+                this.today = true;
               }
-            });
-            break;
+              this._firstOpen = false;
+              this.start = UtilitiesService.createPersonalTimeStamp(this.startDate);
+              this.end = UtilitiesService.createPersonalTimeStamp(this.endDate);
+              if (this.others) {
+                this._tokenTwo = undefined;
+                this.notCalendarTasks = [];
+                this.getNotCalendarTask();
+              } else {
+                this._token = undefined;
+                this.listTask = {historyTasks: [], previousTasks: [], todayTasks: [], scheduleTasks: []};
+                this.getStationTask();
+              }
+            }
+          });
         }
       });
     }
   }
 
   public taskFilter(): void {
-    if(!this.notCalendar){
+    if (!this.notCalendar) {
       this._filterService.open(this.filter).afterClosed().subscribe(response => {
-        switch (response.code) {
-          case 1:
-            this.filter = response.filter;
-            this.listTask = {historyTasks: [], previousTasks: [], todayTasks: [], scheduleTasks:[]};
-            this._token = undefined;
-            if(this.filter === 0){
-              this.resetFilters();
-            }else{
-              this.getStationTask();
-            }
-            break;
+        if (response.code === 1) {
+          this.filter = response.filter;
+          this.listTask = {historyTasks: [], previousTasks: [], todayTasks: [], scheduleTasks: []};
+          this._token = undefined;
+          if (this.filter === 0) {
+            this.resetFilters();
+          } else {
+            this.getStationTask();
+          }
         }
       });
     }
@@ -335,30 +344,30 @@ export class ListTasksComponent implements OnInit, OnDestroy{
     this._taskType = '0';
     this._token = undefined;
     this._tokenTwo = undefined;
-    if(!getTasks){
-      if(this.others){
+    if (!getTasks) {
+      if (this.others) {
         this.notCalendarTasks = [];
         this.getNotCalendarTask();
-      }else{
-        this.listTask = {todayTasks:[], previousTasks: [], historyTasks:[],scheduleTasks:[]};
+      } else {
+        this.listTask = {todayTasks: [], previousTasks: [], historyTasks: [], scheduleTasks: []};
         this.getStationTask();
       }
     }
   }
 
   public search(): void {
-    if(!this.notCalendar){
-      this._taskFilterNameService.open({utils: this.utils.taskTemplates, lastTypeSelected: Number(this._taskType)}).afterClosed().subscribe(response => {
-        switch (response.code) {
-          case 1:
-            this._taskType = response.data.toString();
-            this.listTask = {historyTasks: [], previousTasks: [], todayTasks: [], scheduleTasks:[]};
-            this._token = undefined;
-            this._tokenTwo = undefined;
-            this.getStationTask();
-            break;
-          default:
-            break;
+    if (!this.notCalendar) {
+      this._taskFilterNameService.open({
+        utils: this.utils.taskTemplates,
+        lastTypeSelected: Number(this._taskType)
+      }).afterClosed().subscribe(response => {
+        if (response.code === 1) {
+          this._taskType = response.data.toString();
+          this.listTask = {historyTasks: [], previousTasks: [], todayTasks: [], scheduleTasks: []};
+          this._token = undefined;
+          this._tokenTwo = undefined;
+          this.getStationTask();
+        } else {
         }
       });
     }
@@ -368,28 +377,34 @@ export class ListTasksComponent implements OnInit, OnDestroy{
     this._addStationService.open({stepActive: 3, stationId: this.station.id, disableClose: true});
   }
 
-  public getNotCalendarTask(ev?: any):void{
+  public getNotCalendarTask(ev?: any): void {
     this.goBackList();
     let type = '1';
-    if(ev){
+    if (ev) {
       this._tokenTwo = null;
       this.notCalendarTasks = [];
       this._lastTabSelected = ev.index;
-      switch (ev.index){
-        case 0: type = '1';
+      switch (ev.index) {
+        case 0:
+          type = '1';
           break;
-        case 1: type = '3';
+        case 1:
+          type = '3';
           break;
-        case 2: type = '2';
+        case 2:
+          type = '2';
           break;
       }
-    }else{
-      switch (this._lastTabSelected){
-        case 0: type = '1';
+    } else {
+      switch (this._lastTabSelected) {
+        case 0:
+          type = '1';
           break;
-        case 1: type = '3';
+        case 1:
+          type = '3';
           break;
-        case 2: type = '2';
+        case 2:
+          type = '2';
           break;
       }
     }
@@ -401,80 +416,79 @@ export class ListTasksComponent implements OnInit, OnDestroy{
       type: type || '1',
       cursor: this._tokenTwo
     };
-    if(this.station.stationTaskId){
-      this._api.listUTask(this.filters).subscribe(response=>{
-        switch (response.code){
-          case 200:
-            let token;
-            if(this._tokenTwo === response.nextPageToken){
-              this._tokenTwo = null;
-              token = true;
-            }else{
-              this._tokenTwo = response.nextPageToken;
-            }
-            if(response.items && !token){
-              this.compareNotCalendarTasks(response.items, Number(this.filters.type));
-            }else if(!token) {
-              this.notCalendarTasks = [];
-            }
-            break;
-          default:
+    if (this.station.stationTaskId) {
+      this._api.listUTask(this.filters).subscribe(response => {
+        if (response.code === HttpResponseCodes.OK) {
+          let token;
+          if (this._tokenTwo === response.nextPageToken) {
+            this._tokenTwo = null;
+            token = true;
+          } else {
+            this._tokenTwo = response.nextPageToken;
+          }
+          if (response.items && !token) {
+            this.compareNotCalendarTasks(response.items, Number(this.filters.type));
+          } else if (!token) {
             this.notCalendarTasks = [];
-            break;
+          }
+        } else {
+          this.notCalendarTasks = [];
         }
       });
     }
   }
 
-  private compareNotCalendarTasks(tasks: Task[], type: number):void{
-    tasks.forEach(task => {this.notCalendarTasks.push({id: task.id, date: UtilitiesService.convertDate(task.date), type: type});});
+  private compareNotCalendarTasks(tasks: Task[], type: number): void {
+    tasks.forEach(task => {
+      this.notCalendarTasks.push({id: task.id, date: UtilitiesService.convertDate(task.date), type: type});
+    });
     this._firstGet = false;
   }
 
-  public goTaskInfo(task: any, type?:number): void{
+  public goTaskInfo(task: any, type?: number): void {
     const today = UtilitiesService.createPersonalTimeStamp(new Date());
-    if(!this.others){
-      if(task.status === 3 && this.user.role !== 7){
-        this._snackBarService.openSnackBar('No es posible visualizar tareas vencidas','OK',3000);
+    if (!this.others) {
+      if (task.status === 3 && this.user.role !== 7) {
+        this._snackBarService.openSnackBar('No es posible visualizar tareas vencidas', 'OK', 3000);
         return;
       }
-      if(task.date>today.timeStamp && this.user.role !== 7){
-        this._snackBarService.openSnackBar('No es posible visualizar tareas programadas','OK',3000);
+      if (task.date > today.timeStamp && this.user.role !== 7) {
+        this._snackBarService.openSnackBar('No es posible visualizar tareas programadas', 'OK', 3000);
         return;
       }
       this._modalScroll.nativeElement.scrollTop = '0';
       this.reportConfig = {reportView: true, taskElement: task, typeReportView: task.original.typeReport, status: task.status};
-    }else{
+    } else {
       this._modalScroll.nativeElement.scrollTop = '0';
       this.reportConfig = {reportView: true, taskElement: task, typeReportView: type, status: 4};
     }
   }
 
-  public goBackList(): void{
+  public goBackList(): void {
     this._firstGet = true;
     this.reportConfig = {reportView: false, taskElement: null, typeReportView: 0, status: 0};
   }
 
-  public closeOthers(): void{
+  public closeOthers(): void {
     this.goBackList();
     this._lastTabSelected = 0;
     this.notCalendarTasks = [];
     this.others = false;
-    if(!this.notCalendar){
+    if (!this.notCalendar) {
       this.resetFilters();
     }
   }
 
-  public onScroll(event: any):void{
-    const element = event.srcElement;
-    if(element.scrollHeight - element.scrollTop === element.clientHeight) {
-      if(!this.reportConfig.reportView && !this._firstGet && !this.load){
-        if(this.others){
-          if(this._tokenTwo){
+  public onScroll(event: any): void {
+    const element = event.target;
+    if (element.scrollHeight - element.scrollTop === element.clientHeight) {
+      if (!this.reportConfig.reportView && !this._firstGet && !this.load) {
+        if (this.others) {
+          if (this._tokenTwo) {
             this.getNotCalendarTask();
           }
-        }else{
-          if(this._token){
+        } else {
+          if (this._token) {
             this.getStationTask();
           }
         }
@@ -482,70 +496,82 @@ export class ListTasksComponent implements OnInit, OnDestroy{
     }
   }
 
-  public addNotCalendarTask():void{
+  public addNotCalendarTask(): void {
     let type: number;
     let type_two: number;
-    switch (this._lastTabSelected){
-      case 0: type = 1; type_two = 7;
+    switch (this._lastTabSelected) {
+      case 0:
+        type = 1;
+        type_two = 7;
         break;
-      case 1: type = 3; type_two = 9;
+      case 1:
+        type = 3;
+        type_two = 9;
         break;
-      case 2: type = 2; type_two = 6;
+      case 2:
+        type = 2;
+        type_two = 6;
         break;
     }
-    this.reportConfig = {reportView: true, status: 1, taskElement: {id: 0, status: 1, item: this.utils.uTaskTemplates[type-1], hwg: false}, typeReportView: type_two};
+    this.reportConfig = {
+      reportView: true,
+      status: 1,
+      taskElement: {id: 0, status: 1, item: this.utils.uTaskTemplates[type - 1], hwg: false},
+      typeReportView: type_two
+    };
     this._modalScroll.nativeElement.scrollTop = '0';
   }
 
-  public editFormat(): void{
+  public editFormat(): void {
     this._sharedService.setNotification({type: SharedTypeNotification.EditTask, value: this.reportConfig.typeReportView});
   }
-  public exportFormat():void{
-    if(this.others){
+
+  public exportFormat(): void {
+    if (this.others) {
       this._api.exportReport(
         this.reportConfig.taskElement.id,
         this.reportConfig.typeReportView,
-        this.reportConfig.taskElement.type).subscribe(response=>{
-        if (response){
+        this.reportConfig.taskElement.type).subscribe(response => {
+        if (response) {
           this._openFile.open(response);
         }
       });
-    }else{
+    } else {
       this._api.exportReport(
         this.reportConfig.taskElement.id,
         this.reportConfig.taskElement.original.typeReport,
-        this.reportConfig.taskElement.original.type).subscribe(response=>{
-        if (response){
+        this.reportConfig.taskElement.original.type).subscribe(response => {
+        if (response) {
           this._openFile.open(response);
         }
       });
     }
   }
 
-  public exportListTasks(): void{
-    if(this.listTask.scheduleTasks.length === 0 &&
+  public exportListTasks(): void {
+    if (this.listTask.scheduleTasks.length === 0 &&
       this.listTask.historyTasks.length === 0 &&
       this.listTask.previousTasks.length === 0 &&
-      this.listTask.todayTasks.length == 0){
-      this._snackBarService.openSnackBar('No es posible exportar una lista vacía','OK',3000);
+      this.listTask.todayTasks.length === 0) {
+      this._snackBarService.openSnackBar('No es posible exportar una lista vacía', 'OK', 3000);
       return;
     }
     this._api.exportCalendarByTaskList(this.filters, this.others).subscribe(response => {
-      if (response){
+      if (response) {
         this._openFile.open(response);
       }
     });
   }
 
-  private createTasks(id: string):void{
-    this._api.buildTaskByStation(id).subscribe(response=>{
-      switch (response.code){
+  private createTasks(id: string): void {
+    this._api.buildTaskByStation(id).subscribe(response => {
+      switch (response.code) {
         case 200:
         case 400:
-          if(response.item.status!==3){
+          if (response.item.status !== 3) {
             this.createTasks(id);
-          }else{
-            if(this.station){
+          } else {
+            if (this.station) {
               this.station.stationTaskId = response.item.id;
               this.emptyLisTasks = false;
               this.finishCreateTasks = true;

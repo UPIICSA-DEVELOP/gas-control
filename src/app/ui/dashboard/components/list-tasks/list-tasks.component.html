@@ -13,12 +13,14 @@
         <div *ngIf="!reportConfig.reportView" class="settings">
           <mat-icon class="filter-icon">filter_list</mat-icon>
           <mat-chip-list>
-            <mat-chip *ngIf="!others" [disabled]="notCalendar" [selectable]="!notCalendar" [color]="'primary'" selected (click)="taskFilter()">
+            <mat-chip *ngIf="!others" [disabled]="notCalendar" [selectable]="!notCalendar" [color]="'primary'" selected
+                      (click)="taskFilter()">
               Filtro por tareas:
               <span>&nbsp;{{typeFilter[filter]}}&nbsp;</span>
               <mat-icon>edit</mat-icon>
             </mat-chip>
-            <mat-chip [disabled]="notCalendar" [selectable]="!notCalendar" [color]="'primary'" selected (click)="dateFilter()">
+            <mat-chip [disabled]="notCalendar" [selectable]="!notCalendar" [color]="'primary'" selected
+                      (click)="dateFilter()">
               Fecha:
               <span *ngIf="today">&nbsp;{{start.textDate}}&nbsp;</span>
               <span *ngIf="!today">&nbsp;{{start.textDate}} - {{end.textDate}}&nbsp;</span>
@@ -28,23 +30,31 @@
         </div>
         <div class="search">
           <mat-spinner [color]="'primary'" *ngIf="load" [diameter]="24"></mat-spinner>
-          <button [color]="'primary'" class="button" [disabled]="load" mat-icon-button *ngIf="!reportConfig.reportView && !notCalendar" (click)="exportListTasks()" matTooltip="Exportar lista">
+          <button [color]="'primary'" class="button" [disabled]="load" mat-icon-button
+                  *ngIf="!reportConfig.reportView && !notCalendar" (click)="exportListTasks()"
+                  matTooltip="Exportar lista">
             <mat-icon svgIcon="icons:fileDownload"></mat-icon>
           </button>
-          <button [color]="'primary'" class="button" *ngIf="others && !reportConfig.reportView" mat-icon-button (click)="resetFilters()" matTooltip="Reset">
+          <button [color]="'primary'" class="button" *ngIf="others && !reportConfig.reportView" mat-icon-button
+                  (click)="resetFilters()" matTooltip="Reset">
             <mat-icon>refresh</mat-icon>
           </button>
-          <button [color]="'primary'" class="button" *ngIf="others && !reportConfig.reportView" mat-icon-button (click)="closeOthers()" matTooltip="Cerrar">
+          <button [color]="'primary'" class="button" *ngIf="others && !reportConfig.reportView" mat-icon-button
+                  (click)="closeOthers()" matTooltip="Cerrar">
             <mat-icon>close</mat-icon>
           </button>
-          <button [color]="'primary'" class="button" [disabled]="notCalendar" mat-icon-button *ngIf="!others && !reportConfig.reportView" (click)="search()" matTooltip="Buscar">
+          <button [color]="'primary'" class="button" [disabled]="notCalendar" mat-icon-button
+                  *ngIf="!others && !reportConfig.reportView" (click)="search()" matTooltip="Buscar">
             <mat-icon>search</mat-icon>
           </button>
-          <button [color]="'primary'" mat-icon-button [disabled]="notCalendar" *ngIf="!reportConfig.reportView && !notCalendar" [matMenuTriggerFor]="menu_filters" class="menu_filters">
+          <button [color]="'primary'" mat-icon-button [disabled]="notCalendar"
+                  *ngIf="!reportConfig.reportView && !notCalendar" [matMenuTriggerFor]="menu_filters"
+                  class="menu_filters">
             <mat-icon>more_vert</mat-icon>
           </button>
           <mat-menu #menu_filters>
-            <button mat-menu-item [disabled]="load" *ngIf="!reportConfig.reportView && !notCalendar" (click)="exportListTasks()">
+            <button mat-menu-item [disabled]="load" *ngIf="!reportConfig.reportView && !notCalendar"
+                    (click)="exportListTasks()">
               <mat-icon svgIcon="icons:fileDownload"></mat-icon>
               <span>Exportar</span>
             </button>
@@ -72,10 +82,12 @@
           <ng-template #reportForm>
             <div style="width: 95%">
               <div style="display: flex; justify-content: flex-end">
-                <button *ngIf="reportConfig.status === 4" [disabled]="load" mat-icon-button matTooltip="Exportar reporte" (click)="exportFormat()">
+                <button *ngIf="reportConfig.status === 4" [disabled]="load" mat-icon-button
+                        matTooltip="Exportar reporte" (click)="exportFormat()">
                   <mat-icon svgIcon="icons:fileDownload"></mat-icon>
                 </button>
-                <button *ngIf="reportConfig.status === 4 && user.role === 7" mat-icon-button (click)="editFormat()" matTooltip="Editar">
+                <button *ngIf="reportConfig.status === 4 && user.role === 7" mat-icon-button (click)="editFormat()"
+                        matTooltip="Editar">
                   <mat-icon>edit</mat-icon>
                 </button>
                 <button mat-icon-button (click)="goBackList()" matTooltip="Cerrar bitacora">
@@ -102,7 +114,8 @@
             </div>
           </ng-template>
           <ng-template #completeList>
-            <div *ngIf="listTask.todayTasks.length === 0 && listTask.previousTasks.length === 0 && listTask.historyTasks.length === 0 && listTask.scheduleTasks.length === 0; then message else list"></div>
+            <div
+              *ngIf="listTask.todayTasks.length === 0 && listTask.previousTasks.length === 0 && listTask.historyTasks.length === 0 && listTask.scheduleTasks.length === 0; then message else list"></div>
             <ng-template #list>
               <div class="card-list" *ngFor="let task of listTask.scheduleTasks;">
                 <div *ngIf="task.type === 1; then dividerText else taskCard"></div>
@@ -150,12 +163,17 @@
                     <div class="message">Espere un momento por favor...</div>
                   </ng-template>
                   <ng-template #notExistTasks>
-                    <div class="notFoundTasks" *ngIf="emptyLisTasks && !finishCreateTasks">No existen resultados para su búsqueda</div>
-                    <div *ngIf="finishCreateTasks && !emptyLisTasks" class="message">La Estación no cuenta por el momento con tareas programadas, por favor consulte mañana</div>
+                    <div class="notFoundTasks" *ngIf="emptyLisTasks && !finishCreateTasks">No existen resultados para su
+                      búsqueda
+                    </div>
+                    <div *ngIf="finishCreateTasks && !emptyLisTasks" class="message">La Estación no cuenta por el
+                      momento con tareas programadas, por favor consulte mañana
+                    </div>
                   </ng-template>
                 </ng-template>
                 <ng-template #notTask>
-                  <div class="message">Para continuar, es necesario calendarizar las tareas faltantes de la Estación</div>
+                  <div class="message">Para continuar, es necesario calendarizar las tareas faltantes de la Estación
+                  </div>
                   <div class="action" *ngIf="user.role !== 6">
                     <button mat-flat-button type="button" (click)="createStationTasks()">IR A TAREAS</button>
                   </div>
@@ -175,10 +193,12 @@
                 <ng-template #frReportView>
                   <div style="width: 95%">
                     <div style="display: flex; justify-content: flex-end">
-                      <button *ngIf="reportConfig.status === 4" [disabled]="load" mat-icon-button matTooltip="Exportar reporte" (click)="exportFormat()">
+                      <button *ngIf="reportConfig.status === 4" [disabled]="load" mat-icon-button
+                              matTooltip="Exportar reporte" (click)="exportFormat()">
                         <mat-icon svgIcon="icons:fileDownload"></mat-icon>
                       </button>
-                      <button mat-icon-button *ngIf="user.role === 7 && reportConfig.status === 4" (click)="editFormat()" matTooltip="Editar">
+                      <button mat-icon-button *ngIf="user.role === 7 && reportConfig.status === 4"
+                              (click)="editFormat()" matTooltip="Editar">
                         <mat-icon>edit</mat-icon>
                       </button>
                       <button mat-icon-button (click)="goBackList()" matTooltip="Cerrar bitacora">
@@ -222,37 +242,40 @@
                 <ng-template #incidenceReportView>
                   <div style="width: 95%">
                     <div style="display: flex; justify-content: flex-end">
-                      <button *ngIf="reportConfig.status === 4" [disabled]="load" mat-icon-button matTooltip="Exportar reporte" (click)="exportFormat()">
+                      <button *ngIf="reportConfig.status === 4" [disabled]="load" mat-icon-button
+                              matTooltip="Exportar reporte" (click)="exportFormat()">
                         <mat-icon svgIcon="icons:fileDownload"></mat-icon>
                       </button>
-                      <button mat-icon-button *ngIf="user.role === 7 && reportConfig.status === 4" (click)="editFormat()" matTooltip="Editar">
+                      <button mat-icon-button *ngIf="user.role === 7 && reportConfig.status === 4"
+                              (click)="editFormat()" matTooltip="Editar">
                         <mat-icon>edit</mat-icon>
                       </button>
                       <button mat-icon-button (click)="goBackList()" matTooltip="Cerrar bitacora">
                         <mat-icon>close</mat-icon>
                       </button>
                     </div>
-                    <app-incidence-report [taskIncidenceInfo]="reportConfig.taskElement" [utilities]="utils" [station]="station"></app-incidence-report>
+                    <app-incidence-report [taskIncidenceInfo]="reportConfig.taskElement" [utilities]="utils"
+                                          [station]="station"></app-incidence-report>
                   </div>
                 </ng-template>
                 <ng-template #incidenceList>
                   <div class="card-list" *ngFor="let task of notCalendarTasks;">
                     <mat-card matRipple (click)="goTaskInfo(task, 9)" class="task" style="margin-top: 8px">
-                        <div class="priority" style="background-color:#E00000"></div>
-                        <mat-card-content>
-                          <div class="date">
-                            <div>
-                              <div class="text-bold">{{task.date[0]}}</div>
-                              <div class="text-bold">{{task.date[1]}}</div>
-                            </div>
+                      <div class="priority" style="background-color:#E00000"></div>
+                      <mat-card-content>
+                        <div class="date">
+                          <div>
+                            <div class="text-bold">{{task.date[0]}}</div>
+                            <div class="text-bold">{{task.date[1]}}</div>
                           </div>
-                          <div class="content">
-                            <div class="head">Incidencia</div>
-                            <div class="text"></div>
-                            <div class="text">Crítico</div>
-                          </div>
-                        </mat-card-content>
-                      </mat-card>
+                        </div>
+                        <div class="content">
+                          <div class="head">Incidencia</div>
+                          <div class="text"></div>
+                          <div class="text">Crítico</div>
+                        </div>
+                      </mat-card-content>
+                    </mat-card>
                   </div>
                 </ng-template>
               </ng-template>
@@ -269,10 +292,12 @@
                 <ng-template #frReportView>
                   <div style="width: 95%">
                     <div style="display: flex; justify-content: flex-end">
-                      <button *ngIf="reportConfig.status === 4" [disabled]="load" mat-icon-button matTooltip="Exportar reporte" (click)="exportFormat()">
+                      <button *ngIf="reportConfig.status === 4" [disabled]="load" mat-icon-button
+                              matTooltip="Exportar reporte" (click)="exportFormat()">
                         <mat-icon svgIcon="icons:fileDownload"></mat-icon>
                       </button>
-                      <button mat-icon-button *ngIf="user.role === 7 && reportConfig.status === 4" (click)="editFormat()" matTooltip="Editar">
+                      <button mat-icon-button *ngIf="user.role === 7 && reportConfig.status === 4"
+                              (click)="editFormat()" matTooltip="Editar">
                         <mat-icon>edit</mat-icon>
                       </button>
                       <button mat-icon-button (click)="goBackList()" matTooltip="Cerrar bitacora">
@@ -311,7 +336,10 @@
             </mat-tab>
           </mat-tab-group>
         </div>
-        <button matTooltip="Nueva bitacora" *ngIf="others && !reportConfig.reportView && user.role === 7 && station.stationTaskId" type="button" (click)="addNotCalendarTask()" mat-icon-button style="background-color: #FFAA00; color: #FFFFFF; position: absolute; bottom: 24px; right: 24px; z-index: 4; margin: 16px">
+        <button matTooltip="Nueva bitacora"
+                *ngIf="others && !reportConfig.reportView && user.role === 7 && station.stationTaskId" type="button"
+                (click)="addNotCalendarTask()" mat-icon-button
+                style="background-color: #FFAA00; color: #FFFFFF; position: absolute; bottom: 24px; right: 24px; z-index: 4; margin: 16px">
           <mat-icon>add</mat-icon>
         </button>
       </ng-template>

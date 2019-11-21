@@ -4,11 +4,13 @@
  *  Proprietary and confidential
  */
 @import "../../../../../styles/colors";
-#list-tasks{
+
+#list-tasks {
   width: 100%;
   position: absolute;
   top: 0;
   bottom: 0;
+
   .header {
     padding-bottom: 8px;
     width: 100%;
@@ -16,54 +18,66 @@
     overflow: hidden;
     text-overflow: ellipsis;
   }
-  .flex-box{
+
+  .flex-box {
     display: flex;
   }
-  .container{
+
+  .container {
     height: 100%;
-    .header{
+
+    .header {
       align-items: center;
-      h4{
+
+      h4 {
         margin: 8px;
       }
-      .filters{
-       display: flex;
+
+      .filters {
+        display: flex;
         justify-content: space-between;
-        .settings{
+
+        .settings {
           width: 100%;
           display: flex;
-          .filter-icon{
+
+          .filter-icon {
             margin: 4px 8px 0 0;
             color: mat-color($primary);
-            @media screen and (max-width: 600px){
+            @media screen and (max-width: 600px) {
               display: none;
             }
           }
         }
-        .search{
+
+        .search {
           display: flex;
           align-items: flex-start;
-          .button{
+
+          .button {
             margin: -8px 8px 0 0;
-            @media screen and (max-width: 600px){
+            @media screen and (max-width: 600px) {
               display: none;
             }
           }
         }
-        .menu_filters{
+
+        .menu_filters {
           display: none;
-          @media screen and (max-width: 600px){
+          @media screen and (max-width: 600px) {
             display: block;
           }
         }
       }
     }
-    mat-card-content{
+
+    mat-card-content {
       height: 100%;
-      @media screen and (max-width: 600px){
+      @media screen and (max-width: 600px) {
         height: calc(100% - 48px);
       }
-      .sub-container{
+
+      .sub-container {
         overflow: auto;
         height: calc(100% - 72px);
         width: 100%;
@@ -71,33 +85,38 @@
         flex-direction: column;
         align-items: center;
         position: relative;
-        .notFoundTasks{
+
+        .notFoundTasks {
           position: absolute;
           top: 50%;
           font-size: 18px;
         }
-        .task{
+
+        .task {
           cursor: pointer;
           padding: 0;
           display: flex;
           margin-bottom: 12px;
           height: 92px;
-          mat-card-content{
+
+          mat-card-content {
             display: flex;
             width: 100%;
             position: relative;
             padding: 12px;
           }
-          .date{
+
+          .date {
             text-align: center;
             display: flex;
             justify-content: center;
             align-items: center;
             margin: 12px;
-            @media screen and (max-width: 900px){
+            @media screen and (max-width: 900px) {
               width: 25%;
             }
-            .text-bold{
+
+            .text-bold {
               color: #707070;
               font-weight: 500;
               font-size: 16px;
@@ -106,15 +125,18 @@
               text-overflow: ellipsis;
             }
           }
-          .content{
+
+          .content {
             width: 90%;
             height: 100%;
-            .head{
+
+            .head {
               color: #000000;
               font-weight: 700;
               font-size: 13px;
             }
-            .text{
+
+            .text {
               color: #707070;
               font-weight: 400;
               font-size: 12px;
@@ -128,56 +150,65 @@
       }
     }
   }
-  .priority{
+
+  .priority {
     width: 1%;
     position: relative;
     top: 0;
     left: 0;
     border-radius: 4px 0 0 4px;
   }
-  .empty-list{
+
+  .empty-list {
     width: 100%;
     height: 100%;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    .message{
+
+    .message {
       margin: 12px 0;
       font-size: 20px;
       text-align: center;
       width: 75%;
     }
-    .action{
+
+    .action {
       display: flex;
       justify-content: center;
-      button{
+
+      button {
         background-color: #FFAA00;
         color: #FFFFFF;
         margin-top: 24px;
       }
     }
   }
-  .card-list{
+
+  .card-list {
     width: 95%;
   }
 
-  .containerTask{
+  .containerTask {
     width: 100%;
   }
-  .done{
+
+  .done {
     color: #257602;
     font-size: 16px;
     width: 16px;
     height: 16px;
   }
-  .pending{
+
+  .pending {
     color: #707070;
     font-size: 16px;
     width: 16px;
     height: 16px;
   }
-  .latest{
+
+  .latest {
     color: #E00000;
     font-size: 16px;
     width: 16px;
