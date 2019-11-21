@@ -21,6 +21,7 @@ import {LoaderService} from '@app/core/components/loader/loader.service';
 import {VRSReport} from '@app/utils/interfaces/reports/vrs-report';
 import {VRSTank} from '@app/utils/interfaces/vrs-tank';
 import {Task} from '@app/utils/interfaces/task';
+import {HttpResponseCodes} from '@app/utils/enums/http-response-codes';
 
 @Component({
   selector: 'app-vrs-report',
@@ -31,13 +32,15 @@ import {Task} from '@app/utils/interfaces/task';
 export class VrsReportComponent implements OnInit, OnDestroy {
   private _taskId: string;
   public task: Task;
-  @Input() set taskVrsInfo(taskObj: any){
-    if(taskObj){
+
+  @Input() set taskVrsInfo(taskObj: any) {
+    if (taskObj) {
       this._taskId = taskObj.id;
       this.task = taskObj;
       this.getVRSReport();
     }
   }
+
   public load: boolean;
   public vrsForm: FormGroup;
   public vrsReport: VRSReport;
@@ -54,11 +57,12 @@ export class VrsReportComponent implements OnInit, OnDestroy {
   private _signature: FormData;
   private _signatureElement: any;
   private _evidenceElement: any;
-  private _loads: boolean[];
+  private readonly _loads: boolean[];
   private _indexTask: number;
   private _copyTask: VRSReport;
   private _subscriptionShared: Subscription;
   private _subscriptionLoader: Subscription;
+
   constructor(
     private _api: ApiService,
     private _apiLoader: LoaderService,
@@ -68,41 +72,46 @@ export class VrsReportComponent implements OnInit, OnDestroy {
     private _uploadFileService: UploadFileService,
     private _signatureService: SignaturePadService,
     private _sharedService: SharedService
-
   ) {
     this.date = [];
     this.taskItems = [];
     this._indexTask = 0;
-    this.tanks = [{capAndFillingAdapter: undefined,capAndSteamAdapter: undefined,fuelType: 0, overfillValve: undefined, vacuumPressureValve:undefined}];
+    this.tanks = [{
+      capAndFillingAdapter: undefined,
+      capAndSteamAdapter: undefined,
+      fuelType: 0,
+      overfillValve: undefined,
+      vacuumPressureValve: undefined
+    }];
     this.errorTank = [false];
     this.editable = false;
     this._loads = [false, false];
   }
 
   ngOnInit() {
-    this._subscriptionLoader = this._apiLoader.getProgress().subscribe(load=>{this.load = load});
+    this._subscriptionLoader = this._apiLoader.getProgress().subscribe(load => {
+      this.load = load;
+    });
     this.initVrsForm();
     this.getNotifications();
   }
 
-  ngOnDestroy():void{
+  ngOnDestroy(): void {
     this._subscriptionShared.unsubscribe();
     this._subscriptionLoader.unsubscribe();
   }
 
-  private getNotifications():void{
-    this._subscriptionShared = this._sharedService.getNotifications().subscribe(response=>{
-      switch (response.type){
-        case SharedTypeNotification.EditTask:
-          if(response.value === 4){
-            this.startEditReport();
-          }
-          break;
+  private getNotifications(): void {
+    this._subscriptionShared = this._sharedService.getNotifications().subscribe(response => {
+      if (response.type === SharedTypeNotification.EditTask) {
+        if (response.value === 4) {
+          this.startEditReport();
+        }
       }
-    })
+    });
   }
 
-  private initVrsForm():void{
+  private initVrsForm(): void {
     this.vrsForm = this._formBuilder.group({
       magna: [false, []],
       premium: [false, []],
@@ -117,17 +126,17 @@ export class VrsReportComponent implements OnInit, OnDestroy {
     });
   }
 
-  private resetElements(): void{
+  private resetElements(): void {
     this.vrsReport = undefined;
     this.vrsForm.reset();
     this.vrsForm.disable();
     const user = LocalStorageService.getItem(Constants.UserInSession);
-    if(this.task.status !== 4 && user.role ===7){
+    if (this.task.status !== 4 && user.role === 7) {
       this.startEditReport(true);
     }
   }
 
-  private patchForm(task: any):void{
+  private patchForm(task: any): void {
     this.vrsReport = {
       date: task.date || null,
       emergencyStop: task.emergencyStop || null,
@@ -154,58 +163,55 @@ export class VrsReportComponent implements OnInit, OnDestroy {
       emergencyStop: this.vrsReport.emergencyStop,
       observations: this.vrsReport.observations
     });
-    if(this.vrsReport.vrsTanks) {
+    if (this.vrsReport.vrsTanks) {
       this.tanks = this.vrsReport.vrsTanks;
     }
     this.date = UtilitiesService.convertDate(this.vrsReport.date);
     this.vrsForm.disable();
   }
 
-  private getVRSReport(): void{
-    this._api.getTaskInformation(this._taskId, 4).subscribe(response=>{
-      switch (response.code){
-        case 200:
-          if(response.items){
-            this.taskItems = UtilitiesService.sortJSON(response.items,'folio','desc');
-            this._indexTask = 0;
-            this.patchForm(this.taskItems[0]);
-          }else{
-            this.resetElements();
-          }
-          break;
-        default:
+  private getVRSReport(): void {
+    this._api.getTaskInformation(this._taskId, 4).subscribe(response => {
+      if (response.code === HttpResponseCodes.OK) {
+        if (response.items) {
+          this.taskItems = UtilitiesService.sortJSON(response.items, 'folio', 'desc');
+          this._indexTask = 0;
+          this.patchForm(this.taskItems[0]);
+        } else {
           this.resetElements();
-          break;
+        }
+      } else {
+        this.resetElements();
       }
     });
   }
 
-  public seeEvidence():void{
-    if(this.task.status !== 4){
+  public seeEvidence(): void {
+    if (this.task.status !== 4) {
       return;
     }
-    if(this.taskItems[this._indexTask].fileCS){
+    if (this.taskItems[this._indexTask].fileCS) {
       this._imageVisor.open(this.taskItems[this._indexTask].fileCS);
-    }else{
-      this._snackBarService.openSnackBar('Esta tarea no cuenta con evidencia', 'OK',3000);
+    } else {
+      this._snackBarService.openSnackBar('Esta tarea no cuenta con evidencia', 'OK', 3000);
     }
   }
 
-  public changeTask(ev: any){
+  public changeTask(ev: any) {
     this._indexTask = ev.pageIndex;
     this.patchForm(this.taskItems[this._indexTask]);
   }
 
-  private startEditReport(isNewLoad?: boolean):void{
+  private startEditReport(isNewLoad?: boolean): void {
     let today: any = new Date();
     const user = LocalStorageService.getItem(Constants.UserInSession);
     today = UtilitiesService.createPersonalTimeStamp(today);
     this.date = UtilitiesService.convertDate(today.timeStamp);
     this.editable = true;
     this.name = user.completeName;
-    if(!isNewLoad){
+    if (!isNewLoad) {
       this._copyTask = this.vrsReport;
-      if(this.vrsReport.fileCS){
+      if (this.vrsReport.fileCS) {
         this._evidenceElement = this.vrsReport.fileCS;
         this.evidenceThumbnail = this.vrsReport.fileCS.thumbnail;
       }
@@ -221,8 +227,8 @@ export class VrsReportComponent implements OnInit, OnDestroy {
     this.evidenceThumbnail = ev.url;
     this._loads[0] = true;
     this._evidence = new FormData();
-    this._evidence.append('path', 'Task'+this._taskId);
-    this._evidence.append('fileName', 'evidence-'+this._taskId + new Date().getTime() + '.png');
+    this._evidence.append('path', 'Task' + this._taskId);
+    this._evidence.append('fileName', 'evidence-' + this._taskId + new Date().getTime() + '.png');
     this._evidence.append('isImage', 'true');
     this._evidence.append('file', ev.blob);
   }
@@ -231,65 +237,70 @@ export class VrsReportComponent implements OnInit, OnDestroy {
     this.evidenceThumbnail = undefined;
     this._loads[0] = false;
     this._evidence = undefined;
-    this._evidenceElement = undefined
+    this._evidenceElement = undefined;
   }
 
   public loadSignature(): void {
     this._signatureService.open().afterClosed().subscribe(response => {
-      switch (response.code) {
-        case 1:
-          this.signatureThumbnail = response.base64;
-          this._loads[1] = true;
-          this._signature = new FormData();
-          this._signature.append('fileName', 'signature-' + new Date().getTime() + '.png');
-          this._signature.append('isImage', 'true');
-          this._signature.append('file', response.blob);
-          break;
+      if (response.code === 1) {
+        this.signatureThumbnail = response.base64;
+        this._loads[1] = true;
+        this._signature = new FormData();
+        this._signature.append('fileName', 'signature-' + new Date().getTime() + '.png');
+        this._signature.append('isImage', 'true');
+        this._signature.append('file', response.blob);
       }
     });
   }
 
-  public addRemoveTank(isAdd: boolean, index?: number): void{
-    if(isAdd){
-      this.tanks.push({capAndFillingAdapter: undefined,capAndSteamAdapter: undefined,fuelType: 1, overfillValve: undefined, vacuumPressureValve:undefined});
+  public addRemoveTank(isAdd: boolean, index?: number): void {
+    if (isAdd) {
+      this.tanks.push({
+        capAndFillingAdapter: undefined,
+        capAndSteamAdapter: undefined,
+        fuelType: 1,
+        overfillValve: undefined,
+        vacuumPressureValve: undefined
+      });
       this.errorTank.push(false);
-    }else{
+    } else {
       this.tanks.splice(index, 1);
       this.errorTank.splice(index, 1);
     }
   }
 
-  public validateForm(value: any):void{
+  public validateForm(value: any): void {
     let error = false;
-    for(let i = 0; i<this.tanks.length; i++){
-      if(!this.tanks[i].vacuumPressureValve || !this.tanks[i].overfillValve || !this.tanks[i].fuelType || !this.tanks[i].capAndSteamAdapter || !this.tanks[i].capAndFillingAdapter){
+    for (let i = 0; i < this.tanks.length; i++) {
+      if (!this.tanks[i].vacuumPressureValve || !this.tanks[i].overfillValve ||
+        !this.tanks[i].fuelType || !this.tanks[i].capAndSteamAdapter || !this.tanks[i].capAndFillingAdapter) {
         this.errorTank[i] = true;
         error = true;
       }
     }
-    if(!value.magna && !value.premium){
+    if (!value.magna && !value.premium) {
       this.error = true;
     }
-    if(this.error || this.vrsForm.invalid || error){
-      this._snackBarService.openSnackBar('Por favor, complete los campos','OK',3000);
+    if (this.error || this.vrsForm.invalid || error) {
+      this._snackBarService.openSnackBar('Por favor, complete los campos', 'OK', 3000);
       return;
     }
-    if(!this._signature){
-      this._snackBarService.openSnackBar('Por favor, registre su firma','OK',3000);
+    if (!this._signature) {
+      this._snackBarService.openSnackBar('Por favor, registre su firma', 'OK', 3000);
       return;
     }
-    if(this._loads[0]) {
+    if (this._loads[0]) {
       this.uploadFile(1);
       return;
     }
-    if(this._loads[1]){
+    if (this._loads[1]) {
       this.uploadFile(2);
       return;
     }
     this.saveReport(value);
   }
 
-  private saveReport(value: any):void{
+  private saveReport(value: any): void {
     let date: any = new Date();
     date = UtilitiesService.createPersonalTimeStamp(date);
     this.vrsReport = {
@@ -313,26 +324,23 @@ export class VrsReportComponent implements OnInit, OnDestroy {
         shortHose: value.shortHose
       }
     };
-    if(this._copyTask){
+    if (this._copyTask) {
       this.vrsReport.id = this._copyTask.id;
     }
-    this._api.createTask(this.vrsReport, 4).subscribe(response=>{
-      switch (response.code){
-        case 200:
-          this._sharedService.setNotification({type: SharedTypeNotification.FinishEditTask, value: response.item.station});
-          break;
-        default:
-          console.error(response);
-          break;
+    this._api.createTask(this.vrsReport, 4).subscribe(response => {
+      if (response.code === HttpResponseCodes.OK) {
+        this._sharedService.setNotification({type: SharedTypeNotification.FinishEditTask, value: response.item.station});
+      } else {
+        console.error(response);
       }
-    })
+    });
   }
 
-  private uploadFile(type: number):void{
-    switch (type){
+  private uploadFile(type: number): void {
+    switch (type) {
       case 1:
-        this._uploadFileService.upload(this._evidence).subscribe(response=>{
-          if (response){
+        this._uploadFileService.upload(this._evidence).subscribe(response => {
+          if (response) {
             this._evidenceElement = {
               blobName: response.item.blobName,
               thumbnail: response.item.thumbnail
@@ -343,8 +351,8 @@ export class VrsReportComponent implements OnInit, OnDestroy {
         });
         break;
       case 2:
-        this._uploadFileService.upload(this._signature).subscribe(response=>{
-          if (response){
+        this._uploadFileService.upload(this._signature).subscribe(response => {
+          if (response) {
             this._signatureElement = {
               blobName: response.item.blobName,
               thumbnail: response.item.thumbnail
@@ -359,11 +367,11 @@ export class VrsReportComponent implements OnInit, OnDestroy {
     }
   }
 
-  public changeFuelType(ev: any){
+  public changeFuelType() {
     this.error = false;
   }
 
-  public changeTankInfo(ev: any, index: number){
+  public changeTankInfo(ev: any, index: number) {
     this.errorTank[index] = false;
   }
 

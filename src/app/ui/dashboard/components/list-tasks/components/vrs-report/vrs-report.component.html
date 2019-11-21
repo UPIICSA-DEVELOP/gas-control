@@ -24,10 +24,10 @@
         <div class="inputs">
           <div class="space-box">
             <div class="checks-row">
-              <mat-checkbox formControlName="magna" (change)="changeFuelType($event)">Magna</mat-checkbox>
+              <mat-checkbox formControlName="magna" (change)="changeFuelType()">Magna</mat-checkbox>
             </div>
             <div class="checks-row">
-              <mat-checkbox formControlName="premium" (change)="changeFuelType($event)">Premium</mat-checkbox>
+              <mat-checkbox formControlName="premium" (change)="changeFuelType()">Premium</mat-checkbox>
             </div>
           </div>
         </div>
@@ -93,19 +93,26 @@
         </div>
         <div class="inputs" *ngFor="let tankItem of tanks; let i = index">
           <div class="tanks-box">
-            <h3>Tanque {{i+1}}</h3>
-            <button mat-icon-button type="button" *ngIf="i === 0 && editable" (click)="addRemoveTank(true)"><mat-icon class="add">add</mat-icon></button>
-            <button mat-icon-button type="button" *ngIf="i !== 0 && editable" (click)="addRemoveTank(false, i)"><mat-icon class="remove">remove</mat-icon></button>
+            <h3>Tanque {{i + 1}}</h3>
+            <button mat-icon-button type="button" *ngIf="i === 0 && editable" (click)="addRemoveTank(true)">
+              <mat-icon class="add">add</mat-icon>
+            </button>
+            <button mat-icon-button type="button" *ngIf="i !== 0 && editable" (click)="addRemoveTank(false, i)">
+              <mat-icon class="remove">remove</mat-icon>
+            </button>
           </div>
           <mat-error *ngIf="errorTank[i] && editable" class="error-text">
             Complete los campos del tanque
           </mat-error>
-          <mat-radio-group [(ngModel)]="tankItem.fuelType" [ngModelOptions]="{standalone: true}" [disabled]="!editable" (change)="changeTankInfo($event, i)" class="fuel-type">
+          <mat-radio-group [(ngModel)]="tankItem.fuelType" [ngModelOptions]="{standalone: true}" [disabled]="!editable"
+                           (change)="changeTankInfo($event, i)" class="fuel-type">
             <mat-radio-button [value]="1">Magna</mat-radio-button>
             <mat-radio-button [value]="2">Premium</mat-radio-button>
           </mat-radio-group>
           <mat-form-field class="input-full">
-            <mat-select [(ngModel)]="tankItem.capAndSteamAdapter" [ngModelOptions]="{standalone: true}" required (selectionChange)="changeTankInfo($event, i)" [disabled]="!editable" placeholder="Tapa y adaptador de vapor">
+            <mat-select [(ngModel)]="tankItem.capAndSteamAdapter" [ngModelOptions]="{standalone: true}" required
+                        (selectionChange)="changeTankInfo($event, i)" [disabled]="!editable"
+                        placeholder="Tapa y adaptador de vapor">
               <mat-option [value]="'Satisfactorio'">Satisfactorio</mat-option>
               <mat-option [value]="'No satisfactorio'">No satisfactorio</mat-option>
               <mat-option [value]="'No determinado'">No determinado</mat-option>
@@ -115,7 +122,9 @@
             </mat-error>
           </mat-form-field>
           <mat-form-field class="input-full">
-            <mat-select [(ngModel)]="tankItem.capAndFillingAdapter" [ngModelOptions]="{standalone: true}" required (selectionChange)="changeTankInfo($event, i)" [disabled]="!editable" placeholder="Tapa y adaptador de llenado">
+            <mat-select [(ngModel)]="tankItem.capAndFillingAdapter" [ngModelOptions]="{standalone: true}" required
+                        (selectionChange)="changeTankInfo($event, i)" [disabled]="!editable"
+                        placeholder="Tapa y adaptador de llenado">
               <mat-option [value]="'Satisfactorio'">Satisfactorio</mat-option>
               <mat-option [value]="'No satisfactorio'">No satisfactorio</mat-option>
               <mat-option [value]="'No determinado'">No determinado</mat-option>
@@ -125,7 +134,9 @@
             </mat-error>
           </mat-form-field>
           <mat-form-field class="input-full">
-            <mat-select [(ngModel)]="tankItem.overfillValve" [ngModelOptions]="{standalone: true}" required (selectionChange)="changeTankInfo($event, i)" [disabled]="!editable" placeholder="Válvula de sobrellenado">
+            <mat-select [(ngModel)]="tankItem.overfillValve" [ngModelOptions]="{standalone: true}" required
+                        (selectionChange)="changeTankInfo($event, i)" [disabled]="!editable"
+                        placeholder="Válvula de sobrellenado">
               <mat-option [value]="'Satisfactorio'">Satisfactorio</mat-option>
               <mat-option [value]="'No satisfactorio'">No satisfactorio</mat-option>
               <mat-option [value]="'No determinado'">No determinado</mat-option>
@@ -135,7 +146,9 @@
             </mat-error>
           </mat-form-field>
           <mat-form-field class="input-full">
-            <mat-select [(ngModel)]="tankItem.vacuumPressureValve" [ngModelOptions]="{standalone: true}" required (selectionChange)="changeTankInfo($event, i)" [disabled]="!editable" placeholder="Válvula de presión-vacío">
+            <mat-select [(ngModel)]="tankItem.vacuumPressureValve" [ngModelOptions]="{standalone: true}" required
+                        (selectionChange)="changeTankInfo($event, i)" [disabled]="!editable"
+                        placeholder="Válvula de presión-vacío">
               <mat-option [value]="'Satisfactorio'">Satisfactorio</mat-option>
               <mat-option [value]="'No satisfactorio'">No satisfactorio</mat-option>
               <mat-option [value]="'No determinado'">No determinado</mat-option>
@@ -178,7 +191,7 @@
         </div>
         <div *ngIf="!editable; then showEv else modify"></div>
         <ng-template #showEv>
-          <div *ngIf="!vrsReport || !vrsReport.fileCS" class="image-container" >
+          <div *ngIf="!vrsReport || !vrsReport.fileCS" class="image-container">
             <mat-icon class="default-image">image</mat-icon>
           </div>
           <div *ngIf="vrsReport && vrsReport.fileCS " class="image-container-real" (click)="seeEvidence()">
@@ -186,9 +199,10 @@
           </div>
         </ng-template>
         <ng-template #modify>
-          <app-upload-file class="inputs" (onLoad)="loadEvidence($event)" (onRemove)="deleteEvidence()" [layoutTemplate]="imageEvidence" [type]="'image'">
+          <app-upload-file class="inputs" (onLoad)="loadEvidence($event)" (onRemove)="deleteEvidence()"
+                           [layoutTemplate]="imageEvidence" [type]="'image'">
             <ng-template #imageEvidence>
-              <div *ngIf="!evidenceThumbnail" class="image-container" >
+              <div *ngIf="!evidenceThumbnail" class="image-container">
                 <mat-icon class="default-image">image</mat-icon>
               </div>
               <div *ngIf="evidenceThumbnail" class="image-container-real">
@@ -204,14 +218,14 @@
           <div *ngIf="!editable; then showSign else loadSign"></div>
           <ng-template #showSign>
             <div class="signature-element">
-              <img *ngIf="vrsReport && vrsReport.signature" [src]="vrsReport.signature.thumbnail">
+              <img *ngIf="vrsReport && vrsReport.signature" [src]="vrsReport.signature.thumbnail" alt="">
               <div class="empty-signature" *ngIf="!vrsReport || !vrsReport.signature"></div>
             </div>
           </ng-template>
           <ng-template #loadSign>
             <div class="signature-element" (click)="loadSignature()" style="cursor: pointer" matTooltip="Cargar Firma">
-              <img *ngIf="signatureThumbnail" [src]="signatureThumbnail">
-              <div class="empty-signature" *ngIf="!signatureThumbnail" ></div>
+              <img *ngIf="signatureThumbnail" [src]="signatureThumbnail" alt="">
+              <div class="empty-signature" *ngIf="!signatureThumbnail"></div>
             </div>
           </ng-template>
           <div class="divider"></div>
@@ -233,6 +247,7 @@
     </div>
   </form>
   <div *ngIf="taskItems && taskItems.length !== 0 && !editable">
-    <mat-paginator [pageSize]="1" [length]="taskItems.length" [hidePageSize]="true" (page)="changeTask($event)" ></mat-paginator>
+    <mat-paginator [pageSize]="1" [length]="taskItems.length" [hidePageSize]="true"
+                   (page)="changeTask($event)"></mat-paginator>
   </div>
 </div>

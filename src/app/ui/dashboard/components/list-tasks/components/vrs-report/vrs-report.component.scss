@@ -4,175 +4,208 @@
  *  Proprietary and confidential
  */
 
-#vrs-report{
+#vrs-report {
   width: 100%;
   height: 100%;
-  .head{
+
+  .head {
     display: flex;
     justify-content: center;
     margin: 8px 0;
     text-align: center;
-    .task-name{
+
+    .task-name {
       font-weight: 600;
       font-size: 18px;
     }
   }
-  .flex-box{
+
+  .flex-box {
     display: flex;
-    @media screen and (max-width: 600px){
+    @media screen and (max-width: 600px) {
       display: block;
     }
   }
-  .inputs{
+
+  .inputs {
     width: 90%;
   }
-  .divider{
+
+  .divider {
     width: 100%;
     height: 1px;
     background-color: #707070;
   }
-  .default-image{
+
+  .default-image {
     font-size: 56px;
     height: 56px;
     width: 56px;
     color: #707070;
   }
-  .image-header{
+
+  .image-header {
     color: #707070;
     font-size: 11px;
     margin: 12px 0;
     width: 90%;
   }
-  .image-container{
+
+  .image-container {
     display: flex;
-    justify-content:center;
-    align-items:center;
+    justify-content: center;
+    align-items: center;
     width: 100%;
     height: 200px;
     border: 1px solid #707070;
   }
-  .image-container-real{
+
+  .image-container-real {
     display: flex;
-    justify-content:center;
-    align-items:center;
+    justify-content: center;
+    align-items: center;
     width: 100%;
     height: 200px;
     cursor: pointer;
   }
-  .columns{
+
+  .columns {
     position: relative;
     display: flex;
     flex-direction: column;
     align-items: center;
     width: 50%;
     margin: 12px;
-    @media screen and (max-width: 600px){
+    @media screen and (max-width: 600px) {
       width: 100%;
       margin: 0;
     }
   }
-  .times{
+
+  .times {
     display: flex;
     justify-content: space-between;
     width: 90%;
-    .clock{
+
+    .clock {
       width: 45%;
     }
   }
-  .dispensers{
+
+  .dispensers {
     margin: 4px 0;
     font-size: 14px
   }
-  .tanks-box{
+
+  .tanks-box {
     display: flex;
     justify-content: space-between;
     align-items: center;
     margin-bottom: 4px;
     width: 100%;
-    h3{
+
+    h3 {
       margin: 12px 0;
       font-size: 14px;
     }
   }
-  .maintenance{
+
+  .maintenance {
     margin: 8px 0;
     font-size: 14px;
   }
-  .fuel-type{
+
+  .fuel-type {
     display: flex;
     width: 90%;
     justify-content: space-between;
     flex-wrap: wrap;
     margin-bottom: 16px;
   }
-  .task-header{
+
+  .task-header {
     display: flex;
     justify-content: space-around;
     margin-top: 18px;
   }
-  .head-bold{
+
+  .head-bold {
     font-weight: 600;
     width: 50%;
     display: flex;
     align-items: flex-end;
   }
-  .control-data{
+
+  .control-data {
     width: 40%;
     display: flex;
     justify-content: space-between;
   }
-  .space-box{
+
+  .space-box {
     display: flex;
     justify-content: space-between;
     margin: 16px 0;
     align-items: center;
   }
-  .checks-row{
+
+  .checks-row {
     width: 45%;
     margin: 0 8px;
   }
-  .text-sign{
+
+  .text-sign {
     color: #707070;
     margin: 24px 0 8px 0;
     text-align: center;
   }
-  .signature-element{
+
+  .signature-element {
     display: flex;
     justify-content: center;
-    img{
+
+    img {
       width: 60%;
       height: 60px;
     }
-    .empty-signature{
+
+    .empty-signature {
       width: 60%;
       height: 60px;
     }
   }
-  .name{
+
+  .name {
     display: flex;
     justify-content: center;
   }
-  .input-full{
+
+  .input-full {
     width: 100%;
   }
-  .evidence{
+
+  .evidence {
     height: inherit;
     padding: 8px;
   }
-  .finish-button{
+
+  .finish-button {
     width: 100%;
     display: flex;
     justify-content: center;
   }
-  .error-text{
+
+  .error-text {
     width: 90%;
     font-size: 11px;
     margin-bottom: 12px;
   }
-  .add{
+
+  .add {
     color: #257602;
   }
-  .remove{
+
+  .remove {
     color: #E00000;
   }
 }
