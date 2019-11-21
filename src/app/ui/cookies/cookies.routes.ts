@@ -8,14 +8,15 @@
 import {Routes} from '@angular/router';
 import {environment} from '@env/environment';
 import {CookiesComponent} from '@app/ui/cookies/pages/cookies/cookies.component';
+
 const URL_BASE = environment.url;
 
 export const cookiesRoutes: Routes = [
   {
     path: '',
     component: CookiesComponent,
-    data:{
-      title:'Política de Cookies',
+    data: {
+      title: 'Política de Cookies',
       url: URL_BASE + 'cookies',
       robots: 'true',
       canonical: 'true'

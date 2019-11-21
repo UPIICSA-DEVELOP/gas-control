@@ -5,8 +5,8 @@
  *
  */
 
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import {NgModule} from '@angular/core';
+import {CommonModule} from '@angular/common';
 import {SharedModule} from '@app/shared/shared.module';
 import {RouterModule} from '@angular/router';
 import {cookiesRoutes} from '@app/ui/cookies/cookies.routes';
@@ -37,4 +37,5 @@ const Providers = [];
     Providers
   ]
 })
-export class CookiesModule { }
+export class CookiesModule {
+}
