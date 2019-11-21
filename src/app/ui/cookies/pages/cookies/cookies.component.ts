@@ -4,7 +4,7 @@
  * Proprietary and confidential
  */
 
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import {Component, OnInit, ViewEncapsulation} from '@angular/core';
 import {LocalStorageService} from 'app/core/services/local-storage/local-storage.service';
 import {Router} from '@angular/router';
 import {Constants} from 'app/utils/constants/constants.utils';
@@ -19,15 +19,16 @@ export class CookiesComponent implements OnInit {
 
   constructor(
     private _router: Router
-  ) { }
+  ) {
+  }
 
   ngOnInit() {
   }
 
-  public redirectTo():void{
+  public redirectTo(): void {
     const user = LocalStorageService.getItem(Constants.UserInSession);
-    if(user){
-      switch(user.role){
+    if (user) {
+      switch (user.role) {
         case 1:
         case 2:
         case 3:
@@ -41,9 +42,9 @@ export class CookiesComponent implements OnInit {
           break;
         default:
           this._router.navigate(['/login']).then();
-          break
+          break;
       }
-    }else{
+    } else {
       this._router.navigate(['/login']).then();
     }
   }
