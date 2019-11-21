@@ -1,6 +1,4 @@
-import {HWGReport} from '@app/utils/interfaces/reports/hwg-report';
-
-export interface TaskTemplate{
+export interface TaskTemplate {
   active: boolean;
   asea: boolean;
   cre: boolean;
