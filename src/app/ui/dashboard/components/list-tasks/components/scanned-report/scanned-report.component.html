@@ -53,10 +53,12 @@
     <div class="divider" *ngIf="task.hwg"></div>
     <div *ngIf="task.hwg" class="hwg">
       <div *ngIf="task.hwg && scannedReport">
-        <app-hwg-report [taskHwgInfo]="hwgData || undefined" (formInformation)="getHWGReportInformation($event)" [validate]="startValidate"></app-hwg-report>
+        <app-hwg-report [taskHwgInfo]="hwgData || undefined" (formInformation)="getHWGReportInformation($event)"
+                        [validate]="startValidate"></app-hwg-report>
       </div>
       <div *ngIf="task.hwg && !scannedReport">
-        <app-hwg-report [taskHwgInfo]="undefined" (formInformation)="getHWGReportInformation($event)" [validate]="startValidate"></app-hwg-report>
+        <app-hwg-report [taskHwgInfo]="undefined" (formInformation)="getHWGReportInformation($event)"
+                        [validate]="startValidate"></app-hwg-report>
       </div>
     </div>
     <div class="text-sign">
@@ -66,13 +68,13 @@
       <div *ngIf="!editable; then showSign else loadSign"></div>
       <ng-template #showSign>
         <div class="signature-element">
-          <img *ngIf="scannedReport && scannedReport.signature" [src]="scannedReport.signature.thumbnail">
+          <img *ngIf="scannedReport && scannedReport.signature" [src]="scannedReport.signature.thumbnail" alt="">
           <div *ngIf="!scannedReport || !scannedReport.signature" class="empty-signature"></div>
         </div>
       </ng-template>
       <ng-template #loadSign>
         <div class="signature-element" (click)="loadSignature()" style="cursor: pointer" matTooltip="Cargar Firma">
-          <img *ngIf="signatureThumbnail" [src]="signatureThumbnail">
+          <img *ngIf="signatureThumbnail" [src]="signatureThumbnail" alt="">
           <div *ngIf="!signatureThumbnail" class="empty-signature"></div>
         </div>
       </ng-template>
@@ -88,10 +90,12 @@
     </div>
   </div>
   <div *ngIf="taskItems && taskItems.length !== 0 && !editable">
-    <mat-paginator [pageSize]="1" [length]="taskItems.length" [hidePageSize]="true" (page)="changeTask($event)"></mat-paginator>
+    <mat-paginator [pageSize]="1" [length]="taskItems.length" [hidePageSize]="true"
+                   (page)="changeTask($event)"></mat-paginator>
   </div>
   <div *ngIf="editable" class="finish-button">
-    <button mat-flat-button type="submit" (click)="task.hwg? startValidateForm() : validateElements()" [color]="'primary'" [disabled]="load">
+    <button mat-flat-button type="submit" (click)="task.hwg? startValidateForm() : validateElements()"
+            [color]="'primary'" [disabled]="load">
       FINALIZAR
     </button>
   </div>

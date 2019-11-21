@@ -4,29 +4,34 @@
  *  Proprietary and confidential
  */
 
-#scanned-report{
+#scanned-report {
   width: 100%;
   height: 100%;
-  .head{
+
+  .head {
     display: flex;
     justify-content: center;
     margin: 8px 0;
     text-align: center;
-    .task-name{
+
+    .task-name {
       font-weight: 600;
       font-size: 18px;
     }
   }
-  .divider{
+
+  .divider {
     width: 100%;
     height: 1px;
     background-color: #707070;
   }
-  mat-card{
+
+  mat-card {
     width: 95%;
     margin: 12px 0;
     cursor: pointer;
-    mat-card-content{
+
+    mat-card-content {
       display: flex;
       align-items: center;
       font-weight: 600;
@@ -35,74 +40,90 @@
       margin: 0;
     }
   }
-  .task-header{
+
+  .task-header {
     display: flex;
     justify-content: space-around;
     margin-top: 18px;
   }
-  .head-bold{
+
+  .head-bold {
     font-weight: 600;
     width: 50%;
     display: flex;
     align-items: flex-end;
   }
-  .control-data{
+
+  .control-data {
     width: 40%;
     display: flex;
     justify-content: space-between;
   }
-  .text-divider{
+
+  .text-divider {
     margin: 8px 0;
     color: #707070;
     width: 90%;
   }
-  .text-sign{
+
+  .text-sign {
     color: #707070;
     margin: 24px 0 8px 0;
     text-align: center;
   }
-  .signature-container{
+
+  .signature-container {
     width: 50%;
     margin: 24px auto;
   }
-  .signature-element{
+
+  .signature-element {
     display: flex;
     justify-content: center;
-    img{
+
+    img {
       width: 60%;
       height: 60px;
     }
-    .empty-signature{
+
+    .empty-signature {
       width: 60%;
       height: 60px
     }
   }
-  .name{
+
+  .name {
     display: flex;
     justify-content: center;
   }
-  .finish-button{
+
+  .finish-button {
     width: 100%;
     display: flex;
     justify-content: center;
     margin-top: 16px;
   }
-  .file{
+
+  .file {
     display: flex;
     align-items: center;
     flex-direction: column
   }
-  .hwg{
+
+  .hwg {
     width: 100%;
   }
-  .submit-icon{
+
+  .submit-icon {
     margin: 0 12px;
   }
-  .manifest-icon{
+
+  .manifest-icon {
     position: absolute;
     right: 8px;
   }
-  .error-text{
+
+  .error-text {
     width: 90%;
     font-size: 11px;
     margin-bottom: 12px;
