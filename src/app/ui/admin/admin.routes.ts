@@ -11,6 +11,7 @@ import {AdminComponent} from '@app/ui/admin/pages/admin/admin.component';
 import {AuthRouterService} from '@app/core/services/auth/auth-router.service';
 import {AuthService} from '@app/core/services/auth/auth.service';
 import {AdminNotificationsComponent} from '@app/ui/admin/pages/admin-notifications/admin-notifications.component';
+
 const URL_BASE = environment.url;
 
 export const adminRoutes: Routes = [
@@ -20,7 +21,7 @@ export const adminRoutes: Routes = [
     canActivate: [AuthRouterService],
     resolve: {data: AuthService},
     data: {
-      title:'Administrador',
+      title: 'Administrador',
       url: URL_BASE
     },
     children: [

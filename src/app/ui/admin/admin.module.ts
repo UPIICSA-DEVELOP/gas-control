@@ -5,8 +5,8 @@
  *
  */
 
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import {NgModule} from '@angular/core';
+import {CommonModule} from '@angular/common';
 import {AdminComponent} from '@app/ui/admin/pages/admin/admin.component';
 import {AdminNotificationsComponent} from '@app/ui/admin/pages/admin-notifications/admin-notifications.component';
 import {ListStationsComponent} from '@app/ui/admin/components/list-stations/list-stations.component';
@@ -58,4 +58,5 @@ const EntryComponents = [
     Providers
   ]
 })
-export class AdminModule { }
+export class AdminModule {
+}
