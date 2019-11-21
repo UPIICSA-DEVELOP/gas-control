@@ -22,6 +22,8 @@ import {ModalProceduresService} from '@app/ui/dashboard/components/modal-procedu
 import {LoaderService} from '@app/core/components/loader/loader.service';
 import {IncidenceReport} from '@app/utils/interfaces/reports/incidence-report';
 import {Task} from '@app/utils/interfaces/task';
+import {HttpResponseCodes} from '@app/utils/enums/http-response-codes';
+import {AppUtil} from '@app/utils/interfaces/app-util';
 
 @Component({
   selector: 'app-incidence-report',
@@ -33,31 +35,35 @@ export class IncidenceReportComponent implements OnInit, OnDestroy {
   private _taskId: string;
   private _stationId: string;
   public task: Task;
-  public utils: any;
-  @Input() set taskIncidenceInfo(taskObj: any){
-    if(taskObj){
+  public utils: AppUtil;
+
+  @Input() set taskIncidenceInfo(taskObj: any) {
+    if (taskObj) {
       this._taskId = taskObj.id;
       this.task = taskObj;
       this.getIncidenceReport();
     }
   }
-  @Input() set utilities(utils: any){
-    if (utils){
+
+  @Input() set utilities(utils: any) {
+    if (utils) {
       this.utils = utils;
     }
   }
-  @Input() set station(station: any){
-    if(station){
+
+  @Input() set station(station: any) {
+    if (station) {
       this._stationId = station.id;
     }
   }
+
   public load: boolean;
   public incidenceForm: FormGroup;
   public incidenceReport: IncidenceReport;
   public date: any[];
   public taskItems: any[];
   public name: string;
-  private _load: boolean[];
+  private readonly _load: boolean[];
   public editable: boolean;
   public error: boolean;
   private _copyTask: IncidenceReport;
@@ -71,8 +77,9 @@ export class IncidenceReportComponent implements OnInit, OnDestroy {
   public signatureThumbnail: string;
   private _signatureElement: any;
   private _signature: FormData;
+
   constructor(
-    private _api:ApiService,
+    private _api: ApiService,
     private _apiLoader: LoaderService,
     private _formBuilder: FormBuilder,
     private _imageVisor: ImageVisorService,
@@ -93,7 +100,9 @@ export class IncidenceReportComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this._subscriptionLoader = this._apiLoader.getProgress().subscribe(load=>{this.load = load});
+    this._subscriptionLoader = this._apiLoader.getProgress().subscribe(load => {
+      this.load = load;
+    });
     this.initIncidenceForm();
     this.getNotifications();
   }
@@ -105,27 +114,24 @@ export class IncidenceReportComponent implements OnInit, OnDestroy {
 
   private initIncidenceForm(): void {
     this.incidenceForm = this._formBuilder.group({
-      time: ['',[Validators.required]],
-      area: ['',[Validators.required]],
-      description: ['',[Validators.required]]
+      time: ['', [Validators.required]],
+      area: ['', [Validators.required]],
+      description: ['', [Validators.required]]
     });
   }
 
-  private getNotifications(): void{
-    this._subscriptionShared = this._sharedService.getNotifications().subscribe(response=>{
-      switch (response.type){
-        case SharedTypeNotification.EditTask:
-          if(response.value === 9){
-            this.startEditFormat();
-          }
-          break;
-        default:
-          break;
+  private getNotifications(): void {
+    this._subscriptionShared = this._sharedService.getNotifications().subscribe(response => {
+      if (response.type === SharedTypeNotification.EditTask) {
+        if (response.value === 9) {
+          this.startEditFormat();
+        }
+      } else {
       }
     });
   }
 
-  private patchForm(report: IncidenceReport):void {
+  private patchForm(report: IncidenceReport): void {
     this.incidenceReport = {
       area: report.area || undefined,
       date: report.date || undefined,
@@ -148,36 +154,33 @@ export class IncidenceReportComponent implements OnInit, OnDestroy {
     this.incidenceForm.disable();
   }
 
-  private getIncidenceReport(): void{
-    this._api.getTaskInformation(this._taskId, 9).subscribe(response=>{
-      switch (response.code){
-        case 200:
-          if(response.items){
-            this.taskItems = UtilitiesService.sortJSON(response.items,'folio','desc');
-            this._indexTask = 0;
-            this.patchForm(this.taskItems[0]);
-          }else{
-            this.resetElements();
-          }
-          break;
-        default:
+  private getIncidenceReport(): void {
+    this._api.getTaskInformation(this._taskId, 9).subscribe(response => {
+      if (response.code === HttpResponseCodes.OK) {
+        if (response.items) {
+          this.taskItems = UtilitiesService.sortJSON(response.items, 'folio', 'desc');
+          this._indexTask = 0;
+          this.patchForm(this.taskItems[0]);
+        } else {
           this.resetElements();
-          break;
+        }
+      } else {
+        this.resetElements();
       }
     });
   }
 
-  private startEditFormat(isNewLoad?: boolean): void{
+  private startEditFormat(isNewLoad?: boolean): void {
     let today: any = new Date();
     const user = LocalStorageService.getItem(Constants.UserInSession);
     today = UtilitiesService.createPersonalTimeStamp(today);
     this.date = UtilitiesService.convertDate(today.timeStamp);
     this.editable = true;
     this.name = user.completeName;
-    if(!isNewLoad){
+    if (!isNewLoad) {
       this._copyTask = this.incidenceReport;
       this.procedures = this.incidenceReport.procedures || [];
-      if (this.incidenceReport.fileCS){
+      if (this.incidenceReport.fileCS) {
         this._evidenceElement = this.incidenceReport.fileCS;
         this.evidenceThumbnail = this.incidenceReport.fileCS.thumbnail;
       }
@@ -193,25 +196,25 @@ export class IncidenceReportComponent implements OnInit, OnDestroy {
     this.incidenceForm.reset();
     this.incidenceForm.disable();
     const user = LocalStorageService.getItem(Constants.UserInSession);
-    if(this.task.status !== 4 && user.role ===7){
+    if (this.task.status !== 4 && user.role === 7) {
       this.startEditFormat(true);
     }
   }
 
-  public changeTask(ev: any){
+  public changeTask(ev: any) {
     this._indexTask = ev.pageIndex;
     this.patchForm(this.taskItems[this._indexTask]);
   }
 
-  public seeEvidence():void{
-    if(this.taskItems[this._indexTask].fileCS){
+  public seeEvidence(): void {
+    if (this.taskItems[this._indexTask].fileCS) {
       this._imageVisor.open(this.taskItems[this._indexTask].fileCS);
-    }else{
-      this._snackBarService.openSnackBar('Esta tarea no cuenta con evidencia', 'OK',3000);
+    } else {
+      this._snackBarService.openSnackBar('Esta tarea no cuenta con evidencia', 'OK', 3000);
     }
   }
 
-  public changeTime(ev: any): void{
+  public changeTime(ev: any): void {
     this.incidenceForm.patchValue({
       time: ev
     });
@@ -221,8 +224,8 @@ export class IncidenceReportComponent implements OnInit, OnDestroy {
     this.evidenceThumbnail = ev.url;
     this._load[0] = true;
     this._evidence = new FormData();
-    this._evidence.append('path', 'Task'+this._taskId);
-    this._evidence.append('fileName', 'evidence-'+this._taskId + new Date().getTime() + '.png');
+    this._evidence.append('path', 'Task' + this._taskId);
+    this._evidence.append('fileName', 'evidence-' + this._taskId + new Date().getTime() + '.png');
     this._evidence.append('isImage', 'true');
     this._evidence.append('file', ev.blob);
     this.error = false;
@@ -234,65 +237,61 @@ export class IncidenceReportComponent implements OnInit, OnDestroy {
     this._evidence = undefined;
   }
 
-  public addRemoveArrayItem(isAdd: boolean, index?: number): void{
-    if(isAdd){
+  public addRemoveArrayItem(isAdd: boolean, index?: number): void {
+    if (isAdd) {
       this._proceduresService.open(
         {utils: this.utils.procedures, proceduresSelected: this.procedures, notVisibleChecks: false}
-      ).afterClosed().subscribe(response=>{
-        switch (response.code){
-          case 1:
-            this.procedures = response.data;
-            break;
+      ).afterClosed().subscribe(response => {
+        if (response.code === 1) {
+          this.procedures = response.data;
         }
-      })
-    }else{
+      });
+    } else {
       this.procedures.splice(index, 1);
     }
   }
 
   public loadSignature(): void {
     this._signatureService.open().afterClosed().subscribe(response => {
-      switch (response.code) {
-        case 1:
-          this.signatureThumbnail = response.base64;
-          this._load[1] = true;
-          this._signature = new FormData();
-          this._signature.append('fileName', 'signature-' + new Date().getTime() + '.png');
-          this._signature.append('isImage', 'true');
-          this._signature.append('file', response.blob);
-          break;
+      if (response.code === 1) {
+        this.signatureThumbnail = response.base64;
+        this._load[1] = true;
+        this._signature = new FormData();
+        this._signature.append('fileName', 'signature-' + new Date().getTime() + '.png');
+        this._signature.append('isImage', 'true');
+        this._signature.append('file', response.blob);
       }
     });
   }
 
-  public validateForm(value: any): void{
-    if(!this.evidenceThumbnail){
+  public validateForm(value: any): void {
+    if (!this.evidenceThumbnail) {
       this.error = true;
     }
-    if(this.error || this.incidenceForm.invalid){
-      this._snackBarService.openSnackBar('Por favor, complete los campos','OK',3000);
+    if (this.error || this.incidenceForm.invalid) {
+      this._snackBarService.openSnackBar('Por favor, complete los campos', 'OK', 3000);
       return;
     }
-    if(!this._signature){
-      this._snackBarService.openSnackBar('Por favor, registre su firma','OK',3000);
+    if (!this._signature) {
+      this._snackBarService.openSnackBar('Por favor, registre su firma', 'OK', 3000);
       return;
     }
-    if(this._load[0]) {
+    if (this._load[0]) {
       this.uploadFile(1);
       return;
     }
-    if(this._load[1]){
+    if (this._load[1]) {
       this.uploadFile(2);
       return;
     }
     this.saveReport(value);
   }
 
-  private uploadFile(type: number):void{
-    switch (type){
+  private uploadFile(type: number): void {
+    switch (type) {
       case 1:
-        this._uploadFile.upload(this._evidence).subscribe(response=>{
-          if (response){
+        this._uploadFile.upload(this._evidence).subscribe(response => {
+          if (response) {
             this._evidenceElement = {
               blobName: response.item.blobName,
               thumbnail: response.item.thumbnail
@@ -303,8 +302,8 @@ export class IncidenceReportComponent implements OnInit, OnDestroy {
         });
         break;
       case 2:
-        this._uploadFile.upload(this._signature).subscribe(response=>{
-          if (response){
+        this._uploadFile.upload(this._signature).subscribe(response => {
+          if (response) {
             this._signatureElement = {
               blobName: response.item.blobName,
               thumbnail: response.item.thumbnail
@@ -319,7 +318,7 @@ export class IncidenceReportComponent implements OnInit, OnDestroy {
     }
   }
 
-  private saveReport(value: any): void{
+  private saveReport(value: any): void {
     let date: any = new Date();
     date = UtilitiesService.createPersonalTimeStamp(date);
     this.incidenceReport = {
@@ -333,29 +332,23 @@ export class IncidenceReportComponent implements OnInit, OnDestroy {
       taskId: this._taskId,
       time: UtilitiesService.removeFormatTime(value.time)
     };
-    if(this._copyTask){
+    if (this._copyTask) {
       this.incidenceReport.id = this._copyTask.id;
-      this._api.createTask(this.incidenceReport, 9).subscribe(response=>{
-        switch (response.code){
-          case 200:
-            this._sharedService.setNotification({type: SharedTypeNotification.FinishEditTask, value: response.item.station});
-            break;
-          default:
-            console.error(response);
-            break;
+      this._api.createTask(this.incidenceReport, 9).subscribe(response => {
+        if (response.code === HttpResponseCodes.OK) {
+          this._sharedService.setNotification({type: SharedTypeNotification.FinishEditTask, value: response.item.station});
+        } else {
+          console.error(response);
         }
-      })
-    }else{
-      this._api.createIncidenceReportAndTask(this.incidenceReport, this._stationId).subscribe(response=>{
-        switch (response.code){
-          case 200:
-            this._sharedService.setNotification({type: SharedTypeNotification.FinishEditTask, value: response.item.station});
-            break;
-          default:
-            console.error(response);
-            break;
+      });
+    } else {
+      this._api.createIncidenceReportAndTask(this.incidenceReport, this._stationId).subscribe(response => {
+        if (response.code === HttpResponseCodes.OK) {
+          this._sharedService.setNotification({type: SharedTypeNotification.FinishEditTask, value: response.item.station});
+        } else {
+          console.error(response);
         }
-      })
+      });
     }
 
   }
