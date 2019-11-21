@@ -7,12 +7,14 @@
 <div id="admin">
 
   <mat-toolbar [color]="'primary'">
-   <div class="logo">
-     <img src="../../../assets/image/logo.png">
-   </div>
+    <div class="logo">
+      <img src="../../../../../assets/image/logo.png" alt="">
+    </div>
     <div class="actions">
       <button mat-button routerLink="/admin/notifications">Notificaciones</button>
-      <button mat-icon-button matTooltip="Cerrar Sesión" (click)="signOut()"><mat-icon>exit_to_app</mat-icon></button>
+      <button mat-icon-button matTooltip="Cerrar Sesión" (click)="signOut()">
+        <mat-icon>exit_to_app</mat-icon>
+      </button>
     </div>
     <div class="menus">
       <button mat-icon-button [mat-menu-trigger-for]="context_menu">
@@ -55,9 +57,10 @@
         </div>
 
 
-        <mat-card class="item" matRipple *ngFor="let item of consultancyList" (click)="openCollaborators(item.id, item.businessName)">
+        <mat-card class="item" matRipple *ngFor="let item of consultancyList"
+                  (click)="openCollaborators(item.id, item.businessName)">
           <div class="image">
-            <img src="../../../assets/image/inspector-icono.png">
+            <img src="../../../../../assets/image/inspector-icono.png" alt="">
           </div>
           <div class="info">
             <h3>{{item.businessName}}</h3>
@@ -72,7 +75,10 @@
     <div class="mask"></div>
 
     <div class="add-consultancy">
-      <button mat-button (click)="addConsultancy()"><mat-icon>add</mat-icon>  AGREGAR CONSULTORA</button>
+      <button mat-button (click)="addConsultancy()">
+        <mat-icon>add</mat-icon>
+        AGREGAR CONSULTORA
+      </button>
     </div>
 
     <div class="progress" *ngIf="load">

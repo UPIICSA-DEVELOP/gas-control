@@ -4,13 +4,13 @@
  * Proprietary and confidential
  */
 
-#admin{
+#admin {
   width: 100vw;
   height: 100vh;
   background-color: #F2F2F2;
 
 
-  .empty-list{
+  .empty-list {
     position: absolute;
     top: 0;
     bottom: 0;
@@ -19,14 +19,15 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    h2{
+
+    h2 {
       width: 300px;
       text-align: center;
     }
   }
 
 
-  .mask{
+  .mask {
     width: 600px;
     height: 300px;
     position: absolute;
@@ -34,22 +35,23 @@
     right: 0;
     background: url("https://lh3.googleusercontent.com/EIWxZIbTAHZ1C1Eg9lIL7lUwrLC5EAH1_d_khzBrbf-VUDqvn8tclbPaOYlAGw0AoPZyEDIteEN-CbjRtt5X2EMfpMSaX-gM") no-repeat center;
     background-size: contain;
-    @media screen and (max-width: 600px){
+    @media screen and (max-width: 600px) {
       width: 300px;
       height: 150px;
     }
   }
 
-  .progress{
+  .progress {
     position: absolute;
     right: 0;
     bottom: 0;
     margin: 24px;
   }
 
-  mat-toolbar{
+  mat-toolbar {
     height: 48px;
-    .logo{
+
+    .logo {
       margin: 0 auto;
       position: absolute;
       top: 0;
@@ -57,25 +59,28 @@
       left: 0;
       justify-content: center;
       display: flex;
-      img{
+
+      img {
         height: 40px;
         margin: 4px;
         cursor: pointer;
         outline: none;
       }
     }
-    .actions{
+
+    .actions {
       position: absolute;
       right: 16px;
-      @media screen and (max-width: 900px){
+      @media screen and (max-width: 900px) {
         display: none;
       }
     }
-    .menus{
+
+    .menus {
       display: none;
       position: absolute;
       right: 16px;
-      @media screen and (max-width: 900px){
+      @media screen and (max-width: 900px) {
         display: block;
       }
     }
@@ -85,38 +90,42 @@
     width: 100%;
     height: calc(100% - 48px);
     overflow: hidden;
-    @media screen and (max-width: 600px){
+    @media screen and (max-width: 600px) {
       padding-bottom: 96px;
     }
+
     .title {
       color: #707070;
     }
 
-    .list{
+    .list {
       width: 100%;
       height: 100%;
       padding: 0 15%;
       margin: auto;
       overflow-y: auto;
 
-      @media screen and (max-width: 600px){
+      @media screen and (max-width: 600px) {
         padding: 8px;
       }
 
-      .list-header{
+      .list-header {
         display: flex;
         justify-content: space-between;
-        .search-box{
+
+        .search-box {
           width: 45%;
           height: 30px;
           display: flex;
           margin: auto 0;
           border-radius: 8px;
           background-color: white;
-          mat-icon{
+
+          mat-icon {
             margin: auto 8px;
           }
-          input{
+
+          input {
             width: 100%;
             border-radius: 8px;
             border: none;
@@ -127,7 +136,7 @@
         }
       }
 
-      .items{
+      .items {
         width: 100%;
         height: 100%;
         position: relative;
@@ -135,14 +144,14 @@
         flex-wrap: wrap;
         justify-content: space-between;
         align-content: baseline;
-        @media screen and (max-width: 600px){
+        @media screen and (max-width: 600px) {
           flex-wrap: inherit;
           flex-direction: column;
           justify-content: initial;
         }
       }
 
-      .content{
+      .content {
         position: relative;
         padding: 8px;
       }
@@ -155,16 +164,17 @@
         cursor: pointer;
         margin: 8px 0;
         z-index: 2;
-        @media screen and (max-width: 600px){
+        @media screen and (max-width: 600px) {
           width: 100%;
           min-height: 154px;
         }
 
-        .image{
+        .image {
           display: flex;
           align-items: center;
           margin: 0 8px;
-          img{
+
+          img {
             width: 60px;
             height: 60px;
           }
@@ -173,14 +183,17 @@
         .info {
           width: calc(100% - 60px);
           margin: 8px 0 8px 8px;
+
           h3, p {
             margin: 0;
           }
-          p{
+
+          p {
             color: rgba(0, 0, 0, 0.54);
           }
         }
-        .address{
+
+        .address {
           margin: 5px 0;
         }
       }
@@ -188,23 +201,25 @@
   }
 
 
-  .add-consultancy{
+  .add-consultancy {
     position: absolute;
     bottom: 16px;
-    left: calc(50% - (230px/2));
+    left: calc(50% - (230px / 2));
     z-index: 2;
-    button{
+
+    button {
       background-color: #FFAA00;
       color: white;
       border-radius: 16px;
     }
   }
-  .footer{
+
+  .footer {
     position: absolute;
     bottom: 0;
     right: 0;
     margin: 24px;
-    @media screen and (max-width: 600px){
+    @media screen and (max-width: 600px) {
       position: relative;
       margin: -96px 0 0 24px;
     }

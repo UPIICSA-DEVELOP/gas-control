@@ -13,6 +13,8 @@ import {ListStationsService} from '@app/ui/admin/components/list-stations/list-s
 import {AddConsultancyService} from '@app/ui/admin/components/add-consultancy/add-consultancy.service';
 import {LoaderService} from '@app/core/components/loader/loader.service';
 import {Consultancy} from '@app/utils/interfaces/consultancy';
+import {HttpResponseCodes} from '@app/utils/enums/http-response-codes';
+import {EntityCollectionResponse} from '@app/utils/class/entity-collection-response';
 
 @Component({
   selector: 'app-admin',
@@ -27,6 +29,7 @@ export class AdminComponent implements OnInit, OnDestroy {
   public consultancyListCopy: Consultancy[];
   public notResults: boolean;
   private _subscriptionLoader: Subscription;
+
   constructor(
     private _collaborators: ListStationsService,
     private _addConsultancy: AddConsultancyService,
@@ -40,67 +43,62 @@ export class AdminComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-   this._subscriptionLoader = this._apiLoader.getProgress().subscribe(load => this.load = load);
-   this.getConsultancyList();
+    this._subscriptionLoader = this._apiLoader.getProgress().subscribe(load => this.load = load);
+    this.getConsultancyList();
   }
 
-  ngOnDestroy(): void{
+  ngOnDestroy(): void {
     this._subscriptionLoader.unsubscribe();
   }
 
-  public getConsultancyList(): void{
-    this._api.listConsultancy().subscribe(response => {
-      switch (response.code){
-        case 200:
-          this.consultancyList = response.items;
-          this.consultancyListCopy = this.consultancyList;
-          break;
+  public getConsultancyList(): void {
+    this._api.listConsultancy().subscribe((response: EntityCollectionResponse<Consultancy>) => {
+      if (response.code === HttpResponseCodes.OK) {
+        this.consultancyList = response.items;
+        this.consultancyListCopy = this.consultancyList;
       }
     });
   }
 
-  public openCollaborators(id: string, name: string): void{
-   this._collaborators.open(id, name);
+  public openCollaborators(id: string, name: string): void {
+    this._collaborators.open(id, name);
   }
 
-  public addConsultancy(): void{
+  public addConsultancy(): void {
     this._addConsultancy.open().afterClosed().subscribe(response => {
-      switch (response.code){
-        case 200:
-          this.getConsultancyList();
-          break;
+      if (response.code === HttpResponseCodes.OK) {
+        this.getConsultancyList();
       }
     });
   }
 
-  public signOut(): void{
+  public signOut(): void {
     this._dialog.confirmDialog('Está a punto de cerrar sesión',
       '¿Desea continuar?',
       'ACEPTAR',
       'CANCELAR').afterClosed().subscribe((response) => {
-      switch (response.code) {
-        case 1:
-          this._auth.logOut();
-          break;
+      if (response.code === 1) {
+        this._auth.logOut();
       }
     });
   }
 
 
-  public search(ev: any): void{
-    const text = ev.srcElement.value.toLowerCase();
-    if(text === ''){
+  public search(ev: any): void {
+    const text = ev.target.value.toLowerCase();
+    if (text === '') {
       this.consultancyList = this.consultancyListCopy;
-    }else{
+    } else {
       const listCopy = this.consultancyListCopy;
       const newResults = [];
       listCopy.forEach(item => {
-        if(item.businessName.toLowerCase().includes(text) || item.address.toLowerCase().includes(text) || item.officePhone.toLowerCase().includes(text)){
-          newResults.push(item)
+        if (item.businessName.toLowerCase().includes(text) || item.address.toLowerCase().includes(text) ||
+          item.officePhone.toLowerCase().includes(text)) {
+          newResults.push(item);
         }
       });
       this.consultancyList = newResults;
-      this.notResults = (newResults.length===0);
+      this.notResults = (newResults.length === 0);
     }
 
   }
