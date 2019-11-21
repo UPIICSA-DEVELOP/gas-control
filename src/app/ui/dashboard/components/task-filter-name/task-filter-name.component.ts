@@ -20,6 +20,7 @@ export class TaskFilterNameComponent implements OnInit {
   public emptyList: boolean;
   private _taskTemplate: any[];
   private _taskCopy: any[];
+
   constructor(
     @Inject(MAT_DIALOG_DATA) private _data: any,
     private _dialogRef: MatDialogRef<TaskFilterNameComponent>
@@ -35,38 +36,39 @@ export class TaskFilterNameComponent implements OnInit {
     this.getTasks();
   }
 
-  private getTasks():void{
-    //this.taskName.push({id: 0, name: 'Todas'});
-    for (let i = 0; i < this._taskTemplate.length; i++){
-      if(this._taskTemplate[i].typeReport !== 6 && this._taskTemplate[i].typeReport !== 7 && this._taskTemplate[i].typeReport !== 9)
-      this.taskName.push({id: Number(this._data.utils[i].id), name: this._data.utils[i].name});
+  private getTasks(): void {
+    // this.taskName.push({id: 0, name: 'Todas'});
+    for (let i = 0; i < this._taskTemplate.length; i++) {
+      if (this._taskTemplate[i].typeReport !== 6 && this._taskTemplate[i].typeReport !== 7 && this._taskTemplate[i].typeReport !== 9) {
+        this.taskName.push({id: Number(this._data.utils[i].id), name: this._data.utils[i].name});
+      }
     }
     this._taskCopy = this.taskName;
   }
 
-  public cancel():void{
+  public cancel(): void {
     this._dialogRef.close({code: -1});
   }
 
-  public apply():void{
+  public apply(): void {
     this._dialogRef.close({code: 1, data: this.taskSelected});
   }
 
-  public searchTask(event:any):void{
+  public searchTask(event: any): void {
     const newArray = [];
-    const text = (event.srcElement.value).toLowerCase();
-    if(text === ''){
+    const text = (event.target.value).toLowerCase();
+    if (text === '') {
       this.taskName = this._taskCopy;
-    }else{
-      for(let x=0; x < this._taskCopy.length; x++){
-        if(UtilitiesService.removeDiacritics(this._taskCopy[x].name).toLowerCase().includes(text)){
+    } else {
+      for (let x = 0; x < this._taskCopy.length; x++) {
+        if (UtilitiesService.removeDiacritics(this._taskCopy[x].name).toLowerCase().includes(text)) {
           newArray.push(this._taskCopy[x]);
         }
       }
-      if(newArray.length > 0){
+      if (newArray.length > 0) {
         this.taskName = newArray;
         this.emptyList = false;
-      }else{
+      } else {
         this.taskName = newArray;
         this.emptyList = (newArray.length === 0);
       }

@@ -4,7 +4,7 @@
  * Proprietary and confidential
  */
 
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {MatDialog, MatDialogRef} from '@angular/material';
 import {TaskFilterNameComponent} from '@app/ui/dashboard/components/task-filter-name/task-filter-name.component';
 
@@ -18,9 +18,10 @@ export class TaskFilterNameService {
 
   constructor(
     private _dialog: MatDialog
-  ) { }
+  ) {
+  }
 
-  public open(config: FilterConfig):MatDialogRef<TaskFilterNameComponent>{
-    return this._dialog.open(TaskFilterNameComponent,{disableClose: true, panelClass: 'modal-panel', data: config || null});
+  public open(config: FilterConfig): MatDialogRef<TaskFilterNameComponent> {
+    return this._dialog.open(TaskFilterNameComponent, {disableClose: true, panelClass: 'modal-panel', data: config || null});
   }
 }
