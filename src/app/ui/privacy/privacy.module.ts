@@ -5,8 +5,8 @@
  *
  */
 
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import {NgModule} from '@angular/core';
+import {CommonModule} from '@angular/common';
 import {SharedModule} from '@app/shared/shared.module';
 import {RouterModule} from '@angular/router';
 import {PrivacyComponent} from '@app/ui/privacy/pages/privacy/privacy.component';
@@ -37,4 +37,5 @@ const Providers = [];
     Providers
   ]
 })
-export class PrivacyModule { }
+export class PrivacyModule {
+}
