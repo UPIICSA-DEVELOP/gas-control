@@ -22,6 +22,7 @@ export class ModalProceduresComponent implements OnInit {
   public procedures: Procedure[];
   public selected: boolean[];
   public seeCheckbox: boolean;
+
   constructor(
     @Inject(MAT_DIALOG_DATA) private _data: any,
     private _dialogRef: MatDialogRef<ModalProceduresComponent>,
@@ -37,40 +38,40 @@ export class ModalProceduresComponent implements OnInit {
     this.initArray();
   }
 
-  public finishSelectProcedures():void{
-    let procedure = [];
-    this.selected.forEach((item, index)=>{
-      if(item === true){
-        procedure.push(index+1);
+  public finishSelectProcedures(): void {
+    const procedure = [];
+    this.selected.forEach((item, index) => {
+      if (item === true) {
+        procedure.push(index + 1);
       }
     });
     this._dialogRef.close({code: 1, data: procedure});
   }
 
-  public openFile(url:any):void{
+  public openFile(url: any): void {
     const user = LocalStorageService.getItem(Constants.UserInSession);
-    switch (user.role){
+    switch (user.role) {
       case 1:
       case 2:
       case 7:
-        this._pdf.open({urlOrFile: HashService.set("123456$#@$^@1ERF", url)});
+        this._pdf.open({urlOrFile: HashService.set('123456$#@$^@1ERF', url)});
         break;
       case 3:
       case 4:
       case 5:
       case 6:
-        this._pdf.open({urlOrFile: HashService.set("123456$#@$^@1ERF", url), hideDownload: true});
+        this._pdf.open({urlOrFile: HashService.set('123456$#@$^@1ERF', url), hideDownload: true});
         break;
     }
   }
 
-  private initArray():void{
-    for (let i = 0; i<this.procedures.length; i++){
+  private initArray(): void {
+    for (let i = 0; i < this.procedures.length; i++) {
       this.selected.push(false);
     }
-    for (let i = 0; i<this.procedures.length; i++){
-      for(let j = 0; j <this._data.proceduresSelected.length; j++){
-        if(this._data.proceduresSelected[j] === (i+1)){
+    for (let i = 0; i < this.procedures.length; i++) {
+      for (let j = 0; j < this._data.proceduresSelected.length; j++) {
+        if (this._data.proceduresSelected[j] === (i + 1)) {
           this.selected[i] = true;
         }
       }

@@ -4,9 +4,10 @@
  * Proprietary and confidential
  */
 
-#modal-procedures{
+#modal-procedures {
   height: 100%;
-  mat-dialog-content{
+
+  mat-dialog-content {
     min-height: 75vh;
     margin: 0;
     overflow: auto;
@@ -14,19 +15,23 @@
     flex-wrap: wrap;
     justify-content: center;
     padding: 8px 0;
-    mat-card{
+
+    mat-card {
       cursor: pointer;
       margin: 8px 0;
       width: 85%;
-      mat-card-content{
+
+      mat-card-content {
         align-items: center;
         display: flex;
         color: #707070;
         min-height: 32px;
-        .icon{
+
+        .icon {
           margin: 0 4px;
         }
-        .divider{
+
+        .divider {
           min-height: 32px;
           padding: 0 8px;
           border-left: 1px solid;
@@ -36,7 +41,8 @@
       }
     }
   }
-  a{
+
+  a {
     color: #707070;
     text-decoration: none;
   }
