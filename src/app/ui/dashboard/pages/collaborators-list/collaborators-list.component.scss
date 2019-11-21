@@ -14,6 +14,7 @@
   z-index: 3;
   overflow: hidden;
   display: flex;
+
   .progress {
     width: calc(100% - 40px);
     right: 0;
@@ -21,6 +22,7 @@
     top: 0;
     z-index: 1;
   }
+
   .tap {
     margin-top: 72px;
     background-color: #FFFFFF;
@@ -35,6 +37,7 @@
       display: none;
     }
   }
+
   .add {
     margin-top: 12px;
     background-color: #FFAA00;
@@ -50,14 +53,17 @@
       display: none;
     }
   }
+
   .search {
     width: 100%;
     padding: 0 24px;
+
     .icons {
       color: #707070;
       margin: 0 12px;
     }
   }
+
   .content {
     height: 100%;
     overflow: hidden;
@@ -65,28 +71,33 @@
     background: #F2F2F2;
     box-shadow: 0 2px 1px -1px rgba(0, 0, 0, 0.2), 0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12);
   }
+
   .head {
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 16px 24px;
+
     span {
       font-weight: 700;
       font-size: 16px;
       color: #707070;
     }
+
     button {
       display: none;
       @media screen and (max-width: 600px) {
         display: block;
       }
     }
+
     .add {
       background-color: #FFAA00;
       color: #FFFFFF;
       border-radius: 50%;
       margin-top: -4px;
     }
+
     .back {
       display: none;
       color: #707070;
@@ -95,18 +106,21 @@
       }
     }
   }
+
   .container-1 {
     padding: 0 24px;
     height: calc(100% - 134px);
     overflow-x: hidden;
     overflow-y: auto;
   }
+
   .container-2 {
     padding: 0 24px;
     height: calc(100% - 72px);
     overflow-x: hidden;
     overflow-y: auto;
   }
+
   .notValidate {
     color: #FFFFFF;
     background-color: #000000;
@@ -119,6 +133,7 @@
     z-index: 2;
     display: flex;
     border-radius: 4px;
+
     .text-validate {
       font-weight: 600;
       margin: 0 4px 4px 0;
@@ -130,22 +145,26 @@
       font-size: 12px;
     }
   }
+
   .collaborator {
     min-height: 164px;
     position: relative;
     margin-bottom: 8px;
     padding: 0;
+
     mat-card-content {
       display: flex;
       width: 100%;
       height: 100%;
       padding: 16px 0;
       margin: 0;
+
       .image {
         display: flex;
         justify-content: center;
         align-items: center;
         padding: 0 10px;
+
         .image-collaborator {
           width: 50px;
           height: 50px;
@@ -155,14 +174,17 @@
           align-items: center;
           justify-content: center;
         }
+
         mat-icon {
           color: #707070;
           font-size: 40px;
         }
       }
+
       .information {
         padding: 0 10px;
         width: 75%;
+
         .info {
           color: #707070;
           font-weight: 500;
@@ -174,6 +196,7 @@
         }
       }
     }
+
     .profile-button {
       padding: 4px;
       height: 100%;
@@ -182,6 +205,7 @@
       justify-content: flex-end;
       color: #707070;
     }
+
     .action-buttons {
       padding: 4px;
       height: 100%;
@@ -189,38 +213,46 @@
       display: flex;
       justify-content: space-evenly;
       color: #707070;
+
       .link {
         color: #707070;
       }
     }
+
     .button {
       width: 64px;
       height: 32px;
       margin: 4px 0;
     }
   }
+
   .form {
     text-align: center;
-    .image-head{
+
+    .image-head {
       width: 100%;
       display: flex;
       justify-content: center;
     }
+
     .head-image {
       width: 80%;
     }
+
     .profileImage {
       margin: -48px 0 16px 0;
       border-radius: 50%;
       width: 80px;
       height: 80px;
       padding: 0;
+
       img {
         width: 80px;
         height: 80px;
         border-radius: 50%;
         box-shadow: 0 3px 1px 1px rgba(0, 0, 0, 0.1), 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, .10);
       }
+
       mat-icon {
         width: 80px;
         height: 80px;
@@ -234,30 +266,37 @@
         align-items: center;
       }
     }
+
     .inputs {
       width: 90%;
     }
+
     .phone {
       width: 90%;
       margin: auto;
       display: flex;
       justify-content: space-between;
+
       .number {
         width: 70%;
       }
     }
+
     .website {
       width: 90%;
       margin: auto;
       display: flex;
       justify-content: space-between;
+
       .protocol {
         width: 25%;
       }
+
       .url {
         width: 70%;
       }
     }
+
     .formHead {
       font-weight: 500;
       font-size: 14px;
@@ -265,11 +304,13 @@
       margin-bottom: 12px;
       text-align: left;
     }
+
     .signature-input {
       margin-bottom: 16px;
       width: 100%;
       padding: 0 4%;
     }
+
     .signatureContainer {
       display: flex;
       justify-content: center;
@@ -277,19 +318,23 @@
       border: 1.25px solid;
       align-items: center;
       cursor: pointer;
+
       span {
         margin: 54px 0;
       }
+
       .imageSignature {
         width: 100%;
       }
     }
+
     .save-button {
       display: flex;
       justify-content: center;
       padding-bottom: 16px;
     }
   }
+
   .modal {
     position: relative;
 
@@ -303,12 +348,14 @@
       cursor: pointer;
     }
   }
+
   .empty {
     height: 100%;
     display: flex;
     align-items: center;
     text-align: center
   }
+
   .load {
     height: 100%;
     display: flex;
