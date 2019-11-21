@@ -23,12 +23,13 @@ import {Person} from '@app/utils/interfaces/person';
   styleUrls: ['./nav-bar.component.scss'],
   encapsulation: ViewEncapsulation.None
 })
-export class NavBarComponent implements OnInit, DoCheck, OnDestroy  {
+export class NavBarComponent implements OnInit, DoCheck, OnDestroy {
 
   public user: Person;
   public load: boolean;
-  public imageExist: boolean = false;
+  public imageExist = false;
   private _subscriptionLoader: Subscription;
+
   constructor(
     @Inject(DOCUMENT) private _document: Document,
     @Inject(PLATFORM_ID) private _platformId: string,
@@ -48,7 +49,7 @@ export class NavBarComponent implements OnInit, DoCheck, OnDestroy  {
     this.getUser();
   }
 
-  ngOnDestroy(): void{
+  ngOnDestroy(): void {
     this._subscriptionLoader.unsubscribe();
   }
 
@@ -57,15 +58,13 @@ export class NavBarComponent implements OnInit, DoCheck, OnDestroy  {
       '¿Desea continuar?',
       'ACEPTAR',
       'CANCELAR').afterClosed().subscribe((response) => {
-      switch (response.code) {
-        case 1:
-          this._auth.logOut();
-          break;
+      if (response.code === 1) {
+        this._auth.logOut();
       }
     });
   }
 
-  public navigateProfile():void {
+  public navigateProfile(): void {
     switch (this.user.role) {
       case 1:
       case 2:
@@ -78,34 +77,35 @@ export class NavBarComponent implements OnInit, DoCheck, OnDestroy  {
         this._router.navigate(['/home/profile/user']).then();
         break;
       default:
-        break
+        break;
     }
   }
 
   private getUser(): void {
     this.user = LocalStorageService.getItem(Constants.UserInSession);
-    if (this.user){
+    if (this.user) {
       this.imageExist = this.user.profileImage && this.user.profileImage.thumbnail !== '';
     }
   }
 
-  public openCollaboratorsList(): void{
-    if(this.user.role !== 7){
+  public openCollaboratorsList(): void {
+    if (this.user.role !== 7) {
       this._router.navigate(['/home/collaborators'], {queryParams: {consultancy: this.user.refId}}).then();
-    }else{
-      let consultancyId = undefined;
+    } else {
+      let consultancyId;
+      consultancyId = null;
       const identifiers = SessionStorageService.getItem(Constants.StationAdmin);
       identifiers.forEach(item => {
-        if(item.lastView){
+        if (item.lastView) {
           consultancyId = item.consultancyId;
         }
       });
-      this._router.navigate(['/home/collaborators'],{queryParams: {consultancy: consultancyId}}).then();
+      this._router.navigate(['/home/collaborators'], {queryParams: {consultancy: consultancyId}}).then();
     }
   }
 
-  public openMenu():void{
-    this._sharedService.setNotification({type:SharedTypeNotification.OpenCloseMenu, value:true});
+  public openMenu(): void {
+    this._sharedService.setNotification({type: SharedTypeNotification.OpenCloseMenu, value: true});
   }
 
 }

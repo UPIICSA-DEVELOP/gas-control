@@ -16,34 +16,40 @@
         <img alt="app-logo" src="../../../../../assets/image/logo.png" routerLink="/home">
       </div>
       <div class="navigation-buttons">
-        <div id="progress" #progress *ngIf="load">
+        <div id="progress" *ngIf="load">
           <mat-spinner [diameter]="25" [mode]="'indeterminate'"></mat-spinner>
         </div>
-        <button id="btn-collaborators" *ngIf="user && (user.role<=3 || user.role==7)" mat-button (click)="openCollaboratorsList()">
-          <div>Colaboradores</div>
+        <button id="btn-collaborators" *ngIf="user && (user.role<=3 || user.role==7)" mat-button
+                (click)="openCollaboratorsList()">
+          Colaboradores
           <mat-icon>group</mat-icon>
         </button>
-        <button mat-button (click)="logOut()" matTooltip="Cerrar Sesión" class="btn-logout" *ngIf="user && user.role!==7">
+        <button mat-button (click)="logOut()" matTooltip="Cerrar Sesión" class="btn-logout"
+                *ngIf="user && user.role!==7">
           <mat-icon>exit_to_app</mat-icon>
         </button>
         <div class="user">
-          <button class="button-user" matTooltip="Mi Perfil" mat-button (click)="navigateProfile()" *ngIf="user && user.role!==7">
+          <button class="button-user" matTooltip="Mi Perfil" mat-button (click)="navigateProfile()"
+                  *ngIf="user && user.role!==7">
             <img class="image-user" *ngIf="imageExist" [src]="user.profileImage" alt="User profile image">
             <mat-icon *ngIf="!imageExist">account_circle</mat-icon>
           </button>
         </div>
       </div>
       <div class="menus">
-        <button mat-button [mat-menu-trigger-for]="menu_one" >
+        <button mat-button [mat-menu-trigger-for]="menu_one">
           <mat-icon>more_vert</mat-icon>
         </button>
         <mat-menu #menu_one>
-          <button style="display: flex; align-items: center;" mat-menu-item *ngIf="user && user.role !== 7" (click)="navigateProfile()">
-            <img style="width: 24px;height: 24px;border-radius: 50%;background-color: #FFFFFF;margin-right: 16px;" *ngIf="imageExist" [src]="user.profileImage" alt="User profile image">
+          <button style="display: flex; align-items: center;" mat-menu-item *ngIf="user && user.role !== 7"
+                  (click)="navigateProfile()">
+            <img style="width: 24px;height: 24px;border-radius: 50%;background-color: #FFFFFF;margin-right: 16px;"
+                 *ngIf="imageExist" [src]="user.profileImage" alt="User profile image">
             <mat-icon *ngIf="!imageExist">account_circle</mat-icon>
             <span>Perfil</span>
           </button>
-          <button class="menu-buttons" mat-menu-item *ngIf="user && (user.role<=3 || user.role===7)" (click)="openCollaboratorsList()">
+          <button class="menu-buttons" mat-menu-item *ngIf="user && (user.role<=3 || user.role===7)"
+                  (click)="openCollaboratorsList()">
             <mat-icon>supervisor_account</mat-icon>
             <span>Colaboradores</span>
           </button>
