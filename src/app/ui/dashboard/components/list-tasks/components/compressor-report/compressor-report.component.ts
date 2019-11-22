@@ -14,7 +14,6 @@ import {UploadFileService} from '@app/shared/components/upload-file/upload-file.
 import {SignaturePadService} from '@app/shared/components/signature-pad/signature-pad.service';
 import {Subscription} from 'rxjs';
 import {Constants} from '@app/utils/constants/constants.utils';
-import {UploadFileResponse} from '@app/shared/components/upload-file/upload-file.component';
 import {FormatTimePipe} from '@app/shared/pipes/format-time/format-time.pipe';
 import {LoaderService} from '@app/core/components/loader/loader.service';
 import {CompressorReport} from '@app/utils/interfaces/reports/compressor-report';
@@ -22,6 +21,7 @@ import {HWGReport} from '@app/utils/interfaces/reports/hwg-report';
 import {Task} from '@app/utils/interfaces/task';
 import {HttpResponseCodes} from '@app/utils/enums/http-response-codes';
 import {LocalStorageService, SnackBarService} from 'ng-maplander';
+import {UserMedia} from 'ng-maplander/lib/utils/models/user-media';
 
 @Component({
   selector: 'app-compressor-report',
@@ -251,7 +251,13 @@ export class CompressorReportComponent implements OnInit, OnDestroy {
     });
   }
 
-  public loadEvidence(ev: UploadFileResponse): void {
+  public loadEvidence(ev: UserMedia): void {
+    if (ev) {
+      this.evidenceThumbnail = null;
+      this._loads[0] = false;
+      this._evidence = null;
+      this._evidenceElement = null;
+    }
     this.error = false;
     this.evidenceThumbnail = ev.url;
     this._loads[0] = true;
@@ -261,14 +267,6 @@ export class CompressorReportComponent implements OnInit, OnDestroy {
     this._evidence.append('isImage', 'true');
     this._evidence.append('file', ev.blob);
   }
-
-  public deleteEvidence(): void {
-    this.evidenceThumbnail = undefined;
-    this._loads[0] = false;
-    this._evidence = undefined;
-    this._evidenceElement = undefined;
-  }
-
 
   public validateForm(value: any): void {
     let error = false;

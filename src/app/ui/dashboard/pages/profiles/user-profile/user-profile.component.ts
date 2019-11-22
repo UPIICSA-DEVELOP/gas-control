@@ -13,7 +13,6 @@ import {DialogService} from 'app/shared/components/dialog/dialog.service';
 import {CountryCodeService} from 'app/shared/components/country-code/country-code.service';
 import {UploadFileService} from 'app/shared/components/upload-file/upload-file.service';
 import {Constants} from 'app/utils/constants/constants.utils';
-import {UploadFileResponse} from 'app/shared/components/upload-file/upload-file.component';
 import {SignaturePadService} from 'app/shared/components/signature-pad/signature-pad.service';
 import {PdfVisorService} from 'app/shared/components/pdf-visor/pdf-visor.service';
 import {Subscription} from 'rxjs';
@@ -26,6 +25,7 @@ import {PersonInformation} from '@app/utils/interfaces/person-information';
 import {HttpResponseCodes} from '@app/utils/enums/http-response-codes';
 import {ANIMATION} from '@app/ui/dashboard/pages/profiles/user-profile/animation';
 import {LocalStorageService, SnackBarService} from 'ng-maplander';
+import {UserMedia} from 'ng-maplander/lib/utils/models/user-media';
 
 @Component({
   selector: 'app-user-profile',
@@ -137,7 +137,15 @@ export class UserProfileComponent implements OnInit, OnDestroy {
     });
   }
 
-  public onLoadImage(event: UploadFileResponse): void {
+  public onLoadImage(event: UserMedia): void {
+    if (event == null) {
+      this.change = true;
+      this.deleteImage = true;
+      this.newImage = false;
+      this.profileImage = null;
+      this._formDeleteData = new FormData();
+      this._formDeleteData.append('blobName', this.blobName);
+    }
     this.newImage = true;
     this.change = true;
     this.deleteImage = false;
@@ -149,14 +157,14 @@ export class UserProfileComponent implements OnInit, OnDestroy {
     this._formData.append('file', event.blob);
   }
 
-  public onLoadFile(event: UploadFileResponse): void {
+  public onLoadFile(event: UserMedia): void {
     this.newFile = true;
     this.change = true;
-    this.file = event.file;
+    this.file = event.blob;
     this._formFile = new FormData();
     this._formFile.append('path', '');
     this._formFile.append('fileName', 'benzene-' + this.user.id + '-' + new Date().getTime() + '.pdf');
-    this._formFile.append('file', event.file);
+    this._formFile.append('file', event.blob);
   }
 
   public changeSignature(): void {
@@ -185,15 +193,6 @@ export class UserProfileComponent implements OnInit, OnDestroy {
         this.updateProfile(this.profileForm.value);
       }
     });
-  }
-
-  public onRemoveImage(): void {
-    this.change = true;
-    this.deleteImage = true;
-    this.newImage = false;
-    this.profileImage = undefined;
-    this._formDeleteData = new FormData();
-    this._formDeleteData.append('blobName', this.blobName);
   }
 
   public openListCountry(): void {

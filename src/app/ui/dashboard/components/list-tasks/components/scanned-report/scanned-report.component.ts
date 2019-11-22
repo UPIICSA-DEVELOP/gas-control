@@ -11,7 +11,6 @@ import {UploadFileService} from '@app/shared/components/upload-file/upload-file.
 import {SignaturePadService} from '@app/shared/components/signature-pad/signature-pad.service';
 import {SharedService, SharedTypeNotification} from '@app/core/services/shared/shared.service';
 import {Subscription} from 'rxjs';
-import {UploadFileResponse} from '@app/shared/components/upload-file/upload-file.component';
 import {Constants} from '@app/utils/constants/constants.utils';
 import {PdfVisorService} from '@app/shared/components/pdf-visor/pdf-visor.service';
 import {HashService} from '@app/utils/utilities/hash.service';
@@ -21,6 +20,7 @@ import {HWGReport} from '@app/utils/interfaces/reports/hwg-report';
 import {Task} from '@app/utils/interfaces/task';
 import {HttpResponseCodes} from '@app/utils/enums/http-response-codes';
 import {LocalStorageService, SnackBarService} from 'ng-maplander';
+import {UserMedia} from 'ng-maplander/lib/utils/models/user-media';
 
 @Component({
   selector: 'app-scanned-report',
@@ -175,15 +175,15 @@ export class ScannedReportComponent implements OnInit, OnDestroy {
   }
 
 
-  public loadFile(ev: UploadFileResponse): void {
+  public loadFile(ev: UserMedia): void {
     this.error = false;
     this._loads[0] = true;
     this.file = true;
-    this._file = ev.file;
+    this._file = ev.blob;
     this._evidence = new FormData();
     this._evidence.append('path', 'Task-' + this._taskId);
     this._evidence.append('fileName', 'manifest-' + this._taskId + new Date().getTime() + '.pdf');
-    this._evidence.append('file', ev.file);
+    this._evidence.append('file', ev.blob);
   }
 
   public loadSignature(): void {

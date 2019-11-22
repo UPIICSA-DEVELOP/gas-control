@@ -13,13 +13,13 @@
       <div class="information">
         <mat-card class="content">
           <mat-card class="head">
-            <app-upload-file [layoutTemplate]="icon" (onLoad)="onLoadImage($event)" (onRemove)="onRemoveImage()"
-                             [type]="'image'">
+            <lib-upload-file [content]="icon" (loadImage)="onLoadImage($event)"
+                             [fileType]="'image'">
               <ng-template #icon>
                 <img *ngIf="profileImage" [src]="profileImage" profile-image alt="User profile image">
                 <mat-icon *ngIf="!profileImage" profile-image default-image>add_photo_alternate</mat-icon>
               </ng-template>
-            </app-upload-file>
+            </lib-upload-file>
           </mat-card>
           <mat-card-content class="user-form">
             <h2 title-blue>Mi información</h2>
@@ -136,7 +136,7 @@
                 </mat-select>
               </mat-form-field>
               <div benzene-study>
-                <app-upload-file inputs-person [layoutTemplate]="button" (onLoad)="onLoadFile($event)" [type]="'file'">
+                <lib-upload-file inputs-person [content]="button" (loadImage)="onLoadFile($event)" [fileType]="'file'">
                   <ng-template #button>
                     <div class="content-input">
                       <span>Estudio de toxicidad (Benceno)</span>
@@ -144,7 +144,7 @@
                       <mat-icon *ngIf="file">autorenew</mat-icon>
                     </div>
                   </ng-template>
-                </app-upload-file>
+                </lib-upload-file>
                 <button type="button" [disabled]="load" mat-icon-button matTooltip="Ver estudio" *ngIf="file"
                         (click)="openStudy()">
                   <mat-icon>visibility</mat-icon>

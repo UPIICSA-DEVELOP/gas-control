@@ -68,7 +68,7 @@
             </div>
           </ng-template>
           <ng-template #loadManifest>
-            <app-upload-file class="inputs" [layoutTemplate]="button" (onLoad)="loadFile($event)" [type]="'file'">
+            <lib-upload-file class="inputs" [content]="button" (loadImage)="loadFile($event)" [fileType]="'file'">
               <ng-template #button>
                 <div class="button edit">
                   <mat-icon *ngIf="file">autorenew</mat-icon>
@@ -76,7 +76,7 @@
                   <span class="text-upload">MANIFIESTO</span>
                 </div>
               </ng-template>
-            </app-upload-file>
+            </lib-upload-file>
           </ng-template>
         </div>
         <mat-error *ngIf="error && editable" class="error-text">

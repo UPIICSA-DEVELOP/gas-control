@@ -8,7 +8,6 @@ import {Component, HostBinding, OnDestroy, OnInit} from '@angular/core';
 import {UploadFileService} from '@app/shared/components/upload-file/upload-file.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {ApiService} from '@app/core/services/api/api.service';
-import {UploadFileResponse} from '@app/shared/components/upload-file/upload-file.component';
 import {Subscription} from 'rxjs';
 import {PdfVisorService} from '@app/shared/components/pdf-visor/pdf-visor.service';
 import {Constants} from '@app/utils/constants/constants.utils';
@@ -18,6 +17,7 @@ import {Document} from '@app/utils/interfaces/document';
 import {HttpResponseCodes} from '@app/utils/enums/http-response-codes';
 import {ANIMATION} from '@app/ui/dashboard/pages/documentation/animation';
 import {LocalStorageService, SnackBarService} from 'ng-maplander';
+import {UserMedia} from 'ng-maplander/lib/utils/models/user-media';
 
 @Component({
   selector: 'app-documentation',
@@ -95,11 +95,11 @@ export class DocumentationComponent implements OnInit, OnDestroy {
     }
   }
 
-  public uploadFile(event: UploadFileResponse, index: number, regulationType: number, type: number) {
+  public uploadFile(event: UserMedia, index: number, regulationType: number, type: number) {
     this._documentData = new FormData();
     this._documentData.append('path', this.stationId);
     this._documentData.append('fileName', (regulationType === 1 ? 'ASEA-' : 'CRE-') + new Date().getTime() + '.pdf');
-    this._documentData.append('file', event.file);
+    this._documentData.append('file', event.blob);
     let id = null;
     if (regulationType === 1 && this.docsAsea[index]) {
       id = this.docsAsea[index].id;

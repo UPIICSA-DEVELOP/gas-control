@@ -12,7 +12,6 @@ import {SignaturePadService} from 'app/shared/components/signature-pad/signature
 import {CountryCodeService} from 'app/shared/components/country-code/country-code.service';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {DialogService} from 'app/shared/components/dialog/dialog.service';
-import {UploadFileResponse} from 'app/shared/components/upload-file/upload-file.component';
 import {UploadFileService} from 'app/shared/components/upload-file/upload-file.service';
 import {UtilitiesService} from 'app/utils/utilities/utilities';
 import {Subscription} from 'rxjs';
@@ -22,6 +21,7 @@ import {HttpResponseCodes} from '@app/utils/enums/http-response-codes';
 import {EntityResponse} from '@app/utils/class/entity-response';
 import {ANIMATION} from '@app/ui/dashboard/pages/collaborators-list/animation';
 import {CookieService, LocalStorageService, SnackBarService} from 'ng-maplander';
+import {UserMedia} from 'ng-maplander/lib/utils/models/user-media';
 
 @Component({
   selector: 'app-collaborators-list',
@@ -212,7 +212,12 @@ export class CollaboratorsListComponent implements OnInit, OnDestroy {
     });
   }
 
-  public onLoadImage(event: UploadFileResponse): void {
+  public onLoadImage(event: UserMedia): void {
+    if (event == null) {
+      this.changes = true;
+      this.blobImageProfile = '';
+      this.addImage = false;
+    }
     this.changes = true;
     this.blobImageProfile = event.url;
     this.addImage = true;
@@ -221,12 +226,6 @@ export class CollaboratorsListComponent implements OnInit, OnDestroy {
     this._formImage.append('filename', 'profileImage-' + this._refId + '-' + new Date().getTime() + '.png');
     this._formImage.append('isImage', 'true');
     this._formImage.append('file', event.blob);
-  }
-
-  public onRemoveImage(): void {
-    this.changes = true;
-    this.blobImageProfile = '';
-    this.addImage = false;
   }
 
   public selectCountryCode(): void {

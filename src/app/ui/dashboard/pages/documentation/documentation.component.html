@@ -56,12 +56,12 @@
                   <span *ngIf="!docsAsea[0]"> A. Dictamen de instalaciones eléctricas</span>
                 </div>
                 <div class="button-icon">
-                  <app-upload-file (onLoad)="uploadFile($event, 0, 1, 1)" [layoutTemplate]="button" [type]="'file'">
+                  <lib-upload-file (loadImage)="uploadFile($event, 0, 1, 1)" [content]="button" [fileType]="'file'">
                     <ng-template #button>
                       <mat-icon *ngIf="!docsAsea[0]" matTooltip="Cambiar" svgIcon="icons:upload"></mat-icon>
                       <mat-icon *ngIf="docsAsea[0]" matTooltip="Cargar">autorenew</mat-icon>
                     </ng-template>
-                  </app-upload-file>
+                  </lib-upload-file>
                 </div>
               </mat-card>
               <mat-card class="file">
@@ -70,12 +70,12 @@
                   <span *ngIf="!docsAsea[1]"> 1. Plano de instalaciones eléctricas</span>
                 </div>
                 <div class="button-icon">
-                  <app-upload-file (onLoad)="uploadFile($event, 1, 1, 2)" [layoutTemplate]="button" [type]="'file'">
+                  <lib-upload-file (loadImage)="uploadFile($event, 1, 1, 2)" [content]="button" [fileType]="'file'">
                     <ng-template #button>
                       <mat-icon *ngIf="!docsAsea[1]" matTooltip="Cambiar" svgIcon="icons:upload"></mat-icon>
                       <mat-icon *ngIf="docsAsea[1]" matTooltip="Cargar">autorenew</mat-icon>
                     </ng-template>
-                  </app-upload-file>
+                  </lib-upload-file>
                 </div>
               </mat-card>
               <mat-card class="file">
@@ -84,12 +84,12 @@
                   <span *ngIf="!docsAsea[2]"> 2. Diagrama unifilar</span>
                 </div>
                 <div class="button-icon">
-                  <app-upload-file (onLoad)="uploadFile($event, 2, 1, 3)" [layoutTemplate]="button" [type]="'file'">
+                  <lib-upload-file (loadImage)="uploadFile($event, 2, 1, 3)" [content]="button" [fileType]="'file'">
                     <ng-template #button>
                       <mat-icon *ngIf="!docsAsea[2]" matTooltip="Cambiar" svgIcon="icons:upload"></mat-icon>
                       <mat-icon *ngIf="docsAsea[2]" matTooltip="Cargar">autorenew</mat-icon>
                     </ng-template>
-                  </app-upload-file>
+                  </lib-upload-file>
                 </div>
               </mat-card>
               <mat-card class="file">
@@ -98,12 +98,12 @@
                   <span *ngIf="!docsAsea[3]"> 3. Recibo de consumo eléctrico</span>
                 </div>
                 <div class="button-icon">
-                  <app-upload-file (onLoad)="uploadFile($event, 3, 1, 4)" [layoutTemplate]="button" [type]="'file'">
+                  <lib-upload-file (loadImage)="uploadFile($event, 3, 1, 4)" [content]="button" [fileType]="'file'">
                     <ng-template #button>
                       <mat-icon *ngIf="!docsAsea[3]" matTooltip="Cambiar" svgIcon="icons:upload"></mat-icon>
                       <mat-icon *ngIf="docsAsea[3]" matTooltip="Cargar">autorenew</mat-icon>
                     </ng-template>
-                  </app-upload-file>
+                  </lib-upload-file>
                 </div>
               </mat-card>
               <div class="divider"></div>
@@ -113,12 +113,12 @@
                   <span *ngIf="!docsAsea[4]"> B. Estudio de tierras físicas y pararrayos</span>
                 </div>
                 <div class="button-icon">
-                  <app-upload-file (onLoad)="uploadFile($event, 4, 1, 5)" [layoutTemplate]="button" [type]="'file'">
+                  <lib-upload-file (loadImage)="uploadFile($event, 4, 1, 5)" [content]="button" [fileType]="'file'">
                     <ng-template #button>
                       <mat-icon *ngIf="!docsAsea[4]" matTooltip="Cambiar" svgIcon="icons:upload"></mat-icon>
                       <mat-icon *ngIf="docsAsea[4]" matTooltip="Cargar">autorenew</mat-icon>
                     </ng-template>
-                  </app-upload-file>
+                  </lib-upload-file>
                 </div>
               </mat-card>
               <mat-card class="file">
@@ -127,12 +127,12 @@
                   <span *ngIf="!docsAsea[5]"> 1. Razón social</span>
                 </div>
                 <div class="button-icon">
-                  <app-upload-file (onLoad)="uploadFile($event, 5, 1, 6)" [layoutTemplate]="button" [type]="'file'">
+                  <lib-upload-file (loadImage)="uploadFile($event, 5, 1, 6)" [content]="button" [fileType]="'file'">
                     <ng-template #button>
                       <mat-icon *ngIf="!docsAsea[5]" matTooltip="Cambiar" svgIcon="icons:upload"></mat-icon>
                       <mat-icon *ngIf="docsAsea[5]" matTooltip="Cargar">autorenew</mat-icon>
                     </ng-template>
-                  </app-upload-file>
+                  </lib-upload-file>
                 </div>
               </mat-card>
               <mat-card class="file">
@@ -141,12 +141,12 @@
                   <span *ngIf="!docsAsea[6]"> 2. R.F.C</span>
                 </div>
                 <div class="button-icon">
-                  <app-upload-file (onLoad)="uploadFile($event, 6, 1, 7)" [layoutTemplate]="button" [type]="'file'">
+                  <lib-upload-file (loadImage)="uploadFile($event, 6, 1, 7)" [content]="button" [fileType]="'file'">
                     <ng-template #button>
                       <mat-icon *ngIf="!docsAsea[6]" matTooltip="Cambiar" svgIcon="icons:upload"></mat-icon>
                       <mat-icon *ngIf="docsAsea[6]" matTooltip="Cargar">autorenew</mat-icon>
                     </ng-template>
-                  </app-upload-file>
+                  </lib-upload-file>
                 </div>
               </mat-card>
               <mat-card class="file">
@@ -155,12 +155,12 @@
                   <span *ngIf="!docsAsea[7]"> 3. Dirección</span>
                 </div>
                 <div class="button-icon">
-                  <app-upload-file (onLoad)="uploadFile($event, 7, 1, 8)" [layoutTemplate]="button" [type]="'file'">
+                  <lib-upload-file (loadImage)="uploadFile($event, 7, 1, 8)" [content]="button" [fileType]="'file'">
                     <ng-template #button>
                       <mat-icon *ngIf="!docsAsea[7]" matTooltip="Cambiar" svgIcon="icons:upload"></mat-icon>
                       <mat-icon *ngIf="docsAsea[7]" matTooltip="Cargar">autorenew</mat-icon>
                     </ng-template>
-                  </app-upload-file>
+                  </lib-upload-file>
                 </div>
               </mat-card>
               <div class="divider"></div>
@@ -170,12 +170,12 @@
                   <span *ngIf="!docsAsea[8]"> C. Prueba de hermeticidad</span>
                 </div>
                 <div class="button-icon">
-                  <app-upload-file (onLoad)="uploadFile($event, 8, 1, 9)" [layoutTemplate]="button" [type]="'file'">
+                  <lib-upload-file (loadImage)="uploadFile($event, 8, 1, 9)" [content]="button" [fileType]="'file'">
                     <ng-template #button>
                       <mat-icon *ngIf="!docsAsea[8]" matTooltip="Cambiar" svgIcon="icons:upload"></mat-icon>
                       <mat-icon *ngIf="docsAsea[8]" matTooltip="Cargar">autorenew</mat-icon>
                     </ng-template>
-                  </app-upload-file>
+                  </lib-upload-file>
                 </div>
               </mat-card>
               <mat-card class="file">
@@ -184,12 +184,12 @@
                   <span *ngIf="!docsAsea[9]"> 1. Número de permiso de la CRE</span>
                 </div>
                 <div class="button-icon">
-                  <app-upload-file (onLoad)="uploadFile($event, 9, 1, 10)" [layoutTemplate]="button" [type]="'file'">
+                  <lib-upload-file (loadImage)="uploadFile($event, 9, 1, 10)" [content]="button" [fileType]="'file'">
                     <ng-template #button>
                       <mat-icon *ngIf="!docsAsea[9]" matTooltip="Cambiar" svgIcon="icons:upload"></mat-icon>
                       <mat-icon *ngIf="docsAsea[9]" matTooltip="Cargar">autorenew</mat-icon>
                     </ng-template>
-                  </app-upload-file>
+                  </lib-upload-file>
                 </div>
               </mat-card>
               <mat-card class="file">
@@ -198,12 +198,12 @@
                   <span *ngIf="!docsAsea[6]"> 2. R.F.C</span>
                 </div>
                 <div class="button-icon">
-                  <app-upload-file (onLoad)="uploadFile($event, 6, 1, 7)" [layoutTemplate]="button" [type]="'file'">
+                  <lib-upload-file (loadImage)="uploadFile($event, 6, 1, 7)" [content]="button" [fileType]="'file'">
                     <ng-template #button>
                       <mat-icon *ngIf="!docsAsea[6]" matTooltip="Cambiar" svgIcon="icons:upload"></mat-icon>
                       <mat-icon *ngIf="docsAsea[6]" matTooltip="Cargar">autorenew</mat-icon>
                     </ng-template>
-                  </app-upload-file>
+                  </lib-upload-file>
                 </div>
               </mat-card>
               <mat-card class="file">
@@ -212,12 +212,12 @@
                   <span *ngIf="!docsAsea[7]"> 3. Dirección</span>
                 </div>
                 <div class="button-icon">
-                  <app-upload-file (onLoad)="uploadFile($event, 7, 1, 8)" [layoutTemplate]="button" [type]="'file'">
+                  <lib-upload-file (loadImage)="uploadFile($event, 7, 1, 8)" [content]="button" [fileType]="'file'">
                     <ng-template #button>
                       <mat-icon *ngIf="!docsAsea[7]" matTooltip="Cambiar" svgIcon="icons:upload"></mat-icon>
                       <mat-icon *ngIf="docsAsea[7]" matTooltip="Cargar">autorenew</mat-icon>
                     </ng-template>
-                  </app-upload-file>
+                  </lib-upload-file>
                 </div>
               </mat-card>
               <mat-card class="file">
@@ -228,12 +228,12 @@
                   <span *ngIf="!docsAsea[10]"> 4. Número de tanques, producto y capacidad en litros</span>
                 </div>
                 <div class="button-icon">
-                  <app-upload-file (onLoad)="uploadFile($event, 10, 1, 11)" [layoutTemplate]="button" [type]="'file'">
+                  <lib-upload-file (loadImage)="uploadFile($event, 10, 1, 11)" [content]="button" [fileType]="'file'">
                     <ng-template #button>
                       <mat-icon *ngIf="!docsAsea[10]" matTooltip="Cambiar" svgIcon="icons:upload"></mat-icon>
                       <mat-icon *ngIf="docsAsea[10]" matTooltip="Cargar">autorenew</mat-icon>
                     </ng-template>
-                  </app-upload-file>
+                  </lib-upload-file>
                 </div>
               </mat-card>
               <div class="others">Otros documentos ASEA</div>
@@ -245,12 +245,12 @@
                   <span *ngIf="!docsAsea[13]"> Documento que enuncie el material de las fabricación de tanques y tuberías </span>
                 </div>
                 <div class="button-icon">
-                  <app-upload-file (onLoad)="uploadFile($event, 13, 1, 14)" [layoutTemplate]="button" [type]="'file'">
+                  <lib-upload-file (loadImage)="uploadFile($event, 13, 1, 14)" [content]="button" [fileType]="'file'">
                     <ng-template #button>
                       <mat-icon *ngIf="!docsAsea[13]" matTooltip="Cambiar" svgIcon="icons:upload"></mat-icon>
                       <mat-icon *ngIf="docsAsea[13]" matTooltip="Cargar">autorenew</mat-icon>
                     </ng-template>
-                  </app-upload-file>
+                  </lib-upload-file>
                 </div>
               </mat-card>
               <mat-card class="file">
@@ -259,12 +259,12 @@
                   <span *ngIf="!docsAsea[14]"> Planos de estación (todos)</span>
                 </div>
                 <div class="button-icon">
-                  <app-upload-file (onLoad)="uploadFile($event, 14, 1, 15)" [layoutTemplate]="button" [type]="'file'">
+                  <lib-upload-file (loadImage)="uploadFile($event, 14, 1, 15)" [content]="button" [fileType]="'file'">
                     <ng-template #button>
                       <mat-icon *ngIf="!docsAsea[14]" matTooltip="Cambiar" svgIcon="icons:upload"></mat-icon>
                       <mat-icon *ngIf="docsAsea[14]" matTooltip="Cargar">autorenew</mat-icon>
                     </ng-template>
-                  </app-upload-file>
+                  </lib-upload-file>
                 </div>
               </mat-card>
               <mat-card class="file">
@@ -274,12 +274,12 @@
                   <span *ngIf="!docsAsea[16]">Registro como Generador de Residuos Peligrosos</span>
                 </div>
                 <div class="button-icon">
-                  <app-upload-file (onLoad)="uploadFile($event, 16, 1, 19)" [layoutTemplate]="button" [type]="'file'">
+                  <lib-upload-file (loadImage)="uploadFile($event, 16, 1, 19)" [content]="button" [fileType]="'file'">
                     <ng-template #button>
                       <mat-icon *ngIf="!docsAsea[16]" matTooltip="Cambiar" svgIcon="icons:upload"></mat-icon>
                       <mat-icon *ngIf="docsAsea[16]" matTooltip="Cargar">autorenew</mat-icon>
                     </ng-template>
-                  </app-upload-file>
+                  </lib-upload-file>
                 </div>
               </mat-card>
             </mat-card-content>
@@ -297,12 +297,12 @@
                   <span *ngIf="!docsCre[0]"> Estudio de calidad de productos</span>
                 </div>
                 <div class="button-icon">
-                  <app-upload-file (onLoad)="uploadFile($event, 0, 2, 17)" [layoutTemplate]="button" [type]="'file'">
+                  <lib-upload-file (loadImage)="uploadFile($event, 0, 2, 17)" [content]="button" [fileType]="'file'">
                     <ng-template #button>
                       <mat-icon *ngIf="!docsCre[0]" matTooltip="Cambiar" svgIcon="icons:upload"></mat-icon>
                       <mat-icon *ngIf="docsCre[0]" matTooltip="Cargar">autorenew</mat-icon>
                     </ng-template>
-                  </app-upload-file>
+                  </lib-upload-file>
                 </div>
               </mat-card>
               <mat-card class="file">
@@ -313,12 +313,12 @@
                   <span *ngIf="!docsCre[1]"> Dictamen de los estudios de calidad de los productos</span>
                 </div>
                 <div class="button-icon">
-                  <app-upload-file (onLoad)="uploadFile($event, 1, 2, 18)" [layoutTemplate]="button" [type]="'file'">
+                  <lib-upload-file (loadImage)="uploadFile($event, 1, 2, 18)" [content]="button" [fileType]="'file'">
                     <ng-template #button>
                       <mat-icon *ngIf="!docsCre[1]" matTooltip="Cambiar" svgIcon="icons:upload"></mat-icon>
                       <mat-icon *ngIf="docsCre[1]" matTooltip="Cargar">autorenew</mat-icon>
                     </ng-template>
-                  </app-upload-file>
+                  </lib-upload-file>
                 </div>
               </mat-card>
             </mat-card-content>

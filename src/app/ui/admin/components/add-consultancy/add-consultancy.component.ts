@@ -12,7 +12,6 @@ import {LocationService} from 'app/shared/components/location/location.service';
 import {CountryCodeService} from 'app/shared/components/country-code/country-code.service';
 import {MatDialogRef, MatStepper} from '@angular/material';
 import {ApiService} from 'app/core/services/api/api.service';
-import {UploadFileResponse} from 'app/shared/components/upload-file/upload-file.component';
 import {UploadFileService} from 'app/shared/components/upload-file/upload-file.service';
 import {Subscription} from 'rxjs';
 import {LoaderService} from '@app/core/components/loader/loader.service';
@@ -123,14 +122,13 @@ export class AddConsultancyComponent implements OnInit, OnDestroy {
     }
   }
 
-  public onLoadImage(ev: UploadFileResponse): void {
+  public onLoadImage(ev: UserMedia): void {
+    if (ev == null) {
+      this.userImage.blob = null;
+      this.userImage.url = null;
+    }
     this.userImage.blob = ev.blob;
     this.userImage.url = ev.url;
-  }
-
-  public onRemoveImage(): void {
-    this.userImage.blob = null;
-    this.userImage.url = null;
   }
 
   public addInfOwner(data: any): void {

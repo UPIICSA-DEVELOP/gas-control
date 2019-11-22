@@ -13,7 +13,6 @@ import {UploadFileService} from '@app/shared/components/upload-file/upload-file.
 import {PdfVisorService} from '@app/shared/components/pdf-visor/pdf-visor.service';
 import {Constants} from '@app/utils/constants/constants.utils';
 import {HashService} from '@app/utils/utilities/hash.service';
-import {UploadFileResponse} from '@app/shared/components/upload-file/upload-file.component';
 import {DialogService} from '@app/shared/components/dialog/dialog.service';
 import {environment} from '@env/environment';
 import {MDate} from '@app/utils/class/MDate';
@@ -26,6 +25,7 @@ import {SasisopaDocument} from '@app/utils/interfaces/sasisopa';
 import {BrigadeInterface} from '@app/utils/interfaces/brigade.interface';
 import {Station} from '@app/utils/interfaces/station';
 import {LocalStorageService, SnackBarService} from 'ng-maplander';
+import {UserMedia} from 'ng-maplander/lib/utils/models/user-media';
 
 @Component({
   selector: 'app-sasisopa',
@@ -236,14 +236,14 @@ export class SasisopaComponent implements OnInit, OnDestroy {
     });
   }
 
-  public loadFile(ev: UploadFileResponse, annexed: number, type: number): void {
+  public loadFile(ev: UserMedia, annexed: number, type: number): void {
     this._change = true;
     const form = new FormData();
     form.append('path', 'Sasisopa');
     form.append('fileName', 'SASISOPA' + annexed + '-' + new Date().getTime() + '.pdf');
-    form.append('file', ev.file);
+    form.append('file', ev.blob);
     this._forms[type - 1] = form;
-    this.docFile[type - 1] = ev.file;
+    this.docFile[type - 1] = ev.blob;
   }
 
   private uploadFile(annexed: number, index: number): void {

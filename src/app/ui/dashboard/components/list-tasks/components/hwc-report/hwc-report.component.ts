@@ -13,7 +13,6 @@ import {SignaturePadService} from '@app/shared/components/signature-pad/signatur
 import {SharedService, SharedTypeNotification} from '@app/core/services/shared/shared.service';
 import {Subscription} from 'rxjs';
 import {Constants} from '@app/utils/constants/constants.utils';
-import {UploadFileResponse} from '@app/shared/components/upload-file/upload-file.component';
 import {PdfVisorService} from '@app/shared/components/pdf-visor/pdf-visor.service';
 import {HashService} from '@app/utils/utilities/hash.service';
 import {LoaderService} from '@app/core/components/loader/loader.service';
@@ -21,6 +20,7 @@ import {HWCReport} from '@app/utils/interfaces/reports/hwc-report';
 import {Task} from '@app/utils/interfaces/task';
 import {HttpResponseCodes} from '@app/utils/enums/http-response-codes';
 import {LocalStorageService, SnackBarService} from 'ng-maplander';
+import {UserMedia} from 'ng-maplander/lib/utils/models/user-media';
 
 @Component({
   selector: 'app-hwc-report',
@@ -211,14 +211,14 @@ export class HwcReportComponent implements OnInit, OnDestroy {
     });
   }
 
-  public loadFile(ev: UploadFileResponse): void {
+  public loadFile(ev: UserMedia): void {
     this.file = true;
     this._loads[0] = true;
-    this._files = ev.file;
+    this._files = ev.blob;
     this._file = new FormData();
     this._file.append('path', 'Taks-' + this._taskId);
     this._file.append('fileName', 'manifest-' + this._taskId + new Date().getTime() + '.pdf');
-    this._file.append('file', ev.file);
+    this._file.append('file', ev.blob);
     this.error = false;
   }
 

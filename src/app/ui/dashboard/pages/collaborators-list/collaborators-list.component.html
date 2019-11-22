@@ -135,13 +135,13 @@
             class="head-image" alt="background gas station">
           <div class="image-head">
             <mat-card class="profileImage">
-              <app-upload-file [layoutTemplate]="icon" (onLoad)="onLoadImage($event)" (onRemove)="onRemoveImage()"
-                               [type]="'image'">
+              <lib-upload-file [content]="icon" (loadImage)="onLoadImage($event)"
+                               [fileType]="'image'">
                 <ng-template #icon>
                   <img *ngIf="blobImageProfile" [src]="blobImageProfile" alt="User profile image">
                   <mat-icon *ngIf="!blobImageProfile">add_photo_alternate</mat-icon>
                 </ng-template>
-              </app-upload-file>
+              </lib-upload-file>
             </mat-card>
           </div>
           <mat-form-field class="inputs">

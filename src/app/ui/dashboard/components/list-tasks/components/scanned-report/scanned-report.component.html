@@ -34,7 +34,7 @@
       </mat-card>
     </ng-template>
     <ng-template #changeManifest>
-      <app-upload-file class="hwg" [layoutTemplate]="card" (onLoad)="loadFile($event)" [type]="'file'">
+      <lib-upload-file class="hwg" [content]="card" (loadImage)="loadFile($event)" [fileType]="'file'">
         <ng-template #card>
           <mat-card>
             <mat-card-content>
@@ -45,7 +45,7 @@
             </mat-card-content>
           </mat-card>
         </ng-template>
-      </app-upload-file>
+      </lib-upload-file>
       <mat-error *ngIf="editable && error" class="error-text">
         Es necesario escanear el manifiesto
       </mat-error>

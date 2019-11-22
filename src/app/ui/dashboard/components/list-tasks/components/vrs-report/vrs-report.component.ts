@@ -14,13 +14,13 @@ import {SignaturePadService} from '@app/shared/components/signature-pad/signatur
 import {SharedService, SharedTypeNotification} from '@app/core/services/shared/shared.service';
 import {Subscription} from 'rxjs';
 import {Constants} from '@app/utils/constants/constants.utils';
-import {UploadFileResponse} from '@app/shared/components/upload-file/upload-file.component';
 import {LoaderService} from '@app/core/components/loader/loader.service';
 import {VRSReport} from '@app/utils/interfaces/reports/vrs-report';
 import {VRSTank} from '@app/utils/interfaces/vrs-tank';
 import {Task} from '@app/utils/interfaces/task';
 import {HttpResponseCodes} from '@app/utils/enums/http-response-codes';
 import {LocalStorageService, SnackBarService} from 'ng-maplander';
+import {UserMedia} from 'ng-maplander/lib/utils/models/user-media';
 
 @Component({
   selector: 'app-vrs-report',
@@ -213,15 +213,21 @@ export class VrsReportComponent implements OnInit, OnDestroy {
         this._evidenceElement = this.vrsReport.fileCS;
         this.evidenceThumbnail = this.vrsReport.fileCS.thumbnail;
       }
-      this.vrsReport.folio = undefined;
-      this.vrsReport.date = undefined;
-      this.vrsReport.signature = undefined;
+      this.vrsReport.folio = null;
+      this.vrsReport.date = null;
+      this.vrsReport.signature = null;
     }
     this.tanks[0].fuelType = 1;
     this.vrsForm.enable();
   }
 
-  public loadEvidence(ev: UploadFileResponse): void {
+  public loadEvidence(ev: UserMedia): void {
+    if (ev == null) {
+      this.evidenceThumbnail = null;
+      this._loads[0] = false;
+      this._evidence = null;
+      this._evidenceElement = null;
+    }
     this.evidenceThumbnail = ev.url;
     this._loads[0] = true;
     this._evidence = new FormData();
@@ -229,13 +235,6 @@ export class VrsReportComponent implements OnInit, OnDestroy {
     this._evidence.append('fileName', 'evidence-' + this._taskId + new Date().getTime() + '.png');
     this._evidence.append('isImage', 'true');
     this._evidence.append('file', ev.blob);
-  }
-
-  public deleteEvidence(): void {
-    this.evidenceThumbnail = undefined;
-    this._loads[0] = false;
-    this._evidence = undefined;
-    this._evidenceElement = undefined;
   }
 
   public loadSignature(): void {

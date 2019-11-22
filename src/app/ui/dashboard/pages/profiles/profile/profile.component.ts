@@ -14,7 +14,6 @@ import {LocationOptions, LocationService} from 'app/shared/components/location/l
 import {UploadFileService} from 'app/shared/components/upload-file/upload-file.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {UpdatePasswordService} from 'app/shared/components/update-password/update-password.service';
-import {UploadFileResponse} from 'app/shared/components/upload-file/upload-file.component';
 import {SignaturePadService} from 'app/shared/components/signature-pad/signature-pad.service';
 import {Subscription} from 'rxjs';
 import {ShareService} from 'app/shared/components/share/share.service';
@@ -25,6 +24,7 @@ import {Consultancy} from '@app/utils/interfaces/consultancy';
 import {HttpResponseCodes} from '@app/utils/enums/http-response-codes';
 import {ANIMATION} from '@app/ui/dashboard/pages/profiles/profile/animation';
 import {SnackBarService} from 'ng-maplander';
+import {UserMedia} from 'ng-maplander/lib/utils/models/user-media';
 
 @Component({
   selector: 'app-profile',
@@ -107,7 +107,13 @@ export class ProfileComponent implements OnInit, OnDestroy {
     this._router.navigate(['/home']).then();
   }
 
-  public onLoadImage(event: UploadFileResponse): void {
+  public onLoadImage(event: UserMedia): void {
+    if (event == null) {
+      this.change = true;
+      this.deleteImage = true;
+      this.newImage = false;
+      this.profileImage = null;
+    }
     this.newImage = true;
     this.change = true;
     this.deleteImage = false;
@@ -117,13 +123,6 @@ export class ProfileComponent implements OnInit, OnDestroy {
     this._formData.append('fileName', 'profile-' + this.user.id + '-' + new Date().getTime() + '.png');
     this._formData.append('isImage', 'true');
     this._formData.append('file', event.blob);
-  }
-
-  public onRemoveImage(): void {
-    this.change = true;
-    this.deleteImage = true;
-    this.newImage = false;
-    this.profileImage = undefined;
   }
 
   public changePassword() {

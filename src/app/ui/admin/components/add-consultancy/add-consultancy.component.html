@@ -33,12 +33,12 @@
       <div class="container-forms">
         <div class="header-image" *ngIf="showOwnerForm">
           <mat-card>
-            <app-upload-file [layoutTemplate]="profileImage" [type]="'image'" (onLoad)="onLoadImage($event)" (onRemove)="onRemoveImage()">
+            <lib-upload-file [content]="profileImage" [fileType]="'image'" (loadImage)="onLoadImage($event)" >
               <ng-template #profileImage>
                 <mat-icon *ngIf="!userImage.blob">add_photo_alternate</mat-icon>
                 <img *ngIf="userImage.blob" [src]="userImage.url" alt="User image">
               </ng-template>
-            </app-upload-file>
+            </lib-upload-file>
           </mat-card>
         </div>
 

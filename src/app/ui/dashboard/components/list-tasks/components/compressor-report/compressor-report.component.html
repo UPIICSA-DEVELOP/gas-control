@@ -132,8 +132,8 @@
           </div>
         </ng-template>
         <ng-template #modify>
-          <app-upload-file class="inputs" (onLoad)="loadEvidence($event)" (onRemove)="deleteEvidence()"
-                           [layoutTemplate]="imageEvidence" [type]="'image'">
+          <lib-upload-file class="inputs" (loadImage)="loadEvidence($event)"
+                           [content]="imageEvidence" [fileType]="'image'">
             <ng-template #imageEvidence>
               <div *ngIf="!evidenceThumbnail" class="image-container">
                 <mat-icon class="default-image">image</mat-icon>
@@ -142,7 +142,7 @@
                 <img class="evidence" [src]="evidenceThumbnail" alt="Evidence capture">
               </div>
             </ng-template>
-          </app-upload-file>
+          </lib-upload-file>
         </ng-template>
         <div *ngIf="!task.hwg" class="text-sign">
           Nombre y firma del responsable

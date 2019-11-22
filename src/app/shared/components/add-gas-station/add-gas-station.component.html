@@ -332,13 +332,12 @@
                 <form [formGroup]="newLegalRep" (ngSubmit)="validateLegal(newLegalRep.value)">
                   <img src="../../../../assets/image/background.png" class="head-image" alt="background gas station">
                   <div class="image">
-                    <app-upload-file [layoutTemplate]="icon" (onLoad)="onLoadImage($event, false)"
-                                     (onRemove)="onRemoveImage(false)" [type]="'image'">
+                    <lib-upload-file [content]="icon" (loadImage)="onLoadImage($event, false)" [fileType]="'image'">
                       <ng-template #icon>
                         <img *ngIf="profileImage" [src]="profileImage" profile-image alt="User profile image">
                         <mat-icon *ngIf="!profileImage" profile-image default-image>add_photo_alternate</mat-icon>
                       </ng-template>
-                    </app-upload-file>
+                    </lib-upload-file>
                   </div>
                   <mat-form-field inputs-person>
                     <input formControlName="name" matInput placeholder="Nombre(s)" required type="text"
@@ -450,8 +449,8 @@
                       </mat-select>
                     </mat-form-field>
                     <div class="submit">
-                      <app-upload-file class="inputs" [layoutTemplate]="button" (onLoad)="onLoadFile($event, false)"
-                                       [type]="'file'">
+                      <lib-upload-file class="inputs" [content]="button" (loadImage)="onLoadFile($event, false)"
+                                       [fileType]="'file'">
                         <ng-template #button>
                           <div class="study">
                             <span>Estudio de toxicidad (Benceno)</span>
@@ -459,7 +458,7 @@
                             <mat-icon class="file-icon" *ngIf="file">autorenew</mat-icon>
                           </div>
                         </ng-template>
-                      </app-upload-file>
+                      </lib-upload-file>
                       <button type="button" mat-icon-button matTooltip="Ver estudio" *ngIf="file"
                               (click)="openStudy(false)">
                         <mat-icon class="file-icon">visibility</mat-icon>

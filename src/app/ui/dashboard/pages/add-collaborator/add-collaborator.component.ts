@@ -17,12 +17,12 @@ import {CountryCodeService} from '@app/shared/components/country-code/country-co
 import {UploadFileService} from '@app/shared/components/upload-file/upload-file.service';
 import {SignaturePadService} from '@app/shared/components/signature-pad/signature-pad.service';
 import {PdfVisorService} from '@app/shared/components/pdf-visor/pdf-visor.service';
-import {UploadFileResponse} from '@app/shared/components/upload-file/upload-file.component';
 import {Person} from '@app/utils/interfaces/person';
 import {PersonInformation} from '@app/utils/interfaces/person-information';
 import {HttpResponseCodes} from '@app/utils/enums/http-response-codes';
 import {ANIMATION} from '@app/ui/dashboard/pages/add-collaborator/animation';
 import {LocalStorageService, SnackBarService} from 'ng-maplander';
+import {UserMedia} from 'ng-maplander/lib/utils/models/user-media';
 
 @Component({
   selector: 'app-add-collaborator',
@@ -111,7 +111,12 @@ export class AddCollaboratorComponent implements OnInit, OnDestroy {
     }
   }
 
-  public onLoadImage(event: UploadFileResponse): void {
+  public onLoadImage(event: UserMedia): void {
+    if (event == null) {
+      this.changes = true;
+      this.blobImageProfile = '';
+      this.addImage = false;
+    }
     this.changes = true;
     this.blobImageProfile = event.url;
     this.addImage = true;
@@ -120,12 +125,6 @@ export class AddCollaboratorComponent implements OnInit, OnDestroy {
     this._formImage.append('filename', 'profileImage-' + this.user.refId + '-' + new Date().getTime() + '.png');
     this._formImage.append('isImage', 'true');
     this._formImage.append('file', event.blob);
-  }
-
-  public onRemoveImage(): void {
-    this.changes = true;
-    this.blobImageProfile = '';
-    this.addImage = false;
   }
 
   public selectCountryCode(): void {
@@ -142,14 +141,14 @@ export class AddCollaboratorComponent implements OnInit, OnDestroy {
     });
   }
 
-  public onLoadFile(event: UploadFileResponse): void {
+  public onLoadFile(event: UserMedia): void {
     this.changes = true;
     this.newFile = true;
-    this.file = event.file;
+    this.file = event.blob;
     this._formFile = new FormData();
     this._formFile.append('path', '');
     this._formFile.append('fileName', 'benzene-' + this.user.refId + '-' + new Date().getTime() + '.pdf');
-    this._formFile.append('file', event.file);
+    this._formFile.append('file', event.blob);
   }
 
   public addSignature(): void {

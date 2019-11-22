@@ -27,8 +27,6 @@ import {SignaturePadComponent} from '@app/shared/components/signature-pad/signat
 import {SignaturePadService} from '@app/shared/components/signature-pad/signature-pad.service';
 import {UpdatePasswordComponent} from '@app/shared/components/update-password/update-password.component';
 import {UpdatePasswordService} from '@app/shared/components/update-password/update-password.service';
-import {UploadFileComponent} from '@app/shared/components/upload-file/upload-file.component';
-import {UploadFileService} from '@app/shared/components/upload-file/upload-file.service';
 import {CommonsModule} from '@app/commons/commons.module';
 import {ImageCropperModule} from 'ngx-image-cropper';
 import {PdfViewerModule} from 'ng2-pdf-viewer';
@@ -41,6 +39,8 @@ import {SharedPipesModule} from '@app/shared/pipes/shared.pipes.module';
 import {ModalStationComponent} from '@app/shared/components/modal-station/modal-station.component';
 import {ModalStationService} from '@app/shared/components/modal-station/modal-station.service';
 import {RouterModule} from '@angular/router';
+import {UploadFileService} from '@app/shared/components/upload-file/upload-file.service';
+import {UploadFileModule} from 'ng-maplander';
 
 
 const Components = [
@@ -56,7 +56,6 @@ const Components = [
   ShareComponent,
   SignaturePadComponent,
   UpdatePasswordComponent,
-  UploadFileComponent,
   AddGasStationComponent,
   ModalStationComponent
 ];
@@ -101,6 +100,7 @@ const EntryComponents = [
     SharedPipesModule,
     ImageCropperModule,
     PdfViewerModule,
+    UploadFileModule,
     AgmCoreModule.forRoot({
       apiKey: Constants.GoogleApiKey,
       libraries: [

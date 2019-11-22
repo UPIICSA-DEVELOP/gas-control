@@ -13,7 +13,6 @@ import {SignaturePadService} from '../signature-pad/signature-pad.service';
 import {UploadFileService} from '../upload-file/upload-file.service';
 import {CountryCodeService} from '../country-code/country-code.service';
 import {LocationOptions, LocationService} from '../location/location.service';
-import {UploadFileResponse} from '../upload-file/upload-file.component';
 import {DialogService} from '../dialog/dialog.service';
 import {PdfVisorOptions, PdfVisorService} from '../pdf-visor/pdf-visor.service';
 import {DateAdapter, MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
@@ -37,6 +36,8 @@ import {GroupIcon} from '@app/utils/interfaces/group-icon';
 import {PersonLite} from '@app/utils/interfaces/person-lite';
 import {EntityCollectionResponse} from '@app/utils/class/entity-collection-response';
 import {LocalStorageService, SnackBarService} from 'ng-maplander';
+import {UserMedia} from 'ng-maplander/lib/utils/models/user-media';
+import {FileCS} from '@app/utils/interfaces/file-cs';
 
 @Component({
   selector: 'app-add-gas-station',
@@ -81,7 +82,7 @@ export class AddGasStationComponent implements OnInit, OnDestroy {
   public file: any;
   public signatureTwo: any;
   public profileImageTwo: any;
-  public fileTwo: any;
+  public fileTwo: UserMedia;
   public listRepresentative: PersonLite[];
   public listExist: boolean;
   public bloodType: string;
@@ -108,6 +109,7 @@ export class AddGasStationComponent implements OnInit, OnDestroy {
   private _formSignatureTwo: FormData;
   private _formFileTwo: FormData;
   private readonly _stationId: string;
+  private _fileUploaded: FileCS;
   private _subscriptionLoader: Subscription;
 
   constructor(
@@ -312,7 +314,16 @@ export class AddGasStationComponent implements OnInit, OnDestroy {
     });
   }
 
-  public onLoadImage(event: UploadFileResponse, isManager?: boolean): void {
+  public onLoadImage(event: UserMedia, isManager?: boolean): void {
+    if (event == null) {
+      if (isManager) {
+        this.addImageTwo = false;
+        this.profileImageTwo = null;
+      } else {
+        this.addImage = false;
+        this.profileImage = null;
+      }
+    }
     if (isManager) {
       this.addImageTwo = true;
       this.profileImageTwo = event.url;
@@ -332,31 +343,21 @@ export class AddGasStationComponent implements OnInit, OnDestroy {
     }
   }
 
-  public onRemoveImage(isManager?: boolean): void {
-    if (isManager) {
-      this.addImageTwo = false;
-      this.profileImageTwo = null;
-    } else {
-      this.addImage = false;
-      this.profileImage = null;
-    }
-  }
-
-  public onLoadFile(event: UploadFileResponse, isManager?: boolean): void {
+  public onLoadFile(event: UserMedia, isManager?: boolean): void {
     if (isManager) {
       this.newFileTwo = true;
-      this.fileTwo = event.file;
+      this.fileTwo = event;
       this._formFileTwo = new FormData();
       this._formFileTwo.append('path', '');
       this._formFileTwo.append('fileName', 'benzene-' + this.user.id + '-' + new Date().getTime() + '.pdf');
-      this._formFileTwo.append('file', event.file);
+      this._formFileTwo.append('file', event.blob);
     } else {
       this.newFile = true;
-      this.file = event.file;
+      this.file = event.blob;
       this._formFile = new FormData();
       this._formFile.append('path', '');
       this._formFile.append('fileName', 'benzene-' + this.user.id + '-' + new Date().getTime() + '.pdf');
-      this._formFile.append('file', event.file);
+      this._formFile.append('file', event.blob);
     }
   }
 
@@ -411,15 +412,15 @@ export class AddGasStationComponent implements OnInit, OnDestroy {
   public getListRepresentative(): void {
     this._api.listPersonStationByConsultancy(LocalStorageService.getItem(Constants.UserInSession).refId)
       .subscribe((response: EntityCollectionResponse<PersonLite>) => {
-      if (response.code === HttpResponseCodes.OK) {
-        this.listExist = true;
-        if (response.items) {
-          this.listRepresentative = response.items;
-        } else {
-          this.listRepresentative = [];
+        if (response.code === HttpResponseCodes.OK) {
+          this.listExist = true;
+          if (response.items) {
+            this.listRepresentative = response.items;
+          } else {
+            this.listRepresentative = [];
+          }
         }
-      }
-    });
+      });
   }
 
   public validateStation(data: any) {
@@ -527,10 +528,7 @@ export class AddGasStationComponent implements OnInit, OnDestroy {
               };
               break;
             case 3:
-              this.fileTwo = {
-                blobName: response.item.blobName || '',
-                thumbnail: response.item.thumbnail || ''
-              };
+              this._fileUploaded = response.item;
               break;
           }
         } else {
@@ -632,28 +630,28 @@ export class AddGasStationComponent implements OnInit, OnDestroy {
       this.manger = {
         active: data.active,
         creationDate: data.creationDate,
-        refId: undefined,
-        signature: (this.signatureTwo ? this.signatureTwo : undefined),
-        profileImage: (this.profileImageTwo ? this.profileImageTwo : undefined),
+        refId: null,
+        signature: (this.signatureTwo ? this.signatureTwo : null),
+        profileImage: (this.profileImageTwo ? this.profileImageTwo : null),
         name: data.name,
         lastName: data.lastName,
         email: data.email,
         phoneNumber: data.phoneNumber,
         countryCode: data.code,
         country: this.countryTwo,
-        website: (data.website ? this.protocolTwo + data.website : undefined),
+        website: (data.website ? this.protocolTwo + data.website : null),
         jobTitle: data.jobTitle,
         role: 5,
-        bCard: undefined
+        bCard: null
       };
       this.mangerInformation = {
         id: '',
-        contactKinship: (data.contactKinship ? data.contactKinship : undefined),
-        concatcPhone: (data.contactPhoneNumber ? data.contactPhoneNumber : undefined),
-        ssn: (data.ssn ? data.ssn : undefined),
+        contactKinship: (data.contactKinship ? data.contactKinship : null),
+        concatcPhone: (data.contactPhoneNumber ? data.contactPhoneNumber : null),
+        ssn: (data.ssn ? data.ssn : null),
         bloodType: this.bloodTypeTwo,
-        contactName: (data.contactName ? data.contactName : undefined),
-        benzene: (this.fileTwo ? this.fileTwo : undefined)
+        contactName: (data.contactName ? data.contactName : null),
+        benzene: (this.fileTwo ? this._fileUploaded : null)
       };
       this.createBC(true);
     }
@@ -724,26 +722,26 @@ export class AddGasStationComponent implements OnInit, OnDestroy {
           this.legalName = response.item.name + ' ' + response.item.lastName;
           this._api.savePersonInformation(this.legalRepresentativeInformation)
             .subscribe((saveInformation: EntityResponse<PersonInformation>) => {
-            if (saveInformation.code === HttpResponseCodes.OK) {
-              this.newStation.patchValue({
-                legalRepresentative: this.legalName
-              });
-              this._dialogService.alertDialog(
-                'Información',
-                'Hemos enviado un email de validación de cuenta a: ' + this.legalRepresentative.email,
-                'ACEPTAR').afterClosed().subscribe(() => {
-                this.step = 0;
-                this.listExist = true;
-                this._modalScroll.nativeElement.scrollTop = '0';
-                this.disableButton[0] = false;
+              if (saveInformation.code === HttpResponseCodes.OK) {
+                this.newStation.patchValue({
+                  legalRepresentative: this.legalName
+                });
+                this._dialogService.alertDialog(
+                  'Información',
+                  'Hemos enviado un email de validación de cuenta a: ' + this.legalRepresentative.email,
+                  'ACEPTAR').afterClosed().subscribe(() => {
+                  this.step = 0;
+                  this.listExist = true;
+                  this._modalScroll.nativeElement.scrollTop = '0';
+                  this.disableButton[0] = false;
+                  this.load_two = false;
+                });
+              } else {
+                this._snackBarService.setMessage('Ha ocurrido un error, por favor, intente de nuevo', 'OK', 3000);
                 this.load_two = false;
-              });
-            } else {
-              this._snackBarService.setMessage('Ha ocurrido un error, por favor, intente de nuevo', 'OK', 3000);
-              this.load_two = false;
-              this.disableButton[0] = false;
-            }
-          });
+                this.disableButton[0] = false;
+              }
+            });
         }
       });
     } else {
@@ -752,26 +750,26 @@ export class AddGasStationComponent implements OnInit, OnDestroy {
           this.legalName = response.item.name + ' ' + response.item.lastName;
           this._api.savePersonInformation(this.legalRepresentativeInformation)
             .subscribe((saveInformation: EntityResponse<PersonInformation>) => {
-            if (saveInformation.code === HttpResponseCodes.OK) {
-              this.newStation.patchValue({
-                legalRepresentative: this.legalName
-              });
-              this._dialogService.alertDialog(
-                'Información',
-                'Hemos enviado un email de validación de cuenta a: ' + this.legalRepresentative.email,
-                'ACEPTAR').afterClosed().subscribe(() => {
-                this.step = 0;
-                this.listExist = true;
-                this._modalScroll.nativeElement.scrollTop = '0';
-                this.disableButton[0] = false;
+              if (saveInformation.code === HttpResponseCodes.OK) {
+                this.newStation.patchValue({
+                  legalRepresentative: this.legalName
+                });
+                this._dialogService.alertDialog(
+                  'Información',
+                  'Hemos enviado un email de validación de cuenta a: ' + this.legalRepresentative.email,
+                  'ACEPTAR').afterClosed().subscribe(() => {
+                  this.step = 0;
+                  this.listExist = true;
+                  this._modalScroll.nativeElement.scrollTop = '0';
+                  this.disableButton[0] = false;
+                  this.load_two = false;
+                });
+              } else {
+                this._snackBarService.setMessage('Ha ocurrido un error, por favor, intente de nuevo', 'OK', 3000);
                 this.load_two = false;
-              });
-            } else {
-              this._snackBarService.setMessage('Ha ocurrido un error, por favor, intente de nuevo', 'OK', 3000);
-              this.load_two = false;
-              this.disableButton[0] = false;
-            }
-          });
+                this.disableButton[0] = false;
+              }
+            });
         }
       });
     }
@@ -787,25 +785,25 @@ export class AddGasStationComponent implements OnInit, OnDestroy {
           this.managerName = response.item.name + ' ' + response.item.lastName;
           this._api.savePersonInformation(this.mangerInformation)
             .subscribe((saveInformation: EntityResponse<PersonInformation>) => {
-            if (saveInformation.code === HttpResponseCodes.OK) {
-              this.newStation.patchValue({
-                manager: this.managerName
-              });
-              this._dialogService.alertDialog(
-                'Información',
-                'Hemos enviado un email de validación de cuenta a: ' + this.manger.email,
-                'ACEPTAR').afterClosed().subscribe(() => {
-                this.step = 0;
-                this._modalScroll.nativeElement.scrollTop = '0';
+              if (saveInformation.code === HttpResponseCodes.OK) {
+                this.newStation.patchValue({
+                  manager: this.managerName
+                });
+                this._dialogService.alertDialog(
+                  'Información',
+                  'Hemos enviado un email de validación de cuenta a: ' + this.manger.email,
+                  'ACEPTAR').afterClosed().subscribe(() => {
+                  this.step = 0;
+                  this._modalScroll.nativeElement.scrollTop = '0';
+                  this.load_two = false;
+                  this.disableButton[1] = false;
+                });
+              } else {
+                this._snackBarService.setMessage('Ha ocurrido un error, por favor, intente de nuevo', 'OK', 3000);
                 this.load_two = false;
                 this.disableButton[1] = false;
-              });
-            } else {
-              this._snackBarService.setMessage('Ha ocurrido un error, por favor, intente de nuevo', 'OK', 3000);
-              this.load_two = false;
-              this.disableButton[1] = false;
-            }
-          });
+              }
+            });
         }
       });
     } else {
@@ -1054,7 +1052,7 @@ export class AddGasStationComponent implements OnInit, OnDestroy {
 
   private initCalendar(): void {
     for (let i = 0; i < 26; i++) {
-      this.calendar.push(undefined);
+      this.calendar.push(null);
     }
   }
 

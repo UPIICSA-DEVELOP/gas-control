@@ -17,13 +17,13 @@ import {LoaderService} from '@app/core/components/loader/loader.service';
 import {Subscription} from 'rxjs';
 import {FormatTimePipe} from '@app/shared/pipes/format-time/format-time.pipe';
 import {ModalProceduresService} from '@app/ui/dashboard/components/modal-procedures/modal-procedures.service';
-import {UploadFileResponse} from '@app/shared/components/upload-file/upload-file.component';
 import {OMReport} from '@app/utils/interfaces/reports/omr-report';
 import {HWGReport} from '@app/utils/interfaces/reports/hwg-report';
 import {Task} from '@app/utils/interfaces/task';
 import {HttpResponseCodes} from '@app/utils/enums/http-response-codes';
 import {AppUtil} from '@app/utils/interfaces/app-util';
 import {LocalStorageService, SnackBarService} from 'ng-maplander';
+import {UserMedia} from 'ng-maplander/lib/utils/models/user-media';
 
 
 @Component({
@@ -318,7 +318,13 @@ export class OmReportComponent implements OnInit, OnDestroy {
     });
   }
 
-  public loadEvidence(ev: UploadFileResponse): void {
+  public loadEvidence(ev: UserMedia): void {
+    if (ev == null) {
+      this.evidenceThumbnail = null;
+      this._loads[0] = false;
+      this._evidence = null;
+      this._evidenceElement = null;
+    }
     this.evidenceThumbnail = ev.url;
     this._loads[0] = true;
     this._evidence = new FormData();
@@ -328,14 +334,6 @@ export class OmReportComponent implements OnInit, OnDestroy {
     this._evidence.append('file', ev.blob);
     this.errors[2] = false;
   }
-
-  public deleteEvidence(): void {
-    this.evidenceThumbnail = undefined;
-    this._loads[0] = false;
-    this._evidence = undefined;
-    this._evidenceElement = undefined;
-  }
-
 
   public validateForm(value: any): void {
     let error = false;
