@@ -6,7 +6,6 @@
 
 import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {ApiService} from '@app/core/services/api/api.service';
-import {SnackBarService} from '@app/core/services/snackbar/snackbar.service';
 import {DialogService} from '@app/shared/components/dialog/dialog.service';
 import {Constants} from '@app/utils/constants/constants.utils';
 import {UtilitiesService} from '@app/utils/utilities/utilities';
@@ -16,7 +15,7 @@ import {Person} from '@app/utils/interfaces/person';
 import {HttpResponseCodes} from '@app/utils/enums/http-response-codes';
 import {AppUtil} from '@app/utils/interfaces/app-util';
 import {Station} from '@app/utils/interfaces/station';
-import {CookieService, LocalStorageService} from 'ng-maplander';
+import {CookieService, LocalStorageService, SnackBarService} from 'ng-maplander';
 
 @Component({
   selector: 'app-directory-list',
@@ -160,10 +159,10 @@ export class DirectoryListComponent implements OnInit, OnDestroy {
       if (response.code === 1) {
         this._api.updateRolePerson(person.id, newRole).subscribe(updatePerson => {
           if (updatePerson.code === HttpResponseCodes.OK) {
-            this._snackBarService.openSnackBar('Rol actualizado', 'OK', 2000);
+            this._snackBarService.setMessage('Rol actualizado', 'OK', 2000);
             this.getCollaborators();
           } else {
-            this._snackBarService.openSnackBar('No se ha podido actualizar el rol', 'OK', 2000);
+            this._snackBarService.setMessage('No se ha podido actualizar el rol', 'OK', 2000);
             this.getCollaborators();
           }
         });

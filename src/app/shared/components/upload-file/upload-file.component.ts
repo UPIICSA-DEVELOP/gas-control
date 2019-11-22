@@ -7,11 +7,11 @@
 
 import {
   Component, ContentChild, EventEmitter, Inject, Input, OnInit, Output, PLATFORM_ID, TemplateRef} from '@angular/core';
-import {SnackBarService} from '@app/core/services/snackbar/snackbar.service';
 import {MatDialog} from '@angular/material/dialog';
 import {CropImageComponent} from '@app/shared/components/crop-image/crop-image.component';
 import {DOCUMENT, isPlatformBrowser} from '@angular/common';
 import {UtilitiesService} from 'app/utils/utilities/utilities';
+import {SnackBarService} from 'ng-maplander';
 
 export interface UploadFileResponse {
   isImage: boolean;
@@ -115,7 +115,7 @@ export class UploadFileComponent implements OnInit {
 
   private validateImage(file: any): boolean {
     if (!(/(\.jpg|\.jpeg|\.png)$/i).exec(file)) {
-      this._snackBarService.openSnackBar('Suba un archivo que tenga las extensiones .jpeg / .jpg / .png solamente.', 'OK', 2000);
+      this._snackBarService.setMessage('Suba un archivo que tenga las extensiones .jpeg / .jpg / .png solamente.', 'OK', 2000);
       return false;
     } else {
       return true;
@@ -124,7 +124,7 @@ export class UploadFileComponent implements OnInit {
 
   private validateFile(file: any): boolean {
     if (!(/(\.pdf)$/i).exec(file)) {
-      this._snackBarService.openSnackBar('Suba un archivo que tenga las extensiones .pdf solamente.', 'OK', 2000);
+      this._snackBarService.setMessage('Suba un archivo que tenga las extensiones .pdf solamente.', 'OK', 2000);
       return false;
     } else {
       return true;

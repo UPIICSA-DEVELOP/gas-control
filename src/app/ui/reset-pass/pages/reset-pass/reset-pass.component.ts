@@ -5,7 +5,6 @@
  */
 
 import {Component, ElementRef, HostBinding, OnDestroy, OnInit, ViewChild} from '@angular/core';
-import {SnackBarService} from '@app/core/services/snackbar/snackbar.service';
 import {DialogService} from '@app/shared/components/dialog/dialog.service';
 import {Constants} from '@app/utils/constants/constants.utils';
 import {ApiService} from '@app/core/services/api/api.service';
@@ -17,7 +16,7 @@ import {LoaderService} from '@app/core/components/loader/loader.service';
 import {Person} from '@app/utils/interfaces/person';
 import {HttpResponseCodes} from '@app/utils/enums/http-response-codes';
 import {ANIMATION} from '@app/ui/reset-pass/pages/reset-pass/animation';
-import {LocalStorageService} from 'ng-maplander';
+import {LocalStorageService, SnackBarService} from 'ng-maplander';
 
 export function ValidatePasswords(ac: AbstractControl) {
   const password = ac.get('newPassword').value;
@@ -114,9 +113,9 @@ export class ResetPassComponent implements OnInit, OnDestroy {
       if (response.code === HttpResponseCodes.OK) {
         this._auth.logIn(response.item, true, token);
         LocalStorageService.removeItem(Constants.UpdatePassword);
-        this._snackBarService.openSnackBar('Contraseña actualizada', 'OK', 3000);
+        this._snackBarService.setMessage('Contraseña actualizada', 'OK', 3000);
       } else {
-        this._snackBarService.openSnackBar('No se a podido actualizar la contraseña', 'OK', 3000);
+        this._snackBarService.setMessage('No se a podido actualizar la contraseña', 'OK', 3000);
         this._router.navigate(['/login']).then();
       }
     });

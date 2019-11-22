@@ -8,7 +8,6 @@ import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {ApiService} from '@app/core/services/api/api.service';
 import {UtilitiesService} from '@app/utils/utilities/utilities';
-import {SnackBarService} from '@app/core/services/snackbar/snackbar.service';
 import {SharedService, SharedTypeNotification} from '@app/core/services/shared/shared.service';
 import {SignaturePadService} from '@app/shared/components/signature-pad/signature-pad.service';
 import {UploadFileService} from '@app/shared/components/upload-file/upload-file.service';
@@ -20,7 +19,7 @@ import {FEReport} from '@app/utils/interfaces/reports/fe-report';
 import {FireExtinguisher} from '@app/utils/interfaces/fire-extinguisher';
 import {Task} from '@app/utils/interfaces/task';
 import {HttpResponseCodes} from '@app/utils/enums/http-response-codes';
-import {LocalStorageService} from 'ng-maplander';
+import {LocalStorageService, SnackBarService} from 'ng-maplander';
 
 @Component({
   selector: 'app-fe-report',
@@ -245,11 +244,11 @@ export class FeReportComponent implements OnInit, OnDestroy {
       }
     }
     if (error || this.feForm.invalid) {
-      this._snackBarService.openSnackBar('Por favor, complete los campos', 'OK', 3000);
+      this._snackBarService.setMessage('Por favor, complete los campos', 'OK', 3000);
       return;
     }
     if (!this._signature) {
-      this._snackBarService.openSnackBar('Por favor, registre su firma', 'OK', 3000);
+      this._snackBarService.setMessage('Por favor, registre su firma', 'OK', 3000);
       return;
     }
     if (this._load) {

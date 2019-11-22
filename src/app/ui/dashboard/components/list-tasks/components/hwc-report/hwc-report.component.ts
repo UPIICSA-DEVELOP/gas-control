@@ -10,7 +10,6 @@ import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {UtilitiesService} from '@app/utils/utilities/utilities';
 import {UploadFileService} from '@app/shared/components/upload-file/upload-file.service';
 import {SignaturePadService} from '@app/shared/components/signature-pad/signature-pad.service';
-import {SnackBarService} from '@app/core/services/snackbar/snackbar.service';
 import {SharedService, SharedTypeNotification} from '@app/core/services/shared/shared.service';
 import {Subscription} from 'rxjs';
 import {Constants} from '@app/utils/constants/constants.utils';
@@ -21,7 +20,7 @@ import {LoaderService} from '@app/core/components/loader/loader.service';
 import {HWCReport} from '@app/utils/interfaces/reports/hwc-report';
 import {Task} from '@app/utils/interfaces/task';
 import {HttpResponseCodes} from '@app/utils/enums/http-response-codes';
-import {LocalStorageService} from 'ng-maplander';
+import {LocalStorageService, SnackBarService} from 'ng-maplander';
 
 @Component({
   selector: 'app-hwc-report',
@@ -229,11 +228,11 @@ export class HwcReportComponent implements OnInit, OnDestroy {
       this.error = true;
     }
     if (this.error || this.hwcForm.invalid) {
-      this._snackBarService.openSnackBar('Por favor, complete los campos', 'OK', 3000);
+      this._snackBarService.setMessage('Por favor, complete los campos', 'OK', 3000);
       return;
     }
     if (!this._signature) {
-      this._snackBarService.openSnackBar('Por favor, registre su firma', 'OK', 3000);
+      this._snackBarService.setMessage('Por favor, registre su firma', 'OK', 3000);
       return;
     }
     if (this._loads[0]) {

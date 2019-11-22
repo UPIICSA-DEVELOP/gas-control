@@ -3,8 +3,8 @@ import {UtilitiesService} from 'app/utils/utilities/utilities';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 import {SearchBoxResult} from 'app/shared/components/search-box/search-box.component';
 import {MouseEvent} from '@agm/core/map-types';
-import {SnackBarService} from '@app/core/services/snackbar/snackbar.service';
 import {MapsAPILoader} from '@agm/core';
+import {SnackBarService} from 'ng-maplander';
 
 declare var google: any;
 
@@ -86,7 +86,7 @@ export class LocationComponent implements OnInit {
           this.reverseGeoCode(position.coords.latitude, position.coords.longitude);
         });
       }, () => {
-        this._snackBarService.openSnackBar('No pudimos obtener su ubicación actual', 'OK', 2000);
+        this._snackBarService.setMessage('No pudimos obtener su ubicación actual', 'OK', 2000);
       });
     }
   }

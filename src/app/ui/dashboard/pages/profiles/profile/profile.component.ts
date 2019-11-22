@@ -9,7 +9,6 @@ import {ApiService} from 'app/core/services/api/api.service';
 import {Constants} from 'app/utils/constants/constants.utils';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {DialogService} from 'app/shared/components/dialog/dialog.service';
-import {SnackBarService} from 'app/core/services/snackbar/snackbar.service';
 import {CountryCodeService} from 'app/shared/components/country-code/country-code.service';
 import {LocationOptions, LocationService} from 'app/shared/components/location/location.service';
 import {UploadFileService} from 'app/shared/components/upload-file/upload-file.service';
@@ -25,6 +24,7 @@ import {Person} from '@app/utils/interfaces/person';
 import {Consultancy} from '@app/utils/interfaces/consultancy';
 import {HttpResponseCodes} from '@app/utils/enums/http-response-codes';
 import {ANIMATION} from '@app/ui/dashboard/pages/profiles/profile/animation';
+import {SnackBarService} from 'ng-maplander';
 
 @Component({
   selector: 'app-profile',
@@ -101,7 +101,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
       return;
     }
     if (!this.signature) {
-      this._snackBarService.openSnackBar('Por favor, registre su firma', 'OK', 3000);
+      this._snackBarService.setMessage('Por favor, registre su firma', 'OK', 3000);
       return;
     }
     this._router.navigate(['/home']).then();
@@ -292,7 +292,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
       }
       this.userRole = this.role[this.user.role - 1];
     } else {
-      this._snackBarService.openSnackBar('No se ha podido acceder, intente más tarde', 'OK', 3000);
+      this._snackBarService.setMessage('No se ha podido acceder, intente más tarde', 'OK', 3000);
       this._router.navigate(['/home']).then();
     }
   }
@@ -319,7 +319,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
       }
       this.patchForm();
     } else {
-      this._snackBarService.openSnackBar('No se ha podido acceder, intente más tarde', 'OK', 3000);
+      this._snackBarService.setMessage('No se ha podido acceder, intente más tarde', 'OK', 3000);
       this._router.navigate(['/home']).then();
     }
   }
@@ -382,7 +382,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
       return;
     }
     if (!this.signature) {
-      this._snackBarService.openSnackBar('Por favor, registre su firma', 'OK', 3000);
+      this._snackBarService.setMessage('Por favor, registre su firma', 'OK', 3000);
       return;
     }
     if (this.newImage) {
@@ -451,7 +451,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
         if (!redirect) {
           this.saveConsultancyData();
         } else {
-          this._snackBarService.openSnackBar('Contraseña Actualizada', 'OK', 3000);
+          this._snackBarService.setMessage('Contraseña Actualizada', 'OK', 3000);
         }
       } else {
         this._dialogService.alertDialog('No se pudo acceder', 'Se produjo un error de comunicación con el servidor', 'ACEPTAR');
@@ -472,7 +472,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
   private saveConsultancyData(): void {
     this._api.updateConsultancy(this.consultancy).subscribe(response => {
       if (response.code === HttpResponseCodes.OK) {
-        this._snackBarService.openSnackBar('Información actualizada', 'OK', 3000);
+        this._snackBarService.setMessage('Información actualizada', 'OK', 3000);
         if (this.user.role === 1) {
           this.profileForm.controls['email'].disable();
         }
@@ -489,7 +489,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
   }
 
   private updateBusiness(isNewEmail: boolean): void {
-    this._snackBarService.openSnackBar('Espere un momento...', '', 0);
+    this._snackBarService.setMessage('Espere un momento...', '', 0);
     const data = {
       name: this.user.name || '',
       lastName: this.user.lastName || '',
@@ -515,7 +515,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
         }
       } else {
         this._snackBarService.closeSnackBar();
-        this._snackBarService.openSnackBar('Ha ocurrido un error, por favor, intente de nuevo', 'OK', 3000);
+        this._snackBarService.setMessage('Ha ocurrido un error, por favor, intente de nuevo', 'OK', 3000);
       }
     });
   }

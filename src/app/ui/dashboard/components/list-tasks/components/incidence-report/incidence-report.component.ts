@@ -9,7 +9,6 @@ import {UtilitiesService} from '@app/utils/utilities/utilities';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {ApiService} from '@app/core/services/api/api.service';
 import {ImageVisorService} from '@app/shared/components/image-visor/image-visor.service';
-import {SnackBarService} from '@app/core/services/snackbar/snackbar.service';
 import {Subscription} from 'rxjs';
 import {UploadFileService} from '@app/shared/components/upload-file/upload-file.service';
 import {SignaturePadService} from '@app/shared/components/signature-pad/signature-pad.service';
@@ -23,7 +22,7 @@ import {IncidenceReport} from '@app/utils/interfaces/reports/incidence-report';
 import {Task} from '@app/utils/interfaces/task';
 import {HttpResponseCodes} from '@app/utils/enums/http-response-codes';
 import {AppUtil} from '@app/utils/interfaces/app-util';
-import {LocalStorageService} from 'ng-maplander';
+import {LocalStorageService, SnackBarService} from 'ng-maplander';
 
 @Component({
   selector: 'app-incidence-report',
@@ -209,7 +208,7 @@ export class IncidenceReportComponent implements OnInit, OnDestroy {
     if (this.taskItems[this._indexTask].fileCS) {
       this._imageVisor.open(this.taskItems[this._indexTask].fileCS);
     } else {
-      this._snackBarService.openSnackBar('Esta tarea no cuenta con evidencia', 'OK', 3000);
+      this._snackBarService.setMessage('Esta tarea no cuenta con evidencia', 'OK', 3000);
     }
   }
 
@@ -268,11 +267,11 @@ export class IncidenceReportComponent implements OnInit, OnDestroy {
       this.error = true;
     }
     if (this.error || this.incidenceForm.invalid) {
-      this._snackBarService.openSnackBar('Por favor, complete los campos', 'OK', 3000);
+      this._snackBarService.setMessage('Por favor, complete los campos', 'OK', 3000);
       return;
     }
     if (!this._signature) {
-      this._snackBarService.openSnackBar('Por favor, registre su firma', 'OK', 3000);
+      this._snackBarService.setMessage('Por favor, registre su firma', 'OK', 3000);
       return;
     }
     if (this._load[0]) {

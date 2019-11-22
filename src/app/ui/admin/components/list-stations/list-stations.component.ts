@@ -8,7 +8,6 @@ import {Component, Inject, OnInit} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
 import {ApiService} from '@app/core/services/api/api.service';
 import {Constants} from '@app/utils/constants/constants.utils';
-import {SnackBarService} from '@app/core/services/snackbar/snackbar.service';
 import {DialogService} from '@app/shared/components/dialog/dialog.service';
 import {UtilitiesService} from '@app/utils/utilities/utilities';
 import {AuthService} from '@app/core/services/auth/auth.service';
@@ -20,7 +19,7 @@ import {ConsultancyBasicData} from '@app/utils/interfaces/consultancy-basic-data
 import {StationLite} from '@app/utils/interfaces/station-lite';
 import {AppUtil} from '@app/utils/interfaces/app-util';
 import {GroupIcon} from '@app/utils/interfaces/group-icon';
-import {CookieService, LocalStorageService, SessionStorageService} from 'ng-maplander';
+import {CookieService, LocalStorageService, SessionStorageService, SnackBarService} from 'ng-maplander';
 
 @Component({
   selector: 'app-list-collaborators',
@@ -170,7 +169,7 @@ export class ListStationsComponent implements OnInit {
   }
 
   private onErrorOccurred(): void {
-    this._snackBar.openSnackBar('Ha ocurrido un error, por favor, intente de nuevo', 'OK', 3000);
+    this._snackBar.setMessage('Ha ocurrido un error, por favor, intente de nuevo', 'OK', 3000);
   }
 
 }

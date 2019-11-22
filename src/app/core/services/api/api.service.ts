@@ -8,7 +8,6 @@
 import {Injectable, OnDestroy} from '@angular/core';
 import {forkJoin, Observable, Subscription} from 'rxjs';
 import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
-import {SnackBarService} from '@app/core/services/snackbar/snackbar.service';
 import {Consultancy} from '@app/utils/interfaces/consultancy';
 import {environment} from '@env/environment';
 import {Constants} from '@app/utils/constants/constants.utils';
@@ -37,7 +36,7 @@ import {HWCReport} from '@app/utils/interfaces/reports/hwc-report';
 import {FRReport} from '@app/utils/interfaces/reports/frr-report';
 import {IncidenceReport} from '@app/utils/interfaces/reports/incidence-report';
 import {Notification} from '@app/utils/interfaces/notification';
-import {NetworkService, SessionStorageService} from 'ng-maplander';
+import {NetworkService, SessionStorageService, SnackBarService} from 'ng-maplander';
 
 
 @Injectable()
@@ -705,7 +704,7 @@ export class ApiService implements OnDestroy {
   private initNetwork(): void {
     this._subscriptionNetwork = this._networkService.getNetworkChanges().subscribe(status => {
       const text = (!status) ? 'La conexión a internet se ha perdido' : 'De nuevo en linea';
-      this._snackBarService.openSnackBar(text, 'OK', (status) ? 2000 : 0);
+      this._snackBarService.setMessage(text, 'OK', (status) ? 2000 : 0);
     });
   }
 

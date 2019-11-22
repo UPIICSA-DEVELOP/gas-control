@@ -6,7 +6,6 @@
 
 import {Component, ElementRef, HostBinding, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {ApiService} from '@app/core/services/api/api.service';
-import {SnackBarService} from '@app/core/services/snackbar/snackbar.service';
 import {SharedService, SharedTypeNotification} from '@app/core/services/shared/shared.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
@@ -23,7 +22,7 @@ import {Person} from '@app/utils/interfaces/person';
 import {PersonInformation} from '@app/utils/interfaces/person-information';
 import {HttpResponseCodes} from '@app/utils/enums/http-response-codes';
 import {ANIMATION} from '@app/ui/dashboard/pages/add-collaborator/animation';
-import {LocalStorageService} from 'ng-maplander';
+import {LocalStorageService, SnackBarService} from 'ng-maplander';
 
 @Component({
   selector: 'app-add-collaborator',
@@ -334,7 +333,7 @@ export class AddCollaboratorComponent implements OnInit, OnDestroy {
   }
 
   private createBCard(person: Person, personInformation: PersonInformation): void {
-    this._snackBarService.openSnackBar('Espere un momento...', '', 0);
+    this._snackBarService.setMessage('Espere un momento...', '', 0);
     const data = {
       name: person.name || '',
       lastName: person.lastName || '',
@@ -355,7 +354,7 @@ export class AddCollaboratorComponent implements OnInit, OnDestroy {
         this.createPerson(person, personInformation);
       } else {
         this._snackBarService.closeSnackBar();
-        this._snackBarService.openSnackBar('Ha ocurrido un error, por favor, intente de nuevo', 'OK', 3000);
+        this._snackBarService.setMessage('Ha ocurrido un error, por favor, intente de nuevo', 'OK', 3000);
       }
     });
   }

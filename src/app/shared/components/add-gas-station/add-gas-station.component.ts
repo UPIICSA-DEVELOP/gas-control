@@ -10,7 +10,6 @@ import {Router} from '@angular/router';
 import {Constants} from '@app/utils/constants/constants.utils';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {SignaturePadService} from '../signature-pad/signature-pad.service';
-import {SnackBarService} from '@app/core/services/snackbar/snackbar.service';
 import {UploadFileService} from '../upload-file/upload-file.service';
 import {CountryCodeService} from '../country-code/country-code.service';
 import {LocationOptions, LocationService} from '../location/location.service';
@@ -37,7 +36,7 @@ import {DefaultResponse} from '@app/utils/interfaces/default-response';
 import {GroupIcon} from '@app/utils/interfaces/group-icon';
 import {PersonLite} from '@app/utils/interfaces/person-lite';
 import {EntityCollectionResponse} from '@app/utils/class/entity-collection-response';
-import {LocalStorageService} from 'ng-maplander';
+import {LocalStorageService, SnackBarService} from 'ng-maplander';
 
 @Component({
   selector: 'app-add-gas-station',
@@ -426,7 +425,7 @@ export class AddGasStationComponent implements OnInit, OnDestroy {
   public validateStation(data: any) {
     if (this.newStation.invalid || !this.iconStation) {
       if (!this.iconStation) {
-        this._snackBarService.openSnackBar('Asigne la imagen del grupo gasolinero correspondiente', 'OK', 3000);
+        this._snackBarService.setMessage('Asigne la imagen del grupo gasolinero correspondiente', 'OK', 3000);
         return;
       }
       return;
@@ -662,7 +661,7 @@ export class AddGasStationComponent implements OnInit, OnDestroy {
 
   private createBC(isManager: boolean): void {
     let data;
-    this._snackBarService.openSnackBar('Espere un momento...', '', 0);
+    this._snackBarService.setMessage('Espere un momento...', '', 0);
     if (isManager) {
       data = {
         name: this.manger.name || '',
@@ -710,7 +709,7 @@ export class AddGasStationComponent implements OnInit, OnDestroy {
         }
         this.load_two = false;
         this._snackBarService.closeSnackBar();
-        this._snackBarService.openSnackBar('Ha ocurrido un error, por favor, intente de nuevo', 'OK', 3000);
+        this._snackBarService.setMessage('Ha ocurrido un error, por favor, intente de nuevo', 'OK', 3000);
       }
     });
   }
@@ -740,7 +739,7 @@ export class AddGasStationComponent implements OnInit, OnDestroy {
                 this.load_two = false;
               });
             } else {
-              this._snackBarService.openSnackBar('Ha ocurrido un error, por favor, intente de nuevo', 'OK', 3000);
+              this._snackBarService.setMessage('Ha ocurrido un error, por favor, intente de nuevo', 'OK', 3000);
               this.load_two = false;
               this.disableButton[0] = false;
             }
@@ -768,7 +767,7 @@ export class AddGasStationComponent implements OnInit, OnDestroy {
                 this.load_two = false;
               });
             } else {
-              this._snackBarService.openSnackBar('Ha ocurrido un error, por favor, intente de nuevo', 'OK', 3000);
+              this._snackBarService.setMessage('Ha ocurrido un error, por favor, intente de nuevo', 'OK', 3000);
               this.load_two = false;
               this.disableButton[0] = false;
             }
@@ -802,7 +801,7 @@ export class AddGasStationComponent implements OnInit, OnDestroy {
                 this.disableButton[1] = false;
               });
             } else {
-              this._snackBarService.openSnackBar('Ha ocurrido un error, por favor, intente de nuevo', 'OK', 3000);
+              this._snackBarService.setMessage('Ha ocurrido un error, por favor, intente de nuevo', 'OK', 3000);
               this.load_two = false;
               this.disableButton[1] = false;
             }
@@ -828,7 +827,7 @@ export class AddGasStationComponent implements OnInit, OnDestroy {
                 this.disableButton[1] = false;
               });
             } else {
-              this._snackBarService.openSnackBar('Ha ocurrido un error, por favor, intente de nuevo', 'OK', 3000);
+              this._snackBarService.setMessage('Ha ocurrido un error, por favor, intente de nuevo', 'OK', 3000);
               this.load_two = false;
               this.disableButton[1] = false;
             }
@@ -842,13 +841,13 @@ export class AddGasStationComponent implements OnInit, OnDestroy {
     this._api.createStation(this.station).subscribe(response => {
       switch (response.code) {
         case HttpResponseCodes.OK:
-          this._snackBarService.openSnackBar('Estación creada con exito', 'OK', 3000);
+          this._snackBarService.setMessage('Estación creada con exito', 'OK', 3000);
           this.station.id = response.item.id;
           this._modalScroll.nativeElement.scrollTop = '0';
           this.step = 3;
           break;
         case HttpResponseCodes.ALREADY_EXISTS:
-          this._snackBarService.openSnackBar('Ya existe una estación con esta información', 'OK', 3000);
+          this._snackBarService.setMessage('Ya existe una estación con esta información', 'OK', 3000);
           break;
         default:
           break;
@@ -973,7 +972,7 @@ export class AddGasStationComponent implements OnInit, OnDestroy {
         this._sharedService.setNotification({type: SharedTypeNotification.ChangeStation, value: {id: stationId, newNotification: false}});
         this._dialogRef.close();
       } else {
-        this._snackBarService.openSnackBar('Ha ocurrido un error, por favor, intente de nuevo', 'OK', 3000);
+        this._snackBarService.setMessage('Ha ocurrido un error, por favor, intente de nuevo', 'OK', 3000);
         this.taskNotCalendar = false;
       }
     });
@@ -983,7 +982,7 @@ export class AddGasStationComponent implements OnInit, OnDestroy {
     this.taskNotCalendar = true;
     for (let i = 0; i < this.calendar.length; i++) {
       if (!this.calendar[i]) {
-        this._snackBarService.openSnackBar('Para continuar es necesario programar todas las tareas', 'OK', 3000);
+        this._snackBarService.setMessage('Para continuar es necesario programar todas las tareas', 'OK', 3000);
         return;
       }
     }
@@ -1010,24 +1009,24 @@ export class AddGasStationComponent implements OnInit, OnDestroy {
   private validateStationArrays(): boolean {
     for (let i = 0; i < this.workShifts.length; i++) {
       if ((this.workShifts[i].start && !this.workShifts[i].end) || (!this.workShifts[i].start && this.workShifts[i].end)) {
-        this._snackBarService.openSnackBar('Complete los campos para el turno ' + (i + 1), 'OK', 3000);
+        this._snackBarService.setMessage('Complete los campos para el turno ' + (i + 1), 'OK', 3000);
         return false;
       }
     }
     for (let j = 0; j < this.tanks.length; j++) {
       if ((!this.tanks[j].capacity && this.tanks[j].fuelType) || (this.tanks[j].capacity && !this.tanks[j].fuelType)) {
-        this._snackBarService.openSnackBar('Complete los campos para el tanque ' + (j + 1), 'OK', 3000);
+        this._snackBarService.setMessage('Complete los campos para el tanque ' + (j + 1), 'OK', 3000);
         return false;
       }
     }
     for (let k = 0; k < this.dispensers.length; k++) {
       if ((this.dispensers[k].hoses) && (this.dispensers[k].magna === false &&
         this.dispensers[k].premium === false && this.dispensers[k].diesel === false)) {
-        this._snackBarService.openSnackBar('Complete los campos para el dispensario ' + (k + 1), 'OK', 3000);
+        this._snackBarService.setMessage('Complete los campos para el dispensario ' + (k + 1), 'OK', 3000);
         return false;
       } else if ((!this.dispensers[k].hoses) && (this.dispensers[k].magna === true ||
         this.dispensers[k].premium === true || this.dispensers[k].diesel === true)) {
-        this._snackBarService.openSnackBar('Complete los campos para el dispensario ' + (k + 1), 'OK', 3000);
+        this._snackBarService.setMessage('Complete los campos para el dispensario ' + (k + 1), 'OK', 3000);
         return false;
       }
     }

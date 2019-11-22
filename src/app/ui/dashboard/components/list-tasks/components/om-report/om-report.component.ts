@@ -9,7 +9,6 @@ import {ApiService} from '@app/core/services/api/api.service';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {UtilitiesService} from '@app/utils/utilities/utilities';
 import {ImageVisorService} from '@app/shared/components/image-visor/image-visor.service';
-import {SnackBarService} from '@app/core/services/snackbar/snackbar.service';
 import {SignaturePadService} from '@app/shared/components/signature-pad/signature-pad.service';
 import {UploadFileService} from '@app/shared/components/upload-file/upload-file.service';
 import {SharedService, SharedTypeNotification} from '@app/core/services/shared/shared.service';
@@ -24,7 +23,7 @@ import {HWGReport} from '@app/utils/interfaces/reports/hwg-report';
 import {Task} from '@app/utils/interfaces/task';
 import {HttpResponseCodes} from '@app/utils/enums/http-response-codes';
 import {AppUtil} from '@app/utils/interfaces/app-util';
-import {LocalStorageService} from 'ng-maplander';
+import {LocalStorageService, SnackBarService} from 'ng-maplander';
 
 
 @Component({
@@ -235,7 +234,7 @@ export class OmReportComponent implements OnInit, OnDestroy {
     if (this.taskItems[this._indexTask].fileCS) {
       this._imageVisor.open(this.taskItems[this._indexTask].fileCS);
     } else {
-      this._snackBarService.openSnackBar('Esta tarea no cuenta con evidencia', 'OK', 3000);
+      this._snackBarService.setMessage('Esta tarea no cuenta con evidencia', 'OK', 3000);
     }
   }
 
@@ -366,11 +365,11 @@ export class OmReportComponent implements OnInit, OnDestroy {
       }
     }
     if (this.errors[0] || this.errors[1] || this.errors[2] || this.omForm.invalid || error) {
-      this._snackBarService.openSnackBar('Por favor, complete los campos', 'OK', 3000);
+      this._snackBarService.setMessage('Por favor, complete los campos', 'OK', 3000);
       return;
     }
     if (!this._signature) {
-      this._snackBarService.openSnackBar('Por favor, registre su firma', 'OK', 3000);
+      this._snackBarService.setMessage('Por favor, registre su firma', 'OK', 3000);
       return;
     }
     if (this._loads[0]) {

@@ -15,7 +15,6 @@ import {Constants} from '@app/utils/constants/constants.utils';
 import {HashService} from '@app/utils/utilities/hash.service';
 import {UploadFileResponse} from '@app/shared/components/upload-file/upload-file.component';
 import {DialogService} from '@app/shared/components/dialog/dialog.service';
-import {SnackBarService} from '@app/core/services/snackbar/snackbar.service';
 import {environment} from '@env/environment';
 import {MDate} from '@app/utils/class/MDate';
 import {ModalProceduresService} from '@app/ui/dashboard/components/modal-procedures/modal-procedures.service';
@@ -26,7 +25,7 @@ import {BrigadeElem} from '@app/utils/interfaces/brigade-element';
 import {SasisopaDocument} from '@app/utils/interfaces/sasisopa';
 import {BrigadeInterface} from '@app/utils/interfaces/brigade.interface';
 import {Station} from '@app/utils/interfaces/station';
-import {LocalStorageService} from 'ng-maplander';
+import {LocalStorageService, SnackBarService} from 'ng-maplander';
 
 @Component({
   selector: 'app-sasisopa',
@@ -303,7 +302,7 @@ export class SasisopaComponent implements OnInit, OnDestroy {
     } else {
       for (let i = 0; i < this.brigade.length; i++) {
         if (!this.brigade[i].name || !this.brigade[i].lastName || !this.brigade[i].position) {
-          this._snackBarService.openSnackBar('Por favor, complete los campos', 'OK', 3000);
+          this._snackBarService.setMessage('Por favor, complete los campos', 'OK', 3000);
           return;
         }
       }
@@ -323,21 +322,21 @@ export class SasisopaComponent implements OnInit, OnDestroy {
           this.uploadFile(index, 2);
           return;
         }
-        this._snackBarService.openSnackBar('Información actualizada', 'OK', 3000);
+        this._snackBarService.setMessage('Información actualizada', 'OK', 3000);
         break;
       case 4:
         if (this._forms[4]) {
           this.uploadFile(index, 5);
           return;
         }
-        this._snackBarService.openSnackBar('Información actualizada', 'OK', 3000);
+        this._snackBarService.setMessage('Información actualizada', 'OK', 3000);
         break;
       case 6:
         if (this._forms[5]) {
           this.uploadFile(index, 6);
           return;
         }
-        this._snackBarService.openSnackBar('Información actualizada', 'OK', 3000);
+        this._snackBarService.setMessage('Información actualizada', 'OK', 3000);
         break;
       case 7:
         if (this._forms[6]) {
@@ -348,7 +347,7 @@ export class SasisopaComponent implements OnInit, OnDestroy {
           this.uploadFile(index, 8);
           return;
         }
-        this._snackBarService.openSnackBar('Información actualizada', 'OK', 3000);
+        this._snackBarService.setMessage('Información actualizada', 'OK', 3000);
         break;
       case 8:
         if (this._forms[8]) {
@@ -363,14 +362,14 @@ export class SasisopaComponent implements OnInit, OnDestroy {
           this.uploadFile(index, 11);
           return;
         }
-        this._snackBarService.openSnackBar('Información actualizada', 'OK', 3000);
+        this._snackBarService.setMessage('Información actualizada', 'OK', 3000);
         break;
       case 9:
         if (this._forms[11]) {
           this.uploadFile(index, 12);
           return;
         }
-        this._snackBarService.openSnackBar('Información actualizada', 'OK', 3000);
+        this._snackBarService.setMessage('Información actualizada', 'OK', 3000);
         break;
       case 3:
         if (this._forms[2]) {
@@ -381,11 +380,11 @@ export class SasisopaComponent implements OnInit, OnDestroy {
           this.uploadFile(index, 4);
           return;
         }
-        this._snackBarService.openSnackBar('Información actualizada', 'OK', 3000);
+        this._snackBarService.setMessage('Información actualizada', 'OK', 3000);
         break;
       case 5:
         this.saveEvidenceDate();
-        this._snackBarService.openSnackBar('Información actualizada', 'OK', 3000);
+        this._snackBarService.setMessage('Información actualizada', 'OK', 3000);
         break;
     }
   }
@@ -628,7 +627,7 @@ export class SasisopaComponent implements OnInit, OnDestroy {
           this.dateGeneration = MDate.getDateArray(response.item.date);
           this.isAvailable = (response.item.date <= MDate.getTimeStamp(new Date()));
         } else {
-          this._snackBarService.openSnackBar('Ha ocurrido un error, por favor intente más tarde', 'OK', 3000);
+          this._snackBarService.setMessage('Ha ocurrido un error, por favor intente más tarde', 'OK', 3000);
         }
       });
     }
@@ -665,7 +664,7 @@ export class SasisopaComponent implements OnInit, OnDestroy {
   public seeDocuments(type: number): void {
     const user = LocalStorageService.getItem(Constants.UserInSession);
     if (!this.docFile[type - 1] && !this.sasisopaDocs[type - 1]) {
-      this._snackBarService.openSnackBar('No se ha escaneado el documento', 'OK', 3000);
+      this._snackBarService.setMessage('No se ha escaneado el documento', 'OK', 3000);
       return;
     }
     switch (user.role) {

@@ -10,7 +10,6 @@ import {Constants} from '@app/utils/constants/constants.utils';
 import {UtilitiesService} from '@app/utils/utilities/utilities';
 import {SharedNotification, SharedService, SharedTypeNotification} from '@app/core/services/shared/shared.service';
 import {Subscription} from 'rxjs';
-import {SnackBarService} from '@app/core/services/snackbar/snackbar.service';
 import {OpenFileService} from '@app/shared/components/open-file/open-file.service';
 import {DatepickerService, DateRangeOptions} from '@app/ui/dashboard/components/datepicker/datepicker.service';
 import {TaskFilterService} from '@app/ui/dashboard/components/task-filter/task-filter.service';
@@ -25,7 +24,7 @@ import {Task} from '@app/utils/interfaces/task';
 import {HttpResponseCodes} from '@app/utils/enums/http-response-codes';
 import {EntityResponse} from '@app/utils/class/entity-response';
 import {StationTask} from '@app/utils/interfaces/station-task';
-import {LocalStorageService} from 'ng-maplander';
+import {LocalStorageService, SnackBarService} from 'ng-maplander';
 
 @Component({
   selector: 'app-list-tasks',
@@ -448,11 +447,11 @@ export class ListTasksComponent implements OnInit, OnDestroy {
     const today = UtilitiesService.createPersonalTimeStamp(new Date());
     if (!this.others) {
       if (task.status === 3 && this.user.role !== 7) {
-        this._snackBarService.openSnackBar('No es posible visualizar tareas vencidas', 'OK', 3000);
+        this._snackBarService.setMessage('No es posible visualizar tareas vencidas', 'OK', 3000);
         return;
       }
       if (task.date > today.timeStamp && this.user.role !== 7) {
-        this._snackBarService.openSnackBar('No es posible visualizar tareas programadas', 'OK', 3000);
+        this._snackBarService.setMessage('No es posible visualizar tareas programadas', 'OK', 3000);
         return;
       }
       this._modalScroll.nativeElement.scrollTop = '0';
@@ -552,7 +551,7 @@ export class ListTasksComponent implements OnInit, OnDestroy {
       this.listTask.historyTasks.length === 0 &&
       this.listTask.previousTasks.length === 0 &&
       this.listTask.todayTasks.length === 0) {
-      this._snackBarService.openSnackBar('No es posible exportar una lista vacía', 'OK', 3000);
+      this._snackBarService.setMessage('No es posible exportar una lista vacía', 'OK', 3000);
       return;
     }
     this._api.exportCalendarByTaskList(this.filters, this.others).subscribe(response => {

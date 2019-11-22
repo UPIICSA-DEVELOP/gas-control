@@ -9,7 +9,6 @@ import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
 import {ApiService} from '@app/core/services/api/api.service';
 import {PdfVisorService} from '@app/shared/components/pdf-visor/pdf-visor.service';
 import {DialogService} from '@app/shared/components/dialog/dialog.service';
-import {SnackBarService} from '@app/core/services/snackbar/snackbar.service';
 import {Subscription} from 'rxjs';
 import {HashService} from '@app/utils/utilities/hash.service';
 import {UtilitiesService} from '@app/utils/utilities/utilities';
@@ -22,7 +21,7 @@ import {Station} from '@app/utils/interfaces/station';
 import {Task} from '@app/utils/interfaces/task';
 import {HttpResponseCodes} from '@app/utils/enums/http-response-codes';
 import {SgmDocument} from '@app/utils/interfaces/sgm-document';
-import {LocalStorageService} from 'ng-maplander';
+import {LocalStorageService, SnackBarService} from 'ng-maplander';
 
 @Component({
   selector: 'app-sgm',
@@ -135,9 +134,9 @@ export class SgmComponent implements OnInit, OnDestroy {
       if (response.code === HttpResponseCodes.OK) {
         this.getSgm();
         this._change = false;
-        this._snackBarService.openSnackBar('Información actualizada', 'OK', 3000);
+        this._snackBarService.setMessage('Información actualizada', 'OK', 3000);
       } else {
-        this._snackBarService.openSnackBar('Ha ocurrido un error, por favor intente más tarde', 'OK', 3000);
+        this._snackBarService.setMessage('Ha ocurrido un error, por favor intente más tarde', 'OK', 3000);
       }
     });
   }
@@ -240,7 +239,7 @@ export class SgmComponent implements OnInit, OnDestroy {
             this.isAvailable = true;
           }
         } else {
-          this._snackBarService.openSnackBar('Ha ocurrido un error, por favor intente más tarde', 'OK', 3000);
+          this._snackBarService.setMessage('Ha ocurrido un error, por favor intente más tarde', 'OK', 3000);
         }
       });
     }

@@ -11,7 +11,6 @@ import {ApiService} from 'app/core/services/api/api.service';
 import {UpdatePasswordService} from 'app/shared/components/update-password/update-password.service';
 import {DialogService} from 'app/shared/components/dialog/dialog.service';
 import {CountryCodeService} from 'app/shared/components/country-code/country-code.service';
-import {SnackBarService} from 'app/core/services/snackbar/snackbar.service';
 import {UploadFileService} from 'app/shared/components/upload-file/upload-file.service';
 import {Constants} from 'app/utils/constants/constants.utils';
 import {UploadFileResponse} from 'app/shared/components/upload-file/upload-file.component';
@@ -26,7 +25,7 @@ import {Person} from '@app/utils/interfaces/person';
 import {PersonInformation} from '@app/utils/interfaces/person-information';
 import {HttpResponseCodes} from '@app/utils/enums/http-response-codes';
 import {ANIMATION} from '@app/ui/dashboard/pages/profiles/user-profile/animation';
-import {LocalStorageService} from 'ng-maplander';
+import {LocalStorageService, SnackBarService} from 'ng-maplander';
 
 @Component({
   selector: 'app-user-profile',
@@ -112,7 +111,7 @@ export class UserProfileComponent implements OnInit, OnDestroy {
       return;
     }
     if (!this.signature) {
-      this._snackBarService.openSnackBar('Por favor, registre su firma', 'OK', 3000);
+      this._snackBarService.setMessage('Por favor, registre su firma', 'OK', 3000);
       return;
     }
     this._router.navigate(['/home']).then();
@@ -395,7 +394,7 @@ export class UserProfileComponent implements OnInit, OnDestroy {
       return;
     }
     if (!this.signature) {
-      this._snackBarService.openSnackBar('Por favor, registre su firma', 'OK', 3000);
+      this._snackBarService.setMessage('Por favor, registre su firma', 'OK', 3000);
       return;
     }
     if (this.newImage) {
@@ -464,7 +463,7 @@ export class UserProfileComponent implements OnInit, OnDestroy {
 
 
   private updateBusiness(isNewEmail: boolean): void {
-    this._snackBarService.openSnackBar('Espere un momento...', '', 0);
+    this._snackBarService.setMessage('Espere un momento...', '', 0);
     let company;
     if (LocalStorageService.getItem(Constants.StationInDashboard)) {
       company = LocalStorageService.getItem(Constants.StationInDashboard).name;
@@ -496,7 +495,7 @@ export class UserProfileComponent implements OnInit, OnDestroy {
         }
       } else {
         this._snackBarService.closeSnackBar();
-        this._snackBarService.openSnackBar('Ha ocurrido un error, por favor, intente de nuevo', 'OK', 3000);
+        this._snackBarService.setMessage('Ha ocurrido un error, por favor, intente de nuevo', 'OK', 3000);
       }
     });
   }
@@ -507,7 +506,7 @@ export class UserProfileComponent implements OnInit, OnDestroy {
         if (!redirect) {
           this.saveInformation();
         } else {
-          this._snackBarService.openSnackBar('Contraseña Actualizada', 'OK', 3000);
+          this._snackBarService.setMessage('Contraseña Actualizada', 'OK', 3000);
         }
       } else {
         this._dialogService.alertDialog('No se pudo acceder', 'Se produjo un error de comunicación con el servidor', 'ACEPTAR');
@@ -529,7 +528,7 @@ export class UserProfileComponent implements OnInit, OnDestroy {
     this._api.savePersonInformation(this.userInformation).subscribe(response => {
       if (response.code === HttpResponseCodes.OK) {
         this.change = false;
-        this._snackBarService.openSnackBar('Información actualizada', 'OK', 3000);
+        this._snackBarService.setMessage('Información actualizada', 'OK', 3000);
       } else {
         this._dialogService.alertDialog('No se pudo acceder', 'Se produjo un error de comunicación con el servidor', 'ACEPTAR');
       }

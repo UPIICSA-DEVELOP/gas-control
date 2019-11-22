@@ -7,7 +7,6 @@
 
 import {ModuleWithProviders, NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
-import {SnackBarService} from './snackbar/snackbar.service';
 import {ApiService} from './api/api.service';
 import {DeviceDetectorService} from './device-detector/device-detector.service';
 import {MessagingService} from '@app/core/services/messaging/messaging.service';
@@ -27,7 +26,7 @@ import {ClipboardModule, MetaModule, MetaService, NetworkModule} from 'ng-maplan
     NetworkModule.forRoot(),
     ConsoleModule.forRoot(),
     ClipboardModule.forRoot(),
-    MetaModule.forRoot()
+    MetaModule.forRoot(),
   ],
   declarations: [],
   providers: []
@@ -45,7 +44,6 @@ export class ServicesModule {
     return {
       ngModule: ServicesModule,
       providers: [
-        SnackBarService,
         ApiService,
         DeviceDetectorService,
         MessagingService,

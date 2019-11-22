@@ -8,7 +8,6 @@ import {Component, ElementRef, HostBinding, OnDestroy, OnInit, ViewChild} from '
 import {ActivatedRoute, Router} from '@angular/router';
 import {Constants} from 'app/utils/constants/constants.utils';
 import {ApiService} from 'app/core/services/api/api.service';
-import {SnackBarService} from 'app/core/services/snackbar/snackbar.service';
 import {SignaturePadService} from 'app/shared/components/signature-pad/signature-pad.service';
 import {CountryCodeService} from 'app/shared/components/country-code/country-code.service';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
@@ -22,7 +21,7 @@ import {Person} from '@app/utils/interfaces/person';
 import {HttpResponseCodes} from '@app/utils/enums/http-response-codes';
 import {EntityResponse} from '@app/utils/class/entity-response';
 import {ANIMATION} from '@app/ui/dashboard/pages/collaborators-list/animation';
-import {CookieService, LocalStorageService} from 'ng-maplander';
+import {CookieService, LocalStorageService, SnackBarService} from 'ng-maplander';
 
 @Component({
   selector: 'app-collaborators-list',
@@ -164,10 +163,10 @@ export class CollaboratorsListComponent implements OnInit, OnDestroy {
       if (response.code === 1) {
         this._api.updateRolePerson(person.id, newRole).subscribe((updatePerson: EntityResponse<Person>) => {
           if (updatePerson.code === HttpResponseCodes.OK) {
-            this._snackBarService.openSnackBar('Rol actualizado', 'OK', 2000);
+            this._snackBarService.setMessage('Rol actualizado', 'OK', 2000);
             this.getCollaborators();
           } else {
-            this._snackBarService.openSnackBar('No se ha podido actualizar el rol', 'OK', 2000);
+            this._snackBarService.setMessage('No se ha podido actualizar el rol', 'OK', 2000);
             this.getCollaborators();
           }
         });
@@ -368,7 +367,7 @@ export class CollaboratorsListComponent implements OnInit, OnDestroy {
   }
 
   private createBCard(person: Person): void {
-    this._snackBarService.openSnackBar('Espere un momento...', '', 0);
+    this._snackBarService.setMessage('Espere un momento...', '', 0);
     const data = {
       name: person.name || '',
       lastName: person.lastName || '',
@@ -389,7 +388,7 @@ export class CollaboratorsListComponent implements OnInit, OnDestroy {
         this.createPerson(person);
       } else {
         this._snackBarService.closeSnackBar();
-        this._snackBarService.openSnackBar('Ha ocurrido un error, por favor, intente de nuevo', 'OK', 3000);
+        this._snackBarService.setMessage('Ha ocurrido un error, por favor, intente de nuevo', 'OK', 3000);
       }
     });
   }

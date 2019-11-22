@@ -9,7 +9,6 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {ApiService} from 'app/core/services/api/api.service';
 import {LocationService} from 'app/shared/components/location/location.service';
-import {SnackBarService} from 'app/core/services/snackbar/snackbar.service';
 import {DialogService} from 'app/shared/components/dialog/dialog.service';
 import {Constants} from 'app/utils/constants/constants.utils';
 import {Subscription} from 'rxjs';
@@ -24,7 +23,7 @@ import {Person} from '@app/utils/interfaces/person';
 import {HttpResponseCodes} from '@app/utils/enums/http-response-codes';
 import {ANIMATION} from '@app/ui/dashboard/pages/profiles/station-profile/animation';
 import {AppUtil} from '@app/utils/interfaces/app-util';
-import {LocalStorageService} from 'ng-maplander';
+import {LocalStorageService, SnackBarService} from 'ng-maplander';
 
 @Component({
   selector: 'app-station-profile',
@@ -206,7 +205,7 @@ export class StationProfileComponent implements OnInit, OnDestroy {
       }
       this.patchForm();
     } else {
-      this._snackBarService.openSnackBar('No se ha podido acceder, intente más tarde', 'OK', 3000);
+      this._snackBarService.setMessage('No se ha podido acceder, intente más tarde', 'OK', 3000);
       this._router.navigate(['/home']).then();
     }
   }
@@ -271,7 +270,7 @@ export class StationProfileComponent implements OnInit, OnDestroy {
     this._api.updateStation(this.station).subscribe(response => {
       if (response.code === HttpResponseCodes.OK) {
         this._change = false;
-        this._snackBarService.openSnackBar('Información actualizada', 'OK', 3000);
+        this._snackBarService.setMessage('Información actualizada', 'OK', 3000);
       } else {
         this._dialogService.alertDialog('No se pudo acceder', 'Se produjo un error de comunicación con el servidor', 'ACEPTAR');
       }
@@ -310,24 +309,24 @@ export class StationProfileComponent implements OnInit, OnDestroy {
   private validateStationArrays(): boolean {
     for (let i = 0; i < this.workShifts.length; i++) {
       if ((this.workShifts[i].start && !this.workShifts[i].end) || (!this.workShifts[i].start && this.workShifts[i].end)) {
-        this._snackBarService.openSnackBar('Complete los campos para el turno ' + (i + 1), 'OK', 3000);
+        this._snackBarService.setMessage('Complete los campos para el turno ' + (i + 1), 'OK', 3000);
         return false;
       }
     }
     for (let j = 0; j < this.tanks.length; j++) {
       if ((!this.tanks[j].capacity && this.tanks[j].fuelType) || (this.tanks[j].capacity && !this.tanks[j].fuelType)) {
-        this._snackBarService.openSnackBar('Complete los campos para el tanque ' + (j + 1), 'OK', 3000);
+        this._snackBarService.setMessage('Complete los campos para el tanque ' + (j + 1), 'OK', 3000);
         return false;
       }
     }
     for (let k = 0; k < this.dispensers.length; k++) {
       if ((this.dispensers[k].hoses) && (this.dispensers[k].magna === false && this.dispensers[k].premium === false &&
         this.dispensers[k].diesel === false)) {
-        this._snackBarService.openSnackBar('Complete los campos para el dispensario ' + (k + 1), 'OK', 3000);
+        this._snackBarService.setMessage('Complete los campos para el dispensario ' + (k + 1), 'OK', 3000);
         return false;
       } else if ((!this.dispensers[k].hoses) && (this.dispensers[k].magna === true || this.dispensers[k].premium === true ||
         this.dispensers[k].diesel === true)) {
-        this._snackBarService.openSnackBar('Complete los campos para el dispensario ' + (k + 1), 'OK', 3000);
+        this._snackBarService.setMessage('Complete los campos para el dispensario ' + (k + 1), 'OK', 3000);
         return false;
       }
     }
@@ -364,7 +363,7 @@ export class StationProfileComponent implements OnInit, OnDestroy {
     if (this.user.role !== 6) {
       this._router.navigate(['/home/documents', this.station.id]).then();
     } else {
-      this._snackBarService.openSnackBar('Usted no tiene permiso para visualizar este módulo', 'OK', 3000);
+      this._snackBarService.setMessage('Usted no tiene permiso para visualizar este módulo', 'OK', 3000);
     }
   }
 }

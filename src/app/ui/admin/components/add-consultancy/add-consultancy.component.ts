@@ -11,7 +11,6 @@ import {SignaturePadService} from 'app/shared/components/signature-pad/signature
 import {LocationService} from 'app/shared/components/location/location.service';
 import {CountryCodeService} from 'app/shared/components/country-code/country-code.service';
 import {MatDialogRef, MatStepper} from '@angular/material';
-import {SnackBarService} from 'app/core/services/snackbar/snackbar.service';
 import {ApiService} from 'app/core/services/api/api.service';
 import {UploadFileResponse} from 'app/shared/components/upload-file/upload-file.component';
 import {UploadFileService} from 'app/shared/components/upload-file/upload-file.service';
@@ -21,6 +20,7 @@ import {Person} from '@app/utils/interfaces/person';
 import {Consultancy} from '@app/utils/interfaces/consultancy';
 import {HttpResponseCodes} from '@app/utils/enums/http-response-codes';
 import {UserMedia} from '@app/utils/interfaces/user-media';
+import {SnackBarService} from 'ng-maplander';
 
 @Component({
   selector: 'app-add-consultancy',
@@ -171,7 +171,7 @@ export class AddConsultancyComponent implements OnInit, OnDestroy {
 
   public done(): void {
     this.progress = true;
-    this._snackBar.openSnackBar('Espere un momento...', '', 0);
+    this._snackBar.setMessage('Espere un momento...', '', 0);
     this.createConsultancy();
   }
 
@@ -233,7 +233,7 @@ export class AddConsultancyComponent implements OnInit, OnDestroy {
           break;
         case 470:
           this.progress = false;
-          this._snackBar.openSnackBar('Ya existe una consultora registrada con esta información', 'OK', 3000);
+          this._snackBar.setMessage('Ya existe una consultora registrada con esta información', 'OK', 3000);
           break;
         default:
           this.onErrorOccurred();
@@ -335,13 +335,13 @@ export class AddConsultancyComponent implements OnInit, OnDestroy {
 
   public exit(snack: boolean, code: number): void {
     if (snack) {
-      this._snackBar.openSnackBar('Consultora creada con éxito', 'OK', 3000);
+      this._snackBar.setMessage('Consultora creada con éxito', 'OK', 3000);
     }
     this._dialog.close({code: code});
   }
 
   private onErrorOccurred(): void {
-    this._snackBar.openSnackBar('Ha ocurrido un error, por favor, intente de nuevo', 'OK', 3000);
+    this._snackBar.setMessage('Ha ocurrido un error, por favor, intente de nuevo', 'OK', 3000);
   }
 
   public makeBusinessCard(): void {

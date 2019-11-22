@@ -10,8 +10,8 @@ import {HttpEvent, HttpInterceptor, HttpHandler, HttpRequest, HttpErrorResponse}
 
 import {Observable, throwError} from 'rxjs';
 import {catchError, retry} from 'rxjs/internal/operators';
-import {SnackBarService} from 'app/core/services/snackbar/snackbar.service';
 import {Constants} from 'app/utils/constants/constants.utils';
+import {SnackBarService} from 'ng-maplander';
 
 
 @Injectable()
@@ -33,7 +33,7 @@ export class HandlerErrorInterceptor implements HttpInterceptor {
           } else {
             errorMessage = `Error server side: ${error.status} \n ${error.message}`;
           }
-          this._snackBar.openSnackBar(Constants.ErrorMessageHandler, 'OK', 3000);
+          this._snackBar.setMessage(Constants.ErrorMessageHandler, 'OK', 3000);
           return throwError(errorMessage);
         })
       );

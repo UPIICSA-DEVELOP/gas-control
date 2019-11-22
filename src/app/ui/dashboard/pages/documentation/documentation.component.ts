@@ -9,7 +9,6 @@ import {UploadFileService} from '@app/shared/components/upload-file/upload-file.
 import {ActivatedRoute, Router} from '@angular/router';
 import {ApiService} from '@app/core/services/api/api.service';
 import {UploadFileResponse} from '@app/shared/components/upload-file/upload-file.component';
-import {SnackBarService} from '@app/core/services/snackbar/snackbar.service';
 import {Subscription} from 'rxjs';
 import {PdfVisorService} from '@app/shared/components/pdf-visor/pdf-visor.service';
 import {Constants} from '@app/utils/constants/constants.utils';
@@ -18,7 +17,7 @@ import {LoaderService} from '@app/core/components/loader/loader.service';
 import {Document} from '@app/utils/interfaces/document';
 import {HttpResponseCodes} from '@app/utils/enums/http-response-codes';
 import {ANIMATION} from '@app/ui/dashboard/pages/documentation/animation';
-import {LocalStorageService} from 'ng-maplander';
+import {LocalStorageService, SnackBarService} from 'ng-maplander';
 
 @Component({
   selector: 'app-documentation',
@@ -76,7 +75,7 @@ export class DocumentationComponent implements OnInit, OnDestroy {
         this.docsAsea = [];
       }
     } else {
-      this._snackBarService.openSnackBar('No se ha podido acceder, intente más tarde', 'OK', 3000);
+      this._snackBarService.setMessage('No se ha podido acceder, intente más tarde', 'OK', 3000);
       this._router.navigate(['/home']).then();
     }
   }
@@ -91,7 +90,7 @@ export class DocumentationComponent implements OnInit, OnDestroy {
         this.docsCre = [];
       }
     } else {
-      this._snackBarService.openSnackBar('No se ha podido acceder, intente más tarde', 'OK', 3000);
+      this._snackBarService.setMessage('No se ha podido acceder, intente más tarde', 'OK', 3000);
       this._router.navigate(['/home']).then();
     }
   }
@@ -160,7 +159,7 @@ export class DocumentationComponent implements OnInit, OnDestroy {
     };
     this._api.createDocument(doc).subscribe(response => {
       if (response.code === HttpResponseCodes.OK) {
-        this._snackBarService.openSnackBar('Documento actualizado', 'OK', 3000);
+        this._snackBarService.setMessage('Documento actualizado', 'OK', 3000);
         switch (doc.regulationType) {
           case 1:
             this.docsAsea[index] = doc;
@@ -170,7 +169,7 @@ export class DocumentationComponent implements OnInit, OnDestroy {
             break;
         }
       } else {
-        this._snackBarService.openSnackBar('Error al actualizar el documento', 'OK', 3000);
+        this._snackBarService.setMessage('Error al actualizar el documento', 'OK', 3000);
       }
     });
   }
@@ -185,7 +184,7 @@ export class DocumentationComponent implements OnInit, OnDestroy {
     };
     this._api.updateDocument(doc).subscribe(response => {
       if (response.code === HttpResponseCodes.OK) {
-        this._snackBarService.openSnackBar('Documento cargado', 'OK', 3000);
+        this._snackBarService.setMessage('Documento cargado', 'OK', 3000);
         switch (doc.regulationType) {
           case 1:
             this.docsAsea[index] = doc;
@@ -195,7 +194,7 @@ export class DocumentationComponent implements OnInit, OnDestroy {
             break;
         }
       } else {
-        this._snackBarService.openSnackBar('Error al cargar el documento', 'OK', 3000);
+        this._snackBarService.setMessage('Error al cargar el documento', 'OK', 3000);
       }
     });
   }

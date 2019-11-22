@@ -15,7 +15,6 @@ import {Subscription} from 'rxjs';
 import {SharedNotification, SharedService, SharedTypeNotification} from 'app/core/services/shared/shared.service';
 import {SignaturePadService} from 'app/shared/components/signature-pad/signature-pad.service';
 import {UploadFileService} from 'app/shared/components/upload-file/upload-file.service';
-import {SnackBarService} from 'app/core/services/snackbar/snackbar.service';
 import {UtilitiesService} from 'app/utils/utilities/utilities';
 import {DOCUMENT} from '@angular/common';
 import {AddStationService} from '@app/shared/components/add-gas-station/add-station.service';
@@ -28,7 +27,7 @@ import {AppUtil} from '@app/utils/interfaces/app-util';
 import {Station} from '@app/utils/interfaces/station';
 import {EntityResponse} from '@app/utils/class/entity-response';
 import {StationBasicData} from '@app/utils/interfaces/station-basic-data';
-import {CookieService, LocalStorageService, MetaService} from 'ng-maplander';
+import {CookieService, LocalStorageService, MetaService, SnackBarService} from 'ng-maplander';
 
 @Component({
   selector: 'app-screen',
@@ -235,7 +234,7 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy {
         this._drawer.toggle();
       }
     } else {
-      this._snackBarService.openSnackBar('Usted no tiene permiso para visualizar este módulo', 'OK', 3000);
+      this._snackBarService.setMessage('Usted no tiene permiso para visualizar este módulo', 'OK', 3000);
     }
   }
 
@@ -246,7 +245,7 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy {
         this._drawer.toggle();
       }
     } else {
-      this._snackBarService.openSnackBar('Usted no tiene permiso para visualizar este módulo', 'OK', 3000);
+      this._snackBarService.setMessage('Usted no tiene permiso para visualizar este módulo', 'OK', 3000);
     }
   }
 
@@ -394,7 +393,7 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy {
   private updatePerson(person: Person): void {
     this._api.updatePerson(person).subscribe(response => {
       if (response.code === HttpResponseCodes.OK) {
-        this._snackBarService.openSnackBar('Firma actualizada', 'OK', 3000);
+        this._snackBarService.setMessage('Firma actualizada', 'OK', 3000);
         LocalStorageService.removeItem(Constants.NotSignature);
         this.getDashboardInformation(this._stationId);
       } else {
@@ -404,6 +403,6 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   private onErrorOccur(): void {
-    this._snackBarService.openSnackBar('Ha ocurrido un error, por favor intente después', 'OK', 3000);
+    this._snackBarService.setMessage('Ha ocurrido un error, por favor intente después', 'OK', 3000);
   }
 }

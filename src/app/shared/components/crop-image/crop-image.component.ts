@@ -7,7 +7,7 @@
 
 import {Component, Inject, OnInit} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
-import {SnackBarService} from '@app/core/services/snackbar/snackbar.service';
+import {SnackBarService} from 'ng-maplander';
 
 @Component({
   selector: 'app-crop-image',
@@ -43,7 +43,7 @@ export class CropImageComponent implements OnInit {
   }
 
   public loadImageFailed() {
-    this._snackBarService.openSnackBar('Ocurrio un error al cargar la imagen, por favor, intente de nuevo.', 'OK', 2000);
+    this._snackBarService.setMessage('Ocurrio un error al cargar la imagen, por favor, intente de nuevo.', 'OK', 2000);
   }
 
   public finishCrop(): void {

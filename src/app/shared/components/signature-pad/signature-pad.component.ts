@@ -9,10 +9,9 @@ import {MatDialogRef} from '@angular/material';
 import {DOCUMENT, isPlatformBrowser} from '@angular/common';
 import SignaturePad from 'signature_pad';
 import {UtilitiesService} from 'app/utils/utilities/utilities';
-import {SnackBarService} from '@app/core/services/snackbar/snackbar.service';
 import {Constants} from 'app/utils/constants/constants.utils';
 import {DeviceDetectorService} from '@app/core/services/device-detector/device-detector.service';
-import {LocalStorageService} from 'ng-maplander';
+import {LocalStorageService, SnackBarService} from 'ng-maplander';
 
 @Component({
   selector: 'app-signature-pad',
@@ -56,7 +55,7 @@ export class SignaturePadComponent implements OnInit {
 
   public closeAccept(): void {
     if (this.pad.isEmpty()) {
-      this._snackBarService.openSnackBar('Por favor registre su firma', 'OK', 2000);
+      this._snackBarService.setMessage('Por favor registre su firma', 'OK', 2000);
       return;
     }
     const data = this.pad.toDataURL('image/png');

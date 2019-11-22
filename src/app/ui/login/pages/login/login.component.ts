@@ -8,11 +8,11 @@ import {Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {ApiService} from 'app/core/services/api/api.service';
 import {DialogService} from 'app/shared/components/dialog/dialog.service';
-import {SnackBarService} from 'app/core/services/snackbar/snackbar.service';
 import {AuthService} from 'app/core/services/auth/auth.service';
 import {Subscription} from 'rxjs';
 import {LoaderService} from '@app/core/components/loader/loader.service';
 import {HttpResponseCodes} from '@app/utils/enums/http-response-codes';
+import {SnackBarService} from 'ng-maplander';
 
 const md5 = require('md5');
 
@@ -77,7 +77,7 @@ export class LoginComponent implements OnInit, OnDestroy {
               this._dialogService.alertDialog('Información', 'Hemos enviado un link de recuperación de contraseña al correo: ' + email, 'ACEPTAR');
               break;
             case HttpResponseCodes.NOT_EXISTS:
-              this._snackService.openSnackBar('Este usuario no está registrado', 'OK', 5000);
+              this._snackService.setMessage('Este usuario no está registrado', 'OK', 5000);
               break;
             default:
               this.connectionLost();
@@ -112,11 +112,11 @@ export class LoginComponent implements OnInit, OnDestroy {
             break;
           case 471:
             this.loginForm.controls['email'].setErrors({notExist: true});
-            this._snackService.openSnackBar('Este usuario no está registrado', 'OK', 2000);
+            this._snackService.setMessage('Este usuario no está registrado', 'OK', 2000);
             break;
           case 472:
             this.loginForm.controls['password'].setErrors({incorrect: true});
-            this._snackService.openSnackBar('Usuario o contraseña inválidos', 'OK', 2000);
+            this._snackService.setMessage('Usuario o contraseña inválidos', 'OK', 2000);
             break;
           case 500:
             this.connectionLost();
