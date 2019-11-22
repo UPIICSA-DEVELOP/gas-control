@@ -7,7 +7,6 @@
 
 import {ModuleWithProviders, NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
-import {MetaService} from './meta/meta.service';
 import {SnackBarService} from './snackbar/snackbar.service';
 import {ApiService} from './api/api.service';
 import {DeviceDetectorService} from './device-detector/device-detector.service';
@@ -20,7 +19,7 @@ import {UserProfileService} from '@app/ui/dashboard/pages/profiles/user-profile/
 import {IconsModule} from '@app/core/services/icons/icons.module';
 import {NetworkModule} from '@app/core/services/network/network.module';
 import {ConsoleModule} from '@app/core/services/console/console.module';
-import {ClipboardModule} from 'ng-maplander';
+import {ClipboardModule, MetaModule, MetaService} from 'ng-maplander';
 
 @NgModule({
   imports: [
@@ -28,7 +27,8 @@ import {ClipboardModule} from 'ng-maplander';
     IconsModule.forRoot(),
     NetworkModule.forRoot(),
     ConsoleModule.forRoot(),
-    ClipboardModule.forRoot()
+    ClipboardModule.forRoot(),
+    MetaModule.forRoot()
   ],
   declarations: [],
   providers: []
@@ -39,7 +39,7 @@ export class ServicesModule {
     private _routerState: RouterStateService
   ) {
     this._routerState.loadRouting();
-    this._meta.init();
+    this._meta.init().then();
   }
 
   static forRoot(): ModuleWithProviders {

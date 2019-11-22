@@ -13,7 +13,6 @@ import {AuthService} from 'app/core/services/auth/auth.service';
 import {environment} from 'environments/environment';
 import {Subscription} from 'rxjs';
 import {SharedNotification, SharedService, SharedTypeNotification} from 'app/core/services/shared/shared.service';
-import {MetaService} from 'app/core/services/meta/meta.service';
 import {SignaturePadService} from 'app/shared/components/signature-pad/signature-pad.service';
 import {UploadFileService} from 'app/shared/components/upload-file/upload-file.service';
 import {SnackBarService} from 'app/core/services/snackbar/snackbar.service';
@@ -29,7 +28,7 @@ import {AppUtil} from '@app/utils/interfaces/app-util';
 import {Station} from '@app/utils/interfaces/station';
 import {EntityResponse} from '@app/utils/class/entity-response';
 import {StationBasicData} from '@app/utils/interfaces/station-basic-data';
-import {CookieService, LocalStorageService} from 'ng-maplander';
+import {CookieService, LocalStorageService, MetaService} from 'ng-maplander';
 
 @Component({
   selector: 'app-screen',
