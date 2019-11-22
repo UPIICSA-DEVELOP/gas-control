@@ -9,7 +9,6 @@ import {ModuleWithProviders, NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {MetaService} from './meta/meta.service';
 import {SnackBarService} from './snackbar/snackbar.service';
-import {ClipboardService} from './clipboard/clipboard.service';
 import {ApiService} from './api/api.service';
 import {DeviceDetectorService} from './device-detector/device-detector.service';
 import {MessagingService} from '@app/core/services/messaging/messaging.service';
@@ -21,13 +20,15 @@ import {UserProfileService} from '@app/ui/dashboard/pages/profiles/user-profile/
 import {IconsModule} from '@app/core/services/icons/icons.module';
 import {NetworkModule} from '@app/core/services/network/network.module';
 import {ConsoleModule} from '@app/core/services/console/console.module';
+import {ClipboardModule} from 'ng-maplander';
 
 @NgModule({
   imports: [
     CommonModule,
     IconsModule.forRoot(),
     NetworkModule.forRoot(),
-    ConsoleModule.forRoot()
+    ConsoleModule.forRoot(),
+    ClipboardModule.forRoot()
   ],
   declarations: [],
   providers: []
@@ -47,7 +48,6 @@ export class ServicesModule {
       providers: [
         MetaService,
         SnackBarService,
-        ClipboardService,
         ApiService,
         DeviceDetectorService,
         MessagingService,
