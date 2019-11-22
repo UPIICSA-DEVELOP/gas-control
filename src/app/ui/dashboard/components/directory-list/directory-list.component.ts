@@ -10,14 +10,13 @@ import {SnackBarService} from '@app/core/services/snackbar/snackbar.service';
 import {DialogService} from '@app/shared/components/dialog/dialog.service';
 import {Constants} from '@app/utils/constants/constants.utils';
 import {UtilitiesService} from '@app/utils/utilities/utilities';
-import {CookieService} from '@app/core/services/cookie/cookie.service';
 import {SharedNotification, SharedService, SharedTypeNotification} from '@app/core/services/shared/shared.service';
 import {Subscription} from 'rxjs';
 import {Person} from '@app/utils/interfaces/person';
 import {HttpResponseCodes} from '@app/utils/enums/http-response-codes';
 import {AppUtil} from '@app/utils/interfaces/app-util';
 import {Station} from '@app/utils/interfaces/station';
-import {LocalStorageService} from 'ng-maplander';
+import {CookieService, LocalStorageService} from 'ng-maplander';
 
 @Component({
   selector: 'app-directory-list',

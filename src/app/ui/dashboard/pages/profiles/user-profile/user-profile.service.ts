@@ -8,9 +8,9 @@ import {Injectable} from '@angular/core';
 import {ActivatedRouteSnapshot, Resolve, RouterStateSnapshot} from '@angular/router';
 import {ApiService} from 'app/core/services/api/api.service';
 import {Constants} from 'app/utils/constants/constants.utils';
-import {CookieService} from 'app/core/services/cookie/cookie.service';
 import {forkJoin} from 'rxjs';
 import {map} from 'rxjs/internal/operators';
+import {CookieService} from 'ng-maplander';
 
 @Injectable()
 export class UserProfileService implements Resolve<any> {

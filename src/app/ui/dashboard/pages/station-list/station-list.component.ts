@@ -7,7 +7,6 @@
 import {Component, HostBinding, OnInit} from '@angular/core';
 import {ApiService} from 'app/core/services/api/api.service';
 import {DialogService} from 'app/shared/components/dialog/dialog.service';
-import {CookieService} from 'app/core/services/cookie/cookie.service';
 import {Constants} from 'app/utils/constants/constants.utils';
 import {Router} from '@angular/router';
 import {UtilitiesService} from 'app/utils/utilities/utilities';
@@ -20,7 +19,7 @@ import {Station} from '@app/utils/interfaces/station';
 import {ANIMATION} from '@app/ui/dashboard/pages/station-list/animation';
 import {StationLite} from '@app/utils/interfaces/station-lite';
 import {AppUtil} from '@app/utils/interfaces/app-util';
-import {LocalStorageService} from 'ng-maplander';
+import {CookieService, LocalStorageService} from 'ng-maplander';
 
 @Component({
   selector: 'app-station-list',

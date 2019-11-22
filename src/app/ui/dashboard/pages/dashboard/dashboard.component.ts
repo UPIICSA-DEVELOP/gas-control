@@ -6,7 +6,6 @@
 
 import {AfterViewInit, Component, Inject, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {ApiService} from 'app/core/services/api/api.service';
-import {CookieService} from 'app/core/services/cookie/cookie.service';
 import {Constants} from 'app/utils/constants/constants.utils';
 import {ActivatedRoute, Router} from '@angular/router';
 import {DialogService} from 'app/shared/components/dialog/dialog.service';
@@ -30,7 +29,7 @@ import {AppUtil} from '@app/utils/interfaces/app-util';
 import {Station} from '@app/utils/interfaces/station';
 import {EntityResponse} from '@app/utils/class/entity-response';
 import {StationBasicData} from '@app/utils/interfaces/station-basic-data';
-import {LocalStorageService} from 'ng-maplander';
+import {CookieService, LocalStorageService} from 'ng-maplander';
 
 @Component({
   selector: 'app-screen',

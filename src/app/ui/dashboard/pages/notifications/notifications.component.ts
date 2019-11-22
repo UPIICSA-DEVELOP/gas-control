@@ -8,11 +8,11 @@ import {Component, HostBinding, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {ApiService} from 'app/core/services/api/api.service';
 import {DialogService} from 'app/shared/components/dialog/dialog.service';
-import {CookieService} from 'app/core/services/cookie/cookie.service';
 import {Constants} from 'app/utils/constants/constants.utils';
 import {UtilitiesService} from 'app/utils/utilities/utilities';
 import {HttpResponseCodes} from '@app/utils/enums/http-response-codes';
 import {ANIMATION} from '@app/ui/dashboard/pages/notifications/animation';
+import {CookieService} from 'ng-maplander';
 
 @Component({
   selector: 'app-notifications',

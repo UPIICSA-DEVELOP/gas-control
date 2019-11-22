@@ -9,7 +9,6 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {Constants} from 'app/utils/constants/constants.utils';
 import {ApiService} from 'app/core/services/api/api.service';
 import {SnackBarService} from 'app/core/services/snackbar/snackbar.service';
-import {CookieService} from 'app/core/services/cookie/cookie.service';
 import {SignaturePadService} from 'app/shared/components/signature-pad/signature-pad.service';
 import {CountryCodeService} from 'app/shared/components/country-code/country-code.service';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
@@ -23,7 +22,7 @@ import {Person} from '@app/utils/interfaces/person';
 import {HttpResponseCodes} from '@app/utils/enums/http-response-codes';
 import {EntityResponse} from '@app/utils/class/entity-response';
 import {ANIMATION} from '@app/ui/dashboard/pages/collaborators-list/animation';
-import {LocalStorageService} from 'ng-maplander';
+import {CookieService, LocalStorageService} from 'ng-maplander';
 
 @Component({
   selector: 'app-collaborators-list',

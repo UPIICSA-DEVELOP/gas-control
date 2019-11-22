@@ -6,7 +6,6 @@
 
 import {Inject, Injectable, PLATFORM_ID} from '@angular/core';
 import {ActivatedRouteSnapshot, Resolve, Router, RouterStateSnapshot} from '@angular/router';
-import {CookieService, MaxAge} from 'app/core/services/cookie/cookie.service';
 import {Constants} from 'app/utils/constants/constants.utils';
 import {MessagingService} from 'app/core/services/messaging/messaging.service';
 import {Observable} from 'rxjs';
@@ -14,7 +13,7 @@ import {ApiService} from '@app/core/services/api/api.service';
 import {SessionStorageService} from '@app/core/services/session-storage/session-storage.service';
 import {Person} from '@app/utils/interfaces/person';
 import {HttpResponseCodes} from '@app/utils/enums/http-response-codes';
-import {LocalStorageService} from 'ng-maplander';
+import {CookieService, LocalStorageService, MaxAge} from 'ng-maplander';
 
 @Injectable()
 export class AuthService implements Resolve<any> {

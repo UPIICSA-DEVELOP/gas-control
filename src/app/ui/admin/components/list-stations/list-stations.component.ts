@@ -10,7 +10,6 @@ import {ApiService} from '@app/core/services/api/api.service';
 import {Constants} from '@app/utils/constants/constants.utils';
 import {SnackBarService} from '@app/core/services/snackbar/snackbar.service';
 import {DialogService} from '@app/shared/components/dialog/dialog.service';
-import {CookieService} from '@app/core/services/cookie/cookie.service';
 import {UtilitiesService} from '@app/utils/utilities/utilities';
 import {AuthService} from '@app/core/services/auth/auth.service';
 import {SessionStorageService} from '@app/core/services/session-storage/session-storage.service';
@@ -22,7 +21,7 @@ import {ConsultancyBasicData} from '@app/utils/interfaces/consultancy-basic-data
 import {StationLite} from '@app/utils/interfaces/station-lite';
 import {AppUtil} from '@app/utils/interfaces/app-util';
 import {GroupIcon} from '@app/utils/interfaces/group-icon';
-import {LocalStorageService} from 'ng-maplander';
+import {CookieService, LocalStorageService} from 'ng-maplander';
 
 @Component({
   selector: 'app-list-collaborators',
