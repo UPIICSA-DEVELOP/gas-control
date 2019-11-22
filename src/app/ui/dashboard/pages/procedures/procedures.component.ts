@@ -9,11 +9,11 @@ import {ApiService} from 'app/core/services/api/api.service';
 import {Router} from '@angular/router';
 import {PdfVisorService} from 'app/shared/components/pdf-visor/pdf-visor.service';
 import {Constants} from 'app/utils/constants/constants.utils';
-import {LocalStorageService} from 'app/core/services/local-storage/local-storage.service';
 import {HashService} from 'app/utils/utilities/hash.service';
 import {Procedure} from '@app/utils/interfaces/procedure';
 import {HttpResponseCodes} from '@app/utils/enums/http-response-codes';
 import {ANIMATION} from '@app/ui/dashboard/pages/procedures/animation';
+import {LocalStorageService} from 'ng-maplander';
 
 @Component({
   selector: 'app-procedures',

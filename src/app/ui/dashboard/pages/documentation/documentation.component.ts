@@ -12,13 +12,13 @@ import {UploadFileResponse} from '@app/shared/components/upload-file/upload-file
 import {SnackBarService} from '@app/core/services/snackbar/snackbar.service';
 import {Subscription} from 'rxjs';
 import {PdfVisorService} from '@app/shared/components/pdf-visor/pdf-visor.service';
-import {LocalStorageService} from '@app/core/services/local-storage/local-storage.service';
 import {Constants} from '@app/utils/constants/constants.utils';
 import {HashService} from '@app/utils/utilities/hash.service';
 import {LoaderService} from '@app/core/components/loader/loader.service';
 import {Document} from '@app/utils/interfaces/document';
 import {HttpResponseCodes} from '@app/utils/enums/http-response-codes';
 import {ANIMATION} from '@app/ui/dashboard/pages/documentation/animation';
+import {LocalStorageService} from 'ng-maplander';
 
 @Component({
   selector: 'app-documentation',

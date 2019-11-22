@@ -9,7 +9,6 @@ import {ApiService} from 'app/core/services/api/api.service';
 import {CookieService} from 'app/core/services/cookie/cookie.service';
 import {Constants} from 'app/utils/constants/constants.utils';
 import {ActivatedRoute, Router} from '@angular/router';
-import {LocalStorageService} from 'app/core/services/local-storage/local-storage.service';
 import {DialogService} from 'app/shared/components/dialog/dialog.service';
 import {AuthService} from 'app/core/services/auth/auth.service';
 import {environment} from 'environments/environment';
@@ -31,6 +30,7 @@ import {AppUtil} from '@app/utils/interfaces/app-util';
 import {Station} from '@app/utils/interfaces/station';
 import {EntityResponse} from '@app/utils/class/entity-response';
 import {StationBasicData} from '@app/utils/interfaces/station-basic-data';
+import {LocalStorageService} from 'ng-maplander';
 
 @Component({
   selector: 'app-screen',

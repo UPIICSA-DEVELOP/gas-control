@@ -10,7 +10,6 @@ import {DialogService} from '@app/shared/components/dialog/dialog.service';
 import {Constants} from '@app/utils/constants/constants.utils';
 import {ApiService} from '@app/core/services/api/api.service';
 import {AuthService} from '@app/core/services/auth/auth.service';
-import {LocalStorageService} from '@app/core/services/local-storage/local-storage.service';
 import {Router} from '@angular/router';
 import {AbstractControl, FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Subscription} from 'rxjs';
@@ -18,6 +17,7 @@ import {LoaderService} from '@app/core/components/loader/loader.service';
 import {Person} from '@app/utils/interfaces/person';
 import {HttpResponseCodes} from '@app/utils/enums/http-response-codes';
 import {ANIMATION} from '@app/ui/reset-pass/pages/reset-pass/animation';
+import {LocalStorageService} from 'ng-maplander';
 
 export function ValidatePasswords(ac: AbstractControl) {
   const password = ac.get('newPassword').value;

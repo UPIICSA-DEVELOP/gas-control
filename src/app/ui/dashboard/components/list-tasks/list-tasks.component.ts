@@ -8,7 +8,6 @@ import {Component, ElementRef, Input, OnDestroy, OnInit, ViewChild} from '@angul
 import {ApiService} from '@app/core/services/api/api.service';
 import {Constants} from '@app/utils/constants/constants.utils';
 import {UtilitiesService} from '@app/utils/utilities/utilities';
-import {LocalStorageService} from '@app/core/services/local-storage/local-storage.service';
 import {SharedNotification, SharedService, SharedTypeNotification} from '@app/core/services/shared/shared.service';
 import {Subscription} from 'rxjs';
 import {SnackBarService} from '@app/core/services/snackbar/snackbar.service';
@@ -26,6 +25,7 @@ import {Task} from '@app/utils/interfaces/task';
 import {HttpResponseCodes} from '@app/utils/enums/http-response-codes';
 import {EntityResponse} from '@app/utils/class/entity-response';
 import {StationTask} from '@app/utils/interfaces/station-task';
+import {LocalStorageService} from 'ng-maplander';
 
 @Component({
   selector: 'app-list-tasks',

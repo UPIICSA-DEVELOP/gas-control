@@ -6,7 +6,6 @@
 
 import {Component, HostBinding, OnInit} from '@angular/core';
 import {ApiService} from 'app/core/services/api/api.service';
-import {LocalStorageService} from 'app/core/services/local-storage/local-storage.service';
 import {Constants} from 'app/utils/constants/constants.utils';
 import {Router} from '@angular/router';
 import {HttpResponseCodes} from '@app/utils/enums/http-response-codes';
@@ -14,6 +13,7 @@ import {ANIMATION} from '@app/ui/terms/pages/terms/animation';
 import {EntityResponse} from '@app/utils/class/entity-response';
 import {Station} from '@app/utils/interfaces/station';
 import {Person} from '@app/utils/interfaces/person';
+import {LocalStorageService} from 'ng-maplander';
 
 @Component({
   selector: 'app-terms',

@@ -8,7 +8,6 @@ import {Component, ElementRef, HostBinding, OnDestroy, OnInit, ViewChild} from '
 import {ApiService} from '@app/core/services/api/api.service';
 import {SnackBarService} from '@app/core/services/snackbar/snackbar.service';
 import {SharedService, SharedTypeNotification} from '@app/core/services/shared/shared.service';
-import {LocalStorageService} from '@app/core/services/local-storage/local-storage.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Constants} from 'app/utils/constants/constants.utils';
@@ -24,6 +23,7 @@ import {Person} from '@app/utils/interfaces/person';
 import {PersonInformation} from '@app/utils/interfaces/person-information';
 import {HttpResponseCodes} from '@app/utils/enums/http-response-codes';
 import {ANIMATION} from '@app/ui/dashboard/pages/add-collaborator/animation';
+import {LocalStorageService} from 'ng-maplander';
 
 @Component({
   selector: 'app-add-collaborator',

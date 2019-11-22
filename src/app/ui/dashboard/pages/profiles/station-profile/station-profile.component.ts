@@ -12,7 +12,6 @@ import {LocationService} from 'app/shared/components/location/location.service';
 import {SnackBarService} from 'app/core/services/snackbar/snackbar.service';
 import {DialogService} from 'app/shared/components/dialog/dialog.service';
 import {Constants} from 'app/utils/constants/constants.utils';
-import {LocalStorageService} from 'app/core/services/local-storage/local-storage.service';
 import {Subscription} from 'rxjs';
 import {LoaderService} from '@app/core/components/loader/loader.service';
 import {FormatTimePipe} from '@app/shared/pipes/format-time/format-time.pipe';
@@ -25,6 +24,7 @@ import {Person} from '@app/utils/interfaces/person';
 import {HttpResponseCodes} from '@app/utils/enums/http-response-codes';
 import {ANIMATION} from '@app/ui/dashboard/pages/profiles/station-profile/animation';
 import {AppUtil} from '@app/utils/interfaces/app-util';
+import {LocalStorageService} from 'ng-maplander';
 
 @Component({
   selector: 'app-station-profile',

@@ -12,7 +12,6 @@ import {SnackBarService} from './snackbar/snackbar.service';
 import {ClipboardService} from './clipboard/clipboard.service';
 import {ApiService} from './api/api.service';
 import {DeviceDetectorService} from './device-detector/device-detector.service';
-import {LocalStorageService} from './local-storage/local-storage.service';
 import {CookieService} from './cookie/cookie.service';
 import {SessionStorageService} from '@app/core/services/session-storage/session-storage.service';
 import {MessagingService} from '@app/core/services/messaging/messaging.service';
@@ -53,7 +52,6 @@ export class ServicesModule {
         ClipboardService,
         ApiService,
         DeviceDetectorService,
-        LocalStorageService,
         SessionStorageService,
         CookieService,
         MessagingService,

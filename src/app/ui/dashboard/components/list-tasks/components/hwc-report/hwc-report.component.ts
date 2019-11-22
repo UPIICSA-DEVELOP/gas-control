@@ -14,7 +14,6 @@ import {SnackBarService} from '@app/core/services/snackbar/snackbar.service';
 import {SharedService, SharedTypeNotification} from '@app/core/services/shared/shared.service';
 import {Subscription} from 'rxjs';
 import {Constants} from '@app/utils/constants/constants.utils';
-import {LocalStorageService} from '@app/core/services/local-storage/local-storage.service';
 import {UploadFileResponse} from '@app/shared/components/upload-file/upload-file.component';
 import {PdfVisorService} from '@app/shared/components/pdf-visor/pdf-visor.service';
 import {HashService} from '@app/utils/utilities/hash.service';
@@ -22,6 +21,7 @@ import {LoaderService} from '@app/core/components/loader/loader.service';
 import {HWCReport} from '@app/utils/interfaces/reports/hwc-report';
 import {Task} from '@app/utils/interfaces/task';
 import {HttpResponseCodes} from '@app/utils/enums/http-response-codes';
+import {LocalStorageService} from 'ng-maplander';
 
 @Component({
   selector: 'app-hwc-report',

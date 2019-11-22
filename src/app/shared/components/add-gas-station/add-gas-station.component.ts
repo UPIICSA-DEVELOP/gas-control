@@ -7,7 +7,6 @@
 import {Component, ElementRef, Inject, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {ApiService} from '@app/core/services/api/api.service';
 import {Router} from '@angular/router';
-import {LocalStorageService} from '@app/core/services/local-storage/local-storage.service';
 import {Constants} from '@app/utils/constants/constants.utils';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {SignaturePadService} from '../signature-pad/signature-pad.service';
@@ -38,6 +37,7 @@ import {DefaultResponse} from '@app/utils/interfaces/default-response';
 import {GroupIcon} from '@app/utils/interfaces/group-icon';
 import {PersonLite} from '@app/utils/interfaces/person-lite';
 import {EntityCollectionResponse} from '@app/utils/class/entity-collection-response';
+import {LocalStorageService} from 'ng-maplander';
 
 @Component({
   selector: 'app-add-gas-station',

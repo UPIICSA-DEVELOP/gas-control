@@ -9,9 +9,9 @@ import {ActivatedRouteSnapshot, Resolve, RouterStateSnapshot} from '@angular/rou
 import {ApiService} from 'app/core/services/api/api.service';
 import {CookieService} from 'app/core/services/cookie/cookie.service';
 import {Constants} from 'app/utils/constants/constants.utils';
-import {LocalStorageService} from 'app/core/services/local-storage/local-storage.service';
 import {forkJoin} from 'rxjs';
 import {map} from 'rxjs/internal/operators';
+import {LocalStorageService} from 'ng-maplander';
 
 @Injectable()
 export class ProfileService implements Resolve<any> {

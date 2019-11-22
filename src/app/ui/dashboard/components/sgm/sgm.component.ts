@@ -14,7 +14,6 @@ import {Subscription} from 'rxjs';
 import {HashService} from '@app/utils/utilities/hash.service';
 import {UtilitiesService} from '@app/utils/utilities/utilities';
 import {Constants} from '@app/utils/constants/constants.utils';
-import {LocalStorageService} from '@app/core/services/local-storage/local-storage.service';
 import {environment} from '@env/environment';
 import {MDate} from '@app/utils/class/MDate';
 import {LoaderService} from '@app/core/components/loader/loader.service';
@@ -23,6 +22,7 @@ import {Station} from '@app/utils/interfaces/station';
 import {Task} from '@app/utils/interfaces/task';
 import {HttpResponseCodes} from '@app/utils/enums/http-response-codes';
 import {SgmDocument} from '@app/utils/interfaces/sgm-document';
+import {LocalStorageService} from 'ng-maplander';
 
 @Component({
   selector: 'app-sgm',

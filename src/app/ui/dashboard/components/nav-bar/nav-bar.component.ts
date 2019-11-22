@@ -10,12 +10,12 @@ import {DialogService} from '@app/shared/components/dialog/dialog.service';
 import {Constants} from '@app/utils/constants/constants.utils';
 import {DOCUMENT} from '@angular/common';
 import {Router} from '@angular/router';
-import {LocalStorageService} from '@app/core/services/local-storage/local-storage.service';
 import {Subscription} from 'rxjs';
 import {SessionStorageService} from '@app/core/services/session-storage/session-storage.service';
 import {SharedService, SharedTypeNotification} from '@app/core/services/shared/shared.service';
 import {LoaderService} from '@app/core/components/loader/loader.service';
 import {Person} from '@app/utils/interfaces/person';
+import {LocalStorageService} from 'ng-maplander';
 
 @Component({
   selector: 'app-nav-bar',

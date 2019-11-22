@@ -16,7 +16,6 @@ import {HashService} from '@app/utils/utilities/hash.service';
 import {UploadFileResponse} from '@app/shared/components/upload-file/upload-file.component';
 import {DialogService} from '@app/shared/components/dialog/dialog.service';
 import {SnackBarService} from '@app/core/services/snackbar/snackbar.service';
-import {LocalStorageService} from '@app/core/services/local-storage/local-storage.service';
 import {environment} from '@env/environment';
 import {MDate} from '@app/utils/class/MDate';
 import {ModalProceduresService} from '@app/ui/dashboard/components/modal-procedures/modal-procedures.service';
@@ -27,6 +26,7 @@ import {BrigadeElem} from '@app/utils/interfaces/brigade-element';
 import {SasisopaDocument} from '@app/utils/interfaces/sasisopa';
 import {BrigadeInterface} from '@app/utils/interfaces/brigade.interface';
 import {Station} from '@app/utils/interfaces/station';
+import {LocalStorageService} from 'ng-maplander';
 
 @Component({
   selector: 'app-sasisopa',

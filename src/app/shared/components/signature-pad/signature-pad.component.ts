@@ -11,8 +11,8 @@ import SignaturePad from 'signature_pad';
 import {UtilitiesService} from 'app/utils/utilities/utilities';
 import {SnackBarService} from '@app/core/services/snackbar/snackbar.service';
 import {Constants} from 'app/utils/constants/constants.utils';
-import {LocalStorageService} from '@app/core/services/local-storage/local-storage.service';
 import {DeviceDetectorService} from '@app/core/services/device-detector/device-detector.service';
+import {LocalStorageService} from 'ng-maplander';
 
 @Component({
   selector: 'app-signature-pad',

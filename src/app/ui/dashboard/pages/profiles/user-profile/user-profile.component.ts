@@ -16,7 +16,6 @@ import {UploadFileService} from 'app/shared/components/upload-file/upload-file.s
 import {Constants} from 'app/utils/constants/constants.utils';
 import {UploadFileResponse} from 'app/shared/components/upload-file/upload-file.component';
 import {SignaturePadService} from 'app/shared/components/signature-pad/signature-pad.service';
-import {LocalStorageService} from 'app/core/services/local-storage/local-storage.service';
 import {PdfVisorService} from 'app/shared/components/pdf-visor/pdf-visor.service';
 import {Subscription} from 'rxjs';
 import {ShareService} from 'app/shared/components/share/share.service';
@@ -27,6 +26,7 @@ import {Person} from '@app/utils/interfaces/person';
 import {PersonInformation} from '@app/utils/interfaces/person-information';
 import {HttpResponseCodes} from '@app/utils/enums/http-response-codes';
 import {ANIMATION} from '@app/ui/dashboard/pages/profiles/user-profile/animation';
+import {LocalStorageService} from 'ng-maplander';
 
 @Component({
   selector: 'app-user-profile',

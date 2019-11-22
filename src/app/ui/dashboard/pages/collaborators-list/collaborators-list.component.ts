@@ -17,13 +17,13 @@ import {DialogService} from 'app/shared/components/dialog/dialog.service';
 import {UploadFileResponse} from 'app/shared/components/upload-file/upload-file.component';
 import {UploadFileService} from 'app/shared/components/upload-file/upload-file.service';
 import {UtilitiesService} from 'app/utils/utilities/utilities';
-import {LocalStorageService} from 'app/core/services/local-storage/local-storage.service';
 import {Subscription} from 'rxjs';
 import {LoaderService} from '@app/core/components/loader/loader.service';
 import {Person} from '@app/utils/interfaces/person';
 import {HttpResponseCodes} from '@app/utils/enums/http-response-codes';
 import {EntityResponse} from '@app/utils/class/entity-response';
 import {ANIMATION} from '@app/ui/dashboard/pages/collaborators-list/animation';
+import {LocalStorageService} from 'ng-maplander';
 
 @Component({
   selector: 'app-collaborators-list',

@@ -15,7 +15,6 @@ import {UploadFileService} from '@app/shared/components/upload-file/upload-file.
 import {SignaturePadService} from '@app/shared/components/signature-pad/signature-pad.service';
 import {Subscription} from 'rxjs';
 import {Constants} from '@app/utils/constants/constants.utils';
-import {LocalStorageService} from '@app/core/services/local-storage/local-storage.service';
 import {UploadFileResponse} from '@app/shared/components/upload-file/upload-file.component';
 import {FormatTimePipe} from '@app/shared/pipes/format-time/format-time.pipe';
 import {LoaderService} from '@app/core/components/loader/loader.service';
@@ -23,6 +22,7 @@ import {CompressorReport} from '@app/utils/interfaces/reports/compressor-report'
 import {HWGReport} from '@app/utils/interfaces/reports/hwg-report';
 import {Task} from '@app/utils/interfaces/task';
 import {HttpResponseCodes} from '@app/utils/enums/http-response-codes';
+import {LocalStorageService} from 'ng-maplander';
 
 @Component({
   selector: 'app-compressor-report',
@@ -124,7 +124,7 @@ export class CompressorReportComponent implements OnInit, OnDestroy {
   }
 
   private resetElements(): void {
-    this.compressorReport = undefined;
+    this.compressorReport = null;
     this.compForm.reset();
     this.compForm.disable();
     const user = LocalStorageService.getItem(Constants.UserInSession);

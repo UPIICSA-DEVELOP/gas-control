@@ -13,7 +13,6 @@ import {SnackBarService} from '@app/core/services/snackbar/snackbar.service';
 import {SignaturePadService} from '@app/shared/components/signature-pad/signature-pad.service';
 import {UploadFileService} from '@app/shared/components/upload-file/upload-file.service';
 import {SharedService, SharedTypeNotification} from '@app/core/services/shared/shared.service';
-import {LocalStorageService} from '@app/core/services/local-storage/local-storage.service';
 import {Constants} from '@app/utils/constants/constants.utils';
 import {LoaderService} from '@app/core/components/loader/loader.service';
 import {Subscription} from 'rxjs';
@@ -25,6 +24,7 @@ import {HWGReport} from '@app/utils/interfaces/reports/hwg-report';
 import {Task} from '@app/utils/interfaces/task';
 import {HttpResponseCodes} from '@app/utils/enums/http-response-codes';
 import {AppUtil} from '@app/utils/interfaces/app-util';
+import {LocalStorageService} from 'ng-maplander';
 
 
 @Component({

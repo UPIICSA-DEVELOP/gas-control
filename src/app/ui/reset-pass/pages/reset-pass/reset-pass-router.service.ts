@@ -7,8 +7,8 @@
 import {Injectable} from '@angular/core';
 import {ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot, UrlTree} from '@angular/router';
 import {Observable} from 'rxjs';
-import {LocalStorageService} from 'app/core/services/local-storage/local-storage.service';
 import {Constants} from 'app/utils/constants/constants.utils';
+import {LocalStorageService} from 'ng-maplander';
 
 @Injectable()
 export class ResetPassRouterService implements CanActivate {

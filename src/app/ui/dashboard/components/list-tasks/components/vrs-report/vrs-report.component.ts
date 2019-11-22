@@ -15,13 +15,13 @@ import {SignaturePadService} from '@app/shared/components/signature-pad/signatur
 import {SharedService, SharedTypeNotification} from '@app/core/services/shared/shared.service';
 import {Subscription} from 'rxjs';
 import {Constants} from '@app/utils/constants/constants.utils';
-import {LocalStorageService} from '@app/core/services/local-storage/local-storage.service';
 import {UploadFileResponse} from '@app/shared/components/upload-file/upload-file.component';
 import {LoaderService} from '@app/core/components/loader/loader.service';
 import {VRSReport} from '@app/utils/interfaces/reports/vrs-report';
 import {VRSTank} from '@app/utils/interfaces/vrs-tank';
 import {Task} from '@app/utils/interfaces/task';
 import {HttpResponseCodes} from '@app/utils/enums/http-response-codes';
+import {LocalStorageService} from 'ng-maplander';
 
 @Component({
   selector: 'app-vrs-report',
