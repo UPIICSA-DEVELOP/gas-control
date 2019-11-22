@@ -11,11 +11,10 @@ import {Constants} from '@app/utils/constants/constants.utils';
 import {DOCUMENT} from '@angular/common';
 import {Router} from '@angular/router';
 import {Subscription} from 'rxjs';
-import {SessionStorageService} from '@app/core/services/session-storage/session-storage.service';
 import {SharedService, SharedTypeNotification} from '@app/core/services/shared/shared.service';
 import {LoaderService} from '@app/core/components/loader/loader.service';
 import {Person} from '@app/utils/interfaces/person';
-import {LocalStorageService} from 'ng-maplander';
+import {LocalStorageService, SessionStorageService} from 'ng-maplander';
 
 @Component({
   selector: 'app-nav-bar',

@@ -11,13 +11,12 @@ import {Router} from '@angular/router';
 import {Constants} from 'app/utils/constants/constants.utils';
 import {Subscription} from 'rxjs';
 import {UtilitiesService} from 'app/utils/utilities/utilities';
-import {SessionStorageService} from 'app/core/services/session-storage/session-storage.service';
 import {LoaderService} from '@app/core/components/loader/loader.service';
 import {HttpResponseCodes} from '@app/utils/enums/http-response-codes';
 import {ANIMATION} from '@app/ui/admin/pages/admin-notifications/animation';
 import {EntityCollectionResponse} from '@app/utils/class/entity-collection-response';
 import {Notification} from '@app/utils/interfaces/notification';
-import {CookieService} from 'ng-maplander';
+import {CookieService, SessionStorageService} from 'ng-maplander';
 
 @Component({
   selector: 'app-admin-notifications',

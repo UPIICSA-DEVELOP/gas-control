@@ -12,7 +12,6 @@ import {SnackBarService} from '@app/core/services/snackbar/snackbar.service';
 import {DialogService} from '@app/shared/components/dialog/dialog.service';
 import {UtilitiesService} from '@app/utils/utilities/utilities';
 import {AuthService} from '@app/core/services/auth/auth.service';
-import {SessionStorageService} from '@app/core/services/session-storage/session-storage.service';
 import {AddStationService} from '@app/shared/components/add-gas-station/add-station.service';
 import {HttpResponseCodes} from '@app/utils/enums/http-response-codes';
 import {EntityResponse} from '@app/utils/class/entity-response';
@@ -21,7 +20,7 @@ import {ConsultancyBasicData} from '@app/utils/interfaces/consultancy-basic-data
 import {StationLite} from '@app/utils/interfaces/station-lite';
 import {AppUtil} from '@app/utils/interfaces/app-util';
 import {GroupIcon} from '@app/utils/interfaces/group-icon';
-import {CookieService, LocalStorageService} from 'ng-maplander';
+import {CookieService, LocalStorageService, SessionStorageService} from 'ng-maplander';
 
 @Component({
   selector: 'app-list-collaborators',

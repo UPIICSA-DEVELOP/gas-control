@@ -10,10 +10,9 @@ import {Constants} from 'app/utils/constants/constants.utils';
 import {MessagingService} from 'app/core/services/messaging/messaging.service';
 import {Observable} from 'rxjs';
 import {ApiService} from '@app/core/services/api/api.service';
-import {SessionStorageService} from '@app/core/services/session-storage/session-storage.service';
 import {Person} from '@app/utils/interfaces/person';
 import {HttpResponseCodes} from '@app/utils/enums/http-response-codes';
-import {CookieService, LocalStorageService, MaxAge} from 'ng-maplander';
+import {CookieService, LocalStorageService, MaxAge, SessionStorageService} from 'ng-maplander';
 
 @Injectable()
 export class AuthService implements Resolve<any> {

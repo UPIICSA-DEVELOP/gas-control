@@ -10,7 +10,6 @@ import {forkJoin, Observable, Subscription} from 'rxjs';
 import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 import {NetworkService} from '@app/core/services/network/network.service';
 import {SnackBarService} from '@app/core/services/snackbar/snackbar.service';
-import {SessionStorageService} from '@app/core/services/session-storage/session-storage.service';
 import {Consultancy} from '@app/utils/interfaces/consultancy';
 import {environment} from '@env/environment';
 import {Constants} from '@app/utils/constants/constants.utils';
@@ -39,6 +38,7 @@ import {HWCReport} from '@app/utils/interfaces/reports/hwc-report';
 import {FRReport} from '@app/utils/interfaces/reports/frr-report';
 import {IncidenceReport} from '@app/utils/interfaces/reports/incidence-report';
 import {Notification} from '@app/utils/interfaces/notification';
+import {SessionStorageService} from 'ng-maplander';
 
 
 @Injectable()
