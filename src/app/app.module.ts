@@ -35,7 +35,7 @@ import {CoreModule} from '@app/core/core.module';
     RouterModule.forRoot(appRoutes, {useHash: true}),
     AngularFireMessagingModule,
     BrowserModule.withServerTransition({
-      appId: 'com.maplander.inspector.front'
+      appId: 'inspector'
     }),
     TranslateModule.forRoot({
       loader: {
