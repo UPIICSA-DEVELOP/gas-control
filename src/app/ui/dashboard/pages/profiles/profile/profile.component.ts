@@ -4,7 +4,7 @@
  * Proprietary and confidential
  */
 
-import {Component, ElementRef, HostBinding, OnDestroy, OnInit, ViewChild, ViewEncapsulation} from '@angular/core';
+import {Component, ElementRef, HostBinding, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {ApiService} from 'app/core/services/api/api.service';
 import {Constants} from 'app/utils/constants/constants.utils';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
@@ -30,8 +30,7 @@ import {ANIMATION} from '@app/ui/dashboard/pages/profiles/profile/animation';
   selector: 'app-profile',
   templateUrl: './profile.component.html',
   styleUrls: ['./profile.component.scss'],
-  animations: [ANIMATION],
-  encapsulation: ViewEncapsulation.None
+  animations: [ANIMATION]
 })
 export class ProfileComponent implements OnInit, OnDestroy {
   @HostBinding('@fadeInAnimation')

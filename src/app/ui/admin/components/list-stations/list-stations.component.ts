@@ -4,7 +4,7 @@
  * Proprietary and confidential
  */
 
-import {Component, Inject, OnInit, ViewEncapsulation} from '@angular/core';
+import {Component, Inject, OnInit} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
 import {ApiService} from '@app/core/services/api/api.service';
 import {Constants} from '@app/utils/constants/constants.utils';
@@ -27,8 +27,7 @@ import {GroupIcon} from '@app/utils/interfaces/group-icon';
 @Component({
   selector: 'app-list-collaborators',
   templateUrl: './list-stations.component.html',
-  styleUrls: ['./list-stations.component.scss'],
-  encapsulation: ViewEncapsulation.None
+  styleUrls: ['./list-stations.component.scss']
 })
 export class ListStationsComponent implements OnInit {
 

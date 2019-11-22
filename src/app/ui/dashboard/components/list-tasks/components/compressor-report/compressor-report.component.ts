@@ -4,7 +4,7 @@
  *  Proprietary and confidential
  */
 
-import {Component, Input, OnDestroy, OnInit, ViewEncapsulation} from '@angular/core';
+import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {ApiService} from '@app/core/services/api/api.service';
 import {UtilitiesService} from '@app/utils/utilities/utilities';
@@ -27,8 +27,7 @@ import {HttpResponseCodes} from '@app/utils/enums/http-response-codes';
 @Component({
   selector: 'app-compressor-report',
   templateUrl: './compressor-report.component.html',
-  styleUrls: ['./compressor-report.component.scss'],
-  encapsulation: ViewEncapsulation.None
+  styleUrls: ['./compressor-report.component.scss']
 })
 export class CompressorReportComponent implements OnInit, OnDestroy {
   private _taskId: string;

@@ -4,7 +4,7 @@
  *  Proprietary and confidential
  */
 
-import {Component, Input, OnDestroy, OnInit, ViewEncapsulation} from '@angular/core';
+import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {ApiService} from '@app/core/services/api/api.service';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {UtilitiesService} from '@app/utils/utilities/utilities';
@@ -26,8 +26,7 @@ import {HttpResponseCodes} from '@app/utils/enums/http-response-codes';
 @Component({
   selector: 'app-hwc-report',
   templateUrl: './hwc-report.component.html',
-  styleUrls: ['./hwc-report.component.scss'],
-  encapsulation: ViewEncapsulation.None
+  styleUrls: ['./hwc-report.component.scss']
 })
 export class HwcReportComponent implements OnInit, OnDestroy {
   private _taskId: string;

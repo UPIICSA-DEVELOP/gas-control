@@ -4,15 +4,14 @@
  *  Proprietary and confidential
  */
 
-import {Component, Inject, OnInit, ViewEncapsulation} from '@angular/core';
+import {Component, Inject, OnInit} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
 import {FileCS} from '@app/utils/interfaces/file-cs';
 
 @Component({
   selector: 'app-image-visor',
   templateUrl: './image-visor.component.html',
-  styleUrls: ['./image-visor.component.scss'],
-  encapsulation: ViewEncapsulation.None
+  styleUrls: ['./image-visor.component.scss']
 })
 export class ImageVisorComponent implements OnInit {
   private readonly _lastIndex: number;

@@ -4,15 +4,14 @@
  * Proprietary and confidential
  */
 
-import {Component, Inject, OnInit, ViewEncapsulation} from '@angular/core';
+import {Component, Inject, OnInit} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
 import {GroupIcon} from '@app/utils/interfaces/group-icon';
 
 @Component({
   selector: 'app-modal-station',
   templateUrl: './modal-station.component.html',
-  styleUrls: ['./modal-station.component.scss'],
-  encapsulation: ViewEncapsulation.None
+  styleUrls: ['./modal-station.component.scss']
 })
 export class ModalStationComponent implements OnInit {
   public icons: GroupIcon[];

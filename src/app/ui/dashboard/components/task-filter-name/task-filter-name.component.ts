@@ -4,15 +4,14 @@
  * Proprietary and confidential
  */
 
-import {Component, Inject, OnInit, ViewEncapsulation} from '@angular/core';
+import {Component, Inject, OnInit} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
 import {UtilitiesService} from '@app/utils/utilities/utilities';
 
 @Component({
   selector: 'app-task-filter-name',
   templateUrl: './task-filter-name.component.html',
-  styleUrls: ['./task-filter-name.component.scss'],
-  encapsulation: ViewEncapsulation.None
+  styleUrls: ['./task-filter-name.component.scss']
 })
 export class TaskFilterNameComponent implements OnInit {
   public taskName: any[];

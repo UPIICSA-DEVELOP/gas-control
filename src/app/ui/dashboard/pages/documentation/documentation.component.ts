@@ -4,7 +4,7 @@
  * Proprietary and confidential
  */
 
-import {Component, HostBinding, OnDestroy, OnInit, ViewEncapsulation} from '@angular/core';
+import {Component, HostBinding, OnDestroy, OnInit} from '@angular/core';
 import {UploadFileService} from '@app/shared/components/upload-file/upload-file.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {ApiService} from '@app/core/services/api/api.service';
@@ -24,8 +24,7 @@ import {ANIMATION} from '@app/ui/dashboard/pages/documentation/animation';
   selector: 'app-documentation',
   templateUrl: './documentation.component.html',
   styleUrls: ['./documentation.component.scss'],
-  animations: [ANIMATION],
-  encapsulation: ViewEncapsulation.None
+  animations: [ANIMATION]
 })
 
 export class DocumentationComponent implements OnInit, OnDestroy {

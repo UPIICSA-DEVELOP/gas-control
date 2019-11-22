@@ -4,7 +4,7 @@
  *  Proprietary and confidential
  */
 
-import {Component, Input, OnDestroy, OnInit, ViewEncapsulation} from '@angular/core';
+import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {ApiService} from '@app/core/services/api/api.service';
 import {UtilitiesService} from '@app/utils/utilities/utilities';
 import {UploadFileService} from '@app/shared/components/upload-file/upload-file.service';
@@ -26,8 +26,7 @@ import {HttpResponseCodes} from '@app/utils/enums/http-response-codes';
 @Component({
   selector: 'app-scanned-report',
   templateUrl: './scanned-report.component.html',
-  styleUrls: ['./scanned-report.component.scss'],
-  encapsulation: ViewEncapsulation.None
+  styleUrls: ['./scanned-report.component.scss']
 })
 export class ScannedReportComponent implements OnInit, OnDestroy {
   private _taskId: string;

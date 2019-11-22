@@ -4,7 +4,7 @@
  * Proprietary and confidential
  */
 
-import {Component, ElementRef, HostBinding, OnDestroy, OnInit, ViewChild, ViewEncapsulation} from '@angular/core';
+import {Component, ElementRef, HostBinding, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {SnackBarService} from '@app/core/services/snackbar/snackbar.service';
 import {DialogService} from '@app/shared/components/dialog/dialog.service';
 import {Constants} from '@app/utils/constants/constants.utils';
@@ -35,8 +35,7 @@ const md5 = require('md5');
   selector: 'app-reset-pass',
   templateUrl: './reset-pass.component.html',
   styleUrls: ['./reset-pass.component.scss'],
-  animations: [ANIMATION],
-  encapsulation: ViewEncapsulation.None
+  animations: [ANIMATION]
 })
 export class ResetPassComponent implements OnInit, OnDestroy {
   @HostBinding('@fadeInAnimation')

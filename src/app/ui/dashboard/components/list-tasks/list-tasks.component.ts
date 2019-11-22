@@ -4,7 +4,7 @@
  *  Proprietary and confidential
  */
 
-import {Component, ElementRef, Input, OnDestroy, OnInit, ViewChild, ViewEncapsulation} from '@angular/core';
+import {Component, ElementRef, Input, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {ApiService} from '@app/core/services/api/api.service';
 import {Constants} from '@app/utils/constants/constants.utils';
 import {UtilitiesService} from '@app/utils/utilities/utilities';
@@ -30,8 +30,7 @@ import {StationTask} from '@app/utils/interfaces/station-task';
 @Component({
   selector: 'app-list-tasks',
   templateUrl: './list-tasks.component.html',
-  styleUrls: ['./list-tasks.component.scss'],
-  encapsulation: ViewEncapsulation.None
+  styleUrls: ['./list-tasks.component.scss']
 })
 export class ListTasksComponent implements OnInit, OnDestroy {
   @ViewChild('modalScroll', {static: false}) private _modalScroll: ElementRef;

@@ -4,7 +4,7 @@
  *  Proprietary and confidential
  */
 
-import {Component, HostBinding, OnDestroy, OnInit, ViewEncapsulation} from '@angular/core';
+import {Component, HostBinding, OnDestroy, OnInit} from '@angular/core';
 import {ApiService} from 'app/core/services/api/api.service';
 import {DialogService} from 'app/shared/components/dialog/dialog.service';
 import {Router} from '@angular/router';
@@ -23,8 +23,7 @@ import {Notification} from '@app/utils/interfaces/notification';
   selector: 'app-admin-notifications',
   templateUrl: './admin-notifications.component.html',
   styleUrls: ['./admin-notifications.component.scss'],
-  animations: [ANIMATION],
-  encapsulation: ViewEncapsulation.None
+  animations: [ANIMATION]
 })
 export class AdminNotificationsComponent implements OnInit, OnDestroy {
   @HostBinding('@fadeInAnimation')

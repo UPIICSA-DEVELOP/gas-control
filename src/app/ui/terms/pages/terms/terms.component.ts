@@ -4,7 +4,7 @@
  * Proprietary and confidential
  */
 
-import {Component, HostBinding, OnInit, ViewEncapsulation} from '@angular/core';
+import {Component, HostBinding, OnInit} from '@angular/core';
 import {ApiService} from 'app/core/services/api/api.service';
 import {LocalStorageService} from 'app/core/services/local-storage/local-storage.service';
 import {Constants} from 'app/utils/constants/constants.utils';
@@ -19,8 +19,7 @@ import {Person} from '@app/utils/interfaces/person';
   selector: 'app-terms',
   templateUrl: './terms.component.html',
   styleUrls: ['./terms.component.scss'],
-  animations: [ANIMATION],
-  encapsulation: ViewEncapsulation.None
+  animations: [ANIMATION]
 })
 export class TermsComponent implements OnInit {
   @HostBinding('@fadeInAnimation')

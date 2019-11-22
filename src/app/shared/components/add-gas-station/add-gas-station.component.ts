@@ -4,7 +4,7 @@
  * Proprietary and confidential
  */
 
-import {Component, ElementRef, Inject, OnDestroy, OnInit, ViewChild, ViewEncapsulation} from '@angular/core';
+import {Component, ElementRef, Inject, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {ApiService} from '@app/core/services/api/api.service';
 import {Router} from '@angular/router';
 import {LocalStorageService} from '@app/core/services/local-storage/local-storage.service';
@@ -42,8 +42,7 @@ import {EntityCollectionResponse} from '@app/utils/class/entity-collection-respo
 @Component({
   selector: 'app-add-gas-station',
   templateUrl: './add-gas-station.component.html',
-  styleUrls: ['./add-gas-station.component.scss'],
-  encapsulation: ViewEncapsulation.None
+  styleUrls: ['./add-gas-station.component.scss']
 })
 export class AddGasStationComponent implements OnInit, OnDestroy {
   @ViewChild('phoneNumber', {static: true}) private _phoneNumberInput: ElementRef;

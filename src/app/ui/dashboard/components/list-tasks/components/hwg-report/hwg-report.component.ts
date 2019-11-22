@@ -4,7 +4,7 @@
  *  Proprietary and confidential
  */
 
-import {Component, EventEmitter, Inject, Input, OnDestroy, OnInit, Output, ViewEncapsulation} from '@angular/core';
+import {Component, EventEmitter, Inject, Input, OnDestroy, OnInit, Output} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Subscription} from 'rxjs';
 import {SharedService, SharedTypeNotification} from '@app/core/services/shared/shared.service';
@@ -14,8 +14,7 @@ import {HWGReport} from '@app/utils/interfaces/reports/hwg-report';
 @Component({
   selector: 'app-hwg-report',
   templateUrl: './hwg-report.component.html',
-  styleUrls: ['./hwg-report.component.scss'],
-  encapsulation: ViewEncapsulation.None
+  styleUrls: ['./hwg-report.component.scss']
 })
 export class HwgReportComponent implements OnInit, OnDestroy {
   public report: HWGReport;

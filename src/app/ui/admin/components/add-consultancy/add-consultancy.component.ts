@@ -4,7 +4,7 @@
  * Proprietary and confidential
  */
 
-import {Component, ElementRef, OnDestroy, OnInit, ViewChild, ViewEncapsulation} from '@angular/core';
+import {Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Constants} from 'app/utils/constants/constants.utils';
 import {SignaturePadService} from 'app/shared/components/signature-pad/signature-pad.service';
@@ -25,8 +25,7 @@ import {UserMedia} from '@app/utils/interfaces/user-media';
 @Component({
   selector: 'app-add-consultancy',
   templateUrl: './add-consultancy.component.html',
-  styleUrls: ['./add-consultancy.component.scss'],
-  encapsulation: ViewEncapsulation.None
+  styleUrls: ['./add-consultancy.component.scss']
 })
 export class AddConsultancyComponent implements OnInit, OnDestroy {
   @ViewChild('stepper', {static: true}) private _stepper: MatStepper;

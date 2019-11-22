@@ -4,16 +4,14 @@
  *  Proprietary and confidential
  */
 
-import {Component, Input, OnInit, ViewEncapsulation} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {Constants} from 'app/utils/constants/constants.utils';
 import {Task} from '@app/utils/interfaces/task';
-import {TaskTemplate} from '@app/utils/interfaces/task-template';
 
 @Component({
   selector: 'app-task-card',
   templateUrl: './task-card.component.html',
-  styleUrls: ['./task-card.component.scss'],
-  encapsulation: ViewEncapsulation.None
+  styleUrls: ['./task-card.component.scss']
 })
 export class TaskCardComponent implements OnInit {
   public task: Task;

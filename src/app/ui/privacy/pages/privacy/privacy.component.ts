@@ -4,7 +4,7 @@
  * Proprietary and confidential
  */
 
-import {Component, HostBinding, OnInit, ViewEncapsulation} from '@angular/core';
+import {Component, HostBinding, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
 import {LocalStorageService} from 'app/core/services/local-storage/local-storage.service';
 import {Constants} from 'app/utils/constants/constants.utils';
@@ -14,8 +14,7 @@ import {ANIMATION} from '@app/ui/privacy/pages/privacy/animation';
   selector: 'app-privacy',
   templateUrl: './privacy.component.html',
   styleUrls: ['./privacy.component.scss'],
-  animations: [ANIMATION],
-  encapsulation: ViewEncapsulation.None
+  animations: [ANIMATION]
 })
 export class PrivacyComponent implements OnInit {
 

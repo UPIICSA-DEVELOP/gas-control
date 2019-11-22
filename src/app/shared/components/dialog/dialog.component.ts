@@ -5,7 +5,7 @@
  *
  */
 
-import {Component, ElementRef, Inject, OnInit, ViewChild, ViewEncapsulation} from '@angular/core';
+import {Component, ElementRef, Inject, OnInit, ViewChild} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 import {TypeDialog} from '@app/utils/enums/type-dialog';
 import {AbstractControl, FormBuilder, FormGroup, Validators} from '@angular/forms';
@@ -24,8 +24,7 @@ export function ValidatePasswords(ac: AbstractControl) {
 @Component({
   selector: 'app-dialog',
   templateUrl: './dialog.component.html',
-  styleUrls: ['./dialog.component.scss'],
-  encapsulation: ViewEncapsulation.None
+  styleUrls: ['./dialog.component.scss']
 })
 export class DialogComponent implements OnInit {
 

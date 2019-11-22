@@ -4,7 +4,7 @@
  *  Proprietary and confidential
  */
 
-import {Component, Input, OnDestroy, OnInit, ViewEncapsulation} from '@angular/core';
+import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {UtilitiesService} from '@app/utils/utilities/utilities';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {ApiService} from '@app/core/services/api/api.service';
@@ -28,8 +28,7 @@ import {AppUtil} from '@app/utils/interfaces/app-util';
 @Component({
   selector: 'app-incidence-report',
   templateUrl: './incidence-report.component.html',
-  styleUrls: ['./incidence-report.component.scss'],
-  encapsulation: ViewEncapsulation.None
+  styleUrls: ['./incidence-report.component.scss']
 })
 export class IncidenceReportComponent implements OnInit, OnDestroy {
   private _taskId: string;

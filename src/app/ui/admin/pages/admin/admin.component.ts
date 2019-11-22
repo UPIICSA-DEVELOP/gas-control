@@ -4,7 +4,7 @@
  * Proprietary and confidential
  */
 
-import {Component, OnDestroy, OnInit, ViewEncapsulation} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {ApiService} from 'app/core/services/api/api.service';
 import {AuthService} from 'app/core/services/auth/auth.service';
 import {DialogService} from 'app/shared/components/dialog/dialog.service';
@@ -19,8 +19,7 @@ import {EntityCollectionResponse} from '@app/utils/class/entity-collection-respo
 @Component({
   selector: 'app-admin',
   templateUrl: './admin.component.html',
-  styleUrls: ['./admin.component.scss'],
-  encapsulation: ViewEncapsulation.None
+  styleUrls: ['./admin.component.scss']
 })
 export class AdminComponent implements OnInit, OnDestroy {
 

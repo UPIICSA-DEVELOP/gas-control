@@ -4,7 +4,7 @@
  *  Proprietary and confidential
  */
 
-import {Component, Input, OnDestroy, OnInit, ViewEncapsulation} from '@angular/core';
+import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {ApiService} from '@app/core/services/api/api.service';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {ImageVisorService} from '@app/shared/components/image-visor/image-visor.service';
@@ -26,8 +26,7 @@ import {HttpResponseCodes} from '@app/utils/enums/http-response-codes';
 @Component({
   selector: 'app-vrs-report',
   templateUrl: './vrs-report.component.html',
-  styleUrls: ['./vrs-report.component.scss'],
-  encapsulation: ViewEncapsulation.None
+  styleUrls: ['./vrs-report.component.scss']
 })
 export class VrsReportComponent implements OnInit, OnDestroy {
   private _taskId: string;

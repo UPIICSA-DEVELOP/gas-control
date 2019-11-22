@@ -4,7 +4,7 @@
  * Proprietary and confidential
  */
 
-import {Component, Inject, OnInit, ViewEncapsulation} from '@angular/core';
+import {Component, Inject, OnInit} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
 import {HashService} from '@app/utils/utilities/hash.service';
 import {Constants} from '@app/utils/constants/constants.utils';
@@ -15,8 +15,7 @@ import {Procedure} from '@app/utils/interfaces/procedure';
 @Component({
   selector: 'app-modal-procedures',
   templateUrl: './modal-procedures.component.html',
-  styleUrls: ['./modal-procedures.component.scss'],
-  encapsulation: ViewEncapsulation.None
+  styleUrls: ['./modal-procedures.component.scss']
 })
 export class ModalProceduresComponent implements OnInit {
   public procedures: Procedure[];

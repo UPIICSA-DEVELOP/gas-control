@@ -4,7 +4,7 @@
  *  Proprietary and confidential
  */
 
-import {Component, Inject, OnDestroy, OnInit, ViewEncapsulation} from '@angular/core';
+import {Component, Inject, OnDestroy, OnInit} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
 import {ApiService} from '@app/core/services/api/api.service';
 import {PdfVisorService} from '@app/shared/components/pdf-visor/pdf-visor.service';
@@ -27,8 +27,7 @@ import {SgmDocument} from '@app/utils/interfaces/sgm-document';
 @Component({
   selector: 'app-sgm',
   templateUrl: './sgm.component.html',
-  styleUrls: ['./sgm.component.scss'],
-  encapsulation: ViewEncapsulation.None
+  styleUrls: ['./sgm.component.scss']
 })
 export class SgmComponent implements OnInit, OnDestroy {
   public station: Station;

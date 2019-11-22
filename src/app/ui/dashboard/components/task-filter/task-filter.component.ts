@@ -4,14 +4,13 @@
  *  Proprietary and confidential
  */
 
-import {Component, Inject, OnInit, ViewEncapsulation} from '@angular/core';
+import {Component, Inject, OnInit} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
 
 @Component({
   selector: 'app-task-filter',
   templateUrl: './task-filter.component.html',
-  styleUrls: ['./task-filter.component.scss'],
-  encapsulation: ViewEncapsulation.None
+  styleUrls: ['./task-filter.component.scss']
 })
 export class TaskFilterComponent implements OnInit {
   public option = 0;

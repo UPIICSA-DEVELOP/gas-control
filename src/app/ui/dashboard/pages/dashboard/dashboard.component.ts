@@ -4,7 +4,7 @@
  *  Proprietary and confidential
  */
 
-import {AfterViewInit, Component, Inject, OnDestroy, OnInit, ViewChild, ViewEncapsulation} from '@angular/core';
+import {AfterViewInit, Component, Inject, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {ApiService} from 'app/core/services/api/api.service';
 import {CookieService} from 'app/core/services/cookie/cookie.service';
 import {Constants} from 'app/utils/constants/constants.utils';
@@ -35,8 +35,7 @@ import {StationBasicData} from '@app/utils/interfaces/station-basic-data';
 @Component({
   selector: 'app-screen',
   templateUrl: './dashboard.component.html',
-  styleUrls: ['./dashboard.component.scss'],
-  encapsulation: ViewEncapsulation.None
+  styleUrls: ['./dashboard.component.scss']
 })
 export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy {
 

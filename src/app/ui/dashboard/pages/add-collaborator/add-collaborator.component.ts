@@ -4,7 +4,7 @@
  * Proprietary and confidential
  */
 
-import {Component, ElementRef, HostBinding, OnDestroy, OnInit, ViewChild, ViewEncapsulation} from '@angular/core';
+import {Component, ElementRef, HostBinding, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {ApiService} from '@app/core/services/api/api.service';
 import {SnackBarService} from '@app/core/services/snackbar/snackbar.service';
 import {SharedService, SharedTypeNotification} from '@app/core/services/shared/shared.service';
@@ -29,8 +29,7 @@ import {ANIMATION} from '@app/ui/dashboard/pages/add-collaborator/animation';
   selector: 'app-add-collaborator',
   templateUrl: './add-collaborator.component.html',
   styleUrls: ['./add-collaborator.component.scss'],
-  animations: [ANIMATION],
-  encapsulation: ViewEncapsulation.None
+  animations: [ANIMATION]
 })
 export class AddCollaboratorComponent implements OnInit, OnDestroy {
   @HostBinding('@fadeInAnimation')

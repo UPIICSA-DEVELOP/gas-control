@@ -5,8 +5,7 @@
  */
 
 import {
-  AfterViewInit, Component, ElementRef, Inject, Input, OnDestroy, OnInit, PLATFORM_ID, ViewChild,
-  ViewEncapsulation
+  AfterViewInit, Component, ElementRef, Inject, Input, OnDestroy, OnInit, PLATFORM_ID, ViewChild
 } from '@angular/core';
 import {isPlatformBrowser} from '@angular/common';
 import {Chart} from 'chart.js';
@@ -18,8 +17,7 @@ import {Station} from '@app/utils/interfaces/station';
 @Component({
   selector: 'app-station-status',
   templateUrl: './station-status.component.html',
-  styleUrls: ['./station-status.component.scss'],
-  encapsulation: ViewEncapsulation.None
+  styleUrls: ['./station-status.component.scss']
 })
 export class StationStatusComponent implements OnInit, AfterViewInit, OnDestroy {
   private _station: Station;

@@ -4,7 +4,7 @@
  *  Proprietary and confidential
  */
 
-import {Component, Input, OnDestroy, OnInit, ViewEncapsulation} from '@angular/core';
+import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {ApiService} from '@app/core/services/api/api.service';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {UtilitiesService} from '@app/utils/utilities/utilities';
@@ -30,8 +30,7 @@ import {AppUtil} from '@app/utils/interfaces/app-util';
 @Component({
   selector: 'app-om-report',
   templateUrl: './om-report.component.html',
-  styleUrls: ['./om-report.component.scss'],
-  encapsulation: ViewEncapsulation.None
+  styleUrls: ['./om-report.component.scss']
 })
 export class OmReportComponent implements OnInit, OnDestroy {
   private _taskId: string;

@@ -1,11 +1,10 @@
-import {Component, Inject, OnInit, PLATFORM_ID, ViewEncapsulation} from '@angular/core';
+import {Component, Inject, OnInit, PLATFORM_ID} from '@angular/core';
 import {isPlatformBrowser} from '@angular/common';
 
 @Component({
   selector: 'app-splash',
   templateUrl: './splash.component.html',
-  styleUrls: ['./splash.component.scss'],
-  encapsulation: ViewEncapsulation.None
+  styleUrls: ['./splash.component.scss']
 })
 export class SplashComponent implements OnInit {
   private _seconds = 0;

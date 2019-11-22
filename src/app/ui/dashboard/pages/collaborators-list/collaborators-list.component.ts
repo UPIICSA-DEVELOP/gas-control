@@ -4,7 +4,7 @@
  * Proprietary and confidential
  */
 
-import {Component, ElementRef, HostBinding, OnDestroy, OnInit, ViewChild, ViewEncapsulation} from '@angular/core';
+import {Component, ElementRef, HostBinding, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {Constants} from 'app/utils/constants/constants.utils';
 import {ApiService} from 'app/core/services/api/api.service';
@@ -29,8 +29,7 @@ import {ANIMATION} from '@app/ui/dashboard/pages/collaborators-list/animation';
   selector: 'app-collaborators-list',
   templateUrl: './collaborators-list.component.html',
   styleUrls: ['./collaborators-list.component.scss'],
-  animations: [ANIMATION],
-  encapsulation: ViewEncapsulation.None
+  animations: [ANIMATION]
 })
 export class CollaboratorsListComponent implements OnInit, OnDestroy {
   @HostBinding('@fadeInAnimation')

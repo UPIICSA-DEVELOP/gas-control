@@ -1,4 +1,4 @@
-import {Component, ElementRef, Inject, NgZone, OnInit, ViewEncapsulation} from '@angular/core';
+import {Component, ElementRef, Inject, NgZone, OnInit} from '@angular/core';
 import {UtilitiesService} from 'app/utils/utilities/utilities';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 import {SearchBoxResult} from 'app/shared/components/search-box/search-box.component';
@@ -12,8 +12,7 @@ declare var google: any;
 @Component({
   selector: 'app-location',
   templateUrl: './location.component.html',
-  styleUrls: ['./location.component.scss'],
-  encapsulation: ViewEncapsulation.None
+  styleUrls: ['./location.component.scss']
 })
 export class LocationComponent implements OnInit {
 

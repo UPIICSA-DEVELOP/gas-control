@@ -4,7 +4,7 @@
  *  Proprietary and confidential
  */
 
-import {Component, Inject, OnInit, ViewEncapsulation} from '@angular/core';
+import {Component, Inject, OnInit} from '@angular/core';
 import {MAT_BOTTOM_SHEET_DATA} from '@angular/material/bottom-sheet';
 import {PdfVisorService} from 'app/shared/components/pdf-visor/pdf-visor.service';
 import {MatBottomSheetRef} from '@angular/material';
@@ -12,8 +12,7 @@ import {MatBottomSheetRef} from '@angular/material';
 @Component({
   selector: 'app-open-file',
   templateUrl: './open-file.component.html',
-  styleUrls: ['./open-file.component.scss'],
-  encapsulation: ViewEncapsulation.None
+  styleUrls: ['./open-file.component.scss']
 })
 export class OpenFileComponent implements OnInit {
 

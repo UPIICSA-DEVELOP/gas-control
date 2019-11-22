@@ -4,7 +4,7 @@
  *  Proprietary and confidential
  */
 
-import {Component, HostBinding, OnInit, ViewEncapsulation} from '@angular/core';
+import {Component, HostBinding, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {ApiService} from 'app/core/services/api/api.service';
 import {DialogService} from 'app/shared/components/dialog/dialog.service';
@@ -18,8 +18,7 @@ import {ANIMATION} from '@app/ui/dashboard/pages/notifications/animation';
   selector: 'app-notifications',
   templateUrl: './notifications.component.html',
   styleUrls: ['./notifications.component.scss'],
-  animations: [ANIMATION],
-  encapsulation: ViewEncapsulation.None
+  animations: [ANIMATION]
 })
 export class NotificationsComponent implements OnInit {
   @HostBinding('@fadeInAnimation')

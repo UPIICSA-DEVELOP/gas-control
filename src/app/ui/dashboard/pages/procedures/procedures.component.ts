@@ -4,7 +4,7 @@
  * Proprietary and confidential
  */
 
-import {Component, HostBinding, OnInit, ViewEncapsulation} from '@angular/core';
+import {Component, HostBinding, OnInit} from '@angular/core';
 import {ApiService} from 'app/core/services/api/api.service';
 import {Router} from '@angular/router';
 import {PdfVisorService} from 'app/shared/components/pdf-visor/pdf-visor.service';
@@ -19,8 +19,7 @@ import {ANIMATION} from '@app/ui/dashboard/pages/procedures/animation';
   selector: 'app-procedures',
   templateUrl: './procedures.component.html',
   styleUrls: ['./procedures.component.scss'],
-  animations: [ANIMATION],
-  encapsulation: ViewEncapsulation.None
+  animations: [ANIMATION]
 })
 export class ProceduresComponent implements OnInit {
   @HostBinding('@fadeInAnimation')

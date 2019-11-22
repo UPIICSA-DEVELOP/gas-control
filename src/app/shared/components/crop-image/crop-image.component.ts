@@ -5,15 +5,14 @@
  *
  */
 
-import {Component, Inject, OnInit, ViewEncapsulation} from '@angular/core';
+import {Component, Inject, OnInit} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 import {SnackBarService} from '@app/core/services/snackbar/snackbar.service';
 
 @Component({
   selector: 'app-crop-image',
   templateUrl: './crop-image.component.html',
-  styleUrls: ['./crop-image.component.scss'],
-  encapsulation: ViewEncapsulation.None
+  styleUrls: ['./crop-image.component.scss']
 })
 export class CropImageComponent implements OnInit {
 

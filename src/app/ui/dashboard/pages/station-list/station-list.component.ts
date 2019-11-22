@@ -4,7 +4,7 @@
  * Proprietary and confidential
  */
 
-import {Component, HostBinding, OnInit, ViewEncapsulation} from '@angular/core';
+import {Component, HostBinding, OnInit} from '@angular/core';
 import {ApiService} from 'app/core/services/api/api.service';
 import {DialogService} from 'app/shared/components/dialog/dialog.service';
 import {CookieService} from 'app/core/services/cookie/cookie.service';
@@ -26,8 +26,7 @@ import {AppUtil} from '@app/utils/interfaces/app-util';
   selector: 'app-station-list',
   templateUrl: './station-list.component.html',
   styleUrls: ['./station-list.component.scss'],
-  animations: [ANIMATION],
-  encapsulation: ViewEncapsulation.None
+  animations: [ANIMATION]
 })
 export class StationListComponent implements OnInit {
   @HostBinding('@fadeInAnimation')

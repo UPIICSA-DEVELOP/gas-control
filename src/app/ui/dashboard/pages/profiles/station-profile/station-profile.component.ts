@@ -4,7 +4,7 @@
  * Proprietary and confidential
  */
 
-import {Component, ElementRef, HostBinding, OnDestroy, OnInit, ViewChild, ViewEncapsulation} from '@angular/core';
+import {Component, ElementRef, HostBinding, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {ApiService} from 'app/core/services/api/api.service';
@@ -30,8 +30,7 @@ import {AppUtil} from '@app/utils/interfaces/app-util';
   selector: 'app-station-profile',
   templateUrl: './station-profile.component.html',
   styleUrls: ['./station-profile.component.scss'],
-  animations: [ANIMATION],
-  encapsulation: ViewEncapsulation.None
+  animations: [ANIMATION]
 })
 export class StationProfileComponent implements OnInit, OnDestroy {
   @HostBinding('@fadeInAnimation')
