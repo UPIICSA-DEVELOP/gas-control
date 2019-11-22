@@ -17,9 +17,8 @@ import {SharedService} from '@app/core/services/shared/shared.service';
 import {AuthRouterService} from '@app/core/services/auth/auth-router.service';
 import {UserProfileService} from '@app/ui/dashboard/pages/profiles/user-profile/user-profile.service';
 import {IconsModule} from '@app/core/services/icons/icons.module';
-import {NetworkModule} from '@app/core/services/network/network.module';
 import {ConsoleModule} from '@app/core/services/console/console.module';
-import {ClipboardModule, MetaModule, MetaService} from 'ng-maplander';
+import {ClipboardModule, MetaModule, MetaService, NetworkModule} from 'ng-maplander';
 
 @NgModule({
   imports: [
@@ -46,7 +45,6 @@ export class ServicesModule {
     return {
       ngModule: ServicesModule,
       providers: [
-        MetaService,
         SnackBarService,
         ApiService,
         DeviceDetectorService,

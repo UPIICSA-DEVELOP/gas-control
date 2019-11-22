@@ -20,7 +20,7 @@ import {AngularFireModule} from '@angular/fire';
 import {environment} from '@env/environment';
 import {CommonsModule} from '@app/commons/commons.module';
 import {CoreModule} from '@app/core/core.module';
-import {InjectorModule} from 'ng-maplander';
+import {InjectorModule, SnackBarModule} from 'ng-maplander';
 
 @NgModule({
   declarations: [
@@ -32,7 +32,8 @@ import {InjectorModule} from 'ng-maplander';
     HttpClientModule,
     BrowserTransferStateModule,
     TransferHttpCacheModule,
-    InjectorModule,
+    InjectorModule.forRoot(),
+    SnackBarModule.forRoot(),
     AngularFireModule.initializeApp(environment.firebase),
     RouterModule.forRoot(appRoutes, {useHash: true}),
     AngularFireMessagingModule,
