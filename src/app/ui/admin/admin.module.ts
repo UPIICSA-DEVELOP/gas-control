@@ -16,6 +16,7 @@ import {SharedModule} from '@app/shared/shared.module';
 import {RouterModule} from '@angular/router';
 import {adminRoutes} from '@app/ui/admin/admin.routes';
 import {AddConsultancyComponent} from '@app/ui/admin/components/add-consultancy/add-consultancy.component';
+import {UploadFileModule} from 'ng-maplander';
 
 
 const Components = [
@@ -44,7 +45,8 @@ const EntryComponents = [
   imports: [
     CommonModule,
     SharedModule,
-    RouterModule.forChild(adminRoutes)
+    RouterModule.forChild(adminRoutes),
+    UploadFileModule
   ],
   declarations: [
     Components,
