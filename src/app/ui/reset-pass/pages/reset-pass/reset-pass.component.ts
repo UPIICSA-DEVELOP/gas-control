@@ -16,7 +16,7 @@ import {LoaderService} from '@app/core/components/loader/loader.service';
 import {Person} from '@app/utils/interfaces/person';
 import {HttpResponseCodes} from '@app/utils/enums/http-response-codes';
 import {ANIMATION} from '@app/ui/reset-pass/pages/reset-pass/animation';
-import {LocalStorageService, SnackBarService} from 'ng-maplander';
+import {LocalStorageService, SnackBarService} from '@maplander/core';
 
 export function ValidatePasswords(ac: AbstractControl) {
   const password = ac.get('newPassword').value;

@@ -12,7 +12,7 @@ import {AuthService} from 'app/core/services/auth/auth.service';
 import {Subscription} from 'rxjs';
 import {LoaderService} from '@app/core/components/loader/loader.service';
 import {HttpResponseCodes} from '@app/utils/enums/http-response-codes';
-import {SnackBarService} from 'ng-maplander';
+import {SnackBarService} from '@maplander/core';
 
 const md5 = require('md5');
 

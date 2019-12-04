@@ -11,8 +11,7 @@ import {HttpEvent, HttpInterceptor, HttpHandler, HttpRequest, HttpErrorResponse}
 import {Observable, throwError} from 'rxjs';
 import {catchError, retry} from 'rxjs/internal/operators';
 import {Constants} from 'app/utils/constants/constants.utils';
-import {SnackBarService} from 'ng-maplander';
-
+import {SnackBarService} from '@maplander/core';
 
 @Injectable()
 export class HandlerErrorInterceptor implements HttpInterceptor {

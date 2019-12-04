@@ -10,7 +10,7 @@ import {FormBuilder, FormGroup} from '@angular/forms';
 import {MDate} from '@app/utils/class/MDate';
 import {DOCUMENT} from '@angular/common';
 import {DateRangeOptions} from '@app/ui/dashboard/components/datepicker/datepicker.service';
-import {SnackBarService} from 'ng-maplander';
+import {SnackBarService} from '@maplander/core';
 
 @Component({
   selector: 'app-datepicker',

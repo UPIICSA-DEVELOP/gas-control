@@ -27,7 +27,7 @@ import {AppUtil} from '@app/utils/interfaces/app-util';
 import {Station} from '@app/utils/interfaces/station';
 import {EntityResponse} from '@app/utils/class/entity-response';
 import {StationBasicData} from '@app/utils/interfaces/station-basic-data';
-import {CookieService, LocalStorageService, MetaService, SnackBarService} from 'ng-maplander';
+import {CookieService, LocalStorageService, MetaService, SnackBarService} from '@maplander/core';
 
 @Component({
   selector: 'app-screen',

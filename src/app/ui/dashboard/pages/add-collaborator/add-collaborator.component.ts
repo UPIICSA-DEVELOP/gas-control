@@ -21,8 +21,8 @@ import {Person} from '@app/utils/interfaces/person';
 import {PersonInformation} from '@app/utils/interfaces/person-information';
 import {HttpResponseCodes} from '@app/utils/enums/http-response-codes';
 import {ANIMATION} from '@app/ui/dashboard/pages/add-collaborator/animation';
-import {LocalStorageService, SnackBarService} from 'ng-maplander';
-import {UserMedia} from 'ng-maplander/lib/utils/models/user-media';
+import {LocalStorageService, SnackBarService} from '@maplander/core';
+import {UserMedia} from '@app/utils/interfaces/user-media';
 
 @Component({
   selector: 'app-add-collaborator',

@@ -21,7 +21,7 @@ import {Station} from '@app/utils/interfaces/station';
 import {Task} from '@app/utils/interfaces/task';
 import {HttpResponseCodes} from '@app/utils/enums/http-response-codes';
 import {SgmDocument} from '@app/utils/interfaces/sgm-document';
-import {LocalStorageService, SnackBarService} from 'ng-maplander';
+import {LocalStorageService, SnackBarService} from '@maplander/core';
 
 @Component({
   selector: 'app-sgm',

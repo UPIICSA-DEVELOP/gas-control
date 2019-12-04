@@ -13,7 +13,7 @@ import {HashService} from 'app/utils/utilities/hash.service';
 import {Procedure} from '@app/utils/interfaces/procedure';
 import {HttpResponseCodes} from '@app/utils/enums/http-response-codes';
 import {ANIMATION} from '@app/ui/dashboard/pages/procedures/animation';
-import {LocalStorageService} from 'ng-maplander';
+import {LocalStorageService} from '@maplander/core';
 
 @Component({
   selector: 'app-procedures',

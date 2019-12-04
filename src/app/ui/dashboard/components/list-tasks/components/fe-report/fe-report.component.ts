@@ -19,7 +19,7 @@ import {FEReport} from '@app/utils/interfaces/reports/fe-report';
 import {FireExtinguisher} from '@app/utils/interfaces/fire-extinguisher';
 import {Task} from '@app/utils/interfaces/task';
 import {HttpResponseCodes} from '@app/utils/enums/http-response-codes';
-import {LocalStorageService, SnackBarService} from 'ng-maplander';
+import {LocalStorageService, SnackBarService} from '@maplander/core';
 
 @Component({
   selector: 'app-fe-report',

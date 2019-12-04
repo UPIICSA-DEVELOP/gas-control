@@ -4,10 +4,9 @@ import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 import {SearchBoxResult} from 'app/shared/components/search-box/search-box.component';
 import {MouseEvent} from '@agm/core/map-types';
 import {MapsAPILoader} from '@agm/core';
-import {SnackBarService} from 'ng-maplander';
+import {SnackBarService} from '@maplander/core';
 
 declare var google: any;
-
 
 @Component({
   selector: 'app-location',

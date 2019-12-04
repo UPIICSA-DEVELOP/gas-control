@@ -20,7 +20,7 @@ import {AngularFireModule} from '@angular/fire';
 import {environment} from '@env/environment';
 import {CommonsModule} from '@app/commons/commons.module';
 import {CoreModule} from '@app/core/core.module';
-import {InjectorModule, SnackBarModule} from 'ng-maplander';
+import {InjectorModule, SnackBarModule} from '@maplander/core';
 
 @NgModule({
   declarations: [

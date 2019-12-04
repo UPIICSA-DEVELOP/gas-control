@@ -12,7 +12,7 @@ import {Constants} from 'app/utils/constants/constants.utils';
 import {UtilitiesService} from 'app/utils/utilities/utilities';
 import {HttpResponseCodes} from '@app/utils/enums/http-response-codes';
 import {ANIMATION} from '@app/ui/dashboard/pages/notifications/animation';
-import {CookieService} from 'ng-maplander';
+import {CookieService} from '@maplander/core';
 
 @Component({
   selector: 'app-notifications',

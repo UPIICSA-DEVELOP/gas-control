@@ -20,8 +20,8 @@ import {Person} from '@app/utils/interfaces/person';
 import {HttpResponseCodes} from '@app/utils/enums/http-response-codes';
 import {EntityResponse} from '@app/utils/class/entity-response';
 import {ANIMATION} from '@app/ui/dashboard/pages/collaborators-list/animation';
-import {CookieService, LocalStorageService, SnackBarService} from 'ng-maplander';
-import {UserMedia} from 'ng-maplander/lib/utils/models/user-media';
+import {CookieService, LocalStorageService, SnackBarService} from '@maplander/core';
+import {UserMedia} from '@app/utils/interfaces/user-media';
 
 @Component({
   selector: 'app-collaborators-list',

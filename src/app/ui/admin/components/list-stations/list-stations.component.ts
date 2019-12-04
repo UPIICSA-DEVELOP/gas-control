@@ -19,7 +19,7 @@ import {ConsultancyBasicData} from '@app/utils/interfaces/consultancy-basic-data
 import {StationLite} from '@app/utils/interfaces/station-lite';
 import {AppUtil} from '@app/utils/interfaces/app-util';
 import {GroupIcon} from '@app/utils/interfaces/group-icon';
-import {CookieService, LocalStorageService, SessionStorageService, SnackBarService} from 'ng-maplander';
+import {CookieService, LocalStorageService, SessionStorageService, SnackBarService} from '@maplander/core';
 
 @Component({
   selector: 'app-list-collaborators',

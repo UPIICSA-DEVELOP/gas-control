@@ -17,7 +17,7 @@ import {AuthRouterService} from '@app/core/services/auth/auth-router.service';
 import {UserProfileService} from '@app/ui/dashboard/pages/profiles/user-profile/user-profile.service';
 import {IconsModule} from '@app/core/services/icons/icons.module';
 import {ConsoleModule} from '@app/core/services/console/console.module';
-import {ClipboardModule, MetaModule, MetaService, NetworkModule} from 'ng-maplander';
+import {ClipboardModule, MetaModule, MetaService, NetworkModule} from '@maplander/core';
 
 @NgModule({
   imports: [
@@ -55,5 +55,4 @@ export class ServicesModule {
       ]
     };
   }
-
 }

@@ -23,8 +23,8 @@ import {Person} from '@app/utils/interfaces/person';
 import {Consultancy} from '@app/utils/interfaces/consultancy';
 import {HttpResponseCodes} from '@app/utils/enums/http-response-codes';
 import {ANIMATION} from '@app/ui/dashboard/pages/profiles/profile/animation';
-import {SnackBarService} from 'ng-maplander';
-import {UserMedia} from 'ng-maplander/lib/utils/models/user-media';
+import {SnackBarService} from '@maplander/core';
+import {UserMedia} from '@app/utils/interfaces/user-media';
 
 @Component({
   selector: 'app-profile',

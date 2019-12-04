@@ -36,8 +36,7 @@ import {HWCReport} from '@app/utils/interfaces/reports/hwc-report';
 import {FRReport} from '@app/utils/interfaces/reports/frr-report';
 import {IncidenceReport} from '@app/utils/interfaces/reports/incidence-report';
 import {Notification} from '@app/utils/interfaces/notification';
-import {NetworkService, SessionStorageService, SnackBarService} from 'ng-maplander';
-
+import {NetworkService, SessionStorageService, SnackBarService} from '@maplander/core';
 
 @Injectable()
 export class ApiService implements OnDestroy {

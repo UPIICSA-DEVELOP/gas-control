@@ -10,7 +10,7 @@ import {UtilitiesService} from '@app/utils/utilities/utilities';
 import {DeviceDetectorService} from '@app/core/services/device-detector/device-detector.service';
 import {MAT_BOTTOM_SHEET_DATA} from '@angular/material/bottom-sheet';
 import {DomSanitizer} from '@angular/platform-browser';
-import {ClipboardService} from 'ng-maplander';
+import {ClipboardService} from '@maplander/core';
 
 @Component({
   selector: 'app-share',

@@ -40,8 +40,7 @@ import {ModalStationComponent} from '@app/shared/components/modal-station/modal-
 import {ModalStationService} from '@app/shared/components/modal-station/modal-station.service';
 import {RouterModule} from '@angular/router';
 import {UploadFileService} from '@app/shared/components/upload-file/upload-file.service';
-import {UploadFileModule} from 'ng-maplander';
-
+import {UploadFileModule} from '@maplander/core';
 
 const Components = [
   CountryCodeComponent,
@@ -59,7 +58,6 @@ const Components = [
   AddGasStationComponent,
   ModalStationComponent
 ];
-
 
 const Providers = [
   CountryCodeService,

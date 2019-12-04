@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot, UrlTree} from '@angular/router';
 import {Observable} from 'rxjs';
 import {Constants} from 'app/utils/constants/constants.utils';
-import {CookieService, LocalStorageService} from 'ng-maplander';
+import {CookieService, LocalStorageService} from '@maplander/core';
 
 @Injectable()
 export class AuthRouterService implements CanActivate {

@@ -16,8 +16,7 @@ import {SharedModule} from '@app/shared/shared.module';
 import {RouterModule} from '@angular/router';
 import {adminRoutes} from '@app/ui/admin/admin.routes';
 import {AddConsultancyComponent} from '@app/ui/admin/components/add-consultancy/add-consultancy.component';
-import {UploadFileModule} from 'ng-maplander';
-
+import {UploadFileModule} from '@maplander/core';
 
 const Components = [
   AddConsultancyComponent,

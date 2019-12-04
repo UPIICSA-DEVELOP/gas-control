@@ -8,7 +8,7 @@ import {Component, HostBinding, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
 import {Constants} from 'app/utils/constants/constants.utils';
 import {ANIMATION} from '@app/ui/privacy/pages/privacy/animation';
-import {LocalStorageService} from 'ng-maplander';
+import {LocalStorageService} from '@maplander/core';
 
 @Component({
   selector: 'app-privacy',

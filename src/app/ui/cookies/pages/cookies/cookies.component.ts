@@ -7,7 +7,7 @@
 import {Component, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
 import {Constants} from 'app/utils/constants/constants.utils';
-import {LocalStorageService} from 'ng-maplander';
+import {LocalStorageService} from '@maplander/core';
 
 @Component({
   selector: 'app-cookies',

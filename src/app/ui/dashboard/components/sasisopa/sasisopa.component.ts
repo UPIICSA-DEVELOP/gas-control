@@ -24,8 +24,8 @@ import {BrigadeElem} from '@app/utils/interfaces/brigade-element';
 import {SasisopaDocument} from '@app/utils/interfaces/sasisopa';
 import {BrigadeInterface} from '@app/utils/interfaces/brigade.interface';
 import {Station} from '@app/utils/interfaces/station';
-import {LocalStorageService, SnackBarService} from 'ng-maplander';
-import {UserMedia} from 'ng-maplander/lib/utils/models/user-media';
+import {LocalStorageService, SnackBarService} from '@maplander/core';
+import {UserMedia} from '@app/utils/interfaces/user-media';
 
 @Component({
   selector: 'app-sasisopa',

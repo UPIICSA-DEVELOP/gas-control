@@ -15,7 +15,7 @@ import {Person} from '@app/utils/interfaces/person';
 import {HttpResponseCodes} from '@app/utils/enums/http-response-codes';
 import {AppUtil} from '@app/utils/interfaces/app-util';
 import {Station} from '@app/utils/interfaces/station';
-import {CookieService, LocalStorageService, SnackBarService} from 'ng-maplander';
+import {CookieService, LocalStorageService, SnackBarService} from '@maplander/core';
 
 @Component({
   selector: 'app-directory-list',

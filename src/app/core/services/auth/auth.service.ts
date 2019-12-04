@@ -12,7 +12,7 @@ import {Observable} from 'rxjs';
 import {ApiService} from '@app/core/services/api/api.service';
 import {Person} from '@app/utils/interfaces/person';
 import {HttpResponseCodes} from '@app/utils/enums/http-response-codes';
-import {CookieService, LocalStorageService, MaxAge, SessionStorageService} from 'ng-maplander';
+import {CookieService, LocalStorageService, MaxAge, SessionStorageService} from '@maplander/core';
 
 @Injectable()
 export class AuthService implements Resolve<any> {

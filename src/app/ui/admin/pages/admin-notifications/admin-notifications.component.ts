@@ -16,7 +16,7 @@ import {HttpResponseCodes} from '@app/utils/enums/http-response-codes';
 import {ANIMATION} from '@app/ui/admin/pages/admin-notifications/animation';
 import {EntityCollectionResponse} from '@app/utils/class/entity-collection-response';
 import {Notification} from '@app/utils/interfaces/notification';
-import {CookieService, SessionStorageService} from 'ng-maplander';
+import {CookieService, SessionStorageService} from '@maplander/core';
 
 @Component({
   selector: 'app-admin-notifications',

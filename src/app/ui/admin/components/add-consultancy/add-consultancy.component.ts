@@ -19,7 +19,7 @@ import {Person} from '@app/utils/interfaces/person';
 import {Consultancy} from '@app/utils/interfaces/consultancy';
 import {HttpResponseCodes} from '@app/utils/enums/http-response-codes';
 import {UserMedia} from '@app/utils/interfaces/user-media';
-import {SnackBarService} from 'ng-maplander';
+import {SnackBarService} from '@maplander/core';
 
 @Component({
   selector: 'app-add-consultancy',

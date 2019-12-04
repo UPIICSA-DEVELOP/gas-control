@@ -10,7 +10,7 @@ import {ApiService} from 'app/core/services/api/api.service';
 import {Constants} from 'app/utils/constants/constants.utils';
 import {forkJoin} from 'rxjs';
 import {map} from 'rxjs/internal/operators';
-import {CookieService, LocalStorageService} from 'ng-maplander';
+import {CookieService, LocalStorageService} from '@maplander/core';
 
 @Injectable()
 export class ProfileService implements Resolve<any> {

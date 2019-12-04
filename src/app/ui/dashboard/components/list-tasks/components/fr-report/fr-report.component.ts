@@ -18,7 +18,7 @@ import {LoaderService} from '@app/core/components/loader/loader.service';
 import {FRReport} from '@app/utils/interfaces/reports/frr-report';
 import {Task} from '@app/utils/interfaces/task';
 import {HttpResponseCodes} from '@app/utils/enums/http-response-codes';
-import {LocalStorageService, SnackBarService} from 'ng-maplander';
+import {LocalStorageService, SnackBarService} from '@maplander/core';
 
 @Component({
   selector: 'app-fr-report',

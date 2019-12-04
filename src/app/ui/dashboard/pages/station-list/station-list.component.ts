@@ -19,7 +19,7 @@ import {Station} from '@app/utils/interfaces/station';
 import {ANIMATION} from '@app/ui/dashboard/pages/station-list/animation';
 import {StationLite} from '@app/utils/interfaces/station-lite';
 import {AppUtil} from '@app/utils/interfaces/app-util';
-import {CookieService, LocalStorageService} from 'ng-maplander';
+import {CookieService, LocalStorageService} from '@maplander/core';
 
 @Component({
   selector: 'app-station-list',

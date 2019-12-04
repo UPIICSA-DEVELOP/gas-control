@@ -13,7 +13,7 @@ import {ANIMATION} from '@app/ui/terms/pages/terms/animation';
 import {EntityResponse} from '@app/utils/class/entity-response';
 import {Station} from '@app/utils/interfaces/station';
 import {Person} from '@app/utils/interfaces/person';
-import {LocalStorageService} from 'ng-maplander';
+import {LocalStorageService} from '@maplander/core';
 
 @Component({
   selector: 'app-terms',

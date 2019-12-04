@@ -14,7 +14,7 @@ import {Subscription} from 'rxjs';
 import {SharedService, SharedTypeNotification} from '@app/core/services/shared/shared.service';
 import {LoaderService} from '@app/core/components/loader/loader.service';
 import {Person} from '@app/utils/interfaces/person';
-import {LocalStorageService, SessionStorageService} from 'ng-maplander';
+import {LocalStorageService, SessionStorageService} from '@maplander/core';
 
 @Component({
   selector: 'app-nav-bar',

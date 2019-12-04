@@ -19,8 +19,8 @@ import {LoaderService} from '@app/core/components/loader/loader.service';
 import {HWCReport} from '@app/utils/interfaces/reports/hwc-report';
 import {Task} from '@app/utils/interfaces/task';
 import {HttpResponseCodes} from '@app/utils/enums/http-response-codes';
-import {LocalStorageService, SnackBarService} from 'ng-maplander';
-import {UserMedia} from 'ng-maplander/lib/utils/models/user-media';
+import {LocalStorageService, SnackBarService} from '@maplander/core';
+import {UserMedia} from '@maplander/core/lib/utils/models/user-media';
 
 @Component({
   selector: 'app-hwc-report',

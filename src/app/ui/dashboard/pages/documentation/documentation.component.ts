@@ -16,8 +16,8 @@ import {LoaderService} from '@app/core/components/loader/loader.service';
 import {Document} from '@app/utils/interfaces/document';
 import {HttpResponseCodes} from '@app/utils/enums/http-response-codes';
 import {ANIMATION} from '@app/ui/dashboard/pages/documentation/animation';
-import {LocalStorageService, SnackBarService} from 'ng-maplander';
-import {UserMedia} from 'ng-maplander/lib/utils/models/user-media';
+import {LocalStorageService, SnackBarService} from '@maplander/core';
+import {UserMedia} from '@app/utils/interfaces/user-media';
 
 @Component({
   selector: 'app-documentation',

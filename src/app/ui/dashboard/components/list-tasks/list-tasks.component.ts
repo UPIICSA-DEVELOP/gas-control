@@ -24,7 +24,7 @@ import {Task} from '@app/utils/interfaces/task';
 import {HttpResponseCodes} from '@app/utils/enums/http-response-codes';
 import {EntityResponse} from '@app/utils/class/entity-response';
 import {StationTask} from '@app/utils/interfaces/station-task';
-import {LocalStorageService, SnackBarService} from 'ng-maplander';
+import {LocalStorageService, SnackBarService} from '@maplander/core';
 
 @Component({
   selector: 'app-list-tasks',

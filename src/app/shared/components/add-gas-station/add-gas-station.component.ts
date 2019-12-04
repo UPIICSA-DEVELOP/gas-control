@@ -35,9 +35,9 @@ import {DefaultResponse} from '@app/utils/interfaces/default-response';
 import {GroupIcon} from '@app/utils/interfaces/group-icon';
 import {PersonLite} from '@app/utils/interfaces/person-lite';
 import {EntityCollectionResponse} from '@app/utils/class/entity-collection-response';
-import {LocalStorageService, SnackBarService} from 'ng-maplander';
-import {UserMedia} from 'ng-maplander/lib/utils/models/user-media';
 import {FileCS} from '@app/utils/interfaces/file-cs';
+import {UserMedia} from '@maplander/core/lib/utils/models/user-media';
+import {LocalStorageService, SnackBarService} from '@maplander/core';
 
 @Component({
   selector: 'app-add-gas-station',

@@ -10,7 +10,7 @@ import {HashService} from '@app/utils/utilities/hash.service';
 import {Constants} from '@app/utils/constants/constants.utils';
 import {PdfVisorService} from '@app/shared/components/pdf-visor/pdf-visor.service';
 import {Procedure} from '@app/utils/interfaces/procedure';
-import {LocalStorageService} from 'ng-maplander';
+import {LocalStorageService} from '@maplander/core';
 
 @Component({
   selector: 'app-modal-procedures',
