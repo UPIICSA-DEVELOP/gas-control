@@ -24,7 +24,7 @@
         <div class="inputs">
           <div class="space-box">
             <div class="checks-row">
-              <mat-checkbox formControlName="magna" (change)="changeFuelType()">Magna</mat-checkbox>
+              <mat-checkbox formControlName="magna" (change)="changeFuelType()">Regular</mat-checkbox>
             </div>
             <div class="checks-row">
               <mat-checkbox formControlName="premium" (change)="changeFuelType()">Premium</mat-checkbox>
@@ -106,7 +106,7 @@
           </mat-error>
           <mat-radio-group [(ngModel)]="tankItem.fuelType" [ngModelOptions]="{standalone: true}" [disabled]="!editable"
                            (change)="changeTankInfo($event, i)" class="fuel-type">
-            <mat-radio-button [value]="1">Magna</mat-radio-button>
+            <mat-radio-button [value]="1">Regular</mat-radio-button>
             <mat-radio-button [value]="2">Premium</mat-radio-button>
           </mat-radio-group>
           <mat-form-field class="input-full">

@@ -211,7 +211,7 @@
                         </div>
                         <mat-radio-group class="fuel-selector" aria-label="Station tank fuel type"
                                          [(ngModel)]="tank.fuelType" [ngModelOptions]="{standalone: true}">
-                          <mat-radio-button [value]="1">Magna</mat-radio-button>
+                          <mat-radio-button [value]="1">Regular</mat-radio-button>
                           <mat-radio-button [value]="2">Premium</mat-radio-button>
                           <mat-radio-button [value]="3">Diesel</mat-radio-button>
                         </mat-radio-group>
@@ -252,7 +252,7 @@
                       </div>
                       <section class="hoses" style="flex-wrap: wrap" aria-label="Station hoses fuel type">
                         <mat-checkbox [(ngModel)]="dispenser.magna" [ngModelOptions]="{standalone: true}">
-                          Magna
+                          Regular
                         </mat-checkbox>
                         <mat-checkbox [(ngModel)]="dispenser.premium" [ngModelOptions]="{standalone: true}">
                           Premium
