@@ -373,8 +373,9 @@ export class ApiService implements OnDestroy {
     return this._http.get(url + 'endpoints/v1/joinPDF', {responseType: 'blob' as 'json', params: params});
   }
 
-  public exportReport(taskId: string, typeReport: number, templateId: number): Observable<any> {
+  public exportReport(stationId: string, taskId: string, typeReport: number, templateId: number): Observable<any> {
     let params = new HttpParams();
+    params = params.append('stationId', stationId);
     params = params.append('taskId', taskId);
     params = params.append('typeReport', typeReport.toString());
     params = params.append('templateId', templateId.toString());
