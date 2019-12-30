@@ -8,6 +8,5 @@ ng build --prod
 ng run com.maplander.app.inspector.front:server:production
 npm run api
 npm run config
-npm run lazy
 npm run server
 exit 0

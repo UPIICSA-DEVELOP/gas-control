@@ -19,7 +19,6 @@
     "deploy:production": "gulp zip --file dist && node hooks/scp --filePath dist/bundle.zip --destination /var/www/html/app.inspector.com/deploy && node hooks/remotely --env prod",
     "config": "node server/config.js",
     "api": "webpack --mode production --config api/webpack.config.js --progress --colors",
-    "lazy": "node lazy-loading.js",
     "prerelease:patch": "standard-version --release-as patch --prerelease beta",
     "prerelease:minor": "standard-version --release-as minor --prerelease beta",
     "prerelease:major": "standard-version --release-as major --prerelease beta",
@@ -139,6 +138,7 @@
     "tslint": "~5.20.1",
     "typescript": "3.5.3",
     "uglify-js": "^3.4.9",
+    "webpack": "^4.41.5",
     "webpack-bundle-analyzer": "^3.3.2",
     "webpack-cli": "^3.1.0",
     "webpack-node-externals": "^1.7.2"
