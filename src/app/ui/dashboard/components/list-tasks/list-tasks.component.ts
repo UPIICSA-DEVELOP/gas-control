@@ -527,6 +527,7 @@ export class ListTasksComponent implements OnInit, OnDestroy {
   public exportFormat(): void {
     if (this.others) {
       this._api.exportReport(
+        this.station.id,
         this.reportConfig.taskElement.id,
         this.reportConfig.typeReportView,
         this.reportConfig.taskElement.type).subscribe(response => {
@@ -536,6 +537,7 @@ export class ListTasksComponent implements OnInit, OnDestroy {
       });
     } else {
       this._api.exportReport(
+        this.station.id,
         this.reportConfig.taskElement.id,
         this.reportConfig.taskElement.original.typeReport,
         this.reportConfig.taskElement.original.type).subscribe(response => {
