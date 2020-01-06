@@ -38,6 +38,7 @@ import {EntityCollectionResponse} from '@app/utils/class/entity-collection-respo
 import {FileCS} from '@app/utils/interfaces/file-cs';
 import {UserMedia} from '@maplander/core/lib/utils/models/user-media';
 import {LocalStorageService, SnackBarService} from '@maplander/core';
+import {ConfigAddStation} from '@app/shared/components/add-gas-station/add-station.service';
 
 @Component({
   selector: 'app-add-gas-station',
@@ -113,7 +114,7 @@ export class AddGasStationComponent implements OnInit, OnDestroy {
   private _subscriptionLoader: Subscription;
 
   constructor(
-    @Inject(MAT_DIALOG_DATA) private _data: any,
+    @Inject(MAT_DIALOG_DATA) private _data: ConfigAddStation,
     private _api: ApiService,
     private _apiLoaderService: LoaderService,
     private _router: Router,
@@ -177,6 +178,9 @@ export class AddGasStationComponent implements OnInit, OnDestroy {
     this._subscriptionLoader = this._apiLoaderService.getProgress().subscribe(load => {
       this.load = load;
     });
+    if (this.step === 1) {
+      this.openPersonForm(false);
+    }
   }
 
   ngOnDestroy(): void {
@@ -469,13 +473,17 @@ export class AddGasStationComponent implements OnInit, OnDestroy {
   }
 
   public selectLegalRep(person: PersonLite) {
-    this.legalId = person.id;
-    this.legalName = `${person.name} ${person.lastName}`;
-    this.newStation.patchValue({
-      legalRepresentative: this.legalName
-    });
-    this._modalScroll.nativeElement.scrollTop = '0';
-    this.step = 0;
+    if (this._data.isUpdateRepresentativeLegal) {
+      this.closeAndSendNewRepresentativeLegal(person.id);
+    } else {
+      this.legalId = person.id;
+      this.legalName = `${person.name} ${person.lastName}`;
+      this.newStation.patchValue({
+        legalRepresentative: this.legalName
+      });
+      this._modalScroll.nativeElement.scrollTop = '0';
+      this.step = 0;
+    }
   }
 
   public uploadGenericFile(type: number, isManager?: boolean): void {
@@ -693,8 +701,8 @@ export class AddGasStationComponent implements OnInit, OnDestroy {
       if (response.code === HttpResponseCodes.OK) {
         this._snackBarService.closeSnackBar();
         if (isManager) {
-          this.manger.bCard = response.item;
-          this.createManager();
+          // this.manger.bCard = response.item;
+          // this.createManager();
         } else {
           this.legalRepresentative.bCard = response.item;
           this.createLegal();
@@ -723,19 +731,23 @@ export class AddGasStationComponent implements OnInit, OnDestroy {
           this._api.savePersonInformation(this.legalRepresentativeInformation)
             .subscribe((saveInformation: EntityResponse<PersonInformation>) => {
               if (saveInformation.code === HttpResponseCodes.OK) {
-                this.newStation.patchValue({
-                  legalRepresentative: this.legalName
-                });
-                this._dialogService.alertDialog(
-                  'Información',
-                  'Hemos enviado un email de validación de cuenta a: ' + this.legalRepresentative.email,
-                  'ACEPTAR').afterClosed().subscribe(() => {
-                  this.step = 0;
-                  this.listExist = true;
-                  this._modalScroll.nativeElement.scrollTop = '0';
-                  this.disableButton[0] = false;
-                  this.load_two = false;
-                });
+                if (this._data.isUpdateRepresentativeLegal) {
+                  this.closeAndSendNewRepresentativeLegal(this.legalRepresentative.id);
+                } else {
+                  this.newStation.patchValue({
+                    legalRepresentative: this.legalName
+                  });
+                  this._dialogService.alertDialog(
+                    'Información',
+                    'Hemos enviado un email de validación de cuenta a: ' + this.legalRepresentative.email,
+                    'ACEPTAR').afterClosed().subscribe(() => {
+                    this.step = 0;
+                    this.listExist = true;
+                    this._modalScroll.nativeElement.scrollTop = '0';
+                    this.disableButton[0] = false;
+                    this.load_two = false;
+                  });
+                }
               } else {
                 this._snackBarService.setMessage('Ha ocurrido un error, por favor, intente de nuevo', 'OK', 3000);
                 this.load_two = false;
@@ -775,6 +787,7 @@ export class AddGasStationComponent implements OnInit, OnDestroy {
     }
   }
 
+  /** Deprecated */
   private createManager(): void {
     if (!this.manger.id) {
       this._api.createReferencedPerson(this.manger).subscribe(response => {
@@ -923,8 +936,16 @@ export class AddGasStationComponent implements OnInit, OnDestroy {
         });
         break;
       case 1:
-        this._modalScroll.nativeElement.scrollTop = '0';
-        this.step = 0;
+        if (this._data.isUpdateRepresentativeLegal) {
+          if (this.listExist) {
+            this._dialogRef.close();
+          } else {
+            this.listExist = true;
+          }
+        } else {
+          this._modalScroll.nativeElement.scrollTop = '0';
+          this.step = 0;
+        }
         break;
       case 2:
         this._modalScroll.nativeElement.scrollTop = '0';
@@ -1078,5 +1099,9 @@ export class AddGasStationComponent implements OnInit, OnDestroy {
     for (let x = 1968; x <= year.getFullYear(); x++) {
       this.yearSelector.push(x);
     }
+  }
+
+  private closeAndSendNewRepresentativeLegal(id: string): void {
+    this._dialogRef.close({id: id});
   }
 }

@@ -12,6 +12,7 @@ export interface ConfigAddStation {
   stepActive: number;
   stationId: string;
   disableClose: boolean;
+  isUpdateRepresentativeLegal?: boolean;
 }
 
 @Injectable()
