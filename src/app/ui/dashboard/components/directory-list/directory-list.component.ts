@@ -16,6 +16,8 @@ import {HttpResponseCodes} from '@app/utils/enums/http-response-codes';
 import {AppUtil} from '@app/utils/interfaces/app-util';
 import {Station} from '@app/utils/interfaces/station';
 import {CookieService, LocalStorageService, SnackBarService} from '@maplander/core';
+import {AddStationService} from '@app/shared/components/add-gas-station/add-station.service';
+import {DefaultResponse} from '@app/utils/interfaces/default-response';
 
 @Component({
   selector: 'app-directory-list',
@@ -45,11 +47,13 @@ export class DirectoryListComponent implements OnInit, OnDestroy {
     private _api: ApiService,
     private _snackBarService: SnackBarService,
     private _dialogService: DialogService,
-    private _sharedService: SharedService
+    private _sharedService: SharedService,
+    private _addStation: AddStationService
   ) {
     this.user = LocalStorageService.getItem(Constants.UserInSession);
     this.idSession = CookieService.getCookie(Constants.IdSession);
     this.emptySearch = false;
+    this.collaborators = [];
   }
 
   ngOnInit() {
@@ -62,50 +66,55 @@ export class DirectoryListComponent implements OnInit, OnDestroy {
     this._subscriptionShared.unsubscribe();
   }
 
-  private getCollaborators(): void {
-    this._api.listCollaborators(this.station.id, 'false').subscribe(response => {
-      if (response.code === HttpResponseCodes.OK) {
-        const id = CookieService.getCookie(Constants.IdSession);
-        let member = null;
-        this.collaborators = UtilitiesService.sortJSON(response.items, 'name', 'asc');
-        for (let i = 0; i < this.collaborators.length; i++) {
-          if (this.collaborators[i].id === id) {
-            member = this.collaborators[i];
-          }
-        }
-        if (this.user) {
-          const index = this.collaborators.indexOf(member);
-          this.collaborators.splice(index, 1);
-        }
-        this.collaborator = this.collaborators;
-      } else {
-      }
-    });
-  }
-
   public deleteCollaborator(id: string, index: number, role: number) {
-    if (role <= 4) {
-      this._dialogService.alertDialog(
-        'Información',
-        'No es posible eliminar este usuario',
-        'ACEPTAR'
-      );
-      return;
-    }
-    this._dialogService.confirmDialog('¿Desea eliminar este registro?',
-      '',
-      'ACEPTAR',
-      'CANCELAR').afterClosed().subscribe(response => {
-      if (response.code === 1) {
-        this._api.deletePerson(id).subscribe(deletePerson => {
-          if (deletePerson.code === HttpResponseCodes.OK) {
-            this.collaborators.splice(index, 1);
-          } else {
+    switch (role) {
+      case 1:
+      case 2:
+      case 3:
+        this._dialogService.alertDialog(
+          'Información',
+          'No es posible eliminar este usuario',
+          'ACEPTAR'
+        );
+        break;
+      case 4:
+        this._dialogService.confirmDialog(
+          'Información',
+          'Si desea eliminar a este usuario, deberá asignar uno nuevo ¿Desea hacerlo ahora?',
+          'SI',
+          'NO'
+        ).afterClosed().subscribe((response) => {
+          if (response.code === -1) {
+            return;
+          }
+          this._addStation.open({
+            disableClose: false,
+            stationId: this.station.id,
+            stepActive: 1,
+            isUpdateRepresentativeLegal: true
+          }).afterClosed().subscribe((data) => {
+            if (!data) {
+              return;
+            }
+            this.updateRepresentativeLegal(data.id);
+          });
+        });
+        break;
+      default:
+        this._dialogService.confirmDialog('¿Desea eliminar este registro?',
+          '',
+          'ACEPTAR',
+          'CANCELAR').afterClosed().subscribe(response => {
+          if (response.code === 1) {
+            this._api.deletePerson(id).subscribe(deletePerson => {
+              if (deletePerson.code === HttpResponseCodes.OK) {
+                this.collaborators.splice(index, 1);
+              }
+            });
           }
         });
-      } else {
-      }
-    });
+        break;
+    }
   }
 
   public search(event: any): void {
@@ -134,6 +143,29 @@ export class DirectoryListComponent implements OnInit, OnDestroy {
         this.emptySearch = (newArray.length === 0);
       }
     }
+  }
+
+  public reSendValidationEmail(id: string): void {
+    this.sendEmailValidation(id);
+  }
+
+  private getCollaborators(): void {
+    this._api.listCollaborators(this.station.id, 'false').subscribe(response => {
+      if (response.code === HttpResponseCodes.OK) {
+        let member = null;
+        this.collaborators = UtilitiesService.sortJSON(response.items, 'name', 'asc');
+        this.collaborators.forEach(collaborator => {
+          if (collaborator.id === this.user.id) {
+            member = collaborator;
+          }
+        });
+        if (member) {
+          const index = this.collaborators.indexOf(member);
+          this.collaborators.splice(index, 1);
+        }
+        this.collaborator = this.collaborators;
+      }
+    });
   }
 
   private onChangesComponents(): void {
@@ -167,6 +199,21 @@ export class DirectoryListComponent implements OnInit, OnDestroy {
           }
         });
       }
+    });
+  }
+
+  private updateRepresentativeLegal(personId: string): void {
+    this._api.updateLegalRepresentativeInStation(personId, this.station.id).subscribe((response: DefaultResponse) => {
+      console.log(response);
+      if (response.code === HttpResponseCodes.OK) {
+        this.getCollaborators();
+      }
+    });
+  }
+
+  private sendEmailValidation(personId: string): void {
+    this._api.sendEmailToValidateAccount(personId).subscribe((response: DefaultResponse) => {
+      console.log(response);
     });
   }
 

@@ -24,7 +24,10 @@
             <div *ngFor="let collaborator of collaborators; let i = index">
               <mat-card class="collaborator" *ngIf="collaborator.id !== idSession">
                 <div class="notValidate" *ngIf="!collaborator.active">
-                  <div class="text-validate">Validación pendiente</div>
+                  <div class="text-validate">
+                    <p>Validación pendiente</p>
+                    <button mat-flat-button="" color="primary" (click)="reSendValidationEmail(collaborator.id)">Reenviar correo</button>
+                  </div>
                 </div>
                 <mat-card-content>
                   <div class="image">
@@ -49,7 +52,7 @@
                 <mat-divider></mat-divider>
                 <div class="action-buttons">
                   <div class="button">
-                    <button mat-button *ngIf="collaborator.role!==4 && user.role !==6" matTooltip="Eliminar"
+                    <button mat-button *ngIf="user.role !== 3 && user.role !==6" matTooltip="Eliminar"
                             (click)="deleteCollaborator(collaborator.id, i, collaborator.role)">
                       <mat-icon>delete</mat-icon>
                     </button>
