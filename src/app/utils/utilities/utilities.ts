@@ -334,9 +334,19 @@ export class UtilitiesService {
     }
   }
 
+  static getObjectsByKeyValue(array: any[], key: string, value: any): any[] {
+    const response: any[] = [];
+    array.forEach(obj => {
+      if (obj[key] === value) {
+        response.push(obj);
+      }
+    });
+    return response;
+  }
+
   static downloadFileByBlob(file: Blob | string, fileName: string): void {
     try {
-      const a = document.createElement('a');
+      const a = document.createElement('a') as HTMLAnchorElement;
       document.body.appendChild(a);
       a.style.display = 'none';
       if (file instanceof Blob) {
