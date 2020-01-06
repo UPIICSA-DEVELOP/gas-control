@@ -269,7 +269,7 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy {
   private prepareDashboardToConsultancy(response: any, onlyOneStation?: any): void {
     if (onlyOneStation) {
       if (response.code === HttpResponseCodes.OK) {
-        this.stationActive = response.item.station;
+        this.stationActive = response.item;
         LocalStorageService.setItem(Constants.StationInDashboard, {id: this.stationActive.id, name: this.stationActive.businessName});
         if (this.stationActive.paymentStatus !== 1 && this.role === 4) {
           this.stationBlock();
