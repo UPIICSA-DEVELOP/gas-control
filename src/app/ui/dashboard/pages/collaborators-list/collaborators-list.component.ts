@@ -73,6 +73,7 @@ export class CollaboratorsListComponent implements OnInit, OnDestroy {
     this.protocol = 'http://';
     this.addImage = false;
     this.addSign = false;
+    this.collaborators = [];
   }
 
   ngOnInit() {
@@ -113,18 +114,17 @@ export class CollaboratorsListComponent implements OnInit, OnDestroy {
     this._api.listCollaborators(this._refId, 'true').subscribe(response => {
       if (response.code === HttpResponseCodes.OK) {
         let user = null;
-        this.collaborators = UtilitiesService.sortJSON(response.items, 'name', 'asc');
-        for (let i = 0; i < this.collaborators.length; i++) {
-          if (this.collaborators[i].id === id) {
-            user = this.collaborators[i];
+        this.collaborators = UtilitiesService.sortJSON(response.items || [], 'name', 'asc');
+        this.collaborators.forEach(collaborator => {
+          if (collaborator.id === id) {
+            user = collaborator;
           }
-        }
+        });
         if (user) {
           const index = this.collaborators.indexOf(user);
           this.collaborators.splice(index, 1);
         }
         this.collaborator = this.collaborators;
-      } else {
       }
     });
   }
