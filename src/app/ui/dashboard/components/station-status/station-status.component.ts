@@ -8,10 +8,10 @@ import {
   AfterViewInit, Component, ElementRef, Inject, Input, OnDestroy, OnInit, PLATFORM_ID, ViewChild
 } from '@angular/core';
 import {isPlatformBrowser} from '@angular/common';
-import {Chart} from 'chart.js';
 import {SharedService, SharedTypeNotification} from '@app/core/services/shared/shared.service';
 import {Subscription} from 'rxjs';
 import {Station} from '@app/utils/interfaces/station';
+const chartJs = require('chart.js');
 
 
 @Component({
@@ -25,7 +25,7 @@ export class StationStatusComponent implements OnInit, AfterViewInit, OnDestroy 
     if (stationObj) {
       this._station = stationObj;
       if (this._canvas) {
-        this.createConfigGraphic(this._station);
+        this.updateData();
       }
     }
   }
@@ -50,14 +50,14 @@ export class StationStatusComponent implements OnInit, AfterViewInit, OnDestroy 
       if (response.type === SharedTypeNotification.FinishEditTask) {
         this._station.doneTasks = response.value.doneTasks;
         this._station.progress = response.value.progress;
-        this.createConfigGraphic(this._station);
+        this.updateData();
       }
     });
   }
 
   ngAfterViewInit(): void {
     if (this._station) {
-      this.createConfigGraphic(this._station);
+      this.createConfigGraphic();
     }
   }
 
@@ -65,14 +65,14 @@ export class StationStatusComponent implements OnInit, AfterViewInit, OnDestroy 
     this._subscriptionShared.unsubscribe();
   }
 
-  private createConfigGraphic(station: any) {
+  private createConfigGraphic() {
     this._chartConfig = {
       type: 'doughnut',
       data: {
         labels: ['Completas', 'Incompletas'],
         datasets: [
           {
-            data: [station.doneTasks, station.totalTasks - station.doneTasks],
+            data: [this._station.doneTasks, this._station.totalTasks - this._station.doneTasks],
             borderColor: '#FFFFFF',
             backgroundColor: ['#00C500', '#707070'],
             fill: false
@@ -106,7 +106,7 @@ export class StationStatusComponent implements OnInit, AfterViewInit, OnDestroy 
           ctx.textBaseline = 'middle';
           ctx.fillStyle = '#0d47a1';
 
-          const text = station.progress + '%',
+          const text = this._station.progress + '%',
             textX = Math.round((width - ctx.measureText(text).width) / 2),
             textY = height / 2;
 
@@ -119,14 +119,21 @@ export class StationStatusComponent implements OnInit, AfterViewInit, OnDestroy 
     this.createGraphic();
   }
 
+  private updateData(): void {
+    this.chart.data.datasets = [
+      {
+        data: [this._station.doneTasks, this._station.totalTasks - this._station.doneTasks],
+        borderColor: '#FFFFFF',
+        backgroundColor: ['#00C500', '#707070'],
+        fill: false
+      }
+    ];
+    this.chart.update();
+  }
+
   private createGraphic(): void {
     if (isPlatformBrowser(this._platformId)) {
-      if (this.chart) {
-        this.chart.render().then();
-        this.chart.destroy();
-        this.chart = null;
-      }
-      this.chart = new Chart(this._canvas.nativeElement, this._chartConfig);
+      this.chart = new chartJs.Chart(this._canvas.nativeElement, this._chartConfig);
       this._legend.nativeElement.innerHTML = this.chart.generateLegend();
     }
   }
