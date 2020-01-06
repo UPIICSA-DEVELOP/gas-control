@@ -701,6 +701,23 @@ export class ApiService implements OnDestroy {
     return this._http.post<EntityResponse<Station>>(ApiService.API_URL_COMPLETE + 'enableStation', options);
   }
 
+  public updateLegalRepresentativeInStation(personId: string, stationId: string): Observable<DefaultResponse> {
+    let params = new HttpParams();
+    params = params.append('personId', personId);
+    params = params.append('stationId', stationId);
+    return this._http.put<DefaultResponse>(ApiService.API_URL_COMPLETE + 'updateLegalRepresentativeInStation', {}, {
+      params
+    });
+  }
+
+  public sendEmailToValidateAccount(personId: string): Observable<DefaultResponse> {
+    let params = new HttpParams();
+    params = params.append('id', personId);
+    return this._http.post<DefaultResponse>(ApiService.API_URL_COMPLETE + 'sendEmailToValidateAccount', {}, {
+      params
+    });
+  }
+
   private initNetwork(): void {
     this._subscriptionNetwork = this._networkService.getNetworkChanges().subscribe(status => {
       const text = (!status) ? 'La conexión a internet se ha perdido' : 'De nuevo en linea';
