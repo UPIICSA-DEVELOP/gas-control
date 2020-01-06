@@ -20,6 +20,8 @@ import {ANIMATION} from '@app/ui/dashboard/pages/station-list/animation';
 import {StationLite} from '@app/utils/interfaces/station-lite';
 import {AppUtil} from '@app/utils/interfaces/app-util';
 import {CookieService, LocalStorageService} from '@maplander/core';
+import {CustomStationLite} from '@app/utils/interfaces/custom-station-lite';
+import {GroupIcon} from '@app/utils/interfaces/group-icon';
 
 @Component({
   selector: 'app-station-list',
@@ -30,12 +32,12 @@ import {CookieService, LocalStorageService} from '@maplander/core';
 export class StationListComponent implements OnInit {
   @HostBinding('@fadeInAnimation')
 
-  public stationList: StationLite[];
+  public stationList: CustomStationLite[];
   public notificationActive: boolean[];
   public utils: AppUtil;
   public user: Person;
   public emptySearch: boolean;
-  private _stations: StationLite[];
+  private _stations: CustomStationLite[];
   private _notifyCopy: boolean[];
 
   constructor(
@@ -47,16 +49,19 @@ export class StationListComponent implements OnInit {
   ) {
     this.notificationActive = [];
     this.emptySearch = false;
+    this.stationList = [];
+    this._stations = [];
   }
 
   ngOnInit() {
-    this.getStationList();
+    this.user = LocalStorageService.getItem(Constants.UserInSession);
     this.getUtilities();
   }
 
   private getUtilities(): void {
     this._api.getUtils().subscribe((response: EntityResponse<AppUtil>) => {
       this.utils = response.item;
+      this.getStationList();
     });
   }
 
@@ -123,7 +128,6 @@ export class StationListComponent implements OnInit {
   }
 
   private getStationList(): void {
-    this.user = LocalStorageService.getItem(Constants.UserInSession);
     switch (this.user.role) {
       case 1:
       case 2:
@@ -131,20 +135,16 @@ export class StationListComponent implements OnInit {
       case 7:
         this._api.getConsultancyBasicData(CookieService.getCookie(Constants.IdSession), this.user.refId).subscribe(response => {
           if (response.code === HttpResponseCodes.OK) {
-            this.stationList = UtilitiesService.sortJSON(response.item.stationLites, 'progress', 'asc');
-            this._stations = this.stationList;
+            this.createList(response.item.stationLites);
             this.getNotificationsByStation();
-          } else {
           }
         });
         break;
       case 4:
         this._api.getLegalRepresentativeBasicData(this.user.refId, CookieService.getCookie(Constants.IdSession)).subscribe(response => {
           if (response.code === HttpResponseCodes.OK) {
-            this.stationList = UtilitiesService.sortJSON(response.item.stationLites, 'progress', 'asc');
-            this._stations = this.stationList;
+            this.createList(response.item.stationLites);
             this.getNotificationsByStation();
-          } else {
           }
         });
         break;
@@ -173,27 +173,19 @@ export class StationListComponent implements OnInit {
       this.stationList = this._stations;
       this._notifyCopy = this.notificationActive;
     } else {
-      for (let x = 0; x < this._stations.length; x++) {
-        if (this._stations[x].email.toLowerCase().includes(text) || this._stations[x].phoneNumber.includes(text) ||
-          UtilitiesService.removeDiacritics(this._stations[x].name).toLowerCase().includes(text)) {
-          newArray.push(this._stations[x]);
-          arrayNotify.push(this._stations[x].activeNotification);
-        } else {
-          for (let i = 0; i < this.utils.groupIcons.length; i++) {
-            if (UtilitiesService.removeDiacritics(this.utils.groupIcons[i].name).toLowerCase().includes(text) &&
-              this._stations[x].type === i + 1) {
-              newArray.push(this._stations[x]);
-              arrayNotify.push(this._stations[x].activeNotification);
-            }
-          }
+      this._stations.forEach(station => {
+        const stationName = UtilitiesService.removeDiacritics(station.name);
+        if (
+          station.email.toLowerCase().includes(text) ||
+          station.phoneNumber.toLowerCase().includes(text) ||
+          stationName.toLowerCase().includes(text) ||
+          station.groupName.toLowerCase().includes(text) ||
+          (station.crePermission && station.crePermission.toLowerCase().includes(text))
+        ) {
+          newArray.push(station);
+          arrayNotify.push(station.activeNotification);
         }
-        if (this._stations[x].crePermission) {
-          if (UtilitiesService.removeDiacritics(this._stations[x].crePermission).toLowerCase().includes(text)) {
-            newArray.push(this._stations[x]);
-            arrayNotify.push(this._stations[x].activeNotification);
-          }
-        }
-      }
+      });
       if (newArray.length > 0) {
         this.stationList = newArray;
         this.notificationActive = arrayNotify;
@@ -232,6 +224,36 @@ export class StationListComponent implements OnInit {
           );
           break;
       }
+    }
+  }
+
+  private createList(list: StationLite[]): void {
+    const response: CustomStationLite[] = [];
+    if (list && list.length > 0) {
+      list.forEach(station => {
+        const group = UtilitiesService.getObjectsByKeyValue(this.utils.groupIcons, 'id', '' + station.type)[0] as GroupIcon;
+        response.push({
+          activeNotification: station.activeNotification,
+          businessName: station.businessName,
+          crePermission: station.crePermission,
+          doneTasks: station.doneTasks,
+          email: station.email,
+          enabled: station.enabled,
+          endPaymentDate: station.endPaymentDate,
+          id: station.id,
+          name: station.name,
+          newNotification: station.newNotification,
+          phoneNumber: station.phoneNumber,
+          progress: station.progress,
+          stationTaskId: station.stationTaskId,
+          totalTasks: station.totalTasks,
+          type: station.type,
+          logo: group.fileCS.thumbnail,
+          groupName: group.name
+        });
+      });
+      this.stationList = UtilitiesService.sortJSON(response, 'progress', 'asc');
+      this._stations = this.stationList;
     }
   }
 }

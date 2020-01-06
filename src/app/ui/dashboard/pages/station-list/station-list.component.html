@@ -45,12 +45,12 @@
                      style="display: flex; width: 85%; text-decoration-line: none; cursor: pointer; align-items: center">
                   <div class="image">
                     <img class="image-station" *ngIf="utils"
-                         [src]="utils.groupIcons[stations.type-1].fileCS.thumbnail" alt="station image">
+                         [src]="stations.logo" alt="station image">
                     <mat-icon *ngIf="!utils" class="image-station">local_gas_station</mat-icon>
                   </div>
                   <div class="column">
                     <div>
-                      <span class="task-head" *ngIf="utils">{{utils.groupIcons[stations.type - 1].name}}
+                      <span class="task-head" *ngIf="utils">{{stations.groupName}}
                         - {{stations.name}}</span>
                     </div>
                     <div *ngIf="stations.crePermission" class="margin">
