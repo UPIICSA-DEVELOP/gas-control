@@ -9,7 +9,6 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {Constants} from 'app/utils/constants/constants.utils';
 import {ApiService} from 'app/core/services/api/api.service';
 import {SignaturePadService} from 'app/shared/components/signature-pad/signature-pad.service';
-import {CountryCodeService} from 'app/shared/components/country-code/country-code.service';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {DialogService} from 'app/shared/components/dialog/dialog.service';
 import {UploadFileService} from 'app/shared/components/upload-file/upload-file.service';
@@ -20,7 +19,7 @@ import {Person} from '@app/utils/interfaces/person';
 import {HttpResponseCodes} from '@app/utils/enums/http-response-codes';
 import {EntityResponse} from '@app/utils/class/entity-response';
 import {ANIMATION} from '@app/ui/dashboard/pages/collaborators-list/animation';
-import {CookieService, LocalStorageService, SnackBarService} from '@maplander/core';
+import {CookieService, CountryCodeService, LocalStorageService, SnackBarService} from '@maplander/core';
 import {UserMedia} from '@app/utils/interfaces/user-media';
 
 @Component({
@@ -229,7 +228,7 @@ export class CollaboratorsListComponent implements OnInit, OnDestroy {
   }
 
   public selectCountryCode(): void {
-    this._countryCodeService.openDialog().afterClosed().subscribe(response => {
+    this._countryCodeService.open().afterClosed().subscribe(response => {
       if (response) {
         this.changes = true;
         this.country = response.iso;

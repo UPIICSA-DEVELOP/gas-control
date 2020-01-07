@@ -10,8 +10,6 @@ import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {ApiService} from 'app/core/services/api/api.service';
 import {UpdatePasswordService} from 'app/shared/components/update-password/update-password.service';
 import {DialogService} from 'app/shared/components/dialog/dialog.service';
-import {CountryCodeService} from 'app/shared/components/country-code/country-code.service';
-import {UploadFileService} from 'app/shared/components/upload-file/upload-file.service';
 import {Constants} from 'app/utils/constants/constants.utils';
 import {SignaturePadService} from 'app/shared/components/signature-pad/signature-pad.service';
 import {PdfVisorService} from 'app/shared/components/pdf-visor/pdf-visor.service';
@@ -24,8 +22,9 @@ import {Person} from '@app/utils/interfaces/person';
 import {PersonInformation} from '@app/utils/interfaces/person-information';
 import {HttpResponseCodes} from '@app/utils/enums/http-response-codes';
 import {ANIMATION} from '@app/ui/dashboard/pages/profiles/user-profile/animation';
-import {LocalStorageService, SnackBarService} from '@maplander/core';
+import {CountryCodeService, LocalStorageService, SnackBarService} from '@maplander/core';
 import {UserMedia} from '@app/utils/interfaces/user-media';
+import {UploadFileService} from '@app/shared/components/upload-file/upload-file.service';
 
 @Component({
   selector: 'app-user-profile',
@@ -196,7 +195,7 @@ export class UserProfileComponent implements OnInit, OnDestroy {
   }
 
   public openListCountry(): void {
-    this._countryCodeService.openDialog().afterClosed().subscribe(response => {
+    this._countryCodeService.open().afterClosed().subscribe(response => {
       if (response) {
         this.change = true;
         this.country = response.iso;

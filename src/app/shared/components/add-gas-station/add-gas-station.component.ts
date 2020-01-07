@@ -10,8 +10,6 @@ import {Router} from '@angular/router';
 import {Constants} from '@app/utils/constants/constants.utils';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {SignaturePadService} from '../signature-pad/signature-pad.service';
-import {UploadFileService} from '../upload-file/upload-file.service';
-import {CountryCodeService} from '../country-code/country-code.service';
 import {LocationOptions, LocationService} from '../location/location.service';
 import {DialogService} from '../dialog/dialog.service';
 import {PdfVisorOptions, PdfVisorService} from '../pdf-visor/pdf-visor.service';
@@ -37,8 +35,9 @@ import {PersonLite} from '@app/utils/interfaces/person-lite';
 import {EntityCollectionResponse} from '@app/utils/class/entity-collection-response';
 import {FileCS} from '@app/utils/interfaces/file-cs';
 import {UserMedia} from '@maplander/core/lib/utils/models/user-media';
-import {LocalStorageService, SnackBarService} from '@maplander/core';
+import {CountryCodeService, LocalStorageService, SnackBarService} from '@maplander/core';
 import {ConfigAddStation} from '@app/shared/components/add-gas-station/add-station.service';
+import {UploadFileService} from '@app/shared/components/upload-file/upload-file.service';
 
 @Component({
   selector: 'app-add-gas-station',
@@ -390,7 +389,7 @@ export class AddGasStationComponent implements OnInit, OnDestroy {
   }
 
   public openListCountry(type: number): void {
-    this._countryCodeService.openDialog().afterClosed().subscribe(response => {
+    this._countryCodeService.open().afterClosed().subscribe(response => {
       if (response) {
         switch (type) {
           case 1:
@@ -414,7 +413,7 @@ export class AddGasStationComponent implements OnInit, OnDestroy {
   }
 
   public getListRepresentative(): void {
-    this._api.listPersonStationByConsultancy(LocalStorageService.getItem(Constants.UserInSession).refId)
+    this._api.listPersonStationByConsultancy(LocalStorageService.getItem<Person>(Constants.UserInSession).refId)
       .subscribe((response: EntityCollectionResponse<PersonLite>) => {
         if (response.code === HttpResponseCodes.OK) {
           this.listExist = true;
@@ -461,7 +460,7 @@ export class AddGasStationComponent implements OnInit, OnDestroy {
         workShifts: workShifts,
         dispensers: (this.dispensers.length > 0 ? this.dispensers : null),
         fuelTanks: (this.tanks.length > 0 ? this.tanks : null),
-        idConsultancy: LocalStorageService.getItem(Constants.UserInSession).refId,
+        idConsultancy: LocalStorageService.getItem<Person>(Constants.UserInSession).refId,
         rfc: data.rfc,
         progress: 0,
         idLegalRepresentative: this.legalId,
@@ -591,7 +590,7 @@ export class AddGasStationComponent implements OnInit, OnDestroy {
       this.legalRepresentative = {
         active: data.active,
         creationDate: 0,
-        refId: LocalStorageService.getItem(Constants.UserInSession).refId,
+        refId: LocalStorageService.getItem<Person>(Constants.UserInSession).refId,
         signature: (this.signature ? this.signature : undefined),
         profileImage: (this.profileImage ? this.profileImage : undefined),
         name: data.name,

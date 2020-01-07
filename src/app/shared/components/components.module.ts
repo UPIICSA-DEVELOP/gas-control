@@ -7,9 +7,6 @@
 
 import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
-import {CountryCodeComponent} from '@app/shared/components/country-code/country-code.component';
-import {CountryCodeService} from '@app/shared/components/country-code/country-code.service';
-import {CropImageComponent} from '@app/shared/components/crop-image/crop-image.component';
 import {DialogComponent} from '@app/shared/components/dialog/dialog.component';
 import {DialogService} from '@app/shared/components/dialog/dialog.service';
 import {ImageVisorComponent} from '@app/shared/components/image-visor/image-visor.component';
@@ -39,12 +36,10 @@ import {SharedPipesModule} from '@app/shared/pipes/shared.pipes.module';
 import {ModalStationComponent} from '@app/shared/components/modal-station/modal-station.component';
 import {ModalStationService} from '@app/shared/components/modal-station/modal-station.service';
 import {RouterModule} from '@angular/router';
-import {UploadFileService} from '@app/shared/components/upload-file/upload-file.service';
 import {UploadFileModule} from '@maplander/core';
+import {UploadFileService} from '@app/shared/components/upload-file/upload-file.service';
 
 const Components = [
-  CountryCodeComponent,
-  CropImageComponent,
   DialogComponent,
   FooterComponent,
   ImageVisorComponent,
@@ -60,7 +55,6 @@ const Components = [
 ];
 
 const Providers = [
-  CountryCodeService,
   DialogService,
   ImageVisorService,
   LocationService,
@@ -69,13 +63,12 @@ const Providers = [
   ShareService,
   SignaturePadService,
   UpdatePasswordService,
-  UploadFileService,
   AddStationService,
-  ModalStationService
+  ModalStationService,
+  UploadFileService
 ];
 
 const EntryComponents = [
-  CountryCodeComponent,
   DialogComponent,
   ImageVisorComponent,
   LocationComponent,
@@ -85,7 +78,6 @@ const EntryComponents = [
   SignaturePadComponent,
   UpdatePasswordComponent,
   AddGasStationComponent,
-  CropImageComponent,
   ModalStationComponent
 ];
 

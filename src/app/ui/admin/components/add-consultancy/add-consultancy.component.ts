@@ -9,7 +9,6 @@ import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Constants} from 'app/utils/constants/constants.utils';
 import {SignaturePadService} from 'app/shared/components/signature-pad/signature-pad.service';
 import {LocationService} from 'app/shared/components/location/location.service';
-import {CountryCodeService} from 'app/shared/components/country-code/country-code.service';
 import {MatDialogRef, MatStepper} from '@angular/material';
 import {ApiService} from 'app/core/services/api/api.service';
 import {UploadFileService} from 'app/shared/components/upload-file/upload-file.service';
@@ -19,7 +18,7 @@ import {Person} from '@app/utils/interfaces/person';
 import {Consultancy} from '@app/utils/interfaces/consultancy';
 import {HttpResponseCodes} from '@app/utils/enums/http-response-codes';
 import {UserMedia} from '@app/utils/interfaces/user-media';
-import {SnackBarService} from '@maplander/core';
+import {CountryCodeService, SnackBarService} from '@maplander/core';
 
 @Component({
   selector: 'app-add-consultancy',
@@ -196,7 +195,7 @@ export class AddConsultancyComponent implements OnInit, OnDestroy {
   }
 
   public addCountry(): void {
-    this._countryCode.openDialog().afterClosed().subscribe(response => {
+    this._countryCode.open().afterClosed().subscribe(response => {
       if (response) {
         this.country = response.iso;
         this.ownerForm.patchValue({country: response.name, countryCode: response.code});

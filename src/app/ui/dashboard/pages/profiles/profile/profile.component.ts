@@ -9,7 +9,6 @@ import {ApiService} from 'app/core/services/api/api.service';
 import {Constants} from 'app/utils/constants/constants.utils';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {DialogService} from 'app/shared/components/dialog/dialog.service';
-import {CountryCodeService} from 'app/shared/components/country-code/country-code.service';
 import {LocationOptions, LocationService} from 'app/shared/components/location/location.service';
 import {UploadFileService} from 'app/shared/components/upload-file/upload-file.service';
 import {ActivatedRoute, Router} from '@angular/router';
@@ -23,7 +22,7 @@ import {Person} from '@app/utils/interfaces/person';
 import {Consultancy} from '@app/utils/interfaces/consultancy';
 import {HttpResponseCodes} from '@app/utils/enums/http-response-codes';
 import {ANIMATION} from '@app/ui/dashboard/pages/profiles/profile/animation';
-import {SnackBarService} from '@maplander/core';
+import {CountryCodeService, SnackBarService} from '@maplander/core';
 import {UserMedia} from '@app/utils/interfaces/user-media';
 
 @Component({
@@ -151,7 +150,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
   }
 
   public openListCountry(): void {
-    this._countryCode.openDialog().afterClosed().subscribe(response => {
+    this._countryCode.open().afterClosed().subscribe(response => {
       if (response) {
         this.change = true;
         this.country = response.iso;

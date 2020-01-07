@@ -13,7 +13,6 @@ import {Constants} from 'app/utils/constants/constants.utils';
 import {Subscription} from 'rxjs';
 import {DialogService} from '@app/shared/components/dialog/dialog.service';
 import {LoaderService} from '@app/core/components/loader/loader.service';
-import {CountryCodeService} from '@app/shared/components/country-code/country-code.service';
 import {UploadFileService} from '@app/shared/components/upload-file/upload-file.service';
 import {SignaturePadService} from '@app/shared/components/signature-pad/signature-pad.service';
 import {PdfVisorService} from '@app/shared/components/pdf-visor/pdf-visor.service';
@@ -21,7 +20,7 @@ import {Person} from '@app/utils/interfaces/person';
 import {PersonInformation} from '@app/utils/interfaces/person-information';
 import {HttpResponseCodes} from '@app/utils/enums/http-response-codes';
 import {ANIMATION} from '@app/ui/dashboard/pages/add-collaborator/animation';
-import {LocalStorageService, SnackBarService} from '@maplander/core';
+import {CountryCodeService, LocalStorageService, SnackBarService} from '@maplander/core';
 import {UserMedia} from '@app/utils/interfaces/user-media';
 
 @Component({
@@ -128,7 +127,7 @@ export class AddCollaboratorComponent implements OnInit, OnDestroy {
   }
 
   public selectCountryCode(): void {
-    this._countryCodeService.openDialog().afterClosed().subscribe(response => {
+    this._countryCodeService.open().afterClosed().subscribe(response => {
       if (response) {
         this.changes = true;
         this.country = response.iso;
