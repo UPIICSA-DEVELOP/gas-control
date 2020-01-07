@@ -35,12 +35,8 @@
                          *ngIf="collaborator.profileImage && collaborator.profileImage.thumbnail"
                          [src]="collaborator.profileImage.thumbnail" alt="profile image">
                     <img class="image-collaborator"
-                         *ngIf="(!collaborator.profileImage || !collaborator.profileImage.thumbnail) && utils"
-                         [src]="utils.groupIcons[station.type-1].fileCS.thumbnail" alt="profile image">
-                    <mat-icon class="image-collaborator"
-                              *ngIf="(!collaborator.profileImage || !collaborator.profileImage.thumbnail) && !utils">
-                      add_photo_alternate
-                    </mat-icon>
+                         *ngIf="!collaborator.profileImage || !collaborator.profileImage.thumbnail"
+                         [src]="group.fileCS.thumbnail" alt="profile image">
                   </div>
                   <div class="information">
                     <div class="info"> {{collaborator.name}} {{collaborator.lastName}}</div>

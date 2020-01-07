@@ -4,7 +4,7 @@
  * Proprietary and confidential
  */
 
-import {Component, Input, OnDestroy, OnInit} from '@angular/core';
+import {Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges} from '@angular/core';
 import {ApiService} from '@app/core/services/api/api.service';
 import {DialogService} from '@app/shared/components/dialog/dialog.service';
 import {Constants} from '@app/utils/constants/constants.utils';
@@ -18,29 +18,41 @@ import {Station} from '@app/utils/interfaces/station';
 import {CookieService, LocalStorageService, SnackBarService} from '@maplander/core';
 import {AddStationService} from '@app/shared/components/add-gas-station/add-station.service';
 import {DefaultResponse} from '@app/utils/interfaces/default-response';
+import {GroupIcon} from '@app/utils/interfaces/group-icon';
 
 @Component({
   selector: 'app-directory-list',
   templateUrl: './directory-list.component.html',
   styleUrls: ['./directory-list.component.scss']
 })
-export class DirectoryListComponent implements OnInit, OnDestroy {
+export class DirectoryListComponent implements OnInit, OnChanges, OnDestroy {
   public station: Station;
 
   @Input() set collaboratorsInfo(stationObj: Station) {
     if (stationObj) {
       this.station = stationObj;
       this.getCollaborators();
+      if (this._utils) {
+        this.assignGroup();
+      }
     }
   }
 
-  @Input() public utils: AppUtil;
+  @Input() set utils(obj: AppUtil) {
+    this._utils = obj;
+    if (this.station) {
+      this.assignGroup();
+    }
+  }
+
   public collaborators: Person[];
   public roleType: string[];
   public collaborator: Person[];
   public idSession: string;
   public user: Person;
   public emptySearch: boolean;
+  public group: GroupIcon;
+  private _utils: AppUtil;
   private _subscriptionShared: Subscription;
 
   constructor(
@@ -60,6 +72,17 @@ export class DirectoryListComponent implements OnInit, OnDestroy {
     this.roleType = Constants.roles;
     this.collaborators = [];
     this.onChangesComponents();
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['utils'] && changes['utils'].currentValue) {
+      this._utils = changes['utils'].currentValue;
+    }
+    if (changes['collaboratorsInfo'] && changes['collaboratorsInfo'].currentValue) {
+      this.station = changes['collaboratorsInfo'].currentValue;
+      this.assignGroup();
+      this.getCollaborators();
+    }
   }
 
   ngOnDestroy(): void {
@@ -213,8 +236,14 @@ export class DirectoryListComponent implements OnInit, OnDestroy {
 
   private sendEmailValidation(personId: string): void {
     this._api.sendEmailToValidateAccount(personId).subscribe((response: DefaultResponse) => {
-      console.log(response);
+      if (response.code === HttpResponseCodes.OK) {
+        this._snackBarService.setMessage('El email se a enviado', 'OK', 3000);
+      }
     });
+  }
+
+  private assignGroup(): void {
+    this.group = UtilitiesService.getObjectsByKeyValue(this._utils.groupIcons, 'id', '' + this.station.type)[0];
   }
 
 }
