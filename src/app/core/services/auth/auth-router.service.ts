@@ -3,6 +3,7 @@ import {ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot, UrlTre
 import {Observable} from 'rxjs';
 import {Constants} from 'app/utils/constants/constants.utils';
 import {CookieService, LocalStorageService} from '@maplander/core';
+import {Person} from '@app/utils/interfaces/person';
 
 @Injectable()
 export class AuthRouterService implements CanActivate {
@@ -20,7 +21,7 @@ export class AuthRouterService implements CanActivate {
     : Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
     if (state.url === '/login') {
       if (AuthRouterService.validateUserInSession()) {
-        if (LocalStorageService.getItem(Constants.UserInSession).role === 7) {
+        if (LocalStorageService.getItem<Person>(Constants.UserInSession).role === 7) {
           return this._router.createUrlTree(['/admin']);
         } else {
           return this._router.createUrlTree(['/home']);
@@ -31,7 +32,7 @@ export class AuthRouterService implements CanActivate {
     } else if (
       state.url.includes('/admin') &&
       AuthRouterService.validateUserInSession() &&
-      LocalStorageService.getItem(Constants.UserInSession).role !== 7) {
+      LocalStorageService.getItem<Person>(Constants.UserInSession).role !== 7) {
       return this._router.createUrlTree(['/home']);
     } else {
       if (AuthRouterService.validateUserInSession()) {

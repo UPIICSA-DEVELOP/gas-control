@@ -69,7 +69,7 @@ export class StationProfileComponent implements OnInit, OnDestroy {
     this.workShifts = [];
     this.tanks = [];
     this.dispensers = [];
-    this.user = LocalStorageService.getItem(Constants.UserInSession);
+    this.user = LocalStorageService.getItem<Person>(Constants.UserInSession);
   }
 
   ngOnInit() {

@@ -124,7 +124,7 @@ export class ListTasksComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.checkChanges();
-    this.user = LocalStorageService.getItem(Constants.UserInSession);
+    this.user = LocalStorageService.getItem<Person>(Constants.UserInSession);
     this._subscriptionLoader = this._apiLoader.getProgress().subscribe(load => this.load = load);
     if (this.startDate.toLocaleDateString() === this.endDate.toLocaleDateString()) {
       this.today = true;

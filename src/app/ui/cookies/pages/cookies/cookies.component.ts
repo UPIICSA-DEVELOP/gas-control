@@ -8,6 +8,7 @@ import {Component, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
 import {Constants} from 'app/utils/constants/constants.utils';
 import {LocalStorageService} from '@maplander/core';
+import {Person} from '@app/utils/interfaces/person';
 
 @Component({
   selector: 'app-cookies',
@@ -25,7 +26,7 @@ export class CookiesComponent implements OnInit {
   }
 
   public redirectTo(): void {
-    const user = LocalStorageService.getItem(Constants.UserInSession);
+    const user = LocalStorageService.getItem<Person>(Constants.UserInSession);
     if (user) {
       switch (user.role) {
         case 1:

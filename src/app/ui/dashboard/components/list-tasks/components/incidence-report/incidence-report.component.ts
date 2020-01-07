@@ -23,6 +23,7 @@ import {HttpResponseCodes} from '@app/utils/enums/http-response-codes';
 import {AppUtil} from '@app/utils/interfaces/app-util';
 import {LocalStorageService, SnackBarService} from '@maplander/core';
 import {UserMedia} from '@maplander/core/lib/utils/models/user-media';
+import {Person} from '@app/utils/interfaces/person';
 
 @Component({
   selector: 'app-incidence-report',
@@ -170,11 +171,11 @@ export class IncidenceReportComponent implements OnInit, OnDestroy {
 
   private startEditFormat(isNewLoad?: boolean): void {
     let today: any = new Date();
-    const user = LocalStorageService.getItem(Constants.UserInSession);
+    const user = LocalStorageService.getItem<Person>(Constants.UserInSession);
     today = UtilitiesService.createPersonalTimeStamp(today);
     this.date = UtilitiesService.convertDate(today.timeStamp);
     this.editable = true;
-    this.name = user.completeName;
+    this.name = user.name + user.lastName;
     if (!isNewLoad) {
       this._copyTask = this.incidenceReport;
       this.procedures = this.incidenceReport.procedures || [];
@@ -193,7 +194,7 @@ export class IncidenceReportComponent implements OnInit, OnDestroy {
     this.incidenceReport = undefined;
     this.incidenceForm.reset();
     this.incidenceForm.disable();
-    const user = LocalStorageService.getItem(Constants.UserInSession);
+    const user = LocalStorageService.getItem<Person>(Constants.UserInSession);
     if (this.task.status !== 4 && user.role === 7) {
       this.startEditFormat(true);
     }

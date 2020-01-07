@@ -144,14 +144,14 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   private validateSignatureUser(): void {
-    if (LocalStorageService.getItem(Constants.NotSignature)) {
-      const user = LocalStorageService.getItem(Constants.UserInSession);
+    if (LocalStorageService.getItem<boolean>(Constants.NotSignature)) {
+      const user = LocalStorageService.getItem<Person>(Constants.UserInSession);
       this.role = user.role;
       this._dialogService.alertDialog(
         'Información',
         'Para continuar es necesario registrar su firma digital',
         'REGISTRAR').afterClosed().subscribe(() => {
-        LocalStorageService.setItem(Constants.NotSignature, true);
+        LocalStorageService.setItem<boolean>(Constants.NotSignature, true);
         this.drawSignature();
       });
     } else {
@@ -161,7 +161,7 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy {
 
   private getDashboardInformation(onlyOneStationId?: any): void {
     const userId = CookieService.getCookie(Constants.IdSession);
-    const user = LocalStorageService.getItem(Constants.UserInSession);
+    const user = LocalStorageService.getItem<Person>(Constants.UserInSession);
     if (user && userId) {
       this.role = user.role;
       this._api.getCompleteInfoDashboard(userId, user.refId, this.role, onlyOneStationId).subscribe(response => {
@@ -181,7 +181,8 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy {
             case 7:
               this.stationActive = response.station.item;
               this.assignGroup();
-              LocalStorageService.setItem(Constants.StationInDashboard, {id: this.stationActive.id, name: this.stationActive.businessName});
+              LocalStorageService.setItem<{id: string, name: string}>
+              (Constants.StationInDashboard, {id: this.stationActive.id, name: this.stationActive.businessName});
               if (!this.stationActive.stationTaskId) {
                 this.openTaskCalendar();
               }
@@ -278,7 +279,8 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy {
       if (response.code === HttpResponseCodes.OK) {
         this.stationActive = response.item;
         this.assignGroup();
-        LocalStorageService.setItem(Constants.StationInDashboard, {id: this.stationActive.id, name: this.stationActive.businessName});
+        LocalStorageService.setItem<{id: string, name: string}>
+        (Constants.StationInDashboard, {id: this.stationActive.id, name: this.stationActive.businessName});
         if (this.stationActive.paymentStatus !== 1 && this.role === 4) {
           this.stationBlock();
         }
@@ -290,7 +292,7 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy {
       }
     } else {
       if (response.code === HttpResponseCodes.OK) {
-        LocalStorageService.setItem(Constants.ConsultancyInSession, {
+        LocalStorageService.setItem<{id: string, name: string}>(Constants.ConsultancyInSession, {
           id: response.item.consultancy.id,
           name: response.item.consultancy.businessName
         });
@@ -298,7 +300,8 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy {
           const list = UtilitiesService.sortJSON(response.item.stationLites, 'enabled', 'desc');
           this.stationActive = list[0];
           this.assignGroup();
-          LocalStorageService.setItem(Constants.StationInDashboard, {id: this.stationActive.id, name: this.stationActive.businessName});
+          LocalStorageService.setItem<{id: string, name: string}>
+          (Constants.StationInDashboard, {id: this.stationActive.id, name: this.stationActive.businessName});
           if (this.role === 4 && !response.item.stationLites.enabled) {
             this.stationBlock();
           }
@@ -321,7 +324,8 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy {
     if (onlyOneStation) {
       if (response.code === HttpResponseCodes.OK) {
         this.stationActive = response.item.station;
-        LocalStorageService.setItem(Constants.StationInDashboard, {id: this.stationActive.id, name: this.stationActive.businessName});
+        LocalStorageService.setItem<{id: string, name: string}>
+        (Constants.StationInDashboard, {id: this.stationActive.id, name: this.stationActive.businessName});
         if (!this.stationActive.stationTaskId) {
           this.openTaskCalendar();
         }
@@ -333,7 +337,8 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy {
         if (response.item.station) {
           this.stationActive = response.item.station;
           this.assignGroup();
-          LocalStorageService.setItem(Constants.StationInDashboard, {id: this.stationActive.id, name: this.stationActive.businessName});
+          LocalStorageService.setItem<{id: string, name: string}>
+          (Constants.StationInDashboard, {id: this.stationActive.id, name: this.stationActive.businessName});
           if (response.item.newNotification) {
             this.newNotification = true;
           }
@@ -404,7 +409,7 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy {
     this._api.updatePerson(person).subscribe(response => {
       if (response.code === HttpResponseCodes.OK) {
         this._snackBarService.setMessage('Firma actualizada', 'OK', 3000);
-        LocalStorageService.removeItem(Constants.NotSignature);
+        LocalStorageService.removeItem<boolean>(Constants.NotSignature);
         this.getDashboardInformation(this._stationId);
       } else {
         this.onErrorOccur();

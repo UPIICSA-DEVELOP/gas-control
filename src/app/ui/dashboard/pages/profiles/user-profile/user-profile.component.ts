@@ -464,8 +464,8 @@ export class UserProfileComponent implements OnInit, OnDestroy {
   private updateBusiness(isNewEmail: boolean): void {
     this._snackBarService.setMessage('Espere un momento...', '', 0);
     let company;
-    if (LocalStorageService.getItem(Constants.StationInDashboard)) {
-      company = LocalStorageService.getItem(Constants.StationInDashboard).name;
+    if (LocalStorageService.getItem<{id: string, name: string}>(Constants.StationInDashboard)) {
+      company = LocalStorageService.getItem<{id: string, name: string}>(Constants.StationInDashboard).name;
     } else {
       company = '';
     }

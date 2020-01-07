@@ -21,6 +21,7 @@ import {Task} from '@app/utils/interfaces/task';
 import {HttpResponseCodes} from '@app/utils/enums/http-response-codes';
 import {LocalStorageService, SnackBarService} from '@maplander/core';
 import {UserMedia} from '@maplander/core/lib/utils/models/user-media';
+import {Person} from '@app/utils/interfaces/person';
 
 @Component({
   selector: 'app-vrs-report',
@@ -125,10 +126,10 @@ export class VrsReportComponent implements OnInit, OnDestroy {
   }
 
   private resetElements(): void {
-    this.vrsReport = undefined;
+    this.vrsReport = null;
     this.vrsForm.reset();
     this.vrsForm.disable();
-    const user = LocalStorageService.getItem(Constants.UserInSession);
+    const user = LocalStorageService.getItem<Person>(Constants.UserInSession);
     if (this.task.status !== 4 && user.role === 7) {
       this.startEditReport(true);
     }
@@ -202,11 +203,11 @@ export class VrsReportComponent implements OnInit, OnDestroy {
 
   private startEditReport(isNewLoad?: boolean): void {
     let today: any = new Date();
-    const user = LocalStorageService.getItem(Constants.UserInSession);
+    const user = LocalStorageService.getItem<Person>(Constants.UserInSession);
     today = UtilitiesService.createPersonalTimeStamp(today);
     this.date = UtilitiesService.convertDate(today.timeStamp);
     this.editable = true;
-    this.name = user.completeName;
+    this.name = user.name + user.lastName;
     if (!isNewLoad) {
       this._copyTask = this.vrsReport;
       if (this.vrsReport.fileCS) {

@@ -97,7 +97,7 @@ export class ResetPassComponent implements OnInit, OnDestroy {
 
   private signInWidthIdLink(value: any): void {
     this._auth.requestPermissionNotifications().subscribe((token: string | null) => {
-      this._api.signInWithLink(LocalStorageService.getItem(Constants.UpdatePassword), token).subscribe(response => {
+      this._api.signInWithLink(LocalStorageService.getItem<string>(Constants.UpdatePassword), token).subscribe(response => {
         if (response.code === HttpResponseCodes.OK) {
           this._user = response.item;
           this.updatePersonPassword(value, token);
@@ -112,7 +112,7 @@ export class ResetPassComponent implements OnInit, OnDestroy {
     this._api.updatePerson(this._user).subscribe(response => {
       if (response.code === HttpResponseCodes.OK) {
         this._auth.logIn(response.item, true, token);
-        LocalStorageService.removeItem(Constants.UpdatePassword);
+        LocalStorageService.removeItem<string>(Constants.UpdatePassword);
         this._snackBarService.setMessage('Contraseña actualizada', 'OK', 3000);
       } else {
         this._snackBarService.setMessage('No se a podido actualizar la contraseña', 'OK', 3000);

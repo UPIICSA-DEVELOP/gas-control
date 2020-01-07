@@ -54,7 +54,7 @@ export class StationListComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.user = LocalStorageService.getItem(Constants.UserInSession);
+    this.user = LocalStorageService.getItem<Person>(Constants.UserInSession);
     this.getUtilities();
   }
 

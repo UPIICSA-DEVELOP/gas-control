@@ -27,7 +27,7 @@ export class AuthService implements Resolve<any> {
   }
 
   private static saveInfoUser(user: Person) {
-    LocalStorageService.setItem(Constants.UserInSession, {
+    LocalStorageService.setItem<Person>(Constants.UserInSession, {
       completeName: user.name + ' ' + user.lastName,
       profileImage: (user.profileImage) ? user.profileImage.thumbnail : null,
       role: user.role,
@@ -42,9 +42,9 @@ export class AuthService implements Resolve<any> {
   }
 
   private static resetFlags(): void {
-    LocalStorageService.removeItem(Constants.NotSignature);
-    LocalStorageService.removeItem(Constants.StationInDashboard);
-    LocalStorageService.removeItem(Constants.ConsultancyInSession);
+    LocalStorageService.removeItem<boolean>(Constants.NotSignature);
+    LocalStorageService.removeItem<{id: string, name: string}>(Constants.StationInDashboard);
+    LocalStorageService.removeItem<{id: string, name: string}>(Constants.ConsultancyInSession);
   }
 
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): any {
@@ -83,7 +83,7 @@ export class AuthService implements Resolve<any> {
       time = MaxAge.DAY;
     }
     if (token) {
-      LocalStorageService.setItem(Constants.SessionToken, token);
+      LocalStorageService.setItem<string>(Constants.SessionToken, token);
     }
     AuthService.saveInfoUser(user);
     CookieService.setCookie({
@@ -92,7 +92,7 @@ export class AuthService implements Resolve<any> {
       maxAge: time
     });
     if (!user.signature && user.role !== 7) {
-      LocalStorageService.setItem(Constants.NotSignature, true);
+      LocalStorageService.setItem<boolean>(Constants.NotSignature, true);
     }
     if (user.role === 7) {
       this._router.navigate(['/admin']).then(() => {
@@ -104,18 +104,18 @@ export class AuthService implements Resolve<any> {
   }
 
   public logOut(notNavigate?: boolean): void {
-    this._api.signOut(LocalStorageService.getItem(Constants.SessionToken)).subscribe(response => {
+    this._api.signOut(LocalStorageService.getItem<string>(Constants.SessionToken)).subscribe(response => {
       if (response.code === HttpResponseCodes.OK) {
       } else {
         console.error(response);
       }
     });
-    LocalStorageService.removeItem(Constants.ConsultancyInSession);
-    LocalStorageService.removeItem(Constants.SessionToken);
-    LocalStorageService.removeItem(Constants.NotSignature);
-    LocalStorageService.removeItem(Constants.UserInSession);
-    LocalStorageService.removeItem(Constants.StationInDashboard);
-    SessionStorageService.removeItem(Constants.StationAdmin);
+    LocalStorageService.removeItem<{id: string, name: string}>(Constants.ConsultancyInSession);
+    LocalStorageService.removeItem<string>(Constants.SessionToken);
+    LocalStorageService.removeItem<boolean>(Constants.NotSignature);
+    LocalStorageService.removeItem<Person>(Constants.UserInSession);
+    LocalStorageService.removeItem<{id: string, name: string}>(Constants.StationInDashboard);
+    SessionStorageService.removeItem<{id: string, name: string}>(Constants.StationAdmin);
     CookieService.deleteCookie(Constants.IdSession);
     if (!notNavigate) {
       this._router.navigate(['/']).then(() => {
@@ -126,11 +126,11 @@ export class AuthService implements Resolve<any> {
   private loginAgain(): Observable<boolean> {
     return new Observable<any>(observer => {
       AuthService.resetFlags();
-      let user = LocalStorageService.getItem(Constants.UserInSession);
+      let user = LocalStorageService.getItem<Person>(Constants.UserInSession);
       const data = {
         email: user.email,
         password: user.password,
-        token: LocalStorageService.getItem(Constants.SessionToken) || undefined,
+        token: LocalStorageService.getItem<string>(Constants.SessionToken) || null,
         type: 3
       };
       this._api.signIn(data).subscribe(response => {
@@ -138,7 +138,7 @@ export class AuthService implements Resolve<any> {
           user = response.item;
           AuthService.saveInfoUser(user);
           if (!user.signature && user.role !== 7) {
-            LocalStorageService.setItem(Constants.NotSignature, true);
+            LocalStorageService.setItem<boolean>(Constants.NotSignature, true);
           }
           observer.next(true);
           observer.complete();

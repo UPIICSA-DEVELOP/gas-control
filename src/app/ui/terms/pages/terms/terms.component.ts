@@ -43,7 +43,7 @@ export class TermsComponent implements OnInit {
   }
 
   public redirectTo(): void {
-    const user = LocalStorageService.getItem(Constants.UserInSession);
+    const user = LocalStorageService.getItem<Person>(Constants.UserInSession);
     if (user) {
       switch (user.role) {
         case 1:
@@ -67,18 +67,18 @@ export class TermsComponent implements OnInit {
   }
 
   private getCompanyName(): void {
-    this.role = LocalStorageService.getItem(Constants.UserInSession).role;
+    this.role = LocalStorageService.getItem<Person>(Constants.UserInSession).role;
     switch (this.role) {
       case 1:
       case 2:
       case 3:
-        this.company = LocalStorageService.getItem(Constants.ConsultancyInSession).name;
+        this.company = LocalStorageService.getItem<{id: string, name: string}>(Constants.ConsultancyInSession).name;
         this.getCompanyAddress(false);
         break;
       case 4:
       case 5:
       case 6:
-        this.company = LocalStorageService.getItem(Constants.StationInDashboard).name;
+        this.company = LocalStorageService.getItem<{id: string, name: string}>(Constants.StationInDashboard).name;
         this.getCompanyAddress(true);
         break;
       case 7:
@@ -91,8 +91,8 @@ export class TermsComponent implements OnInit {
   }
 
   private getCompanyAddress(isStation: boolean): void {
-    const stationId = LocalStorageService.getItem(Constants.StationInDashboard).id || '';
-    const consultancyId = LocalStorageService.getItem(Constants.ConsultancyInSession).id || '';
+    const stationId = LocalStorageService.getItem<{id: string, name: string}>(Constants.StationInDashboard).id || '';
+    const consultancyId = LocalStorageService.getItem<{id: string, name: string}>(Constants.ConsultancyInSession).id || '';
     if (isStation) {
       this._api.getStation(stationId).subscribe((response: EntityResponse<Station>) => {
         if (response.code === HttpResponseCodes.OK) {

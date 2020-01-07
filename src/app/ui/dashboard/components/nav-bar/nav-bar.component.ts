@@ -80,7 +80,7 @@ export class NavBarComponent implements OnInit, DoCheck, OnDestroy {
   }
 
   private getUser(): void {
-    this.user = LocalStorageService.getItem(Constants.UserInSession);
+    this.user = LocalStorageService.getItem<Person>(Constants.UserInSession);
     if (this.user) {
       this.imageExist = this.user.profileImage && this.user.profileImage.thumbnail !== '';
     }
@@ -92,7 +92,8 @@ export class NavBarComponent implements OnInit, DoCheck, OnDestroy {
     } else {
       let consultancyId;
       consultancyId = null;
-      const identifiers = SessionStorageService.getItem(Constants.StationAdmin);
+      const identifiers = SessionStorageService.getItem<{stationId: string, consultancyId: string, lastView: boolean}[]>
+      (Constants.StationAdmin);
       identifiers.forEach(item => {
         if (item.lastView) {
           consultancyId = item.consultancyId;

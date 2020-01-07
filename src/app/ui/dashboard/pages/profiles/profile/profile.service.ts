@@ -11,6 +11,7 @@ import {Constants} from 'app/utils/constants/constants.utils';
 import {forkJoin} from 'rxjs';
 import {map} from 'rxjs/internal/operators';
 import {CookieService, LocalStorageService} from '@maplander/core';
+import {Person} from '@app/utils/interfaces/person';
 
 @Injectable()
 export class ProfileService implements Resolve<any> {
@@ -23,7 +24,7 @@ export class ProfileService implements Resolve<any> {
 
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): any {
     const observer1 = this._api.getPerson(CookieService.getCookie(Constants.IdSession));
-    const user = LocalStorageService.getItem(Constants.UserInSession);
+    const user = LocalStorageService.getItem<Person>(Constants.UserInSession);
     const observer2 = this._api.getConsultancy(user.refId);
     return forkJoin([observer1, observer2]).pipe(map((resp: any[]) => {
       return {user: resp[0], consultancy: resp[1]};

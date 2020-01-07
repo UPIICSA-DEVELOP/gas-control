@@ -18,6 +18,7 @@ import {HttpResponseCodes} from '@app/utils/enums/http-response-codes';
 import {ANIMATION} from '@app/ui/dashboard/pages/documentation/animation';
 import {LocalStorageService, SnackBarService} from '@maplander/core';
 import {UserMedia} from '@app/utils/interfaces/user-media';
+import {Person} from '@app/utils/interfaces/person';
 
 @Component({
   selector: 'app-documentation',
@@ -204,7 +205,7 @@ export class DocumentationComponent implements OnInit, OnDestroy {
   }
 
   public openPdf(index: number, isAsea: boolean): void {
-    const user = LocalStorageService.getItem(Constants.UserInSession);
+    const user = LocalStorageService.getItem<Person>(Constants.UserInSession);
     const url = isAsea ? this.docsAsea[index].file.thumbnail : this.docsCre[index].file.thumbnail;
     switch (user.role) {
       case 1:

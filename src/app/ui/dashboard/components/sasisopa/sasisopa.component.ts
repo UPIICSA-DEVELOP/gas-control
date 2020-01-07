@@ -177,7 +177,7 @@ export class SasisopaComponent implements OnInit, OnDestroy {
     } else {
       url = this._data.utils.sasisopaTemplates[0].fileCS.thumbnail;
     }
-    const user = LocalStorageService.getItem(Constants.UserInSession);
+    const user = LocalStorageService.getItem<Person>(Constants.UserInSession);
     switch (user.role) {
       case 1:
       case 2:
@@ -635,7 +635,7 @@ export class SasisopaComponent implements OnInit, OnDestroy {
 
   public seeSasisopa(): void {
     this._api.joinPDF(this.station.id, false).subscribe(response => {
-      const user = LocalStorageService.getItem(Constants.UserInSession);
+      const user = LocalStorageService.getItem<Person>(Constants.UserInSession);
       switch (user.role) {
         case 1:
         case 2:
@@ -662,7 +662,7 @@ export class SasisopaComponent implements OnInit, OnDestroy {
   }
 
   public seeDocuments(type: number): void {
-    const user = LocalStorageService.getItem(Constants.UserInSession);
+    const user = LocalStorageService.getItem<Person>(Constants.UserInSession);
     if (!this.docFile[type - 1] && !this.sasisopaDocs[type - 1]) {
       this._snackBarService.setMessage('No se ha escaneado el documento', 'OK', 3000);
       return;

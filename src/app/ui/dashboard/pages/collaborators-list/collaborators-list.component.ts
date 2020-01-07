@@ -110,7 +110,7 @@ export class CollaboratorsListComponent implements OnInit, OnDestroy {
 
   public getCollaborators(): void {
     const id = CookieService.getCookie(Constants.IdSession);
-    this.user = LocalStorageService.getItem(Constants.UserInSession);
+    this.user = LocalStorageService.getItem<Person>(Constants.UserInSession);
     this._api.listCollaborators(this._refId, 'true').subscribe(response => {
       if (response.code === HttpResponseCodes.OK) {
         let user = null;
@@ -370,7 +370,7 @@ export class CollaboratorsListComponent implements OnInit, OnDestroy {
     const data = {
       name: person.name || '',
       lastName: person.lastName || '',
-      company: LocalStorageService.getItem(Constants.ConsultancyInSession).name || '',
+      company: LocalStorageService.getItem<{id: string, name: string}>(Constants.ConsultancyInSession).name || '',
       phone: person.phoneNumber || '',
       workPosition: person.jobTitle || '',
       email: person.email || '',

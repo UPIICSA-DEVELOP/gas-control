@@ -20,12 +20,12 @@ export class ResetPassRouterService implements CanActivate {
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot)
     : Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-    if (LocalStorageService.getItem(Constants.UpdatePassword)) {
+    if (LocalStorageService.getItem<string>(Constants.UpdatePassword)) {
       return true;
     } else {
       const id = route.queryParams['link'];
       if (id) {
-        LocalStorageService.setItem(Constants.UpdatePassword, id);
+        LocalStorageService.setItem<string>(Constants.UpdatePassword, id);
         return true;
       } else {
         return this._router.createUrlTree(['/login']);

@@ -33,7 +33,7 @@ export class SignaturePadComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.disable = LocalStorageService.getItem(Constants.NotSignature);
+    this.disable = LocalStorageService.getItem<boolean>(Constants.NotSignature);
     if (isPlatformBrowser(this._platformId)) {
       const container = this._document.getElementById('pad');
       this.canvas = container.querySelector('canvas');

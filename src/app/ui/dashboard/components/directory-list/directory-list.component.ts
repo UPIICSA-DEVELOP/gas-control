@@ -62,7 +62,7 @@ export class DirectoryListComponent implements OnInit, OnChanges, OnDestroy {
     private _sharedService: SharedService,
     private _addStation: AddStationService
   ) {
-    this.user = LocalStorageService.getItem(Constants.UserInSession);
+    this.user = LocalStorageService.getItem<Person>(Constants.UserInSession);
     this.idSession = CookieService.getCookie(Constants.IdSession);
     this.emptySearch = false;
     this.collaborators = [];

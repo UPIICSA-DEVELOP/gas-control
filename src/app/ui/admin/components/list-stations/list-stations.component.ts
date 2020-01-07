@@ -21,6 +21,7 @@ import {AppUtil} from '@app/utils/interfaces/app-util';
 import {GroupIcon} from '@app/utils/interfaces/group-icon';
 import {CookieService, LocalStorageService, SessionStorageService, SnackBarService} from '@maplander/core';
 import {CustomStationLite} from '@app/utils/interfaces/custom-station-lite';
+import {Person} from '@app/utils/interfaces/person';
 
 @Component({
   selector: 'app-list-collaborators',
@@ -119,7 +120,7 @@ export class ListStationsComponent implements OnInit {
 
   public addStation(): void {
     this.close();
-    const user = LocalStorageService.getItem(Constants.UserInSession);
+    const user = LocalStorageService.getItem<Person>(Constants.UserInSession);
     user.refId = user.refId ? user.refId : this._data.id;
     this._auth.updateUserInSession(user);
     this._addStation.open().afterClosed().subscribe(() => {
@@ -129,15 +130,16 @@ export class ListStationsComponent implements OnInit {
   }
 
   public goToDashboard(station: any): void {
-    const stationsView = SessionStorageService.getItem(Constants.StationAdmin) || [];
+    const stationsView = SessionStorageService.getItem<{stationId: string, consultancyId: string, lastView: boolean}[]>
+    (Constants.StationAdmin) || [];
     if (stationsView) {
       stationsView.forEach(item => {
         item.lastView = false;
       });
     }
     stationsView.push({stationId: station.id, consultancyId: this._data.id, lastView: true});
-    SessionStorageService.setItem(Constants.StationAdmin, stationsView);
-    LocalStorageService.setItem(Constants.ConsultancyInSession, this._data);
+    SessionStorageService.setItem<{stationId: string, consultancyId: string, lastView: boolean}[]>(Constants.StationAdmin, stationsView);
+    LocalStorageService.setItem<{id: string, name: string }>(Constants.ConsultancyInSession, this._data);
     window.open('/#/home?station=' + station.id, '_blank');
   }
 

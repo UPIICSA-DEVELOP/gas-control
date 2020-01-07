@@ -85,7 +85,7 @@ export class AddCollaboratorComponent implements OnInit, OnDestroy {
     if (this._activateRoute.snapshot.queryParams.stationId) {
       this._refId = this._activateRoute.snapshot.queryParams.stationId;
     }
-    this.user = LocalStorageService.getItem(Constants.UserInSession);
+    this.user = LocalStorageService.getItem<Person>(Constants.UserInSession);
     this._subscriptionLoader = this._apiLoader.getProgress().subscribe(load => {
       this.load = load;
     });
@@ -336,7 +336,7 @@ export class AddCollaboratorComponent implements OnInit, OnDestroy {
     const data = {
       name: person.name || '',
       lastName: person.lastName || '',
-      company: LocalStorageService.getItem(Constants.StationInDashboard).name || '',
+      company: LocalStorageService.getItem<{id: string, name: string}>(Constants.StationInDashboard).name || '',
       phone: person.phoneNumber || '',
       workPosition: person.jobTitle || '',
       email: person.email || '',

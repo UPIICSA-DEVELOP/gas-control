@@ -408,7 +408,8 @@ export class ApiService implements OnDestroy {
       if (role === 7) {
         let stationId;
         stationId = undefined;
-        const stationsView = SessionStorageService.getItem(Constants.StationAdmin) || [];
+        const stationsView = SessionStorageService.getItem<{stationId: string, consultancyId: string, lastView: boolean}[]>
+        (Constants.StationAdmin) || [];
         if (stationsView) {
           stationsView.forEach(item => {
             if (item.lastView) {

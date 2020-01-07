@@ -11,6 +11,7 @@ import {Constants} from '@app/utils/constants/constants.utils';
 import {PdfVisorService} from '@app/shared/components/pdf-visor/pdf-visor.service';
 import {Procedure} from '@app/utils/interfaces/procedure';
 import {LocalStorageService} from '@maplander/core';
+import {Person} from '@app/utils/interfaces/person';
 
 @Component({
   selector: 'app-modal-procedures',
@@ -48,7 +49,7 @@ export class ModalProceduresComponent implements OnInit {
   }
 
   public openFile(url: any): void {
-    const user = LocalStorageService.getItem(Constants.UserInSession);
+    const user = LocalStorageService.getItem<Person>(Constants.UserInSession);
     switch (user.role) {
       case 1:
       case 2:

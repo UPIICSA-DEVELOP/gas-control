@@ -71,14 +71,16 @@ export class AdminNotificationsComponent implements OnInit, OnDestroy {
   }
 
   public navigateToDashboard(stationId: string, consultancyId: string): void {
-    const stationsView = SessionStorageService.getItem(Constants.StationAdmin) || [];
+    const stationsView = SessionStorageService.getItem<{stationId: string, consultancyId: string, lastView: boolean}[]>
+    (Constants.StationAdmin) || [];
     if (stationsView) {
       stationsView.forEach(item => {
         item.lastView = false;
       });
     }
     stationsView.push({stationId: stationId, consultancyId: consultancyId, lastView: true});
-    SessionStorageService.setItem(Constants.StationAdmin, stationsView);
+    SessionStorageService.setItem<{stationId: string, consultancyId: string, lastView: boolean}[]>
+    (Constants.StationAdmin, stationsView);
     window.open('/#/home?station=' + stationId, '_blank');
   }
 

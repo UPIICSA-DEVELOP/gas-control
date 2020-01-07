@@ -22,6 +22,7 @@ import {Task} from '@app/utils/interfaces/task';
 import {HttpResponseCodes} from '@app/utils/enums/http-response-codes';
 import {SgmDocument} from '@app/utils/interfaces/sgm-document';
 import {LocalStorageService, SnackBarService} from '@maplander/core';
+import {Person} from '@app/utils/interfaces/person';
 
 @Component({
   selector: 'app-sgm',
@@ -106,7 +107,7 @@ export class SgmComponent implements OnInit, OnDestroy {
   }
 
   public seeFile(url: any): void {
-    const user = LocalStorageService.getItem(Constants.UserInSession);
+    const user = LocalStorageService.getItem<Person>(Constants.UserInSession);
     switch (user.role) {
       case 1:
       case 2:
@@ -160,7 +161,7 @@ export class SgmComponent implements OnInit, OnDestroy {
 
   public seeSGM(): void {
     this._api.joinPDF(this.station.id, true).subscribe(response => {
-      const user = LocalStorageService.getItem(Constants.UserInSession);
+      const user = LocalStorageService.getItem<Person>(Constants.UserInSession);
       switch (user.role) {
         case 1:
         case 2:

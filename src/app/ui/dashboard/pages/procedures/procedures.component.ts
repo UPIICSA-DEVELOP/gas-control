@@ -14,6 +14,7 @@ import {Procedure} from '@app/utils/interfaces/procedure';
 import {HttpResponseCodes} from '@app/utils/enums/http-response-codes';
 import {ANIMATION} from '@app/ui/dashboard/pages/procedures/animation';
 import {LocalStorageService} from '@maplander/core';
+import {Person} from '@app/utils/interfaces/person';
 
 @Component({
   selector: 'app-procedures',
@@ -43,7 +44,7 @@ export class ProceduresComponent implements OnInit {
   }
 
   public openFile(url: any): void {
-    const user = LocalStorageService.getItem(Constants.UserInSession);
+    const user = LocalStorageService.getItem<Person>(Constants.UserInSession);
     switch (user.role) {
       case 1:
       case 2:

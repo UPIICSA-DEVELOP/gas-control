@@ -21,6 +21,7 @@ import {Task} from '@app/utils/interfaces/task';
 import {HttpResponseCodes} from '@app/utils/enums/http-response-codes';
 import {LocalStorageService, SnackBarService} from '@maplander/core';
 import {UserMedia} from '@app/utils/interfaces/user-media';
+import {Person} from '@app/utils/interfaces/person';
 
 @Component({
   selector: 'app-scanned-report',
@@ -105,11 +106,11 @@ export class ScannedReportComponent implements OnInit, OnDestroy {
 
   private startEditFormat(isNewLoad?: boolean): void {
     let today: any = new Date();
-    const user = LocalStorageService.getItem(Constants.UserInSession);
+    const user = LocalStorageService.getItem<Person>(Constants.UserInSession);
     today = UtilitiesService.createPersonalTimeStamp(today);
     this.date = UtilitiesService.convertDate(today.timeStamp);
     this.editable = true;
-    this.name = user.completeName;
+    this.name = user.name + user.lastName;
     this._sharedService.setNotification({type: SharedTypeNotification.HwgActive, value: isNewLoad ? isNewLoad : false});
     if (!isNewLoad) {
       this._copyTasks = this.scannedReport;
@@ -163,7 +164,7 @@ export class ScannedReportComponent implements OnInit, OnDestroy {
 
   private resetElements(): void {
     this.scannedReport = undefined;
-    const user = LocalStorageService.getItem(Constants.UserInSession);
+    const user = LocalStorageService.getItem<Person>(Constants.UserInSession);
     if (this.task.status !== 4 && user.role === 7) {
       this.startEditFormat(true);
     }
@@ -326,7 +327,7 @@ export class ScannedReportComponent implements OnInit, OnDestroy {
   }
 
   public seeReport(): void {
-    const user = LocalStorageService.getItem(Constants.UserInSession);
+    const user = LocalStorageService.getItem<Person>(Constants.UserInSession);
     switch (user.role) {
       case 1:
       case 2:
