@@ -68,7 +68,7 @@
             </div>
           </ng-template>
           <ng-template #loadManifest>
-            <lib-upload-file class="inputs" [content]="button" (loadImage)="loadFile($event)" [fileType]="'file'">
+            <lib-upload-file class="inputs" [content]="button" (loadImage)="loadFile($event)" [fileType]="'document'">
               <ng-template #button>
                 <div class="button edit">
                   <mat-icon *ngIf="file">autorenew</mat-icon>
