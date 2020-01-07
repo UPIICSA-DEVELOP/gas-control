@@ -28,6 +28,7 @@ import {Station} from '@app/utils/interfaces/station';
 import {EntityResponse} from '@app/utils/class/entity-response';
 import {StationBasicData} from '@app/utils/interfaces/station-basic-data';
 import {CookieService, LocalStorageService, MetaService, SnackBarService} from '@maplander/core';
+import {GroupIcon} from '@app/utils/interfaces/group-icon';
 
 @Component({
   selector: 'app-screen',
@@ -44,6 +45,7 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy {
   public utils: AppUtil;
   public load: boolean;
   public newNotification: boolean;
+  public group: GroupIcon;
   private _stationId: any;
   private _subscriptionShared: Subscription;
   private _subscriptionLoader: Subscription;
@@ -99,6 +101,10 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy {
   private checkChanges(): void {
     this._subscriptionShared = this._sharedService.getNotifications().subscribe((response: SharedNotification) => {
       switch (response.type) {
+        case SharedTypeNotification.UpdateStation:
+          this._stationId = this.stationActive.id;
+          this.getDashboardInformation(this._stationId);
+          break;
         case SharedTypeNotification.ChangeStation:
           this._stationId = response.value.id;
           this.newNotification = response.value.newNotification;
@@ -174,6 +180,7 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy {
               break;
             case 7:
               this.stationActive = response.station.item;
+              this.assignGroup();
               LocalStorageService.setItem(Constants.StationInDashboard, {id: this.stationActive.id, name: this.stationActive.businessName});
               if (!this.stationActive.stationTaskId) {
                 this.openTaskCalendar();
@@ -210,7 +217,7 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy {
 
   private setStationMetas(station: any) {
     this._metaService.setAllMetas({
-      title: 'Dashboard | ' + this.utils.groupIcons[station.type - 1].name + ' - ' + station.name,
+      title: 'Dashboard | ' + this.group.name + ' - ' + station.name,
       description: null,
       url: this._router.url
     });
@@ -270,6 +277,7 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy {
     if (onlyOneStation) {
       if (response.code === HttpResponseCodes.OK) {
         this.stationActive = response.item;
+        this.assignGroup();
         LocalStorageService.setItem(Constants.StationInDashboard, {id: this.stationActive.id, name: this.stationActive.businessName});
         if (this.stationActive.paymentStatus !== 1 && this.role === 4) {
           this.stationBlock();
@@ -289,6 +297,7 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy {
         if (response.item.stationLites) {
           const list = UtilitiesService.sortJSON(response.item.stationLites, 'enabled', 'desc');
           this.stationActive = list[0];
+          this.assignGroup();
           LocalStorageService.setItem(Constants.StationInDashboard, {id: this.stationActive.id, name: this.stationActive.businessName});
           if (this.role === 4 && !response.item.stationLites.enabled) {
             this.stationBlock();
@@ -323,6 +332,7 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy {
       if (response.code === HttpResponseCodes.OK) {
         if (response.item.station) {
           this.stationActive = response.item.station;
+          this.assignGroup();
           LocalStorageService.setItem(Constants.StationInDashboard, {id: this.stationActive.id, name: this.stationActive.businessName});
           if (response.item.newNotification) {
             this.newNotification = true;
@@ -400,6 +410,10 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy {
         this.onErrorOccur();
       }
     });
+  }
+
+  private assignGroup(): void {
+    this.group = UtilitiesService.getObjectsByKeyValue(this.utils.groupIcons, 'id', '' + this.stationActive.type)[0];
   }
 
   private onErrorOccur(): void {

@@ -35,8 +35,7 @@
           <div style="margin: auto; width: 90%;">
             <div class="image">
               <div class="container">
-                <img *ngIf="utils" [src]="utils.groupIcons[stationActive.type-1].fileCS.thumbnail" alt="">
-                <mat-icon *ngIf="!utils">local_gas_station</mat-icon>
+                <img [src]="group.fileCS.thumbnail" alt="Station group icon">
               </div>
             </div>
             <div class="contact">
@@ -90,8 +89,8 @@
       </mat-drawer>
       <mat-drawer-content class="main">
         <div class="col-1">
-          <div class="title" *ngIf="stationActive && utils">
-            <h1>{{utils.groupIcons[stationActive.type - 1].name}}</h1>
+          <div class="title" *ngIf="stationActive">
+            <h1>{{group.name}}</h1>
             <h2>{{stationActive.name}}</h2>
             <p>{{stationActive.doneTasks}}/{{stationActive.totalTasks}} actividades</p>
           </div>
