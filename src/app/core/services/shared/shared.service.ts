@@ -15,7 +15,8 @@ export enum SharedTypeNotification {
   EditTask,
   HwgActive,
   FinishEditTask,
-  OpenCloseMenu
+  OpenCloseMenu,
+  UpdateStation
 }
 
 @Injectable()
