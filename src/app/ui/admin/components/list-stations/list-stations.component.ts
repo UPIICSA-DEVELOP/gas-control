@@ -20,6 +20,7 @@ import {StationLite} from '@app/utils/interfaces/station-lite';
 import {AppUtil} from '@app/utils/interfaces/app-util';
 import {GroupIcon} from '@app/utils/interfaces/group-icon';
 import {CookieService, LocalStorageService, SessionStorageService, SnackBarService} from '@maplander/core';
+import {CustomStationLite} from '@app/utils/interfaces/custom-station-lite';
 
 @Component({
   selector: 'app-list-collaborators',
@@ -28,8 +29,8 @@ import {CookieService, LocalStorageService, SessionStorageService, SnackBarServi
 })
 export class ListStationsComponent implements OnInit {
 
-  public stationList: StationLite[];
-  public stationListCopy: StationLite[];
+  public stationList: CustomStationLite[];
+  public stationListCopy: CustomStationLite[];
   public title: string;
   public notResults: boolean;
   public utils: GroupIcon[];
@@ -49,7 +50,6 @@ export class ListStationsComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.getList(this._data.id);
     this.getUtilities();
   }
 
@@ -78,7 +78,6 @@ export class ListStationsComponent implements OnInit {
             if (enableStation.code === HttpResponseCodes.OK) {
               this.stationList[index].enabled = false;
               this.stationListCopy[index].enabled = false;
-            } else {
             }
           });
         } else {
@@ -146,7 +145,7 @@ export class ListStationsComponent implements OnInit {
     this._api.getUtils().subscribe((response: EntityResponse<AppUtil>) => {
       if (response.code === HttpResponseCodes.OK) {
         this.utils = response.item.groupIcons;
-      } else {
+        this.getList(this._data.id);
       }
     });
   }
@@ -154,18 +153,40 @@ export class ListStationsComponent implements OnInit {
   private getList(id: string): void {
     this._api.getConsultancyBasicData(CookieService.getCookie(Constants.IdSession), id)
       .subscribe((response: EntityResponse<ConsultancyBasicData>) => {
-      if (response.code === HttpResponseCodes.OK) {
-        if (response.item.stationLites) {
-          this.stationList = response.item.stationLites;
-          this.stationListCopy = this.stationList;
+        if (response.code === HttpResponseCodes.OK) {
+          this.createStations(response.item.stationLites || []);
         } else {
-          this.stationList = [];
-          this.stationListCopy = this.stationList;
+          this.onErrorOccurred();
         }
-      } else {
-        this.onErrorOccurred();
-      }
+      });
+  }
+
+  private createStations(list: StationLite[]): void {
+    const newList: CustomStationLite[] = [];
+    list.forEach(station => {
+      const group = UtilitiesService.getObjectsByKeyValue(this.utils, 'id', '' + station.type)[0] as GroupIcon;
+      newList.push({
+        activeNotification: station.activeNotification,
+        businessName: station.businessName,
+        crePermission: station.crePermission,
+        doneTasks: station.doneTasks,
+        email: station.email,
+        enabled: station.enabled,
+        endPaymentDate: station.endPaymentDate,
+        id: station.id,
+        name: station.name,
+        newNotification: station.newNotification,
+        phoneNumber: station.phoneNumber,
+        progress: station.progress,
+        stationTaskId: station.stationTaskId,
+        totalTasks: station.totalTasks,
+        type: station.type,
+        logo: group.fileCS.thumbnail,
+        groupName: group.name
+      });
     });
+    this.stationList = newList;
+    this.stationListCopy = newList;
   }
 
   private onErrorOccurred(): void {

@@ -50,10 +50,10 @@
     <div class="container-list" *ngIf="stationList.length > 0 && utils">
       <mat-card class="item" *ngFor="let station of stationList; let i = index">
         <div class="image">
-          <img *ngIf="utils" [src]="utils[station.type-1].fileCS.thumbnail" alt="station logo">
+          <img [src]="station.logo" alt="station logo">
         </div>
-        <div class="info" *ngIf="utils">
-          <p class="bold-text">{{utils[station.type - 1].name}} - {{station.name}}</p>
+        <div class="info">
+          <p class="bold-text">{{station.groupName}} - {{station.name}}</p>
           <p class="plugin">
             {{station.crePermission}}
           </p>
