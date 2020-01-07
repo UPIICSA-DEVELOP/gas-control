@@ -2,6 +2,39 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="1.6.0-beta.1"></a>
+# [1.6.0-beta.1](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/compare/v1.6.0-beta.0...v1.6.0-beta.1) (2020-01-07)
+
+
+### Bug Fixes
+
+* Remove console module ([76ed722](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/76ed722))
+* Remove yarn lock ([94124e0](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/94124e0))
+* **dashboard:** Fix on set group icon ([92e475a](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/92e475a))
+* **dashboard.component:** Update response on parseDashboardToConsultancy ([5f1b0f0](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/5f1b0f0))
+* **directory-list:** Fix on set group icon and show message on resend email ([76cf8c6](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/76cf8c6))
+* **list-stations:** Fix on set group icon ([a9ae022](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/a9ae022))
+* **service.module:** Remove console module ([3617b0e](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/3617b0e))
+
+
+### Features
+
+* Add logic for change representative legal ([83166e1](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/83166e1))
+* **api.service:** Add new endpoints ([4c31e98](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/4c31e98))
+* **directory-list.component:** Add button for re send email for verification email ([7592b5c](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/7592b5c))
+* **interfaces:** New CustomStationLite interface ([781ccfb](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/781ccfb))
+* **shared.service:** Add UpdateStation state ([65be43b](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/65be43b))
+* **station-profile:** Add feature for change group to station ([2386e2a](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/2386e2a))
+* **utilities.ts:** Add getObjectsByKeyValue ([6358d07](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/6358d07))
+
+
+### Performance Improvements
+
+* **collaborators-list.component:** Improve init list users ([62152fc](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/62152fc))
+* **station-list.component:** Update creation list of stations ([8264c9f](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/8264c9f))
+
+
+
 <a name="1.6.0-beta.0"></a>
 # 1.6.0-beta.0 (2019-12-30)
 
