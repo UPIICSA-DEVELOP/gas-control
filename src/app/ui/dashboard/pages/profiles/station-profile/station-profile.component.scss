@@ -266,6 +266,7 @@
 
     .image {
       margin-right: 18px;
+      cursor: pointer;
       @media screen and (max-width: 800px) {
         display: flex;
         justify-content: center;

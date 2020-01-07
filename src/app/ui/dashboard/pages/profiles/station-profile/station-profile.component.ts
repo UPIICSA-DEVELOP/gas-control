@@ -24,6 +24,9 @@ import {HttpResponseCodes} from '@app/utils/enums/http-response-codes';
 import {ANIMATION} from '@app/ui/dashboard/pages/profiles/station-profile/animation';
 import {AppUtil} from '@app/utils/interfaces/app-util';
 import {LocalStorageService, SnackBarService} from '@maplander/core';
+import {GroupIcon} from '@app/utils/interfaces/group-icon';
+import {ModalStationService} from '@app/shared/components/modal-station/modal-station.service';
+import {SharedService, SharedTypeNotification} from '@app/core/services/shared/shared.service';
 
 @Component({
   selector: 'app-station-profile',
@@ -40,12 +43,13 @@ export class StationProfileComponent implements OnInit, OnDestroy {
   public dispensers: Dispenser[];
   public stationForm: FormGroup;
   public station: Station;
+  public group: GroupIcon;
   public load: boolean;
-  public utils: AppUtil;
   public user: Person;
   public yearSelector: Array<number>;
   private _latLng: any;
   private _change: boolean;
+  private _utils: AppUtil;
   private _subscriptionLoader: Subscription;
 
   constructor(
@@ -55,9 +59,11 @@ export class StationProfileComponent implements OnInit, OnDestroy {
     private _apiLoader: LoaderService,
     private _locationService: LocationService,
     private _snackBarService: SnackBarService,
+    private _sharedService: SharedService,
     private _dialogService: DialogService,
     private _activatedRouter: ActivatedRoute,
-    private _formatTime: FormatTimePipe
+    private _formatTime: FormatTimePipe,
+    private _modalStation: ModalStationService
   ) {
     this.yearSelector = [];
     this.workShifts = [];
@@ -69,8 +75,8 @@ export class StationProfileComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.initYears();
     this.initForm();
-    this.getStation(this._activatedRouter.snapshot.data.data.station);
     this.getUtils(this._activatedRouter.snapshot.data.data.utils);
+    this.getStation(this._activatedRouter.snapshot.data.data.station);
     this._subscriptionLoader = this._apiLoader.getProgress().subscribe(load => {
       this.load = load;
     });
@@ -83,6 +89,16 @@ export class StationProfileComponent implements OnInit, OnDestroy {
   public detectChanges(): void {
     this.stationForm.valueChanges.subscribe(() => {
       this._change = true;
+    });
+  }
+
+  public changeGroup(): void {
+    this._modalStation.open(this._utils.groupIcons).afterClosed().subscribe((response) => {
+      if (response.code === 1) {
+        this.group = response.data;
+        this.station.type = Number(this.group.id);
+        this.updateStation();
+      }
     });
   }
 
@@ -124,7 +140,7 @@ export class StationProfileComponent implements OnInit, OnDestroy {
 
   public getUtils(response: any): void {
     if (response.code === HttpResponseCodes.OK) {
-      this.utils = response.item;
+      this._utils = response.item;
     }
   }
 
@@ -203,6 +219,7 @@ export class StationProfileComponent implements OnInit, OnDestroy {
       if (this.station.location) {
         this._latLng = this.station.location;
       }
+      this.group = UtilitiesService.getObjectsByKeyValue(this._utils.groupIcons, 'id', '' + this.station.type)[0] as GroupIcon;
       this.patchForm();
     } else {
       this._snackBarService.setMessage('No se ha podido acceder, intente más tarde', 'OK', 3000);
@@ -267,14 +284,7 @@ export class StationProfileComponent implements OnInit, OnDestroy {
     this.station.dispensers = this.dispensers.filter(function (item) {
       return item !== undefined;
     });
-    this._api.updateStation(this.station).subscribe(response => {
-      if (response.code === HttpResponseCodes.OK) {
-        this._change = false;
-        this._snackBarService.setMessage('Información actualizada', 'OK', 3000);
-      } else {
-        this._dialogService.alertDialog('No se pudo acceder', 'Se produjo un error de comunicación con el servidor', 'ACEPTAR');
-      }
-    });
+    this.updateStation();
   }
 
   public addRemoveTurn(remove: boolean, type: number, index?: number): void {
@@ -365,5 +375,17 @@ export class StationProfileComponent implements OnInit, OnDestroy {
     } else {
       this._snackBarService.setMessage('Usted no tiene permiso para visualizar este módulo', 'OK', 3000);
     }
+  }
+
+  public updateStation(): void {
+    this._api.updateStation(this.station).subscribe(response => {
+      if (response.code === HttpResponseCodes.OK) {
+        this._change = false;
+        this._sharedService.setNotification({type: SharedTypeNotification.UpdateStation, value: null});
+        this._snackBarService.setMessage('Información actualizada', 'OK', 3000);
+      } else {
+        this._dialogService.alertDialog('No se pudo acceder', 'Se produjo un error de comunicación con el servidor', 'ACEPTAR');
+      }
+    });
   }
 }

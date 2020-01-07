@@ -268,12 +268,12 @@
           </button>
         </div>
         <div class="info-gas-station">
-          <div class="image">
-            <img *ngIf="utils" [src]="utils.groupIcons[station.type-1].fileCS.thumbnail" alt="Gas Station Logo">
-            <mat-icon *ngIf="!utils || !station">local_gas_station</mat-icon>
+          <div class="image" (click)="changeGroup()" matTooltip="Cambiar grupo gasoliero">
+            <img [src]="group.fileCS.thumbnail" alt="Gas Station Logo">
+            <mat-icon *ngIf="!station">local_gas_station</mat-icon>
           </div>
           <div class="info">
-            <h2 *ngIf="utils">{{utils.groupIcons[station.type - 1].name}}</h2>
+            <h2>{{group.name}}</h2>
             <p class="company">{{station.businessName}}</p>
             <p class="store">{{station.name}}</p>
           </div>
