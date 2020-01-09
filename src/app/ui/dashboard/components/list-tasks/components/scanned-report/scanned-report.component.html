@@ -34,7 +34,8 @@
       </mat-card>
     </ng-template>
     <ng-template #changeManifest>
-      <lib-upload-file class="hwg" [content]="card" (loadImage)="loadFile($event)" [fileType]="'document'">
+      <lib-upload-file class="hwg" [content]="card" (loadImage)="loadFile($event)"
+                       [isLoaded]="file ? true : false" [fileType]="'document'">
         <ng-template #card>
           <mat-card>
             <mat-card-content>

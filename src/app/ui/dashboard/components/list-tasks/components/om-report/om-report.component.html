@@ -314,7 +314,7 @@
         </ng-template>
         <ng-template #modify>
           <lib-upload-file class="inputs" (loadImage)="loadEvidence($event)"
-                           [content]="imageEvidence" [fileType]="'image'">
+                           [isLoaded]="evidenceThumbnail ? true : false" [content]="imageEvidence" [fileType]="'image'">
             <ng-template #imageEvidence>
               <div *ngIf="!evidenceThumbnail" class="image-container">
                 <mat-icon class="default-image">image</mat-icon>

@@ -26,7 +26,7 @@
         <div class="image-head">
           <mat-card class="profileImage">
             <lib-upload-file [content]="icon" (loadImage)="onLoadImage($event)"
-                             [fileType]="'image'">
+                             [isLoaded]="blobImageProfile ? true : false" [fileType]="'image'">
               <ng-template #icon>
                 <img *ngIf="blobImageProfile" [src]="blobImageProfile" alt="User profile image">
                 <mat-icon *ngIf="!blobImageProfile">add_photo_alternate</mat-icon>
@@ -150,7 +150,7 @@
           </mat-form-field>
           <div class="submit">
             <lib-upload-file style="width: 100%" [content]="button" (loadImage)="onLoadFile($event)"
-                             [fileType]="'document'">
+                             [isLoaded]="file ? true : false" [fileType]="'document'">
               <ng-template #button>
                 <div class="study">
                   <span>Estudio de toxicidad (Benceno)</span>

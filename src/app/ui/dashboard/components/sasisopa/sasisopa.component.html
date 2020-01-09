@@ -209,7 +209,8 @@
               inmediaciones</p>
             <mat-card class="procedures">
               <mat-card-content>
-                <lib-upload-file (loadImage)="loadFile($event, 2, 1)" [content]="button" [fileType]="'document'">
+                <lib-upload-file (loadImage)="loadFile($event, 2, 1)"
+                                 [isLoaded]="!sasisopaDocs[0] && !docFile[0]" [content]="button" [fileType]="'document'">
                   <ng-template #button>
                     <mat-icon *ngIf="!sasisopaDocs[0] && !docFile[0]" class="color" svgIcon="icons:upload"></mat-icon>
                     <mat-icon *ngIf="sasisopaDocs[0] || docFile[0]" class="color">autorenew</mat-icon>
@@ -220,7 +221,8 @@
             </mat-card>
             <mat-card class="procedures">
               <mat-card-content>
-                <lib-upload-file (loadImage)="loadFile($event, 2, 2)" [content]="button" [fileType]="'document'">
+                <lib-upload-file (loadImage)="loadFile($event, 2, 2)" [content]="button"
+                                 [isLoaded]="!sasisopaDocs[1] && !docFile[1]" [fileType]="'document'">
                   <ng-template #button>
                     <mat-icon *ngIf="!sasisopaDocs[1] && !docFile[1]" class="color" svgIcon="icons:upload"></mat-icon>
                     <mat-icon *ngIf="sasisopaDocs[1] || docFile[1]" class="color">autorenew</mat-icon>
@@ -287,7 +289,8 @@
               mejorar el propio sistema de administración</p>
             <mat-card class="procedures">
               <mat-card-content>
-                <lib-upload-file (loadImage)="loadFile($event, 3, 3)" [content]="button" [fileType]="'document'">
+                <lib-upload-file (loadImage)="loadFile($event, 3, 3)" [content]="button"
+                                 [isLoaded]="!sasisopaDocs[2] && !docFile[2]" [fileType]="'document'">
                   <ng-template #button>
                     <mat-icon *ngIf="!sasisopaDocs[2] && !docFile[2]" class="color" svgIcon="icons:upload"></mat-icon>
                     <mat-icon *ngIf="sasisopaDocs[2] || docFile[2]" class="color">autorenew</mat-icon>
@@ -298,7 +301,8 @@
             </mat-card>
             <mat-card class="procedures">
               <mat-card-content>
-                <lib-upload-file (loadImage)="loadFile($event, 3, 4)" [content]="button" [fileType]="'document'">
+                <lib-upload-file (loadImage)="loadFile($event, 3, 4)" [content]="button"
+                                 [isLoaded]="!sasisopaDocs[3] && !docFile[3]" [fileType]="'document'">
                   <ng-template #button>
                     <mat-icon *ngIf="!sasisopaDocs[3] && !docFile[3]" class="color" svgIcon="icons:upload"></mat-icon>
                     <mat-icon *ngIf="sasisopaDocs[3] || docFile[3]" class="color">autorenew</mat-icon>
@@ -358,7 +362,8 @@
               operativa y protección al medio ambiente</p>
             <mat-card class="procedures">
               <mat-card-content>
-                <lib-upload-file (loadImage)="loadFile($event, 4, 5)" [content]="button" [fileType]="'document'">
+                <lib-upload-file (loadImage)="loadFile($event, 4, 5)" [content]="button"
+                                 [isLoaded]="!sasisopaDocs[4] && !docFile[4]" [fileType]="'document'">
                   <ng-template #button>
                     <mat-icon *ngIf="!sasisopaDocs[4] && !docFile[4]" class="color" svgIcon="icons:upload"></mat-icon>
                     <mat-icon *ngIf="sasisopaDocs[4] || docFile[4]" class="color">autorenew</mat-icon>
@@ -425,7 +430,8 @@
               seguridad operativa y protección al medio ambiente</p>
             <mat-card class="procedures">
               <mat-card-content>
-                <lib-upload-file (loadImage)="loadFile($event, 6, 6)" [content]="button" [fileType]="'document'">
+                <lib-upload-file (loadImage)="loadFile($event, 6, 6)" [content]="button"
+                                 [isLoaded]="!sasisopaDocs[5] && !docFile[5]" [fileType]="'document'">
                   <ng-template #button>
                     <mat-icon *ngIf="!sasisopaDocs[5] && !docFile[5]" class="color" svgIcon="icons:upload"></mat-icon>
                     <mat-icon *ngIf="sasisopaDocs[5] || docFile[5]" class="color">autorenew</mat-icon>
@@ -447,7 +453,8 @@
               y desempeño del propio sistema de administración</p>
             <mat-card class="procedures">
               <mat-card-content>
-                <lib-upload-file (loadImage)="loadFile($event, 9, 7)" [content]="button" [fileType]="'document'">
+                <lib-upload-file (loadImage)="loadFile($event, 9, 7)" [content]="button"
+                                 [isLoaded]="!sasisopaDocs[6] && !docFile[6]" [fileType]="'document'">
                   <ng-template #button>
                     <mat-icon *ngIf="!sasisopaDocs[6] && !docFile[6]" class="color" svgIcon="icons:upload"></mat-icon>
                     <mat-icon *ngIf="sasisopaDocs[6] || docFile[6]" class="color">autorenew</mat-icon>
@@ -458,7 +465,8 @@
             </mat-card>
             <mat-card class="procedures">
               <mat-card-content>
-                <lib-upload-file (loadImage)="loadFile($event, 9, 8)" [content]="button" [fileType]="'document'">
+                <lib-upload-file (loadImage)="loadFile($event, 9, 8)" [content]="button"
+                                 [isLoaded]="!sasisopaDocs[7] && !docFile[7]" [fileType]="'document'">
                   <ng-template #button>
                     <mat-icon *ngIf="!sasisopaDocs[7] && !docFile[7]" class="color" svgIcon="icons:upload"></mat-icon>
                     <mat-icon *ngIf="sasisopaDocs[7] || docFile[7]" class="color">autorenew</mat-icon>
@@ -479,7 +487,8 @@
             <p class="point">Punto 17. La revisión de los resultados en la verificación</p>
             <mat-card class="procedures">
               <mat-card-content>
-                <lib-upload-file (loadImage)="loadFile($event, 10, 9)" [content]="button" [fileType]="'document'">
+                <lib-upload-file (loadImage)="loadFile($event, 10, 9)" [content]="button"
+                                 [isLoaded]="!sasisopaDocs[8] && !docFile[8]" [fileType]="'document'">
                   <ng-template #button>
                     <mat-icon *ngIf="!sasisopaDocs[8] && !docFile[8]" class="color" svgIcon="icons:upload"></mat-icon>
                     <mat-icon *ngIf="sasisopaDocs[8] || docFile[8]" class="color">autorenew</mat-icon>
@@ -490,7 +499,8 @@
             </mat-card>
             <mat-card class="procedures">
               <mat-card-content>
-                <lib-upload-file (loadImage)="loadFile($event, 10, 10)" [content]="button" [fileType]="'document'">
+                <lib-upload-file (loadImage)="loadFile($event, 10, 10)" [content]="button"
+                                 [isLoaded]="!sasisopaDocs[9] && !docFile[9]" [fileType]="'document'">
                   <ng-template #button>
                     <mat-icon *ngIf="!sasisopaDocs[9] && !docFile[9]" class="color" svgIcon="icons:upload"></mat-icon>
                     <mat-icon *ngIf="sasisopaDocs[9] || docFile[9]" class="color">autorenew</mat-icon>
@@ -501,7 +511,8 @@
             </mat-card>
             <mat-card class="procedures">
               <mat-card-content>
-                <lib-upload-file (loadImage)="loadFile($event, 10, 11)" [content]="button" [fileType]="'document'">
+                <lib-upload-file (loadImage)="loadFile($event, 10, 11)" [content]="button"
+                                 [isLoaded]="!sasisopaDocs[10] && !docFile[10]" [fileType]="'document'">
                   <ng-template #button>
                     <mat-icon *ngIf="!sasisopaDocs[10] && !docFile[10]" class="color" svgIcon="icons:upload"></mat-icon>
                     <mat-icon *ngIf="sasisopaDocs[10] || docFile[10]" class="color">autorenew</mat-icon>
@@ -523,7 +534,8 @@
               operativa y protección al medio ambiente</p>
             <mat-card class="procedures">
               <mat-card-content>
-                <lib-upload-file (loadImage)="loadFile($event, 11, 12)" [content]="button" [fileType]="'document'">
+                <lib-upload-file (loadImage)="loadFile($event, 11, 12)" [content]="button"
+                                 [isLoaded]="!sasisopaDocs[11] && !docFile[11]" [fileType]="'document'">
                   <ng-template #button>
                     <mat-icon *ngIf="!sasisopaDocs[11] && !docFile[11]" class="color" svgIcon="icons:upload"></mat-icon>
                     <mat-icon *ngIf="sasisopaDocs[11] || docFile[11]" class="color">autorenew</mat-icon>

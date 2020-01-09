@@ -33,7 +33,7 @@
       <div class="container-forms">
         <div class="header-image" *ngIf="showOwnerForm">
           <mat-card>
-            <lib-upload-file [content]="profileImage" [fileType]="'image'" (loadImage)="onLoadImage($event)" >
+            <lib-upload-file [content]="profileImage" [fileType]="'image'" [isLoaded]="userImage.blob ? true : false" (loadImage)="onLoadImage($event)" >
               <ng-template #profileImage>
                 <mat-icon *ngIf="!userImage.blob">add_photo_alternate</mat-icon>
                 <img *ngIf="userImage.blob" [src]="userImage.url" alt="User image">

@@ -332,7 +332,7 @@
                 <form [formGroup]="newLegalRep" (ngSubmit)="validateLegal(newLegalRep.value)">
                   <img src="../../../../assets/image/background.png" class="head-image" alt="background gas station">
                   <div class="image">
-                    <lib-upload-file [content]="icon" (loadImage)="onLoadImage($event, false)" [fileType]="'image'">
+                    <lib-upload-file [content]="icon" (loadImage)="onLoadImage($event, false)" [isLoaded]="profileImage ? true : false" [fileType]="'image'">
                       <ng-template #icon>
                         <img *ngIf="profileImage" [src]="profileImage" profile-image alt="User profile image">
                         <mat-icon *ngIf="!profileImage" profile-image default-image>add_photo_alternate</mat-icon>
@@ -450,7 +450,7 @@
                     </mat-form-field>
                     <div class="submit">
                       <lib-upload-file class="inputs" [content]="button" (loadImage)="onLoadFile($event, false)"
-                                       [fileType]="'document'">
+                                       [isLoaded]="file ? true : false" [fileType]="'document'">
                         <ng-template #button>
                           <div class="study">
                             <span>Estudio de toxicidad (Benceno)</span>

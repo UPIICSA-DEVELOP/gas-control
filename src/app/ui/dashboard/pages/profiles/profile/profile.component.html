@@ -14,7 +14,7 @@
         <mat-card class="content">
           <mat-card class="head">
             <lib-upload-file [content]="icon" (loadImage)="onLoadImage($event)"
-                             [fileType]="'image'">
+                             [isLoaded]="profileImage ? true : false" [fileType]="'image'">
               <ng-template #icon>
                 <img *ngIf="profileImage" [src]="profileImage" profile-image alt="User profile image">
                 <mat-icon *ngIf="!profileImage" profile-image default-image>add_photo_alternate</mat-icon>
