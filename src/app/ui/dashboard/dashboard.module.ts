@@ -50,7 +50,7 @@ import {TaskFilterNameService} from '@app/ui/dashboard/components/task-filter-na
 import {CompressorReportComponent} from '@app/ui/dashboard/components/list-tasks/components/compressor-report/compressor-report.component';
 import {UserProfileComponent} from '@app/ui/dashboard/pages/profiles/user-profile/user-profile.component';
 import {DashboardComponent} from '@app/ui/dashboard/pages/dashboard/dashboard.component';
-import {CountryCodeService, UploadFileModule} from '@maplander/core';
+import {DialogModule, CountryCodeService, UploadFileModule} from '@maplander/core';
 
 
 const Reports = [
@@ -127,7 +127,8 @@ const EntryComponents = [
     CommonModule,
     SharedModule,
     RouterModule.forChild(dashboardRoutes),
-    UploadFileModule
+    UploadFileModule,
+    DialogModule
   ],
   declarations: [
     Components,

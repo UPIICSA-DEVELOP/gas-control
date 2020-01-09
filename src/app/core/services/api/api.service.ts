@@ -37,6 +37,7 @@ import {FRReport} from '@app/utils/interfaces/reports/frr-report';
 import {IncidenceReport} from '@app/utils/interfaces/reports/incidence-report';
 import {Notification} from '@app/utils/interfaces/notification';
 import {NetworkService, SessionStorageService, SnackBarService} from '@maplander/core';
+import {OtherDocStation} from '@app/utils/interfaces/other-doc-station';
 
 @Injectable()
 export class ApiService implements OnDestroy {
@@ -128,7 +129,9 @@ export class ApiService implements OnDestroy {
   }
 
   public uploadFileToBlob(part: FormData): Observable<any> {
-    return this._http.post(ApiService.API_URL + '/upload', part);
+    return this._http.post(ApiService.API_URL + '/upload', part, {
+      responseType: 'json'
+    });
   }
 
   public deleteFileToBlob(blobName: string): Observable<any> {
@@ -715,6 +718,18 @@ export class ApiService implements OnDestroy {
     let params = new HttpParams();
     params = params.append('id', personId);
     return this._http.post<DefaultResponse>(ApiService.API_URL_COMPLETE + 'sendEmailToValidateAccount', {}, {
+      params
+    });
+  }
+
+  public saveOtherDocStation(docs: OtherDocStation): Observable<EntityResponse<OtherDocStation>> {
+    return this._http.post<EntityResponse<OtherDocStation>>(ApiService.API_URL_COMPLETE + 'saveOtherDocStation', docs);
+  }
+
+  public getOtherDocStation(id: string): Observable<EntityResponse<OtherDocStation>> {
+    let params = new HttpParams();
+    params = params.append('id', id);
+    return this._http.get<EntityResponse<OtherDocStation>>(ApiService.API_URL_COMPLETE + 'getOtherDocStation', {
       params
     });
   }

@@ -8,7 +8,7 @@ import {Component, HostBinding, OnDestroy, OnInit} from '@angular/core';
 import {UploadFileService} from '@app/shared/components/upload-file/upload-file.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {ApiService} from '@app/core/services/api/api.service';
-import {Subscription} from 'rxjs';
+import {Observable, Subscription} from 'rxjs';
 import {PdfVisorService} from '@app/shared/components/pdf-visor/pdf-visor.service';
 import {Constants} from '@app/utils/constants/constants.utils';
 import {HashService} from '@app/utils/utilities/hash.service';
@@ -16,9 +16,14 @@ import {LoaderService} from '@app/core/components/loader/loader.service';
 import {Document} from '@app/utils/interfaces/document';
 import {HttpResponseCodes} from '@app/utils/enums/http-response-codes';
 import {ANIMATION} from '@app/ui/dashboard/pages/documentation/animation';
-import {LocalStorageService, SnackBarService} from '@maplander/core';
+import {DialogResponse, DialogService, LocalStorageService, SnackBarService} from '@maplander/core';
 import {UserMedia} from '@app/utils/interfaces/user-media';
+import {FileCS} from '@app/utils/interfaces/file-cs';
+import {OtherDocument} from '@app/utils/interfaces/other-document';
 import {Person} from '@app/utils/interfaces/person';
+import {switchMap} from 'rxjs/operators';
+import {EntityResponse} from '@app/utils/class/entity-response';
+import {OtherDocStation} from '@app/utils/interfaces/other-doc-station';
 
 @Component({
   selector: 'app-documentation',
@@ -29,12 +34,13 @@ import {Person} from '@app/utils/interfaces/person';
 
 export class DocumentationComponent implements OnInit, OnDestroy {
   @HostBinding('@fadeInAnimation')
-
-  public isASEA: boolean;
   public stationId: string;
   public docsAsea: any[];
   public docsCre: any[];
+  public othersDocuments: OtherDocument[];
+  public profecoDocuments: { id: string, name: string, fileCS: FileCS }[];
   public load: boolean;
+  public documentsActive: number;
   private _documentData: FormData;
   private _subscriptionLoader: Subscription;
 
@@ -45,9 +51,11 @@ export class DocumentationComponent implements OnInit, OnDestroy {
     private _api: ApiService,
     private _apiLoader: LoaderService,
     private _snackBarService: SnackBarService,
-    private _pdf: PdfVisorService
+    private _pdf: PdfVisorService,
+    private _dialog: DialogService
   ) {
-    this.isASEA = true;
+    this.documentsActive = 0;
+    this.othersDocuments = [];
     this.docsAsea = [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null];
     this.docsCre = [null, null];
   }
@@ -56,6 +64,8 @@ export class DocumentationComponent implements OnInit, OnDestroy {
     this.stationId = this._activateRoute.params['_value'].station;
     this.listAseaDocs(this._activateRoute.snapshot.data.data.asea);
     this.listCreDocs(this._activateRoute.snapshot.data.data.cre);
+    this.profecoDocuments = this._activateRoute.snapshot.data.data.profeco.item.profecoDocuments;
+    this.othersDocuments = this._activateRoute.snapshot.data.data.others.item.otherDocuments || [];
     this._subscriptionLoader = this._apiLoader.getProgress().subscribe(load => {
       this.load = load;
     });
@@ -93,6 +103,35 @@ export class DocumentationComponent implements OnInit, OnDestroy {
     } else {
       this._snackBarService.setMessage('No se ha podido acceder, intente más tarde', 'OK', 3000);
       this._router.navigate(['/home']).then();
+    }
+  }
+
+  public loadNewOtherDocument(ev: UserMedia, update?: OtherDocument): void {
+    if (!ev || !ev.blob) {
+      return;
+    }
+    this._dialog.withInput('Información', 'Asigne un nombre al documento', {
+      placeholder: 'Nombre'
+    }).afterClosed().subscribe((response: DialogResponse) => {
+      if (response && response.code === 'ACCEPT') {
+        if (update) {
+          this.removeOtherDocumentFromList(update);
+        }
+        this.uploadNewDocument(ev, response.data.value);
+      }
+    });
+  }
+
+  public updateOtherDocument(ev: UserMedia, source: OtherDocument): void {
+    if (!ev || !ev.blob) {
+      this.removeOtherDocumentFromList(source);
+      this.updateOtherDocumentsList().subscribe((response: EntityResponse<OtherDocStation>) => {
+        if (response.code === HttpResponseCodes.OK) {
+          this._snackBarService.setMessage('Lista actualizada', 'OK', 2000);
+        }
+      });
+    } else {
+      this.loadNewOtherDocument(ev, source);
     }
   }
 
@@ -204,21 +243,52 @@ export class DocumentationComponent implements OnInit, OnDestroy {
     this._router.navigate(['/home/profile/gas-station', this.stationId]).then();
   }
 
+  public openOtherPdf(url: string): void {
+    const user = LocalStorageService.getItem<Person>(Constants.UserInSession);
+    const download = user.role === 1 || user.role === 2 || user.role === 4 || user.role === 7;
+    this._pdf.open({urlOrFile: HashService.set('123456$#@$^@1ERF', url), hideDownload: !download});
+  }
+
+
   public openPdf(index: number, isAsea: boolean): void {
     const user = LocalStorageService.getItem<Person>(Constants.UserInSession);
     const url = isAsea ? this.docsAsea[index].file.thumbnail : this.docsCre[index].file.thumbnail;
-    switch (user.role) {
-      case 1:
-      case 2:
-      case 4:
-      case 7:
-        this._pdf.open({urlOrFile: HashService.set('123456$#@$^@1ERF', url)});
-        break;
-      case 3:
-      case 5:
-      case 6:
-        this._pdf.open({urlOrFile: HashService.set('123456$#@$^@1ERF', url), hideDownload: true});
-        break;
+    const download = user.role === 1 || user.role === 2 || user.role === 4 || user.role === 7;
+    this._pdf.open({urlOrFile: HashService.set('123456$#@$^@1ERF', url), hideDownload: !download});
+  }
+
+  private uploadNewDocument(media: UserMedia, name: string): void {
+    const form = new FormData();
+    form.append('path', this.stationId);
+    form.append('fileName', `${name.replace(/ /g, '-')}.pdf`);
+    form.append('file', media.blob, `${name.replace(/ /g, '-')}.pdf`);
+    this._uploadFile.upload(form).pipe(
+      switchMap((files: EntityResponse<FileCS>) =>
+        this.updateOtherDocumentsList(name, files))).subscribe((response: EntityResponse<OtherDocStation>) => {
+      if (response.code === HttpResponseCodes.OK) {
+        this._snackBarService.setMessage('Archivo agregado', 'OK', 2000);
+      }
+    });
+  }
+
+  private updateOtherDocumentsList(name?: string, response?: EntityResponse<FileCS>): Observable<EntityResponse<OtherDocStation>> {
+    const newList = this.othersDocuments;
+    if (name && response) {
+      newList.push({
+        name: name,
+        fileCS: response.item
+      });
+    }
+    return this._api.saveOtherDocStation({
+      id: this.stationId,
+      otherDocuments: newList
+    });
+  }
+
+  private removeOtherDocumentFromList(source: OtherDocument): void {
+    const i = this.othersDocuments.indexOf(source);
+    if (i > -1) {
+      this.othersDocuments.splice(i, 1);
     }
   }
 }
