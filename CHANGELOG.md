@@ -2,6 +2,25 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="1.6.0-beta.2"></a>
+# [1.6.0-beta.2](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/compare/v1.6.0-beta.1...v1.6.0-beta.2) (2020-01-09)
+
+
+### Bug Fixes
+
+* replace all 'file' input at lib-upload-file to 'document' ([8bb0c19](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/8bb0c19))
+
+
+### Features
+
+* **api.service:** Add endpoint save and get for OtherDocStation ([d4f8d17](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/d4f8d17))
+* **dashboard.module:** Add DialogModule ([f6b3535](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/f6b3535))
+* **documentation.component:** Add profeco and other documents ([f5604aa](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/f5604aa))
+* **interfaces:** Add OtherDocStation and OtherDocument ([1d44d14](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/1d44d14))
+* **package.json:** Update [@maplander](https://bitbucket.org/maplander)/core to 0.14.0 version ([f30b936](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/f30b936))
+
+
+
 <a name="1.6.0-beta.1"></a>
 # [1.6.0-beta.1](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/compare/v1.6.0-beta.0...v1.6.0-beta.1) (2020-01-07)
 
