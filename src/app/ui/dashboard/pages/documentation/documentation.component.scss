@@ -4,12 +4,19 @@
  * Proprietary and confidential
  */
 
+@import "./../../../../../styles/colors";
+
 #documentation {
   top: 0;
   height: 100%;
   background-color: #FFFFFF;
   z-index: 15;
   position: relative;
+
+  .btn-active{
+    color: white !important;
+    background: mat-color($primary) !important;
+  }
 
   .content {
     width: 100%;
@@ -74,17 +81,11 @@
       }
 
       .buttons-container {
-        display: flex;
-        flex-direction: column;
-        width: 25%;
+        display: grid;
+        grid-template-columns: 50% 50%;
         padding: 0 24px;
-        @media screen and (max-width: 800px) {
-          flex-direction: row;
-          width: 100%;
-          justify-content: space-around;
-        }
-
         button {
+          width: 120px;
           font-weight: 600;
           margin: 12px 0;
           box-shadow: 0 3px 1px 1px rgba(0, 0, 0, 0.1), 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, .10);
@@ -195,5 +196,12 @@
     mat-icon {
       color: #FFFFFF;
     }
+  }
+
+  .btn-add-other {
+    position: absolute;
+    right: 24px;
+    bottom: 16px;
+    z-index: 5;
   }
 }
