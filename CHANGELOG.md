@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="1.6.0-beta.3"></a>
+# [1.6.0-beta.3](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/compare/v1.6.0-beta.2...v1.6.0-beta.3) (2020-03-26)
+
+
+### Bug Fixes
+
+* **documentation.component:** Hide temporally PROFECO documents ([7c57cb0](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/7c57cb0))
+
+
+### Features
+
+* **@maplander/core:** isLoaded input assigned to lib-upload-file component, [@maplander](https://bitbucket.org/maplander)/core updated ([ed60be8](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/ed60be8))
+
+
+
 <a name="1.6.0-beta.2"></a>
 # [1.6.0-beta.2](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/compare/v1.6.0-beta.1...v1.6.0-beta.2) (2020-01-09)
 
