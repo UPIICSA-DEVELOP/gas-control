@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="1.6.0-beta.4"></a>
+# [1.6.0-beta.4](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/compare/v1.6.0-beta.3...v1.6.0-beta.4) (2020-03-27)
+
+
+### Bug Fixes
+
+* **api:** Remove api moved to https://api-inspector.maplander.com ([3cb152b](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/3cb152b))
+* **bin:** Remove api task of all scripts ([025d341](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/025d341))
+* **hooks:** Remove all scripts and add start.sh ([34e2008](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/34e2008))
+* **package.json:** Remove tasks for deploy and task for build api ([5f531fa](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/commits/5f531fa))
+
+
+
 <a name="1.6.0-beta.3"></a>
 # [1.6.0-beta.3](https://bitbucket.org/roberto_osvaldo_salazar/com.maplander.inspector.front/compare/v1.6.0-beta.2...v1.6.0-beta.3) (2020-03-26)
 
