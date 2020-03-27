@@ -5,7 +5,7 @@ const FileManagerPlugin = require('filemanager-webpack-plugin');
 module.exports = {
   entry: {
     server: path.join(__dirname, 'server.ts'),
-    logger: path.join(__dirname, 'logger.ts')
+    logger: path.join(__dirname, 'logger/logger.ts')
   },
   resolve: {
     extensions: ['.ts', '.js']

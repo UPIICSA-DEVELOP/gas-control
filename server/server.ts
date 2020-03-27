@@ -5,117 +5,71 @@
  */
 
 
-import 'zone.js/dist/zone-node'
+import 'zone.js/dist/zone-node';
 import {enableProdMode} from '@angular/core';
-import {EndPoints} from '../api/endpoints';
 import * as express from 'express';
-import * as path from "path";
-import {Logger} from './logger';
+import * as path from 'path';
 import * as compression from 'compression';
-import {APIError} from '../api/commons/class';
+import {CustomLogger} from './logger/logger';
+import {HandlerError} from './handler/handlerError';
 
 enableProdMode();
 
 export class Server {
 
-  public app: express.Application;
+  private readonly DIR: string = path.resolve(__dirname, 'browser');
   private _port: number | string;
-  private static DIR: string = path.resolve(__dirname, 'browser');
+  public app: express.Application;
 
 
-  constructor(){
+  constructor() {
     this.app = express();
     this.initConfig();
+  }
+
+  private static globalHeaders(req: any, res: any, next: any): void {
+    res.header('X-Powered-By', 'MapLander');
+    next();
   }
 
   public static bootstrap(): Server {
     return new Server();
   }
 
-  private initConfig(): void{
+  private initConfig(): void {
     this._port = process.env.PORT || 8090;
     this.app.use(Server.globalHeaders);
     this.createLogger();
     this.app.use(compression({level: 9}));
     this.app.use('/.well-known', express.static(__dirname + '/.well-known'));
-    this.app.use(express.static(Server.DIR));
-    this.configEndPoints();
-    this.initHandlers();
+    this.app.use(express.static(this.DIR));
     this.router();
   }
 
-  private createLogger(): void{
+  private createLogger(): void {
     const morgan = require('morgan');
-    const logger = new Logger();
-    this.app.use(morgan('combined', { stream: logger.init().stream, skip: Server.skipLog }));
+    const logger = CustomLogger.bootstrap();
+    this.app.use(morgan('combined', logger.getOptions()));
   }
 
-  private static skipLog(req, res): boolean{
-    let url = req.url;
-    if(url.indexOf('?')>0)
-      url = url.substr(0,url.indexOf('?'));
-    return url.match(/(js|jpg|png|ico|css|woff|woff2|eot)$/ig);
+  private initHandlers(): void {
+    HandlerError.exceptionAndRejection();
+    this.app.use(HandlerError.errors);
   }
 
-  private static globalHeaders(req: any, res: any, next: any): void{
-    res.header('X-Powered-By', 'MapLander');
-    next();
-  }
-
-  private initHandlers(): void{
-    Server.handlerExceptionAndRejection();
-    this.app.use(Server.handlerErrors);
-  }
-
-  private static handlerErrors(err: any, req: any, res: any, next: any): void{
-    if(err instanceof APIError){
-      return res.status(err.code).send(err);
-    }
-    res.status(500).send(err);
-  }
-
-  private static handlerExceptionAndRejection(): void{
-    process.on('uncaughtException', Server.handleFatalErrors);
-    process.on('unhandledRejection', Server.handleFatalErrors);
-  }
-
-  private static handleFatalErrors(err: any, req: any, res: any, next:any): void{
-    console.error('handleFatalErrors', err.message);
-    console.error('handleFatalErrors', err.stack);
-    process.exit(1);
-  }
-
-  private router(): void{
-    this.app.get('*',  (req, res) => {
+  private router(): void {
+    this.app.get('*', (req, res) => {
       res.redirect('/#' + req.url);
     });
+    this.initHandlers();
     this.initServer();
   }
 
-  private initServer(): void{
+  private initServer(): void {
     this.app.listen(this._port, () => {
       console.log(`Current environment ${process.env.NODE_ENV}`);
       console.log(`Listening server lite on http://localhost:${this._port}`);
     });
-  }
-
-
-  /**
-   *
-   * @deprecated
-   *
-   * Migrate to new repository {@link https://api-inspector.maplander.com/}
-   * Available until: July 2019
-   *
-   * */
-  private configEndPoints(): void{
-    const swaggerUi = require('swagger-ui-express');
-    const swaggerDocument = require('../dist/api/swagger.json');
-    const options = {
-      customCss: '.swagger-ui .topbar { display: none }'
-    };
-    this.app.use('/endpoints/v1/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument, options));
-    this.app.use('/endpoints/v1', new EndPoints().bootstrap());
   }
 
 }
