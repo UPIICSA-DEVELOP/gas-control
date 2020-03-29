@@ -111,7 +111,9 @@ export class DocumentationComponent implements OnInit, OnDestroy {
       return;
     }
     this._dialog.withInput('Información', 'Asigne un nombre al documento', {
-      placeholder: 'Nombre'
+      placeholder: 'Nombre',
+      accept: 'ACEPTAR',
+      cancel: 'CANCELAR'
     }).afterClosed().subscribe((response: DialogResponse) => {
       if (response && response.code === 'ACCEPT') {
         if (update) {
