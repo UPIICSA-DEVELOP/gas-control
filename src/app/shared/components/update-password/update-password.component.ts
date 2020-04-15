@@ -5,32 +5,11 @@
  */
 
 import {Component, ElementRef, Inject, OnInit, ViewChild} from '@angular/core';
-import {AbstractControl, FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
 import {ConfigDialogPass} from 'app/shared/components/update-password/update-password.service';
 
 const md5 = require('md5');
-
-let data = null;
-
-export function ValidatePasswords(ac: AbstractControl) {
-  const password = ac.get('newPassword').value;
-  const repeatPassword = ac.get('confirmNewPass').value;
-  if (password !== repeatPassword) {
-    ac.get('confirmNewPass').setErrors({differentPasswords: true});
-  } else {
-    return null;
-  }
-}
-
-export function ValidateOldPassword(ac: AbstractControl) {
-  const oldPassword = ac.get('oldPassword').value;
-  if (md5(oldPassword) !== data.oldPass) {
-    ac.get('oldPassword').setErrors({invalidPassword: true});
-  } else {
-    return null;
-  }
-}
 
 @Component({
   selector: 'app-update-password',
@@ -66,13 +45,12 @@ export class UpdatePasswordComponent implements OnInit {
       cancel: this._data.cancel,
       oldPassword: this._data.oldPassword
     };
-    data = this.info;
     this.simpleForm = this._formBuilder.group({
       oldPassword: ['', [Validators.required]],
       newPassword: ['', [Validators.required]],
       confirmNewPass: ['', [Validators.required]]
     });
-    this.simpleForm.setValidators([ValidatePasswords, ValidateOldPassword]);
+    this.simpleForm.setValidators([this.globalValidator.bind(this)]);
   }
 
   public showPasswordOne(): void {
@@ -100,6 +78,19 @@ export class UpdatePasswordComponent implements OnInit {
 
   public cancel(): void {
     this.dialogRef.close({code: -1});
+  }
+
+  private globalValidator(form: FormGroup): void {
+    let condition = md5(form.get('oldPassword').value) !== this.info.oldPassword;
+    if (condition) {
+      form.get('oldPassword').setErrors({
+        invalidPassword: true
+      });
+    }
+    condition = md5(form.get('newPassword').value) !== md5(form.get('confirmNewPass').value);
+    if (condition) {
+      form.get('confirmNewPass').setErrors({differentPasswords: true});
+    }
   }
 
 }
