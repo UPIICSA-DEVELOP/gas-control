@@ -299,10 +299,12 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy {
         if (response.item.stationLites) {
           const list = UtilitiesService.sortJSON(response.item.stationLites, 'enabled', 'desc');
           this.stationActive = list[0];
+          // Todo: Workaround
+          const copyStation: any = this.stationActive;
           this.assignGroup();
           LocalStorageService.setItem<{id: string, name: string}>
           (Constants.StationInDashboard, {id: this.stationActive.id, name: this.stationActive.businessName});
-          if (this.role === 4 && !response.item.stationLites.enabled) {
+          if (this.role === 4 && !copyStation.enabled) {
             this.stationBlock();
           }
           if (response.item.stationLites.newNotification) {
