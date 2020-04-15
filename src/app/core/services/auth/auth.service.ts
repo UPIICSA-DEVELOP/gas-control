@@ -37,14 +37,24 @@ export class AuthService implements Resolve<any> {
     });
   }
 
-  private static validateUserInSession(): boolean {
+  static validateUserInSession(): boolean {
     return CookieService.getCookie(Constants.IdSession) !== null;
+  }
+
+  private static removeAll(): void {
+    LocalStorageService.removeItem<{ id: string, name: string }>(Constants.ConsultancyInSession);
+    LocalStorageService.removeItem<string>(Constants.SessionToken);
+    LocalStorageService.removeItem<boolean>(Constants.NotSignature);
+    LocalStorageService.removeItem<Person>(Constants.UserInSession);
+    LocalStorageService.removeItem<{ id: string, name: string }>(Constants.StationInDashboard);
+    SessionStorageService.removeItem<{ id: string, name: string }>(Constants.StationAdmin);
+    CookieService.deleteCookie(Constants.IdSession);
   }
 
   private static resetFlags(): void {
     LocalStorageService.removeItem<boolean>(Constants.NotSignature);
-    LocalStorageService.removeItem<{id: string, name: string}>(Constants.StationInDashboard);
-    LocalStorageService.removeItem<{id: string, name: string}>(Constants.ConsultancyInSession);
+    LocalStorageService.removeItem<{ id: string, name: string }>(Constants.StationInDashboard);
+    LocalStorageService.removeItem<{ id: string, name: string }>(Constants.ConsultancyInSession);
   }
 
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): any {
@@ -110,13 +120,7 @@ export class AuthService implements Resolve<any> {
         console.error(response);
       }
     });
-    LocalStorageService.removeItem<{id: string, name: string}>(Constants.ConsultancyInSession);
-    LocalStorageService.removeItem<string>(Constants.SessionToken);
-    LocalStorageService.removeItem<boolean>(Constants.NotSignature);
-    LocalStorageService.removeItem<Person>(Constants.UserInSession);
-    LocalStorageService.removeItem<{id: string, name: string}>(Constants.StationInDashboard);
-    SessionStorageService.removeItem<{id: string, name: string}>(Constants.StationAdmin);
-    CookieService.deleteCookie(Constants.IdSession);
+    AuthService.removeAll();
     if (!notNavigate) {
       this._router.navigate(['/']).then(() => {
       });
