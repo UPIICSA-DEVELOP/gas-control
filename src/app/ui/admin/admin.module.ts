@@ -16,7 +16,7 @@ import {SharedModule} from '@app/shared/shared.module';
 import {RouterModule} from '@angular/router';
 import {adminRoutes} from '@app/ui/admin/admin.routes';
 import {AddConsultancyComponent} from '@app/ui/admin/components/add-consultancy/add-consultancy.component';
-import {UploadFileModule} from '@maplander/core';
+import {CountryCodeModule, UploadFileModule} from '@maplander/core';
 
 const Components = [
   AddConsultancyComponent,
@@ -44,6 +44,7 @@ const EntryComponents = [
   imports: [
     CommonModule,
     SharedModule,
+    CountryCodeModule,
     RouterModule.forChild(adminRoutes),
     UploadFileModule
   ],
