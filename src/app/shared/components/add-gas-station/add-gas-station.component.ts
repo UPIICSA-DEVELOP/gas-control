@@ -472,7 +472,7 @@ export class AddGasStationComponent implements OnInit, OnDestroy {
   }
 
   public selectLegalRep(person: PersonLite) {
-    if (this._data.isUpdateRepresentativeLegal) {
+    if (this._data && this._data.isUpdateRepresentativeLegal) {
       this.closeAndSendNewRepresentativeLegal(person.id);
     } else {
       this.legalId = person.id;
