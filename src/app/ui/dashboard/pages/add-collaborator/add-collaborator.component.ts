@@ -313,8 +313,12 @@ export class AddCollaboratorComponent implements OnInit, OnDestroy {
   }
 
   public validateEmailExist(): void {
+    const text = this.newPerson.controls['email'].value;
+    if (!text || text === '' || this.newPerson.get('email').invalid) {
+      return;
+    }
     const email: any = {
-      email: this.newPerson.controls['email'].value
+      email: text
     };
     this._api.personExists(email).subscribe(response => {
       if (response.code === HttpResponseCodes.OK) {
