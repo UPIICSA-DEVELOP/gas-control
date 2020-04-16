@@ -172,9 +172,8 @@
             </mat-error>
           </mat-form-field>
           <div class="modal">
-            <div class="mask" (click)="selectCountryCode()"></div>
             <mat-form-field class="inputs">
-              <input (keyup)="selectCountryCode()" formControlName="country" matInput placeholder="País" required
+              <input libCountryCode (countrySelected)="selectCountryCode($event)" formControlName="country" matInput placeholder="País" required
                      type="text" aria-label="New collaborator country">
               <mat-error *ngIf="newPerson.controls['country'].hasError('required')">
                 Este campo es obligatorio
@@ -183,15 +182,14 @@
           </div>
           <div class="phone">
             <div class="modal" style="width: 25%;">
-              <div class="mask" (click)="selectCountryCode()"></div>
               <mat-form-field class="inputs">
-                <input formControlName="code" matInput placeholder="Código" type="text"
+                <input libCountryCode (countrySelected)="selectCountryCode($event)" formControlName="code" matInput placeholder="Código" type="text"
                        aria-label="New collaborator countryCode">
               </mat-form-field>
             </div>
             <mat-form-field class="number">
               <input formControlName="phoneNumber" matInput placeholder="Número de celular" required type="text"
-                     aria-label="New collaborator cellphone number" #phoneNumber>
+                     aria-label="New collaborator cellphone number">
               <mat-error *ngIf="newPerson.controls['phoneNumber'].hasError('required')">
                 Este campo es obligatorio
               </mat-error>

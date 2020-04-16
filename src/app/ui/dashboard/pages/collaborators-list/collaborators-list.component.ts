@@ -4,7 +4,7 @@
  * Proprietary and confidential
  */
 
-import {Component, ElementRef, HostBinding, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {Component, HostBinding, OnDestroy, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {Constants} from 'app/utils/constants/constants.utils';
 import {ApiService} from 'app/core/services/api/api.service';
@@ -21,6 +21,7 @@ import {EntityResponse} from '@app/utils/class/entity-response';
 import {ANIMATION} from '@app/ui/dashboard/pages/collaborators-list/animation';
 import {CookieService, CountryCodeService, LocalStorageService, SnackBarService} from '@maplander/core';
 import {UserMedia} from '@app/utils/interfaces/user-media';
+import {CountryCode} from '@maplander/core/lib/utils/models/country-code';
 
 @Component({
   selector: 'app-collaborators-list',
@@ -30,8 +31,6 @@ import {UserMedia} from '@app/utils/interfaces/user-media';
 })
 export class CollaboratorsListComponent implements OnInit, OnDestroy {
   @HostBinding('@fadeInAnimation')
-
-  @ViewChild('phoneNumber', {static: true}) private _phoneNumberInput: ElementRef;
   public collaborators: Person[];
   public register: boolean;
   public signature: any;
@@ -227,18 +226,15 @@ export class CollaboratorsListComponent implements OnInit, OnDestroy {
     this._formImage.append('file', event.blob);
   }
 
-  public selectCountryCode(): void {
-    this._countryCodeService.open().afterClosed().subscribe(response => {
-      if (response) {
-        this.changes = true;
-        this.country = response.iso;
-        this.newPerson.patchValue({
-          country: response.name,
-          code: response.code
-        });
-        this._phoneNumberInput.nativeElement.focus();
-      }
-    });
+  public selectCountryCode(ev: CountryCode): void {
+    if (ev) {
+      this.changes = true;
+      this.country = ev.iso;
+      this.newPerson.patchValue({
+        country: ev.name,
+        code: ev.code
+      });
+    }
   }
 
   public validateImgAndSignature(data: any) {
