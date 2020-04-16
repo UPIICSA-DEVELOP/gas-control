@@ -11,6 +11,7 @@ import {SharedModule} from '@app/shared/shared.module';
 import {RouterModule} from '@angular/router';
 import {ResetPassComponent} from '@app/ui/reset-pass/pages/reset-pass/reset-pass.component';
 import {resetPassRoutes} from '@app/ui/reset-pass/reset-pass.routes';
+import {ResetPassRouterService} from '@app/ui/reset-pass/pages/reset-pass/reset-pass-router.service';
 
 
 const Components = [];
@@ -19,7 +20,9 @@ const Pages = [
   ResetPassComponent
 ];
 
-const Providers = [];
+const Providers = [
+  ResetPassRouterService
+];
 
 
 @NgModule({
