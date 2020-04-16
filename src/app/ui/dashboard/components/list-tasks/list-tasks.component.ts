@@ -455,7 +455,7 @@ export class ListTasksComponent implements OnInit, OnDestroy {
         return;
       }
       this._modalScroll.nativeElement.scrollTop = '0';
-      this.reportConfig = {reportView: true, taskElement: task, typeReportView: task.original.typeReport, status: task.status};
+      this.reportConfig = {reportView: true, taskElement: task, typeReportView: task.original.typeReport, status: task.original.status};
     } else {
       this._modalScroll.nativeElement.scrollTop = '0';
       this.reportConfig = {reportView: true, taskElement: task, typeReportView: type, status: 4};
