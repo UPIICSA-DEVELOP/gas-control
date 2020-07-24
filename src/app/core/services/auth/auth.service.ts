@@ -27,7 +27,8 @@ export class AuthService implements Resolve<any> {
   }
 
   private static saveInfoUser(user: Person) {
-    LocalStorageService.setItem<Person>(Constants.UserInSession, {
+    LocalStorageService.setItem(Constants.UserInSession, {
+      id: user.id,
       completeName: user.name + ' ' + user.lastName,
       profileImage: (user.profileImage) ? user.profileImage.thumbnail : null,
       role: user.role,
@@ -37,30 +38,28 @@ export class AuthService implements Resolve<any> {
     });
   }
 
-  static getInfoUser(): Person {
+  static getInfoUser(): {
+    id: string,
+    completeName: string,
+    profileImage: string | null,
+    role: number,
+    refId: string,
+    email: string,
+    password: string
+  } {
     return LocalStorageService.getItem(Constants.UserInSession);
   }
 
   static validateUserInSession(): boolean {
     const session = CookieService.getCookie(Constants.IdSession) || null;
-    if (session) {
+    if (session !== null) {
       const user = AuthService.getInfoUser() || null;
-      if (user) {
-        const authSession = session === user.id;
-        if (authSession) {
-          return true;
-        } else {
-          AuthService.removeAll();
-          return false;
-        }
-      } else {
-        AuthService.removeAll();
-        return false;
+      if (user && user.id === session) {
+        return true;
       }
-    } else {
-      AuthService.removeAll();
-      return false;
     }
+    AuthService.removeAll();
+    return false;
   }
 
   private static removeAll(): void {
