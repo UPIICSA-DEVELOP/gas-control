@@ -104,7 +104,7 @@
     "@types/jasmine": "~2.5.53",
     "@types/jasminewd2": "~2.0.2",
     "@types/nconf": "^0.10.0",
-    "@types/node": "^6.0.114",
+    "@types/node": "^14.0.25",
     "browserify": "^16.2.2",
     "codelyzer": "^5.0.1",
     "commander": "^2.18.0",
