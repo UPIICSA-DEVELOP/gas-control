@@ -25,6 +25,7 @@ import {AppUtil} from '@app/utils/interfaces/app-util';
 import {LocalStorageService, SnackBarService} from '@maplander/core';
 import {UserMedia} from '@maplander/core/lib/utils/models/user-media';
 import {Person} from '@app/utils/interfaces/person';
+import {AuthService} from '@app/core/services/auth/auth.service';
 
 @Component({
   selector: 'app-om-report',
@@ -245,11 +246,11 @@ export class OmReportComponent implements OnInit, OnDestroy {
 
   private startEditFormat(isNewLoad?: boolean): void {
     let today: any = new Date();
-    const user = LocalStorageService.getItem<Person>(Constants.UserInSession);
+    const user = AuthService.getInfoUser();
     today = UtilitiesService.createPersonalTimeStamp(today);
     this.date = UtilitiesService.convertDate(today.timeStamp);
     this.editable = true;
-    this.name = user.name + user.lastName;
+    this.name = user.completeName;
     this._sharedService.setNotification({type: SharedTypeNotification.HwgActive, value: isNewLoad ? isNewLoad : false});
     if (!isNewLoad) {
       this._copyLastTask = this.omReport;
