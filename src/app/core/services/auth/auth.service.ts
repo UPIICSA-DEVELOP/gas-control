@@ -37,8 +37,30 @@ export class AuthService implements Resolve<any> {
     });
   }
 
+  static getInfoUser(): Person {
+    return LocalStorageService.getItem(Constants.UserInSession);
+  }
+
   static validateUserInSession(): boolean {
-    return CookieService.getCookie(Constants.IdSession) !== null;
+    const session = CookieService.getCookie(Constants.IdSession) || null;
+    if (session) {
+      const user = AuthService.getInfoUser() || null;
+      if (user) {
+        const authSession = session === user.id;
+        if (authSession) {
+          return true;
+        } else {
+          AuthService.removeAll();
+          return false;
+        }
+      } else {
+        AuthService.removeAll();
+        return false;
+      }
+    } else {
+      AuthService.removeAll();
+      return false;
+    }
   }
 
   private static removeAll(): void {
