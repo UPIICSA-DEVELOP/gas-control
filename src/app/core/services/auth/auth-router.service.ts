@@ -1,9 +1,6 @@
 import {Injectable} from '@angular/core';
 import {ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot, UrlTree} from '@angular/router';
 import {Observable} from 'rxjs';
-import {Constants} from 'app/utils/constants/constants.utils';
-import {LocalStorageService} from '@maplander/core';
-import {Person} from '@app/utils/interfaces/person';
 import {AuthService} from '@app/core/services/auth/auth.service';
 
 @Injectable()
@@ -14,29 +11,52 @@ export class AuthRouterService implements CanActivate {
   ) {
   }
 
+  private static validateAdmin(): boolean {
+    const user = AuthService.getInfoUser() || null;
+    if (!user) {
+      return false;
+    }
+    return user.role === 7;
+  }
+
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot)
     : Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-    if (state.url === '/login') {
-      if (AuthService.validateUserInSession()) {
-        if (LocalStorageService.getItem<Person>(Constants.UserInSession).role === 7) {
-          return this._router.createUrlTree(['/admin']);
+    switch (state.url) {
+      case '/login':
+        if (AuthService.validateUserInSession()) {
+          if (AuthRouterService.validateAdmin()) {
+            return this.navigateToAdmin();
+          }
+          return this.navigateToHome();
         } else {
-          return this._router.createUrlTree(['/home']);
+          return true;
         }
-      } else {
-        return true;
-      }
-    } else if (
-      state.url.includes('/admin') &&
-      AuthService.validateUserInSession() &&
-      LocalStorageService.getItem<Person>(Constants.UserInSession).role !== 7) {
-      return this._router.createUrlTree(['/home']);
-    } else {
-      if (AuthService.validateUserInSession()) {
-        return true;
-      } else {
-        return this._router.createUrlTree(['/login']);
-      }
+      case  '/home':
+        if (AuthService.validateUserInSession()) {
+          return true;
+        } else {
+          return this.navigateToLogin();
+        }
+      case '/admin':
+        if (AuthRouterService.validateAdmin()) {
+          return true;
+        } else {
+          return this.navigateToLogin();
+        }
+      default:
+        return this.navigateToLogin();
     }
+  }
+
+  private navigateToHome(): UrlTree {
+    return this._router.createUrlTree(['/home']);
+  }
+
+  private navigateToAdmin(): UrlTree {
+    return this._router.createUrlTree(['/admin']);
+  }
+
+  private navigateToLogin(): UrlTree {
+    return this._router.createUrlTree(['/login']);
   }
 }
