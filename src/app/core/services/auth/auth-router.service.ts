@@ -21,7 +21,8 @@ export class AuthRouterService implements CanActivate {
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot)
     : Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-    switch (state.url) {
+    const url = state.url.split('?')[0].split('#')[0];
+    switch (url) {
       case '/login':
         if (AuthService.validateUserInSession()) {
           if (AuthRouterService.validateAdmin()) {
