@@ -12,16 +12,14 @@ import {UploadFileService} from '@app/shared/components/upload-file/upload-file.
 import {SignaturePadService} from '@app/shared/components/signature-pad/signature-pad.service';
 import {SharedService, SharedTypeNotification} from '@app/core/services/shared/shared.service';
 import {Subscription} from 'rxjs';
-import {Constants} from '@app/utils/constants/constants.utils';
 import {PdfVisorService} from '@app/shared/components/pdf-visor/pdf-visor.service';
 import {HashService} from '@app/utils/utilities/hash.service';
 import {LoaderService} from '@app/core/components/loader/loader.service';
 import {HWCReport} from '@app/utils/interfaces/reports/hwc-report';
-import {Task} from '@app/utils/interfaces/task';
 import {HttpResponseCodes} from '@app/utils/enums/http-response-codes';
-import {LocalStorageService, SnackBarService} from '@maplander/core';
+import {SnackBarService} from '@maplander/core';
 import {UserMedia} from '@maplander/core/lib/utils/models/user-media';
-import {Person} from '@app/utils/interfaces/person';
+import {AuthService} from '@app/core/services/auth/auth.service';
 
 @Component({
   selector: 'app-hwc-report',
@@ -30,7 +28,7 @@ import {Person} from '@app/utils/interfaces/person';
 })
 export class HwcReportComponent implements OnInit, OnDestroy {
   private _taskId: string;
-  public task: Task;
+  public task: any;
   private _stationId: string;
 
   @Input() set taskHwcInfo(taskObj: any) {
@@ -168,7 +166,7 @@ export class HwcReportComponent implements OnInit, OnDestroy {
     this.hwcReport = undefined;
     this.hwcForm.reset();
     this.hwcForm.disable();
-    const user = LocalStorageService.getItem<Person>(Constants.UserInSession);
+    const user = AuthService.getInfoUser();
     if (this.task.status !== 4 && user.role === 7) {
       this.startEditFormat(true);
     }
@@ -181,11 +179,11 @@ export class HwcReportComponent implements OnInit, OnDestroy {
 
   private startEditFormat(isNewLoad?: boolean): void {
     let today: any = new Date();
-    const user = LocalStorageService.getItem<Person>(Constants.UserInSession);
+    const user = AuthService.getInfoUser();
     today = UtilitiesService.createPersonalTimeStamp(today);
     this.date = UtilitiesService.convertDate(today.timeStamp);
     this.editable = true;
-    this.name = user.name + user.lastName;
+    this.name = user.completeName;
     if (!isNewLoad) {
       this._copyTask = this.hwcReport;
       if (this.hwcReport.fileCS) {
@@ -314,7 +312,7 @@ export class HwcReportComponent implements OnInit, OnDestroy {
   }
 
   public seeReport(): void {
-    const user = LocalStorageService.getItem<Person>(Constants.UserInSession);
+    const user = AuthService.getInfoUser();
     switch (user.role) {
       case 1:
       case 2:
