@@ -29,7 +29,7 @@ import {Person} from '@app/utils/interfaces/person';
 export class FrReportComponent implements OnInit, OnDestroy {
   private _taskId: string;
   private _stationId: string;
-  public task: Task;
+  public task: any;
 
   @Input() set taskFrInfo(taskObj: any) {
     if (taskObj) {
