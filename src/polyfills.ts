@@ -48,7 +48,9 @@ import 'zone.js/dist/zone';  // Included with Angular CLI.
  */
 
 (window as any).global = window;
-
+global.Buffer = global.Buffer || require('buffer').Buffer;
+import * as process from 'process';
+window['process'] = process;
 /**
  * Date, currency, decimal and percent pipes.
  * Needed for: All but Chrome, Firefox, Edge, IE11 and Safari 10
