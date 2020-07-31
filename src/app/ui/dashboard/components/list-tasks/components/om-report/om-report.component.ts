@@ -12,7 +12,6 @@ import {ImageVisorService} from '@app/shared/components/image-visor/image-visor.
 import {SignaturePadService} from '@app/shared/components/signature-pad/signature-pad.service';
 import {UploadFileService} from '@app/shared/components/upload-file/upload-file.service';
 import {SharedService, SharedTypeNotification} from '@app/core/services/shared/shared.service';
-import {Constants} from '@app/utils/constants/constants.utils';
 import {LoaderService} from '@app/core/components/loader/loader.service';
 import {Subscription} from 'rxjs';
 import {FormatTimePipe} from '@app/shared/pipes/format-time/format-time.pipe';
@@ -22,9 +21,8 @@ import {HWGReport} from '@app/utils/interfaces/reports/hwg-report';
 import {Task} from '@app/utils/interfaces/task';
 import {HttpResponseCodes} from '@app/utils/enums/http-response-codes';
 import {AppUtil} from '@app/utils/interfaces/app-util';
-import {LocalStorageService, SnackBarService} from '@maplander/core';
+import {SnackBarService} from '@maplander/core';
 import {UserMedia} from '@maplander/core/lib/utils/models/user-media';
-import {Person} from '@app/utils/interfaces/person';
 import {AuthService} from '@app/core/services/auth/auth.service';
 
 @Component({
@@ -34,7 +32,7 @@ import {AuthService} from '@app/core/services/auth/auth.service';
 })
 export class OmReportComponent implements OnInit, OnDestroy {
   private _taskId: string;
-  public task: Task;
+  public task: any;
   public utils: AppUtil;
 
   @Input() set taskOMInfo(taskObj: any) {
@@ -206,7 +204,7 @@ export class OmReportComponent implements OnInit, OnDestroy {
     this.omReport = undefined;
     this.omForm.reset();
     this.omForm.disable();
-    const user = LocalStorageService.getItem<Person>(Constants.UserInSession);
+    const user = AuthService.getInfoUser();
     if (this.task.status !== 4 && user.role === 7) {
       this.startEditFormat(true);
     }
@@ -229,7 +227,7 @@ export class OmReportComponent implements OnInit, OnDestroy {
   }
 
   public seeEvidence(): void {
-    if (this.task.status !== 4) {
+    if (this.task.original.status !== 4) {
       return;
     }
     if (this.taskItems[this._indexTask].fileCS) {
