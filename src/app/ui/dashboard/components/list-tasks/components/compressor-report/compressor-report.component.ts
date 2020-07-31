@@ -13,16 +13,14 @@ import {SharedService, SharedTypeNotification} from '@app/core/services/shared/s
 import {UploadFileService} from '@app/shared/components/upload-file/upload-file.service';
 import {SignaturePadService} from '@app/shared/components/signature-pad/signature-pad.service';
 import {Subscription} from 'rxjs';
-import {Constants} from '@app/utils/constants/constants.utils';
 import {FormatTimePipe} from '@app/shared/pipes/format-time/format-time.pipe';
 import {LoaderService} from '@app/core/components/loader/loader.service';
 import {CompressorReport} from '@app/utils/interfaces/reports/compressor-report';
 import {HWGReport} from '@app/utils/interfaces/reports/hwg-report';
-import {Task} from '@app/utils/interfaces/task';
 import {HttpResponseCodes} from '@app/utils/enums/http-response-codes';
-import {LocalStorageService, SnackBarService} from '@maplander/core';
+import {SnackBarService} from '@maplander/core';
 import {UserMedia} from '@app/utils/interfaces/user-media';
-import {Person} from '@app/utils/interfaces/person';
+import {AuthService} from '@app/core/services/auth/auth.service';
 
 @Component({
   selector: 'app-compressor-report',
@@ -31,9 +29,9 @@ import {Person} from '@app/utils/interfaces/person';
 })
 export class CompressorReportComponent implements OnInit, OnDestroy {
   private _taskId: string;
-  public task: Task;
+  public task: any;
 
-  @Input() set taskCompInfo(taskObj: Task) {
+  @Input() set taskCompInfo(taskObj: any) {
     if (taskObj) {
       this._taskId = taskObj.id;
       this.task = taskObj;
@@ -127,7 +125,7 @@ export class CompressorReportComponent implements OnInit, OnDestroy {
     this.compressorReport = null;
     this.compForm.reset();
     this.compForm.disable();
-    const user = LocalStorageService.getItem<Person>(Constants.UserInSession);
+    const user = AuthService.getInfoUser();
     if (this.task.status !== 4 && user.role === 7) {
       this.startEditFormat(true);
     }
@@ -192,7 +190,7 @@ export class CompressorReportComponent implements OnInit, OnDestroy {
   }
 
   public seeEvidence(): void {
-    if (this.task.status !== 4) {
+    if (this.task.origin.status !== 4) {
       return;
     }
     if (this.taskItems[this._indexTask].fileCS) {
@@ -210,11 +208,11 @@ export class CompressorReportComponent implements OnInit, OnDestroy {
 
   private startEditFormat(prepare?: boolean): void {
     let today: any = new Date();
-    const user = LocalStorageService.getItem<Person>(Constants.UserInSession);
+    const user = AuthService.getInfoUser();
     today = UtilitiesService.createPersonalTimeStamp(today);
     this.date = UtilitiesService.convertDate(today.timeStamp);
     this.editable = true;
-    this.name = user.name + user.lastName;
+    this.name = user.completeName;
     this._sharedService.setNotification({type: SharedTypeNotification.HwgActive, value: prepare ? prepare : false});
     if (!prepare) {
       this._copyTask = this.compressorReport;
@@ -228,7 +226,7 @@ export class CompressorReportComponent implements OnInit, OnDestroy {
       }
       this.compressorReport.signature = null;
       this.compressorReport.folio = null;
-      this.compressorReport.name = user.name + user.lastName;
+      this.compressorReport.name = user.completeName;
     }
     this.compForm.enable();
   }
