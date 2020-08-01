@@ -190,7 +190,7 @@ export class CompressorReportComponent implements OnInit, OnDestroy {
   }
 
   public seeEvidence(): void {
-    if (this.task.origin.status !== 4) {
+    if (this.task.original.status !== 4) {
       return;
     }
     if (this.taskItems[this._indexTask].fileCS) {
