@@ -113,7 +113,7 @@ export class ResetPassComponent implements OnInit, OnDestroy {
       if (response.code === HttpResponseCodes.OK) {
         this._auth.logIn(response.item, true, token);
         LocalStorageService.removeItem<string>(Constants.UpdatePassword);
-        this._snackBarService.setMessage('Contraseña actualizada', 'OK', 3000);
+        this._dialogService.alertDialog('Información', 'Contraseña actualizada');
       } else {
         this._snackBarService.setMessage('No se a podido actualizar la contraseña', 'OK', 3000);
         this._router.navigate(['/login']).then();
