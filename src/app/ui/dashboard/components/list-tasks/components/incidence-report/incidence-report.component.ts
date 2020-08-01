@@ -33,7 +33,7 @@ import {Person} from '@app/utils/interfaces/person';
 export class IncidenceReportComponent implements OnInit, OnDestroy {
   private _taskId: string;
   private _stationId: string;
-  public task: Task;
+  public task: any;
   public utils: AppUtil;
 
   @Input() set taskIncidenceInfo(taskObj: any) {
