@@ -30,7 +30,7 @@ import {Person} from '@app/utils/interfaces/person';
 })
 export class VrsReportComponent implements OnInit, OnDestroy {
   private _taskId: string;
-  public task: Task;
+  public task: any;
 
   @Input() set taskVrsInfo(taskObj: any) {
     if (taskObj) {
@@ -186,7 +186,7 @@ export class VrsReportComponent implements OnInit, OnDestroy {
   }
 
   public seeEvidence(): void {
-    if (this.task.status !== 4) {
+    if (this.task.original.status !== 4) {
       return;
     }
     if (this.taskItems[this._indexTask].fileCS) {
