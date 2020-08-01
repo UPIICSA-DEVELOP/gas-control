@@ -4,7 +4,7 @@
  *  Proprietary and confidential
  */
 
-import {AfterViewInit, Component, Inject, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, HostListener, Inject, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {ApiService} from 'app/core/services/api/api.service';
 import {Constants} from 'app/utils/constants/constants.utils';
 import {ActivatedRoute, Router} from '@angular/router';
@@ -50,6 +50,17 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy {
   private _subscriptionShared: Subscription;
   private _subscriptionLoader: Subscription;
   @ViewChild('drawer', {static: false}) private _drawer: any;
+  @HostListener('window:resize', ['$event']) onResize(event: any) {
+    if (event.target.innerWidth <= 1024) {
+      this.opened = false;
+      this.disabledClose = false;
+      this.mode = 'over';
+    } else {
+      this.mode = 'side';
+      this.opened = true;
+      this.disabledClose = true;
+    }
+  }
 
   constructor(
     @Inject(DOCUMENT) private _document: Document,
@@ -84,11 +95,6 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngAfterViewInit(): void {
-    if (this._document.body.clientWidth <= 1024) {
-      this.opened = false;
-      this.disabledClose = false;
-      this.mode = 'over';
-    }
     this.validateSignatureUser();
     this.initNotifications();
     this.checkChanges();
