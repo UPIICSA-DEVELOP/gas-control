@@ -227,7 +227,6 @@ export class DirectoryListComponent implements OnInit, OnChanges, OnDestroy {
 
   private updateRepresentativeLegal(personId: string): void {
     this._api.updateLegalRepresentativeInStation(personId, this.station.id).subscribe((response: DefaultResponse) => {
-      console.log(response);
       if (response.code === HttpResponseCodes.OK) {
         this.getCollaborators();
       }

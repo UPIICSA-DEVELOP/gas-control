@@ -25,7 +25,6 @@ export class ModalStationComponent implements OnInit {
   ngOnInit() {
     if (this._data) {
       this.icons = this._data;
-      console.log(this._data);
     }
   }
 
