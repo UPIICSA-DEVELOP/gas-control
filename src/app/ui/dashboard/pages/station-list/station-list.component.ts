@@ -206,23 +206,12 @@ export class StationListComponent implements OnInit {
         });
       });
     } else {
-      switch (this.user.role) {
-        case 1:
-        case 2:
-        case 3:
-          this._dialogService.alertDialog(
-            'Verificar Estado de suscripción',
-            'Esta estación esta suspendida por un problema con el último pago',
-            ''
-          );
-          break;
-        case 4:
-          this._dialogService.alertDialog(
-            'Verificar Estado de suscripción',
-            'Su cuenta esta suspendida por un problema con el último pago',
-            ''
-          );
-          break;
+      if (this.user.role === 4) {
+        this._dialogService.alertDialog(
+          'Verificar Estado de suscripción',
+          'Su cuenta esta suspendida por un problema con el último pago',
+          ''
+        );
       }
     }
   }
