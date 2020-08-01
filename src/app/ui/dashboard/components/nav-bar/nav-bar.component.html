@@ -43,7 +43,7 @@
         <mat-menu #menu_one>
           <button style="display: flex; align-items: center;" mat-menu-item *ngIf="user && user.role !== 7"
                   (click)="navigateProfile()">
-            <img style="width: 24px;height: 24px;border-radius: 50%;background-color: #FFFFFF;margin-right: 16px;"
+            <img style="width: 24px; height: 24px; border-radius: 50%; background-color: #FFFFFF; margin-right: 16px;"
                  *ngIf="imageExist" [src]="user.profileImage" alt="User profile image">
             <mat-icon *ngIf="!imageExist">account_circle</mat-icon>
             <span>Perfil</span>
