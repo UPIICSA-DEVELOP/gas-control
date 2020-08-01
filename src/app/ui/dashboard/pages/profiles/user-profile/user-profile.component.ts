@@ -504,7 +504,7 @@ export class UserProfileComponent implements OnInit, OnDestroy {
         if (!redirect) {
           this.saveInformation();
         } else {
-          this._snackBarService.setMessage('Contraseña Actualizada', 'OK', 3000);
+          this._dialogService.alertDialog('Información', 'Contraseña actualizada');
         }
       } else {
         this._dialogService.alertDialog('No se pudo acceder', 'Se produjo un error de comunicación con el servidor', 'ACEPTAR');
