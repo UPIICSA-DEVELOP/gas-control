@@ -95,6 +95,15 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngAfterViewInit(): void {
+    if (this._document.body.clientWidth <= 1024) {
+      this.opened = false;
+      this.disabledClose = false;
+      this.mode = 'over';
+    } else {
+      this.mode = 'side';
+      this.opened = true;
+      this.disabledClose = true;
+    }
     this.validateSignatureUser();
     this.initNotifications();
     this.checkChanges();
