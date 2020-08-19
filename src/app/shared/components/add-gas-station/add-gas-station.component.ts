@@ -730,7 +730,7 @@ export class AddGasStationComponent implements OnInit, OnDestroy {
           this._api.savePersonInformation(this.legalRepresentativeInformation)
             .subscribe((saveInformation: EntityResponse<PersonInformation>) => {
               if (saveInformation.code === HttpResponseCodes.OK) {
-                if (this._data.isUpdateRepresentativeLegal) {
+                if (this._data && this._data.isUpdateRepresentativeLegal) {
                   this.closeAndSendNewRepresentativeLegal(this.legalRepresentative.id);
                 } else {
                   this.newStation.patchValue({
@@ -935,7 +935,7 @@ export class AddGasStationComponent implements OnInit, OnDestroy {
         });
         break;
       case 1:
-        if (this._data.isUpdateRepresentativeLegal) {
+        if (this._data && this._data.isUpdateRepresentativeLegal) {
           if (this.listExist) {
             this._dialogRef.close();
           } else {
