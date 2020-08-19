@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="1.6.4"></a>
+## [1.6.4](https://bitbucket.org/developerswebmaplander/app-inspector/compare/v1.6.4-beta.0...v1.6.4) (2020-08-19)
+
+
+
 <a name="1.6.4-beta.0"></a>
 ## [1.6.4-beta.0](https://bitbucket.org/developerswebmaplander/app-inspector/compare/v1.6.3...v1.6.4-beta.0) (2020-08-19)
 
