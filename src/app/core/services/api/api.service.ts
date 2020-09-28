@@ -734,6 +734,19 @@ export class ApiService implements OnDestroy {
     });
   }
 
+  public getAllSgm(stationTaskId: string, status: number, cursor: string | null, limit: number): Observable<EntityCollectionResponse<Task>> {
+    let params = new HttpParams();
+    params = params.append('stationTaskId', stationTaskId);
+    params = params.append('status', status.toString());
+    params = params.append('limit', limit ? limit.toString() : '30');
+    if (cursor) {
+      params = params.append('cursor', cursor);
+    }
+    return this._http.get<EntityCollectionResponse<Task>>(ApiService.API_URL_COMPLETE + 'getAllSgm', {
+      params: params
+    });
+  }
+
   private initNetwork(): void {
     this._subscriptionNetwork = this._networkService.getNetworkChanges().subscribe(status => {
       const text = (!status) ? 'La conexión a internet se ha perdido' : 'De nuevo en linea';
