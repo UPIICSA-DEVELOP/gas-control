@@ -7,8 +7,8 @@
 const path = require('path'), fs = require('fs');
 
 const PATHS = {
-  dev: '/var/www/html/businesscard.maplander.com/develop/',
-  prod: '/var/www/html/businesscard.maplander.com/production/'
+  dev: '/var/www/html/app.inspector.com/develop/',
+  prod: '/var/www/html/app.inspector.com/production/'
 };
 
 (function () {
