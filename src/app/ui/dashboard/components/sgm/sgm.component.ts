@@ -18,7 +18,6 @@ import {MDate} from '@app/utils/class/MDate';
 import {LoaderService} from '@app/core/components/loader/loader.service';
 import {SgmSelection} from '@app/utils/interfaces/sgm-selection';
 import {Station} from '@app/utils/interfaces/station';
-import {Task} from '@app/utils/interfaces/task';
 import {HttpResponseCodes} from '@app/utils/enums/http-response-codes';
 import {SgmDocument} from '@app/utils/interfaces/sgm-document';
 import {LocalStorageService, SnackBarService} from '@maplander/core';
@@ -39,8 +38,9 @@ export class SgmComponent implements OnInit, OnDestroy {
   public premium: boolean;
   public diesel: boolean;
   public elementOnView: number;
-  public listTasksOne: Task[];
-  public listTasksTwo: Task[];
+  public listTasksOne: any[];
+  public listTasksTwo: any[];
+  public listTasksThree: any[];
   public generate: boolean;
   public isAvailable: boolean;
   public dateGeneration: string[];
@@ -50,6 +50,7 @@ export class SgmComponent implements OnInit, OnDestroy {
   private _subscriptionLoader: Subscription;
   private _token: string;
   private _tokenTwo: string;
+  private _tokenThree: string;
 
   constructor(
     @Inject(MAT_DIALOG_DATA) private _data,
@@ -73,8 +74,10 @@ export class SgmComponent implements OnInit, OnDestroy {
     this.elementOnView = 0;
     this.listTasksOne = [];
     this.listTasksTwo = [];
-    this._token = undefined;
-    this._tokenTwo = undefined;
+    this.listTasksThree = [];
+    this._token = null;
+    this._tokenTwo = null;
+    this._tokenThree = null;
   }
 
   ngOnInit() {
@@ -253,6 +256,7 @@ export class SgmComponent implements OnInit, OnDestroy {
         if (this.station.stationTaskId) {
           this.getStationTasksAnnexeOne();
           this.getStationTasksAnnexeTwo();
+          this.getStationTaskAnnexeThree();
         }
       } else {
         this.station = null;
@@ -277,7 +281,7 @@ export class SgmComponent implements OnInit, OnDestroy {
     }
     listTask.forEach(item => {
       this._data.utils.taskTemplates.forEach(origin => {
-        if (item.type === origin.id) {
+        if (item.type.toString() === origin.id.toString()) {
           newList.push({
             original: {
               id: item.id,
@@ -307,7 +311,6 @@ export class SgmComponent implements OnInit, OnDestroy {
   }
 
   private getStationTasksAnnexeOne(): void {
-    this._token = null;
     this._api.listTask({
       stationTaskId: this.station.stationTaskId,
       startDate: '',
@@ -320,10 +323,12 @@ export class SgmComponent implements OnInit, OnDestroy {
       if (response.code === HttpResponseCodes.OK) {
         if (this._token === response.nextPageToken) {
           this._token = null;
+          return;
         } else {
           this._token = response.nextPageToken;
         }
-        this.listTasksOne = this.buildListTasks(response.items);
+        this.listTasksOne = this.listTasksOne.concat(this.buildListTasks(response.items));
+        this.getStationTasksAnnexeOne();
       } else {
         this.listTasksOne = [];
       }
@@ -331,7 +336,6 @@ export class SgmComponent implements OnInit, OnDestroy {
   }
 
   private getStationTasksAnnexeTwo(): void {
-    this._tokenTwo = null;
     this._api.listTask({
       stationTaskId: this.station.stationTaskId,
       startDate: '',
@@ -344,12 +348,36 @@ export class SgmComponent implements OnInit, OnDestroy {
       if (response.code === HttpResponseCodes.OK) {
         if (this._tokenTwo === response.nextPageToken) {
           this._tokenTwo = null;
+          return;
         } else {
           this._tokenTwo = response.nextPageToken;
         }
-        this.listTasksTwo = this.buildListTasks(response.items);
+        this.listTasksTwo = this.listTasksTwo.concat(this.buildListTasks(response.items));
+        this.getStationTasksAnnexeTwo();
       } else {
         this.listTasksTwo = [];
+      }
+    });
+  }
+
+  private getStationTaskAnnexeThree(): void {
+    this._api.getAllSgm(
+      this.station.stationTaskId,
+      4,
+      this._tokenThree,
+      30
+    ).subscribe((response) => {
+      if (response.code === HttpResponseCodes.OK) {
+        if (this._tokenThree === response.nextPageToken) {
+          this._tokenThree = null;
+          return;
+        } else {
+          this._tokenThree = response.nextPageToken;
+        }
+        this.listTasksThree = this.listTasksThree.concat(this.buildListTasks(response.items));
+        this.getStationTaskAnnexeThree();
+      } else {
+        this.listTasksThree = [];
       }
     });
   }

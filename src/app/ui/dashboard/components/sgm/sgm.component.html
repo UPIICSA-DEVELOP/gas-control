@@ -50,6 +50,12 @@
               <div class="divider bold-text">Anexo 2</div>
             </mat-card-content>
           </mat-card>
+          <mat-card (click)="changeOptions(5)" class="list-and-template">
+            <mat-card-content [ngStyle]="{'color':elementOnView === 5 ? '#0d47a1' : '#707070'}">
+              <mat-icon>insert_drive_file</mat-icon>
+              <div class="divider bold-text">Anexo 3</div>
+            </mat-card-content>
+          </mat-card>
           <mat-error *ngIf="errors[1]" class="error">
             Debe existir al menos una tarea
           </mat-error>
@@ -110,6 +116,22 @@
             <ng-template #completeList>
               <div class="task-header">
                 <div class="item-list" *ngFor="let task of listTasksOne">
+                  <app-task-card [implementation]="3" [taskInfo]="task"></app-task-card>
+                </div>
+              </div>
+            </ng-template>
+            <ng-template #emptyListTasks>
+              <div class="empty-list-task">
+                <div class="gray">No hay registro de este tipo de tareas aún</div>
+              </div>
+            </ng-template>
+          </div>
+          <div class="top-space" *ngSwitchCase="5">
+            <div class="annexe-head">Lorem ipsum dolor</div>
+            <div *ngIf="listTasksThree.length !== 0; then completeList else emptyListTasks"></div>
+            <ng-template #completeList>
+              <div class="task-header">
+                <div class="item-list" *ngFor="let task of listTasksThree">
                   <app-task-card [implementation]="3" [taskInfo]="task"></app-task-card>
                 </div>
               </div>
