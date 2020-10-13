@@ -9,7 +9,7 @@ import {DateAdapter, MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
 import {FormBuilder, FormGroup} from '@angular/forms';
 import {MDate} from '@app/utils/class/MDate';
 import {DOCUMENT} from '@angular/common';
-import {DateRangeOptions} from '@app/ui/dashboard/components/datepicker/datepicker.service';
+import {DateRangeOptions} from '@app/shared/components/datepicker/datepicker.service';
 import {SnackBarService} from '@maplander/core';
 
 @Component({

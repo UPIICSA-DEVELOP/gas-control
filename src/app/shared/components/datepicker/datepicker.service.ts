@@ -6,7 +6,7 @@
 
 import {Injectable} from '@angular/core';
 import {MatDialog, MatDialogRef} from '@angular/material';
-import {DatepickerComponent} from '@app/ui/dashboard/components/datepicker/datepicker.component';
+import {DatepickerComponent} from '@app/shared/components/datepicker/datepicker.component';
 
 export interface DateRangeOptions {
   minDate: Date;
