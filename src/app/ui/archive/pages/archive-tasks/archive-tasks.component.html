@@ -1,0 +1,32 @@
+<div id="archive">
+  <mat-toolbar color="primary">
+    <span>Archivo de tareas</span>
+  </mat-toolbar>
+  <div class="content">
+    <ng-template [ngIf]="mode === 'list'">
+      <ng-template [ngIf]="stationTasks.length > 0">
+        <ng-container *ngFor="let item of stationTasks">
+          <mat-card class="item_list" matRipple (click)="goToTasks(item.id)">
+            Calendarización del {{formatDate(item.creationDate)}}
+          </mat-card>
+        </ng-container>
+      </ng-template>
+      <ng-template [ngIf]="stationTasks.length === 0">
+        <div class="empty-content">
+          <h3>No hay elementos en el archivo</h3>
+        </div>
+      </ng-template>
+    </ng-template>
+    <ng-template [ngIf]="mode === 'tasks'">
+      <div class="back-button">
+        <button mat-button color="primary" (click)="returnToList()">
+          <mat-icon>keyboard_backspace</mat-icon>
+          <span>   Regresar a la lista</span>
+        </button>
+      </div>
+      <div class="container__list-tasks">
+        <app-list-tasks [stationInfo]="station" [utils]="utils"></app-list-tasks>
+      </div>
+    </ng-template>
+  </div>
+</div>
