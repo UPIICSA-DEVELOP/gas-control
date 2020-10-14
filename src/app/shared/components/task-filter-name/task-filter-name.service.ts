@@ -6,7 +6,7 @@
 
 import {Injectable} from '@angular/core';
 import {MatDialog, MatDialogRef} from '@angular/material';
-import {TaskFilterNameComponent} from '@app/ui/dashboard/components/task-filter-name/task-filter-name.component';
+import {TaskFilterNameComponent} from '@app/shared/components/task-filter-name/task-filter-name.component';
 
 export interface FilterConfig {
   utils: any;
