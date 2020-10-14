@@ -38,6 +38,7 @@ import {IncidenceReport} from '@app/utils/interfaces/reports/incidence-report';
 import {Notification} from '@app/utils/interfaces/notification';
 import {NetworkService, SessionStorageService, SnackBarService} from '@maplander/core';
 import {OtherDocStation} from '@app/utils/interfaces/other-doc-station';
+import {CustomProcedure} from '@app/utils/interfaces/customProcedure';
 
 @Injectable()
 export class ApiService implements OnDestroy {
@@ -746,6 +747,34 @@ export class ApiService implements OnDestroy {
       params: params
     });
   }
+
+  public saveCustomProcedure(procedure: CustomProcedure): Observable<EntityResponse<CustomProcedure>> {
+    return this._http.post<EntityResponse<CustomProcedure>>(ApiService.API_URL_COMPLETE + 'saveCustomProcedure', procedure);
+  }
+
+  public customProcedureList(stationId: string): Observable<EntityCollectionResponse<CustomProcedure>> {
+    let params = new HttpParams();
+    params = params.append('stationId', stationId);
+    return this._http.get<EntityCollectionResponse<CustomProcedure>>(ApiService.API_URL_COMPLETE + 'customProcedureList', {
+      params: params
+    });
+  }
+
+  public resetStation(stationId: string): Observable<DefaultResponse> {
+    let params = new HttpParams();
+    params = params.append('stationId', stationId);
+    return this._http.post<DefaultResponse>(ApiService.API_URL_COMPLETE + 'resetStation', {}, {
+      params: params
+    });
+  }
+
+public listStationTaskByStation(stationId: string): Observable<EntityCollectionResponse<StationTask>> {
+    let params = new HttpParams();
+    params = params.append('idStation', stationId);
+    return this._http.get<EntityCollectionResponse<StationTask>>(ApiService.API_URL_COMPLETE + 'listStationTaskByStation', {
+      params: params
+    });
+}
 
   private initNetwork(): void {
     this._subscriptionNetwork = this._networkService.getNetworkChanges().subscribe(status => {
