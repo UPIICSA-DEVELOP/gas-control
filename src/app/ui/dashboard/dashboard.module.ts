@@ -12,20 +12,9 @@ import {RouterModule} from '@angular/router';
 import {dashboardRoutes} from '@app/ui/dashboard/dashboard.routes';
 import {AddCollaboratorComponent} from '@app/ui/dashboard/pages/add-collaborator/add-collaborator.component';
 import {CollaboratorsListComponent} from '@app/ui/dashboard/pages/collaborators-list/collaborators-list.component';
-import {DatepickerComponent} from '@app/ui/dashboard/components/datepicker/datepicker.component';
-import {DatepickerService} from '@app/ui/dashboard/components/datepicker/datepicker.service';
 import {DirectoryListComponent} from '@app/ui/dashboard/components/directory-list/directory-list.component';
 import {DocumentationComponent} from '@app/ui/dashboard/pages/documentation/documentation.component';
 import {DocumentationService} from '@app/ui/dashboard/pages/documentation/documentation.service';
-import {FeReportComponent} from '@app/ui/dashboard/components/list-tasks/components/fe-report/fe-report.component';
-import {FrReportComponent} from '@app/ui/dashboard/components/list-tasks/components/fr-report/fr-report.component';
-import {HwcReportComponent} from '@app/ui/dashboard/components/list-tasks/components/hwc-report/hwc-report.component';
-import {HwgReportComponent} from '@app/ui/dashboard/components/list-tasks/components/hwg-report/hwg-report.component';
-import {IncidenceReportComponent} from '@app/ui/dashboard/components/list-tasks/components/incidence-report/incidence-report.component';
-import {OmReportComponent} from '@app/ui/dashboard/components/list-tasks/components/om-report/om-report.component';
-import {ScannedReportComponent} from '@app/ui/dashboard/components/list-tasks/components/scanned-report/scanned-report.component';
-import {VrsReportComponent} from '@app/ui/dashboard/components/list-tasks/components/vrs-report/vrs-report.component';
-import {ListTasksComponent} from '@app/ui/dashboard/components/list-tasks/list-tasks.component';
 import {ModalProceduresComponent} from '@app/ui/dashboard/components/modal-procedures/modal-procedures.component';
 import {ModalProceduresService} from '@app/ui/dashboard/components/modal-procedures/modal-procedures.service';
 import {NavBarComponent} from '@app/ui/dashboard/components/nav-bar/nav-bar.component';
@@ -42,28 +31,11 @@ import {SgmComponent} from '@app/ui/dashboard/components/sgm/sgm.component';
 import {SgmService} from '@app/ui/dashboard/components/sgm/sgm.service';
 import {StationListComponent} from '@app/ui/dashboard/pages/station-list/station-list.component';
 import {StationStatusComponent} from '@app/ui/dashboard/components/station-status/station-status.component';
-import {TaskCardComponent} from '@app/ui/dashboard/components/task-card/task-card.component';
-import {TaskFilterComponent} from '@app/ui/dashboard/components/task-filter/task-filter.component';
-import {TaskFilterService} from '@app/ui/dashboard/components/task-filter/task-filter.service';
-import {TaskFilterNameComponent} from '@app/ui/dashboard/components/task-filter-name/task-filter-name.component';
-import {TaskFilterNameService} from '@app/ui/dashboard/components/task-filter-name/task-filter-name.service';
-import {CompressorReportComponent} from '@app/ui/dashboard/components/list-tasks/components/compressor-report/compressor-report.component';
 import {UserProfileComponent} from '@app/ui/dashboard/pages/profiles/user-profile/user-profile.component';
 import {DashboardComponent} from '@app/ui/dashboard/pages/dashboard/dashboard.component';
 import {DialogModule, UploadFileModule, CountryCodeModule} from '@maplander/core';
+import { ArchiveComponent } from './pages/archive/archive.component';
 
-
-const Reports = [
-  CompressorReportComponent,
-  FeReportComponent,
-  FrReportComponent,
-  HwcReportComponent,
-  HwgReportComponent,
-  IncidenceReportComponent,
-  OmReportComponent,
-  ScannedReportComponent,
-  VrsReportComponent
-];
 
 const Profiles = [
   ProfileComponent,
@@ -73,21 +45,16 @@ const Profiles = [
 
 
 const Components = [
-  DatepickerComponent,
   DirectoryListComponent,
-  ListTasksComponent,
-  Reports,
   ModalProceduresComponent,
   NavBarComponent,
   SasisopaComponent,
   SgmComponent,
-  StationStatusComponent,
-  TaskCardComponent,
-  TaskFilterComponent,
-  TaskFilterNameComponent
+  StationStatusComponent
 ];
 
 const Pages = [
+  ArchiveComponent,
   AddCollaboratorComponent,
   CollaboratorsListComponent,
   DashboardComponent,
@@ -99,25 +66,19 @@ const Pages = [
 ];
 
 const Providers = [
-  DatepickerService,
   DocumentationService,
   ModalProceduresService,
   ProfileService,
   StationProfileService,
   UserProfileService,
   SasisopaService,
-  SgmService,
-  TaskFilterService,
-  TaskFilterNameService
+  SgmService
 ];
 
 const EntryComponents = [
-  DatepickerComponent,
   ModalProceduresComponent,
   SasisopaComponent,
-  SgmComponent,
-  TaskFilterComponent,
-  TaskFilterNameComponent
+  SgmComponent
 ];
 
 
