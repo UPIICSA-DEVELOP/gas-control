@@ -5,7 +5,7 @@
  */
 
 import {Component, Input, OnInit} from '@angular/core';
-import {Constants} from 'app/utils/constants/constants.utils';
+import {Constants} from '@app/utils/constants/constants.utils';
 import {Task} from '@app/utils/interfaces/task';
 
 @Component({
