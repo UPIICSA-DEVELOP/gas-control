@@ -42,6 +42,10 @@ export const appRoutes: Routes = [
     loadChildren: () => import('app/ui/cookies/cookies.module').then(m => m.CookiesModule)
   },
   {
+    path: 'archive/:stationId',
+    loadChildren: () => import('app/ui/archive/archive.module').then(m => m.ArchiveModule)
+  },
+  {
     path: '**',
     redirectTo: '/login'
   }
