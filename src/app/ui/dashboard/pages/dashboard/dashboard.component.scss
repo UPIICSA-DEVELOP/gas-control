@@ -199,7 +199,7 @@
         flex-direction: column;
         @media screen and (max-width: 900px) {
           width: 100%;
-          height: calc(100% - 48px);
+          height: 100%;
         }
 
         .title {

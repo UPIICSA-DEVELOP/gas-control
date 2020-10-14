@@ -32,7 +32,7 @@
               <mat-icon>close</mat-icon>
             </button>
           </div>
-          <div style="margin: auto; width: 90%;">
+          <div style="margin: auto; width: 90%; height: 95%;">
             <div class="image">
               <div class="container">
                 <img [src]="group.fileCS.thumbnail" alt="Station group icon">
@@ -72,6 +72,10 @@
                 <img *ngIf="stationActive.stationTaskId" class="sgm" src="../../../../../assets/image/sgm.png" alt="">
                 <img *ngIf="!stationActive.stationTaskId" class="sgm" src="../../../../../assets/image/sgm_disabled.png" alt="">
                 <span>Sistema de Gestión de Mediciones</span>
+              </button>
+              <button mat-button (click)="closeToggle()" [routerLink]="['/home/archive', stationActive.id]">
+                <mat-icon [color]="'primary'">archive</mat-icon>
+                <span>Archivo de tareas</span>
               </button>
               <button mat-button [disabled]="!stationActive.stationTaskId" (click)="openOtherTasks()">
                 <mat-icon [color]="'primary'">more_vert</mat-icon>
