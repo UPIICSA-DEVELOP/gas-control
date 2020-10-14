@@ -2,6 +2,44 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="1.7.0-beta.0"></a>
+# [1.7.0-beta.0](https://bitbucket.org/developerswebmaplander/app-inspector/compare/v1.6.4...v1.7.0-beta.0) (2020-10-14)
+
+
+### Bug Fixes
+
+* **compressor.component:** move report two into shared module ([65f8e48](https://bitbucket.org/developerswebmaplander/app-inspector/commits/65f8e48))
+* **config:** solve error in projects path ([dd71d72](https://bitbucket.org/developerswebmaplander/app-inspector/commits/dd71d72))
+* **datepicker.component:** move date filter to task into shared module ([b996161](https://bitbucket.org/developerswebmaplander/app-inspector/commits/b996161))
+* **fe-report.component:** move report eight into shared module ([5bcc7ae](https://bitbucket.org/developerswebmaplander/app-inspector/commits/5bcc7ae))
+* **fr-report.component:** move report seven into shared module ([b12e550](https://bitbucket.org/developerswebmaplander/app-inspector/commits/b12e550))
+* **hwc-report.component:** move report six into shared module ([8908dbd](https://bitbucket.org/developerswebmaplander/app-inspector/commits/8908dbd))
+* **hwg-report.component:** move report three into shared module ([95c3876](https://bitbucket.org/developerswebmaplander/app-inspector/commits/95c3876))
+* **incidence-report.component:** move report nine into shared module ([cf37497](https://bitbucket.org/developerswebmaplander/app-inspector/commits/cf37497))
+* **list-task.component:** move task list into shared module ([54fc55e](https://bitbucket.org/developerswebmaplander/app-inspector/commits/54fc55e))
+* **om-report.component:** move report one into shared module ([b7b2c85](https://bitbucket.org/developerswebmaplander/app-inspector/commits/b7b2c85))
+* **scanned-report.component:** move report five into shared module ([e0634d2](https://bitbucket.org/developerswebmaplander/app-inspector/commits/e0634d2))
+* **task-card.component:** move status filter into shared module ([f2a4189](https://bitbucket.org/developerswebmaplander/app-inspector/commits/f2a4189))
+* **task-card.component:** move task list item into shared module ([7fb9216](https://bitbucket.org/developerswebmaplander/app-inspector/commits/7fb9216))
+* **task-filter-name.component:** move task name filter into shared module ([64137a1](https://bitbucket.org/developerswebmaplander/app-inspector/commits/64137a1))
+* **vrs-report.component:** move report four into shared module ([61e3031](https://bitbucket.org/developerswebmaplander/app-inspector/commits/61e3031))
+
+
+### Features
+
+* **api.service:** add new method for sgm ([b10da8a](https://bitbucket.org/developerswebmaplander/app-inspector/commits/b10da8a))
+* **api.service:** add new methods to procedures and old tasks ([5f244c0](https://bitbucket.org/developerswebmaplander/app-inspector/commits/5f244c0))
+* **app.routes:** add new global paths to archived tasks ([f2d3b5c](https://bitbucket.org/developerswebmaplander/app-inspector/commits/f2d3b5c))
+* **archive:** add view to show old tasks from mobiles ([65e858e](https://bitbucket.org/developerswebmaplander/app-inspector/commits/65e858e))
+* **archive.component:** add view to show old tasks from station ([0858949](https://bitbucket.org/developerswebmaplander/app-inspector/commits/0858949))
+* **components.module:** add imports to task list and filters elements ([bb0eb1a](https://bitbucket.org/developerswebmaplander/app-inspector/commits/bb0eb1a))
+* **customProcedures:** add model to custom procedures ([7f2fc5d](https://bitbucket.org/developerswebmaplander/app-inspector/commits/7f2fc5d))
+* **dashboard.component:** add button to see old tasks ([1cb47dc](https://bitbucket.org/developerswebmaplander/app-inspector/commits/1cb47dc))
+* **dashboard.module:** changes imports for removed components ([1ac9a7a](https://bitbucket.org/developerswebmaplander/app-inspector/commits/1ac9a7a))
+* **sgm.component:** implement new section ([4f927ad](https://bitbucket.org/developerswebmaplander/app-inspector/commits/4f927ad))
+
+
+
 <a name="1.6.4"></a>
 ## [1.6.4](https://bitbucket.org/developerswebmaplander/app-inspector/compare/v1.6.4-beta.0...v1.6.4) (2020-08-19)
 
