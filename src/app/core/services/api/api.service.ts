@@ -735,7 +735,8 @@ export class ApiService implements OnDestroy {
     });
   }
 
-  public getAllSgm(stationTaskId: string, status: number, cursor: string | null, limit: number): Observable<EntityCollectionResponse<Task>> {
+  public getAllSgm(stationTaskId: string, status: number, cursor: string | null,
+                   limit: number): Observable<EntityCollectionResponse<Task>> {
     let params = new HttpParams();
     params = params.append('stationTaskId', stationTaskId);
     params = params.append('status', status.toString());
@@ -748,14 +749,14 @@ export class ApiService implements OnDestroy {
     });
   }
 
-  public saveCustomProcedure(procedure: CustomProcedure): Observable<EntityResponse<CustomProcedure>> {
-    return this._http.post<EntityResponse<CustomProcedure>>(ApiService.API_URL_COMPLETE + 'saveCustomProcedure', procedure);
+  public createCustomProcedure(procedure: CustomProcedure): Observable<EntityResponse<CustomProcedure>> {
+    return this._http.post<EntityResponse<CustomProcedure>>(ApiService.API_URL_COMPLETE + 'createCustomProcedure', procedure);
   }
 
   public customProcedureList(stationId: string): Observable<EntityCollectionResponse<CustomProcedure>> {
     let params = new HttpParams();
     params = params.append('stationId', stationId);
-    return this._http.get<EntityCollectionResponse<CustomProcedure>>(ApiService.API_URL_COMPLETE + 'customProcedureList', {
+    return this._http.post<EntityCollectionResponse<CustomProcedure>>(ApiService.API_URL_COMPLETE + 'customProcedureList', {}, {
       params: params
     });
   }
