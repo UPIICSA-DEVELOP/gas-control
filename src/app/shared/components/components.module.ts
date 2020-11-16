@@ -55,6 +55,8 @@ import {DatepickerComponent} from '@app/shared/components/datepicker/datepicker.
 import {TaskFilterNameService} from '@app/shared/components/task-filter-name/task-filter-name.service';
 import {TaskFilterService} from '@app/shared/components/task-filter/task-filter.service';
 import {DatepickerService} from '@app/shared/components/datepicker/datepicker.service';
+import {ModalProceduresComponent} from '@app/shared/components/modal-procedures/modal-procedures.component';
+import {ModalProceduresService} from '@app/shared/components/modal-procedures/modal-procedures.service';
 
 const Reports = [
   CompressorReportComponent,
@@ -86,7 +88,8 @@ const Components = [
   TaskFilterNameComponent,
   ListTasksComponent,
   Reports,
-  DatepickerComponent
+  DatepickerComponent,
+  ModalProceduresComponent
 ];
 
 const Providers = [
@@ -103,7 +106,8 @@ const Providers = [
   UploadFileService,
   DatepickerService,
   TaskFilterService,
-  TaskFilterNameService
+  TaskFilterNameService,
+  ModalProceduresService
 ];
 
 const EntryComponents = [
@@ -119,7 +123,8 @@ const EntryComponents = [
   ModalStationComponent,
   DatepickerComponent,
   TaskFilterComponent,
-  TaskFilterNameComponent
+  TaskFilterNameComponent,
+  ModalProceduresComponent
 ];
 
 
