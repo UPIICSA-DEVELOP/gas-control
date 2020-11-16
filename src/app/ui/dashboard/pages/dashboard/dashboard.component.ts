@@ -136,6 +136,23 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy {
     });
   }
 
+  public resetStation(): void {
+    this._dialogService.confirmDialog('¡IMPORTANTE!',
+      'Estás a punto de resetear la estación, si continuas con esta operación el progreso ' +
+      'se reiniciara y tendrás que volver a calendarizar las tareas de esta estación'
+    ).afterClosed().subscribe((responseDialog) => {
+      if (responseDialog.code === 1) {
+        this._api.resetStation(this.stationActive.id).subscribe((response) => {
+          switch (response.code) {
+            case HttpResponseCodes.OK:
+              this.getDashboardInformation(this.stationActive.id);
+              break;
+          }
+        });
+      }
+    });
+  }
+
   public addCollaborator(): void {
     if (this.mode === 'over') {
       this._drawer.toggle();
