@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="1.7.0"></a>
+# [1.7.0](https://bitbucket.org/developerswebmaplander/app-inspector/compare/v1.7.0-beta.1...v1.7.0) (2020-11-16)
+
+
+
 <a name="1.7.0-beta.1"></a>
 # [1.7.0-beta.1](https://bitbucket.org/developerswebmaplander/app-inspector/compare/v1.7.0-beta.0...v1.7.0-beta.1) (2020-11-16)
 
