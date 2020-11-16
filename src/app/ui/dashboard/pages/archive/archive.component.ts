@@ -20,7 +20,6 @@ export class ArchiveComponent implements OnInit {
   public utils: AppUtil;
   public mode: 'list' | 'tasks';
   public station: Station;
-  public hideClose: boolean;
   constructor(
     private _router: Router,
     private _api: ApiService,
@@ -29,13 +28,9 @@ export class ArchiveComponent implements OnInit {
     this.mode = 'list';
     this.stationTasks = [];
     this.stationId = null;
-    this.hideClose = false;
   }
 
   ngOnInit() {
-    if (this._activatedRouter.snapshot.queryParams.isMobile) {
-      this.hideClose = this._activatedRouter.snapshot.queryParams.isMobile;
-    }
     this.stationId = this._activatedRouter.snapshot.paramMap.get('stationId');
     if (this.stationId) {
       this.getStation();
