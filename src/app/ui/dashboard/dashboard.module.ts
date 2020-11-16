@@ -15,8 +15,6 @@ import {CollaboratorsListComponent} from '@app/ui/dashboard/pages/collaborators-
 import {DirectoryListComponent} from '@app/ui/dashboard/components/directory-list/directory-list.component';
 import {DocumentationComponent} from '@app/ui/dashboard/pages/documentation/documentation.component';
 import {DocumentationService} from '@app/ui/dashboard/pages/documentation/documentation.service';
-import {ModalProceduresComponent} from '@app/ui/dashboard/components/modal-procedures/modal-procedures.component';
-import {ModalProceduresService} from '@app/ui/dashboard/components/modal-procedures/modal-procedures.service';
 import {NavBarComponent} from '@app/ui/dashboard/components/nav-bar/nav-bar.component';
 import {NotificationsComponent} from '@app/ui/dashboard/pages/notifications/notifications.component';
 import {ProceduresComponent} from '@app/ui/dashboard/pages/procedures/procedures.component';
@@ -46,7 +44,6 @@ const Profiles = [
 
 const Components = [
   DirectoryListComponent,
-  ModalProceduresComponent,
   NavBarComponent,
   SasisopaComponent,
   SgmComponent,
@@ -67,7 +64,6 @@ const Pages = [
 
 const Providers = [
   DocumentationService,
-  ModalProceduresService,
   ProfileService,
   StationProfileService,
   UserProfileService,
@@ -76,7 +72,6 @@ const Providers = [
 ];
 
 const EntryComponents = [
-  ModalProceduresComponent,
   SasisopaComponent,
   SgmComponent
 ];
