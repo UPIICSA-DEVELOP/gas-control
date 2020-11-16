@@ -96,7 +96,7 @@
               </div>
               <ng-container [ngSwitch]="reportConfig.typeReportView">
                 <div *ngSwitchCase="1">
-                  <app-om-report [taskOMInfo]="reportConfig.taskElement" [utilities]="utils"></app-om-report>
+                  <app-om-report [taskOMInfo]="reportConfig.taskElement" [station]="station.id" [utilities]="utils"></app-om-report>
                 </div>
                 <div *ngSwitchCase="2">
                   <app-compressor-report [taskCompInfo]="reportConfig.taskElement"></app-compressor-report>
