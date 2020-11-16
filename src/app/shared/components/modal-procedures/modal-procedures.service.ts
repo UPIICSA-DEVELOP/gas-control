@@ -6,12 +6,13 @@
 
 import {Injectable} from '@angular/core';
 import {MatDialog, MatDialogRef} from '@angular/material';
-import {ModalProceduresComponent} from '@app/ui/dashboard/components/modal-procedures/modal-procedures.component';
+import {ModalProceduresComponent} from '@app/shared/components/modal-procedures/modal-procedures.component';
 
 export interface ProceduresConfig {
   utils: any;
   proceduresSelected: number[];
   notVisibleChecks?: boolean;
+  stationId: string;
 }
 
 @Injectable()
