@@ -15,7 +15,7 @@ import {SharedService, SharedTypeNotification} from '@app/core/services/shared/s
 import {LoaderService} from '@app/core/components/loader/loader.service';
 import {Subscription} from 'rxjs';
 import {FormatTimePipe} from '@app/shared/pipes/format-time/format-time.pipe';
-import {ModalProceduresService} from '@app/ui/dashboard/components/modal-procedures/modal-procedures.service';
+import {ModalProceduresService} from '@app/shared/components/modal-procedures/modal-procedures.service';
 import {OMReport} from '@app/utils/interfaces/reports/omr-report';
 import {HWGReport} from '@app/utils/interfaces/reports/hwg-report';
 import {Task} from '@app/utils/interfaces/task';
@@ -24,6 +24,7 @@ import {AppUtil} from '@app/utils/interfaces/app-util';
 import {SnackBarService} from '@maplander/core';
 import {UserMedia} from '@maplander/core/lib/utils/models/user-media';
 import {AuthService} from '@app/core/services/auth/auth.service';
+import {CustomProcedure} from '@app/utils/interfaces/customProcedure';
 
 @Component({
   selector: 'app-om-report',
@@ -32,8 +33,10 @@ import {AuthService} from '@app/core/services/auth/auth.service';
 })
 export class OmReportComponent implements OnInit, OnDestroy {
   private _taskId: string;
+  private _stationId: string;
   public task: any;
   public utils: AppUtil;
+  public stationProcedures: CustomProcedure[];
 
   @Input() set taskOMInfo(taskObj: any) {
     if (taskObj) {
@@ -46,6 +49,13 @@ export class OmReportComponent implements OnInit, OnDestroy {
   @Input() set utilities(utils: any) {
     if (utils) {
       this.utils = utils;
+    }
+  }
+
+  @Input() set station(station: any) {
+    if (station) {
+      this._stationId = station;
+      this.getStationProcedures();
     }
   }
 
@@ -96,6 +106,7 @@ export class OmReportComponent implements OnInit, OnDestroy {
     this.personnelNames = [];
     this.procedures = [];
     this.editable = false;
+    this.stationProcedures = [];
   }
 
   ngOnInit() {
@@ -110,6 +121,21 @@ export class OmReportComponent implements OnInit, OnDestroy {
     this.editable = false;
     this._subscriptionShared.unsubscribe();
     this._subscriptionLoader.unsubscribe();
+  }
+
+  public getProcedureName(procedureId: string | number): string {
+    let name = '';
+    this.utils.procedures.forEach((item) => {
+      if (item.id === procedureId.toString()) {
+        name = item.name;
+      }
+    });
+    this.stationProcedures.forEach((item) => {
+      if (item.customProcedureId === procedureId) {
+        name = item.name;
+      }
+    });
+    return name;
   }
 
   private detectNotifications(): void {
@@ -285,7 +311,8 @@ export class OmReportComponent implements OnInit, OnDestroy {
       case 2:
         if (isAdd) {
           this._proceduresService.open(
-            {utils: this.utils.procedures, proceduresSelected: this.procedures, notVisibleChecks: false}
+            {utils: this.utils.procedures, proceduresSelected: this.procedures,
+              notVisibleChecks: false, stationId: this._stationId}
           ).afterClosed().subscribe(response => {
             if (response.code === 1) {
               this.procedures = response.data;
@@ -493,6 +520,14 @@ export class OmReportComponent implements OnInit, OnDestroy {
 
   public startValidateForm(): void {
     this.startValidate = true;
+  }
+
+  private getStationProcedures(): void {
+    this._api.customProcedureList(this._stationId).subscribe((response) => {
+      if (response.items) {
+        this.stationProcedures = this.stationProcedures.concat(response.items || []);
+      }
+    });
   }
 
 }
