@@ -6,6 +6,7 @@ import {ActivatedRoute} from '@angular/router';
 import {ApiService} from '@app/core/services/api/api.service';
 import {UtilitiesService} from '@app/utils/utilities/utilities';
 import {HttpResponseCodes} from '@app/utils/enums/http-response-codes';
+import {SharedService, SharedTypeNotification} from '@app/core/services/shared/shared.service';
 
 @Component({
   selector: 'app-archive-tasks',
@@ -21,7 +22,8 @@ export class ArchiveTasksComponent implements OnInit {
   public hideClose: boolean;
   constructor(
     private _api: ApiService,
-    private _activatedRouter: ActivatedRoute
+    private _activatedRouter: ActivatedRoute,
+    private _shared: SharedService
   ) {
     this.mode = 'list';
     this.stationTasks = [];
@@ -36,6 +38,10 @@ export class ArchiveTasksComponent implements OnInit {
       this.listStationTasks();
       this.getUtils();
     }
+  }
+
+  changeOthers(): void {
+    this._shared.setNotification({type: SharedTypeNotification.NotCalendarArchive, value: true});
   }
 
   goToTasks(stationTaskId: string): void {
