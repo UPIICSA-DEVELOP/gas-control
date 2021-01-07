@@ -53,7 +53,7 @@ export class ListTasksComponent implements OnInit, OnDestroy {
       }
     }
   }
-
+  @Input() public isArchive: boolean;
   @Input() public utils: any;
   public startDate: Date;
   public endDate: Date;
@@ -177,6 +177,15 @@ export class ListTasksComponent implements OnInit, OnDestroy {
   private checkChanges(): void {
     this._subscriptionShared = this._sharedService.getNotifications().subscribe((response: SharedNotification) => {
       switch (response.type) {
+        case SharedTypeNotification.NotCalendarArchive:
+          if (this.isArchive) {
+            this.resetFilters(true);
+            this.others = true;
+            this.notCalendarTasks = [];
+            this._modalScroll.nativeElement.scrollTop = '0';
+            this.getNotCalendarTask();
+          }
+          break;
         case SharedTypeNotification.NotCalendarTask:
           if (!this.others) {
             this.resetFilters(true);
