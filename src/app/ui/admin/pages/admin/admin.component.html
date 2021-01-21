@@ -65,7 +65,16 @@
           <div class="info">
             <h3>{{item.businessName}}</h3>
             <p class="address">{{item.address}}</p>
-            <p>{{item.officePhone}}</p>
+            <div class="slide_toggle">
+              <p>{{item.officePhone}}</p>
+              <div class="toggle">
+                <mat-slide-toggle
+                  [color]="'primary'"
+                  [checked]="true">
+                </mat-slide-toggle>
+                <mat-icon color="primary">delete</mat-icon>
+              </div>
+            </div>
           </div>
         </mat-card>
 
