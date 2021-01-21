@@ -25,6 +25,7 @@ import {HttpResponseCodes} from '@app/utils/enums/http-response-codes';
 import {EntityResponse} from '@app/utils/class/entity-response';
 import {StationTask} from '@app/utils/interfaces/station-task';
 import {LocalStorageService, SnackBarService} from '@maplander/core';
+import {ActivatedRoute} from '@angular/router';
 
 @Component({
   selector: 'app-list-tasks',
@@ -52,7 +53,7 @@ export class ListTasksComponent implements OnInit, OnDestroy {
       }
     }
   }
-
+  @Input() public isArchive: boolean;
   @Input() public utils: any;
   public startDate: Date;
   public endDate: Date;
@@ -101,7 +102,8 @@ export class ListTasksComponent implements OnInit, OnDestroy {
     private _taskFilterNameService: TaskFilterNameService,
     private _sharedService: SharedService,
     private _snackBarService: SnackBarService,
-    private _openFile: OpenFileService
+    private _openFile: OpenFileService,
+    private _activatedRouter: ActivatedRoute
   ) {
     this._firstGet = false;
     this.listTask = {historyTasks: [], previousTasks: [], todayTasks: [], scheduleTasks: []};
@@ -125,6 +127,28 @@ export class ListTasksComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.checkChanges();
     this.user = LocalStorageService.getItem<Person>(Constants.UserInSession);
+    if (!this.user) {
+      let role = 1;
+      if (this._activatedRouter.snapshot.queryParams.role) {
+        role = this._activatedRouter.snapshot.queryParams.role;
+      }
+      this.user = {
+        active: true,
+        country: '',
+        countryCode: '',
+        email: '',
+        jobTitle: '',
+        lastName: '',
+        name: '',
+        phoneNumber: '',
+        refId: '',
+        role: role,
+        signature: {
+          thumbnail: 'thumbnail',
+          blobName: 'blobName'
+        }
+      };
+    }
     this._subscriptionLoader = this._apiLoader.getProgress().subscribe(load => this.load = load);
     if (this.startDate.toLocaleDateString() === this.endDate.toLocaleDateString()) {
       this.today = true;
@@ -153,6 +177,15 @@ export class ListTasksComponent implements OnInit, OnDestroy {
   private checkChanges(): void {
     this._subscriptionShared = this._sharedService.getNotifications().subscribe((response: SharedNotification) => {
       switch (response.type) {
+        case SharedTypeNotification.NotCalendarArchive:
+          if (this.isArchive) {
+            this.resetFilters(true);
+            this.others = true;
+            this.notCalendarTasks = [];
+            this._modalScroll.nativeElement.scrollTop = '0';
+            this.getNotCalendarTask();
+          }
+          break;
         case SharedTypeNotification.NotCalendarTask:
           if (!this.others) {
             this.resetFilters(true);

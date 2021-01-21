@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {archiveAnimation} from '@app/ui/dashboard/pages/archive/archive.animation';
 import {ApiService} from '@app/core/services/api/api.service';
@@ -7,6 +7,7 @@ import {StationTask} from '@app/utils/interfaces/station-task';
 import {AppUtil} from '@app/utils/interfaces/app-util';
 import {UtilitiesService} from '@app/utils/utilities/utilities';
 import {Station} from '@app/utils/interfaces/station';
+import {SharedService, SharedTypeNotification} from '@app/core/services/shared/shared.service';
 
 @Component({
   selector: 'app-archive',
@@ -20,28 +21,28 @@ export class ArchiveComponent implements OnInit {
   public utils: AppUtil;
   public mode: 'list' | 'tasks';
   public station: Station;
-  public hideClose: boolean;
   constructor(
     private _router: Router,
     private _api: ApiService,
-    private _activatedRouter: ActivatedRoute
+    private _activatedRouter: ActivatedRoute,
+    private _shared: SharedService
   ) {
     this.mode = 'list';
     this.stationTasks = [];
     this.stationId = null;
-    this.hideClose = false;
   }
 
   ngOnInit() {
-    if (this._activatedRouter.snapshot.queryParams.isMobile) {
-      this.hideClose = this._activatedRouter.snapshot.queryParams.isMobile;
-    }
     this.stationId = this._activatedRouter.snapshot.paramMap.get('stationId');
     if (this.stationId) {
       this.getStation();
       this.listStationTasks();
       this.getUtils();
     }
+  }
+
+  changeOthers(): void {
+    this._shared.setNotification({type: SharedTypeNotification.NotCalendarArchive, value: true});
   }
 
   close() {

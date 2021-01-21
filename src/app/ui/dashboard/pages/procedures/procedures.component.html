@@ -5,30 +5,63 @@
   -->
 
 <div id="procedures">
-  <div class="tap">
-    <button mat-icon-button (click)="onCloseProcedures()">
-      <mat-icon>keyboard_arrow_right</mat-icon>
-    </button>
-  </div>
-  <div class="content">
-    <div class="head">
-      <span>PROCEDIMIENTOS</span>
-      <button mat-icon-button (click)="onCloseProcedures()">
-        <mat-icon>close</mat-icon>
-      </button>
+  <div class="list">
+    <div>
+      <div class="tap">
+        <button mat-icon-button (click)="onCloseProcedures()">
+          <mat-icon>keyboard_arrow_right</mat-icon>
+        </button>
+      </div>
+      <div class="add" *ngIf="role !== 6">
+        <lib-upload-file style="margin-top: 8px" (loadImage)="addNewProcedure($event)" [content]="button"
+                         [fileType]="'document'" [fab]="false">
+          <ng-template #button>
+            <mat-icon>note_add</mat-icon>
+          </ng-template>
+        </lib-upload-file>
+      </div>
     </div>
-    <div class="container" *ngIf="procedures">
-      <div *ngFor="let procedure of procedures; let i = index">
-        <mat-card (click)="openFile(procedure.fileCS.thumbnail)">
-          <mat-card-content>
-            <div class="icon">
-              <mat-icon>insert_drive_file</mat-icon>
-            </div>
-            <div class="divider">
-              {{procedure.name}}
-            </div>
-          </mat-card-content>
-        </mat-card>
+    <div class="content">
+      <div class="head">
+        <span>PROCEDIMIENTOS</span>
+        <div style="display: flex;">
+          <lib-upload-file *ngIf="role !== 6" style="margin-top: 8px" (loadImage)="addNewProcedure($event)" [content]="button"
+                           [fileType]="'document'" [fab]="false">
+            <ng-template #button>
+              <mat-icon>note_add</mat-icon>
+            </ng-template>
+          </lib-upload-file>
+          <button mat-icon-button style="margin: 0 4px;" (click)="onCloseProcedures()">
+            <mat-icon>close</mat-icon>
+          </button>
+        </div>
+      </div>
+      <div class="container" *ngIf="procedures">
+        <div *ngFor="let procedure of procedures; let i = index">
+          <mat-card (click)="openFile(procedure.fileCS.thumbnail)">
+            <mat-card-content>
+              <div class="icon">
+                <mat-icon>insert_drive_file</mat-icon>
+              </div>
+              <div class="divider">
+                {{procedure.name}}
+              </div>
+            </mat-card-content>
+          </mat-card>
+        </div>
+        <mat-divider *ngIf="stationProcedures.length > 0"></mat-divider>
+        <div *ngFor="let procedureStation of stationProcedures; let i = index">
+          <mat-card (click)="openFile(procedureStation.fileCS.thumbnail)">
+            <mat-card-content>
+              <div class="icon">
+                <mat-icon>insert_drive_file</mat-icon>
+              </div>
+              <div class="divider">
+                {{procedureStation.name}}
+              </div>
+            </mat-card-content>
+          </mat-card>
+        </div>
       </div>
     </div>
   </div>

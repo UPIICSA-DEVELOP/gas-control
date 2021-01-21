@@ -2,6 +2,38 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="1.7.0"></a>
+# [1.7.0](https://bitbucket.org/developerswebmaplander/app-inspector/compare/v1.7.0-beta.1...v1.7.0) (2020-11-16)
+
+
+
+<a name="1.7.0-beta.1"></a>
+# [1.7.0-beta.1](https://bitbucket.org/developerswebmaplander/app-inspector/compare/v1.7.0-beta.0...v1.7.0-beta.1) (2020-11-16)
+
+
+### Bug Fixes
+
+* **add-collaborator.component:** remove debugger ([4e9db82](https://bitbucket.org/developerswebmaplander/app-inspector/commits/4e9db82))
+* **api.service:** change http method type ([fc17481](https://bitbucket.org/developerswebmaplander/app-inspector/commits/fc17481))
+* **archive.components:** solve error with close button ([4053551](https://bitbucket.org/developerswebmaplander/app-inspector/commits/4053551))
+* **dashboard.module:** remove modal procedures component and service ([e69a2c2](https://bitbucket.org/developerswebmaplander/app-inspector/commits/e69a2c2))
+* **list-tasks.components:** add validation to archive view and add input into om-report ([7d36192](https://bitbucket.org/developerswebmaplander/app-inspector/commits/7d36192))
+* **models:** change obligatory id into CustomProcedure ([6bb02c7](https://bitbucket.org/developerswebmaplander/app-inspector/commits/6bb02c7))
+* **sasisopa.components:** add parameter to load modal procedures dialog ([b1ebb75](https://bitbucket.org/developerswebmaplander/app-inspector/commits/b1ebb75))
+* **style:** change procedures path styles ([b2e86a6](https://bitbucket.org/developerswebmaplander/app-inspector/commits/b2e86a6))
+
+
+### Features
+
+* **components.module:** integrate modal procedures ([bae8096](https://bitbucket.org/developerswebmaplander/app-inspector/commits/bae8096))
+* **dashboard.components:** add button to reset station ([9ab85e7](https://bitbucket.org/developerswebmaplander/app-inspector/commits/9ab85e7))
+* **incidence-report.components:** add integration to custom procedures ([0f5ebf9](https://bitbucket.org/developerswebmaplander/app-inspector/commits/0f5ebf9))
+* **modal-procedures.component:** add integration for custom procedures and move to shared module ([9d25592](https://bitbucket.org/developerswebmaplander/app-inspector/commits/9d25592))
+* **om-report.components:** add implementation to custom procedures and add new input with stationId ([7c9bdc8](https://bitbucket.org/developerswebmaplander/app-inspector/commits/7c9bdc8))
+* **procedures.components:** add load of new procedures ([f0dbafa](https://bitbucket.org/developerswebmaplander/app-inspector/commits/f0dbafa))
+
+
+
 <a name="1.7.0-beta.0"></a>
 # [1.7.0-beta.0](https://bitbucket.org/developerswebmaplander/app-inspector/compare/v1.6.4...v1.7.0-beta.0) (2020-10-14)
 

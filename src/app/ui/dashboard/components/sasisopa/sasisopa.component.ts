@@ -16,7 +16,7 @@ import {HashService} from '@app/utils/utilities/hash.service';
 import {DialogService} from '@app/shared/components/dialog/dialog.service';
 import {environment} from '@env/environment';
 import {MDate} from '@app/utils/class/MDate';
-import {ModalProceduresService} from '@app/ui/dashboard/components/modal-procedures/modal-procedures.service';
+import {ModalProceduresService} from '@app/shared/components/modal-procedures/modal-procedures.service';
 import {LoaderService} from '@app/core/components/loader/loader.service';
 import {Person} from '@app/utils/interfaces/person';
 import {HttpResponseCodes} from '@app/utils/enums/http-response-codes';
@@ -167,7 +167,8 @@ export class SasisopaComponent implements OnInit, OnDestroy {
   }
 
   public openModalProcedures(): void {
-    this._proceduresService.open({utils: this._data.utils.procedures, proceduresSelected: [], notVisibleChecks: true});
+    this._proceduresService.open({utils: this._data.utils.procedures,
+      proceduresSelected: [], notVisibleChecks: true, stationId: this.station.id});
   }
 
   public openSasisopaTemplate(isAnnexedFive: boolean): void {

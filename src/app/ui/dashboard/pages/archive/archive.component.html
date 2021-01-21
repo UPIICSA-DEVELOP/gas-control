@@ -1,7 +1,7 @@
 <div id="archive">
   <mat-toolbar color="primary">
     <span>Archivo de tareas</span>
-    <button mat-icon-button="" *ngIf="hideClose" (click)="close()">
+    <button mat-icon-button="" (click)="close()">
       <mat-icon>close</mat-icon>
     </button>
   </mat-toolbar>
@@ -21,14 +21,18 @@
       </ng-template>
     </ng-template>
     <ng-template [ngIf]="mode === 'tasks'">
-      <div style="height: 40px; display: flex; align-items: center; margin: 0 16px;">
+      <div style="height: 40px; display: flex; align-items: center; justify-content: space-between; margin: 0 16px;">
         <button mat-button color="primary" (click)="returnToList()">
           <mat-icon>keyboard_backspace</mat-icon>
           <span>   Regresar a la lista</span>
         </button>
+        <button mat-button color="primary" (click)="changeOthers()">
+          <mat-icon>more_vert</mat-icon>
+          <span>   Otros</span>
+        </button>
       </div>
       <div style="width: 100%; height: calc(100% - 48px); position: relative;">
-        <app-list-tasks [stationInfo]="station" [utils]="utils"></app-list-tasks>
+        <app-list-tasks [stationInfo]="station" [utils]="utils" [isArchive]="true"></app-list-tasks>
       </div>
     </ng-template>
   </div>

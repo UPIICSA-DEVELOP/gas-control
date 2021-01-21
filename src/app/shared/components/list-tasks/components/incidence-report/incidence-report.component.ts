@@ -15,7 +15,7 @@ import {SignaturePadService} from '@app/shared/components/signature-pad/signatur
 import {SharedService, SharedTypeNotification} from '@app/core/services/shared/shared.service';
 import {Constants} from '@app/utils/constants/constants.utils';
 import {FormatTimePipe} from '@app/shared/pipes/format-time/format-time.pipe';
-import {ModalProceduresService} from '@app/ui/dashboard/components/modal-procedures/modal-procedures.service';
+import {ModalProceduresService} from '@app/shared/components/modal-procedures/modal-procedures.service';
 import {LoaderService} from '@app/core/components/loader/loader.service';
 import {IncidenceReport} from '@app/utils/interfaces/reports/incidence-report';
 import {Task} from '@app/utils/interfaces/task';
@@ -24,6 +24,7 @@ import {AppUtil} from '@app/utils/interfaces/app-util';
 import {LocalStorageService, SnackBarService} from '@maplander/core';
 import {UserMedia} from '@maplander/core/lib/utils/models/user-media';
 import {Person} from '@app/utils/interfaces/person';
+import {CustomProcedure} from '@app/utils/interfaces/customProcedure';
 
 @Component({
   selector: 'app-incidence-report',
@@ -35,6 +36,7 @@ export class IncidenceReportComponent implements OnInit, OnDestroy {
   private _stationId: string;
   public task: any;
   public utils: AppUtil;
+  public stationProcedures: CustomProcedure[];
 
   @Input() set taskIncidenceInfo(taskObj: any) {
     if (taskObj) {
@@ -53,6 +55,7 @@ export class IncidenceReportComponent implements OnInit, OnDestroy {
   @Input() set station(station: any) {
     if (station) {
       this._stationId = station.id;
+      this.getStationProcedures();
     }
   }
 
@@ -96,6 +99,7 @@ export class IncidenceReportComponent implements OnInit, OnDestroy {
     this.editable = false;
     this.error = false;
     this._load = [false, false];
+    this.stationProcedures = [];
   }
 
   ngOnInit() {
@@ -117,6 +121,21 @@ export class IncidenceReportComponent implements OnInit, OnDestroy {
       area: ['', [Validators.required]],
       description: ['', [Validators.required]]
     });
+  }
+
+  public getProcedureName(procedureId: string | number): string {
+    let name = '';
+    this.utils.procedures.forEach((item) => {
+      if (item.id === procedureId.toString()) {
+        name = item.name;
+      }
+    });
+    this.stationProcedures.forEach((item) => {
+      if (item.customProcedureId === procedureId) {
+        name = item.name;
+      }
+    });
+    return name;
   }
 
   private getNotifications(): void {
@@ -171,11 +190,11 @@ export class IncidenceReportComponent implements OnInit, OnDestroy {
 
   private startEditFormat(isNewLoad?: boolean): void {
     let today: any = new Date();
-    const user = LocalStorageService.getItem<Person>(Constants.UserInSession);
+    const user = LocalStorageService.getItem<any>(Constants.UserInSession);
     today = UtilitiesService.createPersonalTimeStamp(today);
     this.date = UtilitiesService.convertDate(today.timeStamp);
     this.editable = true;
-    this.name = user.name + user.lastName;
+    this.name = user.completeName;
     if (!isNewLoad) {
       this._copyTask = this.incidenceReport;
       this.procedures = this.incidenceReport.procedures || [];
@@ -238,7 +257,8 @@ export class IncidenceReportComponent implements OnInit, OnDestroy {
   public addRemoveArrayItem(isAdd: boolean, index?: number): void {
     if (isAdd) {
       this._proceduresService.open(
-        {utils: this.utils.procedures, proceduresSelected: this.procedures, notVisibleChecks: false}
+        {utils: this.utils.procedures, proceduresSelected: this.procedures,
+          notVisibleChecks: false, stationId: this._stationId}
       ).afterClosed().subscribe(response => {
         if (response.code === 1) {
           this.procedures = response.data;
@@ -349,6 +369,14 @@ export class IncidenceReportComponent implements OnInit, OnDestroy {
       });
     }
 
+  }
+
+  private getStationProcedures(): void {
+    this._api.customProcedureList(this._stationId).subscribe((response) => {
+      if (response.items) {
+        this.stationProcedures = this.stationProcedures.concat(response.items || []);
+      }
+    });
   }
 
 }

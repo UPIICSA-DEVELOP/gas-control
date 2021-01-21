@@ -64,92 +64,15 @@
             <mat-icon class="add">add</mat-icon>
           </button>
         </div>
-        <div class="inputs" *ngIf="incidenceReport && incidenceReport.procedures && !editable">
+        <div class="inputs" *ngIf="incidenceReport && incidenceReport.procedures && !editable && stationProcedures.length > 0 && utils">
           <div class="procedures-list" *ngFor="let procedure of incidenceReport.procedures; let i = index;">
-            <div class="procedure" *ngIf="procedure === 1">{{i + 1}}.- {{utils.procedures[procedure - 1].name}}</div>
-            <div class="procedure" *ngIf="procedure === 2">{{i + 1}}.- {{utils.procedures[procedure - 1].name}}</div>
-            <div class="procedure" *ngIf="procedure === 3">{{i + 1}}.- {{utils.procedures[procedure - 1].name}}</div>
-            <div class="procedure" *ngIf="procedure === 4">{{i + 1}}.- {{utils.procedures[procedure - 1].name}}</div>
-            <div class="procedure" *ngIf="procedure === 5">{{i + 1}}.- {{utils.procedures[procedure - 1].name}}</div>
-            <div class="procedure" *ngIf="procedure === 6">{{i + 1}}.- {{utils.procedures[procedure - 1].name}}</div>
-            <div class="procedure" *ngIf="procedure === 7">{{i + 1}}.- {{utils.procedures[procedure - 1].name}}</div>
-            <div class="procedure" *ngIf="procedure === 8">{{i + 1}}.- {{utils.procedures[procedure - 1].name}}</div>
-            <div class="procedure" *ngIf="procedure === 9">{{i + 1}}.- {{utils.procedures[procedure - 1].name}}</div>
-            <div class="procedure" *ngIf="procedure === 10">{{i + 1}}.- {{utils.procedures[procedure - 1].name}}</div>
-            <div class="procedure" *ngIf="procedure === 11">{{i + 1}}.- {{utils.procedures[procedure - 1].name}}</div>
-            <div class="procedure" *ngIf="procedure === 12">{{i + 1}}.- {{utils.procedures[procedure - 1].name}}</div>
+            <div class="procedure">{{i + 1}}.-{{getProcedureName(procedure)}}</div>
           </div>
         </div>
         <div class="inputs" *ngIf="editable">
           <div *ngFor="let procedure of procedures; let i = index;">
-            <div class="list-element" *ngIf="procedure === 1">
-              <div>{{i + 1}}.-{{utils.procedures[procedure - 1].name}}</div>
-              <button mat-icon-button type="button" (click)="addRemoveArrayItem(false, i)">
-                <mat-icon class="delete">remove</mat-icon>
-              </button>
-            </div>
-            <div class="list-element" *ngIf="procedure === 2">
-              <div>{{i + 1}}.-{{utils.procedures[procedure - 1].name}}</div>
-              <button mat-icon-button type="button" (click)="addRemoveArrayItem(false, i)">
-                <mat-icon class="delete">remove</mat-icon>
-              </button>
-            </div>
-            <div class="list-element" *ngIf="procedure === 3">
-              <div>{{i + 1}}.-{{utils.procedures[procedure - 1].name}}</div>
-              <button mat-icon-button type="button" (click)="addRemoveArrayItem(false, i)">
-                <mat-icon class="delete">remove</mat-icon>
-              </button>
-            </div>
-            <div class="list-element" *ngIf="procedure === 4">
-              <div>{{i + 1}}.-{{utils.procedures[procedure - 1].name}}</div>
-              <button mat-icon-button type="button" (click)="addRemoveArrayItem(false, i)">
-                <mat-icon class="delete">remove</mat-icon>
-              </button>
-            </div>
-            <div class="list-element" *ngIf="procedure === 5">
-              <div>{{i + 1}}.-{{utils.procedures[procedure - 1].name}}</div>
-              <button mat-icon-button type="button" (click)="addRemoveArrayItem(false, i)">
-                <mat-icon class="delete">remove</mat-icon>
-              </button>
-            </div>
-            <div class="list-element" *ngIf="procedure === 6">
-              <div>{{i + 1}}.-{{utils.procedures[procedure - 1].name}}</div>
-              <button mat-icon-button type="button" (click)="addRemoveArrayItem(false, i)">
-                <mat-icon class="delete">remove</mat-icon>
-              </button>
-            </div>
-            <div class="list-element" *ngIf="procedure === 7">
-              <div>{{i + 1}}.-{{utils.procedures[procedure - 1].name}}</div>
-              <button mat-icon-button type="button" (click)="addRemoveArrayItem(false, i)">
-                <mat-icon class="delete">remove</mat-icon>
-              </button>
-            </div>
-            <div class="list-element" *ngIf="procedure === 8">
-              <div>{{i + 1}}.-{{utils.procedures[procedure - 1].name}}</div>
-              <button mat-icon-button type="button" (click)="addRemoveArrayItem(false, i)">
-                <mat-icon class="delete">remove</mat-icon>
-              </button>
-            </div>
-            <div class="list-element" *ngIf="procedure === 9">
-              <div>{{i + 1}}.-{{utils.procedures[procedure - 1].name}}</div>
-              <button mat-icon-button type="button" (click)="addRemoveArrayItem(false, i)">
-                <mat-icon class="delete">remove</mat-icon>
-              </button>
-            </div>
-            <div class="list-element" *ngIf="procedure === 10">
-              <div>{{i + 1}}.-{{utils.procedures[procedure - 1].name}}</div>
-              <button mat-icon-button type="button" (click)="addRemoveArrayItem(false, i)">
-                <mat-icon class="delete">remove</mat-icon>
-              </button>
-            </div>
-            <div class="list-element" *ngIf="procedure === 11">
-              <div>{{i + 1}}.-{{utils.procedures[procedure - 1].name}}</div>
-              <button mat-icon-button type="button" (click)="addRemoveArrayItem(false, i)">
-                <mat-icon class="delete">remove</mat-icon>
-              </button>
-            </div>
-            <div class="list-element" *ngIf="procedure === 12">
-              <div>{{i + 1}}.-{{utils.procedures[procedure - 1].name}}</div>
+            <div class="list-element" >
+              <div>{{i + 1}}.-{{getProcedureName(procedure)}}</div>
               <button mat-icon-button type="button" (click)="addRemoveArrayItem(false, i)">
                 <mat-icon class="delete">remove</mat-icon>
               </button>
