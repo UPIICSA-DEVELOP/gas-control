@@ -161,7 +161,8 @@ export class AddConsultancyComponent implements OnInit, OnDestroy {
       address: this._location.address,
       location: this._location.location,
       officePhone: data.consultancyNumber,
-      group: data.group
+      group: data.group,
+      disabled: data.disable
     };
     this._stepper.next();
   }
