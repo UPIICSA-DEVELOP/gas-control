@@ -101,5 +101,19 @@ export class AdminComponent implements OnInit, OnDestroy {
     }
 
   }
-
+  public toggleDisabledConsultancy(consultancy: Consultancy): void {
+    consultancy.disabled = !consultancy.disabled;
+    this._api.updateConsultancy(consultancy).subscribe(response => {
+      if (response.code === HttpResponseCodes.OK) {
+        for (const item of this.consultancyList) {
+          if (item.id === response.item.id) {
+            item.disabled = response.item.disabled;
+            break;
+          }
+        }
+      } else {
+        this._dialog.alertDialog('No se pudo acceder', 'Se produjo un error de comunicación con el servidor', 'ACEPTAR');
+      }
+    });
+  }
 }
