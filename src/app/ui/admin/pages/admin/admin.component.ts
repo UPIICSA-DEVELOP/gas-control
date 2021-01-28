@@ -15,6 +15,7 @@ import {LoaderService} from '@app/core/components/loader/loader.service';
 import {Consultancy} from '@app/utils/interfaces/consultancy';
 import {HttpResponseCodes} from '@app/utils/enums/http-response-codes';
 import {EntityCollectionResponse} from '@app/utils/class/entity-collection-response';
+import {SnackBarService} from '@maplander/core';
 
 @Component({
   selector: 'app-admin',
@@ -35,7 +36,8 @@ export class AdminComponent implements OnInit, OnDestroy {
     private _apiLoader: LoaderService,
     private _auth: AuthService,
     private _dialog: DialogService,
-    private _api: ApiService
+    private _api: ApiService,
+    private _snackBar: SnackBarService
   ) {
     this.consultancyList = [];
     this.consultancyListCopy = [];
@@ -115,5 +117,9 @@ export class AdminComponent implements OnInit, OnDestroy {
         this._dialog.alertDialog('No se pudo acceder', 'Se produjo un error de comunicación con el servidor', 'ACEPTAR');
       }
     });
+  }
+
+  public deleteConsultancy(id: string): void {
+    this._snackBar.setMessage('Proximamente...', 'OK', 5000);
   }
 }

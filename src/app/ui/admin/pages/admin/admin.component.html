@@ -74,7 +74,9 @@
                 (change)="toggleDisabledConsultancy(item)"
                 >
               </mat-slide-toggle>
-              <mat-icon color="primary">delete</mat-icon>
+              <button mat-icon-button color="primary" (click)="deleteConsultancy(item.id)">
+                <mat-icon>delete</mat-icon>
+              </button>
             </div>
           </div>
         </mat-card>
