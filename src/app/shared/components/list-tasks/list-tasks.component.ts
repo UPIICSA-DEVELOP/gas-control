@@ -4,7 +4,7 @@
  *  Proprietary and confidential
  */
 
-import {Component, ElementRef, Input, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {Component, ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild} from '@angular/core';
 import {ApiService} from '@app/core/services/api/api.service';
 import {Constants} from '@app/utils/constants/constants.utils';
 import {UtilitiesService} from '@app/utils/utilities/utilities';
@@ -26,6 +26,8 @@ import {EntityResponse} from '@app/utils/class/entity-response';
 import {StationTask} from '@app/utils/interfaces/station-task';
 import {LocalStorageService, SnackBarService} from '@maplander/core';
 import {ActivatedRoute} from '@angular/router';
+import {DialogService} from '@app/shared/components/dialog/dialog.service';
+import {StationLite} from '@app/utils/interfaces/station-lite';
 
 @Component({
   selector: 'app-list-tasks',
@@ -92,6 +94,7 @@ export class ListTasksComponent implements OnInit, OnDestroy {
   private _subscriptionShared: Subscription;
   private _subscriptionLoader: Subscription;
   private _firstGet: boolean;
+  @Output() taskDeleted: EventEmitter<any>;
 
   constructor(
     private _dateService: DatepickerService,
@@ -103,8 +106,10 @@ export class ListTasksComponent implements OnInit, OnDestroy {
     private _sharedService: SharedService,
     private _snackBarService: SnackBarService,
     private _openFile: OpenFileService,
-    private _activatedRouter: ActivatedRoute
+    private _activatedRouter: ActivatedRoute,
+    private _dialog: DialogService
   ) {
+    this.taskDeleted = new EventEmitter<any>();
     this._firstGet = false;
     this.listTask = {historyTasks: [], previousTasks: [], todayTasks: [], scheduleTasks: []};
     this.reportConfig = {reportView: false, taskElement: null, typeReportView: 0, status: 0};
@@ -160,6 +165,29 @@ export class ListTasksComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this._subscriptionShared.unsubscribe();
     this._subscriptionLoader.unsubscribe();
+  }
+
+  public deleteTask(task: any) {
+    this._dialog.confirmDialog('Información',
+      '¿Desea eliminar está tarea?').afterClosed().subscribe((responseDialog) => {
+      if (responseDialog.code === 1) {
+        this._api.deleteTask(task.original.id).subscribe((response) => {
+          switch (response.code) {
+            case HttpResponseCodes.OK:
+              this._firstGet = true;
+              this.listTask = {todayTasks: [], previousTasks: [], historyTasks: [], scheduleTasks: []};
+              this._token = null;
+              this.updateStation(response.item);
+              this.getStationTask();
+              break;
+          }
+        });
+      }
+    });
+  }
+
+  private updateStation(stationLite: StationLite) {
+    this.taskDeleted.emit(stationLite);
   }
 
   private getStatusTask(): void {
