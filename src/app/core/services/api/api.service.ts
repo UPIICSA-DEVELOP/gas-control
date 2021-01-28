@@ -39,6 +39,7 @@ import {Notification} from '@app/utils/interfaces/notification';
 import {NetworkService, SessionStorageService, SnackBarService} from '@maplander/core';
 import {OtherDocStation} from '@app/utils/interfaces/other-doc-station';
 import {CustomProcedure} from '@app/utils/interfaces/customProcedure';
+import {StationLite} from '@app/utils/interfaces/station-lite';
 
 @Injectable()
 export class ApiService implements OnDestroy {
@@ -769,13 +770,21 @@ export class ApiService implements OnDestroy {
     });
   }
 
-public listStationTaskByStation(stationId: string): Observable<EntityCollectionResponse<StationTask>> {
+  public listStationTaskByStation(stationId: string): Observable<EntityCollectionResponse<StationTask>> {
     let params = new HttpParams();
     params = params.append('idStation', stationId);
     return this._http.get<EntityCollectionResponse<StationTask>>(ApiService.API_URL_COMPLETE + 'listStationTaskByStation', {
       params: params
     });
-}
+  }
+
+  public deleteTask(taskId: string): Observable<EntityResponse<StationLite>> {
+    let  params = new HttpParams();
+    params = params.append('taskId', taskId);
+    return this._http.delete<EntityResponse<StationLite>>(ApiService.API_URL_COMPLETE + 'deleteTask', {
+      params: params
+    });
+  }
 
   private initNetwork(): void {
     this._subscriptionNetwork = this._networkService.getNetworkChanges().subscribe(status => {
