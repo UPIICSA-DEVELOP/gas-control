@@ -52,6 +52,12 @@ export class StationStatusComponent implements OnInit, AfterViewInit, OnDestroy 
         this._station.progress = response.value.progress;
         this.updateData();
       }
+      if (response.type === SharedTypeNotification.DeleteTask) {
+        this._station.doneTasks = response.value.done;
+        this._station.totalTasks = response.value.total;
+        this._station.progress = response.value.progress;
+        this.updateData();
+      }
     });
   }
 
