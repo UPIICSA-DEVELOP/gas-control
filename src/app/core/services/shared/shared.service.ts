@@ -17,7 +17,8 @@ export enum SharedTypeNotification {
   FinishEditTask,
   OpenCloseMenu,
   UpdateStation,
-  NotCalendarArchive
+  NotCalendarArchive,
+  DeleteTask
 }
 
 @Injectable()
