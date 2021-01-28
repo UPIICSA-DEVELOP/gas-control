@@ -12,12 +12,12 @@
     padding: 0;
     display: flex;
     margin-bottom: 12px;
-    min-height: 92px;
+    min-height: 110px;
+    position: relative;
 
     mat-card-content {
       display: flex;
       width: 100%;
-      position: relative;
       padding: 12px;
     }
 
@@ -71,7 +71,13 @@
       right: 0;
       margin: 16px;
     }
-
+    .delete {
+      position: absolute;
+      top: 35px;
+      right: 0;
+      margin-right: 4px;
+      z-index: 4;
+    }
     .status {
       position: absolute;
       top: 0;
