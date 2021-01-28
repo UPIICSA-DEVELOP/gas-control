@@ -103,7 +103,7 @@
             <p>{{stationActive.doneTasks}}/{{stationActive.totalTasks}} actividades</p>
           </div>
           <div class="tasks">
-            <app-list-tasks [utils]="utils" [stationInfo]="stationActive" [isArchive]="false"></app-list-tasks>
+            <app-list-tasks [utils]="utils" (taskDeleted)="update($event)" [stationInfo]="stationActive" [isArchive]="false"></app-list-tasks>
           </div>
         </div>
         <div class="col-2">

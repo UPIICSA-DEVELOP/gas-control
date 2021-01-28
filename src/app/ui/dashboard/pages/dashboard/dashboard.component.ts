@@ -29,6 +29,7 @@ import {EntityResponse} from '@app/utils/class/entity-response';
 import {StationBasicData} from '@app/utils/interfaces/station-basic-data';
 import {CookieService, LocalStorageService, MetaService, SnackBarService} from '@maplander/core';
 import {GroupIcon} from '@app/utils/interfaces/group-icon';
+import {StationLite} from '@app/utils/interfaces/station-lite';
 
 @Component({
   selector: 'app-screen',
@@ -287,6 +288,16 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy {
     } else {
       this._snackBarService.setMessage('Usted no tiene permiso para visualizar este módulo', 'OK', 3000);
     }
+  }
+
+  public update(item: StationLite): void {
+    this.stationActive.totalTasks = item.totalTasks;
+    const edition = {
+      total: item.totalTasks,
+      progress: item.progress,
+      done: item.doneTasks
+    };
+    this._sharedService.setNotification({type: SharedTypeNotification.DeleteTask, value: edition});
   }
 
   public openNotifications(): void {
