@@ -22,6 +22,7 @@ import {AppUtil} from '@app/utils/interfaces/app-util';
 import {CookieService, LocalStorageService} from '@maplander/core';
 import {CustomStationLite} from '@app/utils/interfaces/custom-station-lite';
 import {GroupIcon} from '@app/utils/interfaces/group-icon';
+import {Consultancy} from '@app/utils/interfaces/consultancy';
 
 @Component({
   selector: 'app-station-list',
@@ -37,6 +38,7 @@ export class StationListComponent implements OnInit {
   public utils: AppUtil;
   public user: Person;
   public emptySearch: boolean;
+  public consultancy: Consultancy;
   private _stations: CustomStationLite[];
   private _notifyCopy: boolean[];
 
@@ -47,6 +49,7 @@ export class StationListComponent implements OnInit {
     private _addStation: AddStationService,
     private _sharedService: SharedService
   ) {
+    this.consultancy = null;
     this.notificationActive = [];
     this.emptySearch = false;
     this.stationList = [];
@@ -135,6 +138,7 @@ export class StationListComponent implements OnInit {
       case 7:
         this._api.getConsultancyBasicData(CookieService.getCookie(Constants.IdSession), this.user.refId).subscribe(response => {
           if (response.code === HttpResponseCodes.OK) {
+            this.consultancy = response.item.consultancy;
             this.createList(response.item.stationLites);
             this.getNotificationsByStation();
           }
