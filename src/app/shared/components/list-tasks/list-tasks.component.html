@@ -334,6 +334,56 @@
                 </div>
               </ng-template>
             </mat-tab>
+            <mat-tab [disabled]="reportConfig.reportView" label="Tareas Libres">
+              <div *ngIf="notCalendarTasks.length !== 0 || reportConfig.reportView; then listIN else emptyIN"></div>
+              <ng-template #listIN>
+                <div *ngIf="reportConfig.reportView; then freeTaskReportView else freeTaskList"></div>
+                <ng-template #freeTaskReportView>
+                  <div style="width: 95%">
+                    <div style="display: flex; justify-content: flex-end">
+                      <button *ngIf="reportConfig.status === 4" [disabled]="load" mat-icon-button
+                              matTooltip="Exportar tarea" (click)="exportFormat()">
+                        <mat-icon svgIcon="icons:fileDownload"></mat-icon>
+                      </button>
+                      <button mat-icon-button *ngIf="user.role === 7 && reportConfig.status === 4"
+                              (click)="editFormat()" matTooltip="Editar">
+                        <mat-icon>edit</mat-icon>
+                      </button>
+                      <button mat-icon-button (click)="goBackList()" matTooltip="Cerrar bitacora">
+                        <mat-icon>close</mat-icon>
+                      </button>
+                    </div>
+                    <app-free-task [taskFreeInfo]="reportConfig.taskElement" [utilities]="utils"
+                                          [station]="station"></app-free-task>
+                  </div>
+                </ng-template>
+                <ng-template #freeTaskList>
+                  <div class="card-list" *ngFor="let task of notCalendarTasks;">
+                    <mat-card matRipple (click)="goTaskInfo(task, 9)" class="task" style="margin-top: 8px">
+                      <div class="priority" style="background-color:#E00000"></div>
+                      <mat-card-content>
+                        <div class="date">
+                          <div>
+                            <div class="text-bold">{{task.date[0]}}</div>
+                            <div class="text-bold">{{task.date[1]}}</div>
+                          </div>
+                        </div>
+                        <div class="content">
+                          <div class="head">Tarea abierta</div>
+                          <div class="text"></div>
+                          <div class="text">Crítico</div>
+                        </div>
+                      </mat-card-content>
+                    </mat-card>
+                  </div>
+                </ng-template>
+              </ng-template>
+              <ng-template #emptyIN>
+                <div class="empty-list">
+                  <div class="message" style="margin-top: 128px;">Aún no hay tareas en su lista</div>
+                </div>
+              </ng-template>
+            </mat-tab>
           </mat-tab-group>
         </div>
         <button matTooltip="Nueva bitacora"
