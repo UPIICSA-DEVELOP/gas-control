@@ -29,7 +29,7 @@
         <mat-icon class="done" *ngSwitchCase="4">check</mat-icon>
       </ng-container>
     </div>
-    <div class="delete" *ngIf="role === 1 || role === 7">
+    <div class="delete" *ngIf="(role === 1 || role === 7) && task.status !== 4">
       <button (click)="deleteItem()" mat-icon-button style="color: #707070" matTooltip="Eliminar"><mat-icon>delete</mat-icon></button>
     </div>
     <div class="frequency">
