@@ -20,12 +20,13 @@ export interface OMReport {
   maintenanceType: string;
   name: string;
   observations?: string;
-  personnelNames: string[];
+  personnelNames: Array<string>;
   personnelType: string;
-  procedures?: number[];
+  procedures?: Array<number>;
   protectiveGoggles: boolean;
   signature: FileCS;
   startTime: number;
   taskId: string;
   toolsAndMaterials: string;
+  extraFileCS: Array<FileCS>;
 }

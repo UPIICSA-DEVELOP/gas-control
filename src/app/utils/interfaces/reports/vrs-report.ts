@@ -14,5 +14,6 @@ export interface VRSReport {
   taskId: string;
   vrsAlarm: string;
   vrsDispensary: VRSDispensary;
-  vrsTanks: VRSTank[];
+  vrsTanks: Array<VRSTank>;
+  extraFileCS: Array<FileCS>;
 }

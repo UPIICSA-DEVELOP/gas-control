@@ -4,12 +4,13 @@ export interface IncidenceReport {
   area: string;
   date: number;
   description: string;
-  fileCS: FileCS;
+  fileCS?: FileCS;
   folio?: number;
   id?: string;
   name: string;
-  procedures?: number[];
+  procedures?: Array<number>;
   signature: FileCS;
   taskId: string;
   time: number;
+  extraFileCS: Array<FileCS>;
 }
