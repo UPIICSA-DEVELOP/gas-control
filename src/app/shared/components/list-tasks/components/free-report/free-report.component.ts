@@ -17,26 +17,25 @@ import {Constants} from '@app/utils/constants/constants.utils';
 import {FormatTimePipe} from '@app/shared/pipes/format-time/format-time.pipe';
 import {ModalProceduresService} from '@app/shared/components/modal-procedures/modal-procedures.service';
 import {LoaderService} from '@app/core/components/loader/loader.service';
-import {FreeTask} from '@app/utils/interfaces/free-task';
 import {Task} from '@app/utils/interfaces/task';
 import {HttpResponseCodes} from '@app/utils/enums/http-response-codes';
 import {AppUtil} from '@app/utils/interfaces/app-util';
 import {LocalStorageService, SnackBarService} from '@maplander/core';
-import {UserMedia} from '@maplander/core/lib/utils/models/user-media';
 import {Person} from '@app/utils/interfaces/person';
 import {CustomProcedure} from '@app/utils/interfaces/customProcedure';
+import {FreeReport} from '@app/utils/interfaces/reports/free-report';
 
 @Component({
-  selector: 'app-free-task',
-  templateUrl: './free-task.component.html',
-  styleUrls: ['./free-task.component.scss']
+  selector: 'app-free-report',
+  templateUrl: './free-report.component.html',
+  styleUrls: ['./free-report.component.scss']
 })
-export class FreeTaskComponent implements OnInit, OnDestroy {
+export class FreeReportComponent implements OnInit, OnDestroy {
   private _taskId: string;
   private _stationId: string;
   public task: any;
   public utils: AppUtil;
-  public stationProcedures: CustomProcedure[];
+  public stationProcedures: Array<CustomProcedure>;
 
   @Input() set taskFreeInfo(taskObj: any) {
     if (taskObj) {
@@ -60,25 +59,21 @@ export class FreeTaskComponent implements OnInit, OnDestroy {
   }
 
   public load: boolean;
-  public freeTaskForm: FormGroup;
-  public freeTask: FreeTask;
-  public date: any[];
-  public taskItems: any[];
+  public freeReportForm: FormGroup;
+  public freeReport: FreeReport;
+  public date: Array<any>;
+  public taskItems: Array<any>;
   public name: string;
-  private readonly _load: boolean[];
+  private readonly _load: Array<boolean>;
   public editable: boolean;
   public error: boolean;
-  private _copyTask: FreeTask;
-  public procedures: number[];
+  private _copyTask: FreeReport;
+  public procedures: Array<number>;
   private _indexTask: number;
   private _subscriptionLoader: Subscription;
   private _subscriptionShared: Subscription;
-  public evidenceThumbnail: string;
-  private _evidenceElement: any;
-  private _evidence: FormData;
-  public signatureThumbnail: string;
-  private _signatureElement: any;
   private _signature: FormData;
+  private _blobs: Array<any>;
 
   constructor(
     private _api: ApiService,
@@ -99,7 +94,22 @@ export class FreeTaskComponent implements OnInit, OnDestroy {
     this.editable = false;
     this.error = false;
     this._load = [false, false];
-    this.stationProcedures = [];
+    this.stationProcedures = null;
+    this._blobs = [];
+    this.freeReport = {
+      area: '',
+      date: 0,
+      description: '',
+      extraFileCS: [],
+      fileCS: null,
+      folio: 0,
+      id: null,
+      name: '',
+      procedures: [],
+      signature: null,
+      taskId: '',
+      time: 0
+    };
   }
 
   ngOnInit() {
@@ -116,7 +126,7 @@ export class FreeTaskComponent implements OnInit, OnDestroy {
   }
 
   private initFreeTaskForm(): void {
-    this.freeTaskForm = this._formBuilder.group({
+    this.freeReportForm = this._formBuilder.group({
       time: ['', [Validators.required]],
       area: ['', [Validators.required]],
       description: ['', [Validators.required]]
@@ -141,7 +151,7 @@ export class FreeTaskComponent implements OnInit, OnDestroy {
   private getNotifications(): void {
     this._subscriptionShared = this._sharedService.getNotifications().subscribe(response => {
       if (response.type === SharedTypeNotification.EditTask) {
-        if (response.value === 9) {
+        if (response.value === 10) {
           this.startEditFormat();
         }
       } else {
@@ -149,27 +159,32 @@ export class FreeTaskComponent implements OnInit, OnDestroy {
     });
   }
 
-  private patchForm(report: FreeTask): void {
-    this.freeTask = {
-      area: report.area || undefined,
-      date: report.date || undefined,
-      description: report.description || undefined,
-      fileCS: report.fileCS || undefined,
-      folio: report.folio || undefined,
-      id: report.id || undefined,
-      name: report.name || undefined,
+  private patchForm(report: FreeReport): void {
+    if (!report.extraFileCS && report.fileCS) {
+      report.extraFileCS = [];
+      report.extraFileCS.push(report.fileCS);
+      this._blobs = report.extraFileCS;
+    }
+    this.freeReport = {
+      area: report.area || null,
+      date: report.date || null,
+      description: report.description || null,
+      extraFileCS: report.extraFileCS || null,
+      folio: report.folio || null,
+      id: report.id || null,
+      name: report.name || null,
       procedures: report.procedures || [],
-      signature: report.signature || undefined,
-      taskId: report.taskId || undefined,
+      signature: report.signature || null,
+      taskId: report.taskId || null,
       time: report.time
     };
-    this.freeTaskForm.patchValue({
-      time: this._formatTimePipe.transform(this.freeTask.time),
-      area: this.freeTask.area,
-      description: this.freeTask.description
+    this.freeReportForm.patchValue({
+      time: this._formatTimePipe.transform(this.freeReport.time),
+      area: this.freeReport.area,
+      description: this.freeReport.description
     });
-    this.date = UtilitiesService.convertDate(this.freeTask.date);
-    this.freeTaskForm.disable();
+    this.date = UtilitiesService.convertDate(this.freeReport.date);
+    this.freeReportForm.disable();
   }
 
   private getFreeTask(): void {
@@ -196,23 +211,18 @@ export class FreeTaskComponent implements OnInit, OnDestroy {
     this.editable = true;
     this.name = user.completeName;
     if (!isNewLoad) {
-      this._copyTask = this.freeTask;
-      this.procedures = this.freeTask.procedures || [];
-      if (this.freeTask.fileCS) {
-        this._evidenceElement = this.freeTask.fileCS;
-        this.evidenceThumbnail = this.freeTask.fileCS.thumbnail;
-      }
-      this.freeTask.date = undefined;
-      this.freeTask.signature = undefined;
-      this.freeTask.folio = undefined;
+      this._copyTask = this.freeReport;
+      this.procedures = this.freeReport.procedures || [];
+      this.freeReport.date = null;
+      this.freeReport.signature = null;
+      this.freeReport.folio = null;
     }
-    this.freeTaskForm.enable();
+    this.freeReportForm.enable();
   }
 
   private resetElements(): void {
-    this.freeTask = undefined;
-    this.freeTaskForm.reset();
-    this.freeTaskForm.disable();
+    this.freeReportForm.reset();
+    this.freeReportForm.disable();
     const user = LocalStorageService.getItem<Person>(Constants.UserInSession);
     if (this.task.status !== 4 && user.role === 7) {
       this.startEditFormat(true);
@@ -225,33 +235,27 @@ export class FreeTaskComponent implements OnInit, OnDestroy {
   }
 
   public seeEvidence(): void {
-    if (this.taskItems[this._indexTask].fileCS) {
-      this._imageVisor.open(this.taskItems[this._indexTask].fileCS);
-    } else {
-      this._snackBarService.setMessage('Esta tarea no cuenta con evidencia', 'OK', 3000);
-    }
-  }
-
-  public changeTime(ev: any): void {
-    this.freeTaskForm.patchValue({
-      time: ev
+    this._imageVisor.open(
+      this.freeReport.extraFileCS || [], this._blobs || [], !this.editable
+    ).afterClosed().subscribe((response) => {
+      switch (response.code) {
+        case 1:
+          if (response.data === null) {
+            this._load[0] = false;
+          }
+          this._load[0] = true;
+          this.error = false;
+          this._blobs = response.data.blobs;
+          this.freeReport.extraFileCS = response.data.images;
+          break;
+      }
     });
   }
 
-  public loadEvidence(ev: UserMedia): void {
-    if (ev == null) {
-      this.evidenceThumbnail = null;
-      this._load[0] = false;
-      this._evidence = null;
-    }
-    this.evidenceThumbnail = ev.url;
-    this._load[0] = true;
-    this._evidence = new FormData();
-    this._evidence.append('path', 'Task' + this._taskId);
-    this._evidence.append('fileName', 'evidence-' + this._taskId + new Date().getTime() + '.png');
-    this._evidence.append('isImage', 'true');
-    this._evidence.append('file', ev.blob);
-    this.error = false;
+  public changeTime(ev: any): void {
+    this.freeReportForm.patchValue({
+      time: ev
+    });
   }
 
   public addRemoveArrayItem(isAdd: boolean, index?: number): void {
@@ -270,9 +274,15 @@ export class FreeTaskComponent implements OnInit, OnDestroy {
   }
 
   public loadSignature(): void {
+    if (!this.editable) {
+      return;
+    }
     this._signatureService.open().afterClosed().subscribe(response => {
       if (response.code === 1) {
-        this.signatureThumbnail = response.base64;
+        this.freeReport.signature = {
+          thumbnail: response.base64,
+          blobName: null
+        };
         this._load[1] = true;
         this._signature = new FormData();
         this._signature.append('fileName', 'signature-' + new Date().getTime() + '.png');
@@ -283,76 +293,84 @@ export class FreeTaskComponent implements OnInit, OnDestroy {
   }
 
   public validateForm(value: any): void {
-    if (!this.evidenceThumbnail) {
+    if (this.freeReport.extraFileCS.length === 0) {
       this.error = true;
     }
-    if (this.error || this.freeTaskForm.invalid) {
+    if (this.error || this.freeReportForm.invalid) {
       this._snackBarService.setMessage('Por favor, complete los campos', 'OK', 3000);
       return;
     }
-    if (!this._signature) {
+    if (!this.freeReport.signature) {
       this._snackBarService.setMessage('Por favor, registre su firma', 'OK', 3000);
       return;
     }
     if (this._load[0]) {
-      this.uploadFile(1);
+      this.uploadEvidences();
       return;
     }
     if (this._load[1]) {
-      this.uploadFile(2);
+      this.uploadFile();
       return;
     }
     this.saveReport(value);
   }
 
-  private uploadFile(type: number): void {
-    switch (type) {
-      case 1:
-        this._uploadFile.upload(this._evidence).subscribe(response => {
+  private uploadEvidences(): void {
+    for (let i = 0; i < this._blobs.length; i++) {
+      if (this._blobs[i].hasOwnProperty('url')) {
+        const evidence = new FormData();
+        evidence.append('path', 'Task' + this._taskId);
+        evidence.append('fileName', 'evidence-' + this._taskId + new Date().getTime() + '.png');
+        evidence.append('isImage', 'true');
+        evidence.append('file', this._blobs[i].blob);
+        this._uploadFile.upload(evidence).subscribe(response => {
           if (response) {
-            this._evidenceElement = {
-              blobName: response.item.blobName,
-              thumbnail: response.item.thumbnail
-            };
-            this._load[0] = false;
-            this.validateForm(this.freeTaskForm.value);
+            this._blobs[i] = response.item;
+            this.uploadEvidences();
           }
         });
         break;
-      case 2:
-        this._uploadFile.upload(this._signature).subscribe(response => {
-          if (response) {
-            this._signatureElement = {
-              blobName: response.item.blobName,
-              thumbnail: response.item.thumbnail
-            };
-            this._load[1] = false;
-            this.validateForm(this.freeTaskForm.value);
-          }
-        });
-        break;
-      default:
-        break;
+      } else {
+        this.freeReport.extraFileCS[i] = this._blobs[i];
+        if (i === this._blobs.length - 1) {
+          this._load[0] = false;
+          this.validateForm(this.freeReportForm.value);
+          break;
+        }
+      }
     }
+  }
+
+  private uploadFile(): void {
+    this._uploadFile.upload(this._signature).subscribe(response => {
+      if (response) {
+        this.freeReport.signature = {
+          blobName: response.item.blobName,
+          thumbnail: response.item.thumbnail
+        };
+        this._load[1] = false;
+        this.validateForm(this.freeReportForm.value);
+      }
+    });
   }
 
   private saveReport(value: any): void {
     let date: any = new Date();
     date = UtilitiesService.createPersonalTimeStamp(date);
-    this.freeTask = {
+    this.freeReport = {
       area: value.area,
       date: date.timeStamp,
       description: value.description,
-      fileCS: this._evidenceElement,
+      extraFileCS: this.freeReport.extraFileCS,
       name: this.name,
       procedures: this.procedures,
-      signature: this._signatureElement,
+      signature: this.freeReport.signature,
       taskId: this._taskId,
       time: UtilitiesService.removeFormatTime(value.time)
     };
     if (this._copyTask) {
-      this.freeTask.id = this._copyTask.id;
-      this._api.createTask(this.freeTask, 9).subscribe(response => {
+      this.freeReport.id = this._copyTask.id;
+      this._api.createTask(this.freeReport, 10).subscribe(response => {
         if (response.code === HttpResponseCodes.OK) {
           this._sharedService.setNotification({type: SharedTypeNotification.FinishEditTask, value: response.item.station});
         } else {
@@ -360,7 +378,7 @@ export class FreeTaskComponent implements OnInit, OnDestroy {
         }
       });
     } else {
-      this._api.createIncidenceReportAndTask(this.freeTask, this._stationId).subscribe(response => {
+      this._api.createIncidenceReportAndTask(this.freeReport, this._stationId, '4').subscribe(response => {
         if (response.code === HttpResponseCodes.OK) {
           this._sharedService.setNotification({type: SharedTypeNotification.FinishEditTask, value: response.item.station});
         } else {
@@ -374,6 +392,9 @@ export class FreeTaskComponent implements OnInit, OnDestroy {
   private getStationProcedures(): void {
     this._api.customProcedureList(this._stationId).subscribe((response) => {
       if (response.items) {
+        if (this.stationProcedures === null) {
+          this.stationProcedures = [];
+        }
         this.stationProcedures = this.stationProcedures.concat(response.items || []);
       }
     });

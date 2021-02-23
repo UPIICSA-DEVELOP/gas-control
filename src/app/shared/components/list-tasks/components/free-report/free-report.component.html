@@ -5,12 +5,12 @@
   -->
 
 <div id="free-task">
-  <form [formGroup]="freeTaskForm" (ngSubmit)="validateForm(freeTaskForm.value)">
+  <form [formGroup]="freeReportForm" (ngSubmit)="validateForm(freeReportForm.value)">
     <div class="task-header">
       <div class="head-bold">Tarea libre</div>
       <div class="control-data">
         <div *ngIf="date.length !== 0">Fecha: {{date[0]}} {{date[1]}} {{date[2]}}</div>
-        <div *ngIf="freeTask && freeTask.folio">Folio: {{freeTask.folio | formatFolio}}</div>
+        <div *ngIf="freeReport && freeReport.folio">Folio: {{freeReport.folio | formatFolio}}</div>
       </div>
     </div>
     <div class="flex-box">
@@ -36,7 +36,7 @@
           <ng-template #confirmBtn>
             <button mat-button type="button">ACEPTAR</button>
           </ng-template>
-          <mat-error *ngIf="freeTaskForm.controls['time'].hasError('required')">
+          <mat-error *ngIf="freeReportForm.controls['time'].hasError('required')">
             Este campo es obligatorio
           </mat-error>
         </mat-form-field>
@@ -47,14 +47,14 @@
             <mat-option value="Cuarto de máquinas">Cuarto de máquinas</mat-option>
             <mat-option value="Trampa de combustibles">Trampa de combustibles</mat-option>
           </mat-select>
-          <mat-error *ngIf="freeTaskForm.controls['area'].hasError('required')">
+          <mat-error *ngIf="freeReportForm.controls['area'].hasError('required')">
             Este campo es obligatorio
           </mat-error>
         </mat-form-field>
         <mat-form-field class="inputs">
           <textarea cdkTextareaAutosize formControlName="description" matInput placeholder="Descripción"
                     required></textarea>
-          <mat-error *ngIf="freeTaskForm.controls['description'].hasError('required')">
+          <mat-error *ngIf="freeReportForm.controls['description'].hasError('required')">
             Este campo es obligatorio
           </mat-error>
         </mat-form-field>
@@ -64,8 +64,8 @@
             <mat-icon class="add">add</mat-icon>
           </button>
         </div>
-        <div class="inputs" *ngIf="freeTask && freeTask.procedures && !editable && stationProcedures.length > 0 && utils">
-          <div class="procedures-list" *ngFor="let procedure of freeTask.procedures; let i = index;">
+        <div class="inputs" *ngIf="freeReport && freeReport.procedures && !editable && stationProcedures !== null && utils">
+          <div class="procedures-list" *ngFor="let procedure of freeReport.procedures; let i = index;">
             <div class="procedure">{{i + 1}}.-{{getProcedureName(procedure)}}</div>
           </div>
         </div>
@@ -87,53 +87,29 @@
         <mat-error *ngIf="error && editable" class="error-text">
           Es necesario tomar la evidencia
         </mat-error>
-        <div *ngIf="!editable; then showEv else modify"></div>
-        <ng-template #showEv>
-          <div *ngIf="!freeTask || !freeTask.fileCS" class="image-container">
-            <mat-icon class="default-image">image</mat-icon>
-          </div>
-          <div *ngIf="freeTask && freeTask.fileCS " class="image-container-real" (click)="seeEvidence()">
-            <img class="evidence" [src]="freeTask.fileCS.thumbnail" alt="Evidence capture">
-          </div>
-        </ng-template>
-        <ng-template #modify>
-          <lib-upload-file class="inputs" (loadImage)="loadEvidence($event)"
-                           [content]="imageEvidence" [isLoaded]="evidenceThumbnail ? true : false" [fileType]="'image'">
-            <ng-template #imageEvidence>
-              <div *ngIf="!evidenceThumbnail" class="image-container">
-                <mat-icon class="default-image">image</mat-icon>
-              </div>
-              <div *ngIf="evidenceThumbnail" class="image-container-real">
-                <img class="evidence" [src]="evidenceThumbnail" alt="Evidence capture">
-              </div>
-            </ng-template>
-          </lib-upload-file>
-        </ng-template>
+        <div *ngIf="freeReport.extraFileCS.length === 0" class="image-container" (click)="seeEvidence()">
+          <mat-icon class="default-image">image</mat-icon>
+        </div>
+        <div *ngIf="freeReport.extraFileCS.length >= 1" class="image-container-real" (click)="seeEvidence()">
+          <img class="evidence" [src]="freeReport.extraFileCS[0].thumbnail" alt="Evidence capture">
+        </div>
         <div class="text-sign">
           Nombre y firma del responsable
         </div>
         <div class=inputs>
-          <div *ngIf="!editable; then showSign else loadSign"></div>
-          <ng-template #showSign>
-            <div class="signature-element">
-              <img *ngIf="freeTask && freeTask.signature" [src]="freeTask.signature.thumbnail" alt="">
-              <div class="empty-signature" *ngIf="!freeTask || !freeTask.signature"></div>
-            </div>
-          </ng-template>
-          <ng-template #loadSign>
-            <div class="signature-element" (click)="loadSignature()" style="cursor: pointer" matTooltip="Cargar Firma">
-              <img *ngIf="signatureThumbnail" [src]="signatureThumbnail" alt="">
-              <div class="empty-signature" *ngIf="!signatureThumbnail"></div>
-            </div>
-          </ng-template>
+          <div class="signature-element" (click)="loadSignature()" style="cursor: pointer"
+               [matTooltipDisabled]="!editable" matTooltip="Cargar Firma">
+            <img *ngIf="freeReport.signature" [src]="freeReport.signature.thumbnail" alt="signature">
+            <div class="empty-signature" *ngIf="!freeReport.signature"></div>
+          </div>
           <div class="divider"></div>
           <div *ngIf="editable; then admonName else originalName"></div>
           <ng-template #admonName>
             <div class="name">{{name}}</div>
           </ng-template>
           <ng-template #originalName>
-            <div *ngIf="!freeTask || !freeTask.name" class="name">Nombre</div>
-            <div *ngIf="freeTask && freeTask.name" class="name">{{freeTask.name}}</div>
+            <div *ngIf="!freeReport || !freeReport.name" class="name">Nombre</div>
+            <div *ngIf="freeReport && freeReport.name" class="name">{{freeReport.name}}</div>
           </ng-template>
         </div>
       </div>
