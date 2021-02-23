@@ -19,7 +19,6 @@ import {CompressorReport} from '@app/utils/interfaces/reports/compressor-report'
 import {HWGReport} from '@app/utils/interfaces/reports/hwg-report';
 import {HttpResponseCodes} from '@app/utils/enums/http-response-codes';
 import {SnackBarService} from '@maplander/core';
-import {UserMedia} from '@app/utils/interfaces/user-media';
 import {AuthService} from '@app/core/services/auth/auth.service';
 
 @Component({
@@ -42,25 +41,21 @@ export class CompressorReportComponent implements OnInit, OnDestroy {
   public load: boolean;
   public compressorReport: CompressorReport;
   public compForm: FormGroup;
-  public date: any[];
-  public taskItems: any[];
+  public date: Array<any>;
+  public taskItems: Array<any>;
   public editable: boolean;
   public name: string;
-  public signatureThumbnail: string;
-  public evidenceThumbnail: string;
   public error: boolean;
   public startValidate: boolean;
   public hwgData: HWGReport;
   private _indexTask: number;
   private _signature: FormData;
-  private _evidence: FormData;
-  private readonly _loads: boolean[];
+  private readonly _loads: Array<boolean>;
   private _subscriptionShared: Subscription;
   private _subscriptionLoader: Subscription;
-  private _evidenceElement: any;
-  private _signatureElement: any;
   private _copyTask: CompressorReport;
   private _hwgElement: HWGReport;
+  private _blobs: Array<any>;
 
   constructor(
     private _api: ApiService,
@@ -73,6 +68,28 @@ export class CompressorReportComponent implements OnInit, OnDestroy {
     private _signatureService: SignaturePadService,
     private _formatTimePipe: FormatTimePipe
   ) {
+    this.compressorReport = {
+      brand: '',
+      controlNumber: '',
+      date: 0,
+      endTime: 0,
+      extraFileCS: [],
+      fileCS: null,
+      folio: 0,
+      hwgReport: null,
+      id: null,
+      model: '',
+      modifications: '',
+      name: '',
+      observations: '',
+      pressure: 0,
+      purge: '',
+      securityValve: '',
+      signature: null,
+      startTime: 0,
+      taskId: ''
+    };
+    this._blobs = [];
     this.startValidate = false;
     this.error = false;
     this._loads = [false, false];
@@ -122,7 +139,6 @@ export class CompressorReportComponent implements OnInit, OnDestroy {
   }
 
   private resetElements(): void {
-    this.compressorReport = null;
     this.compForm.reset();
     this.compForm.disable();
     const user = AuthService.getInfoUser();
@@ -132,12 +148,17 @@ export class CompressorReportComponent implements OnInit, OnDestroy {
   }
 
   private patchForm(report: CompressorReport): void {
+    if (!report.extraFileCS && report.fileCS) {
+      report.extraFileCS = [];
+      report.extraFileCS.push(report.fileCS);
+      this._blobs = report.extraFileCS;
+    }
     this.compressorReport = {
       brand: report.brand || null,
       controlNumber: report.controlNumber || null,
       date: report.date || null,
       endTime: report.endTime,
-      fileCS: report.fileCS || null,
+      extraFileCS: report.extraFileCS || null,
       folio: report.folio || null,
       hwgReport: report.hwgReport || null,
       id: report.id || null,
@@ -167,7 +188,7 @@ export class CompressorReportComponent implements OnInit, OnDestroy {
     if (this.compressorReport.hwgReport) {
       this.hwgData = this.compressorReport.hwgReport;
     } else {
-      this.hwgData = undefined;
+      this.hwgData = null;
     }
     this.date = UtilitiesService.convertDate(this.compressorReport.date);
     this.compForm.disable();
@@ -190,14 +211,21 @@ export class CompressorReportComponent implements OnInit, OnDestroy {
   }
 
   public seeEvidence(): void {
-    if (this.task.original.status !== 4) {
-      return;
-    }
-    if (this.taskItems[this._indexTask].fileCS) {
-      this._imageVisor.open(this.taskItems[this._indexTask].fileCS);
-    } else {
-      this._snackBarService.setMessage('Esta tarea no cuenta con evidencia', 'OK', 3000);
-    }
+    this._imageVisor.open(
+      this.compressorReport.extraFileCS || [], this._blobs || [], !this.editable
+    ).afterClosed().subscribe((response) => {
+      switch (response.code) {
+        case 1:
+          if (response.data === null) {
+            this._loads[0] = false;
+          }
+          this._loads[0] = true;
+          this.error = false;
+          this._blobs = response.data.blobs;
+          this.compressorReport.extraFileCS = response.data.images;
+          break;
+      }
+    });
   }
 
   public changeTask(ev: any) {
@@ -217,10 +245,6 @@ export class CompressorReportComponent implements OnInit, OnDestroy {
     if (!prepare) {
       this._copyTask = this.compressorReport;
       this.compressorReport.signature = null;
-      if (this.compressorReport.fileCS) {
-        this.evidenceThumbnail = this.compressorReport.fileCS.thumbnail;
-        this._evidenceElement = this.compressorReport.fileCS;
-      }
       if (this.compressorReport.hwgReport) {
         this.hwgData = this.compressorReport.hwgReport;
       }
@@ -238,9 +262,15 @@ export class CompressorReportComponent implements OnInit, OnDestroy {
   }
 
   public loadSignature(): void {
+    if (!this.editable) {
+      return;
+    }
     this._signatureService.open().afterClosed().subscribe(response => {
       if (response.code === 1) {
-        this.signatureThumbnail = response.base64;
+        this.compressorReport.signature = {
+          thumbnail: response.base64,
+          blobName: null
+        };
         this._loads[1] = true;
         this._signature = new FormData();
         this._signature.append('fileName', 'signature-' + new Date().getTime() + '.png');
@@ -250,26 +280,9 @@ export class CompressorReportComponent implements OnInit, OnDestroy {
     });
   }
 
-  public loadEvidence(ev: UserMedia): void {
-    if (ev) {
-      this.evidenceThumbnail = null;
-      this._loads[0] = false;
-      this._evidence = null;
-      this._evidenceElement = null;
-    }
-    this.error = false;
-    this.evidenceThumbnail = ev.url;
-    this._loads[0] = true;
-    this._evidence = new FormData();
-    this._evidence.append('path', '');
-    this._evidence.append('fileName', 'evidence-' + new Date().getTime() + '.png');
-    this._evidence.append('isImage', 'true');
-    this._evidence.append('file', ev.blob);
-  }
-
   public validateForm(value: any): void {
     let error = false;
-    if (this.task.evidence && (!this._evidence && !this.compressorReport.fileCS)) {
+    if (this.task.evidence && this.compressorReport.extraFileCS.length === 0) {
       this.error = true;
     }
     if (this.task.hwg) {
@@ -290,45 +303,53 @@ export class CompressorReportComponent implements OnInit, OnDestroy {
       return;
     }
     if (this._loads[0]) {
-      this.uploadFile(1);
+      this.uploadEvidences();
       return;
     }
     if (this._loads[1]) {
-      this.uploadFile(2);
+      this.uploadFile();
       return;
     }
     this.saveReport(value);
   }
 
-  private uploadFile(type: number): void {
-    switch (type) {
-      case 1:
-        this._uploadFile.upload(this._evidence).subscribe(response => {
+  private uploadEvidences(): void {
+    for (let i = 0; i < this._blobs.length; i++) {
+      if (this._blobs[i].hasOwnProperty('url')) {
+        const evidence = new FormData();
+        evidence.append('path', 'Task' + this._taskId);
+        evidence.append('fileName', 'evidence-' + this._taskId + new Date().getTime() + '.png');
+        evidence.append('isImage', 'true');
+        evidence.append('file', this._blobs[i].blob);
+        this._uploadFile.upload(evidence).subscribe(response => {
           if (response) {
-            this._evidenceElement = {
-              blobName: response.item.blobName,
-              thumbnail: response.item.thumbnail
-            };
-            this._loads[0] = false;
-            this.validateForm(this.compForm.value);
+            this._blobs[i] = response.item;
+            this.uploadEvidences();
           }
         });
         break;
-      case 2:
-        this._uploadFile.upload(this._signature).subscribe(response => {
-          if (response) {
-            this._signatureElement = {
-              blobName: response.item.blobName,
-              thumbnail: response.item.thumbnail
-            };
-            this._loads[1] = false;
-            this.validateForm(this.compForm.value);
-          }
-        });
-        break;
-      default:
-        break;
+      } else {
+        this.compressorReport.extraFileCS[i] = this._blobs[i];
+        if (i === this._blobs.length - 1) {
+          this._loads[0] = false;
+          this.validateForm(this.compForm.value);
+          break;
+        }
+      }
     }
+  }
+
+  private uploadFile(): void {
+    this._uploadFile.upload(this._signature).subscribe(response => {
+      if (response) {
+        this.compressorReport.signature = {
+          blobName: response.item.blobName,
+          thumbnail: response.item.thumbnail
+        };
+        this._loads[1] = false;
+        this.validateForm(this.compForm.value);
+      }
+    });
   }
 
   private saveReport(value): any {
@@ -339,15 +360,15 @@ export class CompressorReportComponent implements OnInit, OnDestroy {
       controlNumber: value.controlNumber,
       date: date.timeStamp,
       endTime: UtilitiesService.removeFormatTime(value.endTime),
-      fileCS: this._evidenceElement,
-      hwgReport: undefined,
+      extraFileCS: this.compressorReport.extraFileCS,
+      hwgReport: null,
       modifications: value.modifications,
       model: value.model,
       name: this.name,
       observations: value.observations,
       purge: value.purge,
       pressure: value.pressure,
-      signature: this._signatureElement,
+      signature: this.compressorReport.signature,
       securityValve: value.securityValve,
       startTime: UtilitiesService.removeFormatTime(value.startTime),
       taskId: this._taskId,
@@ -383,16 +404,16 @@ export class CompressorReportComponent implements OnInit, OnDestroy {
       };
     } else {
       this._hwgElement = {
-        area: undefined,
+        area: null,
         corrosive: false,
         explosive: false,
         flammable: false,
         reactive: false,
-        quantity: undefined,
-        temporaryStorage: undefined,
+        quantity: null,
+        temporaryStorage: null,
         toxic: false,
-        unity: undefined,
-        waste: undefined
+        unity: null,
+        waste: null
       };
     }
     this.startValidate = false;

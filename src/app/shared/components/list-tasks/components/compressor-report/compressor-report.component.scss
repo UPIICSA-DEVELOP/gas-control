@@ -27,6 +27,11 @@
     }
   }
 
+  .error-text {
+    width: 90%;
+    font-size: 11px;
+  }
+
   .inputs {
     width: 90%;
   }
@@ -68,6 +73,7 @@
 
   .image-container {
     display: flex;
+    cursor: pointer;
     justify-content: center;
     align-items: center;
     width: 100%;

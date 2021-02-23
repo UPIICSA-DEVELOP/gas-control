@@ -121,46 +121,23 @@
         <div class="image-header">
           Captura fotográfica de la evidencia
         </div>
-        <div *ngIf="!editable; then showEv else modify"></div>
-        <ng-template #showEv>
-          <div *ngIf="!compressorReport || !compressorReport.fileCS" class="image-container">
-            <mat-icon class="default-image">image</mat-icon>
-          </div>
-          <div *ngIf="compressorReport && compressorReport.fileCS " class="image-container-real"
-               (click)="seeEvidence()">
-            <img class="evidence" [src]="compressorReport.fileCS.thumbnail" alt="Evidence capture">
-          </div>
-        </ng-template>
-        <ng-template #modify>
-          <lib-upload-file class="inputs" (loadImage)="loadEvidence($event)"
-                           [isLoaded]="evidenceThumbnail ? true : false" [content]="imageEvidence" [fileType]="'image'">
-            <ng-template #imageEvidence>
-              <div *ngIf="!evidenceThumbnail" class="image-container">
-                <mat-icon class="default-image">image</mat-icon>
-              </div>
-              <div *ngIf="evidenceThumbnail" class="image-container-real">
-                <img class="evidence" [src]="evidenceThumbnail" alt="Evidence capture">
-              </div>
-            </ng-template>
-          </lib-upload-file>
-        </ng-template>
+        <mat-error *ngIf="error && editable" class="error-text">
+          Es necesario tomar la evidencia
+        </mat-error>
+        <div *ngIf="compressorReport.extraFileCS.length === 0" class="image-container" (click)="seeEvidence()">
+          <mat-icon class="default-image">image</mat-icon>
+        </div>
+        <div *ngIf="compressorReport.extraFileCS.length >= 1" class="image-container-real" (click)="seeEvidence()">
+          <img class="evidence" [src]="compressorReport.extraFileCS[0].thumbnail" alt="Evidence capture">
+        </div>
         <div *ngIf="!task.hwg" class="text-sign">
           Nombre y firma del responsable
         </div>
         <div *ngIf="!task.hwg" class="inputs">
-          <div *ngIf="!editable; then showSign else loadSign"></div>
-          <ng-template #showSign>
-            <div class="signature-element">
-              <img *ngIf="compressorReport && compressorReport.signature" [src]="compressorReport.signature.thumbnail" alt="">
-              <div class="empty-signature" *ngIf="!compressorReport || !compressorReport.signature"></div>
-            </div>
-          </ng-template>
-          <ng-template #loadSign>
-            <div class="signature-element" (click)="loadSignature()" style="cursor: pointer" matTooltip="Cargar Firma">
-              <img *ngIf="signatureThumbnail" [src]="signatureThumbnail" alt="">
-              <div class="empty-signature" *ngIf="!signatureThumbnail"></div>
-            </div>
-          </ng-template>
+          <div class="signature-element" (click)="loadSignature()" style="cursor: pointer" matTooltip="Cargar Firma">
+            <img *ngIf="compressorReport.signature" [src]="compressorReport.signature.thumbnail" alt="signature">
+            <div class="empty-signature" *ngIf="!compressorReport.signature"></div>
+          </div>
           <div class="divider"></div>
           <div *ngIf="editable; then admonName else originalName"></div>
           <ng-template #admonName>
@@ -175,30 +152,17 @@
     </div>
     <div class="divider" *ngIf="task.hwg"></div>
     <div *ngIf="task.hwg && compressorReport">
-      <app-hwg-report [taskHwgInfo]="hwgData || undefined" [validate]="startValidate"
-                      (formInformation)="getHWGReportInformation($event)"></app-hwg-report>
-    </div>
-    <div *ngIf="task.hwg && !compressorReport">
-      <app-hwg-report [taskHwgInfo]="undefined" [validate]="startValidate"
+      <app-hwg-report [taskHwgInfo]="hwgData || null" [validate]="startValidate"
                       (formInformation)="getHWGReportInformation($event)"></app-hwg-report>
     </div>
     <div *ngIf="task.hwg" class="text-sign">
       Nombre y firma del responsable
     </div>
     <div *ngIf="task.hwg" class="hwg-sign">
-      <div *ngIf="!editable; then showSign else loadSign"></div>
-      <ng-template #showSign>
-        <div class="signature-element">
-          <img *ngIf="compressorReport && compressorReport.signature" [src]="compressorReport.signature.thumbnail" alt="">
-          <div class="empty-signature" *ngIf="!compressorReport || !compressorReport.signature"></div>
-        </div>
-      </ng-template>
-      <ng-template #loadSign>
-        <div class="signature-element" (click)="loadSignature()" style="cursor: pointer" matTooltip="Cargar Firma">
-          <img *ngIf="signatureThumbnail" [src]="signatureThumbnail" alt="">
-          <div class="empty-signature" *ngIf="!signatureThumbnail"></div>
-        </div>
-      </ng-template>
+      <div class="signature-element" (click)="loadSignature()" style="cursor: pointer" matTooltip="Cargar Firma">
+        <img *ngIf="compressorReport.signature" [src]="compressorReport.signature.thumbnail" alt="signature">
+        <div class="empty-signature" *ngIf="!compressorReport.signature"></div>
+      </div>
       <div class="divider"></div>
       <div *ngIf="editable; then admonName else originalName"></div>
       <ng-template #admonName>
