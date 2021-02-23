@@ -22,7 +22,6 @@ import {Task} from '@app/utils/interfaces/task';
 import {HttpResponseCodes} from '@app/utils/enums/http-response-codes';
 import {AppUtil} from '@app/utils/interfaces/app-util';
 import {LocalStorageService, SnackBarService} from '@maplander/core';
-import {UserMedia} from '@maplander/core/lib/utils/models/user-media';
 import {Person} from '@app/utils/interfaces/person';
 import {CustomProcedure} from '@app/utils/interfaces/customProcedure';
 
@@ -36,7 +35,7 @@ export class IncidenceReportComponent implements OnInit, OnDestroy {
   private _stationId: string;
   public task: any;
   public utils: AppUtil;
-  public stationProcedures: CustomProcedure[];
+  public stationProcedures: Array<CustomProcedure>;
 
   @Input() set taskIncidenceInfo(taskObj: any) {
     if (taskObj) {
@@ -62,23 +61,19 @@ export class IncidenceReportComponent implements OnInit, OnDestroy {
   public load: boolean;
   public incidenceForm: FormGroup;
   public incidenceReport: IncidenceReport;
-  public date: any[];
-  public taskItems: any[];
+  public date: Array<any>;
+  public taskItems: Array<any>;
   public name: string;
-  private readonly _load: boolean[];
+  private readonly _load: Array<boolean>;
   public editable: boolean;
   public error: boolean;
   private _copyTask: IncidenceReport;
-  public procedures: number[];
+  public procedures: Array<number>;
   private _indexTask: number;
   private _subscriptionLoader: Subscription;
   private _subscriptionShared: Subscription;
-  public evidenceThumbnail: string;
-  private _evidenceElement: any;
-  private _evidence: FormData;
-  public signatureThumbnail: string;
-  private _signatureElement: any;
   private _signature: FormData;
+  private _blobs: Array<any>;
 
   constructor(
     private _api: ApiService,
@@ -99,7 +94,22 @@ export class IncidenceReportComponent implements OnInit, OnDestroy {
     this.editable = false;
     this.error = false;
     this._load = [false, false];
-    this.stationProcedures = [];
+    this._blobs = [];
+    this.stationProcedures = null;
+    this.incidenceReport = {
+      area: '',
+      date: 0,
+      description: '',
+      extraFileCS: [],
+      fileCS: null,
+      folio: 0,
+      id: null,
+      name: '',
+      procedures: [],
+      signature: null,
+      taskId: '',
+      time: 0
+    };
   }
 
   ngOnInit() {
@@ -150,17 +160,22 @@ export class IncidenceReportComponent implements OnInit, OnDestroy {
   }
 
   private patchForm(report: IncidenceReport): void {
+    if (!report.extraFileCS && report.fileCS) {
+      report.extraFileCS = [];
+      report.extraFileCS.push(report.fileCS);
+      this._blobs = report.extraFileCS;
+    }
     this.incidenceReport = {
-      area: report.area || undefined,
-      date: report.date || undefined,
-      description: report.description || undefined,
-      fileCS: report.fileCS || undefined,
-      folio: report.folio || undefined,
-      id: report.id || undefined,
-      name: report.name || undefined,
+      area: report.area || null,
+      date: report.date || null,
+      description: report.description || null,
+      extraFileCS: report.extraFileCS || null,
+      folio: report.folio || null,
+      id: report.id || null,
+      name: report.name || null,
       procedures: report.procedures || [],
-      signature: report.signature || undefined,
-      taskId: report.taskId || undefined,
+      signature: report.signature || null,
+      taskId: report.taskId || null,
       time: report.time
     };
     this.incidenceForm.patchValue({
@@ -198,19 +213,14 @@ export class IncidenceReportComponent implements OnInit, OnDestroy {
     if (!isNewLoad) {
       this._copyTask = this.incidenceReport;
       this.procedures = this.incidenceReport.procedures || [];
-      if (this.incidenceReport.fileCS) {
-        this._evidenceElement = this.incidenceReport.fileCS;
-        this.evidenceThumbnail = this.incidenceReport.fileCS.thumbnail;
-      }
-      this.incidenceReport.date = undefined;
-      this.incidenceReport.signature = undefined;
-      this.incidenceReport.folio = undefined;
+      this.incidenceReport.date = null;
+      this.incidenceReport.signature = null;
+      this.incidenceReport.folio = null;
     }
     this.incidenceForm.enable();
   }
 
   private resetElements(): void {
-    this.incidenceReport = undefined;
     this.incidenceForm.reset();
     this.incidenceForm.disable();
     const user = LocalStorageService.getItem<Person>(Constants.UserInSession);
@@ -225,33 +235,27 @@ export class IncidenceReportComponent implements OnInit, OnDestroy {
   }
 
   public seeEvidence(): void {
-    if (this.taskItems[this._indexTask].fileCS) {
-      this._imageVisor.open(this.taskItems[this._indexTask].fileCS);
-    } else {
-      this._snackBarService.setMessage('Esta tarea no cuenta con evidencia', 'OK', 3000);
-    }
+    this._imageVisor.open(
+      this.incidenceReport.extraFileCS || [], this._blobs || [], !this.editable
+    ).afterClosed().subscribe((response) => {
+      switch (response.code) {
+        case 1:
+          if (response.data === null) {
+            this._load[0] = false;
+          }
+          this._load[0] = true;
+          this.error = false;
+          this._blobs = response.data.blobs;
+          this.incidenceReport.extraFileCS = response.data.images;
+          break;
+      }
+    });
   }
 
   public changeTime(ev: any): void {
     this.incidenceForm.patchValue({
       time: ev
     });
-  }
-
-  public loadEvidence(ev: UserMedia): void {
-    if (ev == null) {
-      this.evidenceThumbnail = null;
-      this._load[0] = false;
-      this._evidence = null;
-    }
-    this.evidenceThumbnail = ev.url;
-    this._load[0] = true;
-    this._evidence = new FormData();
-    this._evidence.append('path', 'Task' + this._taskId);
-    this._evidence.append('fileName', 'evidence-' + this._taskId + new Date().getTime() + '.png');
-    this._evidence.append('isImage', 'true');
-    this._evidence.append('file', ev.blob);
-    this.error = false;
   }
 
   public addRemoveArrayItem(isAdd: boolean, index?: number): void {
@@ -270,9 +274,15 @@ export class IncidenceReportComponent implements OnInit, OnDestroy {
   }
 
   public loadSignature(): void {
+    if (!this.editable) {
+      return;
+    }
     this._signatureService.open().afterClosed().subscribe(response => {
       if (response.code === 1) {
-        this.signatureThumbnail = response.base64;
+        this.incidenceReport.signature = {
+          thumbnail: response.base64,
+          blobName: null
+        };
         this._load[1] = true;
         this._signature = new FormData();
         this._signature.append('fileName', 'signature-' + new Date().getTime() + '.png');
@@ -283,57 +293,65 @@ export class IncidenceReportComponent implements OnInit, OnDestroy {
   }
 
   public validateForm(value: any): void {
-    if (!this.evidenceThumbnail) {
+    if (this.incidenceReport.extraFileCS.length === 0) {
       this.error = true;
     }
     if (this.error || this.incidenceForm.invalid) {
       this._snackBarService.setMessage('Por favor, complete los campos', 'OK', 3000);
       return;
     }
-    if (!this._signature) {
+    if (!this.incidenceReport.signature) {
       this._snackBarService.setMessage('Por favor, registre su firma', 'OK', 3000);
       return;
     }
     if (this._load[0]) {
-      this.uploadFile(1);
+      this.uploadEvidences();
       return;
     }
     if (this._load[1]) {
-      this.uploadFile(2);
+      this.uploadFile();
       return;
     }
     this.saveReport(value);
   }
 
-  private uploadFile(type: number): void {
-    switch (type) {
-      case 1:
-        this._uploadFile.upload(this._evidence).subscribe(response => {
+  private uploadEvidences(): void {
+    for (let i = 0; i < this._blobs.length; i++) {
+      if (this._blobs[i].hasOwnProperty('url')) {
+        const evidence = new FormData();
+        evidence.append('path', 'Task' + this._taskId);
+        evidence.append('fileName', 'evidence-' + this._taskId + new Date().getTime() + '.png');
+        evidence.append('isImage', 'true');
+        evidence.append('file', this._blobs[i].blob);
+        this._uploadFile.upload(evidence).subscribe(response => {
           if (response) {
-            this._evidenceElement = {
-              blobName: response.item.blobName,
-              thumbnail: response.item.thumbnail
-            };
-            this._load[0] = false;
-            this.validateForm(this.incidenceForm.value);
+            this._blobs[i] = response.item;
+            this.uploadEvidences();
           }
         });
         break;
-      case 2:
-        this._uploadFile.upload(this._signature).subscribe(response => {
-          if (response) {
-            this._signatureElement = {
-              blobName: response.item.blobName,
-              thumbnail: response.item.thumbnail
-            };
-            this._load[1] = false;
-            this.validateForm(this.incidenceForm.value);
-          }
-        });
-        break;
-      default:
-        break;
+      } else {
+        this.incidenceReport.extraFileCS[i] = this._blobs[i];
+        if (i === this._blobs.length - 1) {
+          this._load[0] = false;
+          this.validateForm(this.incidenceForm.value);
+          break;
+        }
+      }
     }
+  }
+
+  private uploadFile(): void {
+    this._uploadFile.upload(this._signature).subscribe(response => {
+      if (response) {
+        this.incidenceReport.signature = {
+          blobName: response.item.blobName,
+          thumbnail: response.item.thumbnail
+        };
+        this._load[1] = false;
+        this.validateForm(this.incidenceForm.value);
+      }
+    });
   }
 
   private saveReport(value: any): void {
@@ -343,10 +361,10 @@ export class IncidenceReportComponent implements OnInit, OnDestroy {
       area: value.area,
       date: date.timeStamp,
       description: value.description,
-      fileCS: this._evidenceElement,
+      extraFileCS: this.incidenceReport.extraFileCS,
       name: this.name,
       procedures: this.procedures,
-      signature: this._signatureElement,
+      signature: this.incidenceReport.signature,
       taskId: this._taskId,
       time: UtilitiesService.removeFormatTime(value.time)
     };
@@ -360,7 +378,7 @@ export class IncidenceReportComponent implements OnInit, OnDestroy {
         }
       });
     } else {
-      this._api.createIncidenceReportAndTask(this.incidenceReport, this._stationId).subscribe(response => {
+      this._api.createIncidenceReportAndTask(this.incidenceReport, this._stationId, '3').subscribe(response => {
         if (response.code === HttpResponseCodes.OK) {
           this._sharedService.setNotification({type: SharedTypeNotification.FinishEditTask, value: response.item.station});
         } else {
@@ -374,6 +392,9 @@ export class IncidenceReportComponent implements OnInit, OnDestroy {
   private getStationProcedures(): void {
     this._api.customProcedureList(this._stationId).subscribe((response) => {
       if (response.items) {
+        if (this.stationProcedures === null) {
+          this.stationProcedures = [];
+        }
         this.stationProcedures = this.stationProcedures.concat(response.items || []);
       }
     });
