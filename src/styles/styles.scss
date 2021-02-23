@@ -414,3 +414,9 @@ app-add-collaborator{
     color: mat-color($primary) !important;
   }
 }
+
+app-incidence-report, app-free-report, app-om-report, app-compressor-report, app-vrs-report {
+  #upload-file-component {
+    width: 100% !important;
+  }
+}
