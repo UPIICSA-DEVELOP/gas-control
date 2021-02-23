@@ -17,11 +17,10 @@ import {Constants} from '@app/utils/constants/constants.utils';
 import {LoaderService} from '@app/core/components/loader/loader.service';
 import {VRSReport} from '@app/utils/interfaces/reports/vrs-report';
 import {VRSTank} from '@app/utils/interfaces/vrs-tank';
-import {Task} from '@app/utils/interfaces/task';
 import {HttpResponseCodes} from '@app/utils/enums/http-response-codes';
 import {LocalStorageService, SnackBarService} from '@maplander/core';
-import {UserMedia} from '@maplander/core/lib/utils/models/user-media';
 import {Person} from '@app/utils/interfaces/person';
+import {AuthService} from '@app/core/services/auth/auth.service';
 
 @Component({
   selector: 'app-vrs-report',
@@ -43,25 +42,20 @@ export class VrsReportComponent implements OnInit, OnDestroy {
   public load: boolean;
   public vrsForm: FormGroup;
   public vrsReport: VRSReport;
-  public date: any[];
-  public taskItems: any[];
-  public tanks: VRSTank[];
+  public date: Array<any>;
+  public taskItems: Array<any>;
+  public tanks: Array<VRSTank>;
   public editable: boolean;
   public name: string;
   public error: boolean;
-  public errorTank: boolean[];
-  public evidenceThumbnail: string;
-  public signatureThumbnail: string;
-  private _evidence: FormData;
+  public errorTank: Array<boolean>;
   private _signature: FormData;
-  private _signatureElement: any;
-  private _evidenceElement: any;
-  private readonly _loads: boolean[];
+  private readonly _loads: Array<boolean>;
   private _indexTask: number;
   private _copyTask: VRSReport;
   private _subscriptionShared: Subscription;
   private _subscriptionLoader: Subscription;
-
+  private _blobs: Array<any>;
   constructor(
     private _api: ApiService,
     private _apiLoader: LoaderService,
@@ -72,15 +66,30 @@ export class VrsReportComponent implements OnInit, OnDestroy {
     private _signatureService: SignaturePadService,
     private _sharedService: SharedService
   ) {
+    this.vrsReport = {
+      date: 0,
+      emergencyStop: '',
+      extraFileCS: [],
+      fileCS: null,
+      folio: 0,
+      id: null,
+      name: '',
+      observations: '',
+      signature: null,
+      taskId: '',
+      vrsAlarm: '',
+      vrsDispensary: null,
+      vrsTanks: []
+    };
     this.date = [];
     this.taskItems = [];
     this._indexTask = 0;
     this.tanks = [{
-      capAndFillingAdapter: undefined,
-      capAndSteamAdapter: undefined,
+      capAndFillingAdapter: null,
+      capAndSteamAdapter: null,
       fuelType: 0,
-      overfillValve: undefined,
-      vacuumPressureValve: undefined
+      overfillValve: null,
+      vacuumPressureValve: null
     }];
     this.errorTank = [false];
     this.editable = false;
@@ -126,7 +135,6 @@ export class VrsReportComponent implements OnInit, OnDestroy {
   }
 
   private resetElements(): void {
-    this.vrsReport = null;
     this.vrsForm.reset();
     this.vrsForm.disable();
     const user = LocalStorageService.getItem<Person>(Constants.UserInSession);
@@ -136,10 +144,15 @@ export class VrsReportComponent implements OnInit, OnDestroy {
   }
 
   private patchForm(task: any): void {
+    if (!task.extraFileCS && task.fileCS) {
+      task.extraFileCS = [];
+      task.extraFileCS.push(task.fileCS);
+      this._blobs = task.extraFileCS;
+    }
     this.vrsReport = {
       date: task.date || null,
       emergencyStop: task.emergencyStop || null,
-      fileCS: task.fileCS || null,
+      extraFileCS: task.extraFileCS || null,
       folio: task.folio || null,
       id: task.id || null,
       name: task.name || null,
@@ -186,14 +199,20 @@ export class VrsReportComponent implements OnInit, OnDestroy {
   }
 
   public seeEvidence(): void {
-    if (this.task.original.status !== 4) {
-      return;
-    }
-    if (this.taskItems[this._indexTask].fileCS) {
-      this._imageVisor.open(this.taskItems[this._indexTask].fileCS);
-    } else {
-      this._snackBarService.setMessage('Esta tarea no cuenta con evidencia', 'OK', 3000);
-    }
+    this._imageVisor.open(
+      this.vrsReport.extraFileCS || [], this._blobs || [], !this.editable
+    ).afterClosed().subscribe((response) => {
+      switch (response.code) {
+        case 1:
+          if (response.data === null) {
+            this._loads[0] = false;
+          }
+          this._loads[0] = true;
+          this._blobs = response.data.blobs;
+          this.vrsReport.extraFileCS = response.data.images;
+          break;
+      }
+    });
   }
 
   public changeTask(ev: any) {
@@ -203,17 +222,13 @@ export class VrsReportComponent implements OnInit, OnDestroy {
 
   private startEditReport(isNewLoad?: boolean): void {
     let today: any = new Date();
-    const user = LocalStorageService.getItem<Person>(Constants.UserInSession);
+    const user = AuthService.getInfoUser();
     today = UtilitiesService.createPersonalTimeStamp(today);
     this.date = UtilitiesService.convertDate(today.timeStamp);
     this.editable = true;
-    this.name = user.name + user.lastName;
+    this.name = user.completeName;
     if (!isNewLoad) {
       this._copyTask = this.vrsReport;
-      if (this.vrsReport.fileCS) {
-        this._evidenceElement = this.vrsReport.fileCS;
-        this.evidenceThumbnail = this.vrsReport.fileCS.thumbnail;
-      }
       this.vrsReport.folio = null;
       this.vrsReport.date = null;
       this.vrsReport.signature = null;
@@ -222,26 +237,16 @@ export class VrsReportComponent implements OnInit, OnDestroy {
     this.vrsForm.enable();
   }
 
-  public loadEvidence(ev: UserMedia): void {
-    if (ev == null) {
-      this.evidenceThumbnail = null;
-      this._loads[0] = false;
-      this._evidence = null;
-      this._evidenceElement = null;
-    }
-    this.evidenceThumbnail = ev.url;
-    this._loads[0] = true;
-    this._evidence = new FormData();
-    this._evidence.append('path', 'Task' + this._taskId);
-    this._evidence.append('fileName', 'evidence-' + this._taskId + new Date().getTime() + '.png');
-    this._evidence.append('isImage', 'true');
-    this._evidence.append('file', ev.blob);
-  }
-
   public loadSignature(): void {
+    if (!this.editable) {
+      return;
+    }
     this._signatureService.open().afterClosed().subscribe(response => {
       if (response.code === 1) {
-        this.signatureThumbnail = response.base64;
+        this.vrsReport.signature = {
+          thumbnail: response.base64,
+          blobName: null
+        };
         this._loads[1] = true;
         this._signature = new FormData();
         this._signature.append('fileName', 'signature-' + new Date().getTime() + '.png');
@@ -254,11 +259,11 @@ export class VrsReportComponent implements OnInit, OnDestroy {
   public addRemoveTank(isAdd: boolean, index?: number): void {
     if (isAdd) {
       this.tanks.push({
-        capAndFillingAdapter: undefined,
-        capAndSteamAdapter: undefined,
+        capAndFillingAdapter: null,
+        capAndSteamAdapter: null,
         fuelType: 1,
-        overfillValve: undefined,
-        vacuumPressureValve: undefined
+        overfillValve: null,
+        vacuumPressureValve: null
       });
       this.errorTank.push(false);
     } else {
@@ -288,11 +293,11 @@ export class VrsReportComponent implements OnInit, OnDestroy {
       return;
     }
     if (this._loads[0]) {
-      this.uploadFile(1);
+      this.uploadEvidences();
       return;
     }
     if (this._loads[1]) {
-      this.uploadFile(2);
+      this.uploadFile();
       return;
     }
     this.saveReport(value);
@@ -304,10 +309,10 @@ export class VrsReportComponent implements OnInit, OnDestroy {
     this.vrsReport = {
       date: date.timeStamp,
       emergencyStop: value.emergencyStop,
-      fileCS: this._evidenceElement,
+      extraFileCS: this.vrsReport.extraFileCS,
       name: this.name,
       observations: value.observations,
-      signature: this._signatureElement,
+      signature: this.vrsReport.signature,
       taskId: this._taskId,
       vrsTanks: this.tanks,
       vrsAlarm: value.vrsAlarm,
@@ -334,35 +339,43 @@ export class VrsReportComponent implements OnInit, OnDestroy {
     });
   }
 
-  private uploadFile(type: number): void {
-    switch (type) {
-      case 1:
-        this._uploadFileService.upload(this._evidence).subscribe(response => {
+  private uploadEvidences(): void {
+    for (let i = 0; i < this._blobs.length; i++) {
+      if (this._blobs[i].hasOwnProperty('url')) {
+        const evidence = new FormData();
+        evidence.append('path', 'Task' + this._taskId);
+        evidence.append('fileName', 'evidence-' + this._taskId + new Date().getTime() + '.png');
+        evidence.append('isImage', 'true');
+        evidence.append('file', this._blobs[i].blob);
+        this._uploadFileService.upload(evidence).subscribe(response => {
           if (response) {
-            this._evidenceElement = {
-              blobName: response.item.blobName,
-              thumbnail: response.item.thumbnail
-            };
-            this._loads[0] = false;
-            this.validateForm(this.vrsForm.value);
+            this._blobs[i] = response.item;
+            this.uploadEvidences();
           }
         });
         break;
-      case 2:
-        this._uploadFileService.upload(this._signature).subscribe(response => {
-          if (response) {
-            this._signatureElement = {
-              blobName: response.item.blobName,
-              thumbnail: response.item.thumbnail
-            };
-            this._loads[1] = false;
-            this.validateForm(this.vrsForm.value);
-          }
-        });
-        break;
-      default:
-        break;
+      } else {
+        this.vrsReport.extraFileCS[i] = this._blobs[i];
+        if (i === this._blobs.length - 1) {
+          this._loads[0] = false;
+          this.validateForm(this.vrsForm.value);
+          break;
+        }
+      }
     }
+  }
+
+  private uploadFile(): void {
+    this._uploadFileService.upload(this._signature).subscribe(response => {
+      if (response) {
+        this.vrsReport.signature = {
+          blobName: response.item.blobName,
+          thumbnail: response.item.thumbnail
+        };
+        this._loads[1] = false;
+        this.validateForm(this.vrsForm.value);
+      }
+    });
   }
 
   public changeFuelType() {
