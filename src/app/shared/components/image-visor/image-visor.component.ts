@@ -7,6 +7,7 @@
 import {Component, Inject, OnInit} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
 import {FileCS} from '@app/utils/interfaces/file-cs';
+import {UserMedia} from '@maplander/core/lib/utils/models/user-media';
 
 @Component({
   selector: 'app-image-visor',
@@ -15,33 +16,58 @@ import {FileCS} from '@app/utils/interfaces/file-cs';
 })
 export class ImageVisorComponent implements OnInit {
   private readonly _lastIndex: number;
-  public imageOnView: any;
-  public images: FileCS;
-
+  public images: Array<FileCS>;
+  public viewMode: boolean;
+  private _blobs: Array<any>;
   constructor(
     @Inject(MAT_DIALOG_DATA) private _data: any,
     private _dialogRef: MatDialogRef<ImageVisorComponent>
   ) {
     this._lastIndex = 0;
-    this.images = null;
+    this.images = [];
+    this.viewMode = false;
+    this._blobs = [];
   }
 
   ngOnInit() {
     if (this._data) {
-      this.images = this._data;
+      this.viewMode = this._data.onlyViewMode;
+      this.images = Object.assign([], this._data.images);
+      this._blobs = Object.assign([], this._data.blobs);
     }
   }
 
-  public changeImage(next: boolean): void {
-    if (next) {
-      this.imageOnView = this.images[this._lastIndex + 1];
-    } else if (!next) {
-      this.imageOnView = this.images[this._lastIndex - 1];
+  public onUploadImage(ev: UserMedia): void {
+    if (!ev) {
+      return;
     }
+    this.images.push({
+      thumbnail: ev.url,
+      blobName: null
+    });
+    this._blobs.push(ev);
+  }
+
+  public removeImage(index: number): void {
+    this.images.splice(index, 1);
+    this._blobs.splice(index, 1);
+  }
+
+  public changeImage(currentIndex: number, newIndex: number): void {
+    const temp = this.images[newIndex];
+    this.images[newIndex] = this.images[currentIndex];
+    this.images[currentIndex] = temp;
+    const tempBlob = this._blobs[newIndex];
+    this._blobs[newIndex] = this._blobs[currentIndex];
+    this._blobs[currentIndex] = tempBlob;
   }
 
   public close(): void {
-    this._dialogRef.close();
+    if (this.viewMode) {
+      this._dialogRef.close({code: -1});
+    } else {
+      this._dialogRef.close({code: 1, data: {images: this.images, blobs: this._blobs}});
+    }
   }
 
 }

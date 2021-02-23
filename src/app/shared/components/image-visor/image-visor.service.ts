@@ -16,7 +16,17 @@ export class ImageVisorService {
   ) {
   }
 
-  public open(imagesArray: any[]): MatDialogRef<ImageVisorComponent> {
-    return this._dialogRef.open(ImageVisorComponent, {disableClose: true, panelClass: 'modal-image-visor', data: imagesArray || null});
+  public open(imagesArray: any[], blobs?: any[], isOnlyView?: boolean): MatDialogRef<ImageVisorComponent> {
+    return this._dialogRef.open(
+      ImageVisorComponent,
+      {
+        disableClose: true,
+        panelClass: 'modal-image-visor',
+        data: {
+          images: imagesArray || null,
+          blobs: blobs || null,
+          onlyViewMode: isOnlyView
+        }
+      });
   }
 }
