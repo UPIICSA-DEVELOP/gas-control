@@ -453,6 +453,9 @@ export class ListTasksComponent implements OnInit, OnDestroy {
         case 2:
           type = '2';
           break;
+        case 3:
+          type = '4';
+          break;
       }
     } else {
       switch (this._lastTabSelected) {
@@ -464,6 +467,9 @@ export class ListTasksComponent implements OnInit, OnDestroy {
           break;
         case 2:
           type = '2';
+          break;
+        case 3:
+          type = '4';
           break;
       }
     }
@@ -570,6 +576,10 @@ export class ListTasksComponent implements OnInit, OnDestroy {
       case 2:
         type = 2;
         type_two = 6;
+        break;
+      case 3:
+        type = 4;
+        type_two = 10;
         break;
     }
     this.reportConfig = {

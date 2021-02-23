@@ -123,7 +123,7 @@
                   <div style="margin: 8px 0; font-weight: 600;">{{task.title}}</div>
                 </ng-template>
                 <ng-template #taskCard>
-                  <app-task-card (deleteAction)="deleteTask(task)" (taskAction)="goTaskInfo(task)" [userRole]="isArchive ? user.role:0" [implementation]="1" [taskInfo]="task"></app-task-card>
+                  <app-task-card (deleteAction)="deleteTask(task)" (taskAction)="goTaskInfo(task)" [userRole]="!isArchive ? user.role:0" [implementation]="1" [taskInfo]="task"></app-task-card>
                 </ng-template>
               </div>
               <div class="card-list" *ngFor="let task of listTask.todayTasks;">
@@ -132,7 +132,7 @@
                   <div style="margin: 8px 0; font-weight: 600;">{{task.title}}</div>
                 </ng-template>
                 <ng-template #taskCard>
-                  <app-task-card (deleteAction)="deleteTask(task)" (taskAction)="goTaskInfo(task)" [userRole]="isArchive ? user.role:0" [implementation]="1" [taskInfo]="task"></app-task-card>
+                  <app-task-card (deleteAction)="deleteTask(task)" (taskAction)="goTaskInfo(task)" [userRole]="!isArchive ? user.role:0" [implementation]="1" [taskInfo]="task"></app-task-card>
                 </ng-template>
               </div>
               <div class="card-list" *ngFor="let task of listTask.previousTasks;">
@@ -141,7 +141,7 @@
                   <div style="margin: 8px 0; font-weight: 600;">{{task.title}}</div>
                 </ng-template>
                 <ng-template #taskCard>
-                  <app-task-card (deleteAction)="deleteTask(task)" (taskAction)="goTaskInfo(task)" [userRole]="isArchive ? user.role:0" [implementation]="1" [taskInfo]="task"></app-task-card>
+                  <app-task-card (deleteAction)="deleteTask(task)" (taskAction)="goTaskInfo(task)" [userRole]="!isArchive ? user.role:0" [implementation]="1" [taskInfo]="task"></app-task-card>
                 </ng-template>
               </div>
               <div class="card-list" *ngFor="let task of listTask.historyTasks;">
@@ -150,7 +150,7 @@
                   <div style="margin: 8px 0; font-weight: 600;">{{task.title}}</div>
                 </ng-template>
                 <ng-template #taskCard>
-                  <app-task-card (deleteAction)="deleteTask(task)" (taskAction)="goTaskInfo(task)" [userRole]="isArchive ? user.role:0" [implementation]="1" [taskInfo]="task"></app-task-card>
+                  <app-task-card (deleteAction)="deleteTask(task)" (taskAction)="goTaskInfo(task)" [userRole]="!isArchive ? user.role:0" [implementation]="1" [taskInfo]="task"></app-task-card>
                 </ng-template>
               </div>
             </ng-template>
@@ -335,8 +335,8 @@
               </ng-template>
             </mat-tab>
             <mat-tab [disabled]="reportConfig.reportView" label="Tareas Libres">
-              <div *ngIf="notCalendarTasks.length !== 0 || reportConfig.reportView; then listIN else emptyIN"></div>
-              <ng-template #listIN>
+              <div *ngIf="notCalendarTasks.length !== 0 || reportConfig.reportView; then listFree else emptyFree"></div>
+              <ng-template #listFree>
                 <div *ngIf="reportConfig.reportView; then freeTaskReportView else freeTaskList"></div>
                 <ng-template #freeTaskReportView>
                   <div style="width: 95%">
@@ -353,13 +353,13 @@
                         <mat-icon>close</mat-icon>
                       </button>
                     </div>
-                    <app-free-task [taskFreeInfo]="reportConfig.taskElement" [utilities]="utils"
-                                          [station]="station"></app-free-task>
+                    <app-free-report [taskFreeInfo]="reportConfig.taskElement" [utilities]="utils"
+                                          [station]="station"></app-free-report>
                   </div>
                 </ng-template>
                 <ng-template #freeTaskList>
                   <div class="card-list" *ngFor="let task of notCalendarTasks;">
-                    <mat-card matRipple (click)="goTaskInfo(task, 9)" class="task" style="margin-top: 8px">
+                    <mat-card matRipple (click)="goTaskInfo(task, 10)" class="task" style="margin-top: 8px">
                       <div class="priority" style="background-color:#E00000"></div>
                       <mat-card-content>
                         <div class="date">
@@ -378,7 +378,7 @@
                   </div>
                 </ng-template>
               </ng-template>
-              <ng-template #emptyIN>
+              <ng-template #emptyFree>
                 <div class="empty-list">
                   <div class="message" style="margin-top: 128px;">Aún no hay tareas en su lista</div>
                 </div>
