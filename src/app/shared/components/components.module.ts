@@ -44,7 +44,6 @@ import {FrReportComponent} from '@app/shared/components/list-tasks/components/fr
 import {HwcReportComponent} from '@app/shared/components/list-tasks/components/hwc-report/hwc-report.component';
 import {HwgReportComponent} from '@app/shared/components/list-tasks/components/hwg-report/hwg-report.component';
 import {IncidenceReportComponent} from '@app/shared/components/list-tasks/components/incidence-report/incidence-report.component';
-import {FreeTaskComponent} from '@app/shared/components/free-task/free-task.component';
 import {OmReportComponent} from '@app/shared/components/list-tasks/components/om-report/om-report.component';
 import {ScannedReportComponent} from '@app/shared/components/list-tasks/components/scanned-report/scanned-report.component';
 import {VrsReportComponent} from '@app/shared/components/list-tasks/components/vrs-report/vrs-report.component';
@@ -58,6 +57,7 @@ import {TaskFilterService} from '@app/shared/components/task-filter/task-filter.
 import {DatepickerService} from '@app/shared/components/datepicker/datepicker.service';
 import {ModalProceduresComponent} from '@app/shared/components/modal-procedures/modal-procedures.component';
 import {ModalProceduresService} from '@app/shared/components/modal-procedures/modal-procedures.service';
+import {FreeReportComponent} from '@app/shared/components/list-tasks/components/free-report/free-report.component';
 
 const Reports = [
   CompressorReportComponent,
@@ -68,7 +68,8 @@ const Reports = [
   IncidenceReportComponent,
   OmReportComponent,
   ScannedReportComponent,
-  VrsReportComponent
+  VrsReportComponent,
+  FreeReportComponent,
 ];
 
 const Components = [
@@ -87,7 +88,6 @@ const Components = [
   TaskCardComponent,
   TaskFilterComponent,
   TaskFilterNameComponent,
-  FreeTaskComponent,
   ListTasksComponent,
   Reports,
   DatepickerComponent,
