@@ -23,6 +23,7 @@ import {UserProfileComponent} from '@app/ui/dashboard/pages/profiles/user-profil
 import {UserProfileService} from '@app/ui/dashboard/pages/profiles/user-profile/user-profile.service';
 import {StationProfileComponent} from '@app/ui/dashboard/pages/profiles/station-profile/station-profile.component';
 import {StationProfileService} from '@app/ui/dashboard/pages/profiles/station-profile/station-profile.service';
+import {ArchiveComponent} from '@app/ui/dashboard/pages/archive/archive.component';
 
 const URL_BASE = environment.url;
 
@@ -121,6 +122,14 @@ export const dashboardRoutes: Routes = [
             }
           }
         ]
+      },
+      {
+        path: 'archive/:stationId',
+        component: ArchiveComponent,
+        data: {
+          title: 'Archivo de tareas',
+          url: URL_BASE + 'home/archive'
+        }
       }
     ]
   }

@@ -1,0 +1,289 @@
+<!--
+  ~ Copyright (C) MapLander S de R.L de C.V - All Rights Reserved
+  ~  Unauthorized copying of this file, via any medium is strictly prohibited
+  ~  Proprietary and confidential
+  -->
+
+<div id="om-report">
+  <div class="task-name-container">
+    <div *ngIf="task" class="task-name">{{task.original.name}}</div>
+  </div>
+  <div class="task-header">
+    <div class="head-bold">Operación y mantenimiento</div>
+    <div class="control-data">
+      <div *ngIf="date.length !== 0">Fecha: {{date[0]}} {{date[1]}} {{date[2]}}&nbsp;&nbsp;</div>
+      <div *ngIf="omReport && omReport.folio">Folio: {{omReport.folio | formatFolio}}</div>
+    </div>
+  </div>
+  <form [formGroup]="omForm" (ngSubmit)="task.hwg ? startValidateForm() : validateForm(omForm.value)">
+    <div class="flex-box">
+      <div class="columns">
+        <div class="times">
+          <mat-form-field class="clock">
+            <input matInput
+                   formControlName="startTime"
+                   placeholder="Hora de inicio"
+                   required
+                   [ngxTimepicker]="pickerOne"
+                   readonly="readonly">
+            <button [disabled]="!editable" mat-icon-button matSuffix (click)="pickerOne.open()" type="button">
+              <mat-icon>access_time</mat-icon>
+            </button>
+            <ngx-material-timepicker #pickerOne
+                                     (timeSet)="changeTime($event, 'startTime')"
+                                     [confirmBtnTmpl]="confirmBtn"
+                                     [cancelBtnTmpl]="cancelBtn"
+                                     [preventOverlayClick]="true"></ngx-material-timepicker>
+            <ng-template #cancelBtn>
+              <button mat-button type="button">CANCELAR</button>
+            </ng-template>
+            <ng-template #confirmBtn>
+              <button mat-button type="button">ACEPTAR</button>
+            </ng-template>
+            <mat-error *ngIf="omForm.controls['startTime'].hasError('required')">
+              Este campo es obligatorio
+            </mat-error>
+          </mat-form-field>
+          <mat-form-field class="clock">
+            <input matInput
+                   formControlName="endTime"
+                   placeholder="Hora de término"
+                   required
+                   [ngxTimepicker]="pickerTwo"
+                   readonly="readonly">
+            <button [disabled]="!editable" mat-icon-button matSuffix (click)="pickerTwo.open()" type="button">
+              <mat-icon>access_time</mat-icon>
+            </button>
+            <ngx-material-timepicker #pickerTwo
+                                     (timeSet)="changeTime($event, 'endTime')"
+                                     [confirmBtnTmpl]="confirmBtn"
+                                     [cancelBtnTmpl]="cancelBtn"
+                                     [preventOverlayClick]="true"></ngx-material-timepicker>
+            <ng-template #cancelBtn>
+              <button mat-button type="button">CANCELAR</button>
+            </ng-template>
+            <ng-template #confirmBtn>
+              <button mat-button type="button">ACEPTAR</button>
+            </ng-template>
+            <mat-error *ngIf="omForm.controls['endTime'].hasError('required')">
+              Este campo es obligatorio
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <mat-form-field class="inputs">
+          <mat-select formControlName="maintenanceType" placeholder="Tipo de mantenimiento" required>
+            <mat-option value="Preventivo">Preventivo</mat-option>
+            <mat-option value="Correctivo">Correctivo</mat-option>
+          </mat-select>
+          <mat-error *ngIf="omForm.controls['maintenanceType'].hasError('required')">
+            Este campo es obligatorio
+          </mat-error>
+        </mat-form-field>
+        <mat-form-field class="inputs">
+          <mat-select formControlName="activityType" placeholder="Actividad a realizar" required>
+            <mat-option value="Monitoreo de pozos y detección de fugas">Monitoreo de pozos y detección de fugas
+            </mat-option>
+            <mat-option value="Mantenimiento de la Estación">Mantenimiento de la Estación</mat-option>
+            <mat-option value="Albañilería, herrería, etc">Albañilería, herreria, etc</mat-option>
+            <mat-option value="Pruebas de eficiencia">Pruebas de eficiencia</mat-option>
+            <mat-option value="Limpieza">Limpieza</mat-option>
+            <mat-option value="Auditoria externa e interna">Auditoria externa e interna</mat-option>
+            <mat-option value="Eléctrico">Eléctrico</mat-option>
+            <mat-option value="Hidrosanitario">Hidrosanitario</mat-option>
+            <mat-option value="Mecánico">Mecánico</mat-option>
+            <mat-option value="Visita de autoridad">Visita de autoridad</mat-option>
+            <mat-option value="Otro">Otro</mat-option>
+          </mat-select>
+          <mat-error *ngIf="omForm.controls['activityType'].hasError('required')">
+            Este campo es obligatorio
+          </mat-error>
+        </mat-form-field>
+        <mat-form-field class="inputs">
+          <mat-select formControlName="personnelType" placeholder="Tipo de personal" required>
+            <mat-option value="Interno">Interno</mat-option>
+            <mat-option value="Externo">Externo</mat-option>
+          </mat-select>
+          <mat-error *ngIf="omForm.controls['personnelType'].hasError('required')">
+            Este campo es obligatorio
+          </mat-error>
+        </mat-form-field>
+        <div *ngIf="!editable; then headerPersonnel else inputPersonnel"></div>
+        <ng-template #inputPersonnel>
+          <div class="personnel-input">
+            <mat-form-field class="input-two">
+              <input matInput placeholder="Personal Involucrado" type="text" [(ngModel)]="newPersonnel"
+                     [ngModelOptions]="{standalone: true}">
+            </mat-form-field>
+            <button mat-icon-button type="button" (click)="addRemoveArrayItem(1, true)">
+              <mat-icon class="add">add</mat-icon>
+            </button>
+          </div>
+        </ng-template>
+        <ng-template #headerPersonnel>
+          <div class="text-divider">
+            <span>Personal involucrado</span>
+          </div>
+        </ng-template>
+        <mat-error *ngIf="errors[0] && editable" class="error-text">
+          Debe agregar al menos un nombre
+        </mat-error>
+        <div class="inputs" *ngIf="omReport && omReport.personnelNames && !editable">
+          <div class="procedures-list" *ngFor="let item of omReport.personnelNames; let i = index">
+            <div class="procedure">{{i + 1}}.- {{item}}</div>
+          </div>
+        </div>
+        <div *ngIf="editable" class="inputs">
+          <div class="name-list" *ngFor="let item of personnelNames; let i = index">
+            <div class="procedure">{{i + 1}}.- {{item}}</div>
+            <button mat-icon-button type="button" (click)="addRemoveArrayItem(1, false, i)">
+              <mat-icon class="delete">remove</mat-icon>
+            </button>
+          </div>
+        </div>
+        <div class="text-divider">
+          Equipo de protección utilizado
+        </div>
+        <mat-error *ngIf="errors[1] && editable" class="error-text">
+          Debe seleccionar al menos una opción
+        </mat-error>
+        <div class="inputs">
+          <div class="space-box">
+            <div class="checks-row">
+              <mat-checkbox (change)="changeEquipment()" formControlName="cottonClothes">Ropa de algodón
+              </mat-checkbox>
+            </div>
+            <div class="checks-row">
+              <mat-checkbox (change)="changeEquipment()" formControlName="goggles">Goggles</mat-checkbox>
+            </div>
+          </div>
+          <div class="space-box">
+            <div class="checks-row">
+              <mat-checkbox (change)="changeEquipment()" formControlName="industrialShoes">Zapato industrial
+              </mat-checkbox>
+            </div>
+            <div class="checks-row">
+              <mat-checkbox (change)="changeEquipment()" formControlName="protectiveGoggles">Lentes de
+                protección
+              </mat-checkbox>
+            </div>
+          </div>
+          <div class="space-box">
+            <div class="checks-row">
+              <mat-checkbox (change)="changeEquipment()" formControlName="gloves">Guantes</mat-checkbox>
+            </div>
+            <div class="checks-row">
+              <mat-checkbox (change)="changeEquipment()" formControlName="kneepads">Rodilleras</mat-checkbox>
+            </div>
+          </div>
+          <div class="space-box">
+            <div class="checks-row">
+              <mat-checkbox (change)="changeEquipment()" formControlName="faceMask">Cubrebocas</mat-checkbox>
+            </div>
+            <div class="checks-row">
+              <mat-checkbox (change)="changeEquipment()" formControlName="helmet">Cascos</mat-checkbox>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="columns">
+        <mat-form-field class="inputs">
+          <input formControlName="toolsAndMaterials" type="text" matInput
+                 placeholder="Herramientas y material utilizado">
+        </mat-form-field>
+        <div class="procedures-head">
+          <div>Procedimientos utilizados</div>
+          <button mat-icon-button *ngIf="editable" type="button" (click)="addRemoveArrayItem(2, true)">
+            <mat-icon class="add">add</mat-icon>
+          </button>
+        </div>
+        <div class="inputs" *ngIf="omReport && omReport.procedures && !editable && stationProcedures !== null && utils">
+          <div class="procedures-list" *ngFor="let procedure of omReport.procedures; let i = index;">
+            <div class="procedure">{{i + 1}}.-{{getProcedureName(procedure)}}</div>
+          </div>
+        </div>
+        <div class="inputs" *ngIf="editable">
+          <div *ngFor="let procedure of procedures; let i = index;">
+            <div class="list-element">
+              <div>{{i + 1}}.-{{getProcedureName(procedure)}}</div>
+              <button mat-icon-button type="button" (click)="addRemoveArrayItem(2, false, i)">
+                <mat-icon class="delete">remove</mat-icon>
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="importance">
+          Si la actividad es crítica, requiere autorización del gerente
+        </div>
+        <mat-form-field class="description">
+          <textarea formControlName="description" matInput placeholder="Descripción" cdkTextareaAutosize></textarea>
+        </mat-form-field>
+        <mat-form-field class="inputs">
+          <textarea formControlName="observations" matInput placeholder="Observaciones" cdkTextareaAutosize></textarea>
+        </mat-form-field>
+        <div class="image-header">
+          Captura fotográfica de la evidencia.
+        </div>
+        <mat-error *ngIf="errors[2] && editable" class="error-text">
+          Es necesario tomar la evidencia
+        </mat-error>
+        <div *ngIf="omReport.extraFileCS.length === 0" class="image-container" (click)="seeEvidence()">
+          <mat-icon class="default-image">image</mat-icon>
+        </div>
+        <div *ngIf="omReport.extraFileCS.length >= 1" class="image-container-real" (click)="seeEvidence()">
+          <img class="evidence" [src]="omReport.extraFileCS[0].thumbnail" alt="Evidence capture">
+        </div>
+        <div *ngIf="!task.hwg" class="text-sign">
+          Nombre y firma del responsable
+        </div>
+        <div *ngIf="!task.hwg" class="inputs">
+          <div class="signature-element" (click)="loadSignature()" style="cursor: pointer" matTooltip="Cargar Firma">
+            <img *ngIf="omReport.signature" [src]="omReport.signature.thumbnail" alt="signature">
+            <div class="empty-signature" *ngIf="!omReport.signature"></div>
+          </div>
+          <div class="divider"></div>
+          <div *ngIf="editable; then admonName else originalName"></div>
+          <ng-template #admonName>
+            <div class="name">{{name}}</div>
+          </ng-template>
+          <ng-template #originalName>
+            <div *ngIf="!omReport || !omReport.name" class="name">Nombre</div>
+            <div *ngIf="omReport && omReport.name" class="name">{{omReport.name}}</div>
+          </ng-template>
+        </div>
+      </div>
+    </div>
+    <div class="divider" *ngIf="task.hwg"></div>
+    <div *ngIf="task.hwg && omReport">
+      <app-hwg-report [taskHwgInfo]="hwgData || null" [validate]="startValidate"
+                      (formInformation)="getHWGReportInformation($event)"></app-hwg-report>
+    </div>
+    <div *ngIf="task.hwg" class="text-sign">
+      Nombre y firma del responsable
+    </div>
+    <div *ngIf="task.hwg" class="hwg-sign">
+      <div class="signature-element" (click)="loadSignature()" style="cursor: pointer"
+           [matTooltipDisabled]="!editable" matTooltip="Cargar Firma">
+        <img *ngIf="omReport.signature" [src]="omReport.signature.thumbnail" alt="signature">
+        <div class="empty-signature" *ngIf="!omReport.signature"></div>
+      </div>
+      <div class="divider"></div>
+      <div *ngIf="editable; then admonName else originalName"></div>
+      <ng-template #admonName>
+        <div class="name">{{name}}</div>
+      </ng-template>
+      <ng-template #originalName>
+        <div *ngIf="!omReport || !omReport.name" class="name">Nombre</div>
+        <div *ngIf="omReport && omReport.name" class="name">{{omReport.name}}</div>
+      </ng-template>
+    </div>
+    <div *ngIf="taskItems && taskItems.length !== 0 && !editable">
+      <mat-paginator [pageSize]="1" [length]="taskItems.length" [hidePageSize]="true"
+                     (page)="changeTask($event)"></mat-paginator>
+    </div>
+    <div *ngIf="editable" class="finish-button">
+      <button mat-flat-button type="submit" [color]="'primary'" [disabled]="load">
+        FINALIZAR
+      </button>
+    </div>
+  </form>
+</div>

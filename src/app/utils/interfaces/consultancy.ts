@@ -8,4 +8,5 @@ export interface Consultancy {
   location: GeoPt;
   officePhone?: string;
   rfc: string;
+  disabled: boolean;
 }

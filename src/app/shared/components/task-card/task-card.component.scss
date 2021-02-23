@@ -1,0 +1,130 @@
+/*!
+ *  Copyright (C) MapLander S de R.L de C.V - All Rights Reserved
+ *  Unauthorized copying of this file, via any medium is strictly prohibited
+ *  Proprietary and confidential
+ */
+@import "../../../../styles/colors";
+
+#task-card {
+  width: 100%;
+
+  .item {
+    padding: 0;
+    display: flex;
+    margin-bottom: 12px;
+    min-height: 110px;
+    position: relative;
+
+    mat-card-content {
+      display: flex;
+      width: 100%;
+      padding: 12px;
+    }
+
+    .date {
+      text-align: center;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin: 12px;
+      @media screen and (max-width: 600px) {
+        margin: 5px;
+      }
+
+      .text-bold {
+        color: #707070;
+        font-weight: 500;
+        font-size: 16px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+    }
+
+    .content {
+      width: 80%;
+      height: 100%;
+      @media screen and (max-width: 800px) {
+        width: 70%;
+      }
+
+      .head {
+        color: #000000;
+        font-weight: 700;
+        font-size: 13px;
+      }
+
+      .text {
+        color: #707070;
+        font-weight: 400;
+        font-size: 12px;
+        margin-top: 4px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+    }
+
+    .frequency {
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      margin: 16px;
+    }
+    .delete {
+      position: absolute;
+      top: 35px;
+      right: 0;
+      margin-right: 4px;
+      z-index: 4;
+    }
+    .status {
+      position: absolute;
+      top: 0;
+      right: 0;
+      margin: 16px;
+
+      .done {
+        color: $basic;
+        font-size: 16px;
+        width: 16px;
+        height: 16px;
+      }
+
+      .pending {
+        color: $gray;
+        font-size: 16px;
+        width: 16px;
+        height: 16px;
+      }
+
+      .latest {
+        color: $critical;
+        font-size: 16px;
+        width: 16px;
+        height: 16px;
+      }
+    }
+  }
+
+  .basic {
+    background-color: $basic;
+  }
+
+  .medium {
+    background-color: $medium;
+  }
+
+  .critical {
+    background-color: $critical;
+  }
+
+  .priority {
+    width: 1%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    border-radius: 4px 0 0 4px;
+  }
+}

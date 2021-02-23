@@ -74,7 +74,7 @@
                     </mat-icon>
                   </button>
                   <div>
-                    <mat-slide-toggle *ngIf="user.role<4" [checked]="stations.enabled"
+                    <mat-slide-toggle *ngIf="user.role<4 && !consultancy.disabled" [checked]="stations.enabled"
                                       (change)="changeStationEnabled($event, stations.id, i)"></mat-slide-toggle>
                   </div>
                   <div>

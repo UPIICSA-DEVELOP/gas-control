@@ -111,7 +111,6 @@ export class AddCollaboratorComponent implements OnInit, OnDestroy {
   }
 
   public onLoadImage(event: UserMedia): void {
-    debugger;
     if (event == null) {
       this.changes = true;
       this.blobImageProfile = '';

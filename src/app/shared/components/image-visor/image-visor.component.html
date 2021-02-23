@@ -9,11 +9,42 @@
     <div>Evidencia</div>
     <button mat-icon-button (click)="close()">
       <mat-icon>
-        close
+        check
       </mat-icon>
     </button>
   </mat-toolbar>
   <div class="content">
-    <img [src]="images.thumbnail" alt="">
+    <div class="image-list">
+      <ng-template [ngIf]="images.length === 0">
+        <p>Aún no ha añadido images</p>
+      </ng-template>
+      <ng-template [ngIf]="images.length !== 0">
+        <div class="list-items">
+          <ng-container *ngFor="let image of images; let i = index">
+            <div class="image-container">
+              <img [src]="image.thumbnail" alt="{{'evidence-image-'+(i+1)}}">
+              <button mat-icon-button *ngIf="!viewMode" class="delete" (click)="removeImage(i)">
+                <mat-icon>close</mat-icon>
+              </button>
+              <button mat-icon-button *ngIf="i !== 0 && !viewMode" class="top" (click)="changeImage(i-1, i)">
+                <mat-icon>keyboard_arrow_up</mat-icon>
+              </button>
+              <button mat-icon-button *ngIf="i !== images.length-1 && !viewMode" class="down" (click)="changeImage(i-1, i-2)">
+                <mat-icon>keyboard_arrow_down</mat-icon>
+              </button>
+
+            </div>
+          </ng-container>
+        </div>
+      </ng-template>
+      <lib-upload-file [content]="buttonUploadTemplate" *ngIf="images.length < 3 && !viewMode"
+                       [fab]="true" [fileType]="'image'" [aspectRatio]="4 / 3" (loadImage)="onUploadImage($event)">
+        <ng-template #buttonUploadTemplate>
+          <button mat-icon-button>
+            <mat-icon>add</mat-icon>
+          </button>
+        </ng-template>
+      </lib-upload-file>
+    </div>
   </div>
 </div>

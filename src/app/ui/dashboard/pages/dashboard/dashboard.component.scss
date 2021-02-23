@@ -58,11 +58,14 @@
       width: 20%;
       margin: 0 !important;
       overflow-x: hidden;
+      z-index: 1 !important;
       @media screen and (max-width: 1024px) {
+        z-index: 1000 !important;
         position: fixed;
         width: 35%;
       }
       @media screen and (max-width: 600px) {
+        z-index: 1000 !important;
         width: 100%;
       }
 
@@ -199,7 +202,7 @@
         flex-direction: column;
         @media screen and (max-width: 900px) {
           width: 100%;
-          height: calc(100% - 48px);
+          height: 100%;
         }
 
         .title {

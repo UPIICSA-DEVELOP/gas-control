@@ -1,0 +1,171 @@
+<!--
+  ~ Copyright (C) MapLander S de R.L de C.V - All Rights Reserved
+  ~  Unauthorized copying of this file, via any medium is strictly prohibited
+  ~  Proprietary and confidential
+  -->
+
+<div id="fr-report">
+  <form [formGroup]="frForm" (ngSubmit)="validateForm(frForm.value)">
+    <div class="task-header">
+      <div class="head-bold">Descarga de combustible</div>
+      <div class="control-data">
+        <div *ngIf="date.length !== 0">Fecha: {{date[0]}} {{date[1]}} {{date[2]}}</div>
+        <div *ngIf="frReport && frReport.folio">Folio: {{frReport.folio | formatFolio}}</div>
+      </div>
+    </div>
+    <div class="flex-box">
+      <div class="columns">
+        <mat-form-field class="inputs">
+          <input matInput placeholder="Fecha" formControlName="date" required [matDatepicker]="pickerDate" [max]="starDate">
+          <mat-datepicker-toggle matSuffix [for]="pickerDate"></mat-datepicker-toggle>
+          <mat-datepicker #pickerDate></mat-datepicker>
+          <mat-error *ngIf="frForm.controls['date'].hasError('required')">
+            Este campo es obligatorio
+          </mat-error>
+        </mat-form-field>
+        <div class="times">
+          <mat-form-field class="clock">
+            <input matInput
+                   formControlName="startTime"
+                   placeholder="Hora de inicio"
+                   required
+                   [ngxTimepicker]="pickerOne"
+                   readonly="readonly">
+            <button [disabled]="!editable" mat-icon-button matSuffix (click)="pickerOne.open()" type="button">
+              <mat-icon>access_time</mat-icon>
+            </button>
+            <ngx-material-timepicker #pickerOne
+                                     (timeSet)="changeTime($event, 'startTime')"
+                                     [confirmBtnTmpl]="confirmBtn"
+                                     [cancelBtnTmpl]="cancelBtn"
+                                     [preventOverlayClick]="true"></ngx-material-timepicker>
+            <ng-template #cancelBtn>
+              <button mat-button type="button">CANCELAR</button>
+            </ng-template>
+            <ng-template #confirmBtn>
+              <button mat-button type="button">ACEPTAR</button>
+            </ng-template>
+            <mat-error *ngIf="frForm.controls['startTime'].hasError('required')">
+              Este campo es obligatorio
+            </mat-error>
+          </mat-form-field>
+          <mat-form-field class="clock">
+            <input matInput
+                   formControlName="endTime"
+                   placeholder="Hora de término"
+                   required
+                   [ngxTimepicker]="pickerTwo"
+                   readonly="readonly">
+            <button [disabled]="!editable" mat-icon-button matSuffix (click)="pickerTwo.open()" type="button">
+              <mat-icon>access_time</mat-icon>
+            </button>
+            <ngx-material-timepicker #pickerTwo
+                                     (timeSet)="changeTime($event, 'endTime')"
+                                     [confirmBtnTmpl]="confirmBtn"
+                                     [cancelBtnTmpl]="cancelBtn"
+                                     [preventOverlayClick]="true"></ngx-material-timepicker>
+            <ng-template #cancelBtn>
+              <button mat-button type="button">CANCELAR</button>
+            </ng-template>
+            <ng-template #confirmBtn>
+              <button mat-button type="button">ACEPTAR</button>
+            </ng-template>
+            <mat-error *ngIf="frForm.controls['endTime'].hasError('required')">
+              Este campo es obligatorio
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <mat-form-field class="inputs">
+          <input formControlName="remissionNumber" matInput placeholder="Número de remisión" required type="number">
+          <mat-error *ngIf="frForm.controls['remissionNumber'].hasError('required')">
+            Este campo es obligatorio
+          </mat-error>
+        </mat-form-field>
+        <div class="text-divider">Cantidad en:</div>
+        <div class="times">
+          <mat-form-field class="clock">
+            <input formControlName="remission" matInput placeholder="Remisión (lts)" required type="number">
+            <mat-error *ngIf="frForm.controls['remission'].hasError('required')">
+              Este campo es obligatorio
+            </mat-error>
+          </mat-form-field>
+          <mat-form-field class="clock">
+            <input formControlName="volumetric" matInput placeholder="Volumétrico (lts)" required type="number">
+            <mat-error *ngIf="frForm.controls['volumetric'].hasError('required')">
+              Este campo es obligatorio
+            </mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="columns">
+        <div class="text-divider">
+          Tipo de combustible
+        </div>
+        <mat-error *ngIf="error && editable" class="error-text">
+          Debe seleccionar al menos una opción
+        </mat-error>
+        <div class="inputs">
+          <div class="space-box">
+            <div class="checks-row">
+              <mat-checkbox formControlName="magna" (change)="changeFuelType($event)">Regular</mat-checkbox>
+            </div>
+            <div class="checks-row">
+              <mat-checkbox formControlName="premium" (change)="changeFuelType($event)">Premium</mat-checkbox>
+            </div>
+          </div>
+          <div class="space-box">
+            <div class="checks-row">
+              <mat-checkbox formControlName="diesel" (change)="changeFuelType($event)">Diesel</mat-checkbox>
+            </div>
+            <div class="checks-row"></div>
+          </div>
+        </div>
+        <mat-form-field class="inputs">
+          <input formControlName="receiveName" matInput placeholder="Personal que recibe" required>
+          <mat-error *ngIf="frForm.controls['receiveName'].hasError('required')">
+            Este campo es obligatorio
+          </mat-error>
+        </mat-form-field>
+        <div class="end-report">
+          <div class="text-sign">
+            Nombre y firma del responsable
+          </div>
+          <div class=inputs>
+            <div *ngIf="!editable; then showSign else loadSign"></div>
+            <ng-template #showSign>
+              <div class="signature-element">
+                <img *ngIf="frReport && frReport.signature" [src]="frReport.signature.thumbnail" alt="">
+                <div class="empty-signature" *ngIf="!frReport || !frReport.signature"></div>
+              </div>
+            </ng-template>
+            <ng-template #loadSign>
+              <div class="signature-element" (click)="loadSignature()" style="cursor: pointer"
+                   matTooltip="Cargar Firma">
+                <img *ngIf="signatureThumbnail" [src]="signatureThumbnail" alt="">
+                <div class="empty-signature" *ngIf="!signatureThumbnail"></div>
+              </div>
+            </ng-template>
+            <div class="divider"></div>
+            <div *ngIf="editable; then admonName else originalName"></div>
+            <ng-template #admonName>
+              <div class="name">{{name}}</div>
+            </ng-template>
+            <ng-template #originalName>
+              <div *ngIf="!frReport || !frReport.name" class="name">Nombre</div>
+              <div *ngIf="frReport && frReport.name" class="name">{{frReport.name}}</div>
+            </ng-template>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="editable" class="finish-button">
+      <button mat-flat-button type="submit" [color]="'primary'" [disabled]="load">
+        FINALIZAR
+      </button>
+    </div>
+  </form>
+  <div *ngIf="taskItems && taskItems.length !== 0 && !editable">
+    <mat-paginator [pageSize]="1" [length]="taskItems.length" [hidePageSize]="true"
+                   (page)="changeTask($event)"></mat-paginator>
+  </div>
+</div>

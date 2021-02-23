@@ -1,0 +1,39 @@
+<!--
+  ~  Copyright (C) MapLander S de R.L de C.V - All Rights Reserved
+  ~  Unauthorized copying of this file, via any medium is strictly prohibited
+  ~  Proprietary and confidential
+  -->
+
+<div id="task-card">
+  <mat-card [ngStyle]="{'cursor': typeCard === 1 ? 'pointer':'initial'}" class="item">
+    <div class="priority basic" *ngIf="task.level === 1"></div>
+    <div class="priority medium" *ngIf="task.level === 2"></div>
+    <div class="priority critical" *ngIf="task.level === 3"></div>
+    <mat-card-content (click)="cardClicked()" class="last-child">
+      <div class="date">
+        <div>
+          <div class="text-bold">{{task.date[0]}}</div>
+          <div class="text-bold">{{task.date[1]}}</div>
+        </div>
+      </div>
+      <div class="content">
+        <div class="head">{{task.name}}</div>
+        <div class="text">{{zones[task.zone - 1]}}</div>
+        <div class="text">{{priority[task.level - 1]}}</div>
+      </div>
+    </mat-card-content>
+    <div class="status" *ngIf="typeCard === 1 || typeCard === 4">
+      <ng-container [ngSwitch]="task.status">
+        <mat-icon class="pending" *ngSwitchCase="2" svgIcon="icons:task_previous"></mat-icon>
+        <mat-icon class="latest" *ngSwitchCase="3">close</mat-icon>
+        <mat-icon class="done" *ngSwitchCase="4">check</mat-icon>
+      </ng-container>
+    </div>
+    <div class="delete" *ngIf="(role === 1 || role === 7) && task.status !== 4">
+      <button (click)="deleteItem()" mat-icon-button style="color: #707070" matTooltip="Eliminar"><mat-icon>delete</mat-icon></button>
+    </div>
+    <div class="frequency">
+      <div>{{frequency[task.frequency - 1]}}</div>
+    </div>
+  </mat-card>
+</div>

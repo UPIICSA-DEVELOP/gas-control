@@ -57,15 +57,27 @@
         </div>
 
 
-        <mat-card class="item" matRipple *ngFor="let item of consultancyList"
-                  (click)="openCollaborators(item.id, item.businessName)">
-          <div class="image">
+        <mat-card class="item" matRipple *ngFor="let item of consultancyList">
+          <div class="image" (click)="openCollaborators(item.id, item.businessName)">
             <img src="../../../../../assets/image/inspector-icono.png" alt="">
           </div>
-          <div class="info">
+          <div class="info" (click)="openCollaborators(item.id, item.businessName)">
             <h3>{{item.businessName}}</h3>
             <p class="address">{{item.address}}</p>
             <p>{{item.officePhone}}</p>
+          </div>
+          <div class="slide_toggle">
+            <div class="toggle">
+              <mat-slide-toggle
+                [color]="'primary'"
+                [checked]="!item.disabled"
+                (change)="toggleDisabledConsultancy(item)"
+                >
+              </mat-slide-toggle>
+              <button mat-icon-button color="primary" (click)="deleteConsultancy(item.id)">
+                <mat-icon>delete</mat-icon>
+              </button>
+            </div>
           </div>
         </mat-card>
 

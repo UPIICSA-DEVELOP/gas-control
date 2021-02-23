@@ -38,6 +38,8 @@ import {IncidenceReport} from '@app/utils/interfaces/reports/incidence-report';
 import {Notification} from '@app/utils/interfaces/notification';
 import {NetworkService, SessionStorageService, SnackBarService} from '@maplander/core';
 import {OtherDocStation} from '@app/utils/interfaces/other-doc-station';
+import {CustomProcedure} from '@app/utils/interfaces/customProcedure';
+import {StationLite} from '@app/utils/interfaces/station-lite';
 
 @Injectable()
 export class ApiService implements OnDestroy {
@@ -598,6 +600,7 @@ export class ApiService implements OnDestroy {
         response = this.createFEReport(report);
         break;
       case 9:
+      case 10:
         response = this.createIncidenceReport(report);
         break;
     }
@@ -639,8 +642,7 @@ export class ApiService implements OnDestroy {
   }
 
   private createIncidenceReport(report: IncidenceReport): Observable<EntityResponse<ReportComplete<Task, IncidenceReport>>> {
-    return this._http.post<EntityResponse<ReportComplete<Task, IncidenceReport>>>
-    (ApiService.API_URL_COMPLETE + 'createIncidenceReport', report);
+    return this._http.post<EntityResponse<ReportComplete<Task, IncidenceReport>>>(ApiService.API_URL_COMPLETE + 'createIncidenceReport', report);
   }
 
   /**
@@ -655,8 +657,8 @@ export class ApiService implements OnDestroy {
     return this._http.post(ApiService.API_URL_COMPLETE + 'createHWCReportAndTask?stationId=' + stationId + '&type=2', task);
   }
 
-  public createIncidenceReportAndTask(task: any, stationId: string): Observable<any> {
-    return this._http.post(ApiService.API_URL_COMPLETE + 'createIncidenceReportAndTask?stationId=' + stationId + '&type=3', task);
+  public createIncidenceReportAndTask(task: any, stationId: string, type: '3'|'4'): Observable<any> {
+    return this._http.post(ApiService.API_URL_COMPLETE + 'createIncidenceReportAndTask?stationId=' + stationId + '&type=' + type, task);
   }
 
   public listNotificationsAdmin(id: string): Observable<EntityCollectionResponse<Notification>> {
@@ -731,6 +733,56 @@ export class ApiService implements OnDestroy {
     params = params.append('id', id);
     return this._http.get<EntityResponse<OtherDocStation>>(ApiService.API_URL_COMPLETE + 'getOtherDocStation', {
       params
+    });
+  }
+
+  public getAllSgm(stationTaskId: string, status: number, cursor: string | null,
+                   limit: number): Observable<EntityCollectionResponse<Task>> {
+    let params = new HttpParams();
+    params = params.append('stationTaskId', stationTaskId);
+    params = params.append('status', status.toString());
+    params = params.append('limit', limit ? limit.toString() : '30');
+    if (cursor) {
+      params = params.append('cursor', cursor);
+    }
+    return this._http.get<EntityCollectionResponse<Task>>(ApiService.API_URL_COMPLETE + 'getAllSgm', {
+      params: params
+    });
+  }
+
+  public createCustomProcedure(procedure: CustomProcedure): Observable<EntityResponse<CustomProcedure>> {
+    return this._http.post<EntityResponse<CustomProcedure>>(ApiService.API_URL_COMPLETE + 'createCustomProcedure', procedure);
+  }
+
+  public customProcedureList(stationId: string): Observable<EntityCollectionResponse<CustomProcedure>> {
+    let params = new HttpParams();
+    params = params.append('stationId', stationId);
+    return this._http.post<EntityCollectionResponse<CustomProcedure>>(ApiService.API_URL_COMPLETE + 'customProcedureList', {}, {
+      params: params
+    });
+  }
+
+  public resetStation(stationId: string): Observable<DefaultResponse> {
+    let params = new HttpParams();
+    params = params.append('stationId', stationId);
+    return this._http.post<DefaultResponse>(ApiService.API_URL_COMPLETE + 'resetStation', {}, {
+      params: params
+    });
+  }
+
+  public listStationTaskByStation(stationId: string): Observable<EntityCollectionResponse<StationTask>> {
+    let params = new HttpParams();
+    params = params.append('idStation', stationId);
+    return this._http.get<EntityCollectionResponse<StationTask>>(ApiService.API_URL_COMPLETE + 'listStationTaskByStation', {
+      params: params
+    });
+  }
+
+  public deleteTask(taskId: string): Observable<EntityResponse<StationLite>> {
+    let  params = new HttpParams();
+    params = params.append('taskId', taskId);
+    return this._http.delete<EntityResponse<StationLite>>(ApiService.API_URL_COMPLETE + 'deleteTask', {
+      params: params
     });
   }
 

@@ -40,7 +40,7 @@ export class Constants {
     'Cisternas tinacos y bombas de agua',
     'Cuarto de RP',
     'Planta de emergencia',
-    'Dispensarios',
+    'Sanitarios',
     'Otros'
   ];
 

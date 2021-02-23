@@ -38,6 +38,39 @@ import {ModalStationService} from '@app/shared/components/modal-station/modal-st
 import {RouterModule} from '@angular/router';
 import {UploadFileModule} from '@maplander/core';
 import {UploadFileService} from '@app/shared/components/upload-file/upload-file.service';
+import {CompressorReportComponent} from '@app/shared/components/list-tasks/components/compressor-report/compressor-report.component';
+import {FeReportComponent} from '@app/shared/components/list-tasks/components/fe-report/fe-report.component';
+import {FrReportComponent} from '@app/shared/components/list-tasks/components/fr-report/fr-report.component';
+import {HwcReportComponent} from '@app/shared/components/list-tasks/components/hwc-report/hwc-report.component';
+import {HwgReportComponent} from '@app/shared/components/list-tasks/components/hwg-report/hwg-report.component';
+import {IncidenceReportComponent} from '@app/shared/components/list-tasks/components/incidence-report/incidence-report.component';
+import {OmReportComponent} from '@app/shared/components/list-tasks/components/om-report/om-report.component';
+import {ScannedReportComponent} from '@app/shared/components/list-tasks/components/scanned-report/scanned-report.component';
+import {VrsReportComponent} from '@app/shared/components/list-tasks/components/vrs-report/vrs-report.component';
+import {TaskCardComponent} from '@app/shared/components/task-card/task-card.component';
+import {TaskFilterComponent} from '@app/shared/components/task-filter/task-filter.component';
+import {TaskFilterNameComponent} from '@app/shared/components/task-filter-name/task-filter-name.component';
+import {ListTasksComponent} from '@app/shared/components/list-tasks/list-tasks.component';
+import {DatepickerComponent} from '@app/shared/components/datepicker/datepicker.component';
+import {TaskFilterNameService} from '@app/shared/components/task-filter-name/task-filter-name.service';
+import {TaskFilterService} from '@app/shared/components/task-filter/task-filter.service';
+import {DatepickerService} from '@app/shared/components/datepicker/datepicker.service';
+import {ModalProceduresComponent} from '@app/shared/components/modal-procedures/modal-procedures.component';
+import {ModalProceduresService} from '@app/shared/components/modal-procedures/modal-procedures.service';
+import {FreeReportComponent} from '@app/shared/components/list-tasks/components/free-report/free-report.component';
+
+const Reports = [
+  CompressorReportComponent,
+  FeReportComponent,
+  FrReportComponent,
+  HwcReportComponent,
+  HwgReportComponent,
+  IncidenceReportComponent,
+  OmReportComponent,
+  ScannedReportComponent,
+  VrsReportComponent,
+  FreeReportComponent,
+];
 
 const Components = [
   DialogComponent,
@@ -51,7 +84,14 @@ const Components = [
   SignaturePadComponent,
   UpdatePasswordComponent,
   AddGasStationComponent,
-  ModalStationComponent
+  ModalStationComponent,
+  TaskCardComponent,
+  TaskFilterComponent,
+  TaskFilterNameComponent,
+  ListTasksComponent,
+  Reports,
+  DatepickerComponent,
+  ModalProceduresComponent
 ];
 
 const Providers = [
@@ -65,7 +105,11 @@ const Providers = [
   UpdatePasswordService,
   AddStationService,
   ModalStationService,
-  UploadFileService
+  UploadFileService,
+  DatepickerService,
+  TaskFilterService,
+  TaskFilterNameService,
+  ModalProceduresService
 ];
 
 const EntryComponents = [
@@ -78,7 +122,11 @@ const EntryComponents = [
   SignaturePadComponent,
   UpdatePasswordComponent,
   AddGasStationComponent,
-  ModalStationComponent
+  ModalStationComponent,
+  DatepickerComponent,
+  TaskFilterComponent,
+  TaskFilterNameComponent,
+  ModalProceduresComponent
 ];
 
 

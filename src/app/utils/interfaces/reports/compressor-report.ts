@@ -6,7 +6,7 @@ export interface CompressorReport {
   controlNumber?: string;
   date: number;
   endTime: number;
-  fileCS: FileCS;
+  fileCS?: FileCS;
   folio?: number;
   hwgReport?: HWGReport;
   id?: string;
@@ -20,4 +20,5 @@ export interface CompressorReport {
   signature: FileCS;
   startTime: number;
   taskId: string;
+  extraFileCS: Array<FileCS>;
 }

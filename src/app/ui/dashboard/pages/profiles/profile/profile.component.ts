@@ -307,7 +307,8 @@ export class ProfileComponent implements OnInit, OnDestroy {
         },
         officePhone: response.item.officePhone || '',
         rfc: response.item.rfc,
-        group: response.item.group || false
+        group: response.item.group || false,
+        disabled: response.item.disable || false
       };
       if (this.consultancy.location) {
         this.latLong = {

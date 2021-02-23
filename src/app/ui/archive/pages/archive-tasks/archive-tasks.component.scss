@@ -1,0 +1,58 @@
+@import '../../../../../../node_modules/@angular/material/theming';
+
+#archive {
+  width: 100vw;
+  height: 100vh;
+  @media screen and (max-width: 1024px) {
+  }
+  @media screen and (max-width: 600px) {
+    width: 100%;
+    height: 100%;
+  }
+
+  mat-toolbar {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .content {
+    width: 100%;
+    height: calc(100% - 56px);
+    overflow-x: hidden;
+    overflow-y: auto;
+    background-color: #FFFFFF;
+    padding: 16px 0;
+  }
+
+  .item_list {
+    margin: 0 16px;
+    text-align: start;
+    cursor: pointer;
+  }
+
+  .empty-content {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .back-button {
+    height: 40px;
+    display: flex;
+    align-items: center;
+    margin: 0 16px;
+    justify-content: space-between;
+  }
+
+  .container__list-tasks {
+    width: 100%;
+    height: calc(100% - 48px);
+    position: relative;
+  }
+
+  .mat-card-content{
+    height: calc(100% - 114px) !important;
+  }
+}

@@ -196,6 +196,18 @@
         .address {
           margin: 5px 0;
         }
+        .slide_toggle {
+          display: flex;
+          margin: 5px 0;
+          .toggle {
+            display: flex;
+            justify-content: center;
+            align-items: flex-end;
+            mat-slide-toggle {
+              margin-bottom: 4px;
+            }
+          }
+        }
       }
     }
   }
