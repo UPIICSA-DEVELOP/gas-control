@@ -15,6 +15,14 @@
     </div>
     <div class="flex-box">
       <div class="columns">
+        <mat-form-field class="inputs">
+          <input matInput placeholder="Fecha" formControlName="date" required [matDatepicker]="pickerDate" [max]="starDate">
+          <mat-datepicker-toggle matSuffix [for]="pickerDate"></mat-datepicker-toggle>
+          <mat-datepicker #pickerDate></mat-datepicker>
+          <mat-error *ngIf="frForm.controls['date'].hasError('required')">
+            Este campo es obligatorio
+          </mat-error>
+        </mat-form-field>
         <div class="times">
           <mat-form-field class="clock">
             <input matInput

@@ -16,10 +16,10 @@ import {Subscription} from 'rxjs';
 import {FormatTimePipe} from '@app/shared/pipes/format-time/format-time.pipe';
 import {LoaderService} from '@app/core/components/loader/loader.service';
 import {FRReport} from '@app/utils/interfaces/reports/frr-report';
-import {Task} from '@app/utils/interfaces/task';
 import {HttpResponseCodes} from '@app/utils/enums/http-response-codes';
 import {LocalStorageService, SnackBarService} from '@maplander/core';
 import {Person} from '@app/utils/interfaces/person';
+import {MDate} from '@app/utils/class/MDate';
 
 @Component({
   selector: 'app-fr-report',
@@ -61,6 +61,7 @@ export class FrReportComponent implements OnInit, OnDestroy {
   private _subscriptionLoader: Subscription;
   private _subscriptionShared: Subscription;
   private _load: boolean;
+  public readonly starDate: Date;
 
   constructor(
     private _api: ApiService,
@@ -72,6 +73,7 @@ export class FrReportComponent implements OnInit, OnDestroy {
     private _sharedService: SharedService,
     private _formatTimePipe: FormatTimePipe
   ) {
+    this.starDate = new Date();
     this.date = [];
     this.taskItems = [];
     this._indexTask = 0;
@@ -106,6 +108,7 @@ export class FrReportComponent implements OnInit, OnDestroy {
 
   private initFrReport(): void {
     this.frForm = this._formBuilder.group({
+      date: ['', [Validators.required]],
       startTime: ['', [Validators.required]],
       endTime: ['', [Validators.required]],
       remissionNumber: ['', [Validators.required]],
@@ -139,6 +142,7 @@ export class FrReportComponent implements OnInit, OnDestroy {
       volumetric: report.volumetric || null
     };
     this.frForm.patchValue({
+      date: MDate.getPrimitiveDate(this.frReport.date),
       startTime: this._formatTimePipe.transform(this.frReport.startTime),
       endTime: this._formatTimePipe.transform(this.frReport.endTime),
       remissionNumber: this.frReport.remissionNumber,
@@ -186,11 +190,11 @@ export class FrReportComponent implements OnInit, OnDestroy {
 
   private startEditTask(isNewLoad?: boolean): void {
     let today: any = new Date();
-    const user = LocalStorageService.getItem<Person>(Constants.UserInSession);
+    const user = LocalStorageService.getItem<any>(Constants.UserInSession);
     today = UtilitiesService.createPersonalTimeStamp(today);
     this.date = UtilitiesService.convertDate(today.timeStamp);
     this.editable = true;
-    this.name = user.name + user.lastName;
+    this.name = user.completeName;
     if (!isNewLoad) {
       this._copyLastTask = this.frReport;
       this.frReport.date = undefined;
@@ -243,10 +247,8 @@ export class FrReportComponent implements OnInit, OnDestroy {
   }
 
   private saveReport(value: any): void {
-    let date: any = new Date();
-    date = UtilitiesService.createPersonalTimeStamp(date);
     this.frReport = {
-      date: date.timeStamp,
+      date: UtilitiesService.createPersonalTimeStamp(value.date).timeStamp,
       diesel: value.diesel,
       endTime: UtilitiesService.removeFormatTime(value.endTime),
       magna: value.magna,
