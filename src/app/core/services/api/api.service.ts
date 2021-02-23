@@ -600,6 +600,7 @@ export class ApiService implements OnDestroy {
         response = this.createFEReport(report);
         break;
       case 9:
+      case 10:
         response = this.createIncidenceReport(report);
         break;
     }
@@ -641,8 +642,7 @@ export class ApiService implements OnDestroy {
   }
 
   private createIncidenceReport(report: IncidenceReport): Observable<EntityResponse<ReportComplete<Task, IncidenceReport>>> {
-    return this._http.post<EntityResponse<ReportComplete<Task, IncidenceReport>>>
-    (ApiService.API_URL_COMPLETE + 'createIncidenceReport', report);
+    return this._http.post<EntityResponse<ReportComplete<Task, IncidenceReport>>>(ApiService.API_URL_COMPLETE + 'createIncidenceReport', report);
   }
 
   /**
@@ -657,8 +657,8 @@ export class ApiService implements OnDestroy {
     return this._http.post(ApiService.API_URL_COMPLETE + 'createHWCReportAndTask?stationId=' + stationId + '&type=2', task);
   }
 
-  public createIncidenceReportAndTask(task: any, stationId: string): Observable<any> {
-    return this._http.post(ApiService.API_URL_COMPLETE + 'createIncidenceReportAndTask?stationId=' + stationId + '&type=3', task);
+  public createIncidenceReportAndTask(task: any, stationId: string, type: '3'|'4'): Observable<any> {
+    return this._http.post(ApiService.API_URL_COMPLETE + 'createIncidenceReportAndTask?stationId=' + stationId + '&type=' + type, task);
   }
 
   public listNotificationsAdmin(id: string): Observable<EntityCollectionResponse<Notification>> {
