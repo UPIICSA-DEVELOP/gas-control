@@ -18,11 +18,9 @@ import {FormatTimePipe} from '@app/shared/pipes/format-time/format-time.pipe';
 import {ModalProceduresService} from '@app/shared/components/modal-procedures/modal-procedures.service';
 import {OMReport} from '@app/utils/interfaces/reports/omr-report';
 import {HWGReport} from '@app/utils/interfaces/reports/hwg-report';
-import {Task} from '@app/utils/interfaces/task';
 import {HttpResponseCodes} from '@app/utils/enums/http-response-codes';
 import {AppUtil} from '@app/utils/interfaces/app-util';
 import {SnackBarService} from '@maplander/core';
-import {UserMedia} from '@maplander/core/lib/utils/models/user-media';
 import {AuthService} from '@app/core/services/auth/auth.service';
 import {CustomProcedure} from '@app/utils/interfaces/customProcedure';
 
@@ -59,31 +57,27 @@ export class OmReportComponent implements OnInit, OnDestroy {
     }
   }
 
-  private readonly _loads: boolean[];
-  public errors: boolean[];
+  private readonly _loads: Array<boolean>;
+  public errors: Array<boolean>;
   public omForm: FormGroup;
   public omReport: OMReport;
-  public date: any[];
-  public taskItems: any[];
-  public personnelNames: string[];
-  public procedures: number[];
+  public date: Array<any>;
+  public taskItems: Array<any>;
+  public personnelNames: Array<string>;
+  public procedures: Array<number>;
   public editable: boolean;
   public newPersonnel: string;
-  public signatureThumbnail: string;
-  public evidenceThumbnail: string;
   public name: string;
   public load: boolean;
   public startValidate: boolean;
   public hwgData: HWGReport;
-  private _signatureElement: any;
   private _signature: FormData;
-  private _evidenceElement: any;
-  private _evidence: FormData;
   private _indexTask: number;
   private _copyLastTask: OMReport;
   private _subscriptionShared: Subscription;
   private _subscriptionLoader: Subscription;
   private _hwgElement: HWGReport;
+  private _blobs: Array<any>;
 
   constructor(
     private _api: ApiService,
@@ -106,7 +100,37 @@ export class OmReportComponent implements OnInit, OnDestroy {
     this.personnelNames = [];
     this.procedures = [];
     this.editable = false;
-    this.stationProcedures = [];
+    this.stationProcedures = null;
+    this._blobs = [];
+    this.omReport = {
+      activityType: '',
+      cottonClothes: false,
+      date: 0,
+      description: '',
+      endTime: 0,
+      extraFileCS: [],
+      faceMask: false,
+      fileCS: null,
+      folio: 0,
+      gloves: false,
+      goggles: false,
+      helmet: false,
+      hwgReport: null,
+      id: null,
+      industrialShoes: false,
+      kneepads: false,
+      maintenanceType: '',
+      name: '',
+      observations: '',
+      personnelNames: [],
+      personnelType: '',
+      procedures: [],
+      protectiveGoggles: false,
+      signature: null,
+      startTime: 0,
+      taskId: '',
+      toolsAndMaterials: ''
+    };
   }
 
   ngOnInit() {
@@ -171,14 +195,19 @@ export class OmReportComponent implements OnInit, OnDestroy {
   }
 
   private patchForm(report: OMReport): void {
+    if (!report.extraFileCS && report.fileCS) {
+      report.extraFileCS = [];
+      report.extraFileCS.push(report.fileCS);
+      this._blobs = report.extraFileCS;
+    }
     this.omReport = {
       activityType: report.activityType || null,
       cottonClothes: report.cottonClothes || null,
       date: report.date || null,
       description: report.description || null,
-      endTime: report.endTime,
+      endTime: report.endTime || null,
+      extraFileCS: report.extraFileCS || null,
       faceMask: report.faceMask || null,
-      fileCS: report.fileCS || null,
       folio: report.folio || null,
       gloves: report.gloves || null,
       goggles: report.goggles || null,
@@ -220,14 +249,13 @@ export class OmReportComponent implements OnInit, OnDestroy {
     if (this.omReport.hwgReport) {
       this.hwgData = this.omReport.hwgReport;
     } else {
-      this.hwgData = undefined;
+      this.hwgData = null;
     }
     this.date = UtilitiesService.convertDate(this.omReport.date);
     this.omForm.disable();
   }
 
   private resetElements(): void {
-    this.omReport = undefined;
     this.omForm.reset();
     this.omForm.disable();
     const user = AuthService.getInfoUser();
@@ -253,14 +281,21 @@ export class OmReportComponent implements OnInit, OnDestroy {
   }
 
   public seeEvidence(): void {
-    if (this.task.original.status !== 4) {
-      return;
-    }
-    if (this.taskItems[this._indexTask].fileCS) {
-      this._imageVisor.open(this.taskItems[this._indexTask].fileCS);
-    } else {
-      this._snackBarService.setMessage('Esta tarea no cuenta con evidencia', 'OK', 3000);
-    }
+    this._imageVisor.open(
+      this.omReport.extraFileCS || [], this._blobs || [], !this.editable
+    ).afterClosed().subscribe((response) => {
+      switch (response.code) {
+        case 1:
+          if (response.data === null) {
+            this._loads[0] = false;
+          }
+          this._loads[0] = true;
+          this.errors[2] = false;
+          this._blobs = response.data.blobs;
+          this.omReport.extraFileCS = response.data.images;
+          break;
+      }
+    });
   }
 
   public changeTask(ev: any) {
@@ -280,16 +315,12 @@ export class OmReportComponent implements OnInit, OnDestroy {
       this._copyLastTask = this.omReport;
       this.procedures = this.omReport.procedures || [];
       this.personnelNames = this.omReport.personnelNames || [];
-      if (this.omReport.fileCS) {
-        this._evidenceElement = this.omReport.fileCS;
-        this.evidenceThumbnail = this.omReport.fileCS.thumbnail;
-      }
       if (this.omReport.hwgReport) {
         this.hwgData = this.omReport.hwgReport;
       }
-      this.omReport.date = undefined;
-      this.omReport.signature = undefined;
-      this.omReport.folio = undefined;
+      this.omReport.date = null;
+      this.omReport.signature = null;
+      this.omReport.folio = null;
     }
     this.omForm.enable();
   }
@@ -332,9 +363,15 @@ export class OmReportComponent implements OnInit, OnDestroy {
   }
 
   public loadSignature(): void {
+    if (!this.editable) {
+      return;
+    }
     this._signatureService.open().afterClosed().subscribe(response => {
       if (response.code === 1) {
-        this.signatureThumbnail = response.base64;
+        this.omReport.signature = {
+          thumbnail: response.base64,
+          blobName: null
+        };
         this._loads[1] = true;
         this._signature = new FormData();
         this._signature.append('fileName', 'signature-' + new Date().getTime() + '.png');
@@ -342,23 +379,6 @@ export class OmReportComponent implements OnInit, OnDestroy {
         this._signature.append('file', response.blob);
       }
     });
-  }
-
-  public loadEvidence(ev: UserMedia): void {
-    if (ev == null) {
-      this.evidenceThumbnail = null;
-      this._loads[0] = false;
-      this._evidence = null;
-      this._evidenceElement = null;
-    }
-    this.evidenceThumbnail = ev.url;
-    this._loads[0] = true;
-    this._evidence = new FormData();
-    this._evidence.append('path', 'Task' + this._taskId);
-    this._evidence.append('fileName', 'evidence-' + this._taskId + new Date().getTime() + '.png');
-    this._evidence.append('isImage', 'true');
-    this._evidence.append('file', ev.blob);
-    this.errors[2] = false;
   }
 
   public validateForm(value: any): void {
@@ -376,7 +396,7 @@ export class OmReportComponent implements OnInit, OnDestroy {
       !value.protectiveGoggles) {
       this.errors[1] = true;
     }
-    if (this.task.evidence && !this.evidenceThumbnail) {
+    if (this.task.evidence && this.omReport.extraFileCS.length === 0) {
       this.errors[2] = true;
     }
     if (this.task.hwg) {
@@ -397,11 +417,11 @@ export class OmReportComponent implements OnInit, OnDestroy {
       return;
     }
     if (this._loads[0]) {
-      this.uploadFile(1);
+      this.uploadEvidences();
       return;
     }
     if (this._loads[1]) {
-      this.uploadFile(2);
+      this.uploadFile();
       return;
     }
     this.saveReport(value);
@@ -414,27 +434,27 @@ export class OmReportComponent implements OnInit, OnDestroy {
       activityType: value.activityType,
       cottonClothes: value.cottonClothes,
       date: date.timeStamp,
-      description: value.description || undefined,
+      description: value.description || null,
       endTime: UtilitiesService.removeFormatTime(value.endTime),
-      fileCS: this._evidenceElement || undefined,
+      extraFileCS: this.omReport.extraFileCS,
       faceMask: value.faceMask,
       gloves: value.gloves,
       goggles: value.goggles,
       helmet: value.helmet,
-      hwgReport: undefined,
+      hwgReport: null,
       industrialShoes: value.industrialShoes,
       kneepads: value.kneepads,
       maintenanceType: value.maintenanceType,
       name: this.name,
-      observations: value.observations || undefined,
+      observations: value.observations || null,
       personnelNames: this.personnelNames,
       personnelType: value.personnelType,
-      procedures: this.procedures || undefined,
+      procedures: this.procedures || null,
       protectiveGoggles: value.protectiveGoggles,
-      signature: this._signatureElement,
+      signature: this.omReport.signature,
       startTime: UtilitiesService.removeFormatTime(value.startTime),
       taskId: this._taskId,
-      toolsAndMaterials: value.toolsAndMaterials || undefined
+      toolsAndMaterials: value.toolsAndMaterials || null
     };
     if (this._copyLastTask) {
       this.omReport.id = this._copyLastTask.id;
@@ -451,35 +471,43 @@ export class OmReportComponent implements OnInit, OnDestroy {
     });
   }
 
-  private uploadFile(type: number): void {
-    switch (type) {
-      case 1:
-        this._uploadFile.upload(this._evidence).subscribe(response => {
+  private uploadEvidences(): void {
+    for (let i = 0; i < this._blobs.length; i++) {
+      if (this._blobs[i].hasOwnProperty('url')) {
+        const evidence = new FormData();
+        evidence.append('path', 'Task' + this._taskId);
+        evidence.append('fileName', 'evidence-' + this._taskId + new Date().getTime() + '.png');
+        evidence.append('isImage', 'true');
+        evidence.append('file', this._blobs[i].blob);
+        this._uploadFile.upload(evidence).subscribe(response => {
           if (response) {
-            this._evidenceElement = {
-              blobName: response.item.blobName,
-              thumbnail: response.item.thumbnail
-            };
-            this._loads[0] = false;
-            this.validateForm(this.omForm.value);
+            this._blobs[i] = response.item;
+            this.uploadEvidences();
           }
         });
         break;
-      case 2:
-        this._uploadFile.upload(this._signature).subscribe(response => {
-          if (response) {
-            this._signatureElement = {
-              blobName: response.item.blobName,
-              thumbnail: response.item.thumbnail
-            };
-            this._loads[1] = false;
-            this.validateForm(this.omForm.value);
-          }
-        });
-        break;
-      default:
-        break;
+      } else {
+        this.omReport.extraFileCS[i] = this._blobs[i];
+        if (i === this._blobs.length - 1) {
+          this._loads[0] = false;
+          this.validateForm(this.omForm.value);
+          break;
+        }
+      }
     }
+  }
+
+  private uploadFile(): void {
+    this._uploadFile.upload(this._signature).subscribe(response => {
+      if (response) {
+        this.omReport.signature = {
+          blobName: response.item.blobName,
+          thumbnail: response.item.thumbnail
+        };
+        this._loads[1] = false;
+        this.validateForm(this.omForm.value);
+      }
+    });
   }
 
   public changeEquipment() {
@@ -502,7 +530,7 @@ export class OmReportComponent implements OnInit, OnDestroy {
       };
     } else {
       this._hwgElement = {
-        area: undefined,
+        area: null,
         corrosive: false,
         explosive: false,
         flammable: false,
@@ -525,6 +553,9 @@ export class OmReportComponent implements OnInit, OnDestroy {
   private getStationProcedures(): void {
     this._api.customProcedureList(this._stationId).subscribe((response) => {
       if (response.items) {
+        if (this.stationProcedures === null) {
+          this.stationProcedures = [];
+        }
         this.stationProcedures = this.stationProcedures.concat(response.items || []);
       }
     });
