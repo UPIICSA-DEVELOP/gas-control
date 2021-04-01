@@ -24,6 +24,7 @@ import {Person} from '@app/utils/interfaces/person';
 import {switchMap} from 'rxjs/operators';
 import {EntityResponse} from '@app/utils/class/entity-response';
 import {OtherDocStation} from '@app/utils/interfaces/other-doc-station';
+import {UtilitiesService} from '@app/utils/utilities/utilities';
 
 @Component({
   selector: 'app-documentation',
@@ -119,7 +120,7 @@ export class DocumentationComponent implements OnInit, OnDestroy {
         if (update) {
           this.removeOtherDocumentFromList(update);
         }
-        this.uploadNewDocument(ev, response.data.value);
+        this.uploadNewDocument(ev, UtilitiesService.removeDiacritics(response.data.value));
       }
     });
   }

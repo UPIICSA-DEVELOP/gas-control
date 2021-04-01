@@ -86,7 +86,6 @@ export class LoginComponent implements OnInit, OnDestroy {
         });
       }
     });
-    document.title = '';
   }
 
   public connectionLost(): void {
