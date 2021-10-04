@@ -37,6 +37,8 @@ export class DocumentationComponent implements OnInit, OnDestroy {
   public stationId: string;
   public docsAsea: any[];
   public docsCre: any[];
+  public docsProCiv: any[];
+  public docsStps: any[];
   public othersDocuments: OtherDocument[];
   public profecoDocuments: { id: string, name: string, fileCS: FileCS }[];
   public load: boolean;
@@ -58,12 +60,16 @@ export class DocumentationComponent implements OnInit, OnDestroy {
     this.othersDocuments = [];
     this.docsAsea = [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null];
     this.docsCre = [null, null];
+    this.docsProCiv = [];
+    this.docsStps = [];
   }
 
   ngOnInit() {
     this.stationId = this._activateRoute.params['_value'].station;
     this.listAseaDocs(this._activateRoute.snapshot.data.data.asea);
     this.listCreDocs(this._activateRoute.snapshot.data.data.cre);
+    this.listProCiv();
+    this.listStps();
     this.profecoDocuments = this._activateRoute.snapshot.data.data.profeco.item.profecoDocuments;
     this.othersDocuments = this._activateRoute.snapshot.data.data.others.item.otherDocuments || [];
     this._subscriptionLoader = this._apiLoader.getProgress().subscribe(load => {
@@ -77,6 +83,7 @@ export class DocumentationComponent implements OnInit, OnDestroy {
 
   private listAseaDocs(response: any): void {
     if (response.code === HttpResponseCodes.OK) {
+      console.log(response);
       if (response.items) {
         for (let i = 0; i < response.items.length; i++) {
           const newType = (response.items[i].type !== 19) ? response.items[i].type - 1 : response.items[i].type - 3;
@@ -104,6 +111,42 @@ export class DocumentationComponent implements OnInit, OnDestroy {
       this._snackBarService.setMessage('No se ha podido acceder, intente más tarde', 'OK', 3000);
       this._router.navigate(['/home']).then();
     }
+  }
+  private listProCiv() {
+    this.docsProCiv = [
+      {name: 'Acta Constitutiva', type: 1, file: {}},
+      {name: 'Identificación oficial', type: 2, file: {}},
+      {name: 'RFC', type: 3, file: {}},
+      {name: 'Poder notarial', type: 4, file: {}},
+      {name: 'Póliza de Seguros vigente', type: 5, file: {}},
+      {name: 'Factura y Carta Responsiva Extinguidores', type: 6, file: {}},
+      {name: 'Listado de personal (nombre/dirección/teléfono/puesto)', type: 7, file: {}},
+      {name: 'Planos arquitectónicos', type: 8, file: {}},
+      {name: 'Inicio de operaciones', type: 9, file: {}},
+      {name: 'Dictamen estructural vigente', type: 10, file: {}},
+      {name: 'Dictamen eléctrico vigente', type: 11, file: {}},
+      {name: 'Pruebas de hermeticidad vigentes', type: 12, file: {}}
+    ];
+  }
+  private listStps() {
+    this.docsStps = [
+      {name: 'NOM-001-STPS-2008 Instalaciones  de estaciones de servicio', type: 1, file: {}},
+      {name: 'NOM-002-STPS-2010 Seguridad y prevención contra incendios', type: 2, file: {}},
+      {name: 'NOM-005-STPS-1998 Manejo de sustancias químicas', type: 3, file: {}},
+      {name: 'NOM-006-STPS-2014 Almacenamiento de materiales', type: 4, file: {}},
+      {name: 'NOM-009-STPS-2011 Trabajos en alturas', type: 5, file: {}},
+      {name: 'NOM-017-STPS-2008 Equipo de protección al personal', type: 6, file: {}},
+      {name: 'NOM-018-STPS-2015 Identificación y Comunicación de sustancias químicas', type: 7, file: {}},
+      {name: 'NOM-019-STPS-2011 Condiciones de Seguridad e higiene ', type: 8, file: {}},
+      {name: 'NOM-020-STPS-2011 Recipientes sujetos a presión ', type: 9, file: {}},
+      {name: 'NOM-022-STPS-2008 Electricidad estática', type: 10, file: {}},
+      {name: 'NOM-025-STPS-2008 Estudios de iluminación', type: 11, file: {}},
+      {name: 'NOM-029-STPS-2011 Condiciones de electricidad', type: 12, file: {}},
+      {name: 'NOM-030-STPS-2009 Seguridad y Salud en el trabajo', type: 13, file: {}},
+      {name: 'NOM-035-STPS-2018, Factores de riesgo psicosocial en el trabajo', type: 14, file: {}},
+      {name: 'Reglamento interno de trabajo', type: 15, file: {}},
+      {name: 'Contratos', type: 16, file: {}}
+    ];
   }
 
   public loadNewOtherDocument(ev: UserMedia, update?: OtherDocument): void {

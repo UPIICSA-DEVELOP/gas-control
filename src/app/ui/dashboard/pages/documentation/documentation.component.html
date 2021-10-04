@@ -28,6 +28,12 @@
               PROFECO
             </button>-->
             <button type="button" mat-button [ngClass]="{'btn-active':documentsActive === 3}" [color]="'primary'" (click)="documentsActive=3">
+              PROTECCIÓN CIVIL
+            </button>
+            <button type="button" mat-button [ngClass]="{'btn-active':documentsActive === 4}" [color]="'primary'" (click)="documentsActive=4">
+              STPS
+            </button>
+            <button type="button" mat-button [ngClass]="{'btn-active':documentsActive === 5}" [color]="'primary'" (click)="documentsActive=5">
               OTROS
             </button>
           </div>
@@ -840,7 +846,62 @@
             </mat-card-content>
           </mat-card>
         </ng-container>
+
+        <!-- PROTECCIÓN CIVIL -->
         <ng-container *ngSwitchCase="3">
+          <mat-card class="container">
+            <mat-card-header style="font-weight: 600;">
+              PROTECCIÓN CIVIL
+            </mat-card-header>
+            <mat-card-content>
+              <ng-container *ngFor="let doc of docsProCiv">
+                <mat-card class="file">
+                  <div class="text">
+                    <div *ngIf="doc.file.id; else newFileBlock" (click)="openPdf(0, false)">{{doc.name}}</div>
+                    <ng-template #newFileBlock><span>{{doc.name}}</span></ng-template>
+                  </div>
+                  <div class="button-icon">
+                    <lib-upload-file [content]="button" [fileType]="'document'" [isLoaded]="false">
+                      <ng-template #button>
+                        <mat-icon *ngIf="!doc.file.id; else uploadBlock" matTooltip="Cambiar" svgIcon="icons:upload"></mat-icon>
+                        <ng-template #uploadBlock><mat-icon matTooltip="Cargar">autorenew</mat-icon></ng-template>
+                      </ng-template>
+                    </lib-upload-file>
+                  </div>
+                </mat-card>
+              </ng-container>
+            </mat-card-content>
+          </mat-card>
+        </ng-container>
+
+        <!-- STPS -->
+        <ng-container *ngSwitchCase="4">
+          <mat-card class="container">
+            <mat-card-header style="font-weight: 600;">
+              STPS
+            </mat-card-header>
+            <mat-card-content>
+              <ng-container *ngFor="let doc of docsStps">
+                <mat-card class="file">
+                  <div class="text">
+                    <div *ngIf="doc.file.id; else newFileBlock" (click)="openPdf(0, false)">{{doc.name}}</div>
+                    <ng-template #newFileBlock><span>{{doc.name}}</span></ng-template>
+                  </div>
+                  <div class="button-icon">
+                    <lib-upload-file [content]="button" [fileType]="'document'" [isLoaded]="false">
+                      <ng-template #button>
+                        <mat-icon *ngIf="!doc.file.id; else uploadBlock" matTooltip="Cambiar" svgIcon="icons:upload"></mat-icon>
+                        <ng-template #uploadBlock><mat-icon matTooltip="Cargar">autorenew</mat-icon></ng-template>
+                      </ng-template>
+                    </lib-upload-file>
+                  </div>
+                </mat-card>
+              </ng-container>
+            </mat-card-content>
+          </mat-card>
+        </ng-container>
+
+        <ng-container *ngSwitchCase="5">
           <!-- OTHERS -->
           <mat-card class="container">
             <mat-card-header style="font-weight: 600;">
