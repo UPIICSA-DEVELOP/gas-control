@@ -25,6 +25,20 @@ import {switchMap} from 'rxjs/operators';
 import {EntityResponse} from '@app/utils/class/entity-response';
 import {OtherDocStation} from '@app/utils/interfaces/other-doc-station';
 
+
+
+interface DocList {
+  name: string;
+  type: number;
+  docFile?: {
+    file?: FileCS;
+    id?: string;
+    idStation: string;
+    regulationType: number;
+    type: number;
+  };
+}
+
 @Component({
   selector: 'app-documentation',
   templateUrl: './documentation.component.html',
@@ -37,8 +51,8 @@ export class DocumentationComponent implements OnInit, OnDestroy {
   public stationId: string;
   public docsAsea: any[];
   public docsCre: any[];
-  public docsProCiv: any[];
-  public docsStps: any[];
+  public docsProCiv: DocList[];
+  public docsStps: DocList[];
   public othersDocuments: OtherDocument[];
   public profecoDocuments: { id: string, name: string, fileCS: FileCS }[];
   public load: boolean;
@@ -68,8 +82,8 @@ export class DocumentationComponent implements OnInit, OnDestroy {
     this.stationId = this._activateRoute.params['_value'].station;
     this.listAseaDocs(this._activateRoute.snapshot.data.data.asea);
     this.listCreDocs(this._activateRoute.snapshot.data.data.cre);
-    this.listProCiv();
-    this.listStps();
+    this.listProCiv(this._activateRoute.snapshot.data.data.prociv);
+    this.listStps(this._activateRoute.snapshot.data.data.stps);
     this.profecoDocuments = this._activateRoute.snapshot.data.data.profeco.item.profecoDocuments;
     this.othersDocuments = this._activateRoute.snapshot.data.data.others.item.otherDocuments || [];
     this._subscriptionLoader = this._apiLoader.getProgress().subscribe(load => {
@@ -83,7 +97,6 @@ export class DocumentationComponent implements OnInit, OnDestroy {
 
   private listAseaDocs(response: any): void {
     if (response.code === HttpResponseCodes.OK) {
-      console.log(response);
       if (response.items) {
         for (let i = 0; i < response.items.length; i++) {
           const newType = (response.items[i].type !== 19) ? response.items[i].type - 1 : response.items[i].type - 3;
@@ -112,41 +125,61 @@ export class DocumentationComponent implements OnInit, OnDestroy {
       this._router.navigate(['/home']).then();
     }
   }
-  private listProCiv() {
-    this.docsProCiv = [
-      {name: 'Acta Constitutiva', type: 1, file: {}},
-      {name: 'Identificación oficial', type: 2, file: {}},
-      {name: 'RFC', type: 3, file: {}},
-      {name: 'Poder notarial', type: 4, file: {}},
-      {name: 'Póliza de Seguros vigente', type: 5, file: {}},
-      {name: 'Factura y Carta Responsiva Extinguidores', type: 6, file: {}},
-      {name: 'Listado de personal (nombre/dirección/teléfono/puesto)', type: 7, file: {}},
-      {name: 'Planos arquitectónicos', type: 8, file: {}},
-      {name: 'Inicio de operaciones', type: 9, file: {}},
-      {name: 'Dictamen estructural vigente', type: 10, file: {}},
-      {name: 'Dictamen eléctrico vigente', type: 11, file: {}},
-      {name: 'Pruebas de hermeticidad vigentes', type: 12, file: {}}
-    ];
+  private listProCiv(response: any) {
+    if (response.code === HttpResponseCodes.OK) {
+      this.docsProCiv = [
+        {name: 'Acta Constitutiva', type: 1},
+        {name: 'Identificación oficial', type: 2},
+        {name: 'RFC', type: 3},
+        {name: 'Poder notarial', type: 4},
+        {name: 'Póliza de Seguros vigente', type: 5},
+        {name: 'Factura y Carta Responsiva Extinguidores', type: 6},
+        {name: 'Listado de personal (nombre/dirección/teléfono/puesto)', type: 7},
+        {name: 'Planos arquitectónicos', type: 8},
+        {name: 'Inicio de operaciones', type: 9},
+        {name: 'Dictamen estructural vigente', type: 10},
+        {name: 'Dictamen eléctrico vigente', type: 11},
+        {name: 'Pruebas de hermeticidad vigentes', type: 12}
+      ];
+      if (response.items) {
+        for (const doc of response.items) {
+          this.docsProCiv[doc.type - 1].docFile = doc;
+        }
+      }
+    } else {
+      this._snackBarService.setMessage('No se ha podido acceder, intente más tarde', 'OK', 3000);
+      this._router.navigate(['/home']).then();
+    }
   }
-  private listStps() {
-    this.docsStps = [
-      {name: 'NOM-001-STPS-2008 Instalaciones  de estaciones de servicio', type: 1, file: {}},
-      {name: 'NOM-002-STPS-2010 Seguridad y prevención contra incendios', type: 2, file: {}},
-      {name: 'NOM-005-STPS-1998 Manejo de sustancias químicas', type: 3, file: {}},
-      {name: 'NOM-006-STPS-2014 Almacenamiento de materiales', type: 4, file: {}},
-      {name: 'NOM-009-STPS-2011 Trabajos en alturas', type: 5, file: {}},
-      {name: 'NOM-017-STPS-2008 Equipo de protección al personal', type: 6, file: {}},
-      {name: 'NOM-018-STPS-2015 Identificación y Comunicación de sustancias químicas', type: 7, file: {}},
-      {name: 'NOM-019-STPS-2011 Condiciones de Seguridad e higiene ', type: 8, file: {}},
-      {name: 'NOM-020-STPS-2011 Recipientes sujetos a presión ', type: 9, file: {}},
-      {name: 'NOM-022-STPS-2008 Electricidad estática', type: 10, file: {}},
-      {name: 'NOM-025-STPS-2008 Estudios de iluminación', type: 11, file: {}},
-      {name: 'NOM-029-STPS-2011 Condiciones de electricidad', type: 12, file: {}},
-      {name: 'NOM-030-STPS-2009 Seguridad y Salud en el trabajo', type: 13, file: {}},
-      {name: 'NOM-035-STPS-2018, Factores de riesgo psicosocial en el trabajo', type: 14, file: {}},
-      {name: 'Reglamento interno de trabajo', type: 15, file: {}},
-      {name: 'Contratos', type: 16, file: {}}
-    ];
+  private listStps(response: any) {
+    if (response.code === HttpResponseCodes.OK) {
+      this.docsStps = [
+        {name: 'NOM-001-STPS-2008 Instalaciones  de estaciones de servicio', type: 1},
+        {name: 'NOM-002-STPS-2010 Seguridad y prevención contra incendios', type: 2},
+        {name: 'NOM-005-STPS-1998 Manejo de sustancias químicas', type: 3},
+        {name: 'NOM-006-STPS-2014 Almacenamiento de materiales', type: 4},
+        {name: 'NOM-009-STPS-2011 Trabajos en alturas', type: 5},
+        {name: 'NOM-017-STPS-2008 Equipo de protección al personal', type: 6},
+        {name: 'NOM-018-STPS-2015 Identificación y Comunicación de sustancias químicas', type: 7},
+        {name: 'NOM-019-STPS-2011 Condiciones de Seguridad e higiene ', type: 8},
+        {name: 'NOM-020-STPS-2011 Recipientes sujetos a presión ', type: 9},
+        {name: 'NOM-022-STPS-2008 Electricidad estática', type: 10},
+        {name: 'NOM-025-STPS-2008 Estudios de iluminación', type: 11},
+        {name: 'NOM-029-STPS-2011 Condiciones de electricidad', type: 12},
+        {name: 'NOM-030-STPS-2009 Seguridad y Salud en el trabajo', type: 13},
+        {name: 'NOM-035-STPS-2018, Factores de riesgo psicosocial en el trabajo', type: 14},
+        {name: 'Reglamento interno de trabajo', type: 15},
+        {name: 'Contratos', type: 16}
+      ];
+      if (response.items) {
+        for (const doc of response.items) {
+          this.docsStps[doc.type - 1].docFile = doc;
+        }
+      }
+    } else {
+      this._snackBarService.setMessage('No se ha podido acceder, intente más tarde', 'OK', 3000);
+      this._router.navigate(['/home']).then();
+    }
   }
 
   public loadNewOtherDocument(ev: UserMedia, update?: OtherDocument): void {
@@ -182,14 +215,30 @@ export class DocumentationComponent implements OnInit, OnDestroy {
 
   public uploadFile(event: UserMedia, index: number, regulationType: number, type: number) {
     this._documentData = new FormData();
+    const rTypeName = function(rtype: number): string {
+      switch (rtype) {
+        case 1:
+          return 'ASEA-';
+        case 2:
+          return 'CRE-';
+        case 3:
+          return 'PROCIV-';
+        case 4:
+          return 'STPS-';
+      }
+    };
     this._documentData.append('path', this.stationId);
-    this._documentData.append('fileName', (regulationType === 1 ? 'ASEA-' : 'CRE-') + new Date().getTime() + '.pdf');
+    this._documentData.append('fileName', rTypeName(regulationType) + new Date().getTime() + '.pdf');
     this._documentData.append('file', event.blob);
-    let id = null;
+    let id: string;
     if (regulationType === 1 && this.docsAsea[index]) {
       id = this.docsAsea[index].id;
     } else if (regulationType === 2 && this.docsCre[index]) {
       id = this.docsCre[index].id;
+    } else if (regulationType === 3 && this.docsProCiv[index].docFile) {
+      id = this.docsProCiv[index].docFile.id;
+    } else if (regulationType === 4 && this.docsStps[index].docFile) {
+      id = this.docsStps[index].docFile.id;
     }
     this.chargeFile({
       id: id,
@@ -209,7 +258,7 @@ export class DocumentationComponent implements OnInit, OnDestroy {
       type: file.type
     };
     this._uploadFile.upload(file.formData).subscribe(response => {
-      if (response) {
+      if (response.code === HttpResponseCodes.OK) {
         newFile.file = {
           blobName: response.item.blobName,
           thumbnail: response.item.thumbnail
@@ -229,7 +278,23 @@ export class DocumentationComponent implements OnInit, OnDestroy {
               this.createStationDocument(newFile, file.index);
             }
             break;
+          case 3:
+            if (this.docsProCiv[file.index].docFile) {
+              this.updateStationDocument(newFile, file.index);
+            } else {
+              this.createStationDocument(newFile, file.index);
+            }
+            break;
+          case 4:
+            if (this.docsStps[file.index].docFile) {
+              this.updateStationDocument(newFile, file.index);
+            } else {
+              this.createStationDocument(newFile, file.index);
+            }
+            break;
         }
+      } else {
+        this._snackBarService.setMessage('Error al generar el documento', 'OK', 3000);
       }
     });
   }
@@ -251,6 +316,12 @@ export class DocumentationComponent implements OnInit, OnDestroy {
             break;
           case 2:
             this.docsCre[index] = doc;
+            break;
+          case 3:
+            this.docsProCiv[index].docFile = doc;
+            break;
+          case 4:
+            this.docsStps[index].docFile = doc;
             break;
         }
       } else {
@@ -277,6 +348,12 @@ export class DocumentationComponent implements OnInit, OnDestroy {
           case 2:
             this.docsCre[index] = doc;
             break;
+          case 3:
+            this.docsProCiv[index].docFile = doc;
+            break;
+          case 4:
+            this.docsStps[index].docFile = doc;
+            break;
         }
       } else {
         this._snackBarService.setMessage('Error al cargar el documento', 'OK', 3000);
@@ -298,6 +375,13 @@ export class DocumentationComponent implements OnInit, OnDestroy {
   public openPdf(index: number, isAsea: boolean): void {
     const user = LocalStorageService.getItem<Person>(Constants.UserInSession);
     const url = isAsea ? this.docsAsea[index].file.thumbnail : this.docsCre[index].file.thumbnail;
+    const download = user.role === 1 || user.role === 2 || user.role === 4 || user.role === 7;
+    this._pdf.open({urlOrFile: HashService.set('123456$#@$^@1ERF', url), hideDownload: !download});
+  }
+
+  public openPdf2(doc: FileCS): void {
+    const user = LocalStorageService.getItem<Person>(Constants.UserInSession);
+    const url = doc.thumbnail;
     const download = user.role === 1 || user.role === 2 || user.role === 4 || user.role === 7;
     this._pdf.open({urlOrFile: HashService.set('123456$#@$^@1ERF', url), hideDownload: !download});
   }
