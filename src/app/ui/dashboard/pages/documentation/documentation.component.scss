@@ -167,6 +167,18 @@
           cursor: pointer;
         }
 
+        .prof {
+          flex-direction: column;
+          align-items: flex-start;
+          .title {
+            margin-block-end: .99em;
+            font-weight: bold;
+          }
+          .desc {
+            margin-left: 18px;
+          }
+        }
+
         .button-icon {
           color: #707070;
         }
