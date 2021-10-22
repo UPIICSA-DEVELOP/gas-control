@@ -27,7 +27,7 @@ export class DocumentationService implements Resolve<any> {
     const observer6 = this._api.getOtherDocStation(route.params['station']);
     const observer7 = this._api.getUtils();
     return forkJoin([observer1, observer2, observer3, observer4, observer5, observer6, observer7]).pipe(map((resp: any[]) => {
-      return {asea: resp[0], cre: resp[1], prociv: resp[2], stps: resp[3], profeco: resp[4], others: resp[6], utils: resp[7]};
+      return {asea: resp[0], cre: resp[1], prociv: resp[2], stps: resp[3], profeco: resp[4], others: resp[5], utils: resp[6]};
     }));
   }
 }

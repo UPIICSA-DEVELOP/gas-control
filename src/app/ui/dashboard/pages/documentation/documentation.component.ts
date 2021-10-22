@@ -93,7 +93,7 @@ export class DocumentationComponent implements OnInit, OnDestroy {
     this.listStps(this._activateRoute.snapshot.data.data.stps);
     this.listProfeco(this._activateRoute.snapshot.data.data.profeco);
     // this.profecoDocuments = this._activateRoute.snapshot.data.data.profeco.item.profecoDocuments;
-    this.othersDocuments = this._activateRoute.snapshot.data.data.others.item.otherDocuments || [];
+    this.othersDocuments = this._activateRoute.snapshot.data.data.others.otherDocuments || [];
     this._subscriptionLoader = this._apiLoader.getProgress().subscribe(load => {
       this.load = load;
     });
@@ -104,7 +104,7 @@ export class DocumentationComponent implements OnInit, OnDestroy {
   }
 
   private listAseaDocs(response: any): void {
-    console.log({'listAseaDocs()': response});
+    // console.log({'listAseaDocs()': response});
     if (response.code === HttpResponseCodes.OK) {
       this.docsAsea = [
         {name: 'Dictamen de instalaciones eléctricas', type: 1},
@@ -142,19 +142,19 @@ export class DocumentationComponent implements OnInit, OnDestroy {
         {name: 'CURR', type: 34}
       ];
       if (response.items) {
-        let i = 0;
         for (const doc of response.items) {
           let index = this.docsAsea.findIndex(docs => docs.type === doc.type);
-          console.log('OtherDoc? ' + (index > -1));
-          if (index > -1) {
-            console.log(doc);
-            this.docsAsea[index].docFile = doc;
-          } else {
-            console.log(doc);
-            index = this.otherDocsAsea.findIndex(docs => docs.type === doc.type);
-            this.otherDocsAsea[index].docFile = doc;
+          // console.log('OtherDoc? ' + (index > -1));
+          try {
+            if (index > -1) {
+              this.docsAsea[index].docFile = doc;
+            } else {
+              index = this.otherDocsAsea.findIndex(docs => docs.type === doc.type);
+              this.otherDocsAsea[index].docFile = doc;
+            }
+          } catch (e) {
+            console.log({'Error al cargar el documento': doc});
           }
-          i++;
         }
       }
     } else {
@@ -164,7 +164,6 @@ export class DocumentationComponent implements OnInit, OnDestroy {
   }
 
   private listCreDocs(response: any): void {
-    console.log({'listCreDocs()': response});
     if (response.code === HttpResponseCodes.OK) {
       this.docsCre = [
         {name: 'Resultado del laboratorio 1er semestre', type: 3},
@@ -193,12 +192,18 @@ export class DocumentationComponent implements OnInit, OnDestroy {
       ];
       if (response.items) {
         for (const doc of response.items) {
-          let index = this.docsCre.findIndex(docs => docs.type === doc.type);
-          if (index > -1) {
-            this.docsCre[index].docFile = doc;
-          } else {
-            index = this.otherDocsCre.findIndex(docs => docs.type === doc.type);
-            this.otherDocsCre[index].docFile = doc;
+          try {
+            let index = this.docsCre.findIndex(docs => docs.type === doc.type);
+            if (index > -1) {
+              // console.log(doc);
+              this.docsCre[index].docFile = doc;
+            } else {
+              // console.log(doc);
+              index = this.otherDocsCre.findIndex(docs => docs.type === doc.type);
+              this.otherDocsCre[index].docFile = doc;
+            }
+          } catch (e) {
+          console.log({'Error al cargar el documento': doc});
           }
         }
       }
@@ -225,8 +230,12 @@ export class DocumentationComponent implements OnInit, OnDestroy {
       ];
       if (response.items) {
         for (const doc of response.items) {
-          const index = this.docsProCiv.findIndex(docs => docs.type === doc.type);
-          this.docsProCiv[index].docFile = doc;
+          try {
+            const index = this.docsProCiv.findIndex(docs => docs.type === doc.type);
+            this.docsProCiv[index].docFile = doc;
+          } catch (e) {
+            console.log({'Error al cargar el documento': doc});
+          }
         }
       }
     } else {
@@ -256,8 +265,12 @@ export class DocumentationComponent implements OnInit, OnDestroy {
       ];
       if (response.items) {
         for (const doc of response.items) {
-          const index = this.docsStps.findIndex(docs => docs.type === doc.type);
-          this.docsStps[index].docFile = doc;
+          try {
+            const index = this.docsStps.findIndex(docs => docs.type === doc.type);
+            this.docsStps[index].docFile = doc;
+          } catch (e) {
+            console.log({'Error al cargar el documento': doc});
+          }
         }
       }
     } else {
@@ -310,12 +323,16 @@ export class DocumentationComponent implements OnInit, OnDestroy {
       ];
       if (response.items) {
         for (const doc of response.items) {
-          let index = this.docsProfeco.findIndex(docs => docs.type === doc.type);
-          if (index > -1) {
-            this.docsProfeco[index].docFile = doc;
-          } else {
-            index = this.otherDocsProfeco.findIndex(docs => docs.type === doc.type);
-            this.otherDocsProfeco[index].docFile = doc;
+          try {
+            let index = this.docsProfeco.findIndex(docs => docs.type === doc.type);
+            if (index > -1) {
+              this.docsProfeco[index].docFile = doc;
+            } else {
+              index = this.otherDocsProfeco.findIndex(docs => docs.type === doc.type);
+              this.otherDocsProfeco[index].docFile = doc;
+            }
+          } catch (e) {
+            console.log({'Error al cargar el documento': doc});
           }
         }
       }
