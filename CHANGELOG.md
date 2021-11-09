@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="1.8.2-beta.0"></a>
+## [1.8.2-beta.0](https://bitbucket.org/developerswebmaplander/app-inspector/) (2021-11-09)
+
+### Feature
+
+* **documentation.component:** added "stps" and "protección civil" documents ([dbea1b2](https://bitbucket.org/developerswebmaplander/app-inspector/commits/dbea1b2d61c9fcbbbf5a2e77a07aa3b6e2f5f2e8))
+* **documentation.compponent:** added "profeco" documents ([980bc6c](https://bitbucket.org/developerswebmaplander/app-inspector/commits/980bc6ce27ca6bbdd8c4d878f0e50eb8b5526fc1))
+
+### Bug Fixes
+
+* **documentation.component** load documents problem solved ([c1e3e4c](https://bitbucket.org/developerswebmaplander/app-inspector/commits/c1e3e4ce5c30f34794f0b942c0ddf5665bb1a379))
+* **documentation.component** document overlap issue resolved ([211b852](https://bitbucket.org/developerswebmaplander/app-inspector/commits/211b852bd4c0e773e810dac9d1e54e78e12b2b40))
+
 <a name="1.8.1"></a>
 ## [1.8.1](https://bitbucket.org/developerswebmaplander/app-inspector/compare/v1.8.1-beta.0...v1.8.1) (2021-04-01)
 

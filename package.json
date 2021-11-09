@@ -1,10 +1,11 @@
 {
   "name": "com.maplander.app.inspector.front",
-  "version": "1.8.1",
+  "version": "1.8.2-beta.0",
   "license": "UNLICENSED",
   "author": "Alejandro Lopez A <program.alopez@gmail.com> (https://alx-developer.herokuapp.com/)",
   "contributors": [
-    "Fernando Flores H <example@gmail.com> (http://example.com/)"
+    "Fernando Flores H <example@gmail.com> (http://example.com/)",
+    "Oscar Iván Carreto Mtz <oscar.carmaiv@gmail.com>"
   ],
   "private": true,
   "scripts": {
