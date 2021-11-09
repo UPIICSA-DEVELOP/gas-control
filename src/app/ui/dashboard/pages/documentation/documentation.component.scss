@@ -7,22 +7,23 @@
 @import "./../../../../../styles/colors";
 
 #documentation {
+  position: relative;
   top: 0;
   height: 100%;
-  background-color: #FFFFFF;
+  background-color: #fff;
   z-index: 15;
-  position: relative;
 
-  .btn-active{
-    color: white !important;
+  .btn-active {
     background: mat-color($primary) !important;
+    color: white !important;
   }
 
   .content {
+    display: flex;
     width: 100%;
     height: 100%;
     padding: 2.5% 5%;
-    display: flex;
+
     @media screen and(max-width: 900px) {
       display: block;
       overflow: auto;
@@ -37,14 +38,15 @@
   }
 
   .background {
+    position: absolute;
+    right: 5%;
+    bottom: 0;
     width: 600px;
     height: 300px;
-    position: absolute;
-    bottom: 0;
-    right: 5%;
     background: url("https://www.googleapis.com/download/storage/v1/b/businesscardgcs/o/alex4%2F2019-01-26-003812930Web-Fondo-gas-poca-transparencia.png?generation=1548463093083368&alt=media") no-repeat bottom;
     background-size: cover;
     z-index: 0;
+
     @media screen and (max-width: 768px), screen and (max-height: 600px) {
       width: 300px;
       height: 150px;
@@ -52,43 +54,51 @@
   }
 
   .column-one {
-    z-index: 1;
     width: 40%;
     height: 100%;
+    z-index: 1;
+
     @media screen and (max-width: 900px) {
       width: 100%;
       height: initial;
     }
 
     .buttons {
-      width: 100%;
-      height: 40%;
       display: flex;
       flex-direction: column;
       justify-content: center;
+      width: 100%;
+      height: 40%;
       padding: 0 36px;
 
       .documents {
-        font-weight: 600;
-        font-size: 28px;
         margin: 8px 0;
+        font-size: 28px;
+        font-weight: 600;
       }
 
       .add {
-        font-weight: 600;
-        font-size: 18px;
         margin: 8px 0;
+        font-size: 18px;
+        font-weight: 600;
       }
 
       .buttons-container {
         display: grid;
-        grid-template-columns: 50% 50%;
-        padding: 0 24px;
+        padding: 0 3%;
+        grid-template-columns: repeat(2, calc(100% / 2));
+
+        @media screen and (max-width: 450px) {
+          grid-template-columns: 100%;
+          padding: 0 6%;
+        }
+
         button {
-          width: 120px;
+          margin: 6% 6%;
+          padding: 0 6%;
+          min-width: 125px;
           font-weight: 600;
-          margin: 12px 0;
-          box-shadow: 0 3px 1px 1px rgba(0, 0, 0, 0.1), 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, .10);
+          box-shadow: 0 3px 1px 1px rgba(0, 0, 0, .1), 0 2px 2px 0 rgba(0, 0, 0, .14), 0 1px 5px 0 rgba(0, 0, 0, .1);
         }
       }
 
@@ -98,17 +108,18 @@
     }
 
     .description {
-      width: 100%;
-      height: 60%;
-      color: #707070;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
+      width: 100%;
+      height: 60%;
+      color: #707070;
 
       .paragraph {
-        text-align: justify;
         margin: 0 36px;
+        text-align: justify;
+
         @media screen and(max-width: 600px) {
           margin: 0 16px;
         }
@@ -121,23 +132,25 @@
   }
 
   .column-two {
-    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     width: 60%;
     height: 100%;
     padding: 4px;
-    display: flex;
-    align-items: center;
-    flex-direction: column;
     overflow: auto;
+    z-index: 1;
+
     @media screen and (max-width: 900px) {
       width: 100%;
-      overflow: hidden;
       height: auto;
+      overflow: hidden;
     }
 
     .container {
-      height: auto;
       width: 85%;
+      height: auto;
+
       @media screen and(max-width: 600px) {
         width: 100%;
       }
@@ -154,6 +167,18 @@
           cursor: pointer;
         }
 
+        .prof {
+          flex-direction: column;
+          align-items: flex-start;
+          .title {
+            margin-block-end: .99em;
+            font-weight: bold;
+          }
+          .desc {
+            margin-left: 18px;
+          }
+        }
+
         .button-icon {
           color: #707070;
         }
@@ -162,15 +187,15 @@
       .others {
         margin: 16px 0;
         padding-left: 24px;
-        font-weight: 600;
         font-size: 18px;
+        font-weight: 600;
       }
 
       .divider {
-        height: 1px;
-        background-color: #707070;
         width: 100%;
+        height: 1px;
         margin: 16px 0;
+        background-color: #707070;
       }
     }
 
@@ -180,13 +205,13 @@
   }
 
   .btn-close {
+    display: flex;
     position: absolute;
     top: 0;
     right: 0;
-    margin: 24px;
-    display: flex;
-    justify-content: center;
     align-items: center;
+    justify-content: center;
+    margin: 24px;
     z-index: 5;
 
     button {
@@ -194,7 +219,7 @@
     }
 
     mat-icon {
-      color: #FFFFFF;
+      color: #fff;
     }
   }
 
