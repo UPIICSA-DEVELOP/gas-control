@@ -51,9 +51,7 @@ export class DocumentationComponent implements OnInit, OnDestroy {
   @HostBinding('@fadeInAnimation')
   public stationId: string;
   public docsAsea: DocList[];
-  public otherDocsAsea: DocList[];
   public docsCre: DocList[];
-  public otherDocsCre: DocList[];
   public docsProCiv: DocList[];
   public docsStps: DocList[];
   public docsProfeco: DocList[];
@@ -94,7 +92,8 @@ export class DocumentationComponent implements OnInit, OnDestroy {
     this.listStps(this._activateRoute.snapshot.data.data.stps);
     this.listProfeco(this._activateRoute.snapshot.data.data.profeco);
     // this.profecoDocuments = this._activateRoute.snapshot.data.data.profeco.item.profecoDocuments;
-    this.othersDocuments = this._activateRoute.snapshot.data.data.others.otherDocuments || [];
+    this.othersDocuments = this._activateRoute.snapshot.data.data.others.item.otherDocuments || [];
+    console.log(this._activateRoute.snapshot.data.data);
     this._subscriptionLoader = this._apiLoader.getProgress().subscribe(load => {
       this.load = load;
     });
@@ -105,7 +104,6 @@ export class DocumentationComponent implements OnInit, OnDestroy {
   }
 
   private listAseaDocs(response: any): void {
-    // console.log({'listAseaDocs()': response});
     if (response.code === HttpResponseCodes.OK) {
       this.docsAsea = [
         {name: 'Dictamen de instalaciones eléctricas', type: 1},
@@ -116,15 +114,14 @@ export class DocumentationComponent implements OnInit, OnDestroy {
         {name: 'Estudio de tierras físicas y pararrayos', type: 5},
         {name: 'Dictamen de diseño y construcción', type: 20},
         {name: 'Dictamen operación y mantenimiento', type: 21},
-        {name: 'Dirección', type: 8},
         {name: 'spacer'},
         {name: 'Prueba de hermeticidad', type: 9},
         {name: 'Número de permiso de la CRE', type: 10},
         {name: 'Razón social', type: 6},
         {name: 'RFC', type: 7},
-        {name: 'Número de tanques, producto y capacidad en litros', type: 11}
-      ];
-      this.otherDocsAsea = [
+        {name: 'Dirección', type: 8},
+        {name: 'Número de tanques, producto y capacidad en litros', type: 11},
+        {name: 'other'},
         {name: 'Manifiesto de residuos peligrosos', type: 22},
         {name: 'Limpieza ecológica', type: 23},
         {name: 'Documento que enuncie el material de fabricación de tanques y tuberías', type: 14},
@@ -135,23 +132,20 @@ export class DocumentationComponent implements OnInit, OnDestroy {
         {name: 'Licencia de funcionamiento', type: 26},
         {name: 'Cédula de operación anual', type: 27},
         {name: 'Análisis de riesgo', type: 28},
+        {name: 'spacer'},
         {name: 'Protocolo de respuesta a emergencias', type: 29},
         {name: 'SASISOPA', type: 30},
         {name: 'Dictamen de SASISOPA', type: 31},
         {name: 'NOM-004-ASEA-2017 Sistema de Recuperación de vapores', type: 32},
         {name: 'Pruebas de hermeticidad', type: 33},
-        {name: 'CURR', type: 34}
+        {name: 'CURR', type: 34} // Todo Fix upload document error
       ];
       if (response.items) {
         for (const doc of response.items) {
-          let index = this.docsAsea.findIndex(docs => docs.type === doc.type);
-          // console.log('OtherDoc? ' + (index > -1));
           try {
+            const index = this.docsAsea.findIndex(docs => docs.type === doc.type);
             if (index > -1) {
               this.docsAsea[index].docFile = doc;
-            } else {
-              index = this.otherDocsAsea.findIndex(docs => docs.type === doc.type);
-              this.otherDocsAsea[index].docFile = doc;
             }
           } catch (e) {
             console.log({'Error al cargar el documento': doc});
@@ -167,24 +161,24 @@ export class DocumentationComponent implements OnInit, OnDestroy {
   private listCreDocs(response: any): void {
     if (response.code === HttpResponseCodes.OK) {
       this.docsCre = [
-        {name: 'Resultado del laboratorio 1er semestre', type: 3},
-        {name: 'Resultado del laboratorio 2do semestre', type: 4},
-        {name: 'Seguro de responsabilidad civil vigente', type: 5},
-        {name: 'Número de permiso de la CRE', type: 6},
-        {name: 'Reporte de frecuencia de los muestreos y registros de las especificaciones', type: 7},
-        {name: 'Informe de Calidad de los Petrolíferos', type: 8},
-        {name: 'Remisiones de producto', type: 9},
-        {name: 'Bitácora de recepción y descarga de autotanques', type: 10},
-        {name: 'Número de permiso de la CRE', type: 11},
-        {name: 'Bitácora de aditivación', type: 12},
-        {name: 'Especificaciones técnicas del aditivo', type: 13}
-      ];
-      this.otherDocsCre = [
-        {name: 'Estructura de Capital', type: 14},
-        {name: 'Pago de supervisión anual', type: 15},
-        {name: 'Pago de DPAS', type: 16},
-        {name: 'Información estadística trimestral', type: 17},
-        {name: 'Procedencia del producto', type: 18},
+        {name: 'Estudio de calidad de productos', type: 17},
+        {name: 'Dictamen de los estudios de calidad de los productos', type: 18},
+        {name: 'Resultado del laboratorio 1er semestre', type: 1},
+        {name: 'Resultado del laboratorio 2do semestre', type: 2},
+        {name: 'Seguro de responsabilidad civil vigente', type: 3},
+        {name: 'Número de permiso de la CRE', type: 4},
+        {name: 'Reporte de frecuencia de los muestreos y registros de las especificaciones', type: 5},
+        {name: 'Informe de Calidad de los Petrolíferos', type: 6},
+        {name: 'Remisiones de producto', type: 7},
+        {name: 'Bitácora de recepción y descarga de autotanques', type: 8},
+        {name: 'Bitácora de aditivación', type: 10},
+        {name: 'Especificaciones técnicas del aditivo', type: 11},
+        {name: 'other'},
+        {name: 'Estructura de Capital', type: 12},
+        {name: 'Pago de supervisión anual', type: 13},
+        {name: 'Pago de DPAS', type: 14},
+        {name: 'Información estadística trimestral', type: 15},
+        {name: 'Procedencia del producto', type: 16},
         {name: 'Reporte de quejas', type: 19},
         {name: 'Reporte de incidencias', type: 20},
         {name: 'Dictamen NOM-016', type: 21},
@@ -194,14 +188,10 @@ export class DocumentationComponent implements OnInit, OnDestroy {
       if (response.items) {
         for (const doc of response.items) {
           try {
-            let index = this.docsCre.findIndex(docs => docs.type === doc.type);
+            const index = this.docsCre.findIndex(docs => docs.type === doc.type);
             if (index > -1) {
               // console.log(doc);
               this.docsCre[index].docFile = doc;
-            } else {
-              // console.log(doc);
-              index = this.otherDocsCre.findIndex(docs => docs.type === doc.type);
-              this.otherDocsCre[index].docFile = doc;
             }
           } catch (e) {
           console.log({'Error al cargar el documento': doc});
@@ -213,6 +203,7 @@ export class DocumentationComponent implements OnInit, OnDestroy {
       this._router.navigate(['/home']).then();
     }
   }
+
   private listProCiv(response: any) {
     if (response.code === HttpResponseCodes.OK) {
       this.docsProCiv = [
@@ -244,10 +235,11 @@ export class DocumentationComponent implements OnInit, OnDestroy {
       this._router.navigate(['/home']).then();
     }
   }
+
   private listStps(response: any) {
     if (response.code === HttpResponseCodes.OK) {
       this.docsStps = [
-        {name: 'NOM-001-STPS-2008 Instalaciones  de estaciones de servicio', type: 1},
+        {name: 'NOM-001-STPS-2008 Instalaciones de estaciones de servicio', type: 1},
         {name: 'NOM-002-STPS-2010 Seguridad y prevención contra incendios', type: 2},
         {name: 'NOM-005-STPS-1998 Manejo de sustancias químicas', type: 3},
         {name: 'NOM-006-STPS-2014 Almacenamiento de materiales', type: 4},
@@ -279,6 +271,7 @@ export class DocumentationComponent implements OnInit, OnDestroy {
       this._router.navigate(['/home']).then();
     }
   }
+
   private listProfeco(response: any) {
     if (response.code === HttpResponseCodes.OK) {
       this.docsProfeco = [
@@ -333,7 +326,7 @@ export class DocumentationComponent implements OnInit, OnDestroy {
               this.otherDocsProfeco[index].docFile = doc;
             }
           } catch (e) {
-            console.log({'Error al cargar el documento': doc});
+            console.log({'Error al cargar el documento': doc, e});
           }
         }
       }
@@ -394,25 +387,19 @@ export class DocumentationComponent implements OnInit, OnDestroy {
     this._documentData.append('fileName', rTypeName(regulationType) + new Date().getTime() + '.pdf');
     this._documentData.append('file', event.blob);
     let id: string;
-    if (regulationType === 1) {
-      if (this.docsAsea[index].docFile && !otherDocs) {
-        id = this.docsAsea[index].docFile.id;
-      } else if (this.otherDocsAsea[index].docFile && otherDocs) {
-        id = this.otherDocsAsea[index].docFile.id;
-      }
-    } else if (regulationType === 2 && !otherDocs) {
-      if (this.docsCre[index].docFile && !otherDocs) {
-        id = this.docsCre[index].docFile.id;
-      } else if (this.otherDocsCre[index].docFile && otherDocs) {
-        id = this.otherDocsCre[index].docFile.id;
-      }
+    if (regulationType === 1 && this.docsAsea[index].docFile) {
+      id = this.docsAsea[index].docFile.id;
+    } else if (regulationType === 2 && this.docsCre[index].docFile) {
+      id = this.docsCre[index].docFile.id;
     } else if (regulationType === 3 && this.docsProCiv[index].docFile) {
       id = this.docsProCiv[index].docFile.id;
     } else if (regulationType === 4 && this.docsStps[index].docFile) {
       id = this.docsStps[index].docFile.id;
     } else if (regulationType === 5) {
-      if (this.docsProfeco[index].docFile && !otherDocs) {
-        id = this.docsProfeco[index].docFile.id;
+      if (!otherDocs) {
+        if (this.docsProfeco[index].docFile) {
+          id = this.docsProfeco[index].docFile.id;
+        }
       } else if (this.otherDocsProfeco[index].docFile && otherDocs) {
         id = this.otherDocsProfeco[index].docFile.id;
       }
@@ -443,33 +430,17 @@ export class DocumentationComponent implements OnInit, OnDestroy {
         };
         switch (file.regulationType) {
           case 1:
-            if (!file.otherDocs) {
-              if (this.docsAsea[file.index].docFile) {
-                this.updateStationDocument(newFile, file.index);
-              } else {
-                this.createStationDocument(newFile, file.index);
-              }
+            if (this.docsAsea[file.index].docFile) {
+              this.updateStationDocument(newFile, file.index);
             } else {
-              if (this.otherDocsAsea[file.index].docFile) {
-                this.updateStationDocument(newFile, file.index, file.otherDocs);
-              } else {
-                this.createStationDocument(newFile, file.index, file.otherDocs);
-              }
+              this.createStationDocument(newFile, file.index);
             }
             break;
           case 2:
-            if (!file.otherDocs) {
-              if (this.docsCre[file.index].docFile) {
-                this.updateStationDocument(newFile, file.index);
-              } else {
-                this.createStationDocument(newFile, file.index);
-              }
+            if (this.docsCre[file.index].docFile) {
+              this.updateStationDocument(newFile, file.index);
             } else {
-              if (this.otherDocsCre[file.index].docFile) {
-                this.updateStationDocument(newFile, file.index, file.otherDocs);
-              } else {
-                this.createStationDocument(newFile, file.index, file.otherDocs);
-              }
+              this.createStationDocument(newFile, file.index);
             }
             break;
           case 3:
@@ -489,9 +460,9 @@ export class DocumentationComponent implements OnInit, OnDestroy {
           case 5:
             if (!file.otherDocs) {
               if (this.docsProfeco[file.index].docFile) {
-                this.updateStationDocument(newFile, file.index);
+                this.updateStationDocument(newFile, file.index, file.otherDocs);
               } else {
-                this.createStationDocument(newFile, file.index);
+                this.createStationDocument(newFile, file.index, file.otherDocs);
               }
             } else {
               if (this.otherDocsProfeco[file.index].docFile) {
@@ -546,18 +517,10 @@ export class DocumentationComponent implements OnInit, OnDestroy {
   private updateListDocs(doc: Document, index: number, otherDocs?: boolean) {
     switch (doc.regulationType) {
       case 1:
-        if (!otherDocs) {
-          this.docsAsea[index].docFile = doc;
-        } else {
-          this.otherDocsAsea[index].docFile = doc;
-        }
+        this.docsAsea[index].docFile = doc;
         break;
       case 2:
-        if (!otherDocs) {
-          this.docsCre[index].docFile = doc;
-        } else {
-          this.otherDocsCre[index].docFile = doc;
-        }
+        this.docsCre[index].docFile = doc;
         break;
       case 3:
         this.docsProCiv[index].docFile = doc;

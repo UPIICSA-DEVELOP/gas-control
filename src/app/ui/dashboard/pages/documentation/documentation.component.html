@@ -63,7 +63,10 @@
             </mat-card-header>
             <mat-card-content>
               <ng-container *ngFor="let doc of docsAsea; index as i;">
-                <div *ngIf="doc.name.match('spacer'); else fileBlock" class="divider"></div>
+                <div *ngIf="doc.name.match('other'); else dividerBlock" class="others">Otros documentos ASEA</div>
+                <ng-template #dividerBlock>
+                  <div *ngIf="doc.name.match('spacer'); else fileBlock" class="divider"></div>
+                </ng-template>
                 <ng-template #fileBlock>
                   <mat-card class="file">
                     <div class="text">
@@ -72,27 +75,6 @@
                     </div>
                     <div class="button-icon">
                       <lib-upload-file (loadImage)="uploadFile($event, i, 1, doc.type)" [content]="button" [fileType]="'document'" [isLoaded]="false">
-                        <ng-template #button>
-                          <mat-icon *ngIf="!doc.docFile; else uploadBlock" matTooltip="Cambiar" svgIcon="icons:upload"></mat-icon>
-                          <ng-template #uploadBlock><mat-icon matTooltip="Cargar">autorenew</mat-icon></ng-template>
-                        </ng-template>
-                      </lib-upload-file>
-                    </div>
-                  </mat-card>
-                </ng-template>
-              </ng-container>
-
-              <div class="others">Otros documentos ASEA</div>
-              <ng-container *ngFor="let doc of otherDocsAsea; index as i;">
-                <div *ngIf="doc.name.match('spacer'); else fileBlock" class="divider"></div>
-                <ng-template #fileBlock>
-                  <mat-card class="file">
-                    <div class="text">
-                      <div *ngIf="doc.docFile; else newFileBlock" (click)="openPdf2(doc.docFile.file)">{{doc.name}}</div>
-                      <ng-template #newFileBlock><span>{{doc.name}}</span></ng-template>
-                    </div>
-                    <div class="button-icon">
-                      <lib-upload-file (loadImage)="uploadFile($event, i, 1, doc.type, true)" [content]="button" [fileType]="'document'" [isLoaded]="false">
                         <ng-template #button>
                           <mat-icon *ngIf="!doc.docFile; else uploadBlock" matTooltip="Cambiar" svgIcon="icons:upload"></mat-icon>
                           <ng-template #uploadBlock><mat-icon matTooltip="Cargar">autorenew</mat-icon></ng-template>
@@ -114,38 +96,26 @@
             </mat-card-header>
             <mat-card-content>
               <ng-container *ngFor="let doc of docsCre; index as i;">
-                <mat-card class="file">
-                  <div class="text">
-                    <div *ngIf="doc.docFile; else newFileBlock" (click)="openPdf2(doc.docFile.file)">{{doc.name}}</div>
-                    <ng-template #newFileBlock><span>{{doc.name}}</span></ng-template>
-                  </div>
-                  <div class="button-icon">
-                    <lib-upload-file (loadImage)="uploadFile($event, i, 2, doc.type)" [content]="button" [fileType]="'document'" [isLoaded]="false">
-                      <ng-template #button>
-                        <mat-icon *ngIf="!doc.docFile; else uploadBlock" matTooltip="Cambiar" svgIcon="icons:upload"></mat-icon>
-                        <ng-template #uploadBlock><mat-icon matTooltip="Cargar">autorenew</mat-icon></ng-template>
-                      </ng-template>
-                    </lib-upload-file>
-                  </div>
-                </mat-card>
-              </ng-container>
-
-              <div class="others">CRE</div>
-              <ng-container *ngFor="let doc of otherDocsCre; index as i;">
-                <mat-card class="file">
-                  <div class="text">
-                    <div *ngIf="doc.docFile; else newFileBlock" (click)="openPdf2(doc.docFile.file)">{{doc.name}}</div>
-                    <ng-template #newFileBlock><span>{{doc.name}}</span></ng-template>
-                  </div>
-                  <div class="button-icon">
-                    <lib-upload-file (loadImage)="uploadFile($event, i, 1, doc.type, true)" [content]="button" [fileType]="'document'" [isLoaded]="false">
-                      <ng-template #button>
-                        <mat-icon *ngIf="!doc.docFile; else uploadBlock" matTooltip="Cambiar" svgIcon="icons:upload"></mat-icon>
-                        <ng-template #uploadBlock><mat-icon matTooltip="Cargar">autorenew</mat-icon></ng-template>
-                      </ng-template>
-                    </lib-upload-file>
-                  </div>
-                </mat-card>
+                <div *ngIf="doc.name.match('other'); else dividerBlock" class="others">Otros documentos CRE</div>
+                <ng-template #dividerBlock>
+                  <div *ngIf="doc.name.match('spacer'); else fileBlock" class="divider"></div>
+                </ng-template>
+                <ng-template #fileBlock>
+                  <mat-card class="file">
+                    <div class="text">
+                      <div *ngIf="doc.docFile; else newFileBlock" (click)="openPdf2(doc.docFile.file)">{{doc.name}}</div>
+                      <ng-template #newFileBlock><span>{{doc.name}}</span></ng-template>
+                    </div>
+                    <div class="button-icon">
+                      <lib-upload-file (loadImage)="uploadFile($event, i, 2, doc.type)" [content]="button" [fileType]="'document'" [isLoaded]="false">
+                        <ng-template #button>
+                          <mat-icon *ngIf="!doc.docFile; else uploadBlock" matTooltip="Cambiar" svgIcon="icons:upload"></mat-icon>
+                          <ng-template #uploadBlock><mat-icon matTooltip="Cargar">autorenew</mat-icon></ng-template>
+                        </ng-template>
+                      </lib-upload-file>
+                    </div>
+                  </mat-card>
+                </ng-template>
               </ng-container>
             </mat-card-content>
           </mat-card>
@@ -219,7 +189,7 @@
                     <ng-template #newFileBlock><span>{{doc.name}}</span></ng-template>
                   </div>
                   <div class="button-icon">
-                    <lib-upload-file (loadImage)="uploadFile($event, i, 5, doc.type)" [content]="button" [fileType]="'document'" [isLoaded]="false">
+                    <lib-upload-file (loadImage)="uploadFile($event, i, 5, doc.type, false)" [content]="button" [fileType]="'document'" [isLoaded]="false">
                       <ng-template #button>
                         <mat-icon *ngIf="!doc.docFile; else uploadBlock" matTooltip="Cambiar" svgIcon="icons:upload"></mat-icon>
                         <ng-template #uploadBlock><mat-icon matTooltip="Cargar">autorenew</mat-icon></ng-template>
