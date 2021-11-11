@@ -34,7 +34,7 @@
               PROFECO
             </button>
             <button type="button" mat-button [ngClass]="{'btn-active':documentsActive === 6}" [color]="'primary'" (click)="documentsActive=6">
-              OTROS
+              OTRA
             </button>
           </div>
         </div>
@@ -69,10 +69,12 @@
                 </ng-template>
                 <ng-template #fileBlock>
                   <mat-card class="file">
-                    <div class="text">
-                      <div *ngIf="doc.docFile; else newFileBlock" (click)="openPdf2(doc.docFile.file)">{{doc.name}}</div>
-                      <ng-template #newFileBlock><span>{{doc.name}}</span></ng-template>
+                    <div *ngIf="doc.docFile; else newFileBlock" class="text" (click)="openPdf2(doc.docFile.file)">
+                      <div>{{doc.name}}</div>
                     </div>
+                    <ng-template #newFileBlock><div class="text">
+                      <div>{{doc.name}}</div>
+                    </div></ng-template>
                     <div class="button-icon">
                       <lib-upload-file (loadImage)="uploadFile($event, i, 1, doc.type)" [content]="button" [fileType]="'document'" [isLoaded]="false">
                         <ng-template #button>
