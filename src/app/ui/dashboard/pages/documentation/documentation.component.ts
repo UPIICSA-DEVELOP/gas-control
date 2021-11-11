@@ -25,20 +25,7 @@ import {switchMap} from 'rxjs/operators';
 import {EntityResponse} from '@app/utils/class/entity-response';
 import {OtherDocStation} from '@app/utils/interfaces/other-doc-station';
 import {UtilitiesService} from '@app/utils/utilities/utilities';
-
-
-
-interface DocList {
-  name: string;
-  type?: number;
-  docFile?: {
-    file?: FileCS;
-    id?: string;
-    idStation: string;
-    regulationType: number;
-    type: number;
-  };
-}
+import {DocList} from '@app/utils/interfaces/doc-list';
 
 @Component({
   selector: 'app-documentation',
