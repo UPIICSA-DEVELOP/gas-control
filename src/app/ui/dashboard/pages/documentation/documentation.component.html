@@ -72,9 +72,11 @@
                     <div *ngIf="doc.docFile; else newFileBlock" class="text" (click)="openPdf2(doc.docFile.file)">
                       <div>{{doc.name}}</div>
                     </div>
-                    <ng-template #newFileBlock><div class="text">
-                      <div>{{doc.name}}</div>
-                    </div></ng-template>
+                    <ng-template #newFileBlock>
+                      <div class="text">
+                        <div>{{doc.name}}</div>
+                      </div>
+                    </ng-template>
                     <div class="button-icon">
                       <lib-upload-file (loadImage)="uploadFile($event, i, 1, doc.type)" [content]="button" [fileType]="'document'" [isLoaded]="false">
                         <ng-template #button>
@@ -104,10 +106,14 @@
                 </ng-template>
                 <ng-template #fileBlock>
                   <mat-card class="file">
-                    <div class="text">
-                      <div *ngIf="doc.docFile; else newFileBlock" (click)="openPdf2(doc.docFile.file)">{{doc.name}}</div>
-                      <ng-template #newFileBlock><span>{{doc.name}}</span></ng-template>
+                    <div *ngIf="doc.docFile; else newFileBlock" class="text" (click)="openPdf2(doc.docFile.file)">
+                      <div>{{doc.name}}</div>
                     </div>
+                    <ng-template #newFileBlock>
+                      <div class="text">
+                        <div>{{doc.name}}</div>
+                      </div>
+                    </ng-template>
                     <div class="button-icon">
                       <lib-upload-file (loadImage)="uploadFile($event, i, 2, doc.type)" [content]="button" [fileType]="'document'" [isLoaded]="false">
                         <ng-template #button>
@@ -132,10 +138,14 @@
             <mat-card-content>
               <ng-container *ngFor="let doc of docsProCiv; index as i;">
                 <mat-card class="file">
-                  <div class="text">
-                    <div *ngIf="doc.docFile; else newFileBlock" (click)="openPdf2(doc.docFile.file)">{{doc.name}}</div>
-                    <ng-template #newFileBlock><span>{{doc.name}}</span></ng-template>
+                  <div *ngIf="doc.docFile; else newFileBlock" class="text" (click)="openPdf2(doc.docFile.file)">
+                    <div>{{doc.name}}</div>
                   </div>
+                  <ng-template #newFileBlock>
+                    <div class="text">
+                      <div>{{doc.name}}</div>
+                    </div>
+                  </ng-template>
                   <div class="button-icon">
                     <lib-upload-file (loadImage)="uploadFile($event, i, 3, doc.type)" [content]="button" [fileType]="'document'" [isLoaded]="false">
                       <ng-template #button>
@@ -159,10 +169,14 @@
             <mat-card-content>
               <ng-container *ngFor="let doc of docsStps; index as i;">
                 <mat-card class="file">
-                  <div class="text">
-                    <div *ngIf="doc.docFile; else newFileBlock" (click)="openPdf2(doc.docFile.file)">{{doc.name}}</div>
-                    <ng-template #newFileBlock><span>{{doc.name}}</span></ng-template>
+                  <div *ngIf="doc.docFile; else newFileBlock" class="text" (click)="openPdf2(doc.docFile.file)">
+                    <div>{{doc.name}}</div>
                   </div>
+                  <ng-template #newFileBlock>
+                    <div class="text">
+                      <div>{{doc.name}}</div>
+                    </div>
+                  </ng-template>
                   <div class="button-icon">
                     <lib-upload-file (loadImage)="uploadFile($event, i, 4, doc.type)" [content]="button" [fileType]="'document'" [isLoaded]="false">
                       <ng-template #button>
@@ -186,10 +200,14 @@
             <mat-card-content>
               <ng-container *ngFor="let doc of docsProfeco; index as i;">
                 <mat-card class="file">
-                  <div class="text">
-                    <div *ngIf="doc.docFile; else newFileBlock" (click)="openPdf2(doc.docFile.file)">{{doc.name}}</div>
-                    <ng-template #newFileBlock><span>{{doc.name}}</span></ng-template>
+                  <div *ngIf="doc.docFile; else newFileBlock" class="text" (click)="openPdf2(doc.docFile.file)">
+                    <div>{{doc.name}}</div>
                   </div>
+                  <ng-template #newFileBlock>
+                    <div class="text">
+                      <div>{{doc.name}}</div>
+                    </div>
+                  </ng-template>
                   <div class="button-icon">
                     <lib-upload-file (loadImage)="uploadFile($event, i, 5, doc.type, false)" [content]="button" [fileType]="'document'" [isLoaded]="false">
                       <ng-template #button>
@@ -206,8 +224,14 @@
                 <mat-card class="file">
                   <div class="text prof">
                     <span class="title">{{otherDocsProfecoTitles[i]}}</span>
-                    <div class="desc" *ngIf="doc.docFile; else newFileBlock" (click)="openPdf2(doc.docFile.file)">{{doc.name}}</div>
-                    <ng-template #newFileBlock><span class="desc">{{doc.name}}</span></ng-template>
+                    <div *ngIf="doc.docFile; else newFileBlock" class="desc" (click)="openPdf2(doc.docFile.file)">
+                      <div>{{doc.name}}</div>
+                    </div>
+                    <ng-template #newFileBlock>
+                      <div class="desc">
+                        <div>{{doc.name}}</div>
+                      </div>
+                    </ng-template>
                   </div>
                   <div class="button-icon">
                     <lib-upload-file (loadImage)="uploadFile($event, i, 5, doc.type, true)" [content]="button" [fileType]="'document'" [isLoaded]="false">
@@ -239,8 +263,8 @@
             <mat-card-content>
               <ng-container *ngFor="let doc of othersDocuments">
                 <mat-card class="file">
-                  <div class="text">
-                    <div (click)="openOtherPdf(doc.fileCS.thumbnail)">{{doc.name}}</div>
+                  <div class="text" (click)="openOtherPdf(doc.fileCS.thumbnail)">
+                    <div>{{doc.name}}</div>
                   </div>
                   <div class="button-icon">
                     <lib-upload-file (loadImage)="updateOtherDocument($event, doc)" [content]="button" [fileType]="'document'" [isLoaded]="true">
