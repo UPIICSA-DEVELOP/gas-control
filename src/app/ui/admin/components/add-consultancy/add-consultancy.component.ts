@@ -317,7 +317,7 @@ export class AddConsultancyComponent implements OnInit, OnDestroy {
   }
 
   private uploadBusinessCard(bCard: any): void {
-    this._ownerInfo.bCard = bCard;
+    this._ownerInfo.bCard = bCard || null;
     this.validateSignature();
   }
 
@@ -356,14 +356,15 @@ export class AddConsultancyComponent implements OnInit, OnDestroy {
       profileImage: this._ownerInfo.profileImage ? this._ownerInfo.profileImage.blobName : null,
       profileImageThumbnail: this._ownerInfo.profileImage ? this._ownerInfo.profileImage.thumbnail + '=s1200' : null
     };
-    this._api.businessCardService(data).subscribe(response => {
+    this.uploadBusinessCard(null);
+    /*this._api.businessCardService(data).subscribe(response => {
       if (response.code === HttpResponseCodes.OK) {
         this.uploadBusinessCard(response.item);
       } else {
         this.progress = false;
         this.onErrorOccurred();
       }
-    });
+    });*/
   }
 
   public validateEmailExist(): void {

@@ -503,7 +503,12 @@ export class ProfileComponent implements OnInit, OnDestroy {
       profileImageThumbnail: this.user.profileImage ? this.user.profileImage.thumbnail + '=s1200' : '',
       bCardId: this.user.bCard ? this.user.bCard.id : null
     };
-    this._api.businessCardService(data).subscribe(response => {
+    if (isNewEmail) {
+      this.updateProfileDataWithNewEmail();
+    } else {
+      this.saveProfileData();
+    }
+    /*this._api.businessCardService(data).subscribe(response => {
       if (response.code === HttpResponseCodes.OK) {
         this._snackBarService.closeSnackBar();
         this.user.bCard = response.item;
@@ -516,7 +521,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
         this._snackBarService.closeSnackBar();
         this._snackBarService.setMessage('Ha ocurrido un error, por favor, intente de nuevo', 'OK', 3000);
       }
-    });
+    });*/
   }
 
   public validateEmailExist(): void {

@@ -696,7 +696,8 @@ export class AddGasStationComponent implements OnInit, OnDestroy {
         profileImageThumbnail: this.legalRepresentative.profileImage ? this.legalRepresentative.profileImage.thumbnail + '=s1200' : null
       };
     }
-    this._api.businessCardService(data).subscribe(response => {
+    this.createLegal();
+    /*this._api.businessCardService(data).subscribe(response => {
       if (response.code === HttpResponseCodes.OK) {
         this._snackBarService.closeSnackBar();
         if (isManager) {
@@ -716,7 +717,7 @@ export class AddGasStationComponent implements OnInit, OnDestroy {
         this._snackBarService.closeSnackBar();
         this._snackBarService.setMessage('Ha ocurrido un error, por favor, intente de nuevo', 'OK', 3000);
       }
-    });
+    });*/
   }
 
   private createLegal(): void {

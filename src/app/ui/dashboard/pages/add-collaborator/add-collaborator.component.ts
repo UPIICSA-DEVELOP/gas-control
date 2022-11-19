@@ -349,15 +349,15 @@ export class AddCollaboratorComponent implements OnInit, OnDestroy {
       profileImage: person.profileImage ? person.profileImage.blobName : null,
       profileImageThumbnail: person.profileImage ? person.profileImage.thumbnail + '=s1200' : null
     };
-    this._api.businessCardService(data).subscribe(response => {
-      if (response.code === HttpResponseCodes.OK) {
+    // this._api.businessCardService(data).subscribe(response => {
+      // if (response.code === HttpResponseCodes.OK) {
         this._snackBarService.closeSnackBar();
-        person.bCard = response.item;
+        // person.bCard = response.item;
         this.createPerson(person, personInformation);
-      } else {
+      /*} else {
         this._snackBarService.closeSnackBar();
         this._snackBarService.setMessage('Ha ocurrido un error, por favor, intente de nuevo', 'OK', 3000);
-      }
-    });
+      }*/
+    // });
   }
 }

@@ -375,7 +375,8 @@ export class CollaboratorsListComponent implements OnInit, OnDestroy {
       profileImage: person.profileImage ? person.profileImage.blobName : null,
       profileImageThumbnail: person.profileImage ? person.profileImage.thumbnail + '=s1200' : null
     };
-    this._api.businessCardService(data).subscribe(response => {
+    this.createPerson(person);
+    /*this._api.businessCardService(data).subscribe(response => {
       if (response.code === HttpResponseCodes.OK) {
         this._snackBarService.closeSnackBar();
         person.bCard = response.item;
@@ -384,7 +385,7 @@ export class CollaboratorsListComponent implements OnInit, OnDestroy {
         this._snackBarService.closeSnackBar();
         this._snackBarService.setMessage('Ha ocurrido un error, por favor, intente de nuevo', 'OK', 3000);
       }
-    });
+    });*/
   }
 
   private createPerson(person: Person): void {

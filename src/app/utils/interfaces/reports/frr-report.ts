@@ -5,6 +5,7 @@ export interface FRReport {
   diesel: boolean;
   endTime: number;
   fileCS?: FileCS;
+  finalVol?: number;
   folio?: number;
   id?: string;
   magna: boolean;
@@ -15,6 +16,8 @@ export interface FRReport {
   remissionNumber: string;
   signature: FileCS;
   startTime: number;
+  tankNumber?: string;
   taskId: string;
   volumetric: number;
+  waste?: number;
 }

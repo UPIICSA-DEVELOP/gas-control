@@ -76,8 +76,13 @@
           </mat-form-field>
         </div>
         <mat-form-field class="inputs">
-          <input formControlName="remissionNumber" matInput placeholder="Número de remisión" required type="number">
+          <input formControlName="remissionNumber" matInput placeholder="Número de remisión" required type="text">
           <mat-error *ngIf="frForm.controls['remissionNumber'].hasError('required')">
+            Este campo es obligatorio
+          </mat-error>
+        </mat-form-field><mat-form-field class="inputs">
+          <input formControlName="tankNumber" matInput placeholder="Número de tanque" required type="text">
+          <mat-error *ngIf="frForm.controls['tankNumber'].hasError('required')">
             Este campo es obligatorio
           </mat-error>
         </mat-form-field>
@@ -92,6 +97,20 @@
           <mat-form-field class="clock">
             <input formControlName="volumetric" matInput placeholder="Volumétrico (lts)" required type="number">
             <mat-error *ngIf="frForm.controls['volumetric'].hasError('required')">
+              Este campo es obligatorio
+            </mat-error>
+          </mat-form-field>
+        </div>
+      <div class="times">
+          <mat-form-field class="clock">
+            <input formControlName="finalVol" matInput placeholder="Vol. Final (lts)" required type="number">
+            <mat-error *ngIf="frForm.controls['finalVol'].hasError('required')">
+              Este campo es obligatorio
+            </mat-error>
+          </mat-form-field>
+          <mat-form-field class="clock">
+            <input formControlName="waste" matInput placeholder="Merma (lts)" required type="number">
+            <mat-error *ngIf="frForm.controls['waste'].hasError('required')">
               Este campo es obligatorio
             </mat-error>
           </mat-form-field>

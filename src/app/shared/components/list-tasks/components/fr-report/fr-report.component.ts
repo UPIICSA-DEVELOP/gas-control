@@ -112,8 +112,11 @@ export class FrReportComponent implements OnInit, OnDestroy {
       startTime: ['', [Validators.required]],
       endTime: ['', [Validators.required]],
       remissionNumber: ['', [Validators.required]],
+      tankNumber: ['', [Validators.required]],
       remission: ['', [Validators.required]],
       volumetric: ['', [Validators.required]],
+      finalVol: ['', [Validators.required]],
+      waste: ['', [Validators.required]],
       magna: [false, []],
       premium: [false, []],
       diesel: [false, []],
@@ -128,6 +131,7 @@ export class FrReportComponent implements OnInit, OnDestroy {
       diesel: report.diesel || null,
       endTime: report.endTime,
       fileCS: report.fileCS || null,
+      finalVol: report.finalVol || null,
       folio: report.folio || null,
       id: report.id || null,
       magna: report.magna || null,
@@ -138,8 +142,10 @@ export class FrReportComponent implements OnInit, OnDestroy {
       remissionNumber: report.remissionNumber,
       signature: report.signature || null,
       startTime: report.startTime,
+      tankNumber: report.tankNumber,
       taskId: report.taskId || null,
-      volumetric: report.volumetric || null
+      volumetric: report.volumetric || null,
+      waste: report.waste || null
     };
     this.frForm.patchValue({
       date: MDate.getPrimitiveDate(this.frReport.date),
@@ -251,6 +257,7 @@ export class FrReportComponent implements OnInit, OnDestroy {
       date: UtilitiesService.createPersonalTimeStamp(value.date).timeStamp,
       diesel: value.diesel,
       endTime: UtilitiesService.removeFormatTime(value.endTime),
+      finalVol: value.finalVol,
       magna: value.magna,
       name: this.name,
       premium: value.premium,
@@ -259,8 +266,10 @@ export class FrReportComponent implements OnInit, OnDestroy {
       remissionNumber: value.remissionNumber,
       signature: this._signatureElement,
       startTime: UtilitiesService.removeFormatTime(value.startTime),
+      tankNumber: value.tankNumber,
       taskId: this._taskId,
-      volumetric: value.volumetric
+      volumetric: value.volumetric,
+      waste: value.waste
     };
     if (this._copyLastTask) {
       this.frReport.id = this._copyLastTask.id;
