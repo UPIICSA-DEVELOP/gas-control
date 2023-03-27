@@ -124,20 +124,11 @@
           Debe seleccionar al menos una opción
         </mat-error>
         <div class="inputs">
-          <div class="space-box">
-            <div class="checks-row">
-              <mat-checkbox formControlName="magna" (change)="changeFuelType($event)">Regular</mat-checkbox>
-            </div>
-            <div class="checks-row">
-              <mat-checkbox formControlName="premium" (change)="changeFuelType($event)">Premium</mat-checkbox>
-            </div>
-          </div>
-          <div class="space-box">
-            <div class="checks-row">
-              <mat-checkbox formControlName="diesel" (change)="changeFuelType($event)">Diesel</mat-checkbox>
-            </div>
-            <div class="checks-row"></div>
-          </div>
+          <mat-radio-group formControlName="fuelType" style="display: flex; justify-content: space-around; margin: 0 0 16px 0;">
+            <mat-radio-button [value]="1">Regular</mat-radio-button>
+            <mat-radio-button [value]="2">Premium</mat-radio-button>
+            <mat-radio-button [value]="3">Diesel</mat-radio-button>
+          </mat-radio-group>
         </div>
         <mat-form-field class="inputs">
           <input formControlName="receiveName" matInput placeholder="Personal que recibe" required>

@@ -117,9 +117,7 @@ export class FrReportComponent implements OnInit, OnDestroy {
       volumetric: ['', [Validators.required]],
       finalVol: ['', [Validators.required]],
       waste: ['', [Validators.required]],
-      magna: [false, []],
-      premium: [false, []],
-      diesel: [false, []],
+      fuelType: [0, []],
       receiveName: ['', [Validators.required]]
     });
   }
@@ -147,6 +145,14 @@ export class FrReportComponent implements OnInit, OnDestroy {
       volumetric: report.volumetric || null,
       waste: report.waste || null
     };
+    let fuelType = 0;
+    if (this.frReport.magna) {
+      fuelType = 1;
+    } else if (this.frReport.premium) {
+      fuelType = 2;
+    } else if (this.frReport.diesel) {
+      fuelType = 3;
+    }
     this.frForm.patchValue({
       date: MDate.getPrimitiveDate(this.frReport.date),
       startTime: this._formatTimePipe.transform(this.frReport.startTime),
@@ -154,9 +160,7 @@ export class FrReportComponent implements OnInit, OnDestroy {
       remissionNumber: this.frReport.remissionNumber,
       remission: this.frReport.remission,
       volumetric: this.frReport.volumetric,
-      magna: this.frReport.magna,
-      premium: this.frReport.premium,
-      diesel: this.frReport.diesel,
+      fuelType: fuelType,
       receiveName: this.frReport.receiveName
     });
     this.date = UtilitiesService.convertDate(this.frReport.date);
@@ -234,7 +238,7 @@ export class FrReportComponent implements OnInit, OnDestroy {
   }
 
   public validateForm(value: any): void {
-    if (!value.magna && !value.premium && !value.diesel) {
+    if (!value.fuelType) {
       this.error = true;
     }
     if (this.frForm.invalid || this.error) {
@@ -255,12 +259,12 @@ export class FrReportComponent implements OnInit, OnDestroy {
   private saveReport(value: any): void {
     this.frReport = {
       date: UtilitiesService.createPersonalTimeStamp(value.date).timeStamp,
-      diesel: value.diesel,
+      diesel: value.fuelType === 3,
       endTime: UtilitiesService.removeFormatTime(value.endTime),
       finalVol: value.finalVol,
-      magna: value.magna,
+      magna: value.fuelType === 1,
       name: this.name,
-      premium: value.premium,
+      premium: value.fuelType === 2,
       receiveName: value.receiveName,
       remission: value.remission,
       remissionNumber: value.remissionNumber,

@@ -101,12 +101,15 @@
     "@angular/language-service": "8.2.14",
     "@types/chart.js": "^2.7.42",
     "@types/compression": "0.0.36",
+    "@types/express": "4.17.11",
+    "@types/express-serve-static-core": "4.17.19",
+    "@types/serve-static": "1.13.9",
     "@types/crypto-js": "^3.1.43",
     "@types/googlemaps": "^3.30.16",
     "@types/jasmine": "~2.5.53",
     "@types/jasminewd2": "~2.0.2",
     "@types/nconf": "^0.10.0",
-    "@types/node": "^14.0.25",
+    "@types/node": "^10.17.59",
     "browserify": "^16.2.2",
     "codelyzer": "^5.0.1",
     "commander": "^2.18.0",
@@ -137,8 +140,8 @@
     "typescript": "3.5.3",
     "uglify-js": "^3.4.9",
     "webpack": "^4.41.5",
-    "webpack-bundle-analyzer": "^3.3.2",
-    "webpack-cli": "^3.1.0",
-    "webpack-node-externals": "^1.7.2"
+    "webpack-bundle-analyzer": "2.13.1",
+    "webpack-cli": "3.1.0",
+    "webpack-node-externals": "1.7.2"
   }
 }
