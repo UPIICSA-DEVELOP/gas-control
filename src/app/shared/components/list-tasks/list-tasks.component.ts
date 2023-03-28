@@ -620,18 +620,30 @@ export class ListTasksComponent implements OnInit, OnDestroy {
   }
 
   public exportListTasks(): void {
-    if (this.listTask.scheduleTasks.length === 0 &&
-      this.listTask.historyTasks.length === 0 &&
-      this.listTask.previousTasks.length === 0 &&
-      this.listTask.todayTasks.length === 0) {
-      this._snackBarService.setMessage('No es posible exportar una lista vacía', 'OK', 3000);
-      return;
-    }
-    this._api.exportCalendarByTaskList(this.filters, this.others).subscribe(response => {
-      if (response) {
-        this._openFile.open(response);
+    if (this.others) {
+      if (this.notCalendarTasks.length === 0) {
+        this._snackBarService.setMessage('No es posible exportar una lista vacía', 'OK', 3000);
+        return;
       }
-    });
+      this._api.exportCalendarByTaskList(this.filters, this.others).subscribe(response => {
+        if (response) {
+          this._openFile.open(response);
+        }
+      });
+    } else {
+      if (this.listTask.scheduleTasks.length === 0 &&
+        this.listTask.historyTasks.length === 0 &&
+        this.listTask.previousTasks.length === 0 &&
+        this.listTask.todayTasks.length === 0) {
+        this._snackBarService.setMessage('No es posible exportar una lista vacía', 'OK', 3000);
+        return;
+      }
+      this._api.exportCalendarByTaskList(this.filters, this.others).subscribe(response => {
+        if (response) {
+          this._openFile.open(response);
+        }
+      });
+    }
   }
 
   private createTasks(id: string): void {
